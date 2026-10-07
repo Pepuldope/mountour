@@ -1,21 +1,37 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f6f2;
+  --foreground: #1a1e1b;
+  --accent: #1f6f4a;
+  --accent-contrast: #ffffff;
+  --warn: #b3491f;
+  --warn-bg: #fbe9e1;
+  --ok-bg: #e6f2ea;
+  --card-bg: #ffffff;
+  --border: #dcdad2;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #12140f;
+    --foreground: #ececea;
+    --accent: #4fb87a;
+    --accent-contrast: #0a0f0a;
+    --warn: #ff9066;
+    --warn-bg: #3a2016;
+    --ok-bg: #163724;
+    --card-bg: #1b1f19;
+    --border: #2c2f27;
   }
 }
 
@@ -23,4 +39,30 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: var(--card-bg);
+}
+
+.mt-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #fff;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.mt-marker-parking {
+  background: var(--accent);
+}
+
+.mt-marker-poi {
+  background: #b3491f;
 }

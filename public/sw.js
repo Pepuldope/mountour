@@ -1,0 +1,87 @@
+// MounTour service worker.
+//
+// Cache-on-plan, not cache-everything: nothing is precached at install time.
+// A trip is only cached when the visitor taps "Ulozit vylet offline" on its
+// trip sheet, which postMessage()s a CACHE_TRIP request here with the exact
+// URLs to store (the trip page itself, its GPX file, and the OSM tiles for
+// the trail's bbox at zoom 13-15).
+
+const CACHE_PREFIX = "mountour-trip-";
+
+self.addEventListener("install", () => {
+  self.skipWaiting();
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil(self.clients.claim());
+});
+
+self.addEventListener("message", (event) => {
+  const msg = event.data;
+  if (!msg || msg.type !== "CACHE_TRIP") return;
+
+  const { slug, urls } = msg;
+  const cacheName = CACHE_PREFIX + slug;
+  const port = event.ports && event.ports[0];
+
+  event.waitUntil(
+    (async () => {
+      const cache = await caches.open(cacheName);
+      let done = 0;
+      const total = urls.length;
+      for (const url of urls) {
+        try {
+          const res = await fetch(url, { mode: "cors" }).catch(() => fetch(url));
+          if (res && (res.ok || res.type === "opaque")) {
+            await cache.put(url, res.clone());
+          }
+        } catch {
+          // Best-effort: one failed tile shouldn't abort the whole trip cache.
+        }
+        done += 1;
+        if (port) port.postMessage({ type: "PROGRESS", done, total });
+      }
+      if (port) port.postMessage({ type: "DONE", done, total });
+    })()
+  );
+});
+
+self.addEventListener("fetch", (event) => {
+  const req = event.request;
+  if (req.method !== "GET") return;
+
+  event.respondWith(
+    (async () => {
+      const cached = await caches.match(req);
+      if (cached) {
+        // Cache-first for anything we've explicitly stored (tiles, GPX,
+        // the trip page). Refresh in the background when online.
+        event.waitUntil(
+          fetch(req)
+            .then(async (res) => {
+              if (res && res.ok) {
+                const cache = await caches.open(await matchingCacheName(req));
+                if (cache) cache.put(req, res.clone());
+              }
+            })
+            .catch(() => {})
+        );
+        return cached;
+      }
+      try {
+        return await fetch(req);
+      } catch (err) {
+        throw err;
+      }
+    })()
+  );
+});
+
+async function matchingCacheName(req) {
+  const names = await caches.keys();
+  for (const name of names) {
+    const cache = await caches.open(name);
+    if (await cache.match(req)) return name;
+  }
+  return names[0];
+}

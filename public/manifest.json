@@ -1,0 +1,17 @@
+{
+  "name": "MounTour",
+  "short_name": "MounTour",
+  "description": "Planovac jednodnovych vyletov do hor",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f6f2",
+  "theme_color": "#1f6f4a",
+  "lang": "sk",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
