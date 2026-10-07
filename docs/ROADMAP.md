@@ -3,21 +3,21 @@
 Feedback from Peter after the first live version (2026-10-07). Ordered roughly by
 dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
 
-## 1. Real trail data — Malé Karpaty  `[~]`
+## 1. Real trail data — Malé Karpaty  `[x]`
 - Replace the made-up seed with 5–10 real day hikes in Malé Karpaty.
 - Real trail geometry (GPX) following marked KST trails, real trailheads,
   real parking pins (OSM `amenity=parking`), real transit stops near the trailhead.
 - Closures: only rows with a real `source_url`. No source → no row → the UI says
   „Stav chodníka neoverený". Remove the fake Devínska Kobyla closure.
 
-## 2. Map as the main surface  `[~]`
+## 2. Map as the main surface  `[x]`
 - A map that always shows what the user is clicking through: parking spots,
   trails at a place, transit options, POIs.
 - Trail lines drawn on the map, not just a parking link.
 - Marked-trail overlay (turistické značky), which Google/Apple don't render.
 - **Decided 2026-10-07:** Leaflet + OpenTopoMap base + Waymarked Trails hiking overlay. No API key.
 
-## 3. User location  `[~]`
+## 3. User location  `[x]`
 - Browser geolocation → "you are here" on the map, used as the trip's start.
 - Manual start (typed place) as a fallback when GPS is denied.
 
@@ -40,7 +40,7 @@ dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
 - No "fill the form → get a result" flow. Every input (time budget, kids,
   start location, departure time) updates the results, map and timeline instantly.
 
-## 7. Layout  `[ ]`
+## 7. Layout  `[~]`
 - **Desktop:** left column = the inputs + nav (saved trips, etc.), right = map +
   timeline, the visual, interactive part.
 - **Phone:** the visual side can shrink (no big map by default), but inputs still
@@ -49,3 +49,10 @@ dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
 ## 8. Saved trips  `[ ]`
 - A "saved trips" entry in the left nav. Fits with offline cache-on-plan: a saved
   trip = a cached trip. No accounts (still out of scope), so it is per-device.
+
+## Data sources (decided 2026-10-07)
+- Trails, parking, transit stops, POIs: OpenStreetMap via `scripts/build_trails.py`;
+  on-foot track: BRouter. Parking is searched along the whole route (out-and-back
+  trails can start from either end).
+- **Rejected:** Google Places (results must be shown on a Google Map), Mapy.com API
+  (terms forbid storing/caching results). Missing data → fix it in OSM, re-run the build.
