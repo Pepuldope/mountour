@@ -2,6 +2,7 @@
 
 export type Difficulty = "lahka" | "stredna" | "tazka";
 export type ClosureKind = "rocna" | "jednorazova";
+export type TransitMode = "autobus" | "elektricka" | "vlak";
 export type PoiKind =
   | "vyhliadka"
   | "chata"
@@ -67,6 +68,17 @@ export interface Closure {
   verified_on: string;
 }
 
+/** Public-transport stop near a trailhead (OpenStreetMap). */
+export interface TransitStop {
+  id: string;
+  trailhead_id: string;
+  name: string;
+  mode: TransitMode;
+  location: LatLng;
+  /** Straight-line distance to the trailhead, in metres. */
+  distance_m: number;
+}
+
 export interface Poi {
   id: string;
   trail_id: string | null;
@@ -81,6 +93,7 @@ export interface TrailDetail {
   trail: Trail;
   trailheads: Trailhead[];
   parkingLots: ParkingLot[];
+  transitStops: TransitStop[];
   closures: Closure[];
   pois: Poi[];
 }

@@ -1,70 +1,1315 @@
 [
   {
     "trail": {
-      "id": "11111111-1111-1111-1111-111111111111",
-      "name": "Devínska Kobyla",
+      "id": "71eb1c24-5cac-5eb7-b698-cf02865ab7e6",
+      "name": "Devínska Kobyla z Devína",
       "slug": "devinska-kobyla",
-      "description": "Okruh z Devína na vrchol Devínskej Kobyly s výhľadom na sútok Moravy a Dunaja a na Rakúsko. Krátky, ale strmší výstup v závere.",
-      "distance_m": 9200,
-      "ascent_m": 380,
+      "description": "Výstup z Devína pod hradom na najvyšší vrch Devínskych Karpát s rozhľadňou. Výhľad na sútok Moravy a Dunaja.",
+      "distance_m": 6836,
+      "ascent_m": 370,
       "difficulty": "stredna",
-      "duration_min": 210,
+      "duration_min": 180,
       "family_friendly": false,
       "gpx_path": "gpx/devinska-kobyla.gpx",
       "bbox": {
-        "sw": { "lat": 48.17, "lon": 16.965 },
-        "ne": { "lat": 48.2, "lon": 17.01 }
+        "sw": {
+          "lat": 48.17548,
+          "lon": 16.97985
+        },
+        "ne": {
+          "lat": 48.18939,
+          "lon": 16.9955
+        }
       },
-      "created_at": "2026-06-01T00:00:00.000Z"
+      "created_at": "2026-10-07T00:00:00.000Z"
     },
     "trailheads": [
       {
-        "id": "22222222-2222-2222-2222-222222222222",
-        "trail_id": "11111111-1111-1111-1111-111111111111",
-        "name": "Devín - pod hradom",
-        "location": { "lat": 48.1789, "lon": 16.9775 },
+        "id": "379b54b8-fde2-50db-82cb-a876560f42e3",
+        "trail_id": "71eb1c24-5cac-5eb7-b698-cf02865ab7e6",
+        "name": "Devín, pod hradom",
+        "location": {
+          "lat": 48.17547,
+          "lon": 16.97993
+        },
         "is_primary": true
       }
     ],
     "parkingLots": [
       {
-        "id": "33333333-3333-3333-3333-333333333333",
-        "trailhead_id": "22222222-2222-2222-2222-222222222222",
-        "name": "Parkovisko Devín, ulica Slovanské nábrežie",
-        "location": { "lat": 48.1795, "lon": 16.9781 },
-        "surface_type": "spevnene",
-        "note": "Veľké parkovisko pri autobusovej zastávke Devín, krátky peší presun k začiatku značky.",
-        "verified_on": "2026-06-01"
-      }
-    ],
-    "closures": [
-      {
-        "id": "66666666-6666-6666-6666-666666666666",
-        "trail_id": "11111111-1111-1111-1111-111111111111",
-        "kind": "jednorazova",
-        "starts_on": "2026-03-01",
-        "ends_on": "2026-03-15",
-        "reason": "Ťažba dreva v hornej časti trasy.",
-        "source_url": "https://www.bratislava-vidiek.sk/lesy-devin-tazba",
-        "verified_on": "2026-02-20"
-      }
-    ],
-    "pois": [
-      {
-        "id": "44444444-4444-4444-4444-444444444444",
-        "trail_id": "11111111-1111-1111-1111-111111111111",
-        "kind": "vyhliadka",
-        "name": "Vyhliadka Devínska Kobyla",
-        "location": { "lat": 48.1875, "lon": 17.0021 },
-        "note": "Výhľad na sútok Moravy a Dunaja, na Rakúsko a za dobrej viditeľnosti až na Alpy."
+        "id": "3bc5d966-4a6b-5ffc-bd03-7d852fac21c7",
+        "trailhead_id": "379b54b8-fde2-50db-82cb-a876560f42e3",
+        "name": "Parkovisko 71 m od začiatku trasy",
+        "location": {
+          "lat": 48.176013,
+          "lon": 16.979432
+        },
+        "surface_type": "asfalt",
+        "note": "71 m od začiatku trasy, bezplatné (podľa OSM). Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
       },
       {
-        "id": "55555555-5555-5555-5555-555555555555",
-        "trail_id": "11111111-1111-1111-1111-111111111111",
-        "kind": "hrad",
+        "id": "663c2fe3-ee98-53fa-8e00-8ae292ffdbdf",
+        "trailhead_id": "379b54b8-fde2-50db-82cb-a876560f42e3",
+        "name": "Parkovisko 280 m od začiatku trasy",
+        "location": {
+          "lat": 48.173836,
+          "lon": 16.982806
+        },
+        "surface_type": null,
+        "note": "280 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "transitStops": [
+      {
+        "id": "f7294d84-368a-5d06-9c3b-ba2f4e19956b",
+        "trailhead_id": "379b54b8-fde2-50db-82cb-a876560f42e3",
+        "name": "Štrbská",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.177012,
+          "lon": 16.982818
+        },
+        "distance_m": 274
+      },
+      {
+        "id": "ffc90a8a-a196-5283-85b7-6ebc7276f404",
+        "trailhead_id": "379b54b8-fde2-50db-82cb-a876560f42e3",
+        "name": "Cyril a Metod",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.173964,
+          "lon": 16.986124
+        },
+        "distance_m": 489
+      },
+      {
+        "id": "3fef1a52-a7b0-5b11-8760-bb567c6d0f53",
+        "trailhead_id": "379b54b8-fde2-50db-82cb-a876560f42e3",
         "name": "Hrad Devín",
-        "location": { "lat": 48.1787, "lon": 16.9769 },
-        "note": "Zrúcanina hradu pri vstupe na trasu, platený areál, možný štart výletu."
+        "mode": "autobus",
+        "location": {
+          "lat": 48.180082,
+          "lon": 16.979704
+        },
+        "distance_m": 513
+      }
+    ],
+    "closures": [],
+    "pois": [
+      {
+        "id": "82c65647-2665-5953-bbf5-0f0e1f5474e8",
+        "trail_id": "71eb1c24-5cac-5eb7-b698-cf02865ab7e6",
+        "kind": "vyhliadka",
+        "name": "Devínska Kobyla",
+        "location": {
+          "lat": 48.187608,
+          "lon": 16.992483
+        },
+        "note": null
+      },
+      {
+        "id": "3d951101-3be2-5d3c-8dd1-89f0bd357cf8",
+        "trail_id": "71eb1c24-5cac-5eb7-b698-cf02865ab7e6",
+        "kind": "vyhliadka",
+        "name": "Vyhliadková veža Devínska Kobyla",
+        "location": {
+          "lat": 48.189288,
+          "lon": 16.995471
+        },
+        "note": null
+      },
+      {
+        "id": "1ab6e06b-eb13-5384-a3a1-08625dbf2a4c",
+        "trail_id": "71eb1c24-5cac-5eb7-b698-cf02865ab7e6",
+        "kind": "hrad",
+        "name": "Devín",
+        "location": {
+          "lat": 48.173116,
+          "lon": 16.979428
+        },
+        "note": null
+      },
+      {
+        "id": "c00c0010-9e14-5e6a-a986-80f3180b7ae7",
+        "trail_id": "71eb1c24-5cac-5eb7-b698-cf02865ab7e6",
+        "kind": "pramen",
+        "name": "Ladislavov prameň",
+        "location": {
+          "lat": 48.18276,
+          "lon": 16.9946
+        },
+        "note": null
+      },
+      {
+        "id": "f4c6bcab-af9a-5319-a88c-504991d43949",
+        "trail_id": "71eb1c24-5cac-5eb7-b698-cf02865ab7e6",
+        "kind": "obcerstvenie",
+        "name": "U rytiera",
+        "location": {
+          "lat": 48.175204,
+          "lon": 16.978531
+        },
+        "note": null
+      },
+      {
+        "id": "20edf109-4e0b-5416-bd98-f201497cc7e2",
+        "trail_id": "71eb1c24-5cac-5eb7-b698-cf02865ab7e6",
+        "kind": "obcerstvenie",
+        "name": "Hradná Brána",
+        "location": {
+          "lat": 48.175189,
+          "lon": 16.979244
+        },
+        "note": null
+      }
+    ]
+  },
+  {
+    "trail": {
+      "id": "f3f6d94d-0ea0-5a5c-bf0d-f193eea2d91f",
+      "name": "Kamzík zo Železnej studničky",
+      "slug": "kamzik",
+      "description": "Krátky výstup lesom zo Železnej studničky na Kamzík k televíznej veži. Na vrchole bufety a lesný park.",
+      "distance_m": 5124,
+      "ascent_m": 231,
+      "difficulty": "lahka",
+      "duration_min": 120,
+      "family_friendly": true,
+      "gpx_path": "gpx/kamzik.gpx",
+      "bbox": {
+        "sw": {
+          "lat": 48.18232,
+          "lon": 17.07774
+        },
+        "ne": {
+          "lat": 48.19022,
+          "lon": 17.0955
+        }
+      },
+      "created_at": "2026-10-07T00:00:00.000Z"
+    },
+    "trailheads": [
+      {
+        "id": "41b3c3e9-c911-517f-bc65-16cb548eac51",
+        "trail_id": "f3f6d94d-0ea0-5a5c-bf0d-f193eea2d91f",
+        "name": "Železná studnička",
+        "location": {
+          "lat": 48.19031,
+          "lon": 17.08224
+        },
+        "is_primary": true
+      }
+    ],
+    "parkingLots": [],
+    "transitStops": [
+      {
+        "id": "e7a6589a-049c-58be-8c7d-f5eb2a1f69f8",
+        "trailhead_id": "41b3c3e9-c911-517f-bc65-16cb548eac51",
+        "name": "Železná studnička",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.190327,
+          "lon": 17.08213
+        },
+        "distance_m": 8
+      },
+      {
+        "id": "fd56b12e-60f5-5596-9bfb-f8e5699215db",
+        "trailhead_id": "41b3c3e9-c911-517f-bc65-16cb548eac51",
+        "name": "Bukva",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.192538,
+          "lon": 17.086987
+        },
+        "distance_m": 430
+      },
+      {
+        "id": "cb7ab765-dcc8-5355-ab45-486a827817fe",
+        "trailhead_id": "41b3c3e9-c911-517f-bc65-16cb548eac51",
+        "name": "Deviaty mlyn",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.185864,
+          "lon": 17.077691
+        },
+        "distance_m": 598
+      }
+    ],
+    "closures": [],
+    "pois": [
+      {
+        "id": "5909d230-c0f7-57e1-b568-97c50c65bd48",
+        "trail_id": "f3f6d94d-0ea0-5a5c-bf0d-f193eea2d91f",
+        "kind": "chata",
+        "name": "Kamenná besiedka",
+        "location": {
+          "lat": 48.190074,
+          "lon": 17.08097
+        },
+        "note": null
+      },
+      {
+        "id": "9a9d5552-4985-520a-89dc-d8e73988d895",
+        "trail_id": "f3f6d94d-0ea0-5a5c-bf0d-f193eea2d91f",
+        "kind": "pramen",
+        "name": "Železná studnička",
+        "location": {
+          "lat": 48.190145,
+          "lon": 17.082039
+        },
+        "note": null
+      },
+      {
+        "id": "3c18e449-f112-5e4f-8c75-20724f4444e0",
+        "trail_id": "f3f6d94d-0ea0-5a5c-bf0d-f193eea2d91f",
+        "kind": "ihrisko",
+        "name": "Pri modrom domčeku",
+        "location": {
+          "lat": 48.191278,
+          "lon": 17.081654
+        },
+        "note": null
+      },
+      {
+        "id": "224c84c8-2b46-5476-a550-aa558265bbc8",
+        "trail_id": "f3f6d94d-0ea0-5a5c-bf0d-f193eea2d91f",
+        "kind": "obcerstvenie",
+        "name": "Altitude",
+        "location": {
+          "lat": 48.182597,
+          "lon": 17.094655
+        },
+        "note": null
+      },
+      {
+        "id": "9a519fe1-9098-5db6-b4a0-daf179834b64",
+        "trail_id": "f3f6d94d-0ea0-5a5c-bf0d-f193eea2d91f",
+        "kind": "obcerstvenie",
+        "name": "Brasseria",
+        "location": {
+          "lat": 48.182528,
+          "lon": 17.094704
+        },
+        "note": null
+      }
+    ]
+  },
+  {
+    "trail": {
+      "id": "7f3941dc-4259-5c5c-9975-1c4024d03efb",
+      "name": "Biely kríž z Krasnian",
+      "slug": "biely-kriz",
+      "description": "Z konečnej električky v Krasňanoch hrebeňom Malých Karpát na Biely kríž, obľúbený uzol turistických a cyklistických trás.",
+      "distance_m": 13311,
+      "ascent_m": 436,
+      "difficulty": "stredna",
+      "duration_min": 270,
+      "family_friendly": false,
+      "gpx_path": "gpx/biely-kriz.gpx",
+      "bbox": {
+        "sw": {
+          "lat": 48.19875,
+          "lon": 17.13457
+        },
+        "ne": {
+          "lat": 48.24843,
+          "lon": 17.15203
+        }
+      },
+      "created_at": "2026-10-07T00:00:00.000Z"
+    },
+    "trailheads": [
+      {
+        "id": "a81a1c5c-2952-5008-967c-70abf5a43180",
+        "trail_id": "7f3941dc-4259-5c5c-9975-1c4024d03efb",
+        "name": "Pekná cesta, Záhrady",
+        "location": {
+          "lat": 48.19876,
+          "lon": 17.13477
+        },
+        "is_primary": true
+      }
+    ],
+    "parkingLots": [
+      {
+        "id": "ab09e265-164a-52eb-b911-d40fde1ab1eb",
+        "trailhead_id": "a81a1c5c-2952-5008-967c-70abf5a43180",
+        "name": "Parkovisko 58 m od začiatku trasy",
+        "location": {
+          "lat": 48.198563,
+          "lon": 17.135499
+        },
+        "surface_type": null,
+        "note": "58 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "id": "10686c4b-545b-5aed-8339-da5fc7e259a4",
+        "trailhead_id": "a81a1c5c-2952-5008-967c-70abf5a43180",
+        "name": "Parkovisko 74 m od začiatku trasy",
+        "location": {
+          "lat": 48.198591,
+          "lon": 17.135731
+        },
+        "surface_type": null,
+        "note": "74 m od začiatku trasy, spoplatnené (podľa OSM). Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "transitStops": [
+      {
+        "id": "94a38b86-e6e1-571f-850e-b3ab2eb0a962",
+        "trailhead_id": "a81a1c5c-2952-5008-967c-70abf5a43180",
+        "name": "Slanec",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.19863,
+          "lon": 17.135128
+        },
+        "distance_m": 30
+      },
+      {
+        "id": "20e77ca4-752b-5d3a-9edd-6106fe5f58b8",
+        "trailhead_id": "a81a1c5c-2952-5008-967c-70abf5a43180",
+        "name": "Kadnárova",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.199411,
+          "lon": 17.140836
+        },
+        "distance_m": 455
+      },
+      {
+        "id": "57815a3c-e44e-5d1e-886b-e243c947d7ba",
+        "trailhead_id": "a81a1c5c-2952-5008-967c-70abf5a43180",
+        "name": "Hubeného",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.196375,
+          "lon": 17.14012
+        },
+        "distance_m": 477
+      }
+    ],
+    "closures": [],
+    "pois": [
+      {
+        "id": "aa081892-60c0-5688-8133-879219a33aa9",
+        "trail_id": "7f3941dc-4259-5c5c-9975-1c4024d03efb",
+        "kind": "chata",
+        "name": "Horská chata Klinec",
+        "location": {
+          "lat": 48.248802,
+          "lon": 17.143273
+        },
+        "note": null
+      },
+      {
+        "id": "5eace847-59de-5b33-afda-bbfb01e0ab4b",
+        "trail_id": "7f3941dc-4259-5c5c-9975-1c4024d03efb",
+        "kind": "obcerstvenie",
+        "name": "Kokoška",
+        "location": {
+          "lat": 48.210992,
+          "lon": 17.146922
+        },
+        "note": null
+      },
+      {
+        "id": "5cc6e9ee-d57b-5d01-a735-356c10e39d20",
+        "trail_id": "7f3941dc-4259-5c5c-9975-1c4024d03efb",
+        "kind": "obcerstvenie",
+        "name": "Občerstvenie u Kocmundu",
+        "location": {
+          "lat": 48.248554,
+          "lon": 17.144065
+        },
+        "note": null
+      }
+    ]
+  },
+  {
+    "trail": {
+      "id": "e549ea19-e2dd-5054-86d7-0630711ad724",
+      "name": "Hrad Pajštún z Borinky",
+      "slug": "pajstun",
+      "description": "Krátky, miestami strmý výstup z Borinky k zrúcanine hradu Pajštún na skalnom brale.",
+      "distance_m": 3422,
+      "ascent_m": 243,
+      "difficulty": "lahka",
+      "duration_min": 105,
+      "family_friendly": true,
+      "gpx_path": "gpx/pajstun.gpx",
+      "bbox": {
+        "sw": {
+          "lat": 48.26257,
+          "lon": 17.08163
+        },
+        "ne": {
+          "lat": 48.2755,
+          "lon": 17.08705
+        }
+      },
+      "created_at": "2026-10-07T00:00:00.000Z"
+    },
+    "trailheads": [
+      {
+        "id": "e00f600c-9353-5ffc-b346-b13cd1851315",
+        "trail_id": "e549ea19-e2dd-5054-86d7-0630711ad724",
+        "name": "Borinka",
+        "location": {
+          "lat": 48.26265,
+          "lon": 17.08605
+        },
+        "is_primary": true
+      }
+    ],
+    "parkingLots": [
+      {
+        "id": "161d2724-d697-5206-a9b7-14dc80e6af52",
+        "trailhead_id": "e00f600c-9353-5ffc-b346-b13cd1851315",
+        "name": "Parkovisko 18 m od začiatku trasy",
+        "location": {
+          "lat": 48.26249,
+          "lon": 17.086096
+        },
+        "surface_type": null,
+        "note": "18 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "id": "b8d5dada-5bd1-5d36-8260-7bf3def99ff7",
+        "trailhead_id": "e00f600c-9353-5ffc-b346-b13cd1851315",
+        "name": "Parkovisko 31 m od začiatku trasy",
+        "location": {
+          "lat": 48.262668,
+          "lon": 17.085632
+        },
+        "surface_type": null,
+        "note": "31 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "transitStops": [
+      {
+        "id": "47743d38-dd6b-54e1-b1c8-1746216b0238",
+        "trailhead_id": "e00f600c-9353-5ffc-b346-b13cd1851315",
+        "name": "Borinka, Obecný úrad",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.262555,
+          "lon": 17.086272
+        },
+        "distance_m": 20
+      },
+      {
+        "id": "bfa77022-f889-5f86-bdaa-42a81c611272",
+        "trailhead_id": "e00f600c-9353-5ffc-b346-b13cd1851315",
+        "name": "Borinka, Pracháreň",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.265148,
+          "lon": 17.079508
+        },
+        "distance_m": 558
+      },
+      {
+        "id": "f51d2a25-cea6-5668-805f-e64aa0d562b5",
+        "trailhead_id": "e00f600c-9353-5ffc-b346-b13cd1851315",
+        "name": "Borinka, Staré pece",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.25964,
+          "lon": 17.096056
+        },
+        "distance_m": 813
+      }
+    ],
+    "closures": [],
+    "pois": [
+      {
+        "id": "3cceac99-8dd6-50fb-9e99-83608784a28a",
+        "trail_id": "e549ea19-e2dd-5054-86d7-0630711ad724",
+        "kind": "hrad",
+        "name": "Pajštún",
+        "location": {
+          "lat": 48.275419,
+          "lon": 17.082871
+        },
+        "note": null
+      },
+      {
+        "id": "01318a53-42b5-54ca-beff-db57343afa32",
+        "trail_id": "e549ea19-e2dd-5054-86d7-0630711ad724",
+        "kind": "pramen",
+        "name": "Kráľovská studnička",
+        "location": {
+          "lat": 48.269594,
+          "lon": 17.083922
+        },
+        "note": null
+      },
+      {
+        "id": "094095a9-d6ab-5663-8dca-487a7d94ea0f",
+        "trail_id": "e549ea19-e2dd-5054-86d7-0630711ad724",
+        "kind": "obcerstvenie",
+        "name": "Pajštúreň",
+        "location": {
+          "lat": 48.262785,
+          "lon": 17.085394
+        },
+        "note": null
+      }
+    ]
+  },
+  {
+    "trail": {
+      "id": "289ecce2-7873-5f88-b0ee-3c7b60fc9d62",
+      "name": "Vysoká z Kuchyne",
+      "slug": "vysoka",
+      "description": "Výstup z Kuchyne na Vysokú, jeden z najvyšších vrchov Malých Karpát, s výhľadom zo skalného vrcholu.",
+      "distance_m": 12164,
+      "ascent_m": 658,
+      "difficulty": "tazka",
+      "duration_min": 315,
+      "family_friendly": false,
+      "gpx_path": "gpx/vysoka.gpx",
+      "bbox": {
+        "sw": {
+          "lat": 48.40667,
+          "lon": 17.15576
+        },
+        "ne": {
+          "lat": 48.41793,
+          "lon": 17.21714
+        }
+      },
+      "created_at": "2026-10-07T00:00:00.000Z"
+    },
+    "trailheads": [
+      {
+        "id": "e79b35e5-3c39-59c4-b14d-1aab015cc487",
+        "trail_id": "289ecce2-7873-5f88-b0ee-3c7b60fc9d62",
+        "name": "Kuchyňa, kostol",
+        "location": {
+          "lat": 48.4066,
+          "lon": 17.15581
+        },
+        "is_primary": true
+      }
+    ],
+    "parkingLots": [
+      {
+        "id": "6acb8e2f-f20e-5f31-b7f0-461c18f74e71",
+        "trailhead_id": "e79b35e5-3c39-59c4-b14d-1aab015cc487",
+        "name": "Parkovisko 314 m od začiatku trasy",
+        "location": {
+          "lat": 48.407384,
+          "lon": 17.159896
+        },
+        "surface_type": "asfalt",
+        "note": "314 m od začiatku trasy, bezplatné (podľa OSM). Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "id": "51ecdf7a-cfd3-59e9-be98-888325b00317",
+        "trailhead_id": "e79b35e5-3c39-59c4-b14d-1aab015cc487",
+        "name": "Parkovisko 324 m od začiatku trasy",
+        "location": {
+          "lat": 48.403765,
+          "lon": 17.15684
+        },
+        "surface_type": null,
+        "note": "324 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "transitStops": [
+      {
+        "id": "5b29c0d3-2899-5ed3-b1a2-ecf859701c61",
+        "trailhead_id": "e79b35e5-3c39-59c4-b14d-1aab015cc487",
+        "name": "Kuchyňa, Kostol",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.406531,
+          "lon": 17.155668
+        },
+        "distance_m": 13
+      },
+      {
+        "id": "9ebe114a-06c3-5521-975d-d36bbd1f21b7",
+        "trailhead_id": "e79b35e5-3c39-59c4-b14d-1aab015cc487",
+        "name": "Kuchyňa, Obecný úrad",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.407458,
+          "lon": 17.16008
+        },
+        "distance_m": 329
+      },
+      {
+        "id": "9643ff7e-94e0-597e-81f8-b674912f2dc9",
+        "trailhead_id": "e79b35e5-3c39-59c4-b14d-1aab015cc487",
+        "name": "Kuchyňa, Škola",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.403374,
+          "lon": 17.155338
+        },
+        "distance_m": 360
+      }
+    ],
+    "closures": [],
+    "pois": [
+      {
+        "id": "d817229c-b986-5c2e-926d-8670789d8d1f",
+        "trail_id": "289ecce2-7873-5f88-b0ee-3c7b60fc9d62",
+        "kind": "obcerstvenie",
+        "name": "Picerka pod Vysokú",
+        "location": {
+          "lat": 48.407469,
+          "lon": 17.159343
+        },
+        "note": null
+      },
+      {
+        "id": "76ec801b-d926-5453-8ab0-72c776bca4b7",
+        "trail_id": "289ecce2-7873-5f88-b0ee-3c7b60fc9d62",
+        "kind": "obcerstvenie",
+        "name": "Reštaurácia u Melónka",
+        "location": {
+          "lat": 48.407145,
+          "lon": 17.157393
+        },
+        "note": null
+      }
+    ]
+  },
+  {
+    "trail": {
+      "id": "8006f69c-506a-5bcd-84b4-9d89c6d4df81",
+      "name": "Veľká Homoľa od Zochovej chaty",
+      "slug": "velka-homola",
+      "description": "Nenáročná prechádzka od Zochovej chaty na Veľkú Homoľu s drevenou rozhľadňou.",
+      "distance_m": 5599,
+      "ascent_m": 300,
+      "difficulty": "lahka",
+      "duration_min": 150,
+      "family_friendly": true,
+      "gpx_path": "gpx/velka-homola.gpx",
+      "bbox": {
+        "sw": {
+          "lat": 48.36322,
+          "lon": 17.26113
+        },
+        "ne": {
+          "lat": 48.38085,
+          "lon": 17.27961
+        }
+      },
+      "created_at": "2026-10-07T00:00:00.000Z"
+    },
+    "trailheads": [
+      {
+        "id": "33dcf818-29f0-5274-b3eb-cd243865fe17",
+        "trail_id": "8006f69c-506a-5bcd-84b4-9d89c6d4df81",
+        "name": "Zochova chata, parkovisko",
+        "location": {
+          "lat": 48.38083,
+          "lon": 17.27941
+        },
+        "is_primary": true
+      }
+    ],
+    "parkingLots": [
+      {
+        "id": "71e93805-8303-5841-8128-41036252734a",
+        "trailhead_id": "33dcf818-29f0-5274-b3eb-cd243865fe17",
+        "name": "Parkovisko 99 m od začiatku trasy",
+        "location": {
+          "lat": 48.381101,
+          "lon": 17.278131
+        },
+        "surface_type": null,
+        "note": "99 m od začiatku trasy, spoplatnené (podľa OSM). Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "id": "dab56b56-5028-5ded-8772-d4f1e4660a2e",
+        "trailhead_id": "33dcf818-29f0-5274-b3eb-cd243865fe17",
+        "name": "Parkovisko 338 m od začiatku trasy",
+        "location": {
+          "lat": 48.382364,
+          "lon": 17.27546
+        },
+        "surface_type": "tráva",
+        "note": "338 m od začiatku trasy, spoplatnené (podľa OSM). Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "transitStops": [
+      {
+        "id": "c1caa13c-1b31-588e-a5f0-256904342b01",
+        "trailhead_id": "33dcf818-29f0-5274-b3eb-cd243865fe17",
+        "name": "Modra, Zochova chata",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.381466,
+          "lon": 17.276872
+        },
+        "distance_m": 200
+      },
+      {
+        "id": "9cd86c4c-083b-54c7-8bf0-6f71975fd41c",
+        "trailhead_id": "33dcf818-29f0-5274-b3eb-cd243865fe17",
+        "name": "Modra, Komárka",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.381505,
+          "lon": 17.284146
+        },
+        "distance_m": 358
+      }
+    ],
+    "closures": [],
+    "pois": [
+      {
+        "id": "3c5ad3d3-5032-599e-abba-0d65a3fd9966",
+        "trail_id": "8006f69c-506a-5bcd-84b4-9d89c6d4df81",
+        "kind": "vyhliadka",
+        "name": "Rozhľadňa Alexandra Filípka",
+        "location": {
+          "lat": 48.363319,
+          "lon": 17.261114
+        },
+        "note": null
+      },
+      {
+        "id": "e97b59c4-efbb-573a-bd41-465a336ba925",
+        "trail_id": "8006f69c-506a-5bcd-84b4-9d89c6d4df81",
+        "kind": "obcerstvenie",
+        "name": "Furmanská krčma",
+        "location": {
+          "lat": 48.381086,
+          "lon": 17.277729
+        },
+        "note": null
+      },
+      {
+        "id": "c9b35226-06d3-56ad-ac88-cad9be9c395c",
+        "trail_id": "8006f69c-506a-5bcd-84b4-9d89c6d4df81",
+        "kind": "obcerstvenie",
+        "name": "Bufet pod Homoľou",
+        "location": {
+          "lat": 48.379193,
+          "lon": 17.277273
+        },
+        "note": null
+      }
+    ]
+  },
+  {
+    "trail": {
+      "id": "401ea3cf-baf9-5c5b-a762-f7b6de66fcfd",
+      "name": "Záruby zo Smoleníc",
+      "slug": "zaruby",
+      "description": "Výstup od Smolenického zámku na Záruby, najvyšší vrch Malých Karpát.",
+      "distance_m": 8845,
+      "ascent_m": 580,
+      "difficulty": "stredna",
+      "duration_min": 255,
+      "family_friendly": false,
+      "gpx_path": "gpx/zaruby.gpx",
+      "bbox": {
+        "sw": {
+          "lat": 48.50916,
+          "lon": 17.39262
+        },
+        "ne": {
+          "lat": 48.52374,
+          "lon": 17.43367
+        }
+      },
+      "created_at": "2026-10-07T00:00:00.000Z"
+    },
+    "trailheads": [
+      {
+        "id": "56a0661f-9d0d-54d0-aec5-03c4be96859b",
+        "trail_id": "401ea3cf-baf9-5c5b-a762-f7b6de66fcfd",
+        "name": "Smolenice, pod zámkom",
+        "location": {
+          "lat": 48.50918,
+          "lon": 17.43355
+        },
+        "is_primary": true
+      }
+    ],
+    "parkingLots": [
+      {
+        "id": "d7b83587-4fc1-55f5-836c-3dbb505c9fcd",
+        "trailhead_id": "56a0661f-9d0d-54d0-aec5-03c4be96859b",
+        "name": "Parkovisko 15 m od začiatku trasy",
+        "location": {
+          "lat": 48.509297,
+          "lon": 17.433651
+        },
+        "surface_type": null,
+        "note": "15 m od začiatku trasy, spoplatnené (podľa OSM). Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "id": "4fca1b72-3373-5f5e-b138-f5c47401ec49",
+        "trailhead_id": "56a0661f-9d0d-54d0-aec5-03c4be96859b",
+        "name": "Parkovisko 36 m od začiatku trasy",
+        "location": {
+          "lat": 48.509399,
+          "lon": 17.433184
+        },
+        "surface_type": null,
+        "note": "36 m od začiatku trasy, spoplatnené (podľa OSM). Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "transitStops": [
+      {
+        "id": "062948e9-602c-56d6-9e04-96a81de0c6c7",
+        "trailhead_id": "56a0661f-9d0d-54d0-aec5-03c4be96859b",
+        "name": "Smolenice, Lesy",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.509044,
+          "lon": 17.43339
+        },
+        "distance_m": 19
+      },
+      {
+        "id": "23845890-c44a-5a9a-a3df-ac60384f050f",
+        "trailhead_id": "56a0661f-9d0d-54d0-aec5-03c4be96859b",
+        "name": "Smolenice, OcÚ",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.506121,
+          "lon": 17.430183
+        },
+        "distance_m": 421
+      },
+      {
+        "id": "cfab9fb3-e03f-5704-9e76-743e3ca1fefe",
+        "trailhead_id": "56a0661f-9d0d-54d0-aec5-03c4be96859b",
+        "name": "Smolenice, PD",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.514198,
+          "lon": 17.44254
+        },
+        "distance_m": 866
+      }
+    ],
+    "closures": [],
+    "pois": []
+  },
+  {
+    "trail": {
+      "id": "bff45ade-5ef7-5aec-b103-7c6ea240b328",
+      "name": "Plavecký hrad z Plaveckého Podhradia",
+      "slug": "plavecky-hrad",
+      "description": "Krátky výstup z obce k zrúcanine Plaveckého hradu nad Záhorím.",
+      "distance_m": 3360,
+      "ascent_m": 188,
+      "difficulty": "lahka",
+      "duration_min": 90,
+      "family_friendly": true,
+      "gpx_path": "gpx/plavecky-hrad.gpx",
+      "bbox": {
+        "sw": {
+          "lat": 48.48305,
+          "lon": 17.25893
+        },
+        "ne": {
+          "lat": 48.49399,
+          "lon": 17.26987
+        }
+      },
+      "created_at": "2026-10-07T00:00:00.000Z"
+    },
+    "trailheads": [
+      {
+        "id": "5f8264fb-f9bf-5916-99c4-60b10b65173d",
+        "trail_id": "bff45ade-5ef7-5aec-b103-7c6ea240b328",
+        "name": "Plavecké Podhradie",
+        "location": {
+          "lat": 48.48305,
+          "lon": 17.26
+        },
+        "is_primary": true
+      }
+    ],
+    "parkingLots": [
+      {
+        "id": "79a8670a-4adb-5be7-bc75-ed226c444cc5",
+        "trailhead_id": "5f8264fb-f9bf-5916-99c4-60b10b65173d",
+        "name": "Parkovisko 419 m od začiatku trasy",
+        "location": {
+          "lat": 48.480982,
+          "lon": 17.264759
+        },
+        "surface_type": null,
+        "note": "419 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "id": "33d17691-082a-5270-a467-0fb4b60b1735",
+        "trailhead_id": "5f8264fb-f9bf-5916-99c4-60b10b65173d",
+        "name": "Parkovisko 441 m od začiatku trasy",
+        "location": {
+          "lat": 48.481562,
+          "lon": 17.254455
+        },
+        "surface_type": null,
+        "note": "441 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "transitStops": [
+      {
+        "id": "e73e2260-3ab3-501f-ae4c-a823a539fc0e",
+        "trailhead_id": "5f8264fb-f9bf-5916-99c4-60b10b65173d",
+        "name": "Plavecké Podhradie, Kaštieľ",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.485005,
+          "lon": 17.258062
+        },
+        "distance_m": 260
+      },
+      {
+        "id": "1c6156a0-7174-5dfe-9c6a-f2720c59e807",
+        "trailhead_id": "5f8264fb-f9bf-5916-99c4-60b10b65173d",
+        "name": "Plavecké Podhradie, Centrum",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.48131,
+          "lon": 17.264567
+        },
+        "distance_m": 388
+      },
+      {
+        "id": "c1629bb8-2252-5ac3-aa71-b8faa379ab83",
+        "trailhead_id": "5f8264fb-f9bf-5916-99c4-60b10b65173d",
+        "name": "Plavecké Podhradie, Žel. st.",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.482237,
+          "lon": 17.252428
+        },
+        "distance_m": 565
+      }
+    ],
+    "closures": [],
+    "pois": [
+      {
+        "id": "1743a4df-9853-5b41-9bbf-7ce3d56f64ba",
+        "trail_id": "bff45ade-5ef7-5aec-b103-7c6ea240b328",
+        "kind": "hrad",
+        "name": "Plavecký hrad",
+        "location": {
+          "lat": 48.493981,
+          "lon": 17.268663
+        },
+        "note": null
+      },
+      {
+        "id": "686e8da3-8e5a-520f-8f80-69708e61f499",
+        "trail_id": "bff45ade-5ef7-5aec-b103-7c6ea240b328",
+        "kind": "obcerstvenie",
+        "name": "Bistro Varalja",
+        "location": {
+          "lat": 48.485356,
+          "lon": 17.260526
+        },
+        "note": null
+      }
+    ]
+  },
+  {
+    "trail": {
+      "id": "7d2b5215-02d2-5f25-8448-1c42d9aa2f2e",
+      "name": "Červený Kameň z Častej",
+      "slug": "cerveny-kamen",
+      "description": "Prechádzka z Častej k hradu Červený Kameň a zámockému parku.",
+      "distance_m": 4754,
+      "ascent_m": 101,
+      "difficulty": "lahka",
+      "duration_min": 90,
+      "family_friendly": true,
+      "gpx_path": "gpx/cerveny-kamen.gpx",
+      "bbox": {
+        "sw": {
+          "lat": 48.39157,
+          "lon": 17.33405
+        },
+        "ne": {
+          "lat": 48.39878,
+          "lon": 17.35694
+        }
+      },
+      "created_at": "2026-10-07T00:00:00.000Z"
+    },
+    "trailheads": [
+      {
+        "id": "eea79512-f541-5b31-9939-c754199aaa1a",
+        "trail_id": "7d2b5215-02d2-5f25-8448-1c42d9aa2f2e",
+        "name": "Častá",
+        "location": {
+          "lat": 48.39881,
+          "lon": 17.35685
+        },
+        "is_primary": true
+      }
+    ],
+    "parkingLots": [
+      {
+        "id": "d872f166-e8ea-5165-8cf9-b5869ba141d6",
+        "trailhead_id": "eea79512-f541-5b31-9939-c754199aaa1a",
+        "name": "Parkovisko 37 m od začiatku trasy",
+        "location": {
+          "lat": 48.398503,
+          "lon": 17.357053
+        },
+        "surface_type": null,
+        "note": "37 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "id": "06dc250d-35d6-57e0-bc91-b50015035ac5",
+        "trailhead_id": "eea79512-f541-5b31-9939-c754199aaa1a",
+        "name": "Parkovisko 43 m od začiatku trasy",
+        "location": {
+          "lat": 48.398572,
+          "lon": 17.356396
+        },
+        "surface_type": null,
+        "note": "43 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "transitStops": [
+      {
+        "id": "20578cbf-0b66-5d8f-9f35-b378865ef030",
+        "trailhead_id": "eea79512-f541-5b31-9939-c754199aaa1a",
+        "name": "Častá, Námestie",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.398815,
+          "lon": 17.357145
+        },
+        "distance_m": 22
+      },
+      {
+        "id": "e6c5ed04-6690-5f67-b8fa-dfea37faeb4c",
+        "trailhead_id": "eea79512-f541-5b31-9939-c754199aaa1a",
+        "name": "Častá, Základina",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.396135,
+          "lon": 17.35551
+        },
+        "distance_m": 313
+      },
+      {
+        "id": "1fe142cd-1f48-5ff2-8277-a628c58a0bf5",
+        "trailhead_id": "eea79512-f541-5b31-9939-c754199aaa1a",
+        "name": "Častá, Pekáreň",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.401013,
+          "lon": 17.364075
+        },
+        "distance_m": 587
+      }
+    ],
+    "closures": [],
+    "pois": [
+      {
+        "id": "99bf3e80-5ae7-54a0-bb95-c54cdeab4e2e",
+        "trail_id": "7d2b5215-02d2-5f25-8448-1c42d9aa2f2e",
+        "kind": "vyhliadka",
+        "name": "Severná bašta",
+        "location": {
+          "lat": 48.392147,
+          "lon": 17.335277
+        },
+        "note": null
+      },
+      {
+        "id": "f34cf2ca-6cc0-5b94-bad5-f9a123ead78d",
+        "trail_id": "7d2b5215-02d2-5f25-8448-1c42d9aa2f2e",
+        "kind": "hrad",
+        "name": "Červený Kameň",
+        "location": {
+          "lat": 48.391584,
+          "lon": 17.335533
+        },
+        "note": null
+      },
+      {
+        "id": "635e5e1c-0370-5f6b-ab87-850447946768",
+        "trail_id": "7d2b5215-02d2-5f25-8448-1c42d9aa2f2e",
+        "kind": "obcerstvenie",
+        "name": "Taverna pod baštou",
+        "location": {
+          "lat": 48.393885,
+          "lon": 17.334963
+        },
+        "note": null
+      },
+      {
+        "id": "9ba2fd31-5bbf-5373-9b24-6ba084ffa5db",
+        "trail_id": "7d2b5215-02d2-5f25-8448-1c42d9aa2f2e",
+        "kind": "obcerstvenie",
+        "name": "U Schwarzov",
+        "location": {
+          "lat": 48.39835,
+          "lon": 17.357127
+        },
+        "note": null
+      }
+    ]
+  },
+  {
+    "trail": {
+      "id": "1fad5300-e39d-52f2-b152-35e932e903a3",
+      "name": "Čachtický hrad z Čachtíc",
+      "slug": "cachticky-hrad",
+      "description": "Z obce Čachtice k zrúcanine Čachtického hradu na severnom okraji Malých Karpát.",
+      "distance_m": 5296,
+      "ascent_m": 201,
+      "difficulty": "lahka",
+      "duration_min": 120,
+      "family_friendly": true,
+      "gpx_path": "gpx/cachticky-hrad.gpx",
+      "bbox": {
+        "sw": {
+          "lat": 48.71419,
+          "lon": 17.76075
+        },
+        "ne": {
+          "lat": 48.72538,
+          "lon": 17.78635
+        }
+      },
+      "created_at": "2026-10-07T00:00:00.000Z"
+    },
+    "trailheads": [
+      {
+        "id": "1aa1893b-a849-597f-93b0-ea2996fe6662",
+        "trail_id": "1fad5300-e39d-52f2-b152-35e932e903a3",
+        "name": "Čachtice",
+        "location": {
+          "lat": 48.71419,
+          "lon": 17.78629
+        },
+        "is_primary": true
+      }
+    ],
+    "parkingLots": [
+      {
+        "id": "b7000872-1c63-56f1-8b52-51af62447267",
+        "trailhead_id": "1aa1893b-a849-597f-93b0-ea2996fe6662",
+        "name": "Parkovisko 22 m od začiatku trasy",
+        "location": {
+          "lat": 48.714389,
+          "lon": 17.786328
+        },
+        "surface_type": null,
+        "note": "22 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "id": "c63260af-cb71-58f1-b845-2ffdb704ee0c",
+        "trailhead_id": "1aa1893b-a849-597f-93b0-ea2996fe6662",
+        "name": "Parkovisko 28 m od začiatku trasy",
+        "location": {
+          "lat": 48.714379,
+          "lon": 17.786046
+        },
+        "surface_type": null,
+        "note": "28 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      }
+    ],
+    "transitStops": [
+      {
+        "id": "a1ecdd58-f37d-5943-83df-972860932083",
+        "trailhead_id": "1aa1893b-a849-597f-93b0-ea2996fe6662",
+        "name": "Čachtice, námestie",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.712771,
+          "lon": 17.786382
+        },
+        "distance_m": 158
+      },
+      {
+        "id": "d8d9f5f1-5752-5474-a29f-bdb8f496b979",
+        "trailhead_id": "1aa1893b-a849-597f-93b0-ea2996fe6662",
+        "name": "Čachtice, cintorín",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.71779,
+          "lon": 17.790112
+        },
+        "distance_m": 489
+      },
+      {
+        "id": "66b9f1fa-65e6-5624-85d5-4bf597c3facc",
+        "trailhead_id": "1aa1893b-a849-597f-93b0-ea2996fe6662",
+        "name": "Čachtice, ŠM",
+        "mode": "autobus",
+        "location": {
+          "lat": 48.707165,
+          "lon": 17.787124
+        },
+        "distance_m": 784
+      }
+    ],
+    "closures": [],
+    "pois": [
+      {
+        "id": "bdc7b88a-31f1-5dfd-905a-d090ad68ddcf",
+        "trail_id": "1fad5300-e39d-52f2-b152-35e932e903a3",
+        "kind": "hrad",
+        "name": "Čachtický hrad",
+        "location": {
+          "lat": 48.724897,
+          "lon": 17.761186
+        },
+        "note": null
+      },
+      {
+        "id": "586d7246-f5cd-570a-b3b3-ecfaa977eac7",
+        "trail_id": "1fad5300-e39d-52f2-b152-35e932e903a3",
+        "kind": "obcerstvenie",
+        "name": "Pod hradom",
+        "location": {
+          "lat": 48.714056,
+          "lon": 17.786788
+        },
+        "note": null
+      },
+      {
+        "id": "d8b7a444-a67d-5b97-bf26-a916fb1b8595",
+        "trail_id": "1fad5300-e39d-52f2-b152-35e932e903a3",
+        "kind": "obcerstvenie",
+        "name": "Grófkin dvor",
+        "location": {
+          "lat": 48.714786,
+          "lon": 17.785758
+        },
+        "note": null
       }
     ]
   }
