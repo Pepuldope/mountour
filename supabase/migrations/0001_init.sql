@@ -3,7 +3,7 @@
 -- Deliberately does NOT include: parking price/capacity, multi-day trips,
 -- accommodation, community features, personal records, user-drawn routes.
 
-create extension if not exists postgis;
+create extension if not exists postgis with schema extensions;
 
 create type difficulty as enum ('lahka', 'stredna', 'tazka');
 create type closure_kind as enum ('rocna', 'jednorazova');

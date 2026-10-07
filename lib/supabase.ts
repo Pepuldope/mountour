@@ -10,7 +10,9 @@ export function getSupabaseClient(): SupabaseClient | null {
   if (client !== undefined) return client;
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  // Supabase's newer "publishable" key replaces the legacy anon key; accept either.
+  const anonKey =
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !anonKey) {
     client = null;
