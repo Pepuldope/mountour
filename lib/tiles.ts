@@ -1,4 +1,5 @@
 import type { BBox } from "@/lib/types";
+import { BASE_LAYER, TRAILS_OVERLAY, tileUrl } from "@/lib/mapLayers";
 
 function lon2tileX(lon: number, z: number): number {
   return Math.floor(((lon + 180) / 360) * 2 ** z);
@@ -11,7 +12,7 @@ function lat2tileY(lat: number, z: number): number {
   );
 }
 
-/** OSM tile URLs covering `bbox` for zoom levels 13-15 (inclusive). */
+/** Base + trail-overlay tile URLs covering `bbox` for zoom levels 13-15 (inclusive). */
 export function tileUrlsForBbox(bbox: BBox, zooms: number[] = [13, 14, 15]): string[] {
   const urls: string[] = [];
   for (const z of zooms) {
@@ -23,7 +24,7 @@ export function tileUrlsForBbox(bbox: BBox, zooms: number[] = [13, 14, 15]): str
 
     for (let x = xMin; x <= xMax; x++) {
       for (let y = yMin; y <= yMax; y++) {
-        urls.push(`https://tile.openstreetmap.org/${z}/${x}/${y}.png`);
+        urls.push(tileUrl(BASE_LAYER, z, x, y), tileUrl(TRAILS_OVERLAY, z, x, y));
       }
     }
   }

@@ -3,10 +3,21 @@
 // Cache-on-plan, not cache-everything: nothing is precached at install time.
 // A trip is only cached when the visitor taps "Ulozit vylet offline" on its
 // trip sheet, which postMessage()s a CACHE_TRIP request here with the exact
-// URLs to store (the trip page itself, its GPX file, and the OSM tiles for
-// the trail's bbox at zoom 13-15).
+// URLs to store (the trip page itself, its GPX file, and the OpenTopoMap +
+// Waymarked Trails tiles for the trail's bbox at zoom 13-15).
 
 const CACHE_PREFIX = "mountour-trip-";
+
+// OpenTopoMap is requested from a/b/c, but only the "a." URLs are cached
+// (see lib/mapLayers.ts), so tile lookups are normalised to "a.".
+function cacheKey(req) {
+  const url = new URL(req.url);
+  if (/^[bc]\.tile\.opentopomap\.org$/.test(url.hostname)) {
+    url.hostname = "a." + url.hostname.slice(2);
+    return url.toString();
+  }
+  return req.url;
+}
 
 self.addEventListener("install", () => {
   self.skipWaiting();
@@ -52,7 +63,8 @@ self.addEventListener("fetch", (event) => {
 
   event.respondWith(
     (async () => {
-      const cached = await caches.match(req);
+      const key = cacheKey(req);
+      const cached = await caches.match(key);
       if (cached) {
         // Cache-first for anything we've explicitly stored (tiles, GPX,
         // the trip page). Refresh in the background when online.
@@ -60,8 +72,8 @@ self.addEventListener("fetch", (event) => {
           fetch(req)
             .then(async (res) => {
               if (res && res.ok) {
-                const cache = await caches.open(await matchingCacheName(req));
-                if (cache) cache.put(req, res.clone());
+                const cache = await caches.open(await matchingCacheName(key));
+                if (cache) cache.put(key, res.clone());
               }
             })
             .catch(() => {})

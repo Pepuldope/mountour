@@ -1,4 +1,4 @@
-import type { Difficulty, PoiKind } from "@/lib/types";
+import type { Difficulty, PoiKind, TransitMode } from "@/lib/types";
 
 export const DIFFICULTY_LABEL: Record<Difficulty, string> = {
   lahka: "Ľahká",
@@ -41,3 +41,16 @@ export function formatDateSk(iso: string): string {
     timeZone: "UTC",
   });
 }
+
+/** Straight-line distance for "X od teba": "850 m", "4,2 km", "12 km". */
+export function formatFromUser(meters: number): string {
+  if (meters < 1000) return `${Math.round(meters / 10) * 10} m`;
+  if (meters < 10000) return `${(meters / 1000).toFixed(1).replace(".", ",")} km`;
+  return `${Math.round(meters / 1000)} km`;
+}
+
+export const TRANSIT_LABEL: Record<TransitMode, string> = {
+  autobus: "Autobus",
+  elektricka: "Električka",
+  vlak: "Vlak",
+};

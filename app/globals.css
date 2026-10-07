@@ -59,10 +59,36 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.mt-marker-parking {
+.mt-marker-trailhead {
   background: var(--accent);
+  border-width: 3px;
+}
+
+.mt-marker-parking {
+  background: #1d4ed8;
+  border-radius: 5px;
+}
+
+.mt-marker-transit-autobus,
+.mt-marker-transit-elektricka,
+.mt-marker-transit-vlak {
+  background: #334155;
+  border-radius: 5px;
+  font-size: 0.7rem;
+}
+
+.mt-marker-transit-elektricka {
+  background: #7c3aed;
+}
+
+.mt-marker-transit-vlak {
+  background: #0f766e;
 }
 
 .mt-marker-poi {
   background: #b3491f;
+}
+
+.mt-marker-dimmed {
+  opacity: 0.35;
 }

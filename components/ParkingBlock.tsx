@@ -2,10 +2,21 @@ import type { ParkingLot } from "@/lib/types";
 import { formatDateSk } from "@/lib/format";
 
 interface Props {
-  parking: ParkingLot;
+  parking: ParkingLot | null;
 }
 
 export function ParkingBlock({ parking }: Props) {
+  if (!parking) {
+    return (
+      <section className="flex flex-col gap-2 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
+        <h2 className="text-sm font-semibold opacity-70">Parkovanie</h2>
+        <p className="text-sm opacity-80">
+          Pri začiatku trasy nemáme overené parkovisko. Odporúčame verejnú dopravu.
+        </p>
+      </section>
+    );
+  }
+
   const { lat, lon } = parking.location;
   const coordText = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
   const geoUri = `geo:${lat},${lon}`;
@@ -18,7 +29,7 @@ export function ParkingBlock({ parking }: Props) {
       {parking.note && <p className="text-sm opacity-80">{parking.note}</p>}
 
       <p className="text-sm">
-        Suradnice: <span className="select-all font-mono">{coordText}</span>
+        Súradnice: <span className="select-all font-mono">{coordText}</span>
       </p>
 
       <div className="flex flex-wrap gap-2 pt-1">
@@ -34,7 +45,7 @@ export function ParkingBlock({ parking }: Props) {
           rel="noopener noreferrer"
           className="rounded-lg bg-[var(--accent)] px-3 py-2 text-sm font-medium text-[var(--accent-contrast)]"
         >
-          Navigacia (Google Maps)
+          Navigácia (Google Maps)
         </a>
       </div>
 

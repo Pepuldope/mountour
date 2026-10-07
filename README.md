@@ -31,7 +31,7 @@ Explicitly **out of scope** — do not add these without reopening the spec:
 
 - Next.js (App Router) + TypeScript, target deploy: Vercel
 - Supabase Postgres + PostGIS for data (see `supabase/migrations/0001_init.sql`)
-- Leaflet + OpenStreetMap tiles for the map (no `react-leaflet` — plain
+- Leaflet + OpenTopoMap base + Waymarked Trails hiking overlay for the map (no `react-leaflet` — plain
   `leaflet` used directly from a client component, to keep the dependency
   surface small)
 - A hand-written service worker (`public/sw.js`) for offline trip caching
