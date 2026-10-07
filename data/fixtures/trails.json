@@ -45,19 +45,19 @@
           "lon": 16.979432
         },
         "surface_type": "asfalt",
-        "note": "71 m od začiatku trasy, bezplatné (podľa OSM). Zdroj: OpenStreetMap.",
+        "note": "71 m od začiatku trasy, bezplatné. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       },
       {
-        "id": "663c2fe3-ee98-53fa-8e00-8ae292ffdbdf",
+        "id": "894f88b2-6f0d-5fde-a4fc-6e5ab89fb047",
         "trailhead_id": "379b54b8-fde2-50db-82cb-a876560f42e3",
-        "name": "Parkovisko 280 m od začiatku trasy",
+        "name": "Parkovisko pri trase (0.4 km od začiatku)",
         "location": {
-          "lat": 48.173836,
-          "lon": 16.982806
+          "lat": 48.178806,
+          "lon": 16.980083
         },
-        "surface_type": null,
-        "note": "280 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "surface_type": "spevnene",
+        "note": "56 m od trasy, 0.4 km od začiatku – trasu môžete začať aj odtiaľto, bezplatné. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       }
     ],
@@ -202,7 +202,32 @@
         "is_primary": true
       }
     ],
-    "parkingLots": [],
+    "parkingLots": [
+      {
+        "id": "49bec05c-5238-57ca-965d-05de4d1ac5ed",
+        "trailhead_id": "41b3c3e9-c911-517f-bc65-16cb548eac51",
+        "name": "Parkovisko pri trase (2.3 km od začiatku)",
+        "location": {
+          "lat": 48.183511,
+          "lon": 17.095609
+        },
+        "surface_type": null,
+        "note": "22 m od trasy, 2.3 km od začiatku – trasu môžete začať aj odtiaľto. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "id": "e5e56174-cf13-5d69-a0eb-7dba0a6c6aac",
+        "trailhead_id": "41b3c3e9-c911-517f-bc65-16cb548eac51",
+        "name": "Parkovisko pri trase (2.3 km od začiatku)",
+        "location": {
+          "lat": 48.18161,
+          "lon": 17.097773
+        },
+        "surface_type": "štrk",
+        "note": "279 m od trasy, 2.3 km od začiatku – trasu môžete začať aj odtiaľto, cca 50 miest, bezplatné. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      }
+    ],
     "transitStops": [
       {
         "id": "e7a6589a-049c-58be-8c7d-f5eb2a1f69f8",
@@ -232,8 +257,8 @@
         "name": "Deviaty mlyn",
         "mode": "autobus",
         "location": {
-          "lat": 48.185864,
-          "lon": 17.077691
+          "lat": 48.185863,
+          "lon": 17.077696
         },
         "distance_m": 598
       }
@@ -343,19 +368,19 @@
           "lon": 17.135499
         },
         "surface_type": null,
-        "note": "58 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "note": "58 m od začiatku trasy, cca 5 miest. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       },
       {
-        "id": "10686c4b-545b-5aed-8339-da5fc7e259a4",
+        "id": "dfcaa7f1-947a-506f-9f03-7b580083d975",
         "trailhead_id": "a81a1c5c-2952-5008-967c-70abf5a43180",
-        "name": "Parkovisko 74 m od začiatku trasy",
+        "name": "Parkovisko pri trase (3.4 km od začiatku)",
         "location": {
-          "lat": 48.198591,
-          "lon": 17.135731
+          "lat": 48.222401,
+          "lon": 17.148505
         },
-        "surface_type": null,
-        "note": "74 m od začiatku trasy, spoplatnené (podľa OSM). Zdroj: OpenStreetMap.",
+        "surface_type": "asfalt",
+        "note": "14 m od trasy, 3.4 km od začiatku – trasu môžete začať aj odtiaľto, bezplatné. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       }
     ],
@@ -481,15 +506,15 @@
         "verified_on": "2026-10-07"
       },
       {
-        "id": "b8d5dada-5bd1-5d36-8260-7bf3def99ff7",
+        "id": "5c370bb5-d631-5771-b49b-7d3386b8c853",
         "trailhead_id": "e00f600c-9353-5ffc-b346-b13cd1851315",
-        "name": "Parkovisko 31 m od začiatku trasy",
+        "name": "Parkovisko 36 m od začiatku trasy",
         "location": {
-          "lat": 48.262668,
-          "lon": 17.085632
+          "lat": 48.262738,
+          "lon": 17.086519
         },
         "surface_type": null,
-        "note": "31 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "note": "36 m od začiatku trasy, bezplatné. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       }
     ],
@@ -522,10 +547,10 @@
         "name": "Borinka, Staré pece",
         "mode": "autobus",
         "location": {
-          "lat": 48.25964,
-          "lon": 17.096056
+          "lat": 48.259636,
+          "lon": 17.096004
         },
-        "distance_m": 813
+        "distance_m": 809
       }
     ],
     "closures": [],
@@ -603,18 +628,6 @@
     ],
     "parkingLots": [
       {
-        "id": "6acb8e2f-f20e-5f31-b7f0-461c18f74e71",
-        "trailhead_id": "e79b35e5-3c39-59c4-b14d-1aab015cc487",
-        "name": "Parkovisko 314 m od začiatku trasy",
-        "location": {
-          "lat": 48.407384,
-          "lon": 17.159896
-        },
-        "surface_type": "asfalt",
-        "note": "314 m od začiatku trasy, bezplatné (podľa OSM). Zdroj: OpenStreetMap.",
-        "verified_on": "2026-10-07"
-      },
-      {
         "id": "51ecdf7a-cfd3-59e9-be98-888325b00317",
         "trailhead_id": "e79b35e5-3c39-59c4-b14d-1aab015cc487",
         "name": "Parkovisko 324 m od začiatku trasy",
@@ -624,6 +637,18 @@
         },
         "surface_type": null,
         "note": "324 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "verified_on": "2026-10-07"
+      },
+      {
+        "id": "6acb8e2f-f20e-5f31-b7f0-461c18f74e71",
+        "trailhead_id": "e79b35e5-3c39-59c4-b14d-1aab015cc487",
+        "name": "Parkovisko pri trase (0.4 km od začiatku)",
+        "location": {
+          "lat": 48.407384,
+          "lon": 17.159896
+        },
+        "surface_type": "asfalt",
+        "note": "30 m od trasy, 0.4 km od začiatku – trasu môžete začať aj odtiaľto, bezplatné. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       }
     ],
@@ -734,19 +759,19 @@
           "lon": 17.278131
         },
         "surface_type": null,
-        "note": "99 m od začiatku trasy, spoplatnené (podľa OSM). Zdroj: OpenStreetMap.",
+        "note": "99 m od začiatku trasy, spoplatnené. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       },
       {
         "id": "dab56b56-5028-5ded-8772-d4f1e4660a2e",
         "trailhead_id": "33dcf818-29f0-5274-b3eb-cd243865fe17",
-        "name": "Parkovisko 338 m od začiatku trasy",
+        "name": "Parkovisko pri trase (0.4 km od začiatku)",
         "location": {
           "lat": 48.382364,
           "lon": 17.27546
         },
         "surface_type": "tráva",
-        "note": "338 m od začiatku trasy, spoplatnené (podľa OSM). Zdroj: OpenStreetMap.",
+        "note": "307 m od trasy, 0.4 km od začiatku – trasu môžete začať aj odtiaľto, spoplatnené. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       }
     ],
@@ -849,27 +874,27 @@
     ],
     "parkingLots": [
       {
-        "id": "d7b83587-4fc1-55f5-836c-3dbb505c9fcd",
+        "id": "cd11bbd5-64d6-535c-86af-4bfb351ad184",
         "trailhead_id": "56a0661f-9d0d-54d0-aec5-03c4be96859b",
-        "name": "Parkovisko 15 m od začiatku trasy",
+        "name": "Parkovisko 97 m od začiatku trasy",
         "location": {
-          "lat": 48.509297,
-          "lon": 17.433651
+          "lat": 48.509587,
+          "lon": 17.432382
         },
         "surface_type": null,
-        "note": "15 m od začiatku trasy, spoplatnené (podľa OSM). Zdroj: OpenStreetMap.",
+        "note": "97 m od začiatku trasy, spoplatnené. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       },
       {
-        "id": "4fca1b72-3373-5f5e-b138-f5c47401ec49",
+        "id": "5692f125-79b6-5fec-9ea1-24d2ffdab6c7",
         "trailhead_id": "56a0661f-9d0d-54d0-aec5-03c4be96859b",
-        "name": "Parkovisko 36 m od začiatku trasy",
+        "name": "Parkovisko 172 m od začiatku trasy",
         "location": {
-          "lat": 48.509399,
-          "lon": 17.433184
+          "lat": 48.509769,
+          "lon": 17.431391
         },
         "surface_type": null,
-        "note": "36 m od začiatku trasy, spoplatnené (podľa OSM). Zdroj: OpenStreetMap.",
+        "note": "172 m od začiatku trasy, spoplatnené. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       }
     ],
@@ -949,27 +974,27 @@
     ],
     "parkingLots": [
       {
-        "id": "79a8670a-4adb-5be7-bc75-ed226c444cc5",
+        "id": "eb565e60-1c42-5414-b438-b5adc120e447",
         "trailhead_id": "5f8264fb-f9bf-5916-99c4-60b10b65173d",
-        "name": "Parkovisko 419 m od začiatku trasy",
+        "name": "Parkovisko pri trase (0.5 km od začiatku)",
         "location": {
-          "lat": 48.480982,
-          "lon": 17.264759
+          "lat": 48.487167,
+          "lon": 17.259986
         },
         "surface_type": null,
-        "note": "419 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "note": "145 m od trasy, 0.5 km od začiatku – trasu môžete začať aj odtiaľto. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       },
       {
-        "id": "33d17691-082a-5270-a467-0fb4b60b1735",
+        "id": "82ad0ab8-b9d5-5bca-a6ad-fcf9bf476e62",
         "trailhead_id": "5f8264fb-f9bf-5916-99c4-60b10b65173d",
-        "name": "Parkovisko 441 m od začiatku trasy",
+        "name": "Parkovisko pri trase (0.5 km od začiatku)",
         "location": {
-          "lat": 48.481562,
-          "lon": 17.254455
+          "lat": 48.486829,
+          "lon": 17.262251
         },
-        "surface_type": null,
-        "note": "441 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "surface_type": "tráva",
+        "note": "4 m od trasy, 0.5 km od začiatku – trasu môžete začať aj odtiaľto, bezplatné. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       }
     ],
@@ -1072,27 +1097,27 @@
     ],
     "parkingLots": [
       {
-        "id": "d872f166-e8ea-5165-8cf9-b5869ba141d6",
+        "id": "3d03d340-c914-54f7-9747-ea0b9f1cd268",
         "trailhead_id": "eea79512-f541-5b31-9939-c754199aaa1a",
-        "name": "Parkovisko 37 m od začiatku trasy",
+        "name": "Parkovisko pri trase (0.6 km od začiatku)",
         "location": {
-          "lat": 48.398503,
-          "lon": 17.357053
+          "lat": 48.394897,
+          "lon": 17.352902
         },
         "surface_type": null,
-        "note": "37 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "note": "13 m od trasy, 0.6 km od začiatku – trasu môžete začať aj odtiaľto. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       },
       {
-        "id": "06dc250d-35d6-57e0-bc91-b50015035ac5",
+        "id": "2bf85245-45b8-5a64-afc3-bcb1fb345cd8",
         "trailhead_id": "eea79512-f541-5b31-9939-c754199aaa1a",
-        "name": "Parkovisko 43 m od začiatku trasy",
+        "name": "Parkovisko pri trase (2.0 km od začiatku)",
         "location": {
-          "lat": 48.398572,
-          "lon": 17.356396
+          "lat": 48.393989,
+          "lon": 17.334982
         },
         "surface_type": null,
-        "note": "43 m od začiatku trasy. Zdroj: OpenStreetMap.",
+        "note": "13 m od trasy, 2.0 km od začiatku – trasu môžete začať aj odtiaľto, cca 5 miest. Zdroj: OpenStreetMap.",
         "verified_on": "2026-10-07"
       }
     ],

@@ -223,6 +223,7 @@ def build_one(cfg, today):
     q = f"""[out:json][timeout:90];
 (
   nwr["amenity"="parking"]["access"!~"private|no|customers"](around:800,{s_lat},{s_lon});
+  nwr["amenity"="parking"]["access"!~"private|no|customers"]["parking"!="street_side"](around:300,{line});
   node["highway"="bus_stop"]["name"](around:1000,{s_lat},{s_lon});
   node["railway"~"^(tram_stop|station|halt)$"]["name"](around:1000,{s_lat},{s_lon});
   nwr["name"]["tourism"~"^(viewpoint|alpine_hut|wilderness_hut|chalet)$"](around:150,{line});
@@ -259,25 +260,49 @@ out center tags;"""
             if kind and t["name"] not in pois:
                 pois[t["name"]] = (kind, t["name"], loc, e["type"] + "/" + str(e["id"]))
 
-    parkings.sort(key=lambda x: x[0])
+    # Parking: anywhere near the route counts, since an out-and-back can be started from
+    # either end (e.g. Kamzík: the mapped lots are at the summit end, not at Železná studnička).
+    # Rank by how far you'd walk from the car to the track, then prefer bigger lots.
+    seen, ranked = set(), []
+    for _, e, loc in parkings:
+        if e["id"] in seen:
+            continue
+        seen.add(e["id"])
+        i_near, d_track = min(((i, haversine(loc, (p[0], p[1]))) for i, p in enumerate(track)), key=lambda x: x[1])
+        along = sum(haversine(track[i], track[i + 1]) for i in range(min(i_near, len(track) // 2 if i_near > len(track) // 2 else i_near)))
+        if i_near > len(track) // 2:  # second half of an out-and-back: measure from the start the other way
+            along = sum(haversine(track[i], track[i + 1]) for i in range(i_near, len(track) - 1))
+        cap = int(e.get("tags", {}).get("capacity", "0") or 0) if str(e.get("tags", {}).get("capacity", "0")).isdigit() else 0
+        ranked.append((d_track - min(cap, 50) * 2, d_track, along, e, loc))
+    ranked.sort(key=lambda x: x[0])
     parking_rows = []
-    for i, (d, e, loc) in enumerate(parkings[:2]):
+    for _, d_track, along, e, loc in ranked[:2]:
         t = e.get("tags", {})
-        surface = {"asphalt": "asfalt", "paved": "spevnene", "gravel": "štrk", "unpaved": "nespevnene",
-                   "ground": "nespevnene", "grass": "tráva"}.get(t.get("surface", ""), None)
+        surface = {"asphalt": "asfalt", "paved": "spevnene", "gravel": "štrk", "fine_gravel": "štrk", "unpaved": "nespevnene",
+                   "ground": "nespevnene", "grass": "tráva", "paving_stones": "dlažba"}.get(t.get("surface", ""), None)
         fee = {"yes": "spoplatnené", "no": "bezplatné"}.get(t.get("fee", ""))
-        note_bits = [f"{round(d)} m od začiatku trasy"]
+        if along < 300:
+            where = f"{round(haversine(start, loc))} m od začiatku trasy"
+            title = f"Parkovisko {round(haversine(start, loc))} m od začiatku trasy"
+        else:
+            where = f"{round(d_track)} m od trasy, {along / 1000:.1f} km od začiatku – trasu môžete začať aj odtiaľto"
+            title = f"Parkovisko pri trase ({along / 1000:.1f} km od začiatku)"
+        note_bits = [where]
+        if t.get("capacity", "").isdigit():
+            note_bits.append(f"cca {t['capacity']} miest")
         if fee:
-            note_bits.append(fee + " (podľa OSM)")
+            note_bits.append(fee)
         parking_rows.append(dict(
             id=str(uuid.uuid5(NS, f"{slug}:parking:{e['type']}/{e['id']}")),
             trailhead_id=th_id,
-            name=t.get("name") or f"Parkovisko {round(d)} m od začiatku trasy",
+            name=t.get("name") or title,
             location={"lat": round(loc[0], 6), "lon": round(loc[1], 6)},
             surface_type=surface,
             note=", ".join(note_bits) + ". Zdroj: OpenStreetMap.",
             verified_on=today,
+            _order=along,
         ))
+    parking_rows.sort(key=lambda p: p.pop("_order"))
 
     stop_rows = []
     for d, name, mode, loc in sorted(stops.values())[:3]:
