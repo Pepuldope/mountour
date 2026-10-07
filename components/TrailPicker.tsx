@@ -51,7 +51,7 @@ export function TrailPicker({ trails }: Props) {
         </label>
 
         <label className="flex flex-col gap-1 text-sm font-medium">
-          Odkial vyrazam
+          Odkiaľ vyrážam
           <div className="flex gap-2">
             <input
               type="text"
@@ -65,7 +65,7 @@ export function TrailPicker({ trails }: Props) {
               onClick={useMyLocation}
               className="whitespace-nowrap rounded-lg border border-[var(--border)] px-3 py-2 text-sm"
             >
-              {locating ? "Hladam..." : "Moja poloha"}
+              {locating ? "Hľadám..." : "Moja poloha"}
             </button>
           </div>
         </label>
@@ -84,8 +84,8 @@ export function TrailPicker({ trails }: Props) {
       <section className="flex flex-col gap-3">
         <h2 className="text-sm font-semibold opacity-70">
           {matches.length === 0
-            ? "Ziadna trasa nevyhovuje"
-            : `Vyhovujuce trasy (${matches.length})`}
+            ? "Žiadna trasa nevyhovuje"
+            : `Vyhovujúce trasy (${matches.length})`}
         </h2>
 
         {matches.map(({ trail }) => (
@@ -100,7 +100,7 @@ export function TrailPicker({ trails }: Props) {
               {DIFFICULTY_LABEL[trail.difficulty]} - {formatDuration(trail.duration_min)}
             </span>
             {trail.family_friendly && (
-              <span className="text-xs font-medium text-[var(--accent)]">Vhodne pre deti</span>
+              <span className="text-xs font-medium text-[var(--accent)]">Vhodné pre deti</span>
             )}
           </Link>
         ))}

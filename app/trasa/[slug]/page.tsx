@@ -30,19 +30,19 @@ export default async function TripSheetPage({ params }: Props) {
 
       <section className="grid grid-cols-2 gap-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 text-sm">
         <div>
-          <p className="opacity-60">Dlzka</p>
+          <p className="opacity-60">Dĺžka</p>
           <p className="text-lg font-semibold">{formatDistance(trail.distance_m)}</p>
         </div>
         <div>
-          <p className="opacity-60">Prevysenie</p>
+          <p className="opacity-60">Prevýšenie</p>
           <p className="text-lg font-semibold">{trail.ascent_m} m</p>
         </div>
         <div>
-          <p className="opacity-60">Narocnost</p>
+          <p className="opacity-60">Náročnosť</p>
           <p className="text-lg font-semibold">{DIFFICULTY_LABEL[trail.difficulty]}</p>
         </div>
         <div>
-          <p className="opacity-60">Cas chodze</p>
+          <p className="opacity-60">Čas chodze</p>
           <p className="text-lg font-semibold">{formatDuration(trail.duration_min)}</p>
         </div>
       </section>
@@ -64,7 +64,7 @@ export default async function TripSheetPage({ params }: Props) {
       <section className="flex flex-col gap-2 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
         <h2 className="text-sm font-semibold opacity-70">Offline</h2>
         <p className="text-sm opacity-80">
-          Uloz si tuto stranku, GPX trasu a mapove podklady, aby fungovali aj bez signalu.
+          Ulož si túto stránku, GPX trasu a mapové podklady, aby fungovali aj bez signálu.
         </p>
         <OfflineSaveButton slug={trail.slug} gpxUrl={gpxUrl} bbox={trail.bbox} />
       </section>

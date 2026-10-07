@@ -2,9 +2,9 @@
   {
     "trail": {
       "id": "11111111-1111-1111-1111-111111111111",
-      "name": "Devinska Kobyla",
+      "name": "Devínska Kobyla",
       "slug": "devinska-kobyla",
-      "description": "Okruh z Devina na vrchol Devinskej Kobyly s vyhliadkou na sutok Moravy a Dunaja a na Rakusko. Kratky, ale strmsi vystup v zavere.",
+      "description": "Okruh z Devína na vrchol Devínskej Kobyly s výhľadom na sútok Moravy a Dunaja a na Rakúsko. Krátky, ale strmší výstup v závere.",
       "distance_m": 9200,
       "ascent_m": 380,
       "difficulty": "stredna",
@@ -21,7 +21,7 @@
       {
         "id": "22222222-2222-2222-2222-222222222222",
         "trail_id": "11111111-1111-1111-1111-111111111111",
-        "name": "Devin - pod hradom",
+        "name": "Devín - pod hradom",
         "location": { "lat": 48.1789, "lon": 16.9775 },
         "is_primary": true
       }
@@ -30,10 +30,10 @@
       {
         "id": "33333333-3333-3333-3333-333333333333",
         "trailhead_id": "22222222-2222-2222-2222-222222222222",
-        "name": "Parkovisko Devin, ulica Slovanske nabrezie",
+        "name": "Parkovisko Devín, ulica Slovanské nábrežie",
         "location": { "lat": 48.1795, "lon": 16.9781 },
         "surface_type": "spevnene",
-        "note": "Velke parkovisko pri autobusovej zastavke Devin, kratka pesia zachodza k zaciatku znacky.",
+        "note": "Veľké parkovisko pri autobusovej zastávke Devín, krátky peší presun k začiatku značky.",
         "verified_on": "2026-06-01"
       }
     ],
@@ -44,7 +44,7 @@
         "kind": "jednorazova",
         "starts_on": "2026-03-01",
         "ends_on": "2026-03-15",
-        "reason": "Tazba dreva v hornej casti trasy.",
+        "reason": "Ťažba dreva v hornej časti trasy.",
         "source_url": "https://www.bratislava-vidiek.sk/lesy-devin-tazba",
         "verified_on": "2026-02-20"
       }
@@ -54,17 +54,17 @@
         "id": "44444444-4444-4444-4444-444444444444",
         "trail_id": "11111111-1111-1111-1111-111111111111",
         "kind": "vyhliadka",
-        "name": "Vyhliadka Devinska Kobyla",
+        "name": "Vyhliadka Devínska Kobyla",
         "location": { "lat": 48.1875, "lon": 17.0021 },
-        "note": "Vyhlad na sutok Moravy a Dunaja, na Rakusko a za dobrej viditelnosti az na Alpy."
+        "note": "Výhľad na sútok Moravy a Dunaja, na Rakúsko a za dobrej viditeľnosti až na Alpy."
       },
       {
         "id": "55555555-5555-5555-5555-555555555555",
         "trail_id": "11111111-1111-1111-1111-111111111111",
         "kind": "hrad",
-        "name": "Hrad Devin",
+        "name": "Hrad Devín",
         "location": { "lat": 48.1787, "lon": 16.9769 },
-        "note": "Zricanina hradu pri vstupe na trasu, plateny areal, mozny start vylety."
+        "note": "Zrúcanina hradu pri vstupe na trasu, platený areál, možný štart výletu."
       }
     ]
   }

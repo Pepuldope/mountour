@@ -9,7 +9,7 @@ export default async function Home() {
       <header className="flex flex-col gap-1">
         <h1 className="text-2xl font-bold text-[var(--accent)]">MounTour</h1>
         <p className="text-sm opacity-70">
-          Vyber si jednodnovy vylet - trasu, parkovanie a kedy sa este stihnes vratit pred tmou.
+          Vyber si jednodňový výlet - trasu, parkovanie a kedy sa ešte stihneš vrátiť pred tmou.
         </p>
       </header>
 

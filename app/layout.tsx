@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "MounTour",
   description:
-    "Naplanuj si jednodnovy vylet do hor - kedy vyrazit, kde parkovat a kedy sa vratit pred zapadom slnka.",
+    "Naplánuj si jednodňový výlet do hôr - kedy vyraziť, kde parkovať a kedy sa vrátiť pred západom slnka.",
   manifest: "/manifest.json",
 };
 

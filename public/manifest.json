@@ -1,7 +1,7 @@
 {
   "name": "MounTour",
   "short_name": "MounTour",
-  "description": "Planovac jednodnovych vyletov do hor",
+  "description": "Plánovač jednodňových výletov do hôr",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f7f6f2",

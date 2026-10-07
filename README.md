@@ -47,7 +47,7 @@ npm run dev
 Open `http://localhost:3000`. **No Supabase project is required** — if
 `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` are unset (or the
 project is unreachable), the app reads `data/fixtures/trails.json` instead,
-which mirrors `supabase/seed.sql`'s one seeded trail (Devinska Kobyla). This is
+which mirrors `supabase/seed.sql`'s one seeded trail (Devínska Kobyla). This is
 intentional — the slice must run standalone.
 
 ```bash
@@ -111,14 +111,14 @@ sunset for that date/location — showing a clear OK or warning state.
 ## The closure rule (important, do not relax)
 
 If a trail has **no closure data at all**, the UI renders
-**"Stav chodnika neoverený"** ("trail status unverified") — never
+**"Stav chodníka neoverený"** ("trail status unverified") — never
 **"otvorené"** ("open"). Missing data must never read as good news. See
 `components/ClosureBanner.tsx`.
 
 ## Offline caching
 
 Nothing is precached at install — this is cache-on-plan, not
-cache-everything. Tapping "Ulozit vylet offline" on a trip sheet
+cache-everything. Tapping "Uložiť výlet offline" on a trip sheet
 (`components/OfflineSaveButton.tsx`) posts a message to the service worker
 (`public/sw.js`) with the exact URLs to store: the trip page itself, its GPX
 file, and the OpenStreetMap tiles covering the trail's `bbox` at zoom 13-15

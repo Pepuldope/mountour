@@ -17,9 +17,9 @@ export function ClosureBanner({ closures, today }: Props) {
   if (closures.length === 0) {
     return (
       <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-        <p className="font-semibold">Stav chodnika neoverený</p>
+        <p className="font-semibold">Stav chodníka neoverený</p>
         <p className="text-sm opacity-70">
-          Pre tuto trasu nemame ziadne udaje o uzavierkach. Pred vyletom si stav overte na inom zdroji.
+          Pre túto trasu nemáme žiadne údaje o uzávierkach. Pred výletom si stav overte na inom zdroji.
         </p>
       </div>
     );
@@ -30,16 +30,16 @@ export function ClosureBanner({ closures, today }: Props) {
   if (active.length > 0) {
     return (
       <div className="flex flex-col gap-2 rounded-xl border-2 border-[var(--warn)] bg-[var(--warn-bg)] p-4">
-        <p className="font-bold text-[var(--warn)]">Chodnik je momentalne uzavrety</p>
+        <p className="font-bold text-[var(--warn)]">Chodník je momentálne uzavretý</p>
         {active.map((c) => (
           <div key={c.id} className="flex flex-col gap-1 text-sm">
             <p>{c.reason}</p>
             <p>
               <a href={c.source_url} target="_blank" rel="noopener noreferrer" className="underline">
-                Zdroj informacie
+                Zdroj informácie
               </a>
             </p>
-            <p className="opacity-70">Overene: {formatDateSk(c.verified_on)}</p>
+            <p className="opacity-70">Overené: {formatDateSk(c.verified_on)}</p>
           </div>
         ))}
       </div>

@@ -1,19 +1,19 @@
 import type { Difficulty, PoiKind } from "@/lib/types";
 
 export const DIFFICULTY_LABEL: Record<Difficulty, string> = {
-  lahka: "Lahka",
-  stredna: "Stredna",
-  tazka: "Tazka",
+  lahka: "Ľahká",
+  stredna: "Stredná",
+  tazka: "Ťažká",
 };
 
 export const POI_LABEL: Record<PoiKind, string> = {
   vyhliadka: "Vyhliadka",
   chata: "Chata",
-  obcerstvenie: "Obcerstvenie",
+  obcerstvenie: "Občerstvenie",
   pramen: "Pramen",
   hrad: "Hrad",
   ihrisko: "Ihrisko",
-  utulna: "Utulna",
+  utulna: "Útulňa",
 };
 
 export function formatDuration(minutes: number): string {

@@ -43,10 +43,10 @@ export function SunsetCard({ location, durationMin }: Props) {
 
   return (
     <section className={`flex flex-col gap-3 rounded-xl border border-[var(--border)] p-4 ${stateClass}`}>
-      <h2 className="text-sm font-semibold opacity-70">Navrat pred zapadom slnka</h2>
+      <h2 className="text-sm font-semibold opacity-70">Návrat pred západom slnka</h2>
 
       <label className="flex flex-col gap-1 text-sm font-medium">
-        Cas prichodu na parkovisko
+        Čas príchodu na parkovisko
         <input
           type="time"
           value={arrival}
@@ -68,13 +68,13 @@ export function SunsetCard({ location, durationMin }: Props) {
               </p>
               <p className={`font-semibold ${result.ok ? "text-[var(--accent)]" : "text-[var(--warn)]"}`}>
                 {result.ok
-                  ? `V poriadku - stihnes sa vratit ${result.marginMin} min pred zapadom.`
-                  : `Pozor - vratis sa asi ${Math.abs(result.marginMin ?? 0)} min po zapade slnka.`}
+                  ? `V poriadku - stihneš sa vrátiť ${result.marginMin} min pred západom.`
+                  : `Pozor - vrátiš sa asi ${Math.abs(result.marginMin ?? 0)} min po západe slnka.`}
               </p>
             </>
           ) : (
             <p className="font-semibold text-[var(--warn)]">
-              Zapad slnka sa nepodarilo vypocitat pre tento datum a lokalitu.
+              Západ slnka sa nepodarilo vypočítať pre tento dátum a lokalitu.
             </p>
           )}
         </div>

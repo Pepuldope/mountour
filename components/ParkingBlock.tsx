@@ -26,7 +26,7 @@ export function ParkingBlock({ parking }: Props) {
           href={geoUri}
           className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium"
         >
-          Otvorit v mapovej aplikacii
+          Otvoriť v mapovej aplikácii
         </a>
         <a
           href={gmapsUrl}
@@ -39,7 +39,7 @@ export function ParkingBlock({ parking }: Props) {
       </div>
 
       {parking.verified_on && (
-        <p className="text-xs opacity-60">Overene: {formatDateSk(parking.verified_on)}</p>
+        <p className="text-xs opacity-60">Overené: {formatDateSk(parking.verified_on)}</p>
       )}
     </section>
   );

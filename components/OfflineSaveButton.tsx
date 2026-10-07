@@ -63,16 +63,16 @@ export function OfflineSaveButton({ slug, gpxUrl, bbox }: Props) {
         className="rounded-lg bg-[var(--accent)] px-4 py-3 text-base font-semibold text-[var(--accent-contrast)] disabled:opacity-60"
       >
         {status === "saving"
-          ? `Ukladam... (${progress.done}/${progress.total || "?"})`
+          ? `Ukladám... (${progress.done}/${progress.total || "?"})`
           : status === "done"
-            ? "Ulozene offline"
-            : "Ulozit vylet offline"}
+            ? "Uložené offline"
+            : "Uložiť výlet offline"}
       </button>
       {status === "error" && (
-        <p className="text-sm text-[var(--warn)]">Ulozenie sa nepodarilo, skus to znova.</p>
+        <p className="text-sm text-[var(--warn)]">Uloženie sa nepodarilo, skús to znova.</p>
       )}
       {status === "unsupported" && (
-        <p className="text-sm text-[var(--warn)]">Tento prehliadac nepodporuje offline ulozenie.</p>
+        <p className="text-sm text-[var(--warn)]">Tento prehliadač nepodporuje offline uloženie.</p>
       )}
     </div>
   );
