@@ -10,26 +10,23 @@ const FIXTURE_TRAILS = fixtures as unknown as TrailDetail[];
  * configured (no env vars) or the query fails for any reason, falls back to
  * the local JSON fixture so `npm run dev` works with zero cloud setup.
  *
- * NOTE: this project's live Supabase schema uses PostGIS `geography` columns.
- * Reading those back over supabase-js requires either a `st_asgeojson` RPC/view
- * or client-side WKB parsing — neither is wired up here because no live
- * Supabase project exists yet to develop against. Once one does, replace the
- * body of `fetchFromSupabase` with real queries against `trail`, `trailhead`,
- * `parking_lot`, `closure` and `poi`, decoding `location`/`bbox` via a
- * `st_asgeojson(...)` select or a Postgres view that already exposes lat/lon.
+ * Reads the `trail_detail` view (supabase/migrations/0003_trail_detail_view.sql),
+ * which already decodes PostGIS geography into {lat, lon} and returns each row
+ * shaped like TrailDetail.
  */
 async function fetchFromSupabase(): Promise<TrailDetail[] | null> {
   const supabase = getSupabaseClient();
   if (!supabase) return null;
 
   try {
-    const { data, error } = await supabase.from("trail").select("id").limit(1);
-    if (error || !data) return null;
-    // Live PostGIS decoding is not implemented yet (see note above) — until
-    // it is, treat "Supabase reachable" as "not yet able to serve full trail
-    // detail" and fall back to the fixture rather than returning partial data.
-    return null;
-  } catch {
+    const { data, error } = await supabase.from("trail_detail").select("detail").order("slug");
+    if (error || !data) {
+      console.warn("[data] Supabase query failed, using fixture:", error?.message);
+      return null;
+    }
+    return data.map((row) => row.detail as TrailDetail);
+  } catch (err) {
+    console.warn("[data] Supabase unreachable, using fixture:", err);
     return null;
   }
 }
