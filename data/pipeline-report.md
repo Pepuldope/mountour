@@ -1,12 +1,12 @@
 # Trip pipeline report
 
-Run: 2026-10-10T13:50:20+00:00 · OSM data: 2026-10-09T20:21:04Z
+Run: 2026-10-10T13:54:43+00:00 · OSM data: 2026-10-09T20:21:04Z
 
-**88 trips**
+**89 trips**
 
 | Region | Trips | Family | Candidates |
 |---|---|---|---|
-| tatry | 32 | 5 | 282 |
+| tatry | 33 | 5 | 282 |
 | slovensky-raj | 14 | 5 | 56 |
 | mala-fatra | 20 | 5 | 80 |
 | male-karpaty | 22 | 16 | 175 |
@@ -30,12 +30,12 @@ Flag ⚠ when off by more than 15 %.
 
 ## Rejected candidates
 
-- almost the same walk as another trip: 13
-- mostly unmarked: 23
-- no trailhead within reach: 3
-- start already has enough trips: 27
+- almost the same walk as another trip: 14
+- mostly unmarked: 25
+- no trailhead within reach: 5
+- start already has enough trips: 29
 - too flat (city walk): 1
-- too long: 18
+- too long: 19
 - too short: 14
 
 ## Rule place names not found in OSM (check spelling in the rule files)
@@ -112,18 +112,18 @@ Flag ⚠ when off by more than 15 %.
 | vodopad-skok | tatry | Rázcestie pred Heliosom | 8.5 | 404 | 3:15 | stredna |  |
 | skalnate-pleso | tatry | Pod Štartom | 7.9 | 739 | 5:00 | stredna |  |
 | koprovsky-stit | tatry | Holá Úboč | 16.7 | 1005 | 7:30 | tazka | tanap-sezonna-uzavera, tanap-symbolicky-cintorin |
-| vychodna-vysoka | tatry | Sliezsky dom | 7.1 | 682 | 4:45 | stredna | tanap-sezonna-uzavera |
+| vychodna-vysoka-velicka-polana | tatry | Velická poľana | 8.3 | 784 | 5:15 | stredna | tanap-sezonna-uzavera |
 | predne-solisko | tatry | Štrbské Pleso čerpačka | 6.5 | 711 | 4:45 | stredna |  |
 | velka-svistovka | tatry | Pod Štartom | 13.1 | 1010 | 7:15 | tazka | tanap-sezonna-uzavera |
-| batizovske-pleso | tatry | Sliezsky dom | 6.9 | 242 | 2:30 | lahka |  |
+| batizovske-pleso-velicka-polana | tatry | Velická poľana | 8.1 | 345 | 3:00 | lahka |  |
 | capie-pleso | tatry | Rázcestie pred Heliosom | 12.5 | 724 | 5:30 | stredna |  |
 | baranec | tatry | Rázcestie pod Holým vrchom | 10.3 | 1267 | 8:15 | tazka | tanap-sezonna-uzavera |
 | placlive | tatry | Rázcestie Šindľovec | 15.7 | 1082 | 7:45 | tazka | tanap-sezonna-uzavera |
 | salatin | tatry | Pod Spálenou | 10.8 | 1133 | 7:30 | tazka | tanap-sezonna-uzavera |
 | brestova | tatry | Pod Spálenou | 8.4 | 886 | 6:00 | tazka | tanap-sezonna-uzavera |
-| litvorove-pleso | tatry | Sliezsky dom | 8.7 | 840 | 5:45 | stredna | tanap-sezonna-uzavera |
+| litvorove-pleso-velicka-polana | tatry | Velická poľana | 9.9 | 941 | 6:30 | tazka | tanap-sezonna-uzavera |
 | pfinnova-kopa | tatry | Starý Smokovec (pozemná lanovka) | 19.0 | 1158 | 8:45 | tazka |  |
-| sivy-vrch | tatry | 829 m | 14.7 | 1094 | 7:45 | tazka | tanap-sezonna-uzavera |
+| sivy-vrch-razcestie-na-tokarinach | tatry | Rázcestie na Tokarinách | 15.4 | 1131 | 8:00 | tazka | tanap-sezonna-uzavera |
 | vysna-magura | tatry | Úzka dolina, ústie | 13.5 | 1283 | 8:45 | tazka |  |
 | lucna | tatry | Rázcestie Zverovka | 11.2 | 621 | 4:45 | stredna | tanap-sezonna-uzavera |
 | maly-baranec | tatry | Odbočka nad Orešnicou | 11.3 | 1171 | 7:45 | tazka | tanap-sezonna-uzavera |
@@ -131,9 +131,10 @@ Flag ⚠ when off by more than 15 %.
 | velky-vodopad-studeneho-potoka | tatry | Starý Smokovec (pozemná lanovka) | 6.4 | 321 | 2:45 | lahka |  |
 | jamske-pleso | tatry | Bývalá Važecká chata | 7.1 | 291 | 2:45 | lahka |  |
 | zelene-pleso | tatry | Biela voda | 15.1 | 626 | 5:30 | stredna |  |
-| ostra | tatry | 829 m | 12.5 | 1046 | 7:15 | tazka | tanap-sezonna-uzavera |
+| ostra-razcestie-na-tokarinach | tatry | Rázcestie na Tokarinách | 13.2 | 1083 | 7:30 | tazka | tanap-sezonna-uzavera |
 | ostredok | tatry | Úzka dolina, ústie | 11.6 | 1124 | 7:30 | tazka |  |
 | brestovska-jaskyna | tatry | Cukráreň | 6.1 | 106 | 2:00 | lahka | osm fee |
 | hucava-diera | tatry | Tatranská kotlina (zastávka SAD) | 2.4 | 107 | 1:00 | lahka |  |
+| polianky | tatry | Veľké Borové | 4.6 | 175 | 1:45 | lahka |  |
 
-Drive table: 141 towns x 88 trips, 0 pairs without a route.
+Drive table: 141 towns x 89 trips, 0 pairs without a route.

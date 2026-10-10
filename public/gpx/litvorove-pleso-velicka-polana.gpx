@@ -2,7 +2,20 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Litvorové pleso</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Litvorové pleso</name><trkseg>
-    <trkpt lat="49.156077" lon="20.157192"><ele>1668</ele></trkpt>
+    <trkpt lat="49.151871" lon="20.162444"><ele>1565</ele></trkpt>
+    <trkpt lat="49.152205" lon="20.162119"><ele>1570</ele></trkpt>
+    <trkpt lat="49.152638" lon="20.161379"><ele>1580</ele></trkpt>
+    <trkpt lat="49.152756" lon="20.161256"><ele>1583</ele></trkpt>
+    <trkpt lat="49.153142" lon="20.160637"><ele>1595</ele></trkpt>
+    <trkpt lat="49.153893" lon="20.159576"><ele>1616</ele></trkpt>
+    <trkpt lat="49.154123" lon="20.159162"><ele>1624</ele></trkpt>
+    <trkpt lat="49.154353" lon="20.158831"><ele>1632</ele></trkpt>
+    <trkpt lat="49.154852" lon="20.158335"><ele>1641</ele></trkpt>
+    <trkpt lat="49.155350" lon="20.158059"><ele>1651</ele></trkpt>
+    <trkpt lat="49.155985" lon="20.157547"><ele>1665</ele></trkpt>
+    <trkpt lat="49.156036" lon="20.157386"><ele>1667</ele></trkpt>
+    <trkpt lat="49.156029" lon="20.157255"><ele>1667</ele></trkpt>
+    <trkpt lat="49.156154" lon="20.157140"><ele>1668</ele></trkpt>
     <trkpt lat="49.156524" lon="20.156975"><ele>1669</ele></trkpt>
     <trkpt lat="49.156831" lon="20.156763"><ele>1670</ele></trkpt>
     <trkpt lat="49.157065" lon="20.156727"><ele>1670</ele></trkpt>
@@ -382,6 +395,19 @@
     <trkpt lat="49.157065" lon="20.156727"><ele>1670</ele></trkpt>
     <trkpt lat="49.156831" lon="20.156763"><ele>1670</ele></trkpt>
     <trkpt lat="49.156524" lon="20.156975"><ele>1669</ele></trkpt>
-    <trkpt lat="49.156077" lon="20.157192"><ele>1668</ele></trkpt>
+    <trkpt lat="49.156154" lon="20.157140"><ele>1668</ele></trkpt>
+    <trkpt lat="49.156029" lon="20.157255"><ele>1667</ele></trkpt>
+    <trkpt lat="49.156036" lon="20.157386"><ele>1667</ele></trkpt>
+    <trkpt lat="49.155985" lon="20.157547"><ele>1665</ele></trkpt>
+    <trkpt lat="49.155350" lon="20.158059"><ele>1651</ele></trkpt>
+    <trkpt lat="49.154852" lon="20.158335"><ele>1641</ele></trkpt>
+    <trkpt lat="49.154353" lon="20.158831"><ele>1632</ele></trkpt>
+    <trkpt lat="49.154123" lon="20.159162"><ele>1624</ele></trkpt>
+    <trkpt lat="49.153893" lon="20.159576"><ele>1616</ele></trkpt>
+    <trkpt lat="49.153142" lon="20.160637"><ele>1595</ele></trkpt>
+    <trkpt lat="49.152756" lon="20.161256"><ele>1583</ele></trkpt>
+    <trkpt lat="49.152638" lon="20.161379"><ele>1580</ele></trkpt>
+    <trkpt lat="49.152205" lon="20.162119"><ele>1570</ele></trkpt>
+    <trkpt lat="49.151871" lon="20.162444"><ele>1565</ele></trkpt>
   </trkseg></trk>
 </gpx>
