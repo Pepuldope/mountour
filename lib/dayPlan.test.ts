@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { planDay, TIGHT_MARGIN_MIN } from "./dayPlan";
+import { hikeMinutes, planDay, SAFE_MARGIN_MIN } from "./dayPlan";
 
 const BRATISLAVA = { lat: 48.1486, lon: 17.1077 };
 const MIN = 60000;
@@ -25,16 +25,22 @@ describe("planDay", () => {
     expect(hhmm(p.hikeStart)).toBe("09:00");
   });
 
-  it("latest start ends the hike exactly at sunset (drive back is allowed in the dark)", () => {
+  it("latest start ends the hike 30 min before sunset (drive back is allowed in the dark)", () => {
     const input = { date: "2026-12-21", start: "09:00", driveMin: 60, hikeMin: 240, location: BRATISLAVA };
     const p = planDay(input)!;
-    expect(p.latestStart.getTime() + (60 + 240) * MIN).toBe(p.sunset.getTime());
+    expect(p.latestStart.getTime() + (60 + 240 + SAFE_MARGIN_MIN) * MIN).toBe(p.sunset.getTime());
 
-    // Starting a minute after latestStart finishes the hike after sunset.
-    const late = new Date(p.latestStart.getTime() + 1 * MIN);
-    const q = planDay({ ...input, start: hhmm(late) })!;
-    expect(q.marginMin).toBeLessThan(0);
-    expect(["after-sunset", "after-dusk"]).toContain(q.verdict);
+    // Leaving at the latest start (minute rounded down) is "ok"; a few minutes later is only "tight".
+    const atLatest = planDay({ ...input, start: hhmm(p.latestStart) })!;
+    expect(atLatest.verdict).toBe("ok");
+    const late = new Date(p.latestStart.getTime() + 5 * MIN);
+    expect(planDay({ ...input, start: hhmm(late) })!.verdict).toBe("tight");
+  });
+
+  it("kids walk 1.3x slower, rounded to 5 min", () => {
+    expect(hikeMinutes(120, false)).toBe(120);
+    expect(hikeMinutes(120, true)).toBe(155);
+    expect(hikeMinutes(100, true)).toBe(130);
   });
 
   it("grades the finish: ok, tight, after sunset, after dusk", () => {
@@ -43,7 +49,7 @@ describe("planDay", () => {
     const startAt = (minutesBeforeSunset: number) =>
       hhmm(new Date(ref.sunset.getTime() - (60 + minutesBeforeSunset) * MIN));
 
-    expect(planDay({ ...base, start: startAt(TIGHT_MARGIN_MIN + 10) })!.verdict).toBe("ok");
+    expect(planDay({ ...base, start: startAt(SAFE_MARGIN_MIN + 10) })!.verdict).toBe("ok");
     expect(planDay({ ...base, start: startAt(10) })!.verdict).toBe("tight");
     expect(planDay({ ...base, start: startAt(-5) })!.verdict).toBe("after-sunset");
     expect(planDay({ ...base, start: startAt(-90) })!.verdict).toBe("after-dusk");

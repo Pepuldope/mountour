@@ -2,12 +2,15 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { reverseTown } from "@/lib/geocode";
 
 export interface UserFix {
   lat: number;
   lon: number;
   /** Horizontal accuracy radius in metres. */
   accuracy: number;
+  /** The town the fix is in ("Pezinok"), once looked up. */
+  town?: string | null;
 }
 
 /** Where the trip starts: a typed place wins over GPS. */
@@ -37,10 +40,10 @@ const STORAGE_KEY = "mountour-user-fix";
 const MANUAL_KEY = "mountour-start";
 
 const MESSAGES: Partial<Record<LocationStatus, string>> = {
-  locating: "Zisťujem tvoju polohu...",
-  denied: "Prístup k polohe je zamietnutý. Zadaj miesto výletu ručne.",
-  unsupported: "Tento prehliadač nepodporuje zisťovanie polohy. Zadaj miesto ručne.",
-  unavailable: "Polohu sa nepodarilo zistiť. Skús to znova alebo zadaj miesto ručne.",
+  locating: "Zisťujem vašu polohu...",
+  denied: "Prístup k polohe je zamietnutý. Stačí vybrať mesto.",
+  unsupported: "Tento prehliadač nepodporuje polohu. Stačí vybrať mesto.",
+  unavailable: "Polohu sa nepodarilo zistiť. Skúste znova alebo vyberte mesto.",
 };
 
 function readCached(): UserFix | null {
@@ -126,6 +129,15 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
         writeManual(null);
         setManual(null);
         setStatus("ok");
+        // Name the place, so the start reads "Pezinok" and can be shared without coordinates.
+        reverseTown(next.lat, next.lon)
+          .then((town) => {
+            if (!town) return;
+            const named = { ...next, town };
+            writeCached(named);
+            setFix((cur) => (cur === next ? named : cur));
+          })
+          .catch(() => {});
       },
       (err) => setStatus(err.code === err.PERMISSION_DENIED ? "denied" : "unavailable"),
       { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
@@ -139,7 +151,7 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
 
   const start = useMemo<StartPoint | null>(() => {
     if (manual) return { ...manual, source: "manual" };
-    if (fix) return { lat: fix.lat, lon: fix.lon, label: "Tvoja poloha", source: "gps" };
+    if (fix) return { lat: fix.lat, lon: fix.lon, label: fix.town ?? "Vaša poloha", source: "gps" };
     return null;
   }, [manual, fix]);
 

@@ -1,19 +1,25 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
-import { driveDestination, filterTrails, primaryTrailhead, sunLocation } from "@/lib/data";
-import { planDay } from "@/lib/dayPlan";
+import { driveDestination, primaryTrailhead, sunLocation } from "@/lib/data";
+import { hikeMinutes } from "@/lib/dayPlan";
+import { HALF_DAY_MIN, dayFit, dayInSentence, isoDate } from "@/lib/days";
+import { estimateDriveMin } from "@/lib/drive";
+import { tripsCount } from "@/lib/format";
 import { fetchTrack, gpxUrlFor } from "@/lib/gpx";
 import { haversineM } from "@/lib/geo";
+import { trackColor } from "@/lib/mapLayers";
 import { useTripSettings } from "@/lib/tripSettings";
-import { useDriveMatrix, useDriveRoute } from "@/lib/useDriveRoute";
+import { useDriveMatrix } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
-import { TrailPicker } from "@/components/TrailPicker";
-import { TrailList } from "@/components/TrailList";
-import type { TrailListItem } from "@/components/TrailList";
-import { DayPlanView } from "@/components/DayPlanView";
+import { FilterChips } from "@/components/FilterChips";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
+import { SiteFooter } from "@/components/SiteFooter";
+import { StartChip } from "@/components/StartChip";
+import { TripCard } from "@/components/TripCard";
+import type { TripCardItem } from "@/components/TripCard";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
 
@@ -43,29 +49,30 @@ function unionBounds(trails: TrailDetail[]): BBox | null {
   const boxes = trails.map((t) => t.trail.bbox).filter((b): b is BBox => b !== null);
   if (boxes.length === 0) return null;
   return {
-    sw: {
-      lat: Math.min(...boxes.map((b) => b.sw.lat)),
-      lon: Math.min(...boxes.map((b) => b.sw.lon)),
-    },
-    ne: {
-      lat: Math.max(...boxes.map((b) => b.ne.lat)),
-      lon: Math.max(...boxes.map((b) => b.ne.lon)),
-    },
+    sw: { lat: Math.min(...boxes.map((b) => b.sw.lat)), lon: Math.min(...boxes.map((b) => b.sw.lon)) },
+    ne: { lat: Math.max(...boxes.map((b) => b.ne.lat)), lon: Math.max(...boxes.map((b) => b.ne.lon)) },
   };
 }
 
+/**
+ * "Kam dnes" home: answer first. Every trip is listed on arrival, sorted by
+ * travel time once the start is known. Picking a day adds "Vyrazte najneskôr"
+ * and moves trips that don't fit that day's daylight behind a button.
+ */
 export function HomeExplorer({ trails }: Props) {
-  const { date, time, hours, withKids } = useTripSettings();
+  const { date, today, withKids, halfDay, update } = useTripSettings();
   const { start } = useUserLocation();
-  // The trail whose day is shown under the map: last hovered / tapped, sticky on mouse-out.
-  const [panelSlug, setPanelSlug] = useState<string | null>(null);
+  const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [showMapOnPhone, setShowMapOnPhone] = useState(false);
+  const [showHidden, setShowHidden] = useState(false);
   const [trackPoints, setTrackPoints] = useState<Record<string, [number, number][]>>({});
   const itemRefs = useRef(new Map<string, HTMLElement>());
   const isDesktop = useIsDesktop();
+  const mapShown = isDesktop || showMapOnPhone;
 
-  // Static GPX files are small, so every track is loaded client-side.
+  // Tracks only matter once a map is on screen.
   useEffect(() => {
+    if (!mapShown) return;
     let cancelled = false;
     for (const { trail } of trails) {
       const url = gpxUrlFor(trail.gpx_path);
@@ -78,52 +85,51 @@ export function HomeExplorer({ trails }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [trails]);
+  }, [trails, mapShown]);
 
   // Drive time to every trail in one request, in `trails` order.
   const destinations = useMemo(() => trails.map((t) => driveDestination(t)), [trails]);
   const routable = useMemo(() => destinations.filter((d): d is LatLng => d !== null), [destinations]);
-  const { matrix } = useDriveMatrix(start, routable);
-  const driveBySlug = useMemo(() => {
-    const out: Record<string, number | null> = {};
-    let j = 0;
-    trails.forEach((t, i) => {
-      out[t.trail.slug] = destinations[i] ? (matrix?.durationsMin[j++] ?? null) : null;
-    });
-    return out;
-  }, [trails, destinations, matrix]);
+  const { matrix, status: driveStatus } = useDriveMatrix(start, routable);
 
-  // Every input feeds straight into this: filter by kids + whole-day budget, plan each day, sort.
-  const items = useMemo<TrailListItem[]>(() => {
-    const list = filterTrails(trails, { withKids }).flatMap((detail) => {
-      const driveMin = driveBySlug[detail.trail.slug] ?? null;
-      const totalMin = detail.trail.duration_min + 2 * (driveMin ?? 0);
-      if (totalMin > hours * 60) return [];
+  const { shown, hidden } = useMemo(() => {
+    let j = 0;
+    const now = new Date();
+    const all = trails.flatMap((detail, i): TripCardItem[] => {
+      const dest = destinations[i];
+      const routed = dest ? (matrix?.durationsMin[j++] ?? null) : null;
+      if (withKids && !detail.trail.family_friendly) return [];
+      // Routing down or offline: a straight-line estimate beats a blank, marked with "~".
+      const approx = routed === null && driveStatus === "error" && start !== null && dest !== null;
+      const driveMin = routed ?? (approx ? estimateDriveMin(start!, dest!) : null);
+      const hikeMin = hikeMinutes(detail.trail.duration_min, withKids);
+      if (halfDay && hikeMin + 2 * (driveMin ?? 0) > HALF_DAY_MIN) return [];
       const th = primaryTrailhead(detail);
       const sun = sunLocation(detail);
       return [
         {
           detail,
+          hikeMin,
           driveMin,
-          distanceFromUserM: start && th ? haversineM(start, th.location) : null,
-          plan:
-            date && time && sun
-              ? planDay({ date, start: time, driveMin, hikeMin: detail.trail.duration_min, location: sun })
-              : null,
+          driveApprox: approx,
+          driveLoading: driveStatus === "loading",
+          distanceM: start && th ? haversineM(start, th.location) : null,
+          fit: date && today && sun ? dayFit({ date, now, driveMin, hikeMin, location: sun }) : null,
         },
       ];
     });
-    const key = (i: TrailListItem) => i.driveMin ?? (i.distanceFromUserM ?? Infinity) / 1000;
-    if (start) list.sort((a, b) => key(a) - key(b));
-    return list;
-  }, [trails, withKids, hours, date, time, start, driveBySlug]);
+    if (start) {
+      const key = (i: TripCardItem) => i.driveMin ?? (i.distanceM ?? Infinity) / 1000;
+      all.sort((a, b) => key(a) - key(b));
+    }
+    return {
+      shown: all.filter((i) => !i.fit || i.fit.status === "fits"),
+      hidden: all.filter((i) => i.fit && i.fit.status !== "fits"),
+    };
+  }, [trails, destinations, matrix, driveStatus, withKids, halfDay, date, today, start]);
 
-  const matchSlugs = useMemo(() => new Set(items.map((m) => m.detail.trail.slug)), [items]);
-
-  const panelDetail =
-    trails.find((t) => t.trail.slug === panelSlug && matchSlugs.has(panelSlug)) ?? items[0]?.detail ?? null;
-  const activeSlug = panelDetail?.trail.slug ?? null;
-  const panelDrive = useDriveRoute(start, panelDetail ? driveDestination(panelDetail) : null);
+  const shownSlugs = useMemo(() => new Set(shown.map((m) => m.detail.trail.slug)), [shown]);
+  const dayWord = date && today ? dayInSentence(date, new Date()) : null;
 
   const tracks = useMemo<MapTrack[]>(
     () =>
@@ -131,11 +137,10 @@ export function HomeExplorer({ trails }: Props) {
         slug: trail.slug,
         label: trail.name,
         points: trackPoints[trail.slug] ?? [],
-        difficulty: trail.difficulty,
-        state:
-          trail.slug === activeSlug ? "selected" : matchSlugs.has(trail.slug) ? "normal" : "dimmed",
+        color: trackColor(trail.marking),
+        state: trail.slug === activeSlug ? "selected" : shownSlugs.has(trail.slug) ? "normal" : "dimmed",
       })),
-    [trails, trackPoints, activeSlug, matchSlugs]
+    [trails, trackPoints, activeSlug, shownSlugs]
   );
 
   const markers = useMemo<MapMarker[]>(
@@ -150,12 +155,13 @@ export function HomeExplorer({ trails }: Props) {
             location: th.location,
             title: detail.trail.name,
             lines: [th.name],
-            dimmed: !matchSlugs.has(detail.trail.slug),
+            dimmed: !shownSlugs.has(detail.trail.slug),
+            active: detail.trail.slug === activeSlug,
             trailSlug: detail.trail.slug,
           },
         ];
       }),
-    [trails, matchSlugs]
+    [trails, shownSlugs, activeSlug]
   );
 
   const bounds = useMemo(() => unionBounds(trails), [trails]);
@@ -166,7 +172,7 @@ export function HomeExplorer({ trails }: Props) {
   }, []);
 
   const handleMapSelect = useCallback((slug: string) => {
-    setPanelSlug(slug);
+    setActiveSlug(slug);
     itemRefs.current.get(slug)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, []);
 
@@ -176,65 +182,115 @@ export function HomeExplorer({ trails }: Props) {
       markers={markers}
       bounds={bounds}
       onSelectTrail={handleMapSelect}
-      driveLeg={panelDrive.route?.points}
-      ariaLabel="Prehľadová mapa všetkých trás"
+      ariaLabel="Mapa všetkých výletov"
     />
   );
 
+  const heading = !dayWord
+    ? `${tripsCount(shown.length)}${start ? ", najbližšie prvé" : ""}`
+    : `${tripsCount(shown.length)} stihnete ${dayWord}`;
+
+  const cardList = (items: TripCardItem[]) =>
+    items.map((item) => (
+      <TripCard
+        key={item.detail.trail.id}
+        item={item}
+        dayWord={dayWord}
+        active={isDesktop && activeSlug === item.detail.trail.slug}
+        onActive={setActiveSlug}
+        registerItem={registerItem}
+      />
+    ));
+
   return (
     <main className="flex flex-1 flex-col lg:h-dvh lg:flex-row">
-      <div className="flex w-full flex-col gap-5 px-4 py-6 lg:w-[420px] lg:shrink-0 lg:overflow-y-auto">
-        <nav aria-label="Hlavná navigácia">
+      <div className="flex w-full flex-col gap-5 px-4 pt-4 pb-6 lg:w-[440px] lg:shrink-0 lg:overflow-y-auto">
+        <nav aria-label="Hlavná navigácia" className="flex items-center justify-between gap-3">
+          <Link href="/" aria-label="MounTour" className="block">
+            <picture>
+              <source srcSet="/brand/mountour-logo-on-dark.svg" media="(prefers-color-scheme: dark)" />
+              { }
+              <img src="/brand/mountour-logo.svg" alt="MounTour" width={150} height={23} className="h-[23px] w-auto" />
+            </picture>
+          </Link>
           <SavedTripsLink />
         </nav>
 
-        <header className="flex flex-col gap-1">
-          <h1 className="text-2xl font-bold text-[var(--accent)]">MounTour</h1>
-          <p className="text-sm opacity-70">
-            Vyber si jednodňový výlet - trasu, parkovanie a kedy sa ešte stihneš vrátiť pred tmou.
-          </p>
+        <header className="flex flex-col gap-3">
+          <h1 className="text-[1.65rem] leading-tight font-extrabold">Kam dnes, aby ste boli späť za svetla?</h1>
+          <StartChip />
+          <FilterChips />
         </header>
 
-        <TrailPicker hasDrive={start !== null && matrix !== null} />
+        <section className="flex flex-col gap-3" aria-live="polite">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-base font-bold">{heading}</h2>
+            {!isDesktop && (
+              <button
+                type="button"
+                onClick={() => setShowMapOnPhone((v) => !v)}
+                aria-expanded={showMapOnPhone}
+                className="text-sm font-semibold text-[var(--accent)] underline"
+              >
+                {showMapOnPhone ? "Skryť mapu" : "Mapa"}
+              </button>
+            )}
+          </div>
 
-        {!isDesktop && (
-          <button
-            type="button"
-            onClick={() => setShowMapOnPhone((v) => !v)}
-            aria-expanded={showMapOnPhone}
-            className="w-fit rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium"
-          >
-            {showMapOnPhone ? "Skryť mapu" : "Zobraziť mapu"}
-          </button>
-        )}
-        {!isDesktop && showMapOnPhone && (
-          <div className="h-[40vh] overflow-hidden rounded-xl border border-[var(--border)]">{map}</div>
-        )}
-
-        <TrailList
-          items={items}
-          total={trails.length}
-          activeSlug={isDesktop ? activeSlug : null}
-          onActiveChange={setPanelSlug}
-          registerItem={registerItem}
-        />
-      </div>
-
-      {isDesktop && (
-        <div className="sticky top-0 flex h-dvh flex-1 flex-col border-l border-[var(--border)]">
-          <div className="min-h-0 flex-1">{map}</div>
-          {panelDetail && (
-            <div className="h-[42vh] shrink-0 overflow-y-auto border-t border-[var(--border)] bg-[var(--card-bg)] p-4">
-              <DayPlanView
-                title={panelDetail.trail.name}
-                sun={sunLocation(panelDetail)}
-                destination={driveDestination(panelDetail)}
-                hikeMin={panelDetail.trail.duration_min}
-              />
+          {!isDesktop && showMapOnPhone && (
+            <div className="h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)]">
+              {map}
             </div>
           )}
-        </div>
-      )}
+
+          {shown.length === 0 && (
+            <div className="flex flex-col gap-2 rounded-[var(--radius-card)] border border-dashed border-[var(--border)] p-4 text-sm">
+              <p>{dayWord ? `${dayWord === "dnes" ? "Dnes" : "Vtedy"} s týmito filtrami nič nestihnete.` : "S týmito filtrami nič nenachádzame."}</p>
+              <div className="flex flex-wrap gap-3">
+                {halfDay && (
+                  <button type="button" onClick={() => update({ halfDay: false })} className="font-semibold text-[var(--accent)] underline">
+                    Zrušiť pol dňa
+                  </button>
+                )}
+                {withKids && (
+                  <button type="button" onClick={() => update({ withKids: false })} className="font-semibold text-[var(--accent)] underline">
+                    Zrušiť s deťmi
+                  </button>
+                )}
+                {dayWord === "dnes" && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const t = new Date();
+                      update({ date: isoDate(new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1)) });
+                    }}
+                    className="font-semibold text-[var(--accent)] underline"
+                  >
+                    Pozrieť zajtra
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
+          {cardList(shown)}
+
+          {hidden.length > 0 && !showHidden && (
+            <button
+              type="button"
+              onClick={() => setShowHidden(true)}
+              className="w-fit text-sm font-semibold text-[var(--accent)] underline"
+            >
+              Ukázať aj tie, čo {dayWord} nestihnete ({hidden.length})
+            </button>
+          )}
+          {showHidden && cardList(hidden)}
+        </section>
+
+        <SiteFooter />
+      </div>
+
+      {isDesktop && <div className="sticky top-0 h-dvh flex-1 border-l border-[var(--border)]">{map}</div>}
     </main>
   );
 }

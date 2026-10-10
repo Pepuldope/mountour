@@ -6,6 +6,7 @@ import { useDriveRoute } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { fetchTrack } from "@/lib/gpx";
 import { POI_LABEL, TRANSIT_LABEL } from "@/lib/format";
+import { trackColor } from "@/lib/mapLayers";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
 
@@ -36,8 +37,8 @@ export function TripMap({ detail, gpxUrl, destination }: Props) {
   }, [gpxUrl]);
 
   const tracks = useMemo<MapTrack[]>(
-    () => [{ slug: trail.slug, points, difficulty: trail.difficulty, state: "selected" }],
-    [trail.slug, trail.difficulty, points]
+    () => [{ slug: trail.slug, points, color: trackColor(trail.marking), state: "selected" }],
+    [trail.slug, trail.marking, points]
   );
 
   const markers = useMemo<MapMarker[]>(

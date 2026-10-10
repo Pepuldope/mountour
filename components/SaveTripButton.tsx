@@ -3,21 +3,21 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { BBox, LatLng } from "@/lib/types";
-import { tileUrlsForBbox } from "@/lib/tiles";
-import { formatDateSk } from "@/lib/format";
+import { offlineMapUrls } from "@/lib/tiles";
+import { longDay } from "@/lib/days";
 import { useSavedTrips } from "@/lib/savedTrips";
-import { useTripSettings } from "@/lib/tripSettings";
 import { useTripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
+import { ShareButton } from "@/components/ShareButton";
+import type { ShareInfo } from "@/components/ShareButton";
 
-interface Props {
-  slug: string;
-  name: string;
+interface Props extends ShareInfo {
   gpxUrl: string | null;
   bbox: BBox | null;
   sun: LatLng | null;
   destination: LatLng | null;
-  hikeMin: number;
+  /** Walking time before the kids pace. */
+  baseHikeMin: number;
 }
 
 type Status = "idle" | "saving" | "error";
@@ -46,21 +46,29 @@ async function cacheTrip(slug: string, urls: string[], onProgress: (done: number
   await done;
 }
 
+const primary =
+  "w-full rounded-xl bg-[var(--accent)] px-4 py-3 text-base font-bold text-[var(--accent-contrast)] disabled:opacity-60";
+const secondary =
+  "rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-4 py-2.5 text-sm font-semibold hover:border-[var(--accent)]";
+
 /**
- * "Uložiť výlet": one action that both remembers the trip (Uložené výlety, this
- * device only) and stores it for offline use. A saved trip = a cached trip.
+ * "Uložiť výlet" is the main button (PD2): it remembers the trip on this
+ * device and stores it for offline use. Right after saving, one tap offers to
+ * send the plan to the group.
  */
-export function SaveTripButton({ slug, name, gpxUrl, bbox, sun, destination, hikeMin }: Props) {
+export function SaveTripButton({ gpxUrl, bbox, sun, destination, baseHikeMin, ...trip }: Props) {
+  const { slug, name } = trip;
   const { trips, save, patch, remove } = useSavedTrips();
-  const { date, time } = useTripSettings();
   const { start } = useUserLocation();
-  const { route } = useTripPlan(sun, destination, hikeMin);
+  const { plan, date, time, hikeMin, driveMin, route } = useTripPlan(sun, destination, baseHikeMin);
   const [status, setStatus] = useState<Status>("idle");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
+  const [askShare, setAskShare] = useState(false);
 
   const saved = trips.find((t) => t.slug === slug) ?? null;
   const changed =
-    saved !== null && (saved.date !== date || saved.time !== time || (saved.start?.label ?? null) !== (start?.label ?? null));
+    saved !== null &&
+    (saved.date !== date || saved.time !== time || (saved.start?.label ?? null) !== (start?.label ?? null));
 
   async function onSave() {
     if (!date || !time || !sun) return;
@@ -71,12 +79,13 @@ export function SaveTripButton({ slug, name, gpxUrl, bbox, sun, destination, hik
       date,
       time,
       start: start ? { lat: start.lat, lon: start.lon, label: start.label } : null,
-      driveMin: route?.durationMin ?? null,
+      driveMin,
       hikeMin,
       sun,
       savedAt: new Date().toISOString(),
       offline: "pending",
     });
+    setAskShare(true);
 
     if (!("serviceWorker" in navigator)) {
       patch(slug, { offline: "failed" });
@@ -87,7 +96,7 @@ export function SaveTripButton({ slug, name, gpxUrl, bbox, sun, destination, hik
       `/trasa/${slug}`,
       ...(gpxUrl ? [gpxUrl] : []),
       ...loadedAssetUrls(),
-      ...(bbox ? tileUrlsForBbox(bbox) : []),
+      ...(bbox ? await offlineMapUrls(bbox) : []),
     ];
     try {
       await cacheTrip(slug, urls, (d, t) => setProgress({ done: d, total: t }));
@@ -99,50 +108,76 @@ export function SaveTripButton({ slug, name, gpxUrl, bbox, sun, destination, hik
     }
   }
 
-  const showButton = !saved || changed || saved.offline !== "ok" || status === "saving";
+  const showButton = !saved || changed || saved.offline === "failed" || status === "saving";
+  const share = (
+    <ShareButton
+      {...trip}
+      plan={plan}
+      date={date}
+      time={time}
+      hikeMin={hikeMin}
+      hasDrive={route !== null || driveMin !== null}
+      className={secondary}
+    />
+  );
 
   return (
-    <div className="flex flex-col gap-2">
-      {saved && status !== "saving" && (
-        <p className="text-sm">
-          Uložené na <strong>{formatDateSk(saved.date)}</strong> o <strong>{saved.time}</strong>
-          {saved.offline === "ok"
-            ? " - dostupné aj offline. "
-            : saved.offline === "failed"
-              ? " - offline kópia sa nepodarila. "
-              : ". "}
-          <Link href="/ulozene" className="text-[var(--accent)] underline">
-            Uložené výlety
-          </Link>
-        </p>
-      )}
-
+    <div className="flex flex-col gap-3">
       {showButton && (
-        <button
-          type="button"
-          onClick={onSave}
-          disabled={status === "saving" || !date || !time}
-          className="rounded-lg bg-[var(--accent)] px-4 py-3 text-base font-semibold text-[var(--accent-contrast)] disabled:opacity-60"
-        >
+        <button type="button" onClick={onSave} disabled={status === "saving" || !date || !time} className={primary}>
           {status === "saving"
-            ? `Ukladám... (${progress.done}/${progress.total || "?"})`
+            ? `Ukladám aj na cestu bez signálu... (${progress.done}/${progress.total || "?"})`
             : saved
               ? "Uložiť zmeny"
               : "Uložiť výlet"}
         </button>
       )}
 
-      {saved && status !== "saving" && (
-        <button type="button" onClick={() => remove(slug)} className="w-fit text-sm text-[var(--warn)] underline">
-          Odstrániť z uložených
-        </button>
+      {saved && askShare && (
+        <div role="status" className="flex flex-col gap-2 rounded-xl bg-[var(--ok-bg)] p-3 text-sm">
+          <p>
+            <strong>Uložené.</strong> Nájdete to v{" "}
+            <Link href="/ulozene" className="underline">
+              Mojich výletoch
+            </Link>
+            .
+          </p>
+          <p className="font-semibold">Poslať plán partii?</p>
+          <div className="flex flex-wrap gap-2">
+            <ShareButton
+              {...trip}
+              plan={plan}
+              date={date}
+              time={time}
+              hikeMin={hikeMin}
+              hasDrive={route !== null || driveMin !== null}
+              className="rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-bold text-[var(--accent-contrast)]"
+              onShared={() => setAskShare(false)}
+            />
+            <button type="button" onClick={() => setAskShare(false)} className="px-2 text-sm underline">
+              Teraz nie
+            </button>
+          </div>
+        </div>
+      )}
+
+      {saved && !askShare && status !== "saving" && (
+        <p className="text-sm">
+          Uložené na <strong>{longDay(saved.date)}</strong> o <strong>{saved.time}</strong>
+          {saved.offline === "ok" ? ", funguje aj bez signálu. " : ". "}
+          <button type="button" onClick={() => remove(slug)} className="text-[var(--muted)] underline">
+            Odstrániť
+          </button>
+        </p>
       )}
 
       {status === "error" && (
         <p className="text-sm text-[var(--warn)]">
-          Výlet je uložený, ale offline kópiu sa nepodarilo vytvoriť. Skús to znova so signálom.
+          Výlet je uložený, ale kópia bez signálu sa nepodarila. Skúste to znova so signálom.
         </p>
       )}
+
+      {!askShare && share}
     </div>
   );
 }
