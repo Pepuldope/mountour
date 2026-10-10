@@ -1,0 +1,678 @@
+{
+ "version": 1,
+ "generated_at": "2026-10-10T13:31:09+00:00",
+ "osm_data_at": null,
+ "attribution": "© OpenStreetMap contributors (ODbL)",
+ "trips": [
+  {
+   "slug": "devinska-kobyla",
+   "name": "Devínska Kobyla z Devína",
+   "description": "Výstup z Devína pod hradom na najvyšší vrch Devínskych Karpát s rozhľadňou. Výhľad na sútok Moravy a Dunaja.",
+   "region": "male-karpaty",
+   "region_name": "Malé Karpaty",
+   "protected_area": "CHKO Malé Karpaty",
+   "destination": {
+    "name": "Devínska Kobyla, rozhľadňa",
+    "location": {
+     "lat": 48.18937,
+     "lon": 16.99553
+    },
+    "ele_m": 514,
+    "osm": null,
+    "kind": "vyhliadka"
+   },
+   "start": {
+    "name": "Devín, pod hradom",
+    "location": {
+     "lat": 48.17547,
+     "lon": 16.97993
+    },
+    "ele_m": 144,
+    "osm": null
+   },
+   "parking": {
+    "name": "Parkovisko 71 m od začiatku trasy",
+    "location": {
+     "lat": 48.176013,
+     "lon": 16.979432
+    },
+    "walk_m": 71,
+    "fee": null,
+    "osm": null
+   },
+   "transit": {
+    "name": "Štrbská",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.177012,
+     "lon": 16.982818
+    },
+    "walk_m": 274,
+    "osm": null
+   },
+   "route": "tam-a-spat",
+   "distance_m": 6836,
+   "ascent_m": 370,
+   "duration_min": 180,
+   "max_ele_m": 514,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [],
+   "marked_share": 0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 50,
+   "bbox": [
+    16.97985,
+    48.17548,
+    16.9955,
+    48.18939
+   ],
+   "curated": true,
+   "gpx_url": "/gpx/devinska-kobyla.gpx"
+  },
+  {
+   "slug": "kamzik",
+   "name": "Kamzík zo Železnej studničky",
+   "description": "Krátky výstup lesom zo Železnej studničky na Kamzík k televíznej veži. Na vrchole bufety a lesný park.",
+   "region": "male-karpaty",
+   "region_name": "Malé Karpaty",
+   "protected_area": "CHKO Malé Karpaty",
+   "destination": {
+    "name": "Kamzík",
+    "location": {
+     "lat": 48.18185,
+     "lon": 17.09337
+    },
+    "ele_m": 432,
+    "osm": null,
+    "kind": "vrchol"
+   },
+   "start": {
+    "name": "Železná studnička",
+    "location": {
+     "lat": 48.19031,
+     "lon": 17.08224
+    },
+    "ele_m": 215,
+    "osm": null
+   },
+   "parking": {
+    "name": "Parkovisko pri trase (2.3 km od začiatku)",
+    "location": {
+     "lat": 48.183511,
+     "lon": 17.095609
+    },
+    "walk_m": 1247,
+    "fee": null,
+    "osm": null
+   },
+   "transit": {
+    "name": "Železná studnička",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.190327,
+     "lon": 17.08213
+    },
+    "walk_m": 8,
+    "osm": null
+   },
+   "route": "tam-a-spat",
+   "distance_m": 5124,
+   "ascent_m": 231,
+   "duration_min": 120,
+   "max_ele_m": 432,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [],
+   "marked_share": 0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 50,
+   "bbox": [
+    17.07774,
+    48.18232,
+    17.0955,
+    48.19022
+   ],
+   "curated": true,
+   "gpx_url": "/gpx/kamzik.gpx"
+  },
+  {
+   "slug": "biely-kriz",
+   "name": "Biely kríž z Krasnian",
+   "description": "Z konečnej električky v Krasňanoch hrebeňom Malých Karpát na Biely kríž, obľúbený uzol turistických a cyklistických trás.",
+   "region": "male-karpaty",
+   "region_name": "Malé Karpaty",
+   "protected_area": "CHKO Malé Karpaty",
+   "destination": {
+    "name": "Biely kríž",
+    "location": {
+     "lat": 48.24843,
+     "lon": 17.1442
+    },
+    "ele_m": 500,
+    "osm": null,
+    "kind": "ine"
+   },
+   "start": {
+    "name": "Pekná cesta, Záhrady",
+    "location": {
+     "lat": 48.19876,
+     "lon": 17.13477
+    },
+    "ele_m": 164,
+    "osm": null
+   },
+   "parking": {
+    "name": "Parkovisko 58 m od začiatku trasy",
+    "location": {
+     "lat": 48.198563,
+     "lon": 17.135499
+    },
+    "walk_m": 58,
+    "fee": null,
+    "osm": null
+   },
+   "transit": {
+    "name": "Slanec",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.19863,
+     "lon": 17.135128
+    },
+    "walk_m": 30,
+    "osm": null
+   },
+   "route": "tam-a-spat",
+   "distance_m": 13311,
+   "ascent_m": 436,
+   "duration_min": 270,
+   "max_ele_m": 500,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [],
+   "marked_share": 0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 50,
+   "bbox": [
+    17.13457,
+    48.19875,
+    17.15203,
+    48.24843
+   ],
+   "curated": true,
+   "gpx_url": "/gpx/biely-kriz.gpx"
+  },
+  {
+   "slug": "pajstun",
+   "name": "Hrad Pajštún z Borinky",
+   "description": "Krátky, miestami strmý výstup z Borinky k zrúcanine hradu Pajštún na skalnom brale.",
+   "region": "male-karpaty",
+   "region_name": "Malé Karpaty",
+   "protected_area": "CHKO Malé Karpaty",
+   "destination": {
+    "name": "Hrad Pajštún",
+    "location": {
+     "lat": 48.27542,
+     "lon": 17.08287
+    },
+    "ele_m": 480,
+    "osm": null,
+    "kind": "hrad"
+   },
+   "start": {
+    "name": "Borinka",
+    "location": {
+     "lat": 48.26265,
+     "lon": 17.08605
+    },
+    "ele_m": 240,
+    "osm": null
+   },
+   "parking": {
+    "name": "Parkovisko 18 m od začiatku trasy",
+    "location": {
+     "lat": 48.26249,
+     "lon": 17.086096
+    },
+    "walk_m": 18,
+    "fee": null,
+    "osm": null
+   },
+   "transit": {
+    "name": "Borinka, Obecný úrad",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.262555,
+     "lon": 17.086272
+    },
+    "walk_m": 20,
+    "osm": null
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3422,
+   "ascent_m": 243,
+   "duration_min": 105,
+   "max_ele_m": 480,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [],
+   "marked_share": 0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 50,
+   "bbox": [
+    17.08163,
+    48.26257,
+    17.08705,
+    48.2755
+   ],
+   "curated": true,
+   "gpx_url": "/gpx/pajstun.gpx"
+  },
+  {
+   "slug": "vysoka",
+   "name": "Vysoká z Kuchyne",
+   "description": "Výstup z Kuchyne na Vysokú, jeden z najvyšších vrchov Malých Karpát, s výhľadom zo skalného vrcholu.",
+   "region": "male-karpaty",
+   "region_name": "Malé Karpaty",
+   "protected_area": "CHKO Malé Karpaty",
+   "destination": {
+    "name": "Vysoká",
+    "location": {
+     "lat": 48.41639,
+     "lon": 17.21714
+    },
+    "ele_m": 755,
+    "osm": null,
+    "kind": "vrchol"
+   },
+   "start": {
+    "name": "Kuchyňa, kostol",
+    "location": {
+     "lat": 48.4066,
+     "lon": 17.15581
+    },
+    "ele_m": 252,
+    "osm": null
+   },
+   "parking": {
+    "name": "Parkovisko 324 m od začiatku trasy",
+    "location": {
+     "lat": 48.403765,
+     "lon": 17.15684
+    },
+    "walk_m": 324,
+    "fee": null,
+    "osm": null
+   },
+   "transit": {
+    "name": "Kuchyňa, Kostol",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.406531,
+     "lon": 17.155668
+    },
+    "walk_m": 13,
+    "osm": null
+   },
+   "route": "tam-a-spat",
+   "distance_m": 12164,
+   "ascent_m": 658,
+   "duration_min": 315,
+   "max_ele_m": 755,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [],
+   "marked_share": 0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 50,
+   "bbox": [
+    17.15576,
+    48.40667,
+    17.21714,
+    48.41793
+   ],
+   "curated": true,
+   "gpx_url": "/gpx/vysoka.gpx"
+  },
+  {
+   "slug": "velka-homola",
+   "name": "Veľká Homoľa od Zochovej chaty",
+   "description": "Nenáročná prechádzka od Zochovej chaty na Veľkú Homoľu s drevenou rozhľadňou.",
+   "region": "male-karpaty",
+   "region_name": "Malé Karpaty",
+   "protected_area": "CHKO Malé Karpaty",
+   "destination": {
+    "name": "Veľká Homoľa",
+    "location": {
+     "lat": 48.36322,
+     "lon": 17.26113
+    },
+    "ele_m": 708,
+    "osm": null,
+    "kind": "vyhliadka"
+   },
+   "start": {
+    "name": "Zochova chata, parkovisko",
+    "location": {
+     "lat": 48.38083,
+     "lon": 17.27941
+    },
+    "ele_m": 445,
+    "osm": null
+   },
+   "parking": {
+    "name": "Parkovisko 99 m od začiatku trasy",
+    "location": {
+     "lat": 48.381101,
+     "lon": 17.278131
+    },
+    "walk_m": 99,
+    "fee": null,
+    "osm": null
+   },
+   "transit": {
+    "name": "Modra, Zochova chata",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.381466,
+     "lon": 17.276872
+    },
+    "walk_m": 200,
+    "osm": null
+   },
+   "route": "tam-a-spat",
+   "distance_m": 5599,
+   "ascent_m": 300,
+   "duration_min": 150,
+   "max_ele_m": 708,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [],
+   "marked_share": 0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 50,
+   "bbox": [
+    17.26113,
+    48.36322,
+    17.27961,
+    48.38085
+   ],
+   "curated": true,
+   "gpx_url": "/gpx/velka-homola.gpx"
+  },
+  {
+   "slug": "zaruby",
+   "name": "Záruby zo Smoleníc",
+   "description": "Výstup od Smolenického zámku na Záruby, najvyšší vrch Malých Karpát.",
+   "region": "male-karpaty",
+   "region_name": "Malé Karpaty",
+   "protected_area": "CHKO Malé Karpaty",
+   "destination": {
+    "name": "Záruby",
+    "location": {
+     "lat": 48.52346,
+     "lon": 17.39271
+    },
+    "ele_m": 759,
+    "osm": null,
+    "kind": "vrchol"
+   },
+   "start": {
+    "name": "Smolenice, pod zámkom",
+    "location": {
+     "lat": 48.50918,
+     "lon": 17.43355
+    },
+    "ele_m": 229,
+    "osm": null
+   },
+   "parking": {
+    "name": "Parkovisko 97 m od začiatku trasy",
+    "location": {
+     "lat": 48.509587,
+     "lon": 17.432382
+    },
+    "walk_m": 97,
+    "fee": null,
+    "osm": null
+   },
+   "transit": {
+    "name": "Smolenice, Lesy",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.509044,
+     "lon": 17.43339
+    },
+    "walk_m": 19,
+    "osm": null
+   },
+   "route": "tam-a-spat",
+   "distance_m": 8845,
+   "ascent_m": 580,
+   "duration_min": 255,
+   "max_ele_m": 759,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [],
+   "marked_share": 0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 50,
+   "bbox": [
+    17.39262,
+    48.50916,
+    17.43367,
+    48.52374
+   ],
+   "curated": true,
+   "gpx_url": "/gpx/zaruby.gpx"
+  },
+  {
+   "slug": "plavecky-hrad",
+   "name": "Plavecký hrad z Plaveckého Podhradia",
+   "description": "Krátky výstup z obce k zrúcanine Plaveckého hradu nad Záhorím.",
+   "region": "male-karpaty",
+   "region_name": "Malé Karpaty",
+   "protected_area": "CHKO Malé Karpaty",
+   "destination": {
+    "name": "Plavecký hrad",
+    "location": {
+     "lat": 48.49398,
+     "lon": 17.26866
+    },
+    "ele_m": 410,
+    "osm": null,
+    "kind": "hrad"
+   },
+   "start": {
+    "name": "Plavecké Podhradie",
+    "location": {
+     "lat": 48.48305,
+     "lon": 17.26
+    },
+    "ele_m": 222,
+    "osm": null
+   },
+   "parking": {
+    "name": "Parkovisko pri trase (0.5 km od začiatku)",
+    "location": {
+     "lat": 48.487167,
+     "lon": 17.259986
+    },
+    "walk_m": 458,
+    "fee": null,
+    "osm": null
+   },
+   "transit": {
+    "name": "Plavecké Podhradie, Kaštieľ",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.485005,
+     "lon": 17.258062
+    },
+    "walk_m": 260,
+    "osm": null
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3360,
+   "ascent_m": 188,
+   "duration_min": 90,
+   "max_ele_m": 410,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [],
+   "marked_share": 0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 50,
+   "bbox": [
+    17.25893,
+    48.48305,
+    17.26987,
+    48.49399
+   ],
+   "curated": true,
+   "gpx_url": "/gpx/plavecky-hrad.gpx"
+  },
+  {
+   "slug": "cerveny-kamen",
+   "name": "Červený Kameň z Častej",
+   "description": "Prechádzka z Častej k hradu Červený Kameň a zámockému parku.",
+   "region": "male-karpaty",
+   "region_name": "Malé Karpaty",
+   "protected_area": "CHKO Malé Karpaty",
+   "destination": {
+    "name": "Hrad Červený Kameň",
+    "location": {
+     "lat": 48.39158,
+     "lon": 17.33553
+    },
+    "ele_m": 347,
+    "osm": null,
+    "kind": "hrad"
+   },
+   "start": {
+    "name": "Častá",
+    "location": {
+     "lat": 48.39881,
+     "lon": 17.35685
+    },
+    "ele_m": 248,
+    "osm": null
+   },
+   "parking": {
+    "name": "Parkovisko pri trase (0.6 km od začiatku)",
+    "location": {
+     "lat": 48.394897,
+     "lon": 17.352902
+    },
+    "walk_m": 524,
+    "fee": null,
+    "osm": null
+   },
+   "transit": {
+    "name": "Častá, Námestie",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.398815,
+     "lon": 17.357145
+    },
+    "walk_m": 22,
+    "osm": null
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4754,
+   "ascent_m": 101,
+   "duration_min": 90,
+   "max_ele_m": 347,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [],
+   "marked_share": 0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 50,
+   "bbox": [
+    17.33405,
+    48.39157,
+    17.35694,
+    48.39878
+   ],
+   "curated": true,
+   "gpx_url": "/gpx/cerveny-kamen.gpx"
+  },
+  {
+   "slug": "cachticky-hrad",
+   "name": "Čachtický hrad z Čachtíc",
+   "description": "Z obce Čachtice k zrúcanine Čachtického hradu na severnom okraji Malých Karpát.",
+   "region": "male-karpaty",
+   "region_name": "Malé Karpaty",
+   "protected_area": "CHKO Malé Karpaty",
+   "destination": {
+    "name": "Čachtický hrad",
+    "location": {
+     "lat": 48.7249,
+     "lon": 17.76119
+    },
+    "ele_m": 386,
+    "osm": null,
+    "kind": "hrad"
+   },
+   "start": {
+    "name": "Čachtice",
+    "location": {
+     "lat": 48.71419,
+     "lon": 17.78629
+    },
+    "ele_m": 186,
+    "osm": null
+   },
+   "parking": {
+    "name": "Parkovisko 22 m od začiatku trasy",
+    "location": {
+     "lat": 48.714389,
+     "lon": 17.786328
+    },
+    "walk_m": 22,
+    "fee": null,
+    "osm": null
+   },
+   "transit": {
+    "name": "Čachtice, námestie",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.712771,
+     "lon": 17.786382
+    },
+    "walk_m": 158,
+    "osm": null
+   },
+   "route": "tam-a-spat",
+   "distance_m": 5296,
+   "ascent_m": 201,
+   "duration_min": 120,
+   "max_ele_m": 386,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [],
+   "marked_share": 0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 50,
+   "bbox": [
+    17.76075,
+    48.71419,
+    17.78635,
+    48.72538
+   ],
+   "curated": true,
+   "gpx_url": "/gpx/cachticky-hrad.gpx"
+  }
+ ]
+}
