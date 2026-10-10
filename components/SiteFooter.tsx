@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TESTER_FORM_URL } from "@/lib/site";
 
 const LINKS = [
   { href: "/sukromie", label: "Súkromie" },
@@ -27,6 +28,15 @@ export function SiteFooter() {
             {l.label}
           </Link>
         ))}
+        <a
+          href={TESTER_FORM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-umami-event="tester_signup_open"
+          className="font-medium text-[var(--foreground)] underline"
+        >
+          Chcem testovať
+        </a>
       </nav>
     </footer>
   );

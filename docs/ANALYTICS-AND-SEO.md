@@ -16,6 +16,7 @@ Cloudflare dashboard, never into the repo (it is public).
 | Umami visitor stats + product events | `components/Analytics.tsx`, `lib/analytics.ts` | **Step 1** |
 | "People with 4+ visit days" counter + report at `/statistiky` | `app/api/visit`, `lib/visitStore.ts`, Cloudflare D1 | No |
 | Google Search Console | outside the code | **Step 2**, after the domain |
+| Tester sign-up and post-test feedback (Google Forms) | `TESTER_FORM_URL`, `FEEDBACK_FORM_URL` in `lib/site.ts`; footer link "Chcem testovať" | No. Radoslav sends the feedback link after each test |
 
 The real address is `SITE_URL` in `lib/site.ts`. When mountour.sk is live, change that one line
 to `https://mountour.sk` and add `mountour.sk` to Search Console; all canonical URLs, the sitemap
@@ -51,6 +52,7 @@ Databases** → **D1** → **Create** → name `mountour-visits`, then in the Wo
 | `share` | plan shared with the group (call `track("share", { trail })` from the share button) | `trail` |
 | `nav_open` | Google Maps / map-app link tapped | `app`: google or geo |
 | `transit_open` | cp.sk link tapped | none |
+| `tester_signup_open` | "Chcem testovať" footer link tapped | none |
 
 Links can also be tracked with no code: add `data-umami-event="nav_open"` to the `<a>`. Never
 send coordinates, typed places or anything personal.

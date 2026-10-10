@@ -48,6 +48,14 @@ export const OG_IMAGE = {
 
 export const REPO_URL = "https://github.com/Pepuldope/mountour";
 
+/** Google Form for tester sign-up, linked from the footer ("Chcem testovať"). */
+export const TESTER_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSernHNdz6_fbYBMZK7p41rZ7YuUmTmkDV1UTYDkOUfYe78IRg/viewform";
+
+/** Google Form for 1-5 feedback after a test. Not on the site: Radoslav sends it after each test. */
+export const FEEDBACK_FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSf67uP7xbucQZ9dD68iF9OvPIBz75PR0y1_OORP9LCV9SsbkA/viewform";
+
 export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
