@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { EARLIEST_DEPARTURE_HOUR } from "@/lib/days";
 import type { DayFit } from "@/lib/days";
 import { DIFFICULTY_LABEL, formatDuration, formatFromUser, formatTime } from "@/lib/format";
 import { MARKING_COLOR, MARKING_LABEL } from "@/lib/mapLayers";
@@ -97,6 +98,11 @@ export function TripCard({ item, dayWord, active, onActive, registerItem }: Prop
       {!closed && fit && fit.status === "too-late" && (
         <p className="text-sm text-[var(--warn)]">
           {dayWord === "dnes" ? "Dnes" : "Vtedy"} už nestihnete za svetla. Skúste zajtra ráno.
+        </p>
+      )}
+      {!closed && fit && fit.status === "too-early" && (
+        <p className="text-sm text-[var(--warn)]">
+          {capitalize(dayWord ?? "v tento deň")} by ste museli vyraziť pred {EARLIEST_DEPARTURE_HOUR}:00.
         </p>
       )}
       {!closed && fit && fit.status === "too-long" && (
