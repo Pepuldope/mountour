@@ -154,10 +154,10 @@ export function TripPlanner({ sun, destination, baseHikeMin, gpxUrl, bbox, ...tr
         <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} destination={destination} baseHikeMin={baseHikeMin} {...trip} />
         {destination && (
           <div className="flex gap-2">
-            <a href={googleMapsUrl(destination)} target="_blank" rel="noopener noreferrer" className={navButton}>
+            <a href={googleMapsUrl(destination)} data-umami-event="nav_open" data-umami-event-app="google" target="_blank" rel="noopener noreferrer" className={navButton}>
               Navigovať (Google)
             </a>
-            <a href={mapyUrl(destination, start)} target="_blank" rel="noopener noreferrer" className={navButton}>
+            <a href={mapyUrl(destination, start)} data-umami-event="nav_open" data-umami-event-app="mapy" target="_blank" rel="noopener noreferrer" className={navButton}>
               Mapy.com
             </a>
           </div>

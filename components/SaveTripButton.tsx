@@ -8,6 +8,7 @@ import { longDay } from "@/lib/days";
 import { useSavedTrips } from "@/lib/savedTrips";
 import { useTripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
+import { track } from "@/lib/analytics";
 import { ShareButton } from "@/components/ShareButton";
 import type { ShareInfo } from "@/components/ShareButton";
 
@@ -73,6 +74,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, destination, baseHikeMin, ..
   async function onSave() {
     if (!date || !time || !sun) return;
     setStatus("saving");
+    track("trip_saved", { trail: slug });
     save({
       slug,
       name,

@@ -1,17 +1,14 @@
 {
   "name": "MounTour",
   "short_name": "MounTour",
-  "description": "Plánovač jednodňových výletov do hôr",
+  "description": "Kam dnes na výlet do hôr, aby ste boli späť za svetla",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f3f6fa",
   "theme_color": "#17213a",
   "lang": "sk",
   "icons": [
-    {
-      "src": "/icons/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
-    }
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }
   ]
 }

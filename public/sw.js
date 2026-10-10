@@ -1,7 +1,7 @@
 // MounTour service worker.
 //
 // Cache-on-plan, not cache-everything: nothing is precached at install time.
-// A trip is only cached when the visitor taps "Ulozit vylet offline" on its
+// A trip is only cached when the visitor taps "Uložiť výlet" on its
 // trip sheet, which postMessage()s a CACHE_TRIP request here with the exact
 // URLs to store (the trip page itself, its GPX file, and the OpenFreeMap style,
 // vector tiles, sprites and glyphs for the trail's bbox; see lib/tiles.ts).

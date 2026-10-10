@@ -1,4 +1,13 @@
-/** Safety note and data credits, at the bottom of every page. */
+import Link from "next/link";
+
+const LINKS = [
+  { href: "/testeri", label: "Chcem testovať" },
+  { href: "/sukromie", label: "Súkromie" },
+  { href: "/upozornenie", label: "Upozornenie" },
+  { href: "/zdroje", label: "Zdroje" },
+];
+
+/** Safety note, data credits and info pages, at the bottom of every page. */
 export function SiteFooter() {
   return (
     <footer className="mt-auto flex flex-col gap-1 border-t border-[var(--border)] pt-4 text-xs text-[var(--muted)]">
@@ -13,6 +22,13 @@ export function SiteFooter() {
           OpenFreeMap
         </a>
       </p>
+      <nav aria-label="Pätička" className="flex flex-wrap gap-x-4 gap-y-1 pt-1">
+        {LINKS.map((l) => (
+          <Link key={l.href} href={l.href} className="underline">
+            {l.label}
+          </Link>
+        ))}
+      </nav>
     </footer>
   );
 }
