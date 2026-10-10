@@ -104,8 +104,8 @@ class TripBuilder:
         out = {}
         skip = set(self.t.get("exclude_starts", []))
         for f in self.osm.guideposts:
-            if f.name in skip:
-                continue
+            if f.name in skip or (f.name and re.fullmatch(r"[\d\s,.]+m?(\s*n\.\s*m\.)?", f.name)):
+                continue  # excluded, or named only by its elevation ("829 m")
             if not f.name or not self.in_country(f.lat, f.lon):
                 continue
             node = self.g.snap(f.lat, f.lon, 60)
@@ -447,8 +447,12 @@ class TripBuilder:
         return fees
 
     def _slug(self, key, dest_name, start_name):
-        if key in self.slugs and self.slugs[key] not in self.used_slugs:
-            s = self.slugs[key]
+        """Stable slug per destination: a new start for the same destination keeps the URL."""
+        dest_key = key.split("|")[0]
+        known = self.slugs.get(dest_key) or next(
+            (v for k, v in self.slugs.items() if k.split("|")[0] == dest_key and v not in self.used_slugs), None)
+        if known and known not in self.used_slugs:
+            s = known
         else:
             base = slugify(dest_name)
             s = base
@@ -459,7 +463,7 @@ class TripBuilder:
             while s in taken:
                 s = f"{base}-{n}"
                 n += 1
-            self.slugs[key] = s
+        self.slugs[dest_key] = s
         self.used_slugs.add(s)
         return s
 

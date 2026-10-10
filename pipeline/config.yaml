@@ -45,8 +45,8 @@ trips:
   min_ascent_m: 80
   # a parking must sit this close to a public car road (checked with OSRM; drops hotel-only roads)
   parking_road_max_m: 150
-  # guideposts never used as a start (by exact name)
-  exclude_starts: []
+  # guideposts never used as a start (by exact name): hotel-only roads OSRM still treats as public
+  exclude_starts: ["Sliezsky dom"]
   poi_max_m: 150
 
 # Hand-picked trips, always built. They are also the regression test set: the

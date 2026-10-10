@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated_at": "2026-10-10T13:50:20+00:00",
+ "generated_at": "2026-10-10T13:59:10+00:00",
  "osm_data_at": "2026-10-09T20:21:04Z",
  "attribution": "© OpenStreetMap contributors (ODbL); elevation: Copernicus DEM GLO-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA",
  "trips": [
@@ -3201,7 +3201,7 @@
    "gpx_url": "/gpx/biela-jaskyna.gpx"
   },
   {
-   "slug": "marcelov-hrad-hrabusice-myto",
+   "slug": "marcelov-hrad",
    "name": "Marcelov hrad",
    "description": "Výlet k hradu: Marcelov hrad. Štart: Hrabušice - mýto, späť rovnakou cestou. Po zelenej a červenej značke.",
    "region": "slovensky-raj",
@@ -3268,10 +3268,10 @@
     48.97064
    ],
    "curated": false,
-   "gpx_url": "/gpx/marcelov-hrad-hrabusice-myto.gpx"
+   "gpx_url": "/gpx/marcelov-hrad.gpx"
   },
   {
-   "slug": "rozhladna-schulerloch-spisska-nova-ves-bmz",
+   "slug": "rozhladna-schulerloch",
    "name": "Rozhľadňa Schulerloch",
    "description": "Výlet k vyhliadke Rozhľadňa Schulerloch. Štart: Spišská Nová Ves, BMZ, späť rovnakou cestou. Po červenej značke.",
    "region": "slovensky-raj",
@@ -3337,7 +3337,7 @@
     48.92808
    ],
    "curated": false,
-   "gpx_url": "/gpx/rozhladna-schulerloch-spisska-nova-ves-bmz.gpx"
+   "gpx_url": "/gpx/rozhladna-schulerloch.gpx"
   },
   {
    "slug": "tomasovsky-vyhlad",
@@ -3549,7 +3549,7 @@
    "gpx_url": "/gpx/medvedia-hlava.gpx"
   },
   {
-   "slug": "obrovsky-vodopad-pri-starej-horarni",
+   "slug": "obrovsky-vodopad",
    "name": "Obrovský vodopád",
    "description": "Výlet k vodopádu: Obrovský vodopád. Štart: Pri Starej Horárni, späť rovnakou cestou. Po červenej, modrej a žltej značke.",
    "region": "slovensky-raj",
@@ -3617,10 +3617,10 @@
     48.96125
    ],
    "curated": false,
-   "gpx_url": "/gpx/obrovsky-vodopad-pri-starej-horarni.gpx"
+   "gpx_url": "/gpx/obrovsky-vodopad.gpx"
   },
   {
-   "slug": "vodopad-ochrancov-prirody-pri-starej-horarni",
+   "slug": "vodopad-ochrancov-prirody",
    "name": "Vodopád ochrancov prírody",
    "description": "Výlet k vodopádu: Vodopád ochrancov prírody. Štart: Pri Starej Horárni, okruh. Po červenej, žltej a zelenej značke.",
    "region": "slovensky-raj",
@@ -3698,7 +3698,7 @@
     48.96125
    ],
    "curated": false,
-   "gpx_url": "/gpx/vodopad-ochrancov-prirody-pri-starej-horarni.gpx"
+   "gpx_url": "/gpx/vodopad-ochrancov-prirody.gpx"
   },
   {
    "slug": "gacovska-skala",
@@ -4485,7 +4485,7 @@
   {
    "slug": "vychodna-vysoka",
    "name": "Východná Vysoká",
-   "description": "Výstup na vrchol Východná Vysoká (2429 m). Štart: Sliezsky dom, späť rovnakou cestou. Po zelenej a žltej značke.",
+   "description": "Výstup na vrchol Východná Vysoká (2429 m). Štart: Velická poľana, späť rovnakou cestou. Po zelenej a žltej značke.",
    "region": "tatry",
    "region_name": "Tatry",
    "protected_area": "TANAP",
@@ -4500,13 +4500,13 @@
     "osm": "node/382487001"
    },
    "start": {
-    "name": "Sliezsky dom",
+    "name": "Velická poľana",
     "location": {
-     "lat": 49.156087,
-     "lon": 20.157196
+     "lat": 49.151871,
+     "lon": 20.162444
     },
-    "ele_m": 1670,
-    "osm": "node/249813307"
+    "ele_m": 1562,
+    "osm": "node/262687710"
    },
    "parking": {
     "name": null,
@@ -4514,15 +4514,15 @@
      "lat": 49.155997,
      "lon": 20.156637
     },
-    "walk_m": 42,
+    "walk_m": 624,
     "fee": true,
     "osm": "way/369377677"
    },
    "transit": null,
    "route": "tam-a-spat",
-   "distance_m": 7089,
-   "ascent_m": 682,
-   "duration_min": 285,
+   "distance_m": 8330,
+   "ascent_m": 784,
+   "duration_min": 315,
    "max_ele_m": 2354,
    "difficulty": "stredna",
    "family_friendly": false,
@@ -4538,8 +4538,8 @@
    "rank": 88,
    "bbox": [
     20.14029,
-    49.15608,
-    20.15752,
+    49.15187,
+    20.16244,
     49.17528
    ],
    "curated": false,
@@ -4690,7 +4690,7 @@
   {
    "slug": "batizovske-pleso",
    "name": "Batizovské pleso",
-   "description": "Výlet k plesu: Batizovské pleso. Štart: Sliezsky dom, späť rovnakou cestou. Po červenej značke.",
+   "description": "Výlet k plesu: Batizovské pleso. Štart: Velická poľana, späť rovnakou cestou. Po červenej a zelenej značke.",
    "region": "tatry",
    "region_name": "Tatry",
    "protected_area": "TANAP",
@@ -4705,13 +4705,13 @@
     "osm": "way/33488070"
    },
    "start": {
-    "name": "Sliezsky dom",
+    "name": "Velická poľana",
     "location": {
-     "lat": 49.156087,
-     "lon": 20.157196
+     "lat": 49.151871,
+     "lon": 20.162444
     },
-    "ele_m": 1670,
-    "osm": "node/249813307"
+    "ele_m": 1562,
+    "osm": "node/262687710"
    },
    "parking": {
     "name": null,
@@ -4719,20 +4719,21 @@
      "lat": 49.155997,
      "lon": 20.156637
     },
-    "walk_m": 42,
+    "walk_m": 624,
     "fee": true,
     "osm": "way/369377677"
    },
    "transit": null,
    "route": "tam-a-spat",
-   "distance_m": 6859,
-   "ascent_m": 242,
-   "duration_min": 150,
+   "distance_m": 8101,
+   "ascent_m": 345,
+   "duration_min": 180,
    "max_ele_m": 1893,
    "difficulty": "lahka",
-   "family_friendly": true,
+   "family_friendly": false,
    "marking": [
-    "red"
+    "red",
+    "green"
    ],
    "marked_share": 1.0,
    "fees": [],
@@ -4741,7 +4742,7 @@
    "bbox": [
     20.13031,
     49.14414,
-    20.15719,
+    20.16244,
     49.15655
    ],
    "curated": false,
@@ -5091,7 +5092,7 @@
   {
    "slug": "litvorove-pleso",
    "name": "Litvorové pleso",
-   "description": "Výlet k plesu: Litvorové pleso. Štart: Sliezsky dom, späť rovnakou cestou. Po zelenej a modrej značke.",
+   "description": "Výlet k plesu: Litvorové pleso. Štart: Velická poľana, späť rovnakou cestou. Po zelenej a modrej značke.",
    "region": "tatry",
    "region_name": "Tatry",
    "protected_area": "TANAP",
@@ -5106,13 +5107,13 @@
     "osm": "way/33697101"
    },
    "start": {
-    "name": "Sliezsky dom",
+    "name": "Velická poľana",
     "location": {
-     "lat": 49.156087,
-     "lon": 20.157196
+     "lat": 49.151871,
+     "lon": 20.162444
     },
-    "ele_m": 1670,
-    "osm": "node/249813307"
+    "ele_m": 1562,
+    "osm": "node/262687710"
    },
    "parking": {
     "name": null,
@@ -5120,17 +5121,17 @@
      "lat": 49.155997,
      "lon": 20.156637
     },
-    "walk_m": 42,
+    "walk_m": 624,
     "fee": true,
     "osm": "way/369377677"
    },
    "transit": null,
    "route": "tam-a-spat",
-   "distance_m": 8680,
-   "ascent_m": 840,
-   "duration_min": 345,
+   "distance_m": 9921,
+   "ascent_m": 941,
+   "duration_min": 390,
    "max_ele_m": 2189,
-   "difficulty": "stredna",
+   "difficulty": "tazka",
    "family_friendly": false,
    "marking": [
     "green",
@@ -5144,8 +5145,8 @@
    "rank": 79,
    "bbox": [
     20.12991,
-    49.15608,
-    20.15752,
+    49.15187,
+    20.16244,
     49.17844
    ],
    "curated": false,
@@ -5225,7 +5226,7 @@
   {
    "slug": "sivy-vrch",
    "name": "Sivý vrch",
-   "description": "Výstup na vrchol Sivý vrch (1805 m). Štart: 829 m, späť rovnakou cestou. Po zelenej a modrej značke.",
+   "description": "Výstup na vrchol Sivý vrch (1805 m). Štart: Rázcestie na Tokarinách, späť rovnakou cestou. Po zelenej, modrej a žltej značke.",
    "region": "tatry",
    "region_name": "Tatry",
    "protected_area": "TANAP",
@@ -5240,37 +5241,38 @@
     "osm": "node/4330069865"
    },
    "start": {
-    "name": "829 m",
+    "name": "Rázcestie na Tokarinách",
     "location": {
-     "lat": 49.163232,
-     "lon": 19.6302
+     "lat": 49.161093,
+     "lon": 19.641061
     },
-    "ele_m": 829,
-    "osm": "node/4008463677"
+    "ele_m": 787,
+    "osm": "node/7788029610"
    },
    "parking": {
     "name": null,
     "location": {
-     "lat": 49.156324,
-     "lon": 19.632246
+     "lat": 49.156299,
+     "lon": 19.63619
     },
-    "walk_m": 782,
-    "fee": true,
-    "osm": "way/749228845"
+    "walk_m": 640,
+    "fee": null,
+    "osm": "way/749228826"
    },
    "transit": null,
    "route": "tam-a-spat",
-   "distance_m": 14736,
-   "ascent_m": 1094,
-   "duration_min": 465,
-   "max_ele_m": 1795,
+   "distance_m": 15432,
+   "ascent_m": 1131,
+   "duration_min": 480,
+   "max_ele_m": 1793,
    "difficulty": "tazka",
    "family_friendly": false,
    "marking": [
     "green",
-    "blue"
+    "blue",
+    "yellow"
    ],
-   "marked_share": 0.9,
+   "marked_share": 0.8,
    "fees": [],
    "closure_rule_ids": [
     "tanap-sezonna-uzavera"
@@ -5278,7 +5280,7 @@
    "rank": 79,
    "bbox": [
     19.62567,
-    49.16319,
+    49.16102,
     19.64213,
     49.21115
    ],
@@ -5764,7 +5766,7 @@
   {
    "slug": "ostra",
    "name": "Ostrá",
-   "description": "Výstup na vrchol Ostrá (1764 m). Štart: 829 m, späť rovnakou cestou. Po zelenej a modrej značke.",
+   "description": "Výstup na vrchol Ostrá (1764 m). Štart: Rázcestie na Tokarinách, späť rovnakou cestou. Po zelenej, modrej a žltej značke.",
    "region": "tatry",
    "region_name": "Tatry",
    "protected_area": "TANAP",
@@ -5779,37 +5781,38 @@
     "osm": "node/1010603515"
    },
    "start": {
-    "name": "829 m",
+    "name": "Rázcestie na Tokarinách",
     "location": {
-     "lat": 49.163232,
-     "lon": 19.6302
+     "lat": 49.161093,
+     "lon": 19.641061
     },
-    "ele_m": 829,
-    "osm": "node/4008463677"
+    "ele_m": 787,
+    "osm": "node/7788029610"
    },
    "parking": {
     "name": null,
     "location": {
-     "lat": 49.156324,
-     "lon": 19.632246
+     "lat": 49.156299,
+     "lon": 19.63619
     },
-    "walk_m": 782,
-    "fee": true,
-    "osm": "way/749228845"
+    "walk_m": 640,
+    "fee": null,
+    "osm": "way/749228826"
    },
    "transit": null,
    "route": "tam-a-spat",
-   "distance_m": 12465,
-   "ascent_m": 1046,
-   "duration_min": 435,
-   "max_ele_m": 1754,
+   "distance_m": 13161,
+   "ascent_m": 1083,
+   "duration_min": 450,
+   "max_ele_m": 1756,
    "difficulty": "tazka",
    "family_friendly": false,
    "marking": [
     "green",
-    "blue"
+    "blue",
+    "yellow"
    ],
-   "marked_share": 1.0,
+   "marked_share": 0.88,
    "fees": [],
    "closure_rule_ids": [
     "tanap-sezonna-uzavera"
@@ -5817,8 +5820,8 @@
    "rank": 75,
    "bbox": [
     19.62567,
-    49.16319,
-    19.63825,
+    49.16102,
+    19.64093,
     49.20053
    ],
    "curated": false,
@@ -6031,6 +6034,75 @@
    ],
    "curated": false,
    "gpx_url": "/gpx/hucava-diera.gpx"
+  },
+  {
+   "slug": "polianky",
+   "name": "Polianky",
+   "description": "Výstup na vrchol Polianky (1066 m). Štart: Veľké Borové, späť rovnakou cestou. Po červenej značke.",
+   "region": "tatry",
+   "region_name": "Tatry",
+   "protected_area": "TANAP",
+   "destination": {
+    "name": "Polianky",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.219027,
+     "lon": 19.524529
+    },
+    "ele_m": 1066,
+    "osm": "node/5579713443"
+   },
+   "start": {
+    "name": "Veľké Borové",
+    "location": {
+     "lat": 49.203503,
+     "lon": 19.505907
+    },
+    "ele_m": 893,
+    "osm": "node/1706657106"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.203972,
+     "lon": 19.50216
+    },
+    "walk_m": 277,
+    "fee": null,
+    "osm": "way/1181281557"
+   },
+   "transit": {
+    "name": "Škrlák",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.201285,
+     "lon": 19.508606
+    },
+    "walk_m": 315,
+    "osm": "node/1944529494"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4629,
+   "ascent_m": 175,
+   "duration_min": 105,
+   "max_ele_m": 1063,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 60,
+   "bbox": [
+    19.50594,
+    49.20351,
+    19.5231,
+    49.21957
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/polianky.gpx"
   }
  ]
 }
