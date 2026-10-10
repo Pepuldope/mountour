@@ -84,7 +84,12 @@ export type FitStatus =
   /** Today only: the latest departure has already passed. */
   | "too-late"
   /** Doesn't fit this day's daylight even leaving at sunrise. */
-  | "too-long";
+  | "too-long"
+  /** Fits on paper, but only by leaving before EARLIEST_DEPARTURE_HOUR. */
+  | "too-early";
+
+/** Nobody leaves for a day trip at 3 a.m.: earlier latest departures don't count as fitting. */
+export const EARLIEST_DEPARTURE_HOUR = 5;
 
 export interface DayFit {
   status: FitStatus;
@@ -120,6 +125,7 @@ export function dayFit({ date, now, driveMin, hikeMin, location }: DayFitInput):
 
   let status: FitStatus = "fits";
   if (latest < earliest) status = "too-long";
+  else if (latest < new Date(day.getFullYear(), day.getMonth(), day.getDate(), EARLIEST_DEPARTURE_HOUR)) status = "too-early";
   else if (date === isoDate(now) && latest < now) status = "too-late";
   return { status, latest, sunset: sun.sunset };
 }

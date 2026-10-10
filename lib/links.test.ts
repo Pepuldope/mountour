@@ -107,6 +107,12 @@ describe("days", () => {
     expect(dayFit({ ...base, date: "2026-10-14", now: new Date(2026, 9, 13, 14) })!.status).toBe("fits");
   });
 
+  it("drops trips that would mean leaving before 5:00", () => {
+    const fit = dayFit({ date: "2026-10-14", now: new Date(2026, 9, 13, 14), driveMin: 360, hikeMin: 450, location: BRATISLAVA })!;
+    expect(fit.status).toBe("too-early");
+    expect(dayFit({ date: "2026-10-14", now: new Date(2026, 9, 13, 14), driveMin: 120, hikeMin: 450, location: BRATISLAVA })!.status).toBe("fits");
+  });
+
   it("drops trips longer than the day's daylight", () => {
     const fit = dayFit({ date: "2026-12-21", now: new Date(2026, 11, 1), driveMin: 120, hikeMin: 480, location: BRATISLAVA })!;
     expect(fit.status).toBe("too-long");
