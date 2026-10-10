@@ -11,6 +11,11 @@
   --ok-bg: #e6f2ea;
   --card-bg: #ffffff;
   --border: #dcdad2;
+  /* Day timeline sky band */
+  --sky-night: #2b3140;
+  --sky-twilight: #c98a5a;
+  --sky-day: #f1dfa6;
+  --drive: #6b7686;
 }
 
 @theme inline {
@@ -32,6 +37,10 @@
     --ok-bg: #163724;
     --card-bg: #1b1f19;
     --border: #2c2f27;
+    --sky-night: #0b0d14;
+    --sky-twilight: #8a5532;
+    --sky-day: #6f6233;
+    --drive: #7d8899;
   }
 }
 
@@ -91,4 +100,8 @@ body {
 
 .mt-marker-dimmed {
   opacity: 0.35;
+}
+
+.mt-marker-start {
+  background: #3d4a5c;
 }

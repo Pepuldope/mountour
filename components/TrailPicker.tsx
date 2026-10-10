@@ -1,14 +1,12 @@
 "use client";
 
-import { useUserLocation } from "@/lib/userLocation";
+import { StartPicker } from "@/components/StartPicker";
 
 interface Props {
   hours: number;
   onHoursChange: (hours: number) => void;
   withKids: boolean;
   onWithKidsChange: (withKids: boolean) => void;
-  startFrom: string;
-  onStartFromChange: (text: string) => void;
 }
 
 /** The trip inputs. Every change is lifted up so the list and map react instantly. */
@@ -17,11 +15,7 @@ export function TrailPicker({
   onHoursChange,
   withKids,
   onWithKidsChange,
-  startFrom,
-  onStartFromChange,
 }: Props) {
-  const { status, message, locate } = useUserLocation();
-
   return (
     <form
       className="flex flex-col gap-4 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4"
@@ -40,37 +34,7 @@ export function TrailPicker({
         />
       </label>
 
-      <div className="flex flex-col gap-1 text-sm font-medium">
-        <label htmlFor="start-from">Odkiaľ vyrážam</label>
-        <div className="flex gap-2">
-          <input
-            id="start-from"
-            type="text"
-            placeholder="napr. Bratislava"
-            value={startFrom}
-            onChange={(e) => onStartFromChange(e.target.value)}
-            className="min-w-0 flex-1 rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-base"
-          />
-          <button
-            type="button"
-            onClick={locate}
-            disabled={status === "locating"}
-            className="whitespace-nowrap rounded-lg border border-[var(--border)] px-3 py-2 text-sm disabled:opacity-60"
-          >
-            {status === "locating" ? "Hľadám..." : status === "ok" ? "Aktualizovať polohu" : "Moja poloha"}
-          </button>
-        </div>
-        {message && status !== "locating" && (
-          <p role="status" className="text-xs font-normal text-[var(--warn)]">
-            {message}
-          </p>
-        )}
-        {status === "ok" && (
-          <p className="text-xs font-normal opacity-70">
-            Poloha zistená - trasy sú zoradené podľa vzdialenosti od teba.
-          </p>
-        )}
-      </div>
+      <StartPicker />
 
       <label className="flex items-center justify-between gap-2 text-sm font-medium">
         Idem s deťmi

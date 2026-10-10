@@ -19,9 +19,11 @@ dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
 
 ## 3. User location  `[x]`
 - Browser geolocation → "you are here" on the map, used as the trip's start.
-- Manual start (typed place) as a fallback when GPS is denied.
+- Manual start (typed place) as a fallback when GPS is denied. Nominatim search on
+  Enter (its policy forbids search-as-you-type); a typed start wins over GPS and is
+  remembered per device (localStorage). Done 2026-10-10.
 
-## 4. Multi-leg trip: start → trailhead → trail  `[ ]`
+## 4. Multi-leg trip: start → trailhead → trail  `[x]`
 - One route with stops: drive or transit leg to the trailhead, then the on-foot trail.
 - Show how long the drive/transit leg takes.
 - **Scope note:** the locked scope says MounTour "does not route-find" and hands the
@@ -30,11 +32,21 @@ dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
   API. **Decided 2026-10-07: reopen.** Draw the drive leg + duration via a free routing
   API (OSRM / OpenRouteService); transit = nearby stops + a cp.sk link. Google/Apple
   still do the actual turn-by-turn navigation.
+- **Built 2026-10-10:** `/api/drive` → OpenRouteService (`ORS_API_KEY`, server-side),
+  falls back to the public OSRM demo without a key. Coords rounded to ~100 m. Dashed
+  drive line on the trip map; map fits start + trail. Drive ends at the parking pin,
+  else the trailhead. Transit timing still not modelled (cp.sk link only).
 
-## 5. Day timeline instead of the sunset card  `[ ]`
+## 5. Day timeline instead of the sunset card  `[x]`
 - A horizontal timeline of the day: sunrise, sunset, (civil dusk), and the trip
   laid on it as segments — travel there, hike, travel back.
 - Should make "you finish after dark" visible at a glance instead of a text verdict.
+- **Built 2026-10-10:** `lib/dayPlan.ts` (unit tested) + `components/DayTimeline.tsx`.
+  Inputs: date + departure. Sky band night / civil twilight / day, segments drive →
+  hike → drive back, dashed "latest safe departure" line with a one-tap "nastaviť".
+  Safety is judged at the END OF THE HIKE (driving home after dark is fine).
+  Verdicts: ok / tesné (<30 min) / po západe / potme. Without a start, the time is
+  the hike start and only the hike is shown.
 
 ## 6. Live, interactive feel  `[ ]`
 - No "fill the form → get a result" flow. Every input (time budget, kids,

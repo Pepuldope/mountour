@@ -6,7 +6,7 @@ import { DIFFICULTY_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { ParkingBlock } from "@/components/ParkingBlock";
 import { TransitBlock } from "@/components/TransitBlock";
 import { ClosureBanner } from "@/components/ClosureBanner";
-import { SunsetCard } from "@/components/SunsetCard";
+import { DayTimeline } from "@/components/DayTimeline";
 import { OfflineSaveButton } from "@/components/OfflineSaveButton";
 import { TripMap } from "@/components/TripMap";
 
@@ -19,16 +19,19 @@ export default async function TripSheetPage({ params }: Props) {
   const detail = await getTrailBySlug(slug);
   if (!detail) notFound();
 
-  const { trail, parkingLots, transitStops, closures } = detail;
+  const { trail, trailheads, parkingLots, transitStops, closures } = detail;
   const gpxUrl = gpxUrlFor(trail.gpx_path);
   const primaryParking = parkingLots[0] ?? null;
+  const primaryTrailhead = trailheads.find((t) => t.is_primary) ?? trailheads[0] ?? null;
   const center = primaryParking?.location ?? trailCenter(trail);
+  // The drive ends at the parking lot; without one, at the trailhead itself.
+  const destination = primaryParking?.location ?? primaryTrailhead?.location ?? center;
 
   return (
     <main className="flex flex-1 flex-col lg:h-dvh lg:flex-row">
       {/* Map: on top on phones, sticky full-height right column on desktop. */}
       <div className="h-[40vh] w-full overflow-hidden border-b border-[var(--border)] lg:sticky lg:top-0 lg:order-2 lg:h-dvh lg:flex-1 lg:border-b-0 lg:border-l">
-        <TripMap detail={detail} gpxUrl={gpxUrl} />
+        <TripMap detail={detail} gpxUrl={gpxUrl} destination={destination} />
       </div>
 
       <div className="flex w-full flex-col gap-5 px-4 py-6 lg:order-1 lg:w-[440px] lg:shrink-0 lg:overflow-y-auto">
@@ -62,11 +65,13 @@ export default async function TripSheetPage({ params }: Props) {
 
         <ClosureBanner closures={closures} />
 
+        {center && destination && (
+          <DayTimeline location={center} destination={destination} hikeMin={trail.duration_min} />
+        )}
+
         <ParkingBlock parking={primaryParking} />
 
         <TransitBlock stops={transitStops} />
-
-        {center && <SunsetCard location={center} durationMin={trail.duration_min} />}
 
         <section className="flex flex-col gap-2 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
           <h2 className="text-sm font-semibold opacity-70">Offline</h2>

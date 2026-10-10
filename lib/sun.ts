@@ -35,7 +35,12 @@ function toJulianDay(date: Date): number {
  * Returns `null` for polar day/night (sun never rises or never sets) — not a
  * real concern in Slovakia, but handled rather than silently producing NaN.
  */
-export function getSunTimes(date: Date, lat: number, lon: number): SunTimes | null {
+export function getSunTimes(
+  date: Date,
+  lat: number,
+  lon: number,
+  altitudeDeg = -0.833
+): SunTimes | null {
   // The standard sunrise-equation formulas are defined in terms of WEST
   // longitude; our public API takes EAST-positive longitude, so flip it here.
   const lw = -lon;
@@ -68,9 +73,9 @@ export function getSunTimes(date: Date, lat: number, lon: number): SunTimes | nu
 
   const latRad = lat * DEG2RAD;
 
-  // Hour angle at sunrise/sunset, using standard altitude -0.833deg
-  // (accounts for atmospheric refraction + solar disc radius)
-  const h0 = -0.833 * DEG2RAD;
+  // Hour angle at the requested solar altitude. The default -0.833deg is
+  // sunrise/sunset (refraction + solar disc radius); -6deg is civil twilight.
+  const h0 = altitudeDeg * DEG2RAD;
   const cosOmega =
     (Math.sin(h0) - Math.sin(latRad) * Math.sin(delta)) /
     (Math.cos(latRad) * Math.cos(delta));
@@ -88,6 +93,9 @@ export function getSunTimes(date: Date, lat: number, lon: number): SunTimes | nu
     sunset: julianToDate(Jset),
   };
 }
+
+/** Sun altitude at which civil twilight ends: below this it is too dark to hike without a light. */
+export const CIVIL_TWILIGHT_DEG = -6;
 
 function julianToDate(jd: number): Date {
   return new Date((jd - 2440587.5) * 86400000);

@@ -55,14 +55,13 @@ function unionBounds(trails: TrailDetail[]): BBox | null {
 
 export function HomeExplorer({ trails }: Props) {
   const [hours, setHours] = useState(4);
-  const [startFrom, setStartFrom] = useState("");
   const [withKids, setWithKids] = useState(false);
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [trackPoints, setTrackPoints] = useState<Record<string, [number, number][]>>({});
   const itemRefs = useRef(new Map<string, HTMLElement>());
   const isDesktop = useIsDesktop();
-  const { fix } = useUserLocation();
+  const { start } = useUserLocation();
 
   // Static GPX files are small, so every track is loaded client-side.
   useEffect(() => {
@@ -86,16 +85,16 @@ export function HomeExplorer({ trails }: Props) {
   );
   const matchSlugs = useMemo(() => new Set(matches.map((m) => m.trail.slug)), [matches]);
 
-  // With a known location, nearest trailhead first.
+  // With a known start, nearest trailhead first.
   const items = useMemo<TrailListItem[]>(() => {
     const list = matches.map((detail) => {
       const th = primaryTrailhead(detail);
       return {
         detail,
-        distanceFromUserM: fix && th ? haversineM(fix, th.location) : null,
+        distanceFromUserM: start && th ? haversineM(start, th.location) : null,
       };
     });
-    if (fix) {
+    if (start) {
       list.sort(
         (a, b) =>
           (a.distanceFromUserM ?? Number.POSITIVE_INFINITY) -
@@ -103,7 +102,7 @@ export function HomeExplorer({ trails }: Props) {
       );
     }
     return list;
-  }, [matches, fix]);
+  }, [matches, start]);
 
   const activeSlug = hoveredSlug ?? selectedSlug;
 
@@ -187,8 +186,6 @@ export function HomeExplorer({ trails }: Props) {
           onHoursChange={setHours}
           withKids={withKids}
           onWithKidsChange={setWithKids}
-          startFrom={startFrom}
-          onStartFromChange={setStartFrom}
         />
 
         {!isDesktop && (

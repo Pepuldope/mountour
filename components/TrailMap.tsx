@@ -39,6 +39,8 @@ interface Props {
   /** The map re-fits to this box whenever it changes. */
   bounds: BBox | null;
   onSelectTrail?: (slug: string) => void;
+  /** Drive from the trip's start to the parking, drawn dashed under the trail. */
+  driveLeg?: [number, number][];
   ariaLabel: string;
   className?: string;
 }
@@ -83,14 +85,15 @@ function popupContent(title: string, lines: string[] = []): HTMLElement {
   return el;
 }
 
-export function TrailMap({ tracks, markers, bounds, onSelectTrail, ariaLabel, className }: Props) {
+export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ariaLabel, className }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [ctx, setCtx] = useState<{ L: Leaflet; map: LeafletMap } | null>(null);
   const trackLayerRef = useRef<LayerGroup | null>(null);
   const markerLayerRef = useRef<LayerGroup | null>(null);
   const userLayerRef = useRef<LayerGroup | null>(null);
+  const driveLayerRef = useRef<LayerGroup | null>(null);
   const onSelectRef = useRef(onSelectTrail);
-  const { fix } = useUserLocation();
+  const { fix, start } = useUserLocation();
 
   useEffect(() => {
     onSelectRef.current = onSelectTrail;
@@ -118,6 +121,7 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, ariaLabel, cl
         attribution: TRAILS_OVERLAY.attribution,
       }).addTo(map);
 
+      driveLayerRef.current = L.layerGroup().addTo(map);
       trackLayerRef.current = L.layerGroup().addTo(map);
       markerLayerRef.current = L.layerGroup().addTo(map);
       userLayerRef.current = L.layerGroup().addTo(map);
@@ -139,6 +143,7 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, ariaLabel, cl
       trackLayerRef.current = null;
       markerLayerRef.current = null;
       userLayerRef.current = null;
+      driveLayerRef.current = null;
       setCtx(null);
     };
   }, []);
@@ -187,6 +192,18 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, ariaLabel, cl
     }
   }, [ctx, tracks]);
 
+  // Drive leg: dashed, neutral, under the trail so the hike stays the hero.
+  useEffect(() => {
+    const group = driveLayerRef.current;
+    if (!ctx || !group) return;
+    group.clearLayers();
+    if (!driveLeg || driveLeg.length < 2) return;
+    ctx.L.polyline(driveLeg, { color: "#ffffff", weight: 7, opacity: 0.8, interactive: false }).addTo(group);
+    ctx.L.polyline(driveLeg, { color: "#3d4a5c", weight: 4, opacity: 0.9, dashArray: "8 8" })
+      .bindTooltip("Cesta autom", { sticky: true })
+      .addTo(group);
+  }, [ctx, driveLeg]);
+
   // Markers.
   useEffect(() => {
     const group = markerLayerRef.current;
@@ -215,6 +232,16 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, ariaLabel, cl
     if (!ctx || !group) return;
     const { L } = ctx;
     group.clearLayers();
+
+    // A typed start (home, a town) gets its own pin; GPS uses the blue dot below.
+    if (start?.source === "manual") {
+      L.marker([start.lat, start.lon], {
+        icon: L.divIcon({ className: "mt-marker mt-marker-start", html: "S", iconSize: [24, 24] }),
+        title: start.label,
+      })
+        .bindPopup(popupContent("Štart", [start.label]))
+        .addTo(group);
+    }
     if (!fix) return;
 
     L.circle([fix.lat, fix.lon], {
@@ -234,7 +261,7 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, ariaLabel, cl
     })
       .bindTooltip("Tvoja poloha")
       .addTo(group);
-  }, [ctx, fix]);
+  }, [ctx, fix, start]);
 
   return (
     <div

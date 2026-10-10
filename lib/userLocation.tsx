@@ -10,17 +10,31 @@ export interface UserFix {
   accuracy: number;
 }
 
+/** Where the trip starts: a typed place wins over GPS. */
+export interface StartPoint {
+  lat: number;
+  lon: number;
+  label: string;
+  source: "gps" | "manual";
+}
+
 export type LocationStatus = "idle" | "locating" | "ok" | "denied" | "unsupported" | "unavailable";
 
 interface UserLocationState {
   status: LocationStatus;
   fix: UserFix | null;
+  /** The trip's start: the typed place if any, else the GPS fix, else null. */
+  start: StartPoint | null;
+  /** Set (or clear with null) a typed start place. */
+  setManualStart: (place: Omit<StartPoint, "source"> | null) => void;
   /** Slovak, user-facing; null when there is nothing to say. */
   message: string | null;
   locate: () => void;
 }
 
 const STORAGE_KEY = "mountour-user-fix";
+// A typed start (usually home) is worth remembering across visits; a GPS fix is not.
+const MANUAL_KEY = "mountour-start";
 
 const MESSAGES: Partial<Record<LocationStatus, string>> = {
   locating: "Zisťujem tvoju polohu...",
@@ -48,9 +62,31 @@ function writeCached(fix: UserFix) {
   }
 }
 
+function readManual(): Omit<StartPoint, "source"> | null {
+  try {
+    const raw = localStorage.getItem(MANUAL_KEY);
+    if (!raw) return null;
+    const v = JSON.parse(raw) as Omit<StartPoint, "source">;
+    return Number.isFinite(v.lat) && Number.isFinite(v.lon) && typeof v.label === "string" ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeManual(place: Omit<StartPoint, "source"> | null) {
+  try {
+    if (place) localStorage.setItem(MANUAL_KEY, JSON.stringify(place));
+    else localStorage.removeItem(MANUAL_KEY);
+  } catch {
+    // Storage blocked: the start just won't be remembered.
+  }
+}
+
 const UserLocationContext = createContext<UserLocationState>({
   status: "idle",
   fix: null,
+  start: null,
+  setManualStart: () => {},
   message: null,
   locate: () => {},
 });
@@ -58,12 +94,14 @@ const UserLocationContext = createContext<UserLocationState>({
 export function UserLocationProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<LocationStatus>("idle");
   const [fix, setFix] = useState<UserFix | null>(null);
+  const [manual, setManual] = useState<Omit<StartPoint, "source"> | null>(null);
 
-  // Restore the last fix after hydration (sessionStorage doesn't exist on the server).
+  // Restore after hydration (browser storage doesn't exist on the server).
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setManual(readManual());
     const cached = readCached();
     if (cached) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFix(cached);
       setStatus("ok");
     }
@@ -84,6 +122,9 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
         };
         writeCached(next);
         setFix(next);
+        // Asking for GPS means "start from where I am": drop a typed place.
+        writeManual(null);
+        setManual(null);
         setStatus("ok");
       },
       (err) => setStatus(err.code === err.PERMISSION_DENIED ? "denied" : "unavailable"),
@@ -91,9 +132,20 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
+  const setManualStart = useCallback((place: Omit<StartPoint, "source"> | null) => {
+    writeManual(place);
+    setManual(place);
+  }, []);
+
+  const start = useMemo<StartPoint | null>(() => {
+    if (manual) return { ...manual, source: "manual" };
+    if (fix) return { lat: fix.lat, lon: fix.lon, label: "Tvoja poloha", source: "gps" };
+    return null;
+  }, [manual, fix]);
+
   const value = useMemo<UserLocationState>(
-    () => ({ status, fix, message: MESSAGES[status] ?? null, locate }),
-    [status, fix, locate]
+    () => ({ status, fix, start, setManualStart, message: MESSAGES[status] ?? null, locate }),
+    [status, fix, start, setManualStart, locate]
   );
 
   return <UserLocationContext.Provider value={value}>{children}</UserLocationContext.Provider>;
