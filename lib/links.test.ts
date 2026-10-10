@@ -29,6 +29,7 @@ describe("shared plan links", () => {
       departure: new Date(2026, 9, 17, 8, 50),
       back: new Date(2026, 9, 17, 12, 10),
       hasDrive: true,
+      inDaylight: true,
       town: "Bratislava",
       hikeMin: 130,
       difficulty: "lahka",
@@ -41,6 +42,24 @@ describe("shared plan links", () => {
         "2 h 10 min chôdze, ľahká, vhodné pre deti.\n" +
         "https://mountour.sk/trasa/pajstun"
     );
+  });
+
+  it("warns instead of promising daylight when the hike ends after sunset", () => {
+    const text = shareText({
+      name: "Chleb",
+      dayLabel: "sobota 10. 10.",
+      departure: new Date(2026, 9, 10, 8, 0),
+      back: new Date(2026, 9, 10, 21, 10),
+      hasDrive: true,
+      inDaylight: false,
+      town: "Bratislava",
+      hikeMin: 360,
+      difficulty: "tazka",
+      familyFriendly: false,
+      url: "https://mountour.sk/trasa/chleb",
+    });
+    expect(text).toContain("späť okolo 21:10. Pozor, z túry zídete až po západe slnka.");
+    expect(text).not.toContain("za svetla");
   });
 });
 

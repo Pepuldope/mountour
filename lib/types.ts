@@ -1,3 +1,5 @@
+import type { Fee } from "@/lib/tripSchema";
+
 // Shared domain types for MounTour. Mirrors supabase/migrations/0001_init.sql.
 
 export type Difficulty = "lahka" | "stredna" | "tazka";
@@ -100,5 +102,7 @@ export interface TrailDetail {
   parkingLots: ParkingLot[];
   transitStops: TransitStop[];
   closures: Closure[];
+  /** Entry fees (vstupné). Empty = none known, not "free". */
+  fees: Fee[];
   pois: Poi[];
 }

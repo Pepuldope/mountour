@@ -69,6 +69,7 @@ function toTrailDetail(t: TripSummary | TripDetail): TrailDetail {
     parkingLots: parking.map((p, i) => parkingLot(p, t.slug, i)),
     transitStops: stops.map((s, i) => transitStop(s, t.slug, i)),
     closures,
+    fees: t.fees,
     pois: (d?.pois ?? []).map((p, i) => ({
       id: `${t.slug}:poi:${i}`,
       trail_id: t.slug,

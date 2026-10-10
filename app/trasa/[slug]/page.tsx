@@ -5,6 +5,7 @@ import { driveDestination, getTrailBySlug, primaryTrailhead, sunLocation } from 
 import { gpxUrlFor } from "@/lib/gpx";
 import { DIFFICULTY_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { MARKING_COLOR, MARKING_LABEL } from "@/lib/mapLayers";
+import { FeeBlock } from "@/components/FeeBlock";
 import { ParkingBlock } from "@/components/ParkingBlock";
 import { TransitBlock } from "@/components/TransitBlock";
 import { ClosureBanner } from "@/components/ClosureBanner";
@@ -72,7 +73,7 @@ export default async function TripSheetPage({ params }: Props) {
   const detail = await getTrailBySlug(slug);
   if (!detail) notFound();
 
-  const { trail, parkingLots, transitStops, closures } = detail;
+  const { trail, parkingLots, transitStops, closures, fees } = detail;
   const gpxUrl = gpxUrlFor(trail.gpx_path);
   const sun = sunLocation(detail);
   const destination = driveDestination(detail);
@@ -126,6 +127,8 @@ export default async function TripSheetPage({ params }: Props) {
         />
 
         <ParkingBlock parking={parkingLots[0] ?? null} />
+
+        {fees.length > 0 && <FeeBlock fees={fees} />}
 
         <TransitBlock stops={transitStops} />
 

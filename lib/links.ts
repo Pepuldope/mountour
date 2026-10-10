@@ -50,6 +50,8 @@ export interface ShareTextInput {
   /** Back at the start (with a drive) or off the trail (without). */
   back: Date;
   hasDrive: boolean;
+  /** The hike ends before sunset. Otherwise the message warns instead of promising daylight. */
+  inDaylight: boolean;
   town: string | null;
   hikeMin: number;
   difficulty: keyof typeof DIFFICULTY_LABEL;
@@ -59,9 +61,10 @@ export interface ShareTextInput {
 
 /** Chat-ready plan in the voice guide's style: facts first, one line each. */
 export function shareText(i: ShareTextInput): string {
+  const light = i.inDaylight ? ", ešte za svetla." : ". Pozor, z túry zídete až po západe slnka.";
   const leave = i.hasDrive
-    ? `${i.town ? `Štart ${i.town}, odchod` : "Odchod"} ${hhmm(i.departure)}, späť okolo ${hhmm(i.back)}, ešte za svetla.`
-    : `Začiatok túry ${hhmm(i.departure)}, dole okolo ${hhmm(i.back)}, ešte za svetla.`;
+    ? `${i.town ? `Štart ${i.town}, odchod` : "Odchod"} ${hhmm(i.departure)}, späť okolo ${hhmm(i.back)}${light}`
+    : `Začiatok túry ${hhmm(i.departure)}, dole okolo ${hhmm(i.back)}${light}`;
   const facts = [
     `${formatDuration(i.hikeMin)} chôdze`,
     DIFFICULTY_LABEL[i.difficulty].toLowerCase(),
