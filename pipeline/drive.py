@@ -53,3 +53,27 @@ def _pop(f):
         return int(str(f.tags.get("population", "0")).replace(" ", ""))
     except ValueError:
         return 0
+
+
+class CarCheck:
+    """True when OSRM can snap a parking to a public car road within max_m (private roads are not routable)."""
+
+    def __init__(self, osrm_url, max_m):
+        self.url = osrm_url.rstrip("/")
+        self.max_m = max_m
+        self.cache = {}
+        self.checked = 0
+        self.rejected = 0
+
+    def __call__(self, f):
+        if f.osm not in self.cache:
+            self.checked += 1
+            try:
+                with urllib.request.urlopen(f"{self.url}/nearest/v1/driving/{f.lon},{f.lat}?number=1", timeout=30) as r:
+                    res = json.loads(r.read())
+                ok = res.get("code") == "Ok" and res["waypoints"][0]["distance"] <= self.max_m
+            except Exception:
+                ok = True  # never drop data because the checker failed
+            self.rejected += not ok
+            self.cache[f.osm] = ok
+        return self.cache[f.osm]

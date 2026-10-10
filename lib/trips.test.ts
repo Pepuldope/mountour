@@ -41,7 +41,7 @@ describe("trip data", () => {
   it("has a drive-time column per trip once the table is built", () => {
     const dt = getDriveTimes();
     if (dt.towns.length === 0) return;
-    expect(dt.slugs.length).toBe(trips.length);
+    expect(dt.slugs).toEqual(trips.map((t) => t.slug));
     expect(dt.minutes.length).toBe(dt.towns.length);
     expect(driveMinutes(dt.towns[0].id, "no-such-trip")).toBeNull();
   });

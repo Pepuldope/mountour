@@ -81,9 +81,14 @@ def main(argv=None):
 
     links = sitelinks([f.tags["wikidata"] for _, f in osm.destinations if f.tags.get("wikidata")]) if a.wikidata else {}
     cm, fm = RuleMatcher(closures, osm.probes), RuleMatcher(fees, osm.probes)
-    tb = TripBuilder(cfg, osm, graph, dem, cm, fm, slugs, links, log)
+    car_ok = drive_mod.CarCheck(a.osrm, cfg["trips"]["parking_road_max_m"]) if a.osrm else None
+    tb = TripBuilder(cfg, osm, graph, dem, cm, fm, slugs, links, log, car_ok)
     trips = tb.build()
     trips = apply_overrides(trips, overrides)
+    # one fixed order for every output (index, drive-table columns)
+    trips.sort(key=lambda t: (t["region"], -t["rank"], t["slug"]))
+    if car_ok:
+        log(f"parkings checked for car access: {car_ok.checked}, unreachable: {car_ok.rejected}")
     tb.report["unresolved"] = {**cm.unresolved, **fm.unresolved}
     log(f"{len(trips)} trips")
 

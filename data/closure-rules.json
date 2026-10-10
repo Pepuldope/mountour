@@ -12,17 +12,58 @@
       "verified_on": "2026-10-10",
       "applies_to": "Úseky 1 až 40 z prílohy č. 3 vyhlášky Okresného úradu Prešov č. 26/2023 V. v. SR (návštevný poriadok TANAP): sedlá, hrebene a štíty vo Vysokých, Belianskych a Západných Tatrách nad chatami. Úseky k chatám a plesám pod nimi ostávajú otvorené.",
       "selector": {
-        "bbox": [19.40, 49.05, 20.45, 49.33],
+        "bbox": [
+          19.4,
+          49.05,
+          20.45,
+          49.33
+        ],
         "probes": [
-          "Prielom", "Sedielko", "Kopské sedlo", "Široké sedlo", "Jahňací štít",
-          "Sedlo pod Svišťovkou", "Sedlo pod Veľkou Svišťovkou", "Priečne sedlo", "Slavkovský štít",
-          "Poľský hrebeň", "Východná Vysoká", "Sedlo pod Ostrvou", "Vyšné Kôprovské sedlo",
-          "Kôprovský štít", "Rysy", "Bystrá lávka", "Kriváň", "Závory", "Hladké sedlo",
-          "Suché sedlo", "Pyšné sedlo", "Bystrá", "Račkovo sedlo", "Gáborovo sedlo", "Hrubý vrch",
-          "Jamnícke sedlo", "Žiarske sedlo", "Klinovaté", "Holý vrch", "Baníkov", "Smutné sedlo",
-          "Baníkovské sedlo", "Salatín", "Pálenica", "Sivý vrch", "Veľká kopa", "Brestová",
-          "Volovec", "Rákoň", "Lúčna", "Zábrať", "Bobrovecké sedlo", "Nižné Temnosmrečinské pleso",
-          "Roháčske plesá", "Prvé Roháčske pleso"
+          "Prielom",
+          "Sedielko",
+          "Kopské sedlo",
+          "Široké sedlo",
+          "Jahňací štít",
+          "Sedlo pod Svišťovkou",
+          "Sedlo pod Veľkou Svišťovkou",
+          "Priečne sedlo",
+          "Slavkovský štít",
+          "Poľský hrebeň",
+          "Východná Vysoká",
+          "Sedlo pod Ostrvou",
+          "Vyšné Kôprovské sedlo",
+          "Kôprovský štít",
+          "Rysy",
+          "Bystrá lávka",
+          "Kriváň",
+          "Závory",
+          "Hladké sedlo",
+          "Suché sedlo",
+          "Pyšné sedlo",
+          "Bystrá",
+          "Račkovo sedlo",
+          "Gáborovo sedlo",
+          "Hrubý vrch",
+          "Jamnícke sedlo",
+          "Žiarske sedlo",
+          "Klinovaté",
+          "Holý vrch",
+          "Baníkov",
+          "Smutné sedlo",
+          "Baníkovské sedlo",
+          "Salatín",
+          "Pálenica",
+          "Sivý vrch",
+          "Veľká kopa",
+          "Brestová",
+          "Volovec",
+          "Rákoň",
+          "Lúčna",
+          "Zábrať",
+          "Bobrovecké sedlo",
+          "Nižné Temnosmrečinské pleso",
+          "Roháčske plesá",
+          "Prvé Roháčske pleso"
         ]
       }
     },
@@ -36,8 +77,15 @@
       "verified_on": "2026-10-10",
       "applies_to": "Úsek 41 z prílohy č. 3 vyhlášky OÚ Prešov č. 26/2023: Juráňova dolina od ústia cez sedlo Umrlá na rázcestie Pod Umrlou.",
       "selector": {
-        "bbox": [19.60, 49.18, 19.80, 49.28],
-        "probes": ["Umrlá"]
+        "bbox": [
+          19.6,
+          49.18,
+          19.8,
+          49.28
+        ],
+        "probes": [
+          "Umrlá"
+        ]
       }
     },
     {
@@ -50,8 +98,18 @@
       "verified_on": "2026-10-10",
       "applies_to": "Úsek 42 z prílohy č. 3 vyhlášky OÚ Prešov č. 26/2023: Mengusovská dolina, Symbolický cintorín pod Ostrvou.",
       "selector": {
-        "bbox": [20.00, 49.13, 20.12, 49.18],
-        "probes": ["Symbolický cintorín"]
+        "bbox": [
+          20.0,
+          49.13,
+          20.12,
+          49.18
+        ],
+        "probes": [
+          "Symbolický cintorín"
+        ],
+        "route_refs": [
+          "8854"
+        ]
       }
     }
   ]

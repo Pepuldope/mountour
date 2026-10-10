@@ -38,7 +38,7 @@ class Candidate:
 
 
 class TripBuilder:
-    def __init__(self, cfg, osm, graph, dem, closures, fees, slugs, sitelinks=None, log=print):
+    def __init__(self, cfg, osm, graph, dem, closures, fees, slugs, sitelinks=None, log=print, car_ok=None):
         self.cfg = cfg
         self.t = cfg["trips"]
         self.osm = osm
@@ -49,6 +49,7 @@ class TripBuilder:
         self.slugs = slugs  # key -> slug, updated in place
         self.sitelinks = sitelinks or {}
         self.log = log
+        self.car_ok = car_ok  # parking -> bool, True when a car can reach it (OSRM); None = no check
         self.proj = LocalProjection()
         self.used_slugs = set()
         self.report = dict(rejected={}, regression=[], regions={})
@@ -89,6 +90,8 @@ class TripBuilder:
     def make_start(self, name, lat, lon, ele, osm_ref, node):
         st = Start(name, lat, lon, ele, osm_ref, node)
         st.parking = self._near(self.parking_tree, self.osm.parking, lat, lon, self.t["parking_max_m"])
+        if self.car_ok:
+            st.parking = [(d, f) for d, f in st.parking if self.car_ok(f)]
         stops = self._near(self.stop_tree, self.osm.stops, lat, lon, self.t["train_max_m"])
         st.stops = [
             (d, f) for d, f in stops
@@ -99,7 +102,10 @@ class TripBuilder:
     # -------------------------------------------------------- trailheads --
     def trailheads(self):
         out = {}
+        skip = set(self.t.get("exclude_starts", []))
         for f in self.osm.guideposts:
+            if f.name in skip:
+                continue
             if not f.name or not self.in_country(f.lat, f.lon):
                 continue
             node = self.g.snap(f.lat, f.lon, 60)
@@ -176,6 +182,15 @@ class TripBuilder:
                 trip = self.build_generated(c, ths, th_nodes)
                 if not trip:
                     continue
+                same_start = [x for x in chosen if x["start"]["osm"] == trip["start"]["osm"]]
+                if len(same_start) >= self.t["max_trips_per_start"]:
+                    self._reject("start already has enough trips")
+                    continue
+                if any(abs(x["distance_m"] - trip["distance_m"]) < 0.1 * trip["distance_m"]
+                       and haversine(x["destination"]["location"]["lat"], x["destination"]["location"]["lon"],
+                                     c.feature.lat, c.feature.lon) < 1500 for x in same_start):
+                    self._reject("almost the same walk as another trip")
+                    continue
                 if n_regular >= region["max_trips"]:
                     if not trip["family_friendly"]:
                         continue
@@ -230,6 +245,8 @@ class TripBuilder:
             return self._reject("too short")
         if trip["marked_share"] < self.t["min_marked_share"]:
             return self._reject("mostly unmarked")
+        if trip["ascent_m"] < self.t["min_ascent_m"] and c.kind not in ("pleso", "vodopad", "jaskyna"):
+            return self._reject("too flat (city walk)")
         trip["_score"] = c.score
         return trip
 
@@ -240,7 +257,7 @@ class TripBuilder:
         if s_node is None or d_node is None:
             self.report["regression"].append(dict(slug=p["slug"], error="start or destination not on the walking graph"))
             return None
-        dist, succ = self.g.costs_to(d_node, ROUTE_LIMIT * 2)
+        dist, succ = self.g.costs_to(d_node, ROUTE_LIMIT * 2, plain=True)
         out_path = self.g.walk_to_target(succ, s_node, d_node) if np.isfinite(dist[s_node]) else None
         if out_path is None:
             self.report["regression"].append(dict(slug=p["slug"], error="no path"))

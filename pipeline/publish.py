@@ -17,7 +17,6 @@ ATTRIBUTION = ("© OpenStreetMap contributors (ODbL); elevation: Copernicus DEM 
 def write(root, trips, dem, drive, slugs, report, osm_data_at, now=None):
     root = Path(root)
     now = now or dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
-    trips = sorted(trips, key=lambda t: (t["region"], -t["rank"], t["slug"]))
     tdir = root / "data" / "trips"
     gdir = root / "public" / "gpx"
     tdir.mkdir(parents=True, exist_ok=True)

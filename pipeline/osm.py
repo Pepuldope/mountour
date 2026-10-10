@@ -73,6 +73,14 @@ def kst_colour(tags):
     return KST_COLOURS.get(tags.get("colour", "").lower())
 
 
+def clean_name(t):
+    """Slovak name: name:sk if present, else the first part of bilingual names like 'Volovec / Wołowiec'."""
+    name = t.get("name:sk") or t.get("name")
+    if name and " / " in name:
+        name = name.split(" / ")[0].strip()
+    return name
+
+
 def destination_kind(t):
     name = t.get("name", "")
     low = name.lower()
@@ -82,7 +90,9 @@ def destination_kind(t):
         return "vyhliadka"
     if t.get("tourism") == "viewpoint":
         return "vyhliadka"
-    if t.get("historic") == "castle" or (t.get("historic") == "ruins" and (t.get("ruins") == "castle" or "hrad" in low)):
+    if t.get("historic") == "castle" and t.get("castle_type") not in ("palace", "manor", "stately", "citywalls"):
+        return "hrad"
+    if t.get("historic") == "ruins" and (t.get("ruins") == "castle" or "hrad" in low):
         return "hrad"
     if t.get("tourism") == "alpine_hut":
         return "chata"
@@ -164,8 +174,8 @@ def load(path, boxes, probe_names=(), border_relation=14296):
     # pass 2: nodes and ways
     def add_feature(o, lat, lon, osm_ref):
         t = dict(o.tags)
-        name = t.get("name")
-        if name in probe_names:
+        name = clean_name(t)
+        if t.get("name") in probe_names or name in probe_names:
             data.probes.setdefault(name, []).append((lat, lon))
         if t.get("place") in ("city", "town") and name and osm_ref.startswith("node"):
             data.towns.append(Feature(osm_ref, name, lat, lon, t))

@@ -61,6 +61,8 @@ class Graph:
         self.n = n
         self.G = csr_matrix((cost[sel], (src[sel], dst[sel])), shape=(n, n))
         self.GT = self.G.T.tocsr()
+        # same edges weighted by plain length, for routing the hand-picked trips like a plain router would
+        self.GlenT = csr_matrix((np.maximum(self.edge_len, 0.01), (src[sel], dst[sel])), shape=(n, n)).T.tocsr()
         self.ways = ways
 
         self.proj = LocalProjection()
@@ -87,9 +89,10 @@ class Graph:
         return None if not np.isfinite(d) else int(ids[i])
 
     # ------------------------------------------------------------- routing --
-    def costs_to(self, target, limit):
+    def costs_to(self, target, limit, plain=False):
         """Cost from every node to `target`, plus a successor array to walk the path."""
-        dist, pred = dijkstra(self.GT, directed=True, indices=target, limit=limit, return_predecessors=True)
+        G = self.GlenT if plain else self.GT
+        dist, pred = dijkstra(G, directed=True, indices=target, limit=limit, return_predecessors=True)
         return dist, pred
 
     def costs_from(self, source, limit):

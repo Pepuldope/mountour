@@ -6,7 +6,7 @@ regions:
     name: Tatry
     protected_area: TANAP
     bboxes: [[19.45, 49.07, 20.40, 49.32]]
-    max_trips: 25
+    max_trips: 30
   - id: slovensky-raj
     name: Slovenský raj
     protected_area: NP Slovenský raj
@@ -15,7 +15,7 @@ regions:
   - id: mala-fatra
     name: Malá Fatra
     protected_area: NP Malá Fatra
-    bboxes: [[18.95, 49.13, 19.25, 49.28], [18.68, 48.98, 18.92, 49.14]]
+    bboxes: [[18.95, 49.13, 19.17, 49.26], [18.68, 48.98, 18.92, 49.14]]
     max_trips: 15
   - id: male-karpaty
     name: Malé Karpaty
@@ -38,7 +38,15 @@ trips:
   # two destinations closer than this count as one (e.g. a hut at a tarn)
   dedupe_m: 400
   # keep at least this many family trips per region when the region has them
-  min_family_per_region: 3
+  min_family_per_region: 5
+  # variety: at most this many trips from one start
+  max_trips_per_start: 3
+  # generated trips need some climb, so city sights don't count as trips (tarns, waterfalls, caves excepted)
+  min_ascent_m: 80
+  # a parking must sit this close to a public car road (checked with OSRM; drops hotel-only roads)
+  parking_road_max_m: 150
+  # guideposts never used as a start (by exact name)
+  exclude_starts: []
   poi_max_m: 150
 
 # Hand-picked trips, always built. They are also the regression test set: the
