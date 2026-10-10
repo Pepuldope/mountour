@@ -25,7 +25,7 @@ like the gorges in Slovenský raj.
 
 Key fields of `TripSummary` (see `lib/tripSchema.ts` for all):
 
-- `slug`: stable across runs (`pipeline/slugs.json`), safe for URLs, saved trips and share links.
+- `slug`: one per destination and stable across runs, even when a better start is found (`pipeline/slugs.json`); safe for URLs, saved trips and share links.
 - `name`, `description`: generated in Slovak; curated trips and `pipeline/overrides.yaml` can override.
 - `region` (`tatry`, `slovensky-raj`, `mala-fatra`, `male-karpaty`), `region_name`, `protected_area`.
 - `destination` (`kind`, `ele_m`, `location`), `start`, `parking` (drive destination, `fee`), `transit` (nearest stop).
