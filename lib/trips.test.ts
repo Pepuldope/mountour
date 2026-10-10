@@ -31,7 +31,7 @@ describe("trip data", () => {
   });
 
   it("applies the TANAP closure in winter and not in summer", () => {
-    const rule = getClosureRules().find((r) => r.id === "tanap-sezonna-uzavera")!;
+    const rule = { ...getClosureRules().find((r) => r.id === "tanap-sezonna-uzavera")!, trail_id: "test" };
     expect(isClosureActive(rule, "2027-01-15")).toBe(true);
     expect(isClosureActive(rule, "2027-05-31")).toBe(true);
     expect(isClosureActive(rule, "2027-06-01")).toBe(false);
