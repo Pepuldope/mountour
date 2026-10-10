@@ -1,0 +1,134 @@
+# MounTour trip pipeline settings. Edit freely; the weekly job reads this file.
+# Distances in metres, times in minutes, boxes as [west, south, east, north].
+
+regions:
+  - id: tatry
+    name: Tatry
+    protected_area: TANAP
+    bboxes: [[19.45, 49.07, 20.40, 49.32]]
+    max_trips: 30
+  - id: slovensky-raj
+    name: Slovenský raj
+    protected_area: NP Slovenský raj
+    bboxes: [[20.15, 48.86, 20.60, 48.99]]
+    max_trips: 12
+  - id: mala-fatra
+    name: Malá Fatra
+    protected_area: NP Malá Fatra
+    bboxes: [[18.95, 49.13, 19.17, 49.26], [18.68, 48.98, 18.92, 49.14]]
+    max_trips: 15
+  - id: male-karpaty
+    name: Malé Karpaty
+    protected_area: CHKO Malé Karpaty
+    bboxes: [[16.95, 48.14, 17.80, 48.76]]
+    max_trips: 12
+
+trips:
+  # a trailhead is a KST guidepost with public parking or a stop nearby
+  parking_max_m: 800
+  bus_stop_max_m: 1000
+  train_max_m: 2000
+  trailhead_needs_stop_max_m: 500
+  # destination must sit this close to a marked trail
+  destination_snap_m: 150
+  # walk limits
+  min_round_trip_m: 2000
+  max_duration_min: 540
+  min_marked_share: 0.6
+  # two destinations closer than this count as one (e.g. a hut at a tarn)
+  dedupe_m: 400
+  # keep at least this many family trips per region when the region has them
+  min_family_per_region: 5
+  # variety: at most this many trips from one start
+  max_trips_per_start: 3
+  # generated trips need some climb, so city sights don't count as trips (tarns, waterfalls, caves excepted)
+  min_ascent_m: 80
+  # a parking must sit this close to a public car road (checked with OSRM; drops hotel-only roads)
+  parking_road_max_m: 150
+  # guideposts never used as a start (by exact name)
+  exclude_starts: []
+  poi_max_m: 150
+
+# Hand-picked trips, always built. They are also the regression test set: the
+# pipeline report compares them with `expect` and flags anything off by > 15 %.
+pinned:
+  - slug: devinska-kobyla
+    name: "Devínska Kobyla z Devína"
+    start: {name: "Devín, pod hradom", lat: 48.17547, lon: 16.97993}
+    destination: {name: "Devínska Kobyla, rozhľadňa", lat: 48.18937, lon: 16.99553}
+    kind: vyhliadka
+    description: "Výstup z Devína pod hradom na najvyšší vrch Devínskych Karpát s rozhľadňou. Výhľad na sútok Moravy a Dunaja."
+    # values from the hand-built 2026-10-07 version (BRouter), the regression baseline
+    expect: {distance_m: 6836, ascent_m: 370, duration_min: 180}
+  - slug: kamzik
+    name: "Kamzík zo Železnej studničky"
+    start: {name: "Železná studnička", lat: 48.19031, lon: 17.08224}
+    destination: {name: "Kamzík", lat: 48.18185, lon: 17.09337}
+    kind: vrchol
+    description: "Krátky výstup lesom zo Železnej studničky na Kamzík k televíznej veži. Na vrchole bufety a lesný park."
+    # values from the hand-built 2026-10-07 version (BRouter), the regression baseline
+    expect: {distance_m: 5124, ascent_m: 231, duration_min: 120}
+  - slug: biely-kriz
+    name: "Biely kríž z Krasnian"
+    start: {name: "Pekná cesta, Záhrady", lat: 48.19876, lon: 17.13477}
+    destination: {name: "Biely kríž", lat: 48.24843, lon: 17.1442}
+    kind: ine
+    description: "Z konečnej električky v Krasňanoch hrebeňom Malých Karpát na Biely kríž, obľúbený uzol turistických a cyklistických trás."
+    # values from the hand-built 2026-10-07 version (BRouter), the regression baseline
+    expect: {distance_m: 13311, ascent_m: 436, duration_min: 270}
+  - slug: pajstun
+    name: "Hrad Pajštún z Borinky"
+    start: {name: "Borinka", lat: 48.26265, lon: 17.08605}
+    destination: {name: "Hrad Pajštún", lat: 48.27542, lon: 17.08287}
+    kind: hrad
+    description: "Krátky, miestami strmý výstup z Borinky k zrúcanine hradu Pajštún na skalnom brale."
+    # values from the hand-built 2026-10-07 version (BRouter), the regression baseline
+    expect: {distance_m: 3422, ascent_m: 243, duration_min: 105}
+  - slug: vysoka
+    name: "Vysoká z Kuchyne"
+    start: {name: "Kuchyňa, kostol", lat: 48.4066, lon: 17.15581}
+    destination: {name: "Vysoká", lat: 48.41639, lon: 17.21714}
+    kind: vrchol
+    description: "Výstup z Kuchyne na Vysokú, jeden z najvyšších vrchov Malých Karpát, s výhľadom zo skalného vrcholu."
+    # values from the hand-built 2026-10-07 version (BRouter), the regression baseline
+    expect: {distance_m: 12164, ascent_m: 658, duration_min: 315}
+  - slug: velka-homola
+    name: "Veľká Homoľa od Zochovej chaty"
+    start: {name: "Zochova chata, parkovisko", lat: 48.38083, lon: 17.27941}
+    destination: {name: "Veľká Homoľa", lat: 48.36322, lon: 17.26113}
+    kind: vyhliadka
+    description: "Nenáročná prechádzka od Zochovej chaty na Veľkú Homoľu s drevenou rozhľadňou."
+    # values from the hand-built 2026-10-07 version (BRouter), the regression baseline
+    expect: {distance_m: 5599, ascent_m: 300, duration_min: 150}
+  - slug: zaruby
+    name: "Záruby zo Smoleníc"
+    start: {name: "Smolenice, pod zámkom", lat: 48.50918, lon: 17.43355}
+    destination: {name: "Záruby", lat: 48.52346, lon: 17.39271}
+    kind: vrchol
+    description: "Výstup od Smolenického zámku na Záruby, najvyšší vrch Malých Karpát."
+    # values from the hand-built 2026-10-07 version (BRouter), the regression baseline
+    expect: {distance_m: 8845, ascent_m: 580, duration_min: 255}
+  - slug: plavecky-hrad
+    name: "Plavecký hrad z Plaveckého Podhradia"
+    start: {name: "Plavecké Podhradie", lat: 48.48305, lon: 17.26}
+    destination: {name: "Plavecký hrad", lat: 48.49398, lon: 17.26866}
+    kind: hrad
+    description: "Krátky výstup z obce k zrúcanine Plaveckého hradu nad Záhorím."
+    # values from the hand-built 2026-10-07 version (BRouter), the regression baseline
+    expect: {distance_m: 3360, ascent_m: 188, duration_min: 90}
+  - slug: cerveny-kamen
+    name: "Červený Kameň z Častej"
+    start: {name: "Častá", lat: 48.39881, lon: 17.35685}
+    destination: {name: "Hrad Červený Kameň", lat: 48.39158, lon: 17.33553}
+    kind: hrad
+    description: "Prechádzka z Častej k hradu Červený Kameň a zámockému parku."
+    # values from the hand-built 2026-10-07 version (BRouter), the regression baseline
+    expect: {distance_m: 4754, ascent_m: 101, duration_min: 90}
+  - slug: cachticky-hrad
+    name: "Čachtický hrad z Čachtíc"
+    start: {name: "Čachtice", lat: 48.71419, lon: 17.78629}
+    destination: {name: "Čachtický hrad", lat: 48.7249, lon: 17.76119}
+    kind: hrad
+    description: "Z obce Čachtice k zrúcanine Čachtického hradu na severnom okraji Malých Karpát."
+    # values from the hand-built 2026-10-07 version (BRouter), the regression baseline
+    expect: {distance_m: 5296, ascent_m: 201, duration_min: 120}

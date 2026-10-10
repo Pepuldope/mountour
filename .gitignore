@@ -46,3 +46,8 @@ next-env.d.ts
 .open-next
 .wrangler
 .dev.vars
+
+# python
+__pycache__/
+*.pyc
+/pipeline/.cache/

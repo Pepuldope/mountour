@@ -1,3 +1,4 @@
+import { haversineM } from "@/lib/geo";
 import type { LatLng } from "@/lib/types";
 
 /** One-way drive from the trip's start to the parking lot / trailhead. */
@@ -21,4 +22,17 @@ export function driveKey(from: LatLng, to: LatLng): string {
 export interface DriveMatrix {
   durationsMin: (number | null)[];
   distancesM: (number | null)[];
+}
+
+/** Roads are ~1.4x the straight line here; ~60 km/h door to door; rounded to 5 min. */
+const ROAD_FACTOR = 1.4;
+const AVG_KMH = 60;
+
+/**
+ * Rough drive time from the straight-line distance, for when the routing API
+ * is down or offline. Shown with "~" so it never reads as a real route.
+ */
+export function estimateDriveMin(from: LatLng, to: LatLng): number {
+  const km = (haversineM(from, to) / 1000) * ROAD_FACTOR;
+  return Math.max(5, Math.round(((km / AVG_KMH) * 60 + 5) / 5) * 5);
 }

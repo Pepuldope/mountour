@@ -47,7 +47,7 @@ export default function PrivacyPage() {
       <h2>Čo ostáva len vo vašom zariadení</h2>
       <p>
         Uložené výlety, napísané miesto štartu a offline kópie máp sa ukladajú iba vo vašom prehliadači, aby
-        fungovali aj bez signálu. Na server ich neposielame. Zmažete ich v Uložených výletoch alebo vymazaním údajov
+        fungovali aj bez signálu. Na server ich neposielame. Zmažete ich v Mojich výletoch alebo vymazaním údajov
         stránky v prehliadači.
       </p>
 

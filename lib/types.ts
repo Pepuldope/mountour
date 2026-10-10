@@ -12,6 +12,9 @@ export type PoiKind =
   | "ihrisko"
   | "utulna";
 
+/** KST waymark colour of the route (the stripe on the painted square). */
+export type TrailMarking = "red" | "blue" | "green" | "yellow" | "black";
+
 export interface LatLng {
   lat: number;
   lon: number;
@@ -34,6 +37,8 @@ export interface Trail {
   difficulty: Difficulty;
   duration_min: number;
   family_friendly: boolean;
+  /** Main waymark colour; optional until the OSM pipeline fills it. */
+  marking?: TrailMarking | null;
   gpx_path: string | null;
   bbox: BBox | null;
   created_at: string;

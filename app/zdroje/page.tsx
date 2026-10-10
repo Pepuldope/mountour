@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Zdroje a mapy",
-  description: "Odkiaľ MounTour berie mapy a údaje: OpenStreetMap, OpenTopoMap, Waymarked Trails, openrouteservice.",
+  description: "Odkiaľ MounTour berie mapy a údaje: OpenStreetMap, OpenFreeMap, openrouteservice.",
   path: "/zdroje",
 });
 
@@ -18,15 +18,13 @@ export default function SourcesPage() {
         opraviť priamo na <a href="https://www.openstreetmap.org">openstreetmap.org</a>.
       </p>
 
-      <h2>Mapové podklady</h2>
+      <h2>Mapa</h2>
       <ul>
         <li>
-          Turistická mapa: <a href="https://opentopomap.org">© OpenTopoMap</a> (
-          <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>), údaje © OpenStreetMap, SRTM.
+          Podkladová mapa: <a href="https://openfreemap.org">OpenFreeMap</a>, údaje © OpenStreetMap, zobrazené cez{" "}
+          <a href="https://maplibre.org">MapLibre</a>.
         </li>
-        <li>
-          Značené turistické trasy: <a href="https://hiking.waymarkedtrails.org">© Waymarked Trails</a>.
-        </li>
+        <li>Farby turistických značiek kreslíme sami z údajov OpenStreetMap.</li>
       </ul>
 
       <h2>Výpočty</h2>

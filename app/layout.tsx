@@ -1,22 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Barlow_Condensed, Bricolage_Grotesque, Figtree } from "next/font/google";
 import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { UserLocationProvider } from "@/lib/userLocation";
 import { TripSettingsProvider } from "@/lib/tripSettings";
 import { Analytics } from "@/components/Analytics";
 import { VisitBeacon } from "@/components/VisitBeacon";
-import { SiteFooter } from "@/components/SiteFooter";
 import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/site";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Brand fonts (strategy/06-identity): latin-ext covers every Slovak letter.
+const figtree = Figtree({
+  variable: "--font-figtree",
   subsets: ["latin", "latin-ext"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin", "latin-ext"],
+  weight: ["700", "800"],
+});
+
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
+  subsets: ["latin", "latin-ext"],
+  weight: ["600"],
 });
 
 export const metadata: Metadata = {
@@ -44,21 +51,20 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#1f6f4a",
+  themeColor: "#17213a",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="sk"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${figtree.variable} ${bricolage.variable} ${barlowCondensed.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ServiceWorkerRegister />
         <UserLocationProvider>
           <TripSettingsProvider>{children}</TripSettingsProvider>
         </UserLocationProvider>
-        <SiteFooter />
         <VisitBeacon />
         <Analytics />
       </body>

@@ -58,10 +58,10 @@ export const TRANSIT_LABEL: Record<TransitMode, string> = {
 
 /** One-line verdict for list items. */
 export const VERDICT_SHORT: Record<Verdict, string> = {
-  ok: "stihneš pred západom",
+  ok: "stihnete za svetla",
   tight: "tesne pred západom",
-  "after-sunset": "končíš po západe",
-  "after-dusk": "končíš potme",
+  "after-sunset": "končíte po západe",
+  "after-dusk": "končíte potme",
 };
 
 /** Full verdict sentence for the plan card. */
@@ -69,12 +69,19 @@ export function verdictText(plan: DayPlan): string {
   const m = Math.abs(plan.marginMin);
   switch (plan.verdict) {
     case "ok":
-      return `Z trasy budeš dole ${formatDuration(m)} pred západom slnka.`;
+      return `Stihnete to v pohode. Z trasy budete dole ${formatDuration(m)} pred západom slnka.`;
     case "tight":
-      return `Tesné - z trasy budeš dole len ${formatDuration(m)} pred západom slnka.`;
+      return `Tesné. Z trasy budete dole len ${formatDuration(m)} pred západom slnka.`;
     case "after-sunset":
-      return `Pozor - koniec túry vychádza ${formatDuration(m)} po západe slnka, v šere.`;
+      return `Koniec túry vychádza ${formatDuration(m)} po západe slnka, v šere. Vyrazte skôr.`;
     case "after-dusk":
-      return "Pozor - posledná časť túry bude potme. Vyraz skôr alebo vyber kratšiu trasu.";
+      return "Posledná časť túry by bola potme. Vyrazte skôr alebo vyberte kratšiu trasu.";
   }
+}
+
+/** "1 výlet", "3 výlety", "12 výletov". */
+export function tripsCount(n: number): string {
+  if (n === 1) return "1 výlet";
+  if (n >= 2 && n <= 4) return `${n} výlety`;
+  return `${n} výletov`;
 }

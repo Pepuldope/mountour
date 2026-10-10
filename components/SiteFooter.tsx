@@ -4,13 +4,25 @@ const LINKS = [
   { href: "/testeri", label: "Chcem testovať" },
   { href: "/sukromie", label: "Súkromie" },
   { href: "/upozornenie", label: "Upozornenie" },
-  { href: "/zdroje", label: "Zdroje a mapy © OpenStreetMap" },
+  { href: "/zdroje", label: "Zdroje" },
 ];
 
+/** Safety note, data credits and info pages, at the bottom of every page. */
 export function SiteFooter() {
   return (
-    <footer className="border-t border-[var(--border)] px-4 py-4 text-xs opacity-80">
-      <nav aria-label="Pätička" className="mx-auto flex max-w-5xl flex-wrap gap-x-4 gap-y-2">
+    <footer className="mt-auto flex flex-col gap-1 border-t border-[var(--border)] pt-4 text-xs text-[var(--muted)]">
+      <p>Časy sú odhad. Na horách rozhoduje počasie a vaše sily.</p>
+      <p>
+        Mapa a dáta:{" "}
+        <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer" className="underline">
+          © OpenStreetMap
+        </a>
+        ,{" "}
+        <a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer" className="underline">
+          OpenFreeMap
+        </a>
+      </p>
+      <nav aria-label="Pätička" className="flex flex-wrap gap-x-4 gap-y-1 pt-1">
         {LINKS.map((l) => (
           <Link key={l.href} href={l.href} className="underline">
             {l.label}

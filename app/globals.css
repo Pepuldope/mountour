@@ -1,107 +1,184 @@
 @import "tailwindcss";
-@import "leaflet/dist/leaflet.css";
+@import "maplibre-gl/dist/maplibre-gl.css";
 
+/* Brand tokens v1, direction B "Za svetla" + a hint of A "Značka"
+   (strategy/06-identity/final/tokens.css). Contrast notes live there. */
 :root {
-  --background: #f7f6f2;
-  --foreground: #1a1e1b;
-  --accent: #1f6f4a;
+  /* existing names, new values */
+  --background: #f3f6fa;      /* obloha */
+  --foreground: #17213a;      /* nočná modrá, 14.7:1 on background */
+  --accent: #2b4c9b;          /* súmrak, 7.4:1 on background, white on it 8.0:1 */
   --accent-contrast: #ffffff;
-  --warn: #b3491f;
-  --warn-bg: #fbe9e1;
+  --warn: #9a4a06;            /* jantár, 5.6:1 on --warn-bg */
+  --warn-bg: #fdf1dc;
   --ok-bg: #e6f2ea;
   --card-bg: #ffffff;
-  --border: #dcdad2;
-  /* Day timeline sky band */
-  --sky-night: #2b3140;
-  --sky-twilight: #c98a5a;
-  --sky-day: #f1dfa6;
+  --border: #d8dfea;
+  --sky-night: #17213a;       /* daylight band */
+  --sky-twilight: #f7c9b5;
+  --sky-day: #fbe3a8;
   --drive: #6b7686;
+
+  /* new */
+  --muted: #55617a;           /* 5.7:1 on background, 6.2:1 on card */
+  --sun: #f4a51c;             /* fill only; night text on it 7.8:1 */
+  --time: #9a4a06;            /* departure times as text, 6.3:1 on card */
+  --ok: #1e7a3e;              /* "stihnete", 4.7:1 on --ok-bg */
+  --danger: #b3261e;          /* closures, 5.6:1 on --danger-bg */
+  --danger-bg: #fbe9e7;
+  /* KST trail colours (hint of A): route lines and trail chips only, always with white bands */
+  --trail-red: #c4122f;       /* 5.6:1 on background */
+  --trail-blue: #1d4fa0;
+  --trail-green: #1e7a3e;
+  --trail-yellow: #f2c200;    /* never as text; give the chip an ink outline */
+  --trail-white: #ffffff;
+
+  --radius-card: 14px;
+  --radius-chip: 999px;
+  --radius-marker: 3px;       /* trail chips stay square like the painted marks */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0e1426;
+    --foreground: #e9eef7;    /* 15.7:1 */
+    --accent: #9db8ff;        /* 9.4:1 */
+    --accent-contrast: #0e1426;
+    --warn: #ffb53d;          /* 7.9:1 on --warn-bg */
+    --warn-bg: #3a2a10;
+    --ok-bg: #163724;
+    --card-bg: #161e36;
+    --border: #26304d;
+    --sky-night: #05080f;
+    --sky-twilight: #5b3a4a;
+    --sky-day: #3b3524;
+    --drive: #7d8899;
+
+    --muted: #97a3bd;         /* 7.2:1, 6.5:1 on card */
+    --sun: #ffb53d;
+    --time: #ffb53d;          /* 9.4:1 on card */
+    --ok: #5cc283;            /* 5.9:1 on --ok-bg */
+    --danger: #ff8a80;        /* 7.0:1 on --danger-bg */
+    --danger-bg: #3a1714;
+    --trail-red: #ff6b78;
+    --trail-blue: #7fa6f0;
+    --trail-green: #5cc283;
+    --trail-yellow: #f2c200;
+    --trail-white: #e9eef7;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #12140f;
-    --foreground: #ececea;
-    --accent: #4fb87a;
-    --accent-contrast: #0a0f0a;
-    --warn: #ff9066;
-    --warn-bg: #3a2016;
-    --ok-bg: #163724;
-    --card-bg: #1b1f19;
-    --border: #2c2f27;
-    --sky-night: #0b0d14;
-    --sky-twilight: #8a5532;
-    --sky-day: #6f6233;
-    --drive: #7d8899;
-  }
+  --color-muted: var(--muted);
+  --color-sun: var(--sun);
+  --color-time: var(--time);
+  --font-sans: var(--font-figtree);
+  --font-display: var(--font-bricolage);
+  --font-data: var(--font-barlow-condensed);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-figtree), system-ui, sans-serif;
 }
 
-.leaflet-container {
-  width: 100%;
-  height: 100%;
-  background: var(--card-bg);
+h1,
+h2,
+.font-display {
+  font-family: var(--font-bricolage), var(--font-figtree), system-ui, sans-serif;
 }
 
-.mt-marker {
+/* Signpost numbers: times, distances, trail chips. */
+.font-data {
+  font-family: var(--font-barlow-condensed), var(--font-figtree), system-ui, sans-serif;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+/* Square KST-style trail marker: white band, colour stripe, white band. */
+.trail-mark {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  border-radius: var(--radius-marker);
+  background: linear-gradient(#fff 0 30%, var(--mark, var(--accent)) 30% 70%, #fff 70% 100%);
+  box-shadow: 0 0 0 1px var(--foreground);
+  flex-shrink: 0;
+}
+
+/* Map pins (MapLibre HTML markers). */
+.mt-pin {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
   font-weight: 700;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #fff;
   border: 2px solid #fff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
 }
 
-.mt-marker-trailhead {
-  background: var(--accent);
-  border-width: 3px;
+.mt-pin-trailhead {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-marker);
+  background: var(--sky-night);
 }
 
-.mt-marker-parking {
-  background: #1d4ed8;
+.mt-pin-trailhead.is-active {
+  width: 22px;
+  height: 22px;
+  background: var(--sun);
+  border-color: var(--sky-night);
+}
+
+.mt-pin-parking {
+  width: 24px;
+  height: 24px;
   border-radius: 5px;
+  background: #1d4fa0;
 }
 
-.mt-marker-transit-autobus,
-.mt-marker-transit-elektricka,
-.mt-marker-transit-vlak {
+.mt-pin-transit {
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
   background: #334155;
-  border-radius: 5px;
   font-size: 0.7rem;
 }
 
-.mt-marker-transit-elektricka {
-  background: #7c3aed;
+.mt-pin-poi {
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--warn);
 }
 
-.mt-marker-transit-vlak {
-  background: #0f766e;
+.mt-pin-start {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--accent);
 }
 
-.mt-marker-poi {
-  background: #b3491f;
+.mt-pin-me {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: #2563eb;
 }
 
-.mt-marker-dimmed {
+.mt-pin-dimmed {
   opacity: 0.35;
 }
 
-.mt-marker-start {
-  background: #3d4a5c;
+.maplibregl-popup-content {
+  color: #17213a;
+  font-family: var(--font-figtree), system-ui, sans-serif;
 }

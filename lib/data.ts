@@ -1,44 +1,91 @@
-import fixtures from "@/data/fixtures/trails.json";
-import { getSupabaseClient } from "@/lib/supabase";
-import type { TrailDetail, Trail, LatLng } from "@/lib/types";
+import { closureRulesFor, getAllTrips, getTrip } from "@/lib/trips";
+import type { Parking, TransitStop as TripStop, TripDetail, TripSummary } from "@/lib/tripSchema";
+import type { Closure, ParkingLot, TrailDetail, Trail, LatLng, TransitStop } from "@/lib/types";
 
-// Type assertion: the fixture file is hand-maintained to match TrailDetail[].
-const FIXTURE_TRAILS = fixtures as unknown as TrailDetail[];
+// The pages still speak the older TrailDetail shape; this adapts the static
+// trip data (lib/trips.ts, docs/TRIP-DATA.md) to it. New code should use
+// lib/trips.ts directly.
 
-/**
- * Loads every trail's full detail. Tries Supabase first; if it isn't
- * configured (no env vars) or the query fails for any reason, falls back to
- * the local JSON fixture so `npm run dev` works with zero cloud setup.
- *
- * Reads the `trail_detail` view (supabase/migrations/0003_trail_detail_view.sql),
- * which already decodes PostGIS geography into {lat, lon} and returns each row
- * shaped like TrailDetail.
- */
-async function fetchFromSupabase(): Promise<TrailDetail[] | null> {
-  const supabase = getSupabaseClient();
-  if (!supabase) return null;
+function parkingLot(p: Parking, slug: string, i: number): ParkingLot {
+  const fee = p.fee === true ? ", spoplatnené" : p.fee === false ? ", bezplatné" : "";
+  return {
+    id: `${slug}:parking:${i}`,
+    trailhead_id: `${slug}:start`,
+    name: p.name ?? `Parkovisko ${p.walk_m} m od začiatku trasy`,
+    location: p.location,
+    surface_type: null,
+    note: `${p.walk_m} m od začiatku trasy${fee}. Zdroj: OpenStreetMap.`,
+    verified_on: null,
+  };
+}
 
-  try {
-    const { data, error } = await supabase.from("trail_detail").select("detail").order("slug");
-    if (error || !data) {
-      console.warn("[data] Supabase query failed, using fixture:", error?.message);
-      return null;
-    }
-    return data.map((row) => row.detail as TrailDetail);
-  } catch (err) {
-    console.warn("[data] Supabase unreachable, using fixture:", err);
-    return null;
-  }
+function transitStop(s: TripStop, slug: string, i: number): TransitStop {
+  return {
+    id: `${slug}:stop:${i}`,
+    trailhead_id: `${slug}:start`,
+    name: s.name,
+    mode: s.mode,
+    location: s.location,
+    distance_m: s.walk_m,
+  };
+}
+
+function toTrail(t: TripSummary): Trail {
+  const [w, s, e, n] = t.bbox;
+  return {
+    id: t.slug,
+    name: t.name,
+    slug: t.slug,
+    description: t.description,
+    distance_m: t.distance_m,
+    ascent_m: t.ascent_m,
+    difficulty: t.difficulty,
+    duration_min: t.duration_min,
+    family_friendly: t.family_friendly,
+    gpx_path: t.gpx_url.replace(/^\//, ""),
+    bbox: { sw: { lat: s, lon: w }, ne: { lat: n, lon: e } },
+    created_at: "",
+  };
+}
+
+function toTrailDetail(t: TripSummary | TripDetail): TrailDetail {
+  const d = "path" in t ? t : null;
+  const parking = [t.parking, ...(d?.parking_alternatives ?? [])].filter((p): p is Parking => p != null);
+  const stops = [t.transit, ...(d?.transit_alternatives ?? [])].filter((s): s is TripStop => s != null);
+  const closures: Closure[] = closureRulesFor(t).map((r) => ({
+    id: r.id,
+    trail_id: t.slug,
+    kind: r.kind,
+    starts_on: r.starts_on,
+    ends_on: r.ends_on,
+    reason: r.reason,
+    source_url: r.source_url,
+    verified_on: r.verified_on,
+  }));
+  return {
+    trail: toTrail(t),
+    trailheads: [{ id: `${t.slug}:start`, trail_id: t.slug, name: t.start.name, location: t.start.location, is_primary: true }],
+    parkingLots: parking.map((p, i) => parkingLot(p, t.slug, i)),
+    transitStops: stops.map((s, i) => transitStop(s, t.slug, i)),
+    closures,
+    pois: (d?.pois ?? []).map((p, i) => ({
+      id: `${t.slug}:poi:${i}`,
+      trail_id: t.slug,
+      kind: p.kind,
+      name: p.name,
+      location: p.location,
+      note: null,
+    })),
+  };
 }
 
 export async function getAllTrails(): Promise<TrailDetail[]> {
-  const fromDb = await fetchFromSupabase();
-  return fromDb ?? FIXTURE_TRAILS;
+  return getAllTrips().map(toTrailDetail);
 }
 
 export async function getTrailBySlug(slug: string): Promise<TrailDetail | null> {
-  const all = await getAllTrails();
-  return all.find((t) => t.trail.slug === slug) ?? null;
+  const trip = await getTrip(slug);
+  return trip ? toTrailDetail(trip) : null;
 }
 
 export interface TrailSearchFilters {

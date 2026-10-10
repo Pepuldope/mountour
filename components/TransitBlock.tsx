@@ -1,71 +1,57 @@
+"use client";
+
 import type { TransitStop } from "@/lib/types";
 import { TRANSIT_LABEL } from "@/lib/format";
+import { cpSkUrl, startTown } from "@/lib/links";
+import { useTripDay } from "@/lib/tripSettings";
+import { useUserLocation } from "@/lib/userLocation";
 
 interface Props {
   stops: TransitStop[];
 }
 
-const MODE_GLYPH: Record<TransitStop["mode"], string> = {
-  autobus: "A",
-  elektricka: "E",
-  vlak: "V",
-};
-
-// cp.sk prefills the "from" field from ?t=; checked to return HTTP 200.
-function cpSkUrl(stopName: string): string {
-  return `https://cp.sk/vlakbusmhd/spojenie/?t=${encodeURIComponent(stopName)}`;
-}
-
+/**
+ * "Bez auta": the nearest stop and one tap to cp.sk, prefilled with the start
+ * town, the stop, the day and the departure (PD3). Real timetables come later.
+ */
 export function TransitBlock({ stops }: Props) {
-  const sorted = [...stops].sort((a, b) => a.distance_m - b.distance_m);
+  const { start, fix } = useUserLocation();
+  const { date, time } = useTripDay();
+  const nearest = [...stops].sort((a, b) => a.distance_m - b.distance_m)[0] ?? null;
+  const from = startTown(start, fix?.town);
 
   return (
-    <section className="flex flex-col gap-2 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-      <h2 className="text-sm font-semibold opacity-70">Verejná doprava</h2>
-
-      {sorted.length === 0 ? (
+    <section className="flex flex-col gap-1 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4">
+      <h2 className="text-base font-bold">Bez auta</h2>
+      {nearest ? (
         <>
-          <p className="text-sm opacity-80">
-            Pri začiatku trasy sme nenašli zastávku verejnej dopravy.
+          <p className="text-sm">
+            {TRANSIT_LABEL[nearest.mode]}: zastávka <strong>{nearest.name}</strong>,{" "}
+            <span className="font-data">{nearest.distance_m} m</span> od začiatku trasy.
           </p>
+          <a
+            href={cpSkUrl(nearest.name, from, date, time)}
+            data-umami-event="transit_open"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-fit text-sm font-semibold text-[var(--accent)] underline"
+          >
+            Spoje na cp.sk ↗
+          </a>
+        </>
+      ) : (
+        <>
+          <p className="text-sm">Pri začiatku trasy sme nenašli zastávku.</p>
           <a
             href="https://cp.sk/"
             data-umami-event="transit_open"
             target="_blank"
             rel="noopener noreferrer"
-            className="w-fit text-sm font-medium text-[var(--accent)] underline"
+            className="w-fit text-sm font-semibold text-[var(--accent)] underline"
           >
-            Vyhľadať spoj na cp.sk
+            Vyhľadať spoj na cp.sk ↗
           </a>
         </>
-      ) : (
-        <ul className="flex flex-col gap-2">
-          {sorted.map((s) => (
-            <li key={s.id} className="flex items-center gap-3">
-              <span
-                aria-hidden="true"
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[var(--accent)] text-xs font-bold text-[var(--accent-contrast)]"
-              >
-                {MODE_GLYPH[s.mode]}
-              </span>
-              <div className="flex min-w-0 flex-1 flex-col">
-                <span className="font-medium">{s.name}</span>
-                <span className="text-xs opacity-70">
-                  {TRANSIT_LABEL[s.mode]} - {s.distance_m} m od začiatku trasy
-                </span>
-              </div>
-              <a
-                href={cpSkUrl(s.name)}
-                data-umami-event="transit_open"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shrink-0 text-sm font-medium text-[var(--accent)] underline"
-              >
-                Spoj na cp.sk
-              </a>
-            </li>
-          ))}
-        </ul>
       )}
     </section>
   );
