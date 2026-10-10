@@ -8,7 +8,8 @@ import { TransitBlock } from "@/components/TransitBlock";
 import { ClosureBanner } from "@/components/ClosureBanner";
 import { TripInputs } from "@/components/TripInputs";
 import { DayPlanView } from "@/components/DayPlanView";
-import { OfflineSaveButton } from "@/components/OfflineSaveButton";
+import { SaveTripButton } from "@/components/SaveTripButton";
+import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { TripMap } from "@/components/TripMap";
 
 interface Props {
@@ -39,9 +40,12 @@ export default async function TripSheetPage({ params }: Props) {
       </div>
 
       <div className="flex w-full flex-col gap-5 px-4 py-6 lg:order-1 lg:w-[440px] lg:shrink-0 lg:overflow-y-auto">
-        <Link href="/" className="w-fit text-sm font-medium text-[var(--accent)] underline">
-          Späť na zoznam trás
-        </Link>
+        <nav aria-label="Navigácia" className="flex flex-wrap items-center justify-between gap-2">
+          <Link href="/" className="w-fit text-sm font-medium text-[var(--accent)] underline">
+            Späť na zoznam trás
+          </Link>
+          <SavedTripsLink />
+        </nav>
 
         <header className="flex flex-col gap-1">
           <h1 className="text-2xl font-bold text-[var(--accent)]">{trail.name}</h1>
@@ -76,11 +80,20 @@ export default async function TripSheetPage({ params }: Props) {
         <TransitBlock stops={transitStops} />
 
         <section className="flex flex-col gap-2 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-          <h2 className="text-sm font-semibold opacity-70">Offline</h2>
+          <h2 className="text-sm font-semibold opacity-70">Uložiť výlet</h2>
           <p className="text-sm opacity-80">
-            Ulož si túto stránku, GPX trasu a mapové podklady, aby fungovali aj bez signálu.
+            Uloží výlet s dátumom a časom do Uložených výletov v tomto zariadení - aj s mapou a GPX
+            trasou, aby fungoval bez signálu.
           </p>
-          <OfflineSaveButton slug={trail.slug} gpxUrl={gpxUrl} bbox={trail.bbox} />
+          <SaveTripButton
+            slug={trail.slug}
+            name={trail.name}
+            gpxUrl={gpxUrl}
+            bbox={trail.bbox}
+            sun={sun}
+            destination={destination}
+            hikeMin={trail.duration_min}
+          />
         </section>
       </div>
     </main>

@@ -13,6 +13,7 @@ import { TrailPicker } from "@/components/TrailPicker";
 import { TrailList } from "@/components/TrailList";
 import type { TrailListItem } from "@/components/TrailList";
 import { DayPlanView } from "@/components/DayPlanView";
+import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
 
@@ -184,13 +185,7 @@ export function HomeExplorer({ trails }: Props) {
     <main className="flex flex-1 flex-col lg:h-dvh lg:flex-row">
       <div className="flex w-full flex-col gap-5 px-4 py-6 lg:w-[420px] lg:shrink-0 lg:overflow-y-auto">
         <nav aria-label="Hlavná navigácia">
-          <span
-            aria-disabled="true"
-            className="inline-flex items-center gap-2 rounded-lg border border-dashed border-[var(--border)] px-3 py-1.5 text-sm opacity-60"
-          >
-            Uložené výlety
-            <span className="text-xs">čoskoro</span>
-          </span>
+          <SavedTripsLink />
         </nav>
 
         <header className="flex flex-col gap-1">

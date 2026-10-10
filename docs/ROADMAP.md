@@ -67,9 +67,15 @@ dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
   last hovered / tapped on map). Phone home: map behind "Zobraziť mapu", mini timelines in
   the list. Phone trip page: short map, inputs, then the plan.
 
-## 8. Saved trips  `[ ]`
+## 8. Saved trips  `[x]`
 - A "saved trips" entry in the left nav. Fits with offline cache-on-plan: a saved
   trip = a cached trip. No accounts (still out of scope), so it is per-device.
+- **Built 2026-10-10:** "Uložiť výlet" on the trip page saves a snapshot (trail, date,
+  departure, start, drive time) to localStorage AND caches the page + GPX + tiles + the
+  build assets it runs on. `/ulozene` lists them (mini timeline, verdict, Otvoriť restores
+  date/time/start, Odstrániť also drops the cache). Service worker: build assets
+  cache-first in `mountour-static`, pages network-first with the saved copy as offline
+  fallback. Verified offline in headless Chromium: trip page + map tiles + /ulozene load.
 
 ## Data sources (decided 2026-10-07)
 - Trails, parking, transit stops, POIs: OpenStreetMap via `scripts/build_trails.py`;
