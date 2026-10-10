@@ -2,25 +2,29 @@
 @import "maplibre-gl/dist/maplibre-gl.css";
 
 /* Brand tokens v1, direction B "Za svetla" + a hint of A "Značka"
-   (strategy/06-identity/final/tokens.css). Contrast notes live there. */
+   (strategy/06-identity/final/tokens.css). Contrast notes live there.
+   v1.1 (sun arc): neutrals warmed from blue-grey to sunlit paper; dusk, sun
+   and night blue unchanged. */
 :root {
   /* existing names, new values */
-  --background: #f3f6fa;      /* obloha */
-  --foreground: #17213a;      /* nočná modrá, 14.7:1 on background */
-  --accent: #2b4c9b;          /* súmrak, 7.4:1 on background, white on it 8.0:1 */
+  --background: #fbf6ec;      /* slnečný papier */
+  --foreground: #17213a;      /* nočná modrá, 14.8:1 on background */
+  --accent: #2b4c9b;          /* súmrak, 7.5:1 on background, white on it 8.0:1 */
   --accent-contrast: #ffffff;
   --warn: #9a4a06;            /* jantár, 5.6:1 on --warn-bg */
   --warn-bg: #fdf1dc;
   --ok-bg: #e6f2ea;
-  --card-bg: #ffffff;
-  --border: #d8dfea;
+  --card-bg: #fffdf8;
+  --border: #eadfcb;
   --sky-night: #17213a;       /* daylight band */
   --sky-twilight: #f7c9b5;
   --sky-day: #fbe3a8;
-  --drive: #6b7686;
+  --drive: #8b7d6b;           /* road in the sun arc */
+  --ground: #f4ecdc;          /* ground under the sun arc */
+  --ground-edge: #d9c7a6;     /* hills in the sun arc */
 
   /* new */
-  --muted: #55617a;           /* 5.7:1 on background, 6.2:1 on card */
+  --muted: #66594a;           /* 6.3:1 on background, 6.7:1 on card */
   --sun: #f4a51c;             /* fill only; night text on it 7.8:1 */
   --time: #9a4a06;            /* departure times as text, 6.3:1 on card */
   --ok: #1e7a3e;              /* "stihnete", 4.7:1 on --ok-bg */
@@ -40,21 +44,23 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0e1426;
+    --background: #121827;
     --foreground: #e9eef7;    /* 15.7:1 */
     --accent: #9db8ff;        /* 9.4:1 */
     --accent-contrast: #0e1426;
     --warn: #ffb53d;          /* 7.9:1 on --warn-bg */
     --warn-bg: #3a2a10;
     --ok-bg: #163724;
-    --card-bg: #161e36;
-    --border: #26304d;
+    --card-bg: #1a2135;
+    --border: #2c3450;
     --sky-night: #05080f;
     --sky-twilight: #5b3a4a;
     --sky-day: #3b3524;
-    --drive: #7d8899;
+    --drive: #a39682;
+    --ground: #2a2c36;
+    --ground-edge: #474651;
 
-    --muted: #97a3bd;         /* 7.2:1, 6.5:1 on card */
+    --muted: #b5a993;         /* 7.6:1, 6.9:1 on card */
     --sun: #ffb53d;
     --time: #ffb53d;          /* 9.4:1 on card */
     --ok: #5cc283;            /* 5.9:1 on --ok-bg */

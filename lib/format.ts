@@ -69,9 +69,9 @@ export function verdictText(plan: DayPlan): string {
   const m = Math.abs(plan.marginMin);
   switch (plan.verdict) {
     case "ok":
-      return `Stihnete to v pohode. Z trasy budete dole ${formatDuration(m)} pred západom slnka.`;
+      return `Stihnete to za svetla. Z túry budete späť ${formatDuration(m)} pred západom slnka.`;
     case "tight":
-      return `Tesné. Z trasy budete dole len ${formatDuration(m)} pred západom slnka.`;
+      return `Tesné. Z túry budete späť len ${formatDuration(m)} pred západom slnka. Ak sa dá, vyrazte skôr.`;
     case "after-sunset":
       return `Koniec túry vychádza ${formatDuration(m)} po západe slnka, v šere. Vyrazte skôr.`;
     case "after-dusk":

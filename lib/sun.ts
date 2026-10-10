@@ -111,3 +111,34 @@ export function isAfterSunset(time: Date, lat: number, lon: number): boolean {
   if (!sun) return false;
   return time.getTime() > sun.sunset.getTime();
 }
+
+/**
+ * Height of the sun above the horizon at `time`, in degrees (negative = below).
+ * NOAA general solar position (fractional-year series); within a few tenths
+ * of a degree, which is plenty for drawing the sun's path over the day.
+ */
+export function sunAltitude(time: Date, lat: number, lon: number): number {
+  const ms = time.getTime();
+  const yearStart = Date.UTC(time.getUTCFullYear(), 0, 1);
+  const dayOfYear = Math.floor((ms - yearStart) / 86400000);
+  const utcHours = (ms - Date.UTC(time.getUTCFullYear(), time.getUTCMonth(), time.getUTCDate())) / 3600000;
+  const g = ((2 * Math.PI) / 365) * (dayOfYear + (utcHours - 12) / 24);
+
+  const eqTimeMin =
+    229.18 *
+    (0.000075 + 0.001868 * Math.cos(g) - 0.032077 * Math.sin(g) - 0.014615 * Math.cos(2 * g) - 0.040849 * Math.sin(2 * g));
+  const decl =
+    0.006918 -
+    0.399912 * Math.cos(g) +
+    0.070257 * Math.sin(g) -
+    0.006758 * Math.cos(2 * g) +
+    0.000907 * Math.sin(2 * g) -
+    0.002697 * Math.cos(3 * g) +
+    0.00148 * Math.sin(3 * g);
+
+  const solarMin = utcHours * 60 + eqTimeMin + 4 * lon;
+  const hourAngle = (solarMin / 4 - 180) * DEG2RAD;
+  const phi = lat * DEG2RAD;
+  const sinAlt = Math.sin(phi) * Math.sin(decl) + Math.cos(phi) * Math.cos(decl) * Math.cos(hourAngle);
+  return Math.asin(Math.max(-1, Math.min(1, sinAlt))) * RAD2DEG;
+}

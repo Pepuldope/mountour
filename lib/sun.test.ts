@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getSunTimes } from "./sun";
+import { getSunTimes, sunAltitude } from "./sun";
 
 // Bratislava
 const LAT = 48.1486;
@@ -38,5 +38,26 @@ describe("getSunTimes", () => {
     const sun = getSunTimes(date, LAT, LON);
     expect(sun).not.toBeNull();
     expect(sun!.sunrise.getTime()).toBeLessThan(sun!.sunset.getTime());
+  });
+});
+
+describe("sunAltitude", () => {
+  it("is about -0.8 deg at the computed sunset", () => {
+    const sun = getSunTimes(new Date(Date.UTC(2026, 9, 10)), LAT, LON)!;
+    expect(Math.abs(sunAltitude(sun.sunset, LAT, LON) + 0.833)).toBeLessThan(0.5);
+    expect(Math.abs(sunAltitude(sun.sunrise, LAT, LON) + 0.833)).toBeLessThan(0.5);
+  });
+
+  it("peaks near 65 deg at midsummer noon in Bratislava", () => {
+    const sun = getSunTimes(new Date(Date.UTC(2026, 5, 21)), LAT, LON)!;
+    const noon = new Date((sun.sunrise.getTime() + sun.sunset.getTime()) / 2);
+    expect(Math.abs(sunAltitude(noon, LAT, LON) - 65.3)).toBeLessThan(0.7);
+  });
+
+  it("is low in winter and below the horizon at night", () => {
+    const sun = getSunTimes(new Date(Date.UTC(2026, 11, 21)), LAT, LON)!;
+    const noon = new Date((sun.sunrise.getTime() + sun.sunset.getTime()) / 2);
+    expect(Math.abs(sunAltitude(noon, LAT, LON) - 18.4)).toBeLessThan(0.7);
+    expect(sunAltitude(new Date(Date.UTC(2026, 11, 21, 23)), LAT, LON)).toBeLessThan(-30);
   });
 });
