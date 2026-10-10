@@ -36,6 +36,13 @@ export default function PrivacyPage() {
         zmažeme a ostanú len súhrnné čísla (napríklad „120 ľudí, z toho 15 aspoň 4 dni“).
       </p>
 
+      <h2>Prihláška na testovanie a spätná väzba</h2>
+      <p>
+        Ak sa prihlásite na testovanie (odkaz „Chcem testovať“) alebo vyplníte krátky dotazník po teste, odpovede
+        zbiera Google Forms. Prihlásenie do Google účtu netreba. Meno a kontakt použijeme len na dohodnutie
+        testovania a po skončení testovania ich zmažeme.
+      </p>
+
       <h2>Vaša poloha a miesto štartu</h2>
       <p>
         Ak povolíte polohu alebo napíšete miesto štartu, použijeme ich len na výpočet cesty autom. Súradnice
