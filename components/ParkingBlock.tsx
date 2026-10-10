@@ -35,12 +35,16 @@ export function ParkingBlock({ parking }: Props) {
       <div className="flex flex-wrap gap-2 pt-1">
         <a
           href={geoUri}
+          data-umami-event="nav_open"
+          data-umami-event-app="geo"
           className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium"
         >
           Otvoriť v mapovej aplikácii
         </a>
         <a
           href={gmapsUrl}
+          data-umami-event="nav_open"
+          data-umami-event-app="google"
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-lg bg-[var(--accent)] px-3 py-2 text-sm font-medium text-[var(--accent-contrast)]"

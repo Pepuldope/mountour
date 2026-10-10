@@ -77,6 +77,12 @@ project to develop and verify that against yet. Until it's wired up, the app
 always falls back to the JSON fixture for actual trail data. This is called
 out explicitly in that file.
 
+## Search, stats and testers
+
+SEO metadata, sitemap, Umami analytics, the visit-day counter and the tester forms are set up in
+[`docs/ANALYTICS-AND-SEO.md`](docs/ANALYTICS-AND-SEO.md). Non-secret settings (site address,
+Umami ID, form links) live in `lib/site.ts`.
+
 ## Schema decisions (`supabase/migrations/0001_init.sql`)
 
 - All five tables use `geography` (not `geometry`) columns so `ST_Distance`

@@ -30,6 +30,7 @@ export function TransitBlock({ stops }: Props) {
           </p>
           <a
             href="https://cp.sk/"
+            data-umami-event="transit_open"
             target="_blank"
             rel="noopener noreferrer"
             className="w-fit text-sm font-medium text-[var(--accent)] underline"
@@ -55,6 +56,7 @@ export function TransitBlock({ stops }: Props) {
               </div>
               <a
                 href={cpSkUrl(s.name)}
+                data-umami-event="transit_open"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="shrink-0 text-sm font-medium text-[var(--accent)] underline"

@@ -9,6 +9,7 @@ import { useSavedTrips } from "@/lib/savedTrips";
 import { useTripSettings } from "@/lib/tripSettings";
 import { useTripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
+import { track } from "@/lib/analytics";
 
 interface Props {
   slug: string;
@@ -65,6 +66,7 @@ export function SaveTripButton({ slug, name, gpxUrl, bbox, sun, destination, hik
   async function onSave() {
     if (!date || !time || !sun) return;
     setStatus("saving");
+    track("trip_saved", { trail: slug });
     save({
       slug,
       name,
