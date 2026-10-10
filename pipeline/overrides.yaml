@@ -1,0 +1,10 @@
+# Hand edits on top of the generated trips, by slug. Survive every weekly run.
+#
+# trips:
+#   krivan:
+#     name: Kriváň zo Štrbského Plesa
+#     description: Najkrajší výstup v Tatrách ...
+# drop:
+#   - some-bad-trip
+trips: {}
+drop: []

@@ -1,0 +1,100 @@
+name: Weekly trip data
+
+# Rebuilds the trips from OpenStreetMap (pipeline/, docs/TRIP-DATA.md) every
+# Monday and commits the result, which redeploys the site. Run it by hand from
+# the Actions tab ("Run workflow") after editing pipeline/config.yaml or the rules.
+on:
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+  push:
+    branches: ["claude/osm-trip-pipeline-**"]
+    paths: ["pipeline/**", ".github/workflows/trips.yml"]
+  pull_request:
+    paths: ["pipeline/**", ".github/workflows/trips.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trips-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/requirements.txt
+      - run: pip install -r pipeline/requirements.txt
+      - run: python -m pytest -q pipeline/tests
+
+  build:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OSRM_IMAGE: ghcr.io/project-osrm/osrm-backend:v5.27.1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/requirements.txt
+      - run: pip install -r pipeline/requirements.txt
+      - run: python -m pytest -q pipeline/tests
+
+      - name: Download OpenStreetMap extract (Geofabrik, Slovakia)
+        run: |
+          mkdir -p osrm
+          curl -fsSL --retry 3 -o osrm/slovakia.osm.pbf https://download.geofabrik.de/europe/slovakia-latest.osm.pbf
+          ls -la osrm
+          TS=$(python -c "import osmium; r = osmium.io.Reader('osrm/slovakia.osm.pbf', osmium.osm.NOTHING); print(r.header().get('osmosis_replication_timestamp', '')); r.close()")
+          echo "OSM_TS=$TS" >> "$GITHUB_ENV"
+          echo "OSM data timestamp: $TS"
+
+      - name: Cache elevation tiles
+        uses: actions/cache@v4
+        with:
+          path: pipeline/.cache/dem
+          key: dem-v1-${{ hashFiles('pipeline/config.yaml') }}
+          restore-keys: dem-v1-
+      - name: Download elevation tiles (Copernicus DEM GLO-30)
+        run: python -m pipeline.dem pipeline/.cache/dem
+
+      - name: Start OSRM for drive times
+        run: |
+          docker run --rm -v "$PWD/osrm:/data" "$OSRM_IMAGE" osrm-extract -p /opt/car.lua /data/slovakia.osm.pbf
+          docker run --rm -v "$PWD/osrm:/data" "$OSRM_IMAGE" osrm-partition /data/slovakia.osrm
+          docker run --rm -v "$PWD/osrm:/data" "$OSRM_IMAGE" osrm-customize /data/slovakia.osrm
+          docker run -d --name osrm -p 5000:5000 -v "$PWD/osrm:/data" "$OSRM_IMAGE" \
+            osrm-routed --algorithm mld --max-table-size 5000 /data/slovakia.osrm
+          for i in $(seq 1 60); do
+            curl -sf "http://localhost:5000/route/v1/driving/17.107,48.148;19.146,48.736" >/dev/null && break
+            sleep 2
+          done
+          curl -sf "http://localhost:5000/route/v1/driving/17.107,48.148;19.146,48.736" | head -c 300; echo
+
+      - name: Build trips
+        run: |
+          python -m pipeline.run --pbf osrm/slovakia.osm.pbf --dem pipeline/.cache/dem \
+            --osrm http://localhost:5000 --wikidata --osm-timestamp "$OSM_TS"
+          cat data/pipeline-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Commit the new data
+        run: |
+          git config user.name "mountour-data-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/trips data/drive-times.json data/pipeline-report.md public/gpx pipeline/slugs.json
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git commit -m "Trip data from OpenStreetMap ${OSM_TS:-}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
