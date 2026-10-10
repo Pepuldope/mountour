@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
 import { driveDestination, primaryTrailhead, sunLocation } from "@/lib/data";
+import { activeClosures } from "@/lib/closures";
 import { hikeMinutes } from "@/lib/dayPlan";
 import { HALF_DAY_MIN, dayFit, dayInSentence, isoDate } from "@/lib/days";
 import { estimateDriveMin } from "@/lib/drive";
@@ -12,7 +13,7 @@ import { fetchTrack, gpxUrlFor } from "@/lib/gpx";
 import { haversineM } from "@/lib/geo";
 import { trackColor } from "@/lib/mapLayers";
 import { useTripSettings } from "@/lib/tripSettings";
-import { useDriveMatrix } from "@/lib/useDriveRoute";
+import { useTownDrives } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { FilterChips } from "@/components/FilterChips";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
@@ -28,6 +29,9 @@ interface Props {
 }
 
 const DESKTOP_QUERY = "(min-width: 1024px)";
+
+/** Starts further than this from the nearest precomputed town get "~" on their drive times. */
+const TOWN_EXACT_KM = 10;
 
 function subscribeDesktop(cb: () => void) {
   const mq = window.matchMedia(DESKTOP_QUERY);
@@ -87,21 +91,28 @@ export function HomeExplorer({ trails }: Props) {
     };
   }, [trails, mapShown]);
 
-  // Drive time to every trail in one request, in `trails` order.
+  // Drive time to every trail from the weekly precomputed table, via the town nearest the start.
   const destinations = useMemo(() => trails.map((t) => driveDestination(t)), [trails]);
-  const routable = useMemo(() => destinations.filter((d): d is LatLng => d !== null), [destinations]);
-  const { matrix, status: driveStatus } = useDriveMatrix(start, routable);
+  const { drives, status: driveStatus } = useTownDrives(start);
 
   const { shown, hidden } = useMemo(() => {
-    let j = 0;
     const now = new Date();
+    // Getting from the start to its table town: added on top, and "~" when that is a long way.
+    const town: LatLng | null = drives ? { lat: drives.town.lat, lon: drives.town.lon } : null;
+    const toTownKm = start && town ? haversineM(start, town) / 1000 : null;
+    const accessMin = start && town && toTownKm! > 2 ? estimateDriveMin(start, town) : 0;
     const all = trails.flatMap((detail, i): TripCardItem[] => {
       const dest = destinations[i];
-      const routed = dest ? (matrix?.durationsMin[j++] ?? null) : null;
+      const table = drives?.minutes[detail.trail.slug] ?? null;
       if (withKids && !detail.trail.family_friendly) return [];
-      // Routing down or offline: a straight-line estimate beats a blank, marked with "~".
-      const approx = routed === null && driveStatus === "error" && start !== null && dest !== null;
-      const driveMin = routed ?? (approx ? estimateDriveMin(start!, dest!) : null);
+      // Table missing (offline, or a trip newer than the table): a straight-line estimate beats a blank, marked with "~".
+      const estimate = table === null && driveStatus !== "loading" && start !== null && dest !== null;
+      const viaTown = table !== null ? table + accessMin : null;
+      // Far from the table town (e.g. Ždiar -> Belianska jaskyňa), the straight-line guess can be much closer.
+      const direct = viaTown !== null && toTownKm! > TOWN_EXACT_KM && dest ? estimateDriveMin(start!, dest) : null;
+      const driveMin =
+        viaTown !== null ? Math.min(viaTown, direct ?? Infinity) : estimate ? estimateDriveMin(start!, dest!) : null;
+      const approx = estimate || (viaTown !== null && toTownKm! > TOWN_EXACT_KM);
       const hikeMin = hikeMinutes(detail.trail.duration_min, withKids);
       if (halfDay && hikeMin + 2 * (driveMin ?? 0) > HALF_DAY_MIN) return [];
       const th = primaryTrailhead(detail);
@@ -115,6 +126,7 @@ export function HomeExplorer({ trails }: Props) {
           driveLoading: driveStatus === "loading",
           distanceM: start && th ? haversineM(start, th.location) : null,
           fit: date && today && sun ? dayFit({ date, now, driveMin, hikeMin, location: sun }) : null,
+          closed: date !== null && activeClosures(detail.closures, date).length > 0,
         },
       ];
     });
@@ -123,10 +135,10 @@ export function HomeExplorer({ trails }: Props) {
       all.sort((a, b) => key(a) - key(b));
     }
     return {
-      shown: all.filter((i) => !i.fit || i.fit.status === "fits"),
-      hidden: all.filter((i) => i.fit && i.fit.status !== "fits"),
+      shown: all.filter((i) => !i.closed && (!i.fit || i.fit.status === "fits")),
+      hidden: all.filter((i) => i.closed || (i.fit && i.fit.status !== "fits")),
     };
-  }, [trails, destinations, matrix, driveStatus, withKids, halfDay, date, today, start]);
+  }, [trails, destinations, drives, driveStatus, withKids, halfDay, date, today, start]);
 
   const shownSlugs = useMemo(() => new Set(shown.map((m) => m.detail.trail.slug)), [shown]);
   const dayWord = date && today ? dayInSentence(date, new Date()) : null;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { DriveMatrix, DriveRoute } from "@/lib/drive";
+import type { DriveRoute, TownDrives } from "@/lib/drive";
 import { roundCoord } from "@/lib/drive";
 import type { LatLng } from "@/lib/types";
 
@@ -63,12 +63,9 @@ export function useDriveRoute(
   return { status, route: data };
 }
 
-/** Drive times from one start to many destinations (the home list), in one request. */
-export function useDriveMatrix(
-  from: LatLng | null,
-  to: LatLng[]
-): { status: DriveStatus; matrix: DriveMatrix | null } {
-  const url = from && to.length > 0 ? `/api/drive-matrix?from=${pt(from)}&to=${to.map(pt).join("|")}` : null;
-  const { status, data } = useCachedJson<DriveMatrix>(url);
-  return { status, matrix: data };
+/** Drive times from one start to every trip (the home list), via the nearest precomputed town. */
+export function useTownDrives(from: LatLng | null): { status: DriveStatus; drives: TownDrives | null } {
+  const url = from ? `/api/drive-town?from=${pt(from)}` : null;
+  const { status, data } = useCachedJson<TownDrives>(url);
+  return { status, drives: data };
 }

@@ -19,6 +19,8 @@ export interface TripCardItem {
   distanceM: number | null;
   /** Only when a day is picked. */
   fit: DayFit | null;
+  /** A closure (e.g. TANAP winter) covers the picked day. */
+  closed: boolean;
 }
 
 interface Props {
@@ -34,7 +36,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /** One trip, one decision line: travel and walking time, then "Vyrazte najneskôr". */
 export function TripCard({ item, dayWord, active, onActive, registerItem }: Props) {
-  const { detail, hikeMin, driveMin, driveApprox, driveLoading, distanceM, fit } = item;
+  const { detail, hikeMin, driveMin, driveApprox, driveLoading, distanceM, fit, closed } = item;
   const { trail } = detail;
   const total = driveMin !== null ? hikeMin + 2 * driveMin : null;
   const approx = driveApprox ? "~" : "";
@@ -47,7 +49,7 @@ export function TripCard({ item, dayWord, active, onActive, registerItem }: Prop
       onFocus={() => onActive(trail.slug)}
       className={`flex flex-col gap-1.5 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-4 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
         active ? "border-[var(--accent)] ring-2 ring-[var(--accent)]" : "border-[var(--border)]"
-      } ${fit && fit.status !== "fits" ? "opacity-75" : ""}`}
+      } ${closed || (fit && fit.status !== "fits") ? "opacity-75" : ""}`}
     >
       <div className="flex items-start justify-between gap-3">
         <span className="flex items-center gap-2 text-lg leading-tight font-semibold">
@@ -83,18 +85,21 @@ export function TripCard({ item, dayWord, active, onActive, registerItem }: Prop
         )}
       </p>
 
-      {fit && fit.status === "fits" && (
+      {closed && (
+        <p className="text-sm text-[var(--warn)]">{capitalize(dayWord ?? "v tento deň")} je chodník uzavretý (sezónna uzávera).</p>
+      )}
+      {!closed && fit && fit.status === "fits" && (
         <p className="flex items-baseline gap-2">
           <span className="text-sm">{driveMin !== null ? "Vyrazte najneskôr" : "Začnite túru najneskôr"}</span>
           <span className="font-data text-2xl leading-none text-[var(--time)]">{formatTime(fit.latest)}</span>
         </p>
       )}
-      {fit && fit.status === "too-late" && (
+      {!closed && fit && fit.status === "too-late" && (
         <p className="text-sm text-[var(--warn)]">
           {dayWord === "dnes" ? "Dnes" : "Vtedy"} už nestihnete za svetla. Skúste zajtra ráno.
         </p>
       )}
-      {fit && fit.status === "too-long" && (
+      {!closed && fit && fit.status === "too-long" && (
         <p className="text-sm text-[var(--warn)]">{capitalize(dayWord ?? "v tento deň")} je na to málo svetla.</p>
       )}
 

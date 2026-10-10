@@ -18,10 +18,10 @@ export function driveKey(from: LatLng, to: LatLng): string {
   return [from.lat, from.lon, to.lat, to.lon].map(roundCoord).join(",");
 }
 
-/** Drive time from one start to many destinations, in destination order. null = unroutable. */
-export interface DriveMatrix {
-  durationsMin: (number | null)[];
-  distancesM: (number | null)[];
+/** Precomputed drive times from the town nearest to the start, by trip slug. null = unroutable. */
+export interface TownDrives {
+  town: { name: string; lat: number; lon: number };
+  minutes: Record<string, number | null>;
 }
 
 /** Roads are ~1.4x the straight line here; ~60 km/h door to door; rounded to 5 min. */
