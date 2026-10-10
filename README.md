@@ -6,7 +6,8 @@ where you park, the trail itself, and getting back before dark — and hands off
 to the tools that already do the rest: Google/Apple Maps for turn-by-turn
 driving, and a GPX file for the hike itself.
 
-Live at https://mountour.vercel.app (Vercel deploys every push to `main`).
+Live at https://mountour.vercel.app (deployed from `main`). Deploying to Cloudflare
+Workers instead is set up in `docs/DEPLOY-CLOUDFLARE.md`.
 What is built and what was decided along the way is in `docs/ROADMAP.md`.
 
 ## Locked scope
@@ -39,7 +40,8 @@ Explicitly **out of scope** — do not add these without reopening the spec:
 
 ## Stack
 
-- Next.js 16 (App Router) + React 19 + TypeScript + Tailwind 4, deployed on Vercel
+- Next.js 16 (App Router) + React 19 + TypeScript + Tailwind 4, deployable on Vercel or
+  Cloudflare Workers (OpenNext)
 - Supabase Postgres + PostGIS for data (see `supabase/migrations/`), read through
   the `trail_detail` view
 - Leaflet + OpenTopoMap base + Waymarked Trails hiking overlay for the map (no `react-leaflet` — plain
@@ -68,6 +70,7 @@ npm run lint        # eslint
 npm run typecheck   # next typegen + tsc --noEmit
 npm test            # unit tests (vitest, lib/**/*.test.ts)
 npm run build       # production build
+npm run cf:build    # production build + Cloudflare Worker bundle
 ```
 
 `npm run typecheck` runs `next typegen` first because Next 16 generates route
@@ -75,9 +78,10 @@ types (e.g. `LayoutProps`) that plain `tsc` can't see otherwise.
 
 ## CI
 
-`.github/workflows/ci.yml` runs lint, typecheck, tests and a production build on
-every pull request and every push to `main`. Vercel deploys `main` regardless,
-so keep changes on a branch and merge once CI is green.
+`.github/workflows/ci.yml` runs lint, typecheck, tests and the Cloudflare build
+(which includes `next build`) on every pull request and every push to `main`.
+Deploys from `main` don't wait for CI, so keep changes on a branch and merge
+once CI is green.
 
 ## Supabase setup (optional, for real data)
 
