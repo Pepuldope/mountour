@@ -104,8 +104,8 @@ class TripBuilder:
         out = {}
         skip = set(self.t.get("exclude_starts", []))
         for f in self.osm.guideposts:
-            if f.name in skip:
-                continue
+            if f.name in skip or (f.name and re.fullmatch(r"[\d\s,.]+m?(\s*n\.\s*m\.)?", f.name)):
+                continue  # excluded, or named only by its elevation ("829 m")
             if not f.name or not self.in_country(f.lat, f.lon):
                 continue
             node = self.g.snap(f.lat, f.lon, 60)
