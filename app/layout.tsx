@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { UserLocationProvider } from "@/lib/userLocation";
+import { TripSettingsProvider } from "@/lib/tripSettings";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +37,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <ServiceWorkerRegister />
-        <UserLocationProvider>{children}</UserLocationProvider>
+        <UserLocationProvider>
+          <TripSettingsProvider>{children}</TripSettingsProvider>
+        </UserLocationProvider>
       </body>
     </html>
   );

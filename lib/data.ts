@@ -63,3 +63,17 @@ export function trailCenter(trail: Trail): LatLng | null {
     lon: (trail.bbox.sw.lon + trail.bbox.ne.lon) / 2,
   };
 }
+
+export function primaryTrailhead(detail: TrailDetail) {
+  return detail.trailheads.find((t) => t.is_primary) ?? detail.trailheads[0] ?? null;
+}
+
+/** Where the drive ends: the nearest parking lot, else the trailhead itself. */
+export function driveDestination(detail: TrailDetail): LatLng | null {
+  return detail.parkingLots[0]?.location ?? primaryTrailhead(detail)?.location ?? trailCenter(detail.trail);
+}
+
+/** Where sunrise/sunset are computed for a trail. */
+export function sunLocation(detail: TrailDetail): LatLng | null {
+  return detail.parkingLots[0]?.location ?? trailCenter(detail.trail);
+}

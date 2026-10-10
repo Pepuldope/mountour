@@ -1,3 +1,4 @@
+import type { DayPlan, Verdict } from "@/lib/dayPlan";
 import type { Difficulty, PoiKind, TransitMode } from "@/lib/types";
 
 export const DIFFICULTY_LABEL: Record<Difficulty, string> = {
@@ -54,3 +55,26 @@ export const TRANSIT_LABEL: Record<TransitMode, string> = {
   elektricka: "Električka",
   vlak: "Vlak",
 };
+
+/** One-line verdict for list items. */
+export const VERDICT_SHORT: Record<Verdict, string> = {
+  ok: "stihneš pred západom",
+  tight: "tesne pred západom",
+  "after-sunset": "končíš po západe",
+  "after-dusk": "končíš potme",
+};
+
+/** Full verdict sentence for the plan card. */
+export function verdictText(plan: DayPlan): string {
+  const m = Math.abs(plan.marginMin);
+  switch (plan.verdict) {
+    case "ok":
+      return `Z trasy budeš dole ${formatDuration(m)} pred západom slnka.`;
+    case "tight":
+      return `Tesné - z trasy budeš dole len ${formatDuration(m)} pred západom slnka.`;
+    case "after-sunset":
+      return `Pozor - koniec túry vychádza ${formatDuration(m)} po západe slnka, v šere.`;
+    case "after-dusk":
+      return "Pozor - posledná časť túry bude potme. Vyraz skôr alebo vyber kratšiu trasu.";
+  }
+}

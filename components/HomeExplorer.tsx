@@ -1,14 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import type { BBox, TrailDetail } from "@/lib/types";
-import { filterTrails } from "@/lib/data";
+import type { BBox, LatLng, TrailDetail } from "@/lib/types";
+import { driveDestination, filterTrails, primaryTrailhead, sunLocation } from "@/lib/data";
+import { planDay } from "@/lib/dayPlan";
 import { fetchTrack, gpxUrlFor } from "@/lib/gpx";
 import { haversineM } from "@/lib/geo";
+import { useTripSettings } from "@/lib/tripSettings";
+import { useDriveMatrix, useDriveRoute } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { TrailPicker } from "@/components/TrailPicker";
 import { TrailList } from "@/components/TrailList";
 import type { TrailListItem } from "@/components/TrailList";
+import { DayPlanView } from "@/components/DayPlanView";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
 
@@ -33,10 +37,6 @@ function useIsDesktop(): boolean {
   );
 }
 
-function primaryTrailhead(detail: TrailDetail) {
-  return detail.trailheads.find((t) => t.is_primary) ?? detail.trailheads[0] ?? null;
-}
-
 /** Union of every trail's bbox, so the overview map shows them all. */
 function unionBounds(trails: TrailDetail[]): BBox | null {
   const boxes = trails.map((t) => t.trail.bbox).filter((b): b is BBox => b !== null);
@@ -54,14 +54,14 @@ function unionBounds(trails: TrailDetail[]): BBox | null {
 }
 
 export function HomeExplorer({ trails }: Props) {
-  const [hours, setHours] = useState(4);
-  const [withKids, setWithKids] = useState(false);
-  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
-  const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
+  const { date, time, hours, withKids } = useTripSettings();
+  const { start } = useUserLocation();
+  // The trail whose day is shown under the map: last hovered / tapped, sticky on mouse-out.
+  const [panelSlug, setPanelSlug] = useState<string | null>(null);
+  const [showMapOnPhone, setShowMapOnPhone] = useState(false);
   const [trackPoints, setTrackPoints] = useState<Record<string, [number, number][]>>({});
   const itemRefs = useRef(new Map<string, HTMLElement>());
   const isDesktop = useIsDesktop();
-  const { start } = useUserLocation();
 
   // Static GPX files are small, so every track is loaded client-side.
   useEffect(() => {
@@ -79,32 +79,50 @@ export function HomeExplorer({ trails }: Props) {
     };
   }, [trails]);
 
-  const matches = useMemo(
-    () => filterTrails(trails, { maxHours: hours, withKids }),
-    [trails, hours, withKids]
-  );
-  const matchSlugs = useMemo(() => new Set(matches.map((m) => m.trail.slug)), [matches]);
-
-  // With a known start, nearest trailhead first.
-  const items = useMemo<TrailListItem[]>(() => {
-    const list = matches.map((detail) => {
-      const th = primaryTrailhead(detail);
-      return {
-        detail,
-        distanceFromUserM: start && th ? haversineM(start, th.location) : null,
-      };
+  // Drive time to every trail in one request, in `trails` order.
+  const destinations = useMemo(() => trails.map((t) => driveDestination(t)), [trails]);
+  const routable = useMemo(() => destinations.filter((d): d is LatLng => d !== null), [destinations]);
+  const { matrix } = useDriveMatrix(start, routable);
+  const driveBySlug = useMemo(() => {
+    const out: Record<string, number | null> = {};
+    let j = 0;
+    trails.forEach((t, i) => {
+      out[t.trail.slug] = destinations[i] ? (matrix?.durationsMin[j++] ?? null) : null;
     });
-    if (start) {
-      list.sort(
-        (a, b) =>
-          (a.distanceFromUserM ?? Number.POSITIVE_INFINITY) -
-          (b.distanceFromUserM ?? Number.POSITIVE_INFINITY)
-      );
-    }
-    return list;
-  }, [matches, start]);
+    return out;
+  }, [trails, destinations, matrix]);
 
-  const activeSlug = hoveredSlug ?? selectedSlug;
+  // Every input feeds straight into this: filter by kids + whole-day budget, plan each day, sort.
+  const items = useMemo<TrailListItem[]>(() => {
+    const list = filterTrails(trails, { withKids }).flatMap((detail) => {
+      const driveMin = driveBySlug[detail.trail.slug] ?? null;
+      const totalMin = detail.trail.duration_min + 2 * (driveMin ?? 0);
+      if (totalMin > hours * 60) return [];
+      const th = primaryTrailhead(detail);
+      const sun = sunLocation(detail);
+      return [
+        {
+          detail,
+          driveMin,
+          distanceFromUserM: start && th ? haversineM(start, th.location) : null,
+          plan:
+            date && time && sun
+              ? planDay({ date, start: time, driveMin, hikeMin: detail.trail.duration_min, location: sun })
+              : null,
+        },
+      ];
+    });
+    const key = (i: TrailListItem) => i.driveMin ?? (i.distanceFromUserM ?? Infinity) / 1000;
+    if (start) list.sort((a, b) => key(a) - key(b));
+    return list;
+  }, [trails, withKids, hours, date, time, start, driveBySlug]);
+
+  const matchSlugs = useMemo(() => new Set(items.map((m) => m.detail.trail.slug)), [items]);
+
+  const panelDetail =
+    trails.find((t) => t.trail.slug === panelSlug && matchSlugs.has(panelSlug)) ?? items[0]?.detail ?? null;
+  const activeSlug = panelDetail?.trail.slug ?? null;
+  const panelDrive = useDriveRoute(start, panelDetail ? driveDestination(panelDetail) : null);
 
   const tracks = useMemo<MapTrack[]>(
     () =>
@@ -147,7 +165,7 @@ export function HomeExplorer({ trails }: Props) {
   }, []);
 
   const handleMapSelect = useCallback((slug: string) => {
-    setSelectedSlug(slug);
+    setPanelSlug(slug);
     itemRefs.current.get(slug)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, []);
 
@@ -157,6 +175,7 @@ export function HomeExplorer({ trails }: Props) {
       markers={markers}
       bounds={bounds}
       onSelectTrail={handleMapSelect}
+      driveLeg={panelDrive.route?.points}
       ariaLabel="Prehľadová mapa všetkých trás"
     />
   );
@@ -181,29 +200,45 @@ export function HomeExplorer({ trails }: Props) {
           </p>
         </header>
 
-        <TrailPicker
-          hours={hours}
-          onHoursChange={setHours}
-          withKids={withKids}
-          onWithKidsChange={setWithKids}
-        />
+        <TrailPicker hasDrive={start !== null && matrix !== null} />
 
         {!isDesktop && (
-          <div className="h-[35vh] overflow-hidden rounded-xl border border-[var(--border)]">
-            {map}
-          </div>
+          <button
+            type="button"
+            onClick={() => setShowMapOnPhone((v) => !v)}
+            aria-expanded={showMapOnPhone}
+            className="w-fit rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium"
+          >
+            {showMapOnPhone ? "Skryť mapu" : "Zobraziť mapu"}
+          </button>
+        )}
+        {!isDesktop && showMapOnPhone && (
+          <div className="h-[40vh] overflow-hidden rounded-xl border border-[var(--border)]">{map}</div>
         )}
 
         <TrailList
           items={items}
-          activeSlug={activeSlug}
-          onActiveChange={setHoveredSlug}
+          total={trails.length}
+          activeSlug={isDesktop ? activeSlug : null}
+          onActiveChange={setPanelSlug}
           registerItem={registerItem}
         />
       </div>
 
       {isDesktop && (
-        <div className="sticky top-0 h-dvh flex-1 border-l border-[var(--border)]">{map}</div>
+        <div className="sticky top-0 flex h-dvh flex-1 flex-col border-l border-[var(--border)]">
+          <div className="min-h-0 flex-1">{map}</div>
+          {panelDetail && (
+            <div className="h-[42vh] shrink-0 overflow-y-auto border-t border-[var(--border)] bg-[var(--card-bg)] p-4">
+              <DayPlanView
+                title={panelDetail.trail.name}
+                sun={sunLocation(panelDetail)}
+                destination={driveDestination(panelDetail)}
+                hikeMin={panelDetail.trail.duration_min}
+              />
+            </div>
+          )}
+        </div>
       )}
     </main>
   );

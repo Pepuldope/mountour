@@ -93,6 +93,7 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ari
   const userLayerRef = useRef<LayerGroup | null>(null);
   const driveLayerRef = useRef<LayerGroup | null>(null);
   const onSelectRef = useRef(onSelectTrail);
+  const boundsRef = useRef<BBox | null>(bounds);
   const { fix, start } = useUserLocation();
 
   useEffect(() => {
@@ -126,8 +127,14 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ari
       markerLayerRef.current = L.layerGroup().addTo(map);
       userLayerRef.current = L.layerGroup().addTo(map);
 
-      // The map sits in flex/sticky containers whose size can change.
-      observer = new ResizeObserver(() => map?.invalidateSize());
+      // The map sits in flex/sticky containers whose size can change: keep the
+      // requested area in view rather than whatever zoom fit the old size.
+      observer = new ResizeObserver(() => {
+        if (!map) return;
+        map.invalidateSize();
+        const b = boundsRef.current;
+        if (b) map.fitBounds([[b.sw.lat, b.sw.lon], [b.ne.lat, b.ne.lon]], { padding: [24, 24] });
+      });
       observer.observe(containerRef.current);
 
       setCtx({ L, map });
@@ -151,6 +158,7 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ari
   // Fit when the requested area changes.
   const boundsKey = bounds ? `${bounds.sw.lat},${bounds.sw.lon},${bounds.ne.lat},${bounds.ne.lon}` : "";
   useEffect(() => {
+    boundsRef.current = bounds;
     if (!ctx || !bounds) return;
     ctx.map.fitBounds(
       [

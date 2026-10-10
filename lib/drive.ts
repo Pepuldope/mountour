@@ -16,3 +16,9 @@ export function roundCoord(n: number): number {
 export function driveKey(from: LatLng, to: LatLng): string {
   return [from.lat, from.lon, to.lat, to.lon].map(roundCoord).join(",");
 }
+
+/** Drive time from one start to many destinations, in destination order. null = unroutable. */
+export interface DriveMatrix {
+  durationsMin: (number | null)[];
+  distancesM: (number | null)[];
+}

@@ -48,15 +48,24 @@ dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
   Verdicts: ok / tesné (<30 min) / po západe / potme. Without a start, the time is
   the hike start and only the hike is shown.
 
-## 6. Live, interactive feel  `[ ]`
+## 6. Live, interactive feel  `[x]`
 - No "fill the form → get a result" flow. Every input (time budget, kids,
   start location, departure time) updates the results, map and timeline instantly.
+- **Built 2026-10-10:** `lib/tripSettings.tsx` holds date / departure / hours / kids for
+  the whole app (sessionStorage, survives home <-> trip navigation). Home list gets drive
+  times for every trail in one call (`/api/drive-matrix`, ORS matrix), sorts by drive
+  time, and the budget counts the whole day (drive there + hike + drive back). Each item
+  shows a compact timeline + verdict; trails ending after sunset stay listed, flagged.
+  Default departure: now (rounded to 15 min), or tomorrow 08:00 after 15:00.
 
-## 7. Layout  `[~]`
+## 7. Layout  `[x]`
 - **Desktop:** left column = the inputs + nav (saved trips, etc.), right = map +
   timeline, the visual, interactive part.
 - **Phone:** the visual side can shrink (no big map by default), but inputs still
   give live feedback, e.g. the result list and a compact timeline reacting to inputs.
+- **Built 2026-10-10:** desktop right column = map + day plan of the active trail (home:
+  last hovered / tapped on map). Phone home: map behind "Zobraziť mapu", mini timelines in
+  the list. Phone trip page: short map, inputs, then the plan.
 
 ## 8. Saved trips  `[ ]`
 - A "saved trips" entry in the left nav. Fits with offline cache-on-plan: a saved
