@@ -3,6 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { driveDestination, getTrailBySlug, primaryTrailhead, sunLocation } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
+import { getTrip } from "@/lib/trips";
+import { buildProfile } from "@/lib/tripProfile";
 import { DIFFICULTY_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { MARKING_COLOR, MARKING_LABEL } from "@/lib/mapLayers";
 import { FeeBlock } from "@/components/FeeBlock";
@@ -74,6 +76,8 @@ export default async function TripSheetPage({ params }: Props) {
   if (!detail) notFound();
 
   const { trail, parkingLots, transitStops, closures, fees } = detail;
+  const trip = await getTrip(slug);
+  const profile = trip ? buildProfile(trip) : null;
   const gpxUrl = gpxUrlFor(trail.gpx_path);
   const sun = sunLocation(detail);
   const destination = driveDestination(detail);
@@ -122,6 +126,7 @@ export default async function TripSheetPage({ params }: Props) {
           sun={sun}
           destination={destination}
           baseHikeMin={trail.duration_min}
+          profile={profile}
           gpxUrl={gpxUrl}
           bbox={trail.bbox}
         />

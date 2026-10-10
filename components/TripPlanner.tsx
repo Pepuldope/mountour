@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { SAFE_MARGIN_MIN } from "@/lib/dayPlan";
+import type { DayPlan } from "@/lib/dayPlan";
 import { dayInSentence, floorTo5, longDay } from "@/lib/days";
 import { formatDuration, formatTime, verdictText } from "@/lib/format";
 import { googleMapsUrl, mapyUrl, readSharedPlan } from "@/lib/links";
@@ -14,12 +15,15 @@ import { FilterChips } from "@/components/FilterChips";
 import { SaveTripButton } from "@/components/SaveTripButton";
 import type { ShareInfo } from "@/components/ShareButton";
 import { StartChip } from "@/components/StartChip";
-import { TimelineBar } from "@/components/TimelineBar";
+import { SunArc } from "@/components/SunArc";
+import { GOAL_WORDS } from "@/lib/tripProfile";
+import type { TripProfile } from "@/lib/tripProfile";
 
 interface Props extends ShareInfo {
   sun: LatLng | null;
   destination: LatLng | null;
   baseHikeMin: number;
+  profile: TripProfile | null;
   gpxUrl: string | null;
   bbox: BBox | null;
 }
@@ -37,7 +41,7 @@ const navButton =
  * The trip page's answer: "vyrazte najneskôr", the day and departure, the
  * timeline, then Uložiť (main), share and navigation hand-offs.
  */
-export function TripPlanner({ sun, destination, baseHikeMin, gpxUrl, bbox, ...trip }: Props) {
+export function TripPlanner({ sun, destination, baseHikeMin, profile, gpxUrl, bbox, ...trip }: Props) {
   const { start } = useUserLocation();
   const { today, update } = useTripSettings();
   const { plan, date, time, driveMin, driveApprox, driveStatus } = useTripPlan(sun, destination, baseHikeMin);
@@ -75,23 +79,26 @@ export function TripPlanner({ sun, destination, baseHikeMin, gpxUrl, bbox, ...tr
       {plan && (
         <section
           aria-label="Kedy vyraziť"
-          className="flex flex-col gap-1 rounded-[var(--radius-card)] bg-[var(--sky-night)] p-4 text-white"
+          className="overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)]"
         >
-          <p className="text-sm opacity-90">
-            {startName && hasDrive ? `Štart ${startName} · ` : ""}
-            {capitalize(`${date ? `${dayInSentence(date, new Date())} ` : ""}${hasDrive ? "vyrazte" : "začnite túru"} najneskôr`)}
-          </p>
-          <p className="font-data text-5xl leading-none text-[var(--sun)]">{formatTime(latest!)}</p>
-          <p className="text-sm opacity-90">
-            aby ste boli dole {SAFE_MARGIN_MIN} min pred západom slnka ({formatTime(plan.sunset)})
-          </p>
-          {latestPassed && (
-            <p className="pt-1 text-sm text-[var(--sun)]">Na dnes je to už neskoro. Skúste zajtra ráno.</p>
-          )}
-          {driveApprox && (
-            <p className="pt-1 text-xs opacity-80">Cestu autom teraz odhadujeme podľa vzdialenosti (~{formatDuration(driveMin!)}).</p>
-          )}
-          {!start && <p className="pt-1 text-xs opacity-80">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>}
+          <div className="flex flex-col gap-1 px-4 pt-3.5 pb-2">
+            <p className="text-sm text-[var(--muted)]">
+              {startName && hasDrive ? `Štart ${startName} · ` : ""}
+              {capitalize(`${date ? `${dayInSentence(date, new Date())} ` : ""}${hasDrive ? "vyrazte" : "začnite túru"} najneskôr`)}
+            </p>
+            <p className="font-data text-5xl leading-none text-[var(--time)]">{formatTime(latest!)}</p>
+            <p className="text-sm">
+              a budete späť {SAFE_MARGIN_MIN} min pred západom slnka ({formatTime(plan.sunset)})
+            </p>
+            {latestPassed && (
+              <p className="pt-1 text-sm font-semibold text-[var(--time)]">Na dnes je to už neskoro. Skúste zajtra ráno.</p>
+            )}
+            {driveApprox && (
+              <p className="pt-1 text-xs text-[var(--muted)]">Cestu autom teraz odhadujeme podľa vzdialenosti (~{formatDuration(driveMin!)}).</p>
+            )}
+            {!start && <p className="pt-1 text-xs text-[var(--muted)]">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>}
+          </div>
+          {sun && <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} />}
         </section>
       )}
 
@@ -124,28 +131,22 @@ export function TripPlanner({ sun, destination, baseHikeMin, gpxUrl, bbox, ...tr
 
       {plan && (
         <section aria-label="Priebeh dňa" className="flex flex-col gap-3">
-          <TimelineBar plan={plan} good={good} hasDrive={hasDrive} />
-          <p role="status" className={`text-sm font-semibold ${good ? "text-[var(--ok)]" : "text-[var(--warn)]"}`}>
+          <p
+            role="status"
+            className={`rounded-xl px-3 py-2.5 text-sm font-semibold ${good ? "bg-[var(--ok-bg)] text-[var(--ok)]" : "bg-[var(--warn-bg)] text-[var(--warn)]"}`}
+          >
             {verdictText(plan)}
           </p>
           {plan.startsInDark && <p className="text-sm text-[var(--warn)]">Túra začína pred východom slnka, vezmite si čelovku.</p>}
-          <ol className="font-data grid grid-cols-2 gap-x-4 gap-y-0.5 text-[15px] sm:grid-cols-4">
-            {hasDrive && (
-              <li>
-                <span className="text-[var(--muted)]">odchod</span> {formatTime(plan.segments[0].start)}
-              </li>
+          <ol className="font-data grid grid-cols-4 gap-x-3 text-[16px]">
+            {hasDrive ? (
+              <Step label="odchod" time={plan.segments[0].start} />
+            ) : (
+              <Step label="túra" time={plan.hikeStart} />
             )}
-            <li>
-              <span className="text-[var(--muted)]">túra</span> {formatTime(plan.hikeStart)}
-            </li>
-            <li>
-              <span className="text-[var(--muted)]">dole</span> {formatTime(plan.hikeEnd)}
-            </li>
-            {hasDrive && (
-              <li>
-                <span className="text-[var(--muted)]">doma</span> {formatTime(plan.segments[plan.segments.length - 1].end)}
-              </li>
-            )}
+            {profile && <Step label={GOAL_WORDS[profile.goalKind].noun} time={goalTime(plan, profile)} approx />}
+            <Step label="späť" time={plan.hikeEnd} />
+            {hasDrive && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
         </section>
       )}
@@ -165,4 +166,20 @@ export function TripPlanner({ sun, destination, baseHikeMin, gpxUrl, bbox, ...tr
       </section>
     </div>
   );
+}
+
+function Step({ label, time, approx = false }: { label: string; time: Date; approx?: boolean }) {
+  return (
+    <li>
+      <span className="block font-sans text-[11px] font-medium text-[var(--muted)]">{label}</span>
+      {approx ? "~" : ""}
+      {formatTime(time)}
+    </li>
+  );
+}
+
+/** When the walk reaches its goal (peak, lake, castle...). */
+function goalTime(plan: DayPlan, profile: TripProfile): Date {
+  const at = profile.points[profile.goalIndex].at;
+  return new Date(plan.hikeStart.getTime() + at * (plan.hikeEnd.getTime() - plan.hikeStart.getTime()));
 }
