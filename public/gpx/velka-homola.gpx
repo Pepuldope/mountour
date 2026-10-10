@@ -4,20 +4,18 @@
   <trk><name>Veľká Homoľa od Zochovej chaty</name><trkseg>
     <trkpt lat="48.380881" lon="17.279383"><ele>453</ele></trkpt>
     <trkpt lat="48.380775" lon="17.279290"><ele>455</ele></trkpt>
-    <trkpt lat="48.381242" lon="17.277696"><ele>459</ele></trkpt>
+    <trkpt lat="48.381106" lon="17.278153"><ele>458</ele></trkpt>
+    <trkpt lat="48.381016" lon="17.278003"><ele>460</ele></trkpt>
+    <trkpt lat="48.380968" lon="17.277775"><ele>463</ele></trkpt>
+    <trkpt lat="48.381015" lon="17.277488"><ele>463</ele></trkpt>
+    <trkpt lat="48.380854" lon="17.277270"><ele>466</ele></trkpt>
     <trkpt lat="48.380740" lon="17.277170"><ele>461</ele></trkpt>
     <trkpt lat="48.380194" lon="17.277038"><ele>441</ele></trkpt>
     <trkpt lat="48.380132" lon="17.277065"><ele>441</ele></trkpt>
     <trkpt lat="48.379961" lon="17.276973"><ele>441</ele></trkpt>
     <trkpt lat="48.379487" lon="17.276915"><ele>444</ele></trkpt>
-    <trkpt lat="48.379382" lon="17.276781"><ele>446</ele></trkpt>
-    <trkpt lat="48.379220" lon="17.276413"><ele>448</ele></trkpt>
-    <trkpt lat="48.379074" lon="17.275686"><ele>461</ele></trkpt>
-    <trkpt lat="48.379021" lon="17.275544"><ele>463</ele></trkpt>
-    <trkpt lat="48.378939" lon="17.275471"><ele>465</ele></trkpt>
-    <trkpt lat="48.377541" lon="17.275188"><ele>476</ele></trkpt>
-    <trkpt lat="48.377353" lon="17.275542"><ele>481</ele></trkpt>
-    <trkpt lat="48.377059" lon="17.275821"><ele>483</ele></trkpt>
+    <trkpt lat="48.378440" lon="17.276616"><ele>454</ele></trkpt>
+    <trkpt lat="48.377122" lon="17.276041"><ele>480</ele></trkpt>
     <trkpt lat="48.376854" lon="17.275874"><ele>487</ele></trkpt>
     <trkpt lat="48.376346" lon="17.275333"><ele>497</ele></trkpt>
     <trkpt lat="48.376116" lon="17.275206"><ele>500</ele></trkpt>
@@ -89,20 +87,18 @@
     <trkpt lat="48.376116" lon="17.275206"><ele>500</ele></trkpt>
     <trkpt lat="48.376346" lon="17.275333"><ele>497</ele></trkpt>
     <trkpt lat="48.376854" lon="17.275874"><ele>487</ele></trkpt>
-    <trkpt lat="48.377059" lon="17.275821"><ele>483</ele></trkpt>
-    <trkpt lat="48.377353" lon="17.275542"><ele>481</ele></trkpt>
-    <trkpt lat="48.377541" lon="17.275188"><ele>476</ele></trkpt>
-    <trkpt lat="48.378939" lon="17.275471"><ele>465</ele></trkpt>
-    <trkpt lat="48.379021" lon="17.275544"><ele>463</ele></trkpt>
-    <trkpt lat="48.379074" lon="17.275686"><ele>461</ele></trkpt>
-    <trkpt lat="48.379220" lon="17.276413"><ele>448</ele></trkpt>
-    <trkpt lat="48.379382" lon="17.276781"><ele>446</ele></trkpt>
+    <trkpt lat="48.377122" lon="17.276041"><ele>480</ele></trkpt>
+    <trkpt lat="48.378440" lon="17.276616"><ele>454</ele></trkpt>
     <trkpt lat="48.379487" lon="17.276915"><ele>444</ele></trkpt>
     <trkpt lat="48.379961" lon="17.276973"><ele>441</ele></trkpt>
     <trkpt lat="48.380132" lon="17.277065"><ele>441</ele></trkpt>
     <trkpt lat="48.380194" lon="17.277038"><ele>441</ele></trkpt>
     <trkpt lat="48.380740" lon="17.277170"><ele>461</ele></trkpt>
-    <trkpt lat="48.381242" lon="17.277696"><ele>459</ele></trkpt>
+    <trkpt lat="48.380854" lon="17.277270"><ele>466</ele></trkpt>
+    <trkpt lat="48.381015" lon="17.277488"><ele>463</ele></trkpt>
+    <trkpt lat="48.380968" lon="17.277775"><ele>463</ele></trkpt>
+    <trkpt lat="48.381016" lon="17.278003"><ele>460</ele></trkpt>
+    <trkpt lat="48.381106" lon="17.278153"><ele>458</ele></trkpt>
     <trkpt lat="48.380775" lon="17.279290"><ele>455</ele></trkpt>
     <trkpt lat="48.380881" lon="17.279383"><ele>453</ele></trkpt>
   </trkseg></trk>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Brestovská jaskyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Brestovská jaskyňa</name><trkseg>
+    <trkpt lat="49.258128" lon="19.622117"><ele>778</ele></trkpt>
+    <trkpt lat="49.258706" lon="19.624258"><ele>784</ele></trkpt>
+    <trkpt lat="49.258964" lon="19.626200"><ele>787</ele></trkpt>
+    <trkpt lat="49.259108" lon="19.627732"><ele>794</ele></trkpt>
+    <trkpt lat="49.259159" lon="19.628023"><ele>792</ele></trkpt>
+    <trkpt lat="49.260097" lon="19.629815"><ele>794</ele></trkpt>
+    <trkpt lat="49.260941" lon="19.630837"><ele>794</ele></trkpt>
+    <trkpt lat="49.261084" lon="19.631159"><ele>794</ele></trkpt>
+    <trkpt lat="49.261162" lon="19.631523"><ele>794</ele></trkpt>
+    <trkpt lat="49.261178" lon="19.631740"><ele>795</ele></trkpt>
+    <trkpt lat="49.261254" lon="19.631682"><ele>794</ele></trkpt>
+    <trkpt lat="49.261398" lon="19.632207"><ele>795</ele></trkpt>
+    <trkpt lat="49.261496" lon="19.632449"><ele>795</ele></trkpt>
+    <trkpt lat="49.261053" lon="19.635625"><ele>826</ele></trkpt>
+    <trkpt lat="49.260403" lon="19.638605"><ele>833</ele></trkpt>
+    <trkpt lat="49.259277" lon="19.643497"><ele>845</ele></trkpt>
+    <trkpt lat="49.259139" lon="19.644208"><ele>847</ele></trkpt>
+    <trkpt lat="49.259022" lon="19.644994"><ele>845</ele></trkpt>
+    <trkpt lat="49.258638" lon="19.649249"><ele>854</ele></trkpt>
+    <trkpt lat="49.258670" lon="19.649723"><ele>858</ele></trkpt>
+    <trkpt lat="49.259986" lon="19.657334"><ele>880</ele></trkpt>
+    <trkpt lat="49.260026" lon="19.659256"><ele>872</ele></trkpt>
+    <trkpt lat="49.259879" lon="19.661426"><ele>870</ele></trkpt>
+    <trkpt lat="49.259823" lon="19.661417"><ele>869</ele></trkpt>
+    <trkpt lat="49.259879" lon="19.661426"><ele>870</ele></trkpt>
+    <trkpt lat="49.260026" lon="19.659256"><ele>872</ele></trkpt>
+    <trkpt lat="49.259986" lon="19.657334"><ele>880</ele></trkpt>
+    <trkpt lat="49.258670" lon="19.649723"><ele>858</ele></trkpt>
+    <trkpt lat="49.258638" lon="19.649249"><ele>854</ele></trkpt>
+    <trkpt lat="49.259022" lon="19.644994"><ele>845</ele></trkpt>
+    <trkpt lat="49.259139" lon="19.644208"><ele>847</ele></trkpt>
+    <trkpt lat="49.259277" lon="19.643497"><ele>845</ele></trkpt>
+    <trkpt lat="49.260403" lon="19.638605"><ele>833</ele></trkpt>
+    <trkpt lat="49.261053" lon="19.635625"><ele>826</ele></trkpt>
+    <trkpt lat="49.261496" lon="19.632449"><ele>795</ele></trkpt>
+    <trkpt lat="49.261398" lon="19.632207"><ele>795</ele></trkpt>
+    <trkpt lat="49.261254" lon="19.631682"><ele>794</ele></trkpt>
+    <trkpt lat="49.261178" lon="19.631740"><ele>795</ele></trkpt>
+    <trkpt lat="49.261162" lon="19.631523"><ele>794</ele></trkpt>
+    <trkpt lat="49.261084" lon="19.631159"><ele>794</ele></trkpt>
+    <trkpt lat="49.260941" lon="19.630837"><ele>794</ele></trkpt>
+    <trkpt lat="49.260097" lon="19.629815"><ele>794</ele></trkpt>
+    <trkpt lat="49.259159" lon="19.628023"><ele>792</ele></trkpt>
+    <trkpt lat="49.259108" lon="19.627732"><ele>794</ele></trkpt>
+    <trkpt lat="49.258964" lon="19.626200"><ele>787</ele></trkpt>
+    <trkpt lat="49.258706" lon="19.624258"><ele>784</ele></trkpt>
+    <trkpt lat="49.258128" lon="19.622117"><ele>778</ele></trkpt>
+  </trkseg></trk>
+</gpx>
