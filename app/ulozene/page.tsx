@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SavedTripsList } from "@/components/SavedTripsList";
 
-export const metadata: Metadata = { title: "Moje výlety - MounTour" };
+export const metadata: Metadata = {
+  title: "Moje výlety",
+  robots: { index: false, follow: true },
+};
 
 export default function SavedTripsPage() {
   return (

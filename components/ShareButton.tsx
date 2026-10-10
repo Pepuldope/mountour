@@ -6,6 +6,7 @@ import { sharePath, shareText, startTown } from "@/lib/links";
 import type { DayPlan } from "@/lib/dayPlan";
 import type { Difficulty } from "@/lib/types";
 import { useUserLocation } from "@/lib/userLocation";
+import { track } from "@/lib/analytics";
 
 export interface ShareInfo {
   slug: string;
@@ -53,6 +54,7 @@ export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Posl
       url,
     });
     // The URL is already the text's last line; passing it twice duplicates it in most chat apps.
+    track("share", { trail: trip.slug });
     if (navigator.share) {
       try {
         await navigator.share({ text });

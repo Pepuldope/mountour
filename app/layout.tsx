@@ -4,6 +4,9 @@ import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
 import { UserLocationProvider } from "@/lib/userLocation";
 import { TripSettingsProvider } from "@/lib/tripSettings";
+import { Analytics } from "@/components/Analytics";
+import { VisitBeacon } from "@/components/VisitBeacon";
+import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/site";
 
 // Brand fonts (strategy/06-identity): latin-ext covers every Slovak letter.
 const figtree = Figtree({
@@ -24,10 +27,24 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 export const metadata: Metadata = {
-  title: "MounTour",
-  description:
-    "Naplánuj si jednodňový výlet do hôr - kedy vyraziť, kde parkovať a kedy sa vrátiť pred západom slnka.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${SITE_TITLE} | ${SITE_NAME}`,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
   manifest: "/manifest.json",
+  openGraph: {
+    type: "website",
+    locale: "sk_SK",
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [OG_IMAGE],
+  },
+  twitter: { card: "summary_large_image", images: [OG_IMAGE.url] },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
@@ -48,6 +65,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <UserLocationProvider>
           <TripSettingsProvider>{children}</TripSettingsProvider>
         </UserLocationProvider>
+        <VisitBeacon />
+        <Analytics />
       </body>
     </html>
   );

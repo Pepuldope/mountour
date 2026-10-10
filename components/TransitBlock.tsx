@@ -31,6 +31,7 @@ export function TransitBlock({ stops }: Props) {
           </p>
           <a
             href={cpSkUrl(nearest.name, from, date, time)}
+            data-umami-event="transit_open"
             target="_blank"
             rel="noopener noreferrer"
             className="w-fit text-sm font-semibold text-[var(--accent)] underline"
@@ -43,6 +44,7 @@ export function TransitBlock({ stops }: Props) {
           <p className="text-sm">Pri začiatku trasy sme nenašli zastávku.</p>
           <a
             href="https://cp.sk/"
+            data-umami-event="transit_open"
             target="_blank"
             rel="noopener noreferrer"
             className="w-fit text-sm font-semibold text-[var(--accent)] underline"
