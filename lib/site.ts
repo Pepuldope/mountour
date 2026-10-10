@@ -21,7 +21,7 @@ export const SITE_DESCRIPTION =
  * Umami Cloud website ID (Umami → Settings → Websites → Edit → Website ID).
  * Empty = no analytics script is loaded.
  */
-export const UMAMI_WEBSITE_ID = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID ?? "";
+export const UMAMI_WEBSITE_ID = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID ?? "da63a714-c5cf-412f-8194-a13cefc0d4f6";
 
 /**
  * Hosts where visits are counted. Local dev and preview builds stay out of
