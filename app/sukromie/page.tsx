@@ -31,8 +31,9 @@ export default function PrivacyPage() {
       </p>
       <p>
         Aby sme vedeli, koľko ľudí sa k MounTouru vracia, server si pri návšteve zapíše dátum a jednosmerný
-        odtlačok (hash) vytvorený z IP adresy a typu prehliadača s tajným kľúčom, ktorý sa mení každý mesiac. IP
-        adresu neukladáme a z odtlačku sa nedá spätne zistiť, kto ste. Záznamy mažeme po 14 mesiacoch.
+        odtlačok (hash) vytvorený z IP adresy a typu prehliadača s náhodným kľúčom, ktorý sa mení každý mesiac. IP
+        adresu neukladáme a z odtlačku sa nedá spätne zistiť, kto ste. Po skončení mesiaca kľúč aj odtlačky
+        zmažeme a ostanú len súhrnné čísla (napríklad „120 ľudí, z toho 15 aspoň 4 dni“).
       </p>
 
       <h2>Vaša poloha a miesto štartu</h2>

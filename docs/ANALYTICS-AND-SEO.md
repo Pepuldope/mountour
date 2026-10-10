@@ -14,9 +14,9 @@ Cloudflare dashboard, never into the repo (it is public).
 | Brand icons and preview image | `app/icon.svg`, `app/apple-icon.png`, `public/og-image.png` | No |
 | Privacy, disclaimer, sources pages + footer | `/sukromie`, `/upozornenie`, `/zdroje` | Optional contact e-mail |
 | Umami visitor stats + product events | `components/Analytics.tsx`, `lib/analytics.ts` | **Step 1** |
-| "People with 4+ visit days" counter | `app/api/visit`, `supabase/migrations/0006_visit_days.sql` | **Steps 2 and 3** |
-| Tester sign-up and post-test feedback pages | `/testeri`, `/spatna-vazba` | **Step 4** |
-| Google Search Console | outside the code | **Step 5**, after the domain |
+| "People with 4+ visit days" counter + report at `/statistiky` | `app/api/visit`, `lib/visitStore.ts`, Cloudflare D1 | No |
+| Tester sign-up and post-test feedback pages | `/testeri`, `/spatna-vazba` | **Step 2** |
+| Google Search Console | outside the code | **Step 3**, after the domain |
 
 The real address is `SITE_URL` in `lib/site.ts`. When mountour.sk is live, change that one line
 to `https://mountour.sk` and add `mountour.sk` to Search Console; all canonical URLs, the sitemap
@@ -28,10 +28,20 @@ Umami Cloud's free Hobby plan (100k events/month, 1 website, 6 months of history
 dashboard: visitors, where they came from, which trips they opened, saves, shares and navigation
 opens. It has **no API on the free plan**, so a script cannot read its numbers. The proposal KPI
 "people who used MounTour on 4+ different days in a month" is therefore counted by our own small
-table in Supabase, with the same method Umami uses: a one-way hash of IP + browser with a secret
-key that changes every month. Nothing is stored on the visitor's device, so no consent banner.
-The count is conservative: someone whose phone changes IP address between days is counted as two
-people with fewer days each.
+Cloudflare D1 database (free, bound as `VISITS_DB` in `wrangler.jsonc`; the first deploy creates
+it, no account, key or secret needed), with the same method Umami uses: a one-way hash of
+IP + browser with a random key that changes every month. Nothing is stored on the visitor's
+device, so no consent banner. When a month ends its key and raw rows are deleted and only the
+totals stay. The count is conservative: someone whose phone changes IP address between days is
+counted as two people with fewer days each.
+
+**The monthly report:** open `/statistiky` on the live site (not linked, not indexed). One row
+per month: people, people with 2+ days, people with **4+ days** (the KPI), average days. The
+current month updates live. If the page says the counter only runs on the published site after a
+deploy, check Cloudflare → **Workers & Pages** → **mountour** → **Bindings**: `VISITS_DB` should
+be listed. If it is missing, the build had no permission to create the database: **Storage &
+Databases** → **D1** → **Create** → name `mountour-visits`, then in the Worker → **Bindings** →
+**Add binding** → **D1 database**, variable name `VISITS_DB`, database `mountour-visits` → **Save**.
 
 ## Events sent to Umami
 
@@ -67,40 +77,7 @@ send coordinates, typed places or anything personal.
 After the next deploy, open the site, then Umami → **Websites** → MounTour: your visit shows up
 within a minute.
 
-## Step 2. Supabase table for visit days (about 10 minutes)
-
-1. Open https://supabase.com/dashboard and pick the MounTour project. If it says
-   **Project paused**, click **Restore project** and wait a minute.
-2. Left menu **SQL Editor** → **New query**. Paste the whole content of
-   `supabase/migrations/0006_visit_days.sql` and click **Run**. "Success. No rows returned" is right.
-3. Left menu **Project Settings** (gear) → **Data API** (or **API**): copy the **Project URL**
-   (`https://xxxx.supabase.co`).
-4. **Project Settings** → **API Keys**: copy a **secret** key (`sb_secret_...`). If you only see
-   "legacy" keys, copy **service_role** instead. Never paste this key into the repo or a chat.
-
-## Step 3. Cloudflare settings (about 5 minutes)
-
-1. https://dash.cloudflare.com → **Workers & Pages** → **mountour** → **Settings** →
-   **Variables and Secrets** → **Add**.
-2. Add three entries:
-
-   | Type | Variable name | Value |
-   |---|---|---|
-   | Text | `SUPABASE_URL` | the Project URL from step 2.3 |
-   | **Secret** | `SUPABASE_SECRET_KEY` | the secret key from step 2.4 |
-   | **Secret** | `VISIT_SALT` | any long random text, e.g. 40 random letters and digits. Write it nowhere else. |
-
-3. Click **Deploy** (or **Save and deploy**).
-
-Do **not** add `NEXT_PUBLIC_SUPABASE_URL` here: that would switch trail data to the old Supabase
-tables. The names above are different on purpose.
-
-**The monthly report:** Supabase → **Table Editor** → `monthly_visitors`. One row per month:
-`visitors`, `visitors_2plus_days`, `visitors_4plus_days` (the KPI) and `avg_days`. It is always
-up to date. On the 2nd of each month a scheduled job copies finished months to
-`monthly_visitors_archive` and deletes raw rows older than 14 months.
-
-## Step 4. Google Forms for testers (about 20 minutes, Radoslav can do it)
+## Step 2. Google Forms for testers (about 20 minutes, Radoslav can do it)
 
 Create two forms at https://forms.google.com (**Blank form**). In each: **Settings** →
 **Responses** → turn **Collect email addresses** off (contact is asked as a question instead).
@@ -133,7 +110,7 @@ links answers to a spreadsheet.
 Share `/spatna-vazba` (not the raw Google link) after each test session, so `feedback_open` is
 counted.
 
-## Step 5. Google Search Console (after mountour.sk is live)
+## Step 3. Google Search Console (after mountour.sk is live)
 
 1. https://search.google.com/search-console → **Add property** → **Domain** → `mountour.sk` →
    **Continue**.

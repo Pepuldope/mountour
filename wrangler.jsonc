@@ -3,5 +3,8 @@
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
-  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" }
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  // Visit-day counter (lib/visitStore.ts). No database_id on purpose: the
+  // first deploy creates the free D1 database and later deploys reuse it.
+  "d1_databases": [{ "binding": "VISITS_DB", "database_name": "mountour-visits" }]
 }
