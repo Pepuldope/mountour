@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated_at": "2026-10-10T13:54:43+00:00",
+ "generated_at": "2026-10-10T13:59:10+00:00",
  "osm_data_at": "2026-10-09T20:21:04Z",
  "attribution": "© OpenStreetMap contributors (ODbL); elevation: Copernicus DEM GLO-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA",
  "trips": [
@@ -3201,7 +3201,7 @@
    "gpx_url": "/gpx/biela-jaskyna.gpx"
   },
   {
-   "slug": "marcelov-hrad-hrabusice-myto",
+   "slug": "marcelov-hrad",
    "name": "Marcelov hrad",
    "description": "Výlet k hradu: Marcelov hrad. Štart: Hrabušice - mýto, späť rovnakou cestou. Po zelenej a červenej značke.",
    "region": "slovensky-raj",
@@ -3268,10 +3268,10 @@
     48.97064
    ],
    "curated": false,
-   "gpx_url": "/gpx/marcelov-hrad-hrabusice-myto.gpx"
+   "gpx_url": "/gpx/marcelov-hrad.gpx"
   },
   {
-   "slug": "rozhladna-schulerloch-spisska-nova-ves-bmz",
+   "slug": "rozhladna-schulerloch",
    "name": "Rozhľadňa Schulerloch",
    "description": "Výlet k vyhliadke Rozhľadňa Schulerloch. Štart: Spišská Nová Ves, BMZ, späť rovnakou cestou. Po červenej značke.",
    "region": "slovensky-raj",
@@ -3337,7 +3337,7 @@
     48.92808
    ],
    "curated": false,
-   "gpx_url": "/gpx/rozhladna-schulerloch-spisska-nova-ves-bmz.gpx"
+   "gpx_url": "/gpx/rozhladna-schulerloch.gpx"
   },
   {
    "slug": "tomasovsky-vyhlad",
@@ -3549,7 +3549,7 @@
    "gpx_url": "/gpx/medvedia-hlava.gpx"
   },
   {
-   "slug": "obrovsky-vodopad-pri-starej-horarni",
+   "slug": "obrovsky-vodopad",
    "name": "Obrovský vodopád",
    "description": "Výlet k vodopádu: Obrovský vodopád. Štart: Pri Starej Horárni, späť rovnakou cestou. Po červenej, modrej a žltej značke.",
    "region": "slovensky-raj",
@@ -3617,10 +3617,10 @@
     48.96125
    ],
    "curated": false,
-   "gpx_url": "/gpx/obrovsky-vodopad-pri-starej-horarni.gpx"
+   "gpx_url": "/gpx/obrovsky-vodopad.gpx"
   },
   {
-   "slug": "vodopad-ochrancov-prirody-pri-starej-horarni",
+   "slug": "vodopad-ochrancov-prirody",
    "name": "Vodopád ochrancov prírody",
    "description": "Výlet k vodopádu: Vodopád ochrancov prírody. Štart: Pri Starej Horárni, okruh. Po červenej, žltej a zelenej značke.",
    "region": "slovensky-raj",
@@ -3698,7 +3698,7 @@
     48.96125
    ],
    "curated": false,
-   "gpx_url": "/gpx/vodopad-ochrancov-prirody-pri-starej-horarni.gpx"
+   "gpx_url": "/gpx/vodopad-ochrancov-prirody.gpx"
   },
   {
    "slug": "gacovska-skala",
@@ -4483,7 +4483,7 @@
    "gpx_url": "/gpx/koprovsky-stit.gpx"
   },
   {
-   "slug": "vychodna-vysoka-velicka-polana",
+   "slug": "vychodna-vysoka",
    "name": "Východná Vysoká",
    "description": "Výstup na vrchol Východná Vysoká (2429 m). Štart: Velická poľana, späť rovnakou cestou. Po zelenej a žltej značke.",
    "region": "tatry",
@@ -4543,7 +4543,7 @@
     49.17528
    ],
    "curated": false,
-   "gpx_url": "/gpx/vychodna-vysoka-velicka-polana.gpx"
+   "gpx_url": "/gpx/vychodna-vysoka.gpx"
   },
   {
    "slug": "predne-solisko",
@@ -4688,7 +4688,7 @@
    "gpx_url": "/gpx/velka-svistovka.gpx"
   },
   {
-   "slug": "batizovske-pleso-velicka-polana",
+   "slug": "batizovske-pleso",
    "name": "Batizovské pleso",
    "description": "Výlet k plesu: Batizovské pleso. Štart: Velická poľana, späť rovnakou cestou. Po červenej a zelenej značke.",
    "region": "tatry",
@@ -4746,7 +4746,7 @@
     49.15655
    ],
    "curated": false,
-   "gpx_url": "/gpx/batizovske-pleso-velicka-polana.gpx"
+   "gpx_url": "/gpx/batizovske-pleso.gpx"
   },
   {
    "slug": "capie-pleso",
@@ -5090,7 +5090,7 @@
    "gpx_url": "/gpx/brestova.gpx"
   },
   {
-   "slug": "litvorove-pleso-velicka-polana",
+   "slug": "litvorove-pleso",
    "name": "Litvorové pleso",
    "description": "Výlet k plesu: Litvorové pleso. Štart: Velická poľana, späť rovnakou cestou. Po zelenej a modrej značke.",
    "region": "tatry",
@@ -5150,7 +5150,7 @@
     49.17844
    ],
    "curated": false,
-   "gpx_url": "/gpx/litvorove-pleso-velicka-polana.gpx"
+   "gpx_url": "/gpx/litvorove-pleso.gpx"
   },
   {
    "slug": "pfinnova-kopa",
@@ -5224,7 +5224,7 @@
    "gpx_url": "/gpx/pfinnova-kopa.gpx"
   },
   {
-   "slug": "sivy-vrch-razcestie-na-tokarinach",
+   "slug": "sivy-vrch",
    "name": "Sivý vrch",
    "description": "Výstup na vrchol Sivý vrch (1805 m). Štart: Rázcestie na Tokarinách, späť rovnakou cestou. Po zelenej, modrej a žltej značke.",
    "region": "tatry",
@@ -5285,7 +5285,7 @@
     49.21115
    ],
    "curated": false,
-   "gpx_url": "/gpx/sivy-vrch-razcestie-na-tokarinach.gpx"
+   "gpx_url": "/gpx/sivy-vrch.gpx"
   },
   {
    "slug": "vysna-magura",
@@ -5764,7 +5764,7 @@
    "gpx_url": "/gpx/zelene-pleso.gpx"
   },
   {
-   "slug": "ostra-razcestie-na-tokarinach",
+   "slug": "ostra",
    "name": "Ostrá",
    "description": "Výstup na vrchol Ostrá (1764 m). Štart: Rázcestie na Tokarinách, späť rovnakou cestou. Po zelenej, modrej a žltej značke.",
    "region": "tatry",
@@ -5825,7 +5825,7 @@
     49.20053
    ],
    "curated": false,
-   "gpx_url": "/gpx/ostra-razcestie-na-tokarinach.gpx"
+   "gpx_url": "/gpx/ostra.gpx"
   },
   {
    "slug": "ostredok",

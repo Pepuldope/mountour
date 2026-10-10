@@ -1,6 +1,6 @@
 # Trip pipeline report
 
-Run: 2026-10-10T13:54:43+00:00 · OSM data: 2026-10-09T20:21:04Z
+Run: 2026-10-10T13:59:10+00:00 · OSM data: 2026-10-09T20:21:04Z
 
 **89 trips**
 
@@ -94,13 +94,13 @@ Flag ⚠ when off by more than 15 %.
 | velka-knola | slovensky-raj | sedlo Grainár | 7.1 | 247 | 2:30 | stredna |  |
 | predna-hola | slovensky-raj | Pusté Pole | 16.8 | 644 | 6:00 | tazka |  |
 | biela-jaskyna | slovensky-raj | Pri Starej Horárni | 7.2 | 332 | 2:45 | lahka | slovensky-raj-rebriky |
-| marcelov-hrad-hrabusice-myto | slovensky-raj | Hrabušice - mýto | 3.8 | 125 | 1:30 | lahka |  |
-| rozhladna-schulerloch-spisska-nova-ves-bmz | slovensky-raj | Spišská Nová Ves, BMZ | 5.2 | 177 | 2:00 | lahka |  |
+| marcelov-hrad | slovensky-raj | Hrabušice - mýto | 3.8 | 125 | 1:30 | lahka |  |
+| rozhladna-schulerloch | slovensky-raj | Spišská Nová Ves, BMZ | 5.2 | 177 | 2:00 | lahka |  |
 | tomasovsky-vyhlad | slovensky-raj | Čingov, Ďurkovec | 3.6 | 138 | 1:30 | lahka |  |
 | zavojovy-vodopad | slovensky-raj | Lesnica, ústie | 17.7 | 568 | 6:00 | tazka | slovensky-raj-rebriky |
 | medvedia-hlava | slovensky-raj | Košiarny briežok | 8.0 | 354 | 3:00 | lahka |  |
-| obrovsky-vodopad-pri-starej-horarni | slovensky-raj | Pri Starej Horárni | 10.7 | 537 | 4:15 | stredna |  |
-| vodopad-ochrancov-prirody-pri-starej-horarni | slovensky-raj | Pri Starej Horárni | 16.7 | 725 | 6:15 | tazka | slovensky-raj-rebriky |
+| obrovsky-vodopad | slovensky-raj | Pri Starej Horárni | 10.7 | 537 | 4:15 | stredna |  |
+| vodopad-ochrancov-prirody | slovensky-raj | Pri Starej Horárni | 16.7 | 725 | 6:15 | tazka | slovensky-raj-rebriky |
 | gacovska-skala | slovensky-raj | Dedinky | 4.3 | 317 | 2:15 | lahka |  |
 | ogurciak | slovensky-raj | Píla, Piecky | 3.3 | 238 | 1:45 | lahka |  |
 | krivan | tatry | Tri Studničky (Stará horáreň) | 11.5 | 1262 | 8:15 | tazka | tanap-sezonna-uzavera |
@@ -112,18 +112,18 @@ Flag ⚠ when off by more than 15 %.
 | vodopad-skok | tatry | Rázcestie pred Heliosom | 8.5 | 404 | 3:15 | stredna |  |
 | skalnate-pleso | tatry | Pod Štartom | 7.9 | 739 | 5:00 | stredna |  |
 | koprovsky-stit | tatry | Holá Úboč | 16.7 | 1005 | 7:30 | tazka | tanap-sezonna-uzavera, tanap-symbolicky-cintorin |
-| vychodna-vysoka-velicka-polana | tatry | Velická poľana | 8.3 | 784 | 5:15 | stredna | tanap-sezonna-uzavera |
+| vychodna-vysoka | tatry | Velická poľana | 8.3 | 784 | 5:15 | stredna | tanap-sezonna-uzavera |
 | predne-solisko | tatry | Štrbské Pleso čerpačka | 6.5 | 711 | 4:45 | stredna |  |
 | velka-svistovka | tatry | Pod Štartom | 13.1 | 1010 | 7:15 | tazka | tanap-sezonna-uzavera |
-| batizovske-pleso-velicka-polana | tatry | Velická poľana | 8.1 | 345 | 3:00 | lahka |  |
+| batizovske-pleso | tatry | Velická poľana | 8.1 | 345 | 3:00 | lahka |  |
 | capie-pleso | tatry | Rázcestie pred Heliosom | 12.5 | 724 | 5:30 | stredna |  |
 | baranec | tatry | Rázcestie pod Holým vrchom | 10.3 | 1267 | 8:15 | tazka | tanap-sezonna-uzavera |
 | placlive | tatry | Rázcestie Šindľovec | 15.7 | 1082 | 7:45 | tazka | tanap-sezonna-uzavera |
 | salatin | tatry | Pod Spálenou | 10.8 | 1133 | 7:30 | tazka | tanap-sezonna-uzavera |
 | brestova | tatry | Pod Spálenou | 8.4 | 886 | 6:00 | tazka | tanap-sezonna-uzavera |
-| litvorove-pleso-velicka-polana | tatry | Velická poľana | 9.9 | 941 | 6:30 | tazka | tanap-sezonna-uzavera |
+| litvorove-pleso | tatry | Velická poľana | 9.9 | 941 | 6:30 | tazka | tanap-sezonna-uzavera |
 | pfinnova-kopa | tatry | Starý Smokovec (pozemná lanovka) | 19.0 | 1158 | 8:45 | tazka |  |
-| sivy-vrch-razcestie-na-tokarinach | tatry | Rázcestie na Tokarinách | 15.4 | 1131 | 8:00 | tazka | tanap-sezonna-uzavera |
+| sivy-vrch | tatry | Rázcestie na Tokarinách | 15.4 | 1131 | 8:00 | tazka | tanap-sezonna-uzavera |
 | vysna-magura | tatry | Úzka dolina, ústie | 13.5 | 1283 | 8:45 | tazka |  |
 | lucna | tatry | Rázcestie Zverovka | 11.2 | 621 | 4:45 | stredna | tanap-sezonna-uzavera |
 | maly-baranec | tatry | Odbočka nad Orešnicou | 11.3 | 1171 | 7:45 | tazka | tanap-sezonna-uzavera |
@@ -131,7 +131,7 @@ Flag ⚠ when off by more than 15 %.
 | velky-vodopad-studeneho-potoka | tatry | Starý Smokovec (pozemná lanovka) | 6.4 | 321 | 2:45 | lahka |  |
 | jamske-pleso | tatry | Bývalá Važecká chata | 7.1 | 291 | 2:45 | lahka |  |
 | zelene-pleso | tatry | Biela voda | 15.1 | 626 | 5:30 | stredna |  |
-| ostra-razcestie-na-tokarinach | tatry | Rázcestie na Tokarinách | 13.2 | 1083 | 7:30 | tazka | tanap-sezonna-uzavera |
+| ostra | tatry | Rázcestie na Tokarinách | 13.2 | 1083 | 7:30 | tazka | tanap-sezonna-uzavera |
 | ostredok | tatry | Úzka dolina, ústie | 11.6 | 1124 | 7:30 | tazka |  |
 | brestovska-jaskyna | tatry | Cukráreň | 6.1 | 106 | 2:00 | lahka | osm fee |
 | hucava-diera | tatry | Tatranská kotlina (zastávka SAD) | 2.4 | 107 | 1:00 | lahka |  |
