@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Belianska jaskyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Belianska jaskyňa</name><trkseg>
+    <trkpt lat="49.224900" lon="20.323947"><ele>766</ele></trkpt>
+    <trkpt lat="49.224436" lon="20.322626"><ele>765</ele></trkpt>
+    <trkpt lat="49.224410" lon="20.322349"><ele>765</ele></trkpt>
+    <trkpt lat="49.224444" lon="20.321804"><ele>767</ele></trkpt>
+    <trkpt lat="49.224126" lon="20.321285"><ele>771</ele></trkpt>
+    <trkpt lat="49.223847" lon="20.320996"><ele>773</ele></trkpt>
+    <trkpt lat="49.223762" lon="20.320823"><ele>774</ele></trkpt>
+    <trkpt lat="49.223779" lon="20.319901"><ele>779</ele></trkpt>
+    <trkpt lat="49.224184" lon="20.319862"><ele>779</ele></trkpt>
+    <trkpt lat="49.224622" lon="20.320002"><ele>778</ele></trkpt>
+    <trkpt lat="49.225154" lon="20.319894"><ele>776</ele></trkpt>
+    <trkpt lat="49.225284" lon="20.319557"><ele>780</ele></trkpt>
+    <trkpt lat="49.225626" lon="20.318928"><ele>800</ele></trkpt>
+    <trkpt lat="49.226170" lon="20.318339"><ele>802</ele></trkpt>
+    <trkpt lat="49.226605" lon="20.317665"><ele>816</ele></trkpt>
+    <trkpt lat="49.226733" lon="20.317402"><ele>817</ele></trkpt>
+    <trkpt lat="49.226961" lon="20.317089"><ele>811</ele></trkpt>
+    <trkpt lat="49.227011" lon="20.316927"><ele>813</ele></trkpt>
+    <trkpt lat="49.227234" lon="20.316502"><ele>823</ele></trkpt>
+    <trkpt lat="49.228412" lon="20.315199"><ele>858</ele></trkpt>
+    <trkpt lat="49.228887" lon="20.314761"><ele>866</ele></trkpt>
+    <trkpt lat="49.229236" lon="20.314138"><ele>872</ele></trkpt>
+    <trkpt lat="49.229370" lon="20.314022"><ele>865</ele></trkpt>
+    <trkpt lat="49.229325" lon="20.313897"><ele>867</ele></trkpt>
+    <trkpt lat="49.229075" lon="20.313900"><ele>878</ele></trkpt>
+    <trkpt lat="49.228844" lon="20.313968"><ele>887</ele></trkpt>
+    <trkpt lat="49.228898" lon="20.313665"><ele>888</ele></trkpt>
+    <trkpt lat="49.228791" lon="20.312766"><ele>894</ele></trkpt>
+    <trkpt lat="49.228781" lon="20.312276"><ele>897</ele></trkpt>
+    <trkpt lat="49.228812" lon="20.311554"><ele>904</ele></trkpt>
+    <trkpt lat="49.228781" lon="20.312276"><ele>897</ele></trkpt>
+    <trkpt lat="49.228791" lon="20.312766"><ele>894</ele></trkpt>
+    <trkpt lat="49.228898" lon="20.313665"><ele>888</ele></trkpt>
+    <trkpt lat="49.228844" lon="20.313968"><ele>887</ele></trkpt>
+    <trkpt lat="49.229075" lon="20.313900"><ele>878</ele></trkpt>
+    <trkpt lat="49.229325" lon="20.313897"><ele>867</ele></trkpt>
+    <trkpt lat="49.229370" lon="20.314022"><ele>865</ele></trkpt>
+    <trkpt lat="49.229236" lon="20.314138"><ele>872</ele></trkpt>
+    <trkpt lat="49.228887" lon="20.314761"><ele>866</ele></trkpt>
+    <trkpt lat="49.228412" lon="20.315199"><ele>858</ele></trkpt>
+    <trkpt lat="49.227234" lon="20.316502"><ele>823</ele></trkpt>
+    <trkpt lat="49.227011" lon="20.316927"><ele>813</ele></trkpt>
+    <trkpt lat="49.226961" lon="20.317089"><ele>811</ele></trkpt>
+    <trkpt lat="49.226733" lon="20.317402"><ele>817</ele></trkpt>
+    <trkpt lat="49.226605" lon="20.317665"><ele>816</ele></trkpt>
+    <trkpt lat="49.226170" lon="20.318339"><ele>802</ele></trkpt>
+    <trkpt lat="49.225626" lon="20.318928"><ele>800</ele></trkpt>
+    <trkpt lat="49.225284" lon="20.319557"><ele>780</ele></trkpt>
+    <trkpt lat="49.225154" lon="20.319894"><ele>776</ele></trkpt>
+    <trkpt lat="49.224622" lon="20.320002"><ele>778</ele></trkpt>
+    <trkpt lat="49.224184" lon="20.319862"><ele>779</ele></trkpt>
+    <trkpt lat="49.223779" lon="20.319901"><ele>779</ele></trkpt>
+    <trkpt lat="49.223762" lon="20.320823"><ele>774</ele></trkpt>
+    <trkpt lat="49.223847" lon="20.320996"><ele>773</ele></trkpt>
+    <trkpt lat="49.224126" lon="20.321285"><ele>771</ele></trkpt>
+    <trkpt lat="49.224444" lon="20.321804"><ele>767</ele></trkpt>
+    <trkpt lat="49.224410" lon="20.322349"><ele>765</ele></trkpt>
+    <trkpt lat="49.224436" lon="20.322626"><ele>765</ele></trkpt>
+    <trkpt lat="49.224900" lon="20.323947"><ele>766</ele></trkpt>
+  </trkseg></trk>
+</gpx>

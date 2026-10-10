@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Apponyiho palác</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Apponyiho palác</name><trkseg>
+    <trkpt lat="48.136541" lon="17.104403"><ele>143</ele></trkpt>
+    <trkpt lat="48.136572" lon="17.104709"><ele>140</ele></trkpt>
+    <trkpt lat="48.136415" lon="17.104718"><ele>140</ele></trkpt>
+    <trkpt lat="48.136416" lon="17.104748"><ele>141</ele></trkpt>
+    <trkpt lat="48.139619" lon="17.104596"><ele>134</ele></trkpt>
+    <trkpt lat="48.140150" lon="17.104634"><ele>137</ele></trkpt>
+    <trkpt lat="48.140152" lon="17.104937"><ele>140</ele></trkpt>
+    <trkpt lat="48.140588" lon="17.104901"><ele>142</ele></trkpt>
+    <trkpt lat="48.140681" lon="17.104967"><ele>143</ele></trkpt>
+    <trkpt lat="48.141124" lon="17.104782"><ele>145</ele></trkpt>
+    <trkpt lat="48.141901" lon="17.106331"><ele>149</ele></trkpt>
+    <trkpt lat="48.142047" lon="17.106532"><ele>150</ele></trkpt>
+    <trkpt lat="48.142860" lon="17.106494"><ele>154</ele></trkpt>
+    <trkpt lat="48.142942" lon="17.106993"><ele>150</ele></trkpt>
+    <trkpt lat="48.143014" lon="17.107212"><ele>147</ele></trkpt>
+    <trkpt lat="48.143361" lon="17.107781"><ele>152</ele></trkpt>
+    <trkpt lat="48.143391" lon="17.107709"><ele>151</ele></trkpt>
+    <trkpt lat="48.143563" lon="17.107927"><ele>149</ele></trkpt>
+    <trkpt lat="48.143728" lon="17.108237"><ele>146</ele></trkpt>
+    <trkpt lat="48.143791" lon="17.108504"><ele>147</ele></trkpt>
+    <trkpt lat="48.144013" lon="17.109020"><ele>152</ele></trkpt>
+    <trkpt lat="48.144047" lon="17.109191"><ele>154</ele></trkpt>
+    <trkpt lat="48.144018" lon="17.109167"><ele>153</ele></trkpt>
+    <trkpt lat="48.143825" lon="17.109313"><ele>152</ele></trkpt>
+    <trkpt lat="48.144018" lon="17.109167"><ele>153</ele></trkpt>
+    <trkpt lat="48.144047" lon="17.109191"><ele>154</ele></trkpt>
+    <trkpt lat="48.144013" lon="17.109020"><ele>152</ele></trkpt>
+    <trkpt lat="48.143791" lon="17.108504"><ele>147</ele></trkpt>
+    <trkpt lat="48.143728" lon="17.108237"><ele>146</ele></trkpt>
+    <trkpt lat="48.143563" lon="17.107927"><ele>149</ele></trkpt>
+    <trkpt lat="48.143391" lon="17.107709"><ele>151</ele></trkpt>
+    <trkpt lat="48.143361" lon="17.107781"><ele>152</ele></trkpt>
+    <trkpt lat="48.143014" lon="17.107212"><ele>147</ele></trkpt>
+    <trkpt lat="48.142942" lon="17.106993"><ele>150</ele></trkpt>
+    <trkpt lat="48.142860" lon="17.106494"><ele>154</ele></trkpt>
+    <trkpt lat="48.142047" lon="17.106532"><ele>150</ele></trkpt>
+    <trkpt lat="48.141901" lon="17.106331"><ele>149</ele></trkpt>
+    <trkpt lat="48.141124" lon="17.104782"><ele>145</ele></trkpt>
+    <trkpt lat="48.140681" lon="17.104967"><ele>143</ele></trkpt>
+    <trkpt lat="48.140588" lon="17.104901"><ele>142</ele></trkpt>
+    <trkpt lat="48.140152" lon="17.104937"><ele>140</ele></trkpt>
+    <trkpt lat="48.140150" lon="17.104634"><ele>137</ele></trkpt>
+    <trkpt lat="48.139619" lon="17.104596"><ele>134</ele></trkpt>
+    <trkpt lat="48.136416" lon="17.104748"><ele>141</ele></trkpt>
+    <trkpt lat="48.136415" lon="17.104718"><ele>140</ele></trkpt>
+    <trkpt lat="48.136572" lon="17.104709"><ele>140</ele></trkpt>
+    <trkpt lat="48.136541" lon="17.104403"><ele>143</ele></trkpt>
+  </trkseg></trk>
+</gpx>
