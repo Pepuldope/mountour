@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 const LINKS = [
-  { href: "/testeri", label: "Chcem testovať" },
   { href: "/sukromie", label: "Súkromie" },
   { href: "/upozornenie", label: "Upozornenie" },
   { href: "/zdroje", label: "Zdroje" },

@@ -51,13 +51,6 @@ export default function PrivacyPage() {
         stránky v prehliadači.
       </p>
 
-      <h2>Formuláre pre testerov</h2>
-      <p>
-        Prihlásenie testerov a hodnotenie po teste bežia v službe Google Forms. Meno a kontakt, ktoré tam dobrovoľne
-        uvediete, použijeme len na dohodnutie testovania a po skončení projektu ich zmažeme, alebo skôr, ak o to
-        požiadate.
-      </p>
-
       <h2>Mapy a hosting</h2>
       <p>
         Mapové dlaždice sa načítavajú priamo z ich zdrojov (pozri <Link href="/zdroje">Zdroje</Link>), ktoré vidia vašu IP

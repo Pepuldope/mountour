@@ -8,9 +8,7 @@ export type AnalyticsEvent =
   | "trip_saved" // "Uložiť výlet" tapped
   | "share" // plan shared with the group
   | "nav_open" // hand-off to Google Maps / a map app
-  | "transit_open" // cp.sk link opened
-  | "tester_signup_open" // tester sign-up form opened
-  | "feedback_open"; // post-test feedback form opened
+  | "transit_open"; // cp.sk link opened
 
 type EventData = Record<string, string | number | boolean>;
 

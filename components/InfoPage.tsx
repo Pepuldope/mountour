@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/SiteFooter";
 
-/** Plain text page (privacy, disclaimer, sources, testers). */
+/** Plain text page (privacy, disclaimer, sources). */
 export function InfoPage({ title, intro, children }: { title: string; intro?: ReactNode; children: ReactNode }) {
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-5 px-4 py-6">

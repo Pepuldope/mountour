@@ -35,12 +35,6 @@ export const COUNTED_HOSTS = [
   "www.mountour.sk",
 ].filter((h, i, all) => all.indexOf(h) === i);
 
-/** Google Form for tester sign-up ("Chcem testovať"). Empty = "coming soon". */
-export const TESTER_FORM_URL = process.env.NEXT_PUBLIC_TESTER_FORM_URL ?? "";
-
-/** Google Form filled in after a test session (rating 1-5). Empty = "coming soon". */
-export const FEEDBACK_FORM_URL = process.env.NEXT_PUBLIC_FEEDBACK_FORM_URL ?? "";
-
 /** Public contact for privacy requests. Empty = point people to GitHub issues. */
 export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "";
 

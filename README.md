@@ -105,11 +105,11 @@ overwrites `public/gpx/*.gpx`, `supabase/seed.sql` and `data/fixtures/trails.jso
 Missing or wrong data is fixed in OSM and the script re-run. Closures are never
 generated; add them by hand with a real source.
 
-## Search, stats and testers
+## Search and stats
 
-SEO metadata, sitemap, Umami analytics, the visit-day counter and the tester forms are set up in
+SEO metadata, sitemap, Umami analytics and the visit-day counter are set up in
 [`docs/ANALYTICS-AND-SEO.md`](docs/ANALYTICS-AND-SEO.md). Non-secret settings (site address,
-Umami ID, form links) live in `lib/site.ts`.
+Umami ID, contact e-mail) live in `lib/site.ts`.
 
 ## Schema decisions (`supabase/migrations/0001_init.sql`)
 

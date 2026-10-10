@@ -1,4 +1,4 @@
-# Search, visitor stats and tester forms: setup
+# Search and visitor stats: setup
 
 What the code does on its own, and the few things only you can click. Every tool here is free.
 Settings that are not secret live in `lib/site.ts` (one line each). Secrets go only into the
@@ -15,8 +15,7 @@ Cloudflare dashboard, never into the repo (it is public).
 | Privacy, disclaimer, sources pages + footer | `/sukromie`, `/upozornenie`, `/zdroje` | Optional contact e-mail |
 | Umami visitor stats + product events | `components/Analytics.tsx`, `lib/analytics.ts` | **Step 1** |
 | "People with 4+ visit days" counter + report at `/statistiky` | `app/api/visit`, `lib/visitStore.ts`, Cloudflare D1 | No |
-| Tester sign-up and post-test feedback pages | `/testeri`, `/spatna-vazba` | **Step 2** |
-| Google Search Console | outside the code | **Step 3**, after the domain |
+| Google Search Console | outside the code | **Step 2**, after the domain |
 
 The real address is `SITE_URL` in `lib/site.ts`. When mountour.sk is live, change that one line
 to `https://mountour.sk` and add `mountour.sk` to Search Console; all canonical URLs, the sitemap
@@ -52,7 +51,6 @@ Databases** → **D1** → **Create** → name `mountour-visits`, then in the Wo
 | `share` | plan shared with the group (call `track("share", { trail })` from the share button) | `trail` |
 | `nav_open` | Google Maps / map-app link tapped | `app`: google or geo |
 | `transit_open` | cp.sk link tapped | none |
-| `tester_signup_open`, `feedback_open` | form button tapped | none |
 
 Links can also be tracked with no code: add `data-umami-event="nav_open"` to the `<a>`. Never
 send coordinates, typed places or anything personal.
@@ -77,40 +75,7 @@ send coordinates, typed places or anything personal.
 After the next deploy, open the site, then Umami → **Websites** → MounTour: your visit shows up
 within a minute.
 
-## Step 2. Google Forms for testers (about 20 minutes, Radoslav can do it)
-
-Create two forms at https://forms.google.com (**Blank form**). In each: **Settings** →
-**Responses** → turn **Collect email addresses** off (contact is asked as a question instead).
-Then **Send** → link icon → **Shorten URL** → **Copy**, and send both links to Claude (or put them
-into `TESTER_FORM_URL` and `FEEDBACK_FORM_URL` in `lib/site.ts`). Responses → green Sheets icon
-links answers to a spreadsheet.
-
-**Form 1: "MounTour – chcem testovať"** (sign-up, goal 8 testers before 12 Nov)
-
-1. Meno (krátka odpoveď, povinné)
-2. E-mail alebo telefón (krátka odpoveď, povinné)
-3. Ako často chodíte na jednodňové výlety? (výber: viac ako raz za mesiac / raz za mesiac / pár razy do roka / zriedka)
-4. S kým chodíte najčastejšie? (začiarkavacie: s deťmi / s partnerom / s kamarátmi / sám)
-5. Ako sa na výlet dopravujete? (začiarkavacie: auto / vlak alebo autobus / bicykel)
-6. Odkiaľ zvyčajne vyrážate? (krátka odpoveď, napr. Bratislava)
-7. Môžeme vás pozvať na 20-minútový rozhovor? (áno / nie)
-8. Súhlas (začiarkavacie, povinné): „Súhlasím, aby MounTour použil moje meno a kontakt na
-   dohodnutie testovania. Údaje sa po skončení projektu zmažú.“
-
-**Form 2: "MounTour – po teste"** (post-test, proposal: rating 1-5)
-
-1. Celkovo, ako sa vám s MounTourom plánovalo? (lineárna škála 1-5, povinné)
-2. Čo vám chýbalo alebo čo bolo mätúce? (odsek)
-3. Čo sa vám páčilo najviac? (odsek)
-4. Koľko rôznych dní ste MounTour za posledný mesiac použili? (výber: 1 / 2-3 / 4 a viac)
-5. Ako by ste sa cítili, keby ste MounTour už nemohli používať? (výber: veľmi sklamaný / trochu sklamaný / vôbec)
-6. Zaplatili by ste za verziu s offline mapami a reálnymi odchodmi vlakov? Koľko ročne? (výber: nie / do 5 € / 5-10 € / viac ako 10 €)
-7. Meno alebo prezývka (krátka odpoveď, nepovinné; aby sme vedeli spojiť odpoveď s testom)
-
-Share `/spatna-vazba` (not the raw Google link) after each test session, so `feedback_open` is
-counted.
-
-## Step 3. Google Search Console (after mountour.sk is live)
+## Step 2. Google Search Console (after mountour.sk is live)
 
 1. https://search.google.com/search-console → **Add property** → **Domain** → `mountour.sk` →
    **Continue**.

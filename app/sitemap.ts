@@ -5,7 +5,7 @@ import { absoluteUrl } from "@/lib/site";
 // Rebuilt with the trail list, so new trips appear without touching this file.
 export const revalidate = 3600;
 
-const INFO_PAGES = ["/testeri", "/zdroje", "/sukromie", "/upozornenie"];
+const INFO_PAGES = ["/zdroje", "/sukromie", "/upozornenie"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const trails = await getAllTrails();
