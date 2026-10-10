@@ -4,8 +4,8 @@
   "description": "Plánovač jednodňových výletov do hôr",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f7f6f2",
-  "theme_color": "#1f6f4a",
+  "background_color": "#f3f6fa",
+  "theme_color": "#17213a",
   "lang": "sk",
   "icons": [
     {

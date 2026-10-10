@@ -40,3 +40,21 @@ export async function searchPlaces(query: string, signal?: AbortSignal): Promise
     };
   });
 }
+
+interface NominatimReverse {
+  address?: { city?: string; town?: string; village?: string; municipality?: string; suburb?: string };
+}
+
+/**
+ * GPS position -> the town's name ("Pezinok"), so the start reads as a place
+ * and can go into a shared plan without coordinates. One request per fix.
+ */
+export async function reverseTown(lat: number, lon: number, signal?: AbortSignal): Promise<string | null> {
+  const url =
+    "https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=10&accept-language=sk" +
+    `&lat=${lat.toFixed(3)}&lon=${lon.toFixed(3)}`;
+  const res = await fetch(url, { signal });
+  if (!res.ok) return null;
+  const { address: a } = (await res.json()) as NominatimReverse;
+  return a?.city ?? a?.town ?? a?.village ?? a?.municipality ?? null;
+}

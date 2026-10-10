@@ -3,14 +3,15 @@
 import type { Closure } from "@/lib/types";
 import { activeClosures } from "@/lib/closures";
 import { formatDateSk } from "@/lib/format";
-import { useTripSettings } from "@/lib/tripSettings";
+import { useTripDay } from "@/lib/tripSettings";
 
 interface Props {
   closures: Closure[];
 }
 
 export function ClosureBanner({ closures }: Props) {
-  const { date } = useTripSettings();
+  // The day the trip page plans for (picked day, else today or tomorrow).
+  const { date } = useTripDay();
 
   // CRITICAL: missing data must never read as good news. If we have no
   // closure rows at all for this trail, say so plainly instead of implying

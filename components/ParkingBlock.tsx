@@ -5,52 +5,27 @@ interface Props {
   parking: ParkingLot | null;
 }
 
+/** Where to leave the car. Navigation buttons sit with the plan above. */
 export function ParkingBlock({ parking }: Props) {
-  if (!parking) {
-    return (
-      <section className="flex flex-col gap-2 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-        <h2 className="text-sm font-semibold opacity-70">Parkovanie</h2>
-        <p className="text-sm opacity-80">
-          Pri začiatku trasy nemáme overené parkovisko. Odporúčame verejnú dopravu.
-        </p>
-      </section>
-    );
-  }
-
-  const { lat, lon } = parking.location;
-  const coordText = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
-  const geoUri = `geo:${lat},${lon}`;
-  const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}&travelmode=driving`;
-
   return (
-    <section className="flex flex-col gap-2 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-      <h2 className="text-sm font-semibold opacity-70">Parkovanie</h2>
-      <p className="text-lg font-semibold">{parking.name}</p>
-      {parking.note && <p className="text-sm opacity-80">{parking.note}</p>}
-
-      <p className="text-sm">
-        Súradnice: <span className="select-all font-mono">{coordText}</span>
-      </p>
-
-      <div className="flex flex-wrap gap-2 pt-1">
-        <a
-          href={geoUri}
-          className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm font-medium"
-        >
-          Otvoriť v mapovej aplikácii
-        </a>
-        <a
-          href={gmapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-lg bg-[var(--accent)] px-3 py-2 text-sm font-medium text-[var(--accent-contrast)]"
-        >
-          Navigácia (Google Maps)
-        </a>
-      </div>
-
-      {parking.verified_on && (
-        <p className="text-xs opacity-60">Overené: {formatDateSk(parking.verified_on)}</p>
+    <section className="flex flex-col gap-1 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4">
+      <h2 className="text-base font-bold">Parkovanie</h2>
+      {parking ? (
+        <>
+          <p className="font-semibold">{parking.name}</p>
+          {parking.note && <p className="text-sm text-[var(--muted)]">{parking.note}</p>}
+          <p className="text-sm">
+            <span className="text-[var(--muted)]">Súradnice: </span>
+            <span className="font-data select-all">
+              {parking.location.lat.toFixed(5)}, {parking.location.lon.toFixed(5)}
+            </span>
+          </p>
+          {parking.verified_on && (
+            <p className="text-xs text-[var(--muted)]">Overené: {formatDateSk(parking.verified_on)}</p>
+          )}
+        </>
+      ) : (
+        <p className="text-sm">Pri začiatku trasy nemáme overené parkovisko. Skúste vlak alebo autobus.</p>
       )}
     </section>
   );

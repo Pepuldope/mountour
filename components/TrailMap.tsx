@@ -1,21 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Map as LeafletMap, LayerGroup } from "leaflet";
-import type { BBox, Difficulty, LatLng } from "@/lib/types";
-import { BASE_LAYER, TRAILS_OVERLAY } from "@/lib/mapLayers";
+import type { GeoJSONSource, Map as MlMap, Marker, StyleSpecification } from "maplibre-gl";
+import type { BBox, LatLng } from "@/lib/types";
+import { MAP_STYLE_URL } from "@/lib/mapLayers";
 import { useUserLocation } from "@/lib/userLocation";
 
-type Leaflet = typeof import("leaflet");
+type MapLibre = typeof import("maplibre-gl");
 
 export type TrackState = "normal" | "selected" | "dimmed";
 
 export interface MapTrack {
   slug: string;
-  /** Shown as a tooltip when set. */
+  /** The trail's name, kept on the map feature. */
   label?: string;
   points: [number, number][];
-  difficulty: Difficulty;
+  /** Line colour: the trail's KST marking (lib/mapLayers trackColor). */
+  color: string;
   state: TrackState;
 }
 
@@ -29,6 +30,7 @@ export interface MapMarker {
   /** Extra popup lines (plain text). */
   lines?: string[];
   dimmed?: boolean;
+  active?: boolean;
   /** Clicking the marker selects this trail (home page). */
   trailSlug?: string;
 }
@@ -45,13 +47,6 @@ interface Props {
   className?: string;
 }
 
-// Muted so they read on top of topo contours; light / medium / hard.
-export const DIFFICULTY_COLOR: Record<Difficulty, string> = {
-  lahka: "#2f8f4e",
-  stredna: "#d98a00",
-  tazka: "#c0392b",
-};
-
 const MARKER_GLYPH: Record<MarkerKind, string> = {
   trailhead: "",
   parking: "P",
@@ -61,16 +56,23 @@ const MARKER_GLYPH: Record<MarkerKind, string> = {
   poi: "*",
 };
 
-const MARKER_SIZE: Record<MarkerKind, number> = {
-  trailhead: 16,
-  parking: 26,
-  "transit-autobus": 22,
-  "transit-elektricka": 22,
-  "transit-vlak": 22,
-  poi: 22,
+const MARKER_CLASS: Record<MarkerKind, string> = {
+  trailhead: "mt-pin-trailhead",
+  parking: "mt-pin-parking",
+  "transit-autobus": "mt-pin-transit",
+  "transit-elektricka": "mt-pin-transit",
+  "transit-vlak": "mt-pin-transit",
+  poi: "mt-pin-poi",
 };
 
-const SLOVAKIA_CENTER: [number, number] = [48.6667, 19.6833];
+const SLOVAKIA: [[number, number], [number, number]] = [
+  [16.8, 47.7],
+  [22.6, 49.6],
+];
+const FIT_PADDING = 32;
+
+/** [lat, lon] (our data) -> [lon, lat] (GeoJSON / MapLibre). */
+const lngLat = (p: [number, number]): [number, number] => [p[1], p[0]];
 
 function popupContent(title: string, lines: string[] = []): HTMLElement {
   const el = document.createElement("div");
@@ -85,15 +87,43 @@ function popupContent(title: string, lines: string[] = []): HTMLElement {
   return el;
 }
 
+function pinElement(className: string, glyph: string, title: string): HTMLElement {
+  const el = document.createElement("div");
+  el.className = `mt-pin ${className}`;
+  el.textContent = glyph;
+  el.title = title;
+  return el;
+}
+
+function fit(map: MlMap, b: BBox) {
+  map.fitBounds(
+    [
+      [b.sw.lon, b.sw.lat],
+      [b.ne.lon, b.ne.lat],
+    ],
+    { padding: FIT_PADDING, maxZoom: 15, duration: 0 }
+  );
+}
+
+const FALLBACK_STYLE: StyleSpecification = {
+  version: 8,
+  sources: {},
+  layers: [{ id: "background", type: "background", paint: { "background-color": "#e4ebe3" } }],
+};
+
+const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
+
+/**
+ * MapLibre map on OpenFreeMap vector tiles. Trails are our own lines in their
+ * KST colour with a white casing (like the painted marks); drive leg dashed.
+ */
 export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ariaLabel, className }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [ctx, setCtx] = useState<{ L: Leaflet; map: LeafletMap } | null>(null);
-  const trackLayerRef = useRef<LayerGroup | null>(null);
-  const markerLayerRef = useRef<LayerGroup | null>(null);
-  const userLayerRef = useRef<LayerGroup | null>(null);
-  const driveLayerRef = useRef<LayerGroup | null>(null);
+  const [ctx, setCtx] = useState<{ ml: MapLibre; map: MlMap } | null>(null);
   const onSelectRef = useRef(onSelectTrail);
   const boundsRef = useRef<BBox | null>(bounds);
+  const markerRefs = useRef<Marker[]>([]);
+  const userMarkerRefs = useRef<Marker[]>([]);
   const { fix, start } = useUserLocation();
 
   useEffect(() => {
@@ -103,41 +133,97 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ari
   // Create the map once; tear it down on unmount.
   useEffect(() => {
     let cancelled = false;
-    let map: LeafletMap | null = null;
+    let map: MlMap | null = null;
     let observer: ResizeObserver | null = null;
 
     async function init() {
-      const L = await import("leaflet");
+      const ml = await import("maplibre-gl");
       if (cancelled || !containerRef.current) return;
 
-      map = L.map(containerRef.current).setView(SLOVAKIA_CENTER, 8);
-      L.tileLayer(BASE_LAYER.url, {
-        subdomains: BASE_LAYER.subdomains,
-        maxZoom: BASE_LAYER.maxZoom,
-        attribution: BASE_LAYER.attribution,
-      }).addTo(map);
-      L.tileLayer(TRAILS_OVERLAY.url, {
-        maxZoom: TRAILS_OVERLAY.maxZoom,
-        opacity: TRAILS_OVERLAY.opacity,
-        attribution: TRAILS_OVERLAY.attribution,
-      }).addTo(map);
+      map = new ml.Map({
+        container: containerRef.current,
+        style: MAP_STYLE_URL,
+        bounds: SLOVAKIA,
+        attributionControl: { compact: true },
+        cooperativeGestures: false,
+        dragRotate: false,
+        pitchWithRotate: false,
+      });
+      map.touchZoomRotate.disableRotation();
+      map.addControl(new ml.NavigationControl({ showCompass: false }), "top-right");
 
-      driveLayerRef.current = L.layerGroup().addTo(map);
-      trackLayerRef.current = L.layerGroup().addTo(map);
-      markerLayerRef.current = L.layerGroup().addTo(map);
-      userLayerRef.current = L.layerGroup().addTo(map);
+      // Base map unreachable (offline, blocked): fall back to a plain background
+      // so the trail, pins and drive leg still show.
+      let styleFailed = false;
+      map.on("error", (e) => {
+        if (styleFailed || !map || map.isStyleLoaded() || !String(e.error?.message).includes(MAP_STYLE_URL)) return;
+        styleFailed = true;
+        map.setStyle(FALLBACK_STYLE);
+      });
+
+      map.on("load", () => {
+        if (!map || cancelled) return;
+        map.addSource("drive", { type: "geojson", data: EMPTY });
+        map.addSource("tracks", { type: "geojson", data: EMPTY });
+        map.addLayer({
+          id: "drive-casing",
+          type: "line",
+          source: "drive",
+          layout: { "line-cap": "round", "line-join": "round" },
+          paint: { "line-color": "#ffffff", "line-width": 7, "line-opacity": 0.8 },
+        });
+        map.addLayer({
+          id: "drive-line",
+          type: "line",
+          source: "drive",
+          layout: { "line-join": "round" },
+          paint: { "line-color": "#17213a", "line-width": 3.5, "line-dasharray": [2, 2] },
+        });
+        // White band under the colour, like the painted KST mark.
+        map.addLayer({
+          id: "track-casing",
+          type: "line",
+          source: "tracks",
+          layout: { "line-cap": "round", "line-join": "round" },
+          paint: {
+            "line-color": "#ffffff",
+            "line-width": ["match", ["get", "state"], "selected", 10, "dimmed", 5, 7],
+            "line-opacity": ["match", ["get", "state"], "dimmed", 0.4, 1],
+          },
+        });
+        map.addLayer({
+          id: "track-line",
+          type: "line",
+          source: "tracks",
+          layout: { "line-cap": "round", "line-join": "round" },
+          paint: {
+            "line-color": ["get", "color"],
+            "line-width": ["match", ["get", "state"], "selected", 5, "dimmed", 2.5, 3.5],
+            "line-opacity": ["match", ["get", "state"], "dimmed", 0.35, 1],
+          },
+        });
+        // Wide invisible line so thin tracks are easy to tap.
+        map.addLayer({
+          id: "track-hit",
+          type: "line",
+          source: "tracks",
+          paint: { "line-color": "#000000", "line-width": 18, "line-opacity": 0 },
+        });
+        map.on("click", "track-hit", (e) => {
+          const slug = e.features?.[0]?.properties?.slug as string | undefined;
+          if (slug) onSelectRef.current?.(slug);
+        });
+        setCtx({ ml, map });
+      });
 
       // The map sits in flex/sticky containers whose size can change: keep the
       // requested area in view rather than whatever zoom fit the old size.
       observer = new ResizeObserver(() => {
         if (!map) return;
-        map.invalidateSize();
-        const b = boundsRef.current;
-        if (b) map.fitBounds([[b.sw.lat, b.sw.lon], [b.ne.lat, b.ne.lon]], { padding: [24, 24] });
+        map.resize();
+        if (boundsRef.current) fit(map, boundsRef.current);
       });
       observer.observe(containerRef.current);
-
-      setCtx({ L, map });
     }
 
     init();
@@ -147,10 +233,6 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ari
       observer?.disconnect();
       map?.remove();
       map = null;
-      trackLayerRef.current = null;
-      markerLayerRef.current = null;
-      userLayerRef.current = null;
-      driveLayerRef.current = null;
       setCtx(null);
     };
   }, []);
@@ -159,124 +241,85 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ari
   const boundsKey = bounds ? `${bounds.sw.lat},${bounds.sw.lon},${bounds.ne.lat},${bounds.ne.lon}` : "";
   useEffect(() => {
     boundsRef.current = bounds;
-    if (!ctx || !bounds) return;
-    ctx.map.fitBounds(
-      [
-        [bounds.sw.lat, bounds.sw.lon],
-        [bounds.ne.lat, bounds.ne.lon],
-      ],
-      { padding: [24, 24] }
-    );
+    if (ctx && bounds) fit(ctx.map, bounds);
     // `bounds` is tracked via boundsKey so a new-but-equal object doesn't refit.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctx, boundsKey]);
 
   // Tracks: dimmed first, selected last so it paints on top.
   useEffect(() => {
-    const group = trackLayerRef.current;
-    if (!ctx || !group) return;
-    const { L } = ctx;
-    group.clearLayers();
-
+    if (!ctx) return;
     const order: Record<TrackState, number> = { dimmed: 0, normal: 1, selected: 2 };
-    for (const t of [...tracks].sort((a, b) => order[a.state] - order[b.state])) {
-      if (t.points.length < 2) continue;
-      const style =
-        t.state === "selected"
-          ? { weight: 7, opacity: 1 }
-          : t.state === "dimmed"
-            ? { weight: 3, opacity: 0.3 }
-            : { weight: 4, opacity: 0.85 };
-      const line = L.polyline(t.points, { color: DIFFICULTY_COLOR[t.difficulty], ...style });
-      if (t.label) line.bindTooltip(t.label, { sticky: true });
-      line.addTo(group);
-
-      if (onSelectRef.current) {
-        // Wide invisible line so thin tracks are easy to tap.
-        L.polyline(t.points, { weight: 16, opacity: 0 })
-          .on("click", () => onSelectRef.current?.(t.slug))
-          .addTo(group);
-      }
-    }
+    const features: GeoJSON.Feature[] = [...tracks]
+      .filter((t) => t.points.length >= 2)
+      .sort((a, b) => order[a.state] - order[b.state])
+      .map((t) => ({
+        type: "Feature",
+        properties: { slug: t.slug, color: t.color, state: t.state, label: t.label ?? "" },
+        geometry: { type: "LineString", coordinates: t.points.map(lngLat) },
+      }));
+    (ctx.map.getSource("tracks") as GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features });
   }, [ctx, tracks]);
 
-  // Drive leg: dashed, neutral, under the trail so the hike stays the hero.
+  // Drive leg.
   useEffect(() => {
-    const group = driveLayerRef.current;
-    if (!ctx || !group) return;
-    group.clearLayers();
-    if (!driveLeg || driveLeg.length < 2) return;
-    ctx.L.polyline(driveLeg, { color: "#ffffff", weight: 7, opacity: 0.8, interactive: false }).addTo(group);
-    ctx.L.polyline(driveLeg, { color: "#3d4a5c", weight: 4, opacity: 0.9, dashArray: "8 8" })
-      .bindTooltip("Cesta autom", { sticky: true })
-      .addTo(group);
+    if (!ctx) return;
+    const data: GeoJSON.FeatureCollection =
+      driveLeg && driveLeg.length >= 2
+        ? {
+            type: "FeatureCollection",
+            features: [
+              { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: driveLeg.map(lngLat) } },
+            ],
+          }
+        : EMPTY;
+    (ctx.map.getSource("drive") as GeoJSONSource | undefined)?.setData(data);
   }, [ctx, driveLeg]);
 
-  // Markers.
+  // Markers: HTML elements so they can use the brand's square trail marks.
   useEffect(() => {
-    const group = markerLayerRef.current;
-    if (!ctx || !group) return;
-    const { L } = ctx;
-    group.clearLayers();
-
-    for (const m of markers) {
-      const size = MARKER_SIZE[m.kind];
-      const icon = L.divIcon({
-        className: `mt-marker mt-marker-${m.kind}${m.dimmed ? " mt-marker-dimmed" : ""}`,
-        html: MARKER_GLYPH[m.kind],
-        iconSize: [size, size],
+    if (!ctx) return;
+    const { ml, map } = ctx;
+    for (const m of markerRefs.current) m.remove();
+    // Active last so it sits on top.
+    markerRefs.current = [...markers]
+      .sort((a, b) => Number(!!a.active) - Number(!!b.active))
+      .map((m) => {
+        const el = pinElement(
+          `${MARKER_CLASS[m.kind]}${m.dimmed ? " mt-pin-dimmed" : ""}${m.active ? " is-active" : ""}`,
+          MARKER_GLYPH[m.kind],
+          m.title
+        );
+        const marker = new ml.Marker({ element: el })
+          .setLngLat([m.location.lon, m.location.lat])
+          .setPopup(new ml.Popup({ offset: 14, closeButton: false }).setDOMContent(popupContent(m.title, m.lines)))
+          .addTo(map);
+        const slug = m.trailSlug;
+        if (slug) el.addEventListener("click", () => onSelectRef.current?.(slug));
+        return marker;
       });
-      const marker = L.marker([m.location.lat, m.location.lon], { icon, title: m.title })
-        .bindPopup(popupContent(m.title, m.lines))
-        .addTo(group);
-      const slug = m.trailSlug;
-      if (slug && onSelectRef.current) marker.on("click", () => onSelectRef.current?.(slug));
-    }
   }, [ctx, markers]);
 
-  // "You are here": blue dot + accuracy circle.
+  // Start pin (typed place) and "you are here" dot (GPS).
   useEffect(() => {
-    const group = userLayerRef.current;
-    if (!ctx || !group) return;
-    const { L } = ctx;
-    group.clearLayers();
-
-    // A typed start (home, a town) gets its own pin; GPS uses the blue dot below.
+    if (!ctx) return;
+    const { ml, map } = ctx;
+    for (const m of userMarkerRefs.current) m.remove();
+    userMarkerRefs.current = [];
     if (start?.source === "manual") {
-      L.marker([start.lat, start.lon], {
-        icon: L.divIcon({ className: "mt-marker mt-marker-start", html: "S", iconSize: [24, 24] }),
-        title: start.label,
-      })
-        .bindPopup(popupContent("Štart", [start.label]))
-        .addTo(group);
+      userMarkerRefs.current.push(
+        new ml.Marker({ element: pinElement("mt-pin-start", "S", start.label) })
+          .setLngLat([start.lon, start.lat])
+          .setPopup(new ml.Popup({ offset: 14, closeButton: false }).setDOMContent(popupContent("Štart", [start.label])))
+          .addTo(map)
+      );
     }
-    if (!fix) return;
-
-    L.circle([fix.lat, fix.lon], {
-      radius: fix.accuracy,
-      color: "#2563eb",
-      weight: 1,
-      fillColor: "#2563eb",
-      fillOpacity: 0.12,
-      interactive: false,
-    }).addTo(group);
-    L.circleMarker([fix.lat, fix.lon], {
-      radius: 7,
-      color: "#ffffff",
-      weight: 2,
-      fillColor: "#2563eb",
-      fillOpacity: 1,
-    })
-      .bindTooltip("Tvoja poloha")
-      .addTo(group);
+    if (fix) {
+      userMarkerRefs.current.push(
+        new ml.Marker({ element: pinElement("mt-pin-me", "", "Vaša poloha") }).setLngLat([fix.lon, fix.lat]).addTo(map)
+      );
+    }
   }, [ctx, fix, start]);
 
-  return (
-    <div
-      ref={containerRef}
-      className={className ?? "h-full w-full"}
-      role="img"
-      aria-label={ariaLabel}
-    />
-  );
+  return <div ref={containerRef} className={className ?? "h-full w-full"} role="region" aria-label={ariaLabel} />;
 }

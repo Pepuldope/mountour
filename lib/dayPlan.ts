@@ -18,8 +18,8 @@ export interface Segment {
 }
 
 /**
- * ok          - off the trail with a comfortable margin before sunset
- * tight       - before sunset, but with less than TIGHT_MARGIN_MIN to spare
+ * ok          - off the trail at least SAFE_MARGIN_MIN before sunset
+ * tight       - before sunset, but with less than SAFE_MARGIN_MIN to spare
  * after-sunset - finishing in twilight (sunset .. civil dusk)
  * after-dusk  - finishing in the dark
  */
@@ -40,7 +40,7 @@ export interface DayPlan {
   verdict: Verdict;
   /** The hike would start before sunrise. */
   startsInDark: boolean;
-  /** Latest departure (or hike start, without a drive) that still ends the hike at sunset. */
+  /** Latest departure (or hike start, without a drive) that still ends the hike SAFE_MARGIN_MIN before sunset. */
   latestStart: Date;
 }
 
@@ -56,7 +56,15 @@ export interface DayPlanInput {
   location: LatLng;
 }
 
-export const TIGHT_MARGIN_MIN = 30;
+/** "Vyraz najneskôr" gets you off the trail this long before sunset (PD4; tune after tests). */
+export const SAFE_MARGIN_MIN = 30;
+/** With kids, walking takes this much longer (PD4; tune after tests). */
+export const KIDS_PACE = 1.3;
+
+/** Walking time for this group, rounded to 5 min. */
+export function hikeMinutes(baseMin: number, withKids: boolean): number {
+  return withKids ? Math.round((baseMin * KIDS_PACE) / 5) * 5 : baseMin;
+}
 
 const MIN = 60000;
 
@@ -97,7 +105,7 @@ export function planDay(input: DayPlanInput): DayPlan | null {
       ? "after-dusk"
       : marginMin < 0
         ? "after-sunset"
-        : marginMin < TIGHT_MARGIN_MIN
+        : marginMin < SAFE_MARGIN_MIN
           ? "tight"
           : "ok";
 
@@ -112,6 +120,6 @@ export function planDay(input: DayPlanInput): DayPlan | null {
     marginMin,
     verdict,
     startsInDark: hikeStart < sun.sunrise,
-    latestStart: addMin(sun.sunset, -(input.hikeMin + drive)),
+    latestStart: addMin(sun.sunset, -(SAFE_MARGIN_MIN + input.hikeMin + drive)),
   };
 }

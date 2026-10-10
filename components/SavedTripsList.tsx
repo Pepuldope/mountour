@@ -36,8 +36,8 @@ export function SavedTripsList() {
   if (trips.length === 0) {
     return (
       <p className="rounded-xl border border-dashed border-[var(--border)] p-4 text-sm opacity-80">
-        Zatiaľ nemáš uložený žiadny výlet. Na stránke trasy klikni na {"„Uložiť výlet“"} - uloží sa aj
-        s mapou, aby fungoval bez signálu.
+        Zatiaľ tu nemáte žiadny výlet. Na stránke trasy ťuknite na {"„Uložiť výlet“"}, uloží sa aj s
+        mapou, aby fungoval bez signálu.
       </p>
     );
   }
@@ -57,7 +57,7 @@ export function SavedTripsList() {
         return (
           <li
             key={trip.slug}
-            className={`flex flex-col gap-2 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4 ${past ? "opacity-60" : ""}`}
+            className={`flex flex-col gap-2 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4 ${past ? "opacity-60" : ""}`}
           >
             <div className="flex flex-wrap items-baseline justify-between gap-x-3">
               <h2 className="text-lg font-semibold">{trip.name}</h2>
