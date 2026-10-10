@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "note": "Hand-kept entry fees (vstupné) that OpenStreetMap does not carry. Every rule needs a source_url and verified_on. 'selector' works like in closure-rules.json, plus 'way_tags': the trip uses a way with one of these key=value tags.",
+  "rules": [
+    {
+      "id": "slovensky-raj-rebriky",
+      "text": "Poplatok za rebríky a stúpačky v roklinách Slovenského raja: dospelí 3 €, deti 2 €, v hotovosti.",
+      "amount_eur": 3,
+      "source_url": "https://www.noviny.sk/slovensko/1095591-slovensky-raj-je-spoplatneny-brigadnicky-vyberaju-poplatky-pri-rebrikoch-a-stupackach",
+      "verified_on": "2026-10-10",
+      "applies_to": "Trasy v NP Slovenský raj, ktoré idú cez rokliny s rebríkmi a stúpačkami. Zdroj je správa z 14. 8. 2025; overiť na stránke správy NP pred sezónou.",
+      "selector": {
+        "bbox": [20.15, 48.86, 20.60, 48.99],
+        "probes": ["Suchá Belá", "Prielom Hornádu", "Zejmarská roklina", "Piecky", "Kyseľ", "Veľký Sokol", "Malý Sokol", "Kláštorská roklina", "Sokolia dolina"],
+        "way_tags": ["highway=ladder", "ladder=yes", "oneway=yes", "oneway:foot=yes"]
+      }
+    }
+  ]
+}
