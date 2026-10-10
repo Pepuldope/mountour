@@ -1,21 +1,32 @@
 # MounTour
 
-A Slovak day-hike trip planner (maturita school project). MounTour plans the
-*chain* around a hike — where you start, where you park, the trail itself,
-and getting back before dark — and hands off to the tools that already do the
-rest: Google/Apple Maps for the drive, and a GPX file for the hike itself.
+A Slovak day-hike trip planner for Malé Karpaty (maturita school project).
+MounTour plans the *chain* around a hike — where you start, the drive there,
+where you park, the trail itself, and getting back before dark — and hands off
+to the tools that already do the rest: Google/Apple Maps for turn-by-turn
+driving, and a GPX file for the hike itself.
+
+Live at https://mountour.vercel.app (deployed from `main`). Deploying to Cloudflare
+Workers instead is set up in `docs/DEPLOY-CLOUDFLARE.md`.
+What is built and what was decided along the way is in `docs/ROADMAP.md`.
 
 ## Locked scope
 
-MounTour does **not** do navigation and does **not** route-find. It is
-deliberately narrow. In scope:
+MounTour does **not** do turn-by-turn navigation. It is deliberately narrow.
+In scope:
 
-- A trail picker (`/`): how much time you have, where you're starting from,
-  whether you're going with kids.
-- A trip sheet (`/trasa/[slug]`): trail summary, a Leaflet map (GPX track +
-  parking + POIs), a parking block with a driving-directions deep link, a
-  sunset/return-time safety check, a closure banner, and an offline-save
-  button.
+- A trail picker (`/`): 10 real Malé Karpaty trails, filtered and sorted live by
+  your time budget, start place (GPS or typed), departure and whether you're
+  going with kids, each with a mini day timeline.
+- A trip sheet (`/trasa/[slug]`): trail summary, a Leaflet map (trail, drive leg,
+  parking, transit stops, POIs), a day timeline with the sunset safety check, a
+  closure banner, parking with a directions deep link, nearby transit stops with
+  a cp.sk link, and a save button.
+- Saved trips (`/ulozene`): per-device, and each saved trip works offline.
+
+The drive leg is the one deliberate exception to "no route-finding" (reopened
+2026-10-07, see roadmap #4): its line and duration come from OpenRouteService,
+but the actual navigation is still handed to Google/Apple Maps.
 
 Explicitly **out of scope** — do not add these without reopening the spec:
 
@@ -29,12 +40,16 @@ Explicitly **out of scope** — do not add these without reopening the spec:
 
 ## Stack
 
-- Next.js (App Router) + TypeScript, target deploy: Vercel
-- Supabase Postgres + PostGIS for data (see `supabase/migrations/0001_init.sql`)
+- Next.js 16 (App Router) + React 19 + TypeScript + Tailwind 4, deployable on Vercel or
+  Cloudflare Workers (OpenNext)
+- Supabase Postgres + PostGIS for data (see `supabase/migrations/`), read through
+  the `trail_detail` view
 - Leaflet + OpenTopoMap base + Waymarked Trails hiking overlay for the map (no `react-leaflet` — plain
   `leaflet` used directly from a client component, to keep the dependency
   surface small)
 - A hand-written service worker (`public/sw.js`) for offline trip caching
+- OpenRouteService (`/api/drive`, `/api/drive-matrix`) for drive times, with the
+  public OSRM demo as a keyless fallback; Nominatim for typed start places
 - No auth, no user accounts
 
 ## Running it
@@ -45,37 +60,50 @@ npm run dev
 ```
 
 Open `http://localhost:3000`. **No Supabase project is required** — if
-`NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` are unset (or the
-project is unreachable), the app reads `data/fixtures/trails.json` instead,
-which mirrors `supabase/seed.sql`'s one seeded trail (Devínska Kobyla). This is
-intentional — the slice must run standalone.
+`NEXT_PUBLIC_SUPABASE_URL` and a key are unset (or the project is unreachable),
+the app reads `data/fixtures/trails.json` instead, which holds the same 10
+trails as `supabase/seed.sql`. Without `ORS_API_KEY`, drive times come from the
+public OSRM demo server, which is fine for development but has no SLA.
 
 ```bash
+npm run lint        # eslint
+npm run typecheck   # next typegen + tsc --noEmit
+npm test            # unit tests (vitest, lib/**/*.test.ts)
 npm run build       # production build
-npx tsc --noEmit    # typecheck
-npm test            # unit tests (lib/sun.ts, vitest)
+npm run cf:build    # production build + Cloudflare Worker bundle
 ```
+
+`npm run typecheck` runs `next typegen` first because Next 16 generates route
+types (e.g. `LayoutProps`) that plain `tsc` can't see otherwise.
+
+## CI
+
+`.github/workflows/ci.yml` runs lint, typecheck, tests and the Cloudflare build
+(which includes `next build`) on every pull request and every push to `main`.
+Deploys from `main` don't wait for CI, so keep changes on a branch and merge
+once CI is green.
 
 ## Supabase setup (optional, for real data)
 
 1. Create a Supabase project.
-2. Run `supabase/migrations/0001_init.sql` against it (enables PostGIS and
-   creates the five tables: `trail`, `trailhead`, `parking_lot`, `closure`,
-   `poi`).
-3. Run `supabase/seed.sql` to load the one example trail.
-4. Upload a GPX file to Supabase Storage at the path referenced by
-   `trail.gpx_path` (or keep serving it from `public/gpx/` as this slice
-   does).
-5. Copy `.env.local.example` to `.env.local` and fill in the project URL and
-   anon key.
+2. Run the migrations in `supabase/migrations/` in order. They enable PostGIS,
+   create the tables, turn on read-only RLS for the public key, and create the
+   `trail_detail` view that returns each trail already shaped like the app's
+   `TrailDetail` type (geography decoded to `{lat, lon}` in SQL).
+3. Run `supabase/seed.sql` to load the 10 trails.
+4. Copy `.env.local.example` to `.env.local` and fill in the project URL and
+   publishable (or anon) key, plus `ORS_API_KEY` for drive times.
 
-**Note on PostGIS decoding:** `lib/data.ts`'s `fetchFromSupabase()` currently
-detects whether Supabase is reachable but does not decode the `geography`
-columns back into `{lat, lon}` — that needs either a Postgres view/RPC that
-calls `st_asgeojson(...)`, or client-side WKB parsing, and there's no live
-project to develop and verify that against yet. Until it's wired up, the app
-always falls back to the JSON fixture for actual trail data. This is called
-out explicitly in that file.
+Free-tier Supabase pauses after 7 idle days; the fixture fallback keeps the site
+working when it does, so a paused project is easy to miss.
+
+## Trail data
+
+`scripts/build_trails.py` builds everything from open data: the on-foot track
+from BRouter, parking, transit stops and POIs from OpenStreetMap (Overpass). It
+overwrites `public/gpx/*.gpx`, `supabase/seed.sql` and `data/fixtures/trails.json`.
+Missing or wrong data is fixed in OSM and the script re-run. Closures are never
+generated; add them by hand with a real source.
 
 ## Schema decisions (`supabase/migrations/0001_init.sql`)
 
@@ -92,21 +120,20 @@ out explicitly in that file.
   calendar dates).
 - GIST indexes on every geography column (`trail.bbox`, `trailhead.location`,
   `parking_lot.location`, `poi.location`).
-- The seed data's one closure row is a `jednorazova` example that is already
-  expired, so the UI has real data to render without falsely implying the
-  trail is closed today.
+- The seed has no closure rows yet: no trail has a sourced closure, so every
+  trip page currently shows "Stav chodníka neoverený".
 
 ## The sunset/safety rule
 
 `lib/sun.ts` computes sunrise/sunset from latitude, longitude and calendar
 date with a pure implementation of the standard NOAA/Meeus sunrise equation —
 no API key, no network call, no heavy astronomy dependency. Verified against
-Bratislava's known sunset times (~16:01 local on 21 Dec, ~21:00 local on 21
-Jun) in `lib/sun.test.ts`.
+Bratislava's known sunset times in `lib/sun.test.ts`.
 
-The trip sheet's sunset card takes an arrival time + the trail's stated
-duration, computes an estimated return-to-car time, and compares it against
-sunset for that date/location — showing a clear OK or warning state.
+`lib/dayPlan.ts` lays the trip on the day (drive there, hike, drive back) for
+the chosen date and departure, and judges safety at the **end of the hike**
+(driving home after dark is fine): ok / tesné (<30 min) / po západe / potme.
+The trip page and the home list both render it as a timeline.
 
 ## The closure rule (important, do not relax)
 
@@ -115,28 +142,17 @@ If a trail has **no closure data at all**, the UI renders
 **"otvorené"** ("open"). Missing data must never read as good news. See
 `components/ClosureBanner.tsx`.
 
+Closures are checked against the **planned trip date** (the date input shared
+across the app, which defaults to today or tomorrow in local time). The date logic, including
+annual closures that run past New Year, is in `lib/closures.ts` and tested in
+`lib/closures.test.ts`.
+
 ## Offline caching
 
-Nothing is precached at install — this is cache-on-plan, not
-cache-everything. Tapping "Uložiť výlet offline" on a trip sheet
-(`components/OfflineSaveButton.tsx`) posts a message to the service worker
-(`public/sw.js`) with the exact URLs to store: the trip page itself, its GPX
-file, and the OpenStreetMap tiles covering the trail's `bbox` at zoom 13-15
-(computed in `lib/tiles.ts`). The service worker then serves those URLs
-cache-first, with a background refresh when back online.
-
-**Deviation from spec:** the static PNG fallback for the zero-tiles case
-(useful if a visitor is offline before ever visiting a trip page) was not
-built. It would have meant either a headless-render step at build time or a
-third-party tile-stitching call — both are heavier than this slice
-justifies. Skipped per the spec's own "skip it if it balloons the slice"
-allowance; worth adding later if the offline-tile flow proves unreliable in
-practice.
-
-## Verification run for this slice
-
-- `npm run build` — passes
-- `npx tsc --noEmit` — clean
-- `npm test` (vitest, `lib/sun.test.ts`) — 3/3 passing
-- `npm run dev` — `/` and `/trasa/devinska-kobyla` both return 200 with no
-  runtime errors in the server log; an unknown slug correctly 404s
+Nothing is precached at install — this is cache-on-plan, not cache-everything.
+Saving a trip (`components/SaveTripButton.tsx`) stores a snapshot (trail, date,
+departure, start, drive time) in localStorage and asks the service worker
+(`public/sw.js`) to cache the trip page, its GPX file, the map tiles covering
+the trail at zoom 13-15 (`lib/tiles.ts`), and the build assets the page runs on.
+Build assets are served cache-first; pages network-first with the saved copy
+as the offline fallback. Removing a saved trip also drops its cache.
