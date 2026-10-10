@@ -97,4 +97,5 @@ jobs:
             exit 0
           fi
           git commit -m "Trip data from OpenStreetMap ${OSM_TS:-}"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
