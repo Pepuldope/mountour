@@ -22,6 +22,9 @@ const HOR = 146; // horizon line
 const H = HOR + 50;
 const RULER = HOR + 26;
 const PAD = 8;
+// The picture is a sky, so it keeps its own day colours in dark mode too.
+const INK = "#14233b";
+const WALKER = "#1769d1";
 
 /** Sky colours by sun height (degrees): [height, top, horizon]. */
 const SKY: [number, string, string][] = [
@@ -105,7 +108,8 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
     const eles = points.map((p) => p.ele);
     const mn = Math.min(...eles);
     const mx = Math.max(...eles);
-    const rise = Math.max(26, Math.min(104, ((mx - mn) / 1300) * 104));
+    // Capped so the walker on a summit stays below the sun at its highest, not inside its glow.
+    const rise = Math.max(26, Math.min(84, ((mx - mn) / 1300) * 104));
     const walk: WalkPoint[] = points.map((p) => {
       const t = hs + p.at * (he - hs);
       return {
@@ -113,13 +117,13 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
         x: x(t),
         y: HOR - ((p.ele - mn) / (mx - mn || 1)) * rise,
         ele: p.ele,
-        colour: p.colour ? MARKING_COLOR[p.colour] : "var(--drive)",
+        colour: p.colour ? MARKING_COLOR[p.colour] : "#55627a",
       };
     });
 
     // The arc always clears the hill; summer days still arc higher than winter ones.
     const peak = sunAltitude(new Date((sunrise + sunset) / 2), sun.lat, sun.lon);
-    const arcH = Math.min(HOR - 10, Math.max(80, rise + 24) + 18 * Math.min(1, peak / 66));
+    const arcH = Math.min(HOR - 10, Math.max(80, rise + 48) + 18 * Math.min(1, peak / 66));
     const y = (alt: number) => HOR - (Math.max(alt, -3) / peak) * arcH;
     let arc = "";
     for (let t = sunrise; t <= sunset; t += 5 * MIN) {
@@ -200,6 +204,8 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
   const sy = scene.y(alt);
 
   const onTrail = t >= hs && t <= he;
+  // In the dark sky the car turns light.
+  const night = alt < -2;
   const inCar = hasDrive && ((t >= first && t < hs) || (t > he && t < home));
   let walker: [number, number] = [sx, HOR];
   let climbed = 0;
@@ -322,7 +328,7 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
             const mid = (x1 + x2) / 2;
             return (
               <g key={a}>
-                <rect x={x1} y={HOR - 1} width={Math.max(0, x2 - x1)} height={8} rx={4} fill="var(--foreground)" opacity={0.82} />
+                <rect x={x1} y={HOR - 1} width={Math.max(0, x2 - x1)} height={8} rx={4} fill={INK} stroke="#fff" strokeWidth={1} />
                 <line x1={x1 + 4} x2={x2 - 4} y1={HOR + 3} y2={HOR + 3} stroke="#fff" strokeWidth={1.2} strokeDasharray="4 3.5" opacity={0.9} />
                 {x2 - x1 > 30 && (
                   <g transform={`translate(${mid} ${HOR + 19})`} fill="var(--foreground)" style={{ color: "var(--foreground)" }}>
@@ -449,8 +455,9 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
 
         {/* Who is where: the car on the road, the walker on the trail, a dot at home. */}
         <g transform={`translate(${onTrail ? walker[0] : sx} ${onTrail ? walker[1] - 12 : inCar ? HOR - 11 : HOR + 3}) translate(-12.5 -12.5) scale(1.04)`}>
-          <g className="mt-halo" dangerouslySetInnerHTML={{ __html: UI_ICON[marker] }} />
-          <g style={{ color: onTrail ? "var(--accent)" : "var(--foreground)" }} dangerouslySetInnerHTML={{ __html: UI_ICON[marker] }} />
+          {/* A thin white edge keeps the car apart from the ground; the walker needs none. */}
+          {!onTrail && <g className="mt-edge" style={{ color: night ? INK : "#fff" }} dangerouslySetInnerHTML={{ __html: UI_ICON[marker] }} />}
+          <g style={{ color: onTrail ? WALKER : night ? "#fff" : INK }} dangerouslySetInnerHTML={{ __html: UI_ICON[marker] }} />
         </g>
 
         <g transform={`translate(${W - 8} 8)`}>
