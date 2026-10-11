@@ -52,7 +52,7 @@ export function StartChip({ folded = false }: { folded?: boolean }) {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        {!(folded && !start) && <span className="opacity-80">{start ? "Odkiaľ:" : "Odkiaľ vyrážate?"}</span>}
+        {!(folded && !start) && <span className="font-semibold">{start ? "Odkiaľ:" : "Odkiaľ vyrážate?"}</span>}
         {folded && !start && (
           <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className={`${chip} inline-flex items-center gap-1 text-[var(--accent)]`}>
             <UiIcon name="pin" size={15} />

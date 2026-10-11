@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { cache } from "react";
 import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
@@ -106,10 +106,30 @@ function Badge({ colour, icon, children }: { colour: string; icon: string; child
   );
 }
 
+function plainSlug(slug: string): string {
+  let s = slug;
+  try {
+    s = decodeURIComponent(slug);
+  } catch {
+    // Not encoded.
+  }
+  return s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export default async function TripSheetPage({ params }: Props) {
   const { slug } = await params;
   const loaded = await loadTrip(slug);
-  if (!loaded) notFound();
+  if (!loaded) {
+    // A typed or pasted name ("Kriváň", "velky choc") still finds the trip.
+    const plain = plainSlug(slug);
+    if (plain !== slug && (await loadTrip(plain))) permanentRedirect(`/trasa/${plain}`);
+    notFound();
+  }
   const { trip, detail } = loaded;
 
   const { trail, parkingLots, transitStops, closures, fees } = detail;
@@ -127,7 +147,7 @@ export default async function TripSheetPage({ params }: Props) {
         <JsonLd data={trailJsonLd(detail)} />
         <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
         <div className="flex w-full flex-col gap-5 px-4 pt-4 pb-6 lg:w-[460px] lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
-          <header className="relative -mx-4 -mt-4 flex h-[220px] flex-col justify-between">
+          <header className="relative -mx-4 -mt-4 flex h-[220px] shrink-0 flex-col justify-between">
             <SeasonScene season={seasonOf(new Date())} width={460} height={220} seed={3} sunX={0.2} sunY={0.28} shade className="absolute inset-0 h-full w-full" />
             <nav aria-label="Navigácia" className="relative flex items-center justify-between gap-2 px-4 pt-4">
               <Link
