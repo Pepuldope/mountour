@@ -16,7 +16,7 @@ interface Props {
 
 const segment = "grid grid-cols-3 gap-[3px] rounded-xl bg-[var(--segment-bg)] p-[3px]";
 const segBtn = (on: boolean) =>
-  `inline-flex items-center justify-center gap-1.5 rounded-[10px] px-2 py-2 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
+  `inline-flex items-center justify-center gap-1.5 rounded-[10px] px-2 py-2 text-sm font-semibold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
     on ? "bg-[var(--accent)] text-[var(--accent-contrast)]" : "text-[var(--muted)] hover:text-[var(--foreground)]"
   }`;
 
@@ -84,7 +84,10 @@ export function FilterChips({ variant = "home", activeDate }: Props) {
           onClick={openOther}
           className={segBtn(other)}
         >
-          <UiIcon name="cal" size={15} />
+          {/* On a narrow phone the picked date ("St 14. 10.") needs the icon's room to stay on one line. */}
+          <span className={other ? "hidden min-[380px]:inline-flex" : "inline-flex"}>
+            <UiIcon name="cal" size={15} />
+          </span>
           {other && current ? shortDay(current) : "Iný deň"}
         </button>
       </div>
