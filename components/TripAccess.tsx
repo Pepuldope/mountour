@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useMemo, useSyncExternalStore }
 import type { ReactNode } from "react";
 import { approachMin } from "@/lib/dayPlan";
 import { useTripSettings } from "@/lib/tripSettings";
+import type { TrailJoin } from "@/lib/trailJoin";
 import type { LatLng, ParkingLot, TransitStop } from "@/lib/types";
 
 /**
@@ -30,8 +31,12 @@ export interface TripAccess {
   transit: boolean;
   /** Where the walk to the trail starts: the chosen parking, or the stop. */
   walkFrom: LatLng | null;
-  /** Walk to the trail start for the chosen way of travel, one way, minutes. */
+  /** Walk to the trail for the chosen way of travel, one way, minutes. */
   approachMin: number;
+  /** Where that walk reaches the trail: its start, or its nearest point when parked up the trail. */
+  trailJoin: LatLng | null;
+  /** Parked or got off up the trail: the part of the walk skipped (null = the whole trail). */
+  skip: Pick<TrailJoin, "skip_out" | "skip_back" | "skip_m" | "skip_ascent_m"> | null;
 }
 
 const Ctx = createContext<TripAccess>({
@@ -46,6 +51,8 @@ const Ctx = createContext<TripAccess>({
   transit: false,
   walkFrom: null,
   approachMin: 0,
+  trailJoin: null,
+  skip: null,
 });
 
 // The pick is remembered per trip for this browser session (back and forth between pages).
@@ -101,8 +108,9 @@ export function TripAccessProvider({
   const value = useMemo<TripAccess>(() => {
     const parking = parkingLots[choice] ?? null;
     const stop = [...transitStops].sort((a, b) => a.distance_m - b.distance_m)[0] ?? null;
-    const parkingApproach = parking ? approachMin(parking.walk_m) : 0;
-    const stopApproach = stop ? approachMin(stop.distance_m) : 0;
+    const parkingApproach = parking ? approachMin(parking.join?.walk_m ?? parking.walk_m) : 0;
+    const stopApproach = stop ? approachMin(stop.join?.walk_m ?? stop.distance_m) : 0;
+    const join = transit ? (stop?.join ?? null) : (parking?.join ?? null);
     return {
       parkingLots,
       choice,
@@ -115,6 +123,8 @@ export function TripAccessProvider({
       transit,
       walkFrom: transit ? (stop?.location ?? null) : (parking?.location ?? null),
       approachMin: transit ? stopApproach : parkingApproach,
+      trailJoin: join?.location ?? trailStart,
+      skip: join && join.skip_m > 0 ? join : null,
     };
   }, [parkingLots, transitStops, choice, choose, trailStart, transit]);
 

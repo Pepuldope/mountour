@@ -1,12 +1,13 @@
-import type { DriveRoute } from "@/lib/drive";
 import { roundCoord } from "@/lib/drive";
+import { driveRoute, finishDrive, walkRoute } from "@/lib/routing";
 
 /**
  * GET /api/drive?from=lat,lon&to=lat,lon -> DriveRoute
  *
  * OpenRouteService when ORS_API_KEY is set (production; key stays server-side).
  * Without a key it falls back to the public OSRM demo server, which is fine for
- * local development but has no SLA.
+ * local development but has no SLA. When the road route stops short of the
+ * parking, the last stretch follows tracks and minor roads (lib/routing.ts).
  */
 
 // Slovakia plus a generous margin (Vienna, Brno, Budapest, Kraków starts).
@@ -15,6 +16,8 @@ const MAX_POINTS = 400;
 const DAY_S = 86400;
 /** How far from a road a point may be and still be routed (to the nearest road). */
 const SNAP_M = 3000;
+/** The last stretch starts on a road and ends at the parking, both close to a way. */
+const TAIL_SNAP_M = 300;
 
 function parsePoint(raw: string | null, round: (n: number) => number): [number, number] | null {
   if (!raw) return null;
@@ -33,52 +36,6 @@ function thin(coords: [number, number][]): [number, number][] {
   return out;
 }
 
-/** GeoJSON [lon, lat] -> Leaflet [lat, lon]. */
-function flip(coords: [number, number][]): [number, number][] {
-  return coords.map(([lon, lat]) => [lat, lon]);
-}
-
-async function viaOrs(key: string, from: [number, number], to: [number, number]): Promise<DriveRoute> {
-  // POST so we can lift the 350 m snapping limit: a start in a park or a
-  // parking spot off the road network still gets a route to the nearest road.
-  const res = await fetch("https://api.openrouteservice.org/v2/directions/driving-car/geojson", {
-    method: "POST",
-    headers: { Authorization: key, Accept: "application/geo+json", "Content-Type": "application/json" },
-    body: JSON.stringify({
-      coordinates: [
-        [from[1], from[0]],
-        [to[1], to[0]],
-      ],
-      radiuses: [SNAP_M, SNAP_M],
-    }),
-  });
-  if (!res.ok) throw new Error(`ORS ${res.status}`);
-  const data = await res.json();
-  const f = data.features?.[0];
-  if (!f) throw new Error("ORS: no route");
-  return {
-    durationMin: Math.round(f.properties.summary.duration / 60),
-    distanceM: Math.round(f.properties.summary.distance),
-    points: thin(flip(f.geometry.coordinates)),
-  };
-}
-
-async function viaOsrm(from: [number, number], to: [number, number]): Promise<DriveRoute> {
-  const url =
-    "https://router.project-osrm.org/route/v1/driving/" +
-    `${from[1]},${from[0]};${to[1]},${to[0]}?overview=simplified&geometries=geojson`;
-  const res = await fetch(url, { next: { revalidate: DAY_S } });
-  if (!res.ok) throw new Error(`OSRM ${res.status}`);
-  const data = await res.json();
-  const r = data.routes?.[0];
-  if (data.code !== "Ok" || !r) throw new Error(`OSRM: ${data.code}`);
-  return {
-    durationMin: Math.round(r.duration / 60),
-    distanceM: Math.round(r.distance),
-    points: thin(flip(r.geometry.coordinates)),
-  };
-}
-
 export async function GET(req: Request) {
   const params = new URL(req.url).searchParams;
   // The visitor's start stays coarse (~100 m, never an exact home); the parking is a public place.
@@ -90,7 +47,9 @@ export async function GET(req: Request) {
 
   try {
     const key = process.env.ORS_API_KEY;
-    const route = key ? await viaOrs(key, from, to) : await viaOsrm(from, to);
+    const road = await driveRoute(key, from, to, SNAP_M);
+    const full = await finishDrive(road, to, (a, b) => walkRoute(key, a, b, TAIL_SNAP_M));
+    const route = { ...full, points: thin(full.points) };
     return Response.json(route, {
       headers: { "Cache-Control": `public, s-maxage=${DAY_S}, stale-while-revalidate=${DAY_S}` },
     });

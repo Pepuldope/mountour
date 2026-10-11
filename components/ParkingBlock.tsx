@@ -14,8 +14,19 @@ function feeLabel(p: ParkingLot): string | null {
 }
 
 function walkLabel(p: ParkingLot): string {
+  if (p.join) {
+    const min = approachMin(p.join.walk_m);
+    const km = (p.join.skip_m / 1000).toFixed(1).replace(".", ",");
+    const walk = min > 0 ? `${p.join.walk_m} m pešo k trase (~${formatDuration(min)})` : "priamo pri trase";
+    return p.join.skip_m > 0 ? `${walk}, túra kratšia o ${km} km` : walk;
+  }
   const min = approachMin(p.walk_m);
   return min > 0 ? `${p.walk_m} m pešo k začiatku (~${formatDuration(min)})` : "pri začiatku trasy";
+}
+
+function summaryWalk(p: ParkingLot): string {
+  if (p.join) return p.join.walk_m < 150 ? "pri trase" : `${p.join.walk_m} m k trase`;
+  return p.walk_m < 150 ? "pri štarte" : `${p.walk_m} m`;
 }
 
 /**
@@ -35,7 +46,7 @@ export function ParkingBlock() {
         </span>
         Parkovanie
         <span className="ml-auto truncate text-sm font-medium text-[var(--muted)]">
-          {parking ? [parking.walk_m < 150 ? "pri štarte" : `${parking.walk_m} m`, feeLabel(parking)].filter(Boolean).join(", ") : "bez parkoviska"}
+          {parking ? [summaryWalk(parking), feeLabel(parking)].filter(Boolean).join(", ") : "bez parkoviska"}
         </span>
         <span className="text-[var(--muted)] transition-transform group-open:rotate-90">
           <UiIcon name="chev" size={16} />

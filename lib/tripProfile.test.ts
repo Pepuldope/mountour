@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildProfile, stepHours } from "./tripProfile";
+import { buildProfile, stepHours, trimProfile } from "./tripProfile";
 import type { TripDetail } from "./tripSchema";
 
 // Three points due north, ~111 m apart, climbing 100 m then flat.
@@ -47,5 +47,17 @@ describe("buildProfile", () => {
     expect(p.points).toHaveLength(3);
     expect(p.goalIndex).toBe(1);
     expect(p.goalName).toBe("Vrch");
+  });
+});
+
+describe("trimProfile", () => {
+  it("cuts the skipped start and end and keeps the goal", () => {
+    const p = buildProfile({ ...base, route: "tam-a-spat" } as TripDetail)!;
+    const t = trimProfile(p, 0.25, 0.15);
+    expect(t.points[0].at).toBe(0);
+    expect(t.points[t.points.length - 1].at).toBe(1);
+    expect(t.points[0].ele).toBeGreaterThan(500);
+    expect(t.points[t.goalIndex].ele).toBe(600);
+    expect(trimProfile(p, 0, 0)).toBe(p);
   });
 });

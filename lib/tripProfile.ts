@@ -104,3 +104,30 @@ export const GOAL_WORDS: Record<DestinationKind, { noun: string; at: string }> =
   jaskyna: { noun: "jaskyňa", at: "Pri jaskyni" },
   ine: { noun: "cieľ", at: "V cieli" },
 };
+
+/**
+ * The profile without the stretch skipped when joining the trail part-way:
+ * `out` of the walking time cut from the start, `back` from the end.
+ */
+export function trimProfile(profile: TripProfile, out: number, back: number): TripProfile {
+  const from = out;
+  const to = 1 - back;
+  if ((from <= 0 && to >= 1) || to - from <= 0.01) return profile;
+  const pts = profile.points;
+  const eleAt = (t: number): number => {
+    const i = pts.findIndex((p) => p.at >= t);
+    if (i <= 0) return pts[Math.max(0, i)].ele;
+    const a = pts[i - 1];
+    const b = pts[i];
+    return a.ele + ((b.ele - a.ele) * (t - a.at)) / (b.at - a.at || 1);
+  };
+  const colourAt = (t: number) => pts.find((p) => p.at >= t)?.colour ?? null;
+  const goal = pts[profile.goalIndex];
+  const inside = pts.filter((p) => p.at > from && p.at < to);
+  const points = [{ ele: eleAt(from), at: from, colour: colourAt(from) }, ...inside, { ele: eleAt(to), at: to, colour: colourAt(to) }].map(
+    (p) => ({ ...p, at: (p.at - from) / (to - from) })
+  );
+  const goalAt = (goal.at - from) / (to - from);
+  const goalIndex = Math.max(0, points.findIndex((p) => p.at >= goalAt - 1e-9));
+  return { ...profile, points, goalIndex };
+}

@@ -32,22 +32,23 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  */
 export function TripMap({ detail, gpxUrl }: Props) {
   const { trail, trailheads, transitStops, pois } = detail;
-  const { parkingLots, choice, choose, destination, trailStart, walkFrom, transit, stop } = useTripAccess();
+  const { parkingLots, choice, choose, destination, trailJoin, walkFrom, transit, stop } = useTripAccess();
   const [points, setPoints] = useState<[number, number][]>([]);
   const { start } = useUserLocation();
   const drive = useDriveRoute(start, destination);
 
   // Where the walk to the trail begins: the stop, the chosen parking, else the end of the road route.
+  // It ends where it meets the trail: the start, or the nearest point when parked up the trail.
   const driveEnd = drive.route?.points[drive.route.points.length - 1];
   const carStop: LatLng | null = walkFrom ?? (!transit && driveEnd ? { lat: driveEnd[0], lon: driveEnd[1] } : null);
-  const needsWalk = carStop !== null && trailStart !== null && haversineM(carStop, trailStart) > AT_TRAIL_M;
-  const walk = useWalkRoute(needsWalk ? carStop : null, needsWalk ? trailStart : null);
+  const needsWalk = carStop !== null && trailJoin !== null && haversineM(carStop, trailJoin) > AT_TRAIL_M;
+  const walk = useWalkRoute(needsWalk ? carStop : null, needsWalk ? trailJoin : null);
   const walkLeg = useMemo<[number, number][] | undefined>(() => {
     if (!needsWalk) return undefined;
     // No footpath route (offline, router down): a straight dotted line still shows where to go.
-    const pts = walk.route?.points ?? [pair(carStop!), pair(trailStart!)];
-    return [pair(carStop!), ...pts, pair(trailStart!)];
-  }, [needsWalk, walk.route, carStop?.lat, carStop?.lon, trailStart]); // eslint-disable-line react-hooks/exhaustive-deps
+    const pts = walk.route?.points ?? [pair(carStop!), pair(trailJoin!)];
+    return [pair(carStop!), ...pts, pair(trailJoin!)];
+  }, [needsWalk, walk.route, carStop?.lat, carStop?.lon, trailJoin]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // The road route ends on the nearest road; finish the line at the parking itself.
   const driveLeg = useMemo<[number, number][] | undefined>(() => {
@@ -115,6 +116,11 @@ export function TripMap({ detail, gpxUrl }: Props) {
   );
 
   // The trail plus where the car stops; with a drive, the whole day (start -> parking -> trail).
+  // Fitted once per start and way of travel: picking another parking keeps the view where it is.
+  const baseKey = `${start?.lat},${start?.lon},${transit},${trail.slug}`;
+  const [driveFitFor, setDriveFitFor] = useState<string | null>(null);
+  if (drive.route && driveFitFor !== baseKey) setDriveFitFor(baseKey);
+  const fitKey = `${baseKey},${driveFitFor === baseKey}`;
   const bounds = useMemo<BBox | null>(() => {
     const pts: [number, number][] = [...(drive.route?.points ?? [])];
     if (carStop) pts.push(pair(carStop));
@@ -126,7 +132,7 @@ export function TripMap({ detail, gpxUrl }: Props) {
       sw: { lat: Math.min(...lats), lon: Math.min(...lons) },
       ne: { lat: Math.max(...lats), lon: Math.max(...lons) },
     };
-  }, [drive.route, carStop?.lat, carStop?.lon, trail.bbox]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fitKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <TrailMap

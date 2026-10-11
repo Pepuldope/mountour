@@ -6,7 +6,7 @@ import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
 import { getTripLive } from "@/lib/tripDb";
 import { buildProfile } from "@/lib/tripProfile";
-import { DIFFICULTY_LABEL, GOAL_LABEL, POI_LABEL, formatDistance, formatDuration } from "@/lib/format";
+import { GOAL_LABEL, POI_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR, POI_COLOUR } from "@/lib/palette";
 import { seasonOf } from "@/lib/season";
@@ -20,6 +20,7 @@ import { ClosureBanner } from "@/components/ClosureBanner";
 import { TripPlanner } from "@/components/TripPlanner";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { SiteFooter } from "@/components/SiteFooter";
+import { TripFacts } from "@/components/TripFacts";
 import { TripMap } from "@/components/TripMap";
 import { TripAccessProvider } from "@/components/TripAccess";
 import { JsonLd } from "@/components/JsonLd";
@@ -116,7 +117,6 @@ export default async function TripSheetPage({ params }: Props) {
   const profile = buildProfile(trip);
   const gpxUrl = gpxUrlFor(trail.gpx_path);
   const sun = sunLocation(detail);
-  const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
   const goal = trail.goal ?? "ine";
   const also = secondGoal(detail);
   const goalEle = trip?.destination.ele_m;
@@ -159,19 +159,13 @@ export default async function TripSheetPage({ params }: Props) {
           </header>
 
           <div className="flex flex-col gap-2">
-            <p className="font-data flex flex-wrap items-center gap-x-3.5 text-[17px]">
-              <span>{km} km</span>
-              <span className="inline-flex items-center gap-1">
-                <UiIcon name="up" size={16} />
-                {trail.ascent_m} m
-              </span>
-              <span className="inline-flex items-center gap-1">
-                <UiIcon name="clock" size={16} />
-                {formatDuration(trail.duration_min)}
-              </span>
-              <span className="font-sans text-[13px] font-medium text-[var(--muted)]">{DIFFICULTY_LABEL[trail.difficulty].toLowerCase()}</span>
-              {trail.family_friendly && <span className="font-sans text-[13px] font-semibold text-[var(--ok)]">vhodné pre deti</span>}
-            </p>
+            <TripFacts
+              distanceM={trail.distance_m}
+              ascentM={trail.ascent_m}
+              durationMin={trail.duration_min}
+              difficulty={trail.difficulty}
+              familyFriendly={trail.family_friendly}
+            />
             {trail.description && <p className="text-sm text-[var(--muted)]">{trail.description}</p>}
           </div>
 
