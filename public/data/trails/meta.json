@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated_at": "2026-10-11T12:28:21+00:00",
+ "generated_at": "2026-10-11T12:30:38+00:00",
  "osm_data_at": "2026-10-09T20:21:04Z",
  "attribution": "© OpenStreetMap contributors (ODbL); popularity from Wikipedia page views (Wikimedia, CC0)",
  "grid": {
@@ -83,17 +83,17 @@
  "km": 19864,
  "pieces": 72191,
  "level_km": [
-  7945,
-  4966,
-  3575,
+  7946,
+  4965,
+  3576,
   2185,
   1192
  ],
  "cuts": [
-  390,
-  1181,
-  2896,
-  10747
+  416,
+  1221,
+  3003,
+  10844
  ],
  "top_goals": [
   {
@@ -122,6 +122,11 @@
    "views": 140359
   },
   {
+   "name": "Spišský hrad",
+   "kind": "hrad",
+   "views": 131649
+  },
+  {
    "name": "Čachtický hrad",
    "kind": "hrad",
    "views": 97258
@@ -130,11 +135,6 @@
    "name": "Bratislavský hrad",
    "kind": "hrad",
    "views": 97257
-  },
-  {
-   "name": "Spišský hrad",
-   "kind": "hrad",
-   "views": 84679
   },
   {
    "name": "Kasprov vrch",
@@ -184,7 +184,7 @@
   {
    "name": "Svinica",
    "kind": "vrchol",
-   "views": 41208
+   "views": 43053
   },
   {
    "name": "Zelené pleso",
