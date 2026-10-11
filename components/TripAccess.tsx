@@ -25,7 +25,12 @@ export interface TripAccess {
   destination: LatLng | null;
   /** Parking -> trail start on foot, one way, minutes (0 when close or no parking). */
   parkingApproachMin: number;
-  /** Nearest public-transport stop to the trail start. */
+  /** Stops near the trail, nearest walk first. */
+  stops: TransitStop[];
+  /** Index into stops; 0 = the nearest. */
+  stopChoice: number;
+  chooseStop: (index: number) => void;
+  /** The picked stop (by default the nearest). */
   stop: TransitStop | null;
   /** By car: the drive goes on. By train/bus: no drive, the walk starts at the stop. */
   transit: boolean;
@@ -47,6 +52,9 @@ const Ctx = createContext<TripAccess>({
   trailStart: null,
   destination: null,
   parkingApproachMin: 0,
+  stops: [],
+  stopChoice: 0,
+  chooseStop: () => {},
   stop: null,
   transit: false,
   walkFrom: null,
@@ -55,13 +63,14 @@ const Ctx = createContext<TripAccess>({
   skip: null,
 });
 
-// The pick is remembered per trip for this browser session (back and forth between pages).
-const KEY = "mountour-parking";
+// Picks are remembered per trip for this browser session (back and forth between pages).
+const PARKING_KEY = "mountour-parking";
+const STOP_KEY = "mountour-stop";
 const EVENT = "mountour-parking";
 
-function readAll(): Record<string, number> {
+function readAll(key: string): Record<string, number> {
   try {
-    return JSON.parse(sessionStorage.getItem(KEY) ?? "{}") as Record<string, number>;
+    return JSON.parse(sessionStorage.getItem(key) ?? "{}") as Record<string, number>;
   } catch {
     return {};
   }
@@ -70,6 +79,27 @@ function readAll(): Record<string, number> {
 function subscribe(cb: () => void) {
   window.addEventListener(EVENT, cb);
   return () => window.removeEventListener(EVENT, cb);
+}
+
+/** Which of `count` options is picked for this trip (0 = our default), and a setter. */
+function usePick(key: string, slug: string, count: number): [number, (index: number) => void] {
+  const stored = useSyncExternalStore(
+    subscribe,
+    () => readAll(key)[slug] ?? 0,
+    () => 0
+  );
+  const pick = useCallback(
+    (index: number) => {
+      try {
+        sessionStorage.setItem(key, JSON.stringify({ ...readAll(key), [slug]: index }));
+      } catch {
+        // Storage blocked: the pick lasts until the next render only.
+      }
+      window.dispatchEvent(new Event(EVENT));
+    },
+    [key, slug]
+  );
+  return [stored >= 0 && stored < count ? stored : 0, pick];
 }
 
 export function TripAccessProvider({
@@ -85,29 +115,18 @@ export function TripAccessProvider({
   trailStart: LatLng | null;
   children: ReactNode;
 }) {
-  const stored = useSyncExternalStore(
-    subscribe,
-    () => readAll()[slug] ?? 0,
-    () => 0
+  const [choice, choose] = usePick(PARKING_KEY, slug, parkingLots.length);
+  // Nearest walk to the trail first (a stop up the trail counts from where it joins).
+  const stops = useMemo(
+    () => [...transitStops].sort((a, b) => (a.join?.walk_m ?? a.distance_m) - (b.join?.walk_m ?? b.distance_m)),
+    [transitStops]
   );
-  const choice = stored >= 0 && stored < parkingLots.length ? stored : 0;
+  const [stopChoice, chooseStop] = usePick(STOP_KEY, slug, stops.length);
   const transit = useTripSettings().travel === "transit";
-
-  const choose = useCallback(
-    (index: number) => {
-      try {
-        sessionStorage.setItem(KEY, JSON.stringify({ ...readAll(), [slug]: index }));
-      } catch {
-        // Storage blocked: the pick lasts until the next render only.
-      }
-      window.dispatchEvent(new Event(EVENT));
-    },
-    [slug]
-  );
 
   const value = useMemo<TripAccess>(() => {
     const parking = parkingLots[choice] ?? null;
-    const stop = [...transitStops].sort((a, b) => a.distance_m - b.distance_m)[0] ?? null;
+    const stop = stops[stopChoice] ?? null;
     const parkingApproach = parking ? approachMin(parking.join?.walk_m ?? parking.walk_m) : 0;
     const stopApproach = stop ? approachMin(stop.join?.walk_m ?? stop.distance_m) : 0;
     const join = transit ? (stop?.join ?? null) : (parking?.join ?? null);
@@ -119,6 +138,9 @@ export function TripAccessProvider({
       trailStart,
       destination: transit ? null : (parking?.location ?? trailStart),
       parkingApproachMin: parkingApproach,
+      stops,
+      stopChoice,
+      chooseStop,
       stop,
       transit,
       walkFrom: transit ? (stop?.location ?? null) : (parking?.location ?? null),
@@ -126,7 +148,7 @@ export function TripAccessProvider({
       trailJoin: join?.location ?? trailStart,
       skip: join && join.skip_m > 0 ? join : null,
     };
-  }, [parkingLots, transitStops, choice, choose, trailStart, transit]);
+  }, [parkingLots, stops, choice, choose, stopChoice, chooseStop, trailStart, transit]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
