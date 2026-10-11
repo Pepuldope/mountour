@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated_at": "2026-10-11T07:40:42+00:00",
+ "generated_at": "2026-10-11T12:28:21+00:00",
  "osm_data_at": "2026-10-09T20:21:04Z",
  "attribution": "© OpenStreetMap contributors (ODbL); popularity from Wikipedia page views (Wikimedia, CC0)",
  "grid": {
@@ -83,23 +83,113 @@
  "km": 19864,
  "pieces": 72191,
  "level_km": [
-  7946,
+  7945,
   4966,
   3575,
   2185,
   1192
  ],
  "cuts": [
-  20,
-  60,
-  60,
-  339
+  390,
+  1181,
+  2896,
+  10747
  ],
  "top_goals": [
+  {
+   "name": "Rysy",
+   "kind": "vrchol",
+   "views": 213186
+  },
+  {
+   "name": "Rysy",
+   "kind": "vrchol",
+   "views": 213186
+  },
+  {
+   "name": "Gerlachovský štít",
+   "kind": "vrchol",
+   "views": 174152
+  },
+  {
+   "name": "Babia hora",
+   "kind": "vrchol",
+   "views": 170281
+  },
+  {
+   "name": "Oravský hrad",
+   "kind": "hrad",
+   "views": 140359
+  },
+  {
+   "name": "Čachtický hrad",
+   "kind": "hrad",
+   "views": 97258
+  },
+  {
+   "name": "Bratislavský hrad",
+   "kind": "hrad",
+   "views": 97257
+  },
+  {
+   "name": "Spišský hrad",
+   "kind": "hrad",
+   "views": 84679
+  },
+  {
+   "name": "Kasprov vrch",
+   "kind": "vrchol",
+   "views": 75972
+  },
+  {
+   "name": "Karpatsko-duklianska operácia",
+   "kind": "vyhliadka",
+   "views": 68506
+  },
   {
    "name": "Lomnický štít",
    "kind": "vrchol",
    "views": 67855
+  },
+  {
+   "name": "Kriváň",
+   "kind": "vrchol",
+   "views": 63205
+  },
+  {
+   "name": "Bojnický zámok",
+   "kind": "vyhliadka",
+   "views": 60673
+  },
+  {
+   "name": "Štrbské pleso",
+   "kind": "pleso",
+   "views": 52740
+  },
+  {
+   "name": "Sútok Bieleho a Čierneho Váhu",
+   "kind": "vyhliadka",
+   "views": 50472
+  },
+  {
+   "name": "Devín",
+   "kind": "hrad",
+   "views": 50323
+  },
+  {
+   "name": "Dóm svätej Alžbety",
+   "kind": "vyhliadka",
+   "views": 49228
+  },
+  {
+   "name": "Svinica",
+   "kind": "vrchol",
+   "views": 41208
+  },
+  {
+   "name": "Zelené pleso",
+   "kind": "pleso",
+   "views": 40884
   },
   {
    "name": "Chopok",
@@ -107,119 +197,29 @@
    "views": 35691
   },
   {
-   "name": "Ľubovniansky hrad",
+   "name": "Trenčiansky hrad",
    "kind": "hrad",
-   "views": 18740
+   "views": 33070
   },
   {
-   "name": "Bystrá",
+   "name": "Pilsko",
    "kind": "vrchol",
-   "views": 15613
+   "views": 27852
   },
   {
-   "name": "Ochtinská aragonitová jaskyňa",
-   "kind": "jaskyna",
-   "views": 14623
-  },
-  {
-   "name": "Gýmeš",
-   "kind": "hrad",
-   "views": 5430
-  },
-  {
-   "name": "Gombasecká jaskyňa",
-   "kind": "jaskyna",
-   "views": 5155
-  },
-  {
-   "name": "Likava",
-   "kind": "hrad",
-   "views": 5086
-  },
-  {
-   "name": "Čičva",
-   "kind": "hrad",
-   "views": 4499
-  },
-  {
-   "name": "Bystrianska jaskyňa",
-   "kind": "jaskyna",
-   "views": 3599
-  },
-  {
-   "name": "Slanec",
-   "kind": "hrad",
-   "views": 3218
-  },
-  {
-   "name": "Blatnica",
-   "kind": "hrad",
-   "views": 3039
-  },
-  {
-   "name": "Furkotský štít",
+   "name": "Kráľova hoľa",
    "kind": "vrchol",
-   "views": 2541
+   "views": 27427
   },
   {
-   "name": "Zlatý Stôl",
+   "name": "Sokolica",
    "kind": "vrchol",
-   "views": 840
+   "views": 25588
   },
   {
-   "name": "Ruiny Citadela",
-   "kind": "vyhliadka",
-   "views": 815
-  },
-  {
-   "name": "Ruiny Citadela",
-   "kind": "vyhliadka",
-   "views": 815
-  },
-  {
-   "name": "Žakýlske Pleso",
+   "name": "Popradské pleso",
    "kind": "pleso",
-   "views": 704
-  },
-  {
-   "name": "Siminy",
-   "kind": "vrchol",
-   "views": 570
-  },
-  {
-   "name": "Kuchyňa",
-   "kind": "hrad",
-   "views": 505
-  },
-  {
-   "name": "Živánska veža",
-   "kind": "vyhliadka",
-   "views": 453
-  },
-  {
-   "name": "Mošník",
-   "kind": "vrchol",
-   "views": 366
-  },
-  {
-   "name": "Nižné Kozie pleso",
-   "kind": "pleso",
-   "views": 322
-  },
-  {
-   "name": "Katruša",
-   "kind": "vrchol",
-   "views": 169
-  },
-  {
-   "name": "Stinská",
-   "kind": "vrchol",
-   "views": 160
-  },
-  {
-   "name": "Rozhľadňa Špicák",
-   "kind": "vyhliadka",
-   "views": 159
+   "views": 24100
   }
  ]
 }
