@@ -51,7 +51,8 @@ class TripBuilder:
         self.log = log
         self.car_ok = car_ok  # parking -> bool, True when a car can reach it (OSRM); None = no check
         self.proj = LocalProjection()
-        self.used_slugs = set()
+        # Hand-picked trips keep their own slugs; no generated trip may take one.
+        self.used_slugs = {p["slug"] for p in cfg.get("pinned", [])}
         self.report = dict(rejected={}, regression=[], regions={})
 
         def tree(feats):

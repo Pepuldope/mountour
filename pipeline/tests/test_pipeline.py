@@ -82,6 +82,7 @@ def test_end_to_end(tmp_path):
     assert run.main(["--pbf", str(pbf), "--root", str(tmp_path)]) == 0
     index = json.loads((tmp_path / "public" / "data" / "trips" / "index.json").read_text())
     by_slug = {t["slug"]: t for t in index["trips"]}
+    assert len(by_slug) == len(index["trips"])  # slugs are unique
     # the pinned trip is built and the generated trip to the same peak is deduplicated
     assert "testovaci-pin" in by_slug
     assert not any(t["destination"]["name"] == "Testovací vrch" and not t["curated"] for t in index["trips"])
