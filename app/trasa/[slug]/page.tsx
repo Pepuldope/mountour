@@ -151,8 +151,8 @@ export default async function TripSheetPage({ params }: Props) {
                   </Badge>
                 )}
               </div>
-              <h1 className="text-[2.4rem] leading-none font-extrabold tracking-tight [text-shadow:0_1px_12px_rgba(0,0,0,.25)]">{trail.name}</h1>
-              <p className="text-[13.5px] [text-shadow:0_1px_6px_rgba(0,0,0,.35)]">
+              <h1 className="text-[2.4rem] leading-none font-extrabold tracking-tight [text-shadow:0_1px_3px_rgba(0,0,0,.45),0_1px_14px_rgba(0,0,0,.3)]">{trail.name}</h1>
+              <p className="text-[13.5px] font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,.6),0_0_10px_rgba(0,0,0,.45)]">
                 {[trail.region_name, trip ? `štart ${trip.start.name}` : null].filter(Boolean).join(" · ")}
               </p>
             </div>

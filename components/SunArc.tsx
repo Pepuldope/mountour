@@ -5,7 +5,7 @@ import type { PointerEvent as ReactPointerEvent } from "react";
 import type { DayPlan } from "@/lib/dayPlan";
 import { formatDuration, formatDurationShort, formatTime } from "@/lib/format";
 import { LAND, seasonDetails, seasonOf, seeded, snowSvg } from "@/lib/season";
-import { UI_ICON } from "@/lib/uiIcons";
+import { UI_ICON, iconEdge } from "@/lib/uiIcons";
 import { MARKING_COLOR } from "@/lib/mapLayers";
 import { sunAltitude } from "@/lib/sun";
 import { GOAL_WORDS } from "@/lib/tripProfile";
@@ -25,6 +25,8 @@ const PAD = 8;
 // The picture is a sky, so it keeps its own day colours in dark mode too.
 const INK = "#14233b";
 const WALKER = "#1769d1";
+// Even outlines under the markers (the same weight on the head, body and stick).
+const EDGE = { walker: iconEdge(UI_ICON.walker), car: iconEdge(UI_ICON.car), dot: iconEdge(UI_ICON.dot) };
 // The white night car keeps its headlights: amber instead of the icon's white.
 const CAR_AT_NIGHT = UI_ICON.car.replaceAll('fill="#fff"', 'fill="#f4a51c"');
 
@@ -393,7 +395,7 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
             <path d={`M${scene.goal.x},${scene.goal.y - 13}l8,3l-8,3z`} fill="#f4a51c" />
             <text
               x={label(scene.goal.x)}
-              y={scene.goal.y - 18}
+              y={scene.goal.y - 18 - (onTrail && Math.abs(walker[0] - scene.goal.x) < 40 ? 18 : 0)}
               textAnchor="middle"
               fontSize={11}
               fontWeight={700}
@@ -461,7 +463,7 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
         <g transform={`translate(${onTrail ? walker[0] : sx} ${onTrail ? walker[1] - 12 : inCar ? HOR - 11 : HOR + 3}) translate(-12.5 -12.5) scale(1.04)`}>
           {/* A thin edge keeps the marker apart from what is behind it: dark around the walker (a white ring
               round the head read as a halo), white around the dark car by day, dark around the white car at night. */}
-          <g className="mt-edge" style={{ color: onTrail || night ? INK : "#fff" }} dangerouslySetInnerHTML={{ __html: UI_ICON[marker] }} />
+          <g style={{ color: onTrail || night ? INK : "#fff" }} dangerouslySetInnerHTML={{ __html: EDGE[marker] }} />
           <g
             style={{ color: onTrail ? WALKER : night ? "#fff" : INK }}
             dangerouslySetInnerHTML={{ __html: night && marker === "car" ? CAR_AT_NIGHT : UI_ICON[marker] }}
