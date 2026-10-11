@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SAFE_MARGIN_MIN } from "@/lib/dayPlan";
 import type { DayPlan } from "@/lib/dayPlan";
 import { dayInSentence, floorTo5, longDay } from "@/lib/days";
@@ -22,7 +22,8 @@ import { useTripAccess } from "@/components/TripAccess";
 import { WeatherBlock } from "@/components/WeatherBlock";
 import { TransitLegs } from "@/components/TransitBlock";
 import { TravelSwitch } from "@/components/TravelSwitch";
-import { GOAL_WORDS } from "@/lib/tripProfile";
+import { GOAL_WORDS, trimProfile } from "@/lib/tripProfile";
+import { joinedMinutes } from "@/lib/trailJoin";
 import type { TripProfile } from "@/lib/tripProfile";
 
 interface Props extends ShareInfo {
@@ -49,12 +50,14 @@ const navButton =
  * The trip page's answer: "vyrazte najneskôr", the day and departure, the
  * timeline, then Uložiť (main), share and navigation hand-offs.
  */
-export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile, gpxUrl, bbox, ...trip }: Props) {
+export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: fullProfile, gpxUrl, bbox, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
-  const { destination, approachMin, trailStart, transit, stop } = useTripAccess();
-  // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day.
-  const baseHikeMin = trailHikeMin + (transit || start ? 2 * approachMin : 0);
+  const { destination, approachMin, trailStart, transit, stop, skip } = useTripAccess();
+  // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day;
+  // parked up the trail, the stretch below is skipped both ways.
+  const baseHikeMin = joinedMinutes(trailHikeMin, skip) + (transit || start ? 2 * approachMin : 0);
+  const profile = useMemo(() => (fullProfile && skip ? trimProfile(fullProfile, skip.skip_out, skip.skip_back) : fullProfile), [fullProfile, skip]);
   const { plan, date, time, driveMin, driveApprox, driveStatus } = useTripPlan(sun, destination, baseHikeMin);
   const [shared, setShared] = useState<SharedPlan | null>(null);
 

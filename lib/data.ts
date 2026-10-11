@@ -1,5 +1,7 @@
 import { approachMin } from "@/lib/dayPlan";
 import { distanceAlongM } from "@/lib/geo";
+import { trailJoin } from "@/lib/trailJoin";
+import type { TrailJoin } from "@/lib/trailJoin";
 import { closureRulesFor, getAllTrips, getTrip } from "@/lib/trips";
 import type { Parking, TransitStop as TripStop, TripDetail, TripSummary } from "@/lib/tripSchema";
 import type { Closure, ParkingLot, TrailDetail, Trail, LatLng, TransitStop } from "@/lib/types";
@@ -8,7 +10,7 @@ import type { Closure, ParkingLot, TrailDetail, Trail, LatLng, TransitStop } fro
 // trip data (lib/trips.ts, docs/TRIP-DATA.md) to it. New code should use
 // lib/trips.ts directly.
 
-function parkingLot(p: Parking, slug: string, i: number): ParkingLot {
+function parkingLot(p: Parking, slug: string, i: number, join: TrailJoin | null): ParkingLot {
   const fee = p.fee === true ? ", spoplatnené" : p.fee === false ? ", bezplatné" : "";
   return {
     id: `${slug}:parking:${i}`,
@@ -16,14 +18,15 @@ function parkingLot(p: Parking, slug: string, i: number): ParkingLot {
     name: p.name ?? "Parkovisko",
     location: p.location,
     surface_type: null,
-    note: `${p.walk_m} m od začiatku trasy${fee}. Zdroj: OpenStreetMap.`,
+    note: join ? `${join.walk_m} m od trasy${fee}. Zdroj: OpenStreetMap.` : `${p.walk_m} m od začiatku trasy${fee}. Zdroj: OpenStreetMap.`,
     verified_on: null,
     walk_m: p.walk_m,
     fee: p.fee,
+    join,
   };
 }
 
-function transitStop(s: TripStop, slug: string, i: number): TransitStop {
+function transitStop(s: TripStop, slug: string, i: number, join: TrailJoin | null): TransitStop {
   return {
     id: `${slug}:stop:${i}`,
     trailhead_id: `${slug}:start`,
@@ -31,6 +34,7 @@ function transitStop(s: TripStop, slug: string, i: number): TransitStop {
     mode: s.mode,
     location: s.location,
     distance_m: s.walk_m,
+    join,
   };
 }
 
@@ -60,6 +64,8 @@ export function trailDetailFrom(t: TripSummary | TripDetail): TrailDetail {
   const d = "path" in t ? t : null;
   const parking = [t.parking, ...(d?.parking_alternatives ?? [])].filter((p): p is Parking => p != null);
   const stops = [t.transit, ...(d?.transit_alternatives ?? [])].filter((s): s is TripStop => s != null);
+  // Parked or got off up the trail: join it at its nearest point (needs the path).
+  const joinOf = (at: LatLng, walkM: number) => (d ? trailJoin(d.path, at, walkM, d.route === "okruh") : null);
   const closures: Closure[] = closureRulesFor(t).map((r) => ({
     id: r.id,
     trail_id: t.slug,
@@ -73,8 +79,8 @@ export function trailDetailFrom(t: TripSummary | TripDetail): TrailDetail {
   return {
     trail: toTrail(t),
     trailheads: [{ id: `${t.slug}:start`, trail_id: t.slug, name: t.start.name, location: t.start.location, is_primary: true }],
-    parkingLots: parking.map((p, i) => parkingLot(p, t.slug, i)),
-    transitStops: stops.map((s, i) => transitStop(s, t.slug, i)),
+    parkingLots: parking.map((p, i) => parkingLot(p, t.slug, i, joinOf(p.location, p.walk_m))),
+    transitStops: stops.map((s, i) => transitStop(s, t.slug, i, joinOf(s.location, s.walk_m))),
     closures,
     fees: t.fees,
     pois: (d?.pois ?? [])

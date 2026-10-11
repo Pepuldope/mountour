@@ -10,13 +10,24 @@ export type DriveStatus = "idle" | "loading" | "ok" | "error";
 // Shared across components so the map, the timeline and the list make one request each.
 const cache = new Map<string, Promise<unknown>>();
 
+/** One retry after a short pause when the router is busy or down (not for a bad request). */
+function fetchJson<T>(url: string, retries = 1): Promise<T> {
+  return fetch(url).then(
+    (res) => {
+      if (res.ok) return res.json() as Promise<T>;
+      if (res.status >= 500 && retries > 0) return pause().then(() => fetchJson<T>(url, retries - 1));
+      throw new Error(`${url} ${res.status}`);
+    },
+    (err) => (retries > 0 ? pause().then(() => fetchJson<T>(url, retries - 1)) : Promise.reject(err))
+  );
+}
+
+const pause = () => new Promise((resolve) => setTimeout(resolve, 1500));
+
 function load<T>(url: string): Promise<T> {
   let p = cache.get(url) as Promise<T> | undefined;
   if (!p) {
-    p = fetch(url).then((res) => {
-      if (!res.ok) throw new Error(`${url} ${res.status}`);
-      return res.json() as Promise<T>;
-    });
+    p = fetchJson<T>(url);
     // A failure (offline, API down) shouldn't stick: drop it so a later render retries.
     p.catch(() => cache.delete(url));
     cache.set(url, p);
