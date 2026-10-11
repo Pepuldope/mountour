@@ -1,4 +1,4 @@
-import type { Fee } from "@/lib/tripSchema";
+import type { DestinationKind, Fee } from "@/lib/tripSchema";
 
 // Shared domain types for MounTour. Mirrors supabase/migrations/0001_init.sql.
 
@@ -39,6 +39,10 @@ export interface Trail {
   difficulty: Difficulty;
   duration_min: number;
   family_friendly: boolean;
+  /** What the walk is for (peak, waterfall...): colour and icon in lists. */
+  goal?: DestinationKind;
+  /** "Malá Fatra", "Tatry"... */
+  region_name?: string;
   /** Main waymark colour; optional until the OSM pipeline fills it. */
   marking?: TrailMarking | null;
   gpx_path: string | null;

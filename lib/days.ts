@@ -51,6 +51,29 @@ export function dayChips(now: Date): DayChip[] {
   return chips;
 }
 
+export interface StripDay {
+  iso: string;
+  /** "So" */
+  weekday: string;
+  /** Day of the month. */
+  day: number;
+  weekend: boolean;
+}
+
+/** The days after tomorrow, for the "iný deň" strip (Dnes and Zajtra have their own buttons). */
+export function dayStrip(now: Date, count = 14): StripDay[] {
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Array.from({ length: count }, (_, i) => {
+    const d = addDays(today, i + 2);
+    return { iso: isoDate(d), weekday: WEEKDAY_SHORT[d.getDay()], day: d.getDate(), weekend: d.getDay() % 6 === 0 };
+  });
+}
+
+/** "So 17. 10." */
+export function shortDay(iso: string): string {
+  return `${WEEKDAY_SHORT[parseIso(iso).getDay()]} ${shortDate(iso)}`;
+}
+
 /** "17. 10." */
 export function shortDate(iso: string): string {
   const d = parseIso(iso);

@@ -7,6 +7,7 @@ import { cpSkBackUrl, cpSkUrl, startTown } from "@/lib/links";
 import { useTripDay, useTripSettings } from "@/lib/tripSettings";
 import { useUserLocation } from "@/lib/userLocation";
 import { useTripAccess } from "@/components/TripAccess";
+import { UiIcon } from "@/components/UiIcon";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const hhmm = (d: Date) => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
@@ -22,8 +23,18 @@ export function TransitBlock() {
   if (transit) return null;
 
   return (
-    <section className="flex flex-col gap-1 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4">
-      <h2 className="text-base font-bold">Bez auta</h2>
+    <details className="group rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)]">
+      <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-base font-bold [&::-webkit-details-marker]:hidden">
+        <span className="text-[var(--muted)]">
+          <UiIcon name="bus" size={18} />
+        </span>
+        Bez auta
+        <span className="ml-auto truncate text-sm font-medium text-[var(--muted)]">{stop ? `zastávka ${stop.distance_m} m` : "bez zastávky"}</span>
+        <span className="text-[var(--muted)] transition-transform group-open:rotate-90">
+          <UiIcon name="chev" size={16} />
+        </span>
+      </summary>
+      <div className="flex flex-col gap-1 px-4 pb-3.5">
       {stop ? (
         <p className="text-sm">
           {TRANSIT_LABEL[stop.mode]}: zastávka <strong>{stop.name}</strong>,{" "}
@@ -34,10 +45,11 @@ export function TransitBlock() {
       )}
       {stop && (
         <button type="button" onClick={() => update({ travel: "transit" })} className={link}>
-          Naplánovať vlakom alebo autobusom
+          Naplánovať autobusom alebo vlakom
         </button>
       )}
-    </section>
+      </div>
+    </details>
   );
 }
 

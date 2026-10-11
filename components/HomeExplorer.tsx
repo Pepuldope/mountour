@@ -6,20 +6,24 @@ import type { BBox, LatLng, TrailDetail } from "@/lib/types";
 import { defaultApproachMin, driveDestination, nearestStop, primaryTrailhead, sunLocation } from "@/lib/data";
 import { activeClosures } from "@/lib/closures";
 import { approachMin, hikeMinutes } from "@/lib/dayPlan";
-import { HALF_DAY_MIN, dayFit, dayInSentence, isoDate } from "@/lib/days";
+import { dayFit, dayInSentence, isoDate } from "@/lib/days";
 import { estimateDriveMin } from "@/lib/drive";
-import { tripsCount } from "@/lib/format";
+import { GOAL_PLURAL, tripsCount } from "@/lib/format";
+import { GOAL_COLOUR } from "@/lib/palette";
+import { seasonOf } from "@/lib/season";
+import type { DestinationKind } from "@/lib/tripSchema";
 import { fetchTrack, gpxUrlFor } from "@/lib/gpx";
 import { haversineM } from "@/lib/geo";
 import { trackColor } from "@/lib/mapLayers";
 import { useTripSettings } from "@/lib/tripSettings";
 import { useTownDrives } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
-import { FilterChips } from "@/components/FilterChips";
+import { FilterChips, KidsSwitch } from "@/components/FilterChips";
+import { SeasonScene } from "@/components/SeasonScene";
+import { UiIcon } from "@/components/UiIcon";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { SiteFooter } from "@/components/SiteFooter";
 import { StartChip } from "@/components/StartChip";
-import { TravelSwitch } from "@/components/TravelSwitch";
 import { NETWORK_ON } from "@/lib/trailNetwork";
 import { TripCard } from "@/components/TripCard";
 import type { TripCardItem } from "@/components/TripCard";
@@ -31,6 +35,9 @@ interface Props {
 }
 
 const DESKTOP_QUERY = "(min-width: 1024px)";
+
+/** Goal filters on the list, most common first. */
+const GOAL_FILTERS: DestinationKind[] = ["vrchol", "vodopad", "pleso", "hrad", "jaskyna", "vyhliadka", "chata"];
 
 /** Starts further than this from the nearest precomputed town get "~" on their drive times. */
 const TOWN_EXACT_KM = 10;
@@ -66,7 +73,8 @@ function unionBounds(trails: TrailDetail[]): BBox | null {
  * and moves trips that don't fit that day's daylight behind a button.
  */
 export function HomeExplorer({ trails }: Props) {
-  const { date, today, withKids, halfDay, travel, update } = useTripSettings();
+  const { date, today, withKids, travel, update } = useTripSettings();
+  const [goalFilter, setGoalFilter] = useState<DestinationKind | null>(null);
   const transit = travel === "transit";
   const { start } = useUserLocation();
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
@@ -102,7 +110,8 @@ export function HomeExplorer({ trails }: Props) {
 
   // Drive time to every trail from the weekly precomputed table, via the town nearest the start.
   const destinations = useMemo(() => trails.map((t) => driveDestination(t)), [trails]);
-  const { drives, status: driveStatus } = useTownDrives(transit ? null : start);
+  // Drive times are shown by train/bus too (muted), so the two can be compared.
+  const { drives, status: driveStatus } = useTownDrives(start);
 
   const { shown, hidden } = useMemo(() => {
     const now = new Date();
@@ -111,22 +120,23 @@ export function HomeExplorer({ trails }: Props) {
     const toTownKm = start && town ? haversineM(start, town) / 1000 : null;
     const accessMin = start && town && toTownKm! > 2 ? estimateDriveMin(start, town) : 0;
     const all = trails.flatMap((detail, i): TripCardItem[] => {
-      const dest = transit ? null : destinations[i];
+      const dest = destinations[i];
       const stop = nearestStop(detail);
       const table = drives?.minutes[detail.trail.slug] ?? null;
       if (withKids && !detail.trail.family_friendly) return [];
+      if (goalFilter && (detail.trail.goal ?? "ine") !== goalFilter) return [];
       // Table missing (offline, or a trip newer than the table): a straight-line estimate beats a blank, marked with "~".
-      const estimate = !transit && table === null && driveStatus !== "loading" && start !== null && dest !== null;
+      const estimate = table === null && driveStatus !== "loading" && start !== null && dest !== null;
       const viaTown = table !== null ? table + accessMin : null;
       // Far from the table town (e.g. Ždiar -> Belianska jaskyňa), the straight-line guess can be much closer.
       const direct = viaTown !== null && toTownKm! > TOWN_EXACT_KM && dest ? estimateDriveMin(start!, dest) : null;
-      const driveMin =
+      const carMin =
         viaTown !== null ? Math.min(viaTown, direct ?? Infinity) : estimate ? estimateDriveMin(start!, dest!) : null;
       const approx = estimate || (viaTown !== null && toTownKm! > TOWN_EXACT_KM);
+      const driveMin = transit ? null : carMin;
       // The walk from the parking (by car) or the stop (by train/bus) to the trail and back is part of the day.
       const approach = transit ? (stop ? 2 * approachMin(stop.distance_m) : 0) : driveMin !== null ? 2 * defaultApproachMin(detail) : 0;
       const hikeMin = hikeMinutes(detail.trail.duration_min + approach, withKids);
-      if (halfDay && hikeMin + 2 * (driveMin ?? 0) > HALF_DAY_MIN) return [];
       const th = primaryTrailhead(detail);
       const sun = sunLocation(detail);
       return [
@@ -134,25 +144,29 @@ export function HomeExplorer({ trails }: Props) {
           detail,
           hikeMin,
           driveMin,
+          carMin,
           driveApprox: approx,
           driveLoading: driveStatus === "loading",
           distanceM: start && th ? haversineM(start, th.location) : null,
           fit: date && today && sun ? dayFit({ date, now, driveMin, hikeMin, location: sun }) : null,
           closed: date !== null && activeClosures(detail.closures, date).length > 0,
           stop: transit ? stop : null,
+          nearStop: stop,
           noStop: transit && !stop,
         },
       ];
     });
     if (start) {
-      const key = (i: TripCardItem) => i.driveMin ?? (i.distanceM ?? Infinity) / 1000;
+      const key = (i: TripCardItem) => i.carMin ?? (i.distanceM ?? Infinity) / 1000;
       all.sort((a, b) => key(a) - key(b));
     }
     return {
       shown: all.filter((i) => !i.closed && !i.noStop && (!i.fit || i.fit.status === "fits")),
       hidden: all.filter((i) => i.closed || i.noStop || (i.fit && i.fit.status !== "fits")),
     };
-  }, [trails, destinations, drives, driveStatus, withKids, halfDay, date, today, start, transit]);
+  }, [trails, destinations, drives, driveStatus, withKids, goalFilter, date, today, start, transit]);
+
+  const season = seasonOf(date ? new Date(`${date}T12:00`) : new Date());
 
   const shownSlugs = useMemo(() => new Set(shown.map((m) => m.detail.trail.slug)), [shown]);
   const dayWord = date && today ? dayInSentence(date, new Date()) : null;
@@ -189,6 +203,8 @@ export function HomeExplorer({ trails }: Props) {
             dimmed: !shownSlugs.has(detail.trail.slug),
             active: detail.trail.slug === activeSlug,
             trailSlug: detail.trail.slug,
+            // Same goal colour as the card's tile; the active pin stays sun-yellow.
+            colour: detail.trail.slug === activeSlug ? undefined : GOAL_COLOUR[detail.trail.goal ?? "ine"],
           },
         ];
       }),
@@ -228,6 +244,7 @@ export function HomeExplorer({ trails }: Props) {
         key={item.detail.trail.id}
         item={item}
         dayWord={dayWord}
+        transit={transit}
         active={isDesktop && activeSlug === item.detail.trail.slug}
         onActive={setActiveSlug}
         registerItem={registerItem}
@@ -237,23 +254,27 @@ export function HomeExplorer({ trails }: Props) {
   return (
     <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
       <div className="flex w-full flex-col gap-5 px-4 pt-4 pb-6 lg:w-[440px] lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
-        <nav aria-label="Hlavná navigácia" className="flex items-center justify-between gap-3">
-          <Link href="/" aria-label="MounTour" className="block">
-            <picture>
-              <source srcSet="/brand/mountour-logo-on-dark.svg" media="(prefers-color-scheme: dark)" />
-              { }
+        <header className="relative -mx-4 -mt-4 flex flex-col">
+          <SeasonScene season={season} width={440} height={250} seed={11} sunX={0.64} sunY={0.17} drop={0.2} className="absolute inset-0 h-full w-full" />
+          <nav aria-label="Hlavná navigácia" className="relative flex items-center justify-between gap-3 px-4 pt-4">
+            <Link href="/" aria-label="MounTour" className="block">
+              {/* The hero sky is light in both themes, so the dark-ink logo always. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/brand/mountour-logo.svg" alt="MounTour" width={150} height={23} className="h-[23px] w-auto" />
-            </picture>
-          </Link>
-          <SavedTripsLink />
-        </nav>
-
-        <header className="flex flex-col gap-3">
-          <h1 className="text-[1.65rem] leading-tight font-extrabold">Kam dnes, aby ste boli späť za svetla?</h1>
-          <TravelSwitch />
-          <StartChip />
-          <FilterChips />
+            </Link>
+            <SavedTripsLink />
+          </nav>
+          <div className="relative flex flex-col gap-2 px-4 pt-6 pb-16 text-[#14233b]">
+            <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">Kam dnes?</h1>
+            <p className="max-w-[30ch] text-[15px] font-medium">Výlety, z ktorých budete späť za svetla.</p>
+            <StartChip folded />
+          </div>
         </header>
+
+        <div className="relative z-[1] -mx-1 -mt-14 flex flex-col gap-3 rounded-[18px] bg-[var(--card-bg)] p-3 shadow-[var(--shadow-float)]">
+          <FilterChips />
+          <KidsSwitch />
+        </div>
 
         <section className="flex flex-col gap-3" aria-live="polite">
           <div className="flex items-center justify-between gap-3">
@@ -263,11 +284,33 @@ export function HomeExplorer({ trails }: Props) {
                 type="button"
                 onClick={() => setShowMapOnPhone((v) => !v)}
                 aria-expanded={showMapOnPhone}
-                className="text-sm font-semibold text-[var(--accent)] underline"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--accent)]"
               >
+                <UiIcon name="map" size={16} />
                 {showMapOnPhone ? "Skryť mapu" : "Mapa"}
               </button>
             )}
+          </div>
+
+          <div role="group" aria-label="Druh cieľa" className="-mx-4 flex gap-1.5 overflow-x-auto px-4 pb-0.5 [scrollbar-width:none]">
+            {GOAL_FILTERS.map((g) => {
+              const on = goalFilter === g;
+              return (
+                <button
+                  key={g}
+                  type="button"
+                  aria-pressed={on}
+                  onClick={() => setGoalFilter(on ? null : g)}
+                  className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13px] font-semibold ${
+                    on ? "border-transparent text-white" : "border-[var(--border)] bg-[var(--card-bg)]"
+                  }`}
+                  style={on ? { background: GOAL_COLOUR[g] } : undefined}
+                >
+                  {!on && <span className="h-[9px] w-[9px] rounded-full" style={{ background: GOAL_COLOUR[g] }} />}
+                  {GOAL_PLURAL[g]}
+                </button>
+              );
+            })}
           </div>
 
           {!isDesktop && showMapOnPhone && (
@@ -280,9 +323,9 @@ export function HomeExplorer({ trails }: Props) {
             <div className="flex flex-col gap-2 rounded-[var(--radius-card)] border border-dashed border-[var(--border)] p-4 text-sm">
               <p>{dayWord ? `${dayWord === "dnes" ? "Dnes" : "Vtedy"} s týmito filtrami nič nestihnete.` : "S týmito filtrami nič nenachádzame."}</p>
               <div className="flex flex-wrap gap-3">
-                {halfDay && (
-                  <button type="button" onClick={() => update({ halfDay: false })} className="font-semibold text-[var(--accent)] underline">
-                    Zrušiť pol dňa
+                {goalFilter && (
+                  <button type="button" onClick={() => setGoalFilter(null)} className="font-semibold text-[var(--accent)] underline">
+                    Ukázať všetky ciele
                   </button>
                 )}
                 {withKids && (

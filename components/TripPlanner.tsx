@@ -99,24 +99,26 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile, gpx
   return (
     <div className="flex flex-col gap-4">
       {shared && (
-        <div className="rounded-[var(--radius-card)] bg-[var(--sky-night)] p-4 text-sm text-white">
+        <div className="rounded-[var(--radius-card)] bg-[var(--accent-soft)] p-4 text-sm">
           <p>
             Plán od kamaráta: <strong>{longDay(shared.date)}</strong>, odchod{" "}
             <strong className="font-data text-base">{shared.time}</strong>
             {shared.town ? `, štart ${shared.town}` : ""}.
           </p>
-          <p className="opacity-80">
+          <p className="text-[var(--muted)]">
             {adopted ? `Nižšie je prepočítaný zo štartu ${start?.label}. Zmeniť ho môžete pod plánom.` : "Nižšie je prepočítaný z vášho miesta."}
           </p>
         </div>
       )}
+
+      <TravelSwitch driveMin={driveMin} />
 
       {plan && (
         <section
           aria-label="Kedy vyraziť"
           className="overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)]"
         >
-          <div className="flex flex-col gap-1 px-4 pt-3.5 pb-2">
+          <div className="flex flex-col gap-1 bg-[var(--sun-soft)] px-4 pt-3.5 pb-3">
             <p className="text-sm text-[var(--muted)]">
               {startName && hasDrive ? `Štart ${startName} · ` : ""}
               {capitalize(
@@ -125,7 +127,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile, gpx
                 } najneskôr`
               )}
             </p>
-            <p className="font-data text-5xl leading-none text-[var(--time)]">{formatTime(latest!)}</p>
+            <p className="font-data text-[3.2rem] leading-none font-bold text-[var(--time)]">{formatTime(latest!)}</p>
             <p className="text-sm">
               a budete späť {SAFE_MARGIN_MIN} min pred západom slnka ({formatTime(plan.sunset)})
             </p>
@@ -144,7 +146,6 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile, gpx
       )}
 
       <section aria-label="Deň a odchod" className="flex flex-col gap-3">
-        <TravelSwitch />
         <StartChip />
         <FilterChips variant="trip" activeDate={date} />
         <div className="flex flex-wrap items-center gap-3">

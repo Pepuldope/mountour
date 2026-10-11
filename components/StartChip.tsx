@@ -5,6 +5,7 @@ import { searchPlaces } from "@/lib/geocode";
 import type { Place } from "@/lib/geocode";
 import { TOWNS } from "@/lib/towns";
 import { useUserLocation } from "@/lib/userLocation";
+import { UiIcon } from "@/components/UiIcon";
 
 type SearchState = "idle" | "searching" | "results" | "empty" | "error";
 
@@ -13,16 +14,17 @@ const chip =
 
 /**
  * "Odkiaľ vyrážate?": one chip that opens location / town chips / search.
- * The list already works without a start; this only adds travel times.
+ * The list already works without a start; this only adds travel times, so on
+ * home the choices stay folded until asked for (trips first).
  */
-export function StartChip() {
+export function StartChip({ folded = false }: { folded?: boolean }) {
   const { status, message, locate, start, setManualStart } = useUserLocation();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [search, setSearch] = useState<SearchState>("idle");
   const [results, setResults] = useState<Place[]>([]);
   const abortRef = useRef<AbortController | null>(null);
-  const expanded = open || !start;
+  const expanded = open || (!start && !folded);
 
   async function runSearch() {
     if (query.trim().length < 2) return;
@@ -50,16 +52,25 @@ export function StartChip() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        <span className="opacity-80">{start ? "Odkiaľ:" : "Odkiaľ vyrážate?"}</span>
+        {!(folded && !start) && <span className="opacity-80">{start ? "Odkiaľ:" : "Odkiaľ vyrážate?"}</span>}
+        {folded && !start && (
+          <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} className={`${chip} inline-flex items-center gap-1 text-[var(--accent)]`}>
+            <UiIcon name="pin" size={15} />
+            Odkiaľ vyrážate?
+          </button>
+        )}
         {start && (
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-expanded={open}
-            className={`${chip} border-[var(--accent)] text-[var(--accent)]`}
+            className={`${chip} inline-flex items-center gap-1 border-[var(--accent)] font-semibold text-[var(--foreground)]`}
           >
-            {start.source === "gps" ? "📍 " : ""}
-            {start.label.split(",")[0]} <span aria-hidden="true">▾</span>
+            <span className="text-[var(--accent)]">
+              <UiIcon name="pin" size={15} />
+            </span>
+            {start.label.split(",")[0]}
+            <UiIcon name="down" size={14} />
           </button>
         )}
       </div>

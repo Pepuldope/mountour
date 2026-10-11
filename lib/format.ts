@@ -1,4 +1,5 @@
 import type { DayPlan, Verdict } from "@/lib/dayPlan";
+import type { DestinationKind } from "@/lib/tripSchema";
 import type { Difficulty, PoiKind, TransitMode } from "@/lib/types";
 
 export const DIFFICULTY_LABEL: Record<Difficulty, string> = {
@@ -16,6 +17,36 @@ export const POI_LABEL: Record<PoiKind, string> = {
   ihrisko: "Ihrisko",
   utulna: "Útulňa",
 };
+
+export const GOAL_LABEL: Record<DestinationKind, string> = {
+  vrchol: "Vrchol",
+  vodopad: "Vodopád",
+  pleso: "Pleso",
+  hrad: "Hrad",
+  vyhliadka: "Vyhliadka",
+  jaskyna: "Jaskyňa",
+  chata: "Chata",
+  ine: "Výlet",
+};
+
+export const GOAL_PLURAL: Record<DestinationKind, string> = {
+  vrchol: "Vrcholy",
+  vodopad: "Vodopády",
+  pleso: "Plesá",
+  hrad: "Hrady",
+  vyhliadka: "Vyhliadky",
+  jaskyna: "Jaskyne",
+  chata: "Chaty",
+  ine: "Iné",
+};
+
+/** Compact, for chips and the sun arc: "45 min", "3 h", "3 h 05". */
+export function formatDurationShort(minutes: number): string {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  if (h === 0) return `${m} min`;
+  return m === 0 ? `${h} h` : `${h} h ${String(m).padStart(2, "0")}`;
+}
 
 export function formatDuration(minutes: number): string {
   const h = Math.floor(minutes / 60);

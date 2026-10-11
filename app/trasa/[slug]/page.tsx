@@ -6,8 +6,12 @@ import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
 import { getTripLive } from "@/lib/tripDb";
 import { buildProfile } from "@/lib/tripProfile";
-import { DIFFICULTY_LABEL, formatDistance, formatDuration } from "@/lib/format";
-import { MARKING_COLOR, MARKING_LABEL } from "@/lib/mapLayers";
+import { DIFFICULTY_LABEL, GOAL_LABEL, POI_LABEL, formatDistance, formatDuration } from "@/lib/format";
+import { kindSvg } from "@/lib/kindIcons";
+import { GOAL_COLOUR, POI_COLOUR } from "@/lib/palette";
+import { seasonOf } from "@/lib/season";
+import { SeasonScene } from "@/components/SeasonScene";
+import { UiIcon } from "@/components/UiIcon";
 import { FeeBlock } from "@/components/FeeBlock";
 import { ParkingBlock } from "@/components/ParkingBlock";
 import { PoiList } from "@/components/PoiList";
@@ -79,6 +83,28 @@ function trailJsonLd(detail: TrailDetail) {
   };
 }
 
+/** A second reason to go, from what the walk passes: a hut, a castle or a viewpoint. */
+function secondGoal(detail: TrailDetail): "chata" | "hrad" | "vyhliadka" | null {
+  const goal = detail.trail.goal;
+  const kinds = new Set(detail.pois.map((p) => p.kind));
+  for (const k of ["chata", "hrad", "vyhliadka"] as const) if (k !== goal && kinds.has(k)) return k;
+  return null;
+}
+
+function Badge({ colour, icon, children }: { colour: string; icon: string; children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 rounded-full py-1 pr-2.5 pl-1.5 text-[12.5px] font-bold text-white" style={{ background: colour }}>
+      <span
+        aria-hidden
+        className="inline-flex"
+        // Constant markup from lib/kindIcons.ts, no user data.
+        dangerouslySetInnerHTML={{ __html: icon }}
+      />
+      {children}
+    </span>
+  );
+}
+
 export default async function TripSheetPage({ params }: Props) {
   const { slug } = await params;
   const loaded = await loadTrip(slug);
@@ -91,6 +117,9 @@ export default async function TripSheetPage({ params }: Props) {
   const gpxUrl = gpxUrlFor(trail.gpx_path);
   const sun = sunLocation(detail);
   const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
+  const goal = trail.goal ?? "ine";
+  const also = secondGoal(detail);
+  const goalEle = trip?.destination.ele_m;
 
   return (
     <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} transitStops={transitStops} trailStart={trailStart}>
@@ -98,33 +127,53 @@ export default async function TripSheetPage({ params }: Props) {
         <JsonLd data={trailJsonLd(detail)} />
         <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
         <div className="flex w-full flex-col gap-5 px-4 pt-4 pb-6 lg:w-[460px] lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
-          <nav aria-label="Navigácia" className="flex items-center justify-between gap-2">
-            <Link href="/" className="text-sm font-semibold text-[var(--accent)]">
-              ← Kam dnes
-            </Link>
-            <SavedTripsLink />
-          </nav>
-
-          <header className="flex flex-col gap-2">
-            <h1 className="flex items-center gap-2 text-[1.65rem] leading-tight font-extrabold">
-              {trail.marking && (
-                <span
-                  className="trail-mark"
-                  style={{ ["--mark" as string]: MARKING_COLOR[trail.marking] }}
-                  title={MARKING_LABEL[trail.marking]}
-                />
-              )}
-              {trail.name}
-            </h1>
-            <p className="font-data flex flex-wrap gap-x-3 text-[17px] text-[var(--muted)]">
-              <span>{km} km</span>
-              <span>+{trail.ascent_m} m</span>
-              <span>{formatDuration(trail.duration_min)} chôdze</span>
-              <span>{DIFFICULTY_LABEL[trail.difficulty].toLowerCase()}</span>
-              {trail.family_friendly && <span className="text-[var(--ok)]">vhodné pre deti</span>}
-            </p>
-            {trail.description && <p className="text-sm">{trail.description}</p>}
+          <header className="relative -mx-4 -mt-4 flex h-[220px] flex-col justify-between">
+            <SeasonScene season={seasonOf(new Date())} width={460} height={220} seed={3} sunX={0.2} sunY={0.28} shade className="absolute inset-0 h-full w-full" />
+            <nav aria-label="Navigácia" className="relative flex items-center justify-between gap-2 px-4 pt-4">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-0.5 rounded-full border border-[var(--border)] bg-[var(--card-bg)]/90 px-3 py-1.5 text-sm font-semibold"
+              >
+                <UiIcon name="back" size={15} />
+                Kam dnes
+              </Link>
+              <SavedTripsLink />
+            </nav>
+            <div className="relative flex flex-col gap-1.5 px-4 pb-3.5 text-white">
+              <div className="flex flex-wrap gap-1.5">
+                <Badge colour={GOAL_COLOUR[goal]} icon={kindSvg(goal, 16)}>
+                  {GOAL_LABEL[goal]}
+                  {goalEle ? ` · ${goalEle} m` : ""}
+                </Badge>
+                {also && (
+                  <Badge colour={POI_COLOUR[also]} icon={kindSvg(also, 16)}>
+                    {POI_LABEL[also]} na trase
+                  </Badge>
+                )}
+              </div>
+              <h1 className="text-[2.4rem] leading-none font-extrabold tracking-tight [text-shadow:0_1px_12px_rgba(0,0,0,.25)]">{trail.name}</h1>
+              <p className="text-[13.5px] [text-shadow:0_1px_6px_rgba(0,0,0,.35)]">
+                {[trail.region_name, trip ? `štart ${trip.start.name}` : null].filter(Boolean).join(" · ")}
+              </p>
+            </div>
           </header>
+
+          <div className="flex flex-col gap-2">
+            <p className="font-data flex flex-wrap items-center gap-x-3.5 text-[17px]">
+              <span>{km} km</span>
+              <span className="inline-flex items-center gap-1">
+                <UiIcon name="up" size={16} />
+                {trail.ascent_m} m
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <UiIcon name="clock" size={16} />
+                {formatDuration(trail.duration_min)}
+              </span>
+              <span className="font-sans text-[13px] font-medium text-[var(--muted)]">{DIFFICULTY_LABEL[trail.difficulty].toLowerCase()}</span>
+              {trail.family_friendly && <span className="font-sans text-[13px] font-semibold text-[var(--ok)]">vhodné pre deti</span>}
+            </p>
+            {trail.description && <p className="text-sm text-[var(--muted)]">{trail.description}</p>}
+          </div>
 
           <ClosureBanner closures={closures} />
 

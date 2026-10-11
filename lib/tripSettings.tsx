@@ -10,8 +10,6 @@ export interface TripSettings {
   date: string | null;
   /** Departure HH:MM chosen on a trip page; null = the default for the day. */
   time: string | null;
-  /** "pol dňa": the whole outing fits in HALF_DAY_MIN. */
-  halfDay: boolean;
   withKids: boolean;
   /** How the group gets there: by car, or by train/bus (then the plan starts at the stop). */
   travel: Travel;
@@ -50,7 +48,7 @@ export function defaultTimeFor(date: string, now = new Date()): string {
   return soon.date === date ? soon.time : MORNING;
 }
 
-const DEFAULTS: TripSettings = { date: null, time: null, halfDay: false, withKids: false, travel: "car" };
+const DEFAULTS: TripSettings = { date: null, time: null, withKids: false, travel: "car" };
 
 function readStored(): Partial<TripSettings> | null {
   try {
