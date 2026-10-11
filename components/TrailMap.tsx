@@ -33,6 +33,8 @@ export interface MapMarker {
   active?: boolean;
   /** Clicking the marker selects this trail (home page). */
   trailSlug?: string;
+  /** Clicking the marker runs this (e.g. pick this parking). */
+  onClick?: () => void;
 }
 
 interface Props {
@@ -43,6 +45,8 @@ interface Props {
   onSelectTrail?: (slug: string) => void;
   /** Drive from the trip's start to the parking, drawn dashed under the trail. */
   driveLeg?: [number, number][];
+  /** On foot from where the car stops to the trail start, drawn dotted. */
+  walkLeg?: [number, number][];
   ariaLabel: string;
   className?: string;
 }
@@ -117,7 +121,7 @@ const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: 
  * MapLibre map on OpenFreeMap vector tiles. Trails are our own lines in their
  * KST colour with a white casing (like the painted marks); drive leg dashed.
  */
-export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ariaLabel, className }: Props) {
+export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, walkLeg, ariaLabel, className }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [ctx, setCtx] = useState<{ ml: MapLibre; map: MlMap } | null>(null);
   const onSelectRef = useRef(onSelectTrail);
@@ -165,6 +169,7 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ari
         if (!map || cancelled) return;
         map.addSource("drive", { type: "geojson", data: EMPTY });
         map.addSource("tracks", { type: "geojson", data: EMPTY });
+        map.addSource("walk", { type: "geojson", data: EMPTY });
         map.addLayer({
           id: "drive-casing",
           type: "line",
@@ -201,6 +206,21 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ari
             "line-width": ["match", ["get", "state"], "selected", 5, "dimmed", 2.5, 3.5],
             "line-opacity": ["match", ["get", "state"], "dimmed", 0.35, 1],
           },
+        });
+        // Parking -> trail start on foot: small dots, on top of the trail's start.
+        map.addLayer({
+          id: "walk-casing",
+          type: "line",
+          source: "walk",
+          layout: { "line-cap": "round", "line-join": "round" },
+          paint: { "line-color": "#ffffff", "line-width": 6, "line-opacity": 0.85 },
+        });
+        map.addLayer({
+          id: "walk-line",
+          type: "line",
+          source: "walk",
+          layout: { "line-cap": "round", "line-join": "round" },
+          paint: { "line-color": "#17213a", "line-width": 3, "line-dasharray": [0.1, 1.8] },
         });
         // Wide invisible line so thin tracks are easy to tap.
         map.addLayer({
@@ -276,6 +296,21 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ari
     (ctx.map.getSource("drive") as GeoJSONSource | undefined)?.setData(data);
   }, [ctx, driveLeg]);
 
+  // Walk leg.
+  useEffect(() => {
+    if (!ctx) return;
+    const data: GeoJSON.FeatureCollection =
+      walkLeg && walkLeg.length >= 2
+        ? {
+            type: "FeatureCollection",
+            features: [
+              { type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: walkLeg.map(lngLat) } },
+            ],
+          }
+        : EMPTY;
+    (ctx.map.getSource("walk") as GeoJSONSource | undefined)?.setData(data);
+  }, [ctx, walkLeg]);
+
   // Markers: HTML elements so they can use the brand's square trail marks.
   useEffect(() => {
     if (!ctx) return;
@@ -296,6 +331,7 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, ari
           .addTo(map);
         const slug = m.trailSlug;
         if (slug) el.addEventListener("click", () => onSelectRef.current?.(slug));
+        if (m.onClick) el.addEventListener("click", m.onClick);
         return marker;
       });
   }, [ctx, markers]);

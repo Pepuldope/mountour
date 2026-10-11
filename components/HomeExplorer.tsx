@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
-import { driveDestination, primaryTrailhead, sunLocation } from "@/lib/data";
+import { defaultApproachMin, driveDestination, primaryTrailhead, sunLocation } from "@/lib/data";
 import { activeClosures } from "@/lib/closures";
 import { hikeMinutes } from "@/lib/dayPlan";
 import { HALF_DAY_MIN, dayFit, dayInSentence, isoDate } from "@/lib/days";
@@ -113,7 +113,9 @@ export function HomeExplorer({ trails }: Props) {
       const driveMin =
         viaTown !== null ? Math.min(viaTown, direct ?? Infinity) : estimate ? estimateDriveMin(start!, dest!) : null;
       const approx = estimate || (viaTown !== null && toTownKm! > TOWN_EXACT_KM);
-      const hikeMin = hikeMinutes(detail.trail.duration_min, withKids);
+      // By car, the walk from the parking to the trail start and back is part of the day.
+      const approach = driveMin !== null ? 2 * defaultApproachMin(detail) : 0;
+      const hikeMin = hikeMinutes(detail.trail.duration_min + approach, withKids);
       if (halfDay && hikeMin + 2 * (driveMin ?? 0) > HALF_DAY_MIN) return [];
       const th = primaryTrailhead(detail);
       const sun = sunLocation(detail);

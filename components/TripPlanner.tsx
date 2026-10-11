@@ -18,12 +18,13 @@ import { SaveTripButton } from "@/components/SaveTripButton";
 import type { ShareInfo } from "@/components/ShareButton";
 import { StartChip } from "@/components/StartChip";
 import { SunArc } from "@/components/SunArc";
+import { useTripAccess } from "@/components/TripAccess";
 import { GOAL_WORDS } from "@/lib/tripProfile";
 import type { TripProfile } from "@/lib/tripProfile";
 
 interface Props extends ShareInfo {
   sun: LatLng | null;
-  destination: LatLng | null;
+  /** The trail's own walking time (parking approach is added here). */
   baseHikeMin: number;
   profile: TripProfile | null;
   gpxUrl: string | null;
@@ -43,9 +44,12 @@ const navButton =
  * The trip page's answer: "vyrazte najneskôr", the day and departure, the
  * timeline, then Uložiť (main), share and navigation hand-offs.
  */
-export function TripPlanner({ sun, destination, baseHikeMin, profile, gpxUrl, bbox, ...trip }: Props) {
+export function TripPlanner({ sun, baseHikeMin: trailHikeMin, profile, gpxUrl, bbox, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
+  const { destination, approachMin } = useTripAccess();
+  // By car, the walk from the chosen parking to the trail start and back belongs to the day.
+  const baseHikeMin = trailHikeMin + (start ? 2 * approachMin : 0);
   const { plan, date, time, driveMin, driveApprox, driveStatus } = useTripPlan(sun, destination, baseHikeMin);
   const [shared, setShared] = useState<SharedPlan | null>(null);
 

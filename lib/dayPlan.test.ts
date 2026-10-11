@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hikeMinutes, planDay, SAFE_MARGIN_MIN } from "./dayPlan";
+import { approachMin, hikeMinutes, planDay, SAFE_MARGIN_MIN } from "./dayPlan";
 
 const BRATISLAVA = { lat: 48.1486, lon: 17.1077 };
 const MIN = 60000;
@@ -72,5 +72,16 @@ describe("planDay", () => {
   it("rejects malformed input", () => {
     expect(planDay({ date: "", start: "09:00", driveMin: 0, hikeMin: 60, location: BRATISLAVA })).toBeNull();
     expect(planDay({ date: "2026-06-21", start: "", driveMin: 0, hikeMin: 60, location: BRATISLAVA })).toBeNull();
+  });
+});
+
+describe("approachMin", () => {
+  it("ignores a short step from the car", () => {
+    expect(approachMin(0)).toBe(0);
+    expect(approachMin(149)).toBe(0);
+  });
+  it("rounds the walk to the trail up to 5 minutes", () => {
+    expect(approachMin(200)).toBe(5);
+    expect(approachMin(627)).toBe(15);
   });
 });

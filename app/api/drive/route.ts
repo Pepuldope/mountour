@@ -13,13 +13,15 @@ import { roundCoord } from "@/lib/drive";
 const AREA = { minLat: 45, maxLat: 52, minLon: 12, maxLon: 25 };
 const MAX_POINTS = 400;
 const DAY_S = 86400;
+/** How far from a road a point may be and still be routed (to the nearest road). */
+const SNAP_M = 3000;
 
-function parsePoint(raw: string | null): [number, number] | null {
+function parsePoint(raw: string | null, round: (n: number) => number): [number, number] | null {
   if (!raw) return null;
   const [lat, lon] = raw.split(",").map(Number);
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
   if (lat < AREA.minLat || lat > AREA.maxLat || lon < AREA.minLon || lon > AREA.maxLon) return null;
-  return [roundCoord(lat), roundCoord(lon)];
+  return [round(lat), round(lon)];
 }
 
 /** Keep every n-th point (plus the last) so long drives stay light to send and draw. */
@@ -37,12 +39,18 @@ function flip(coords: [number, number][]): [number, number][] {
 }
 
 async function viaOrs(key: string, from: [number, number], to: [number, number]): Promise<DriveRoute> {
-  const url =
-    "https://api.openrouteservice.org/v2/directions/driving-car" +
-    `?start=${from[1]},${from[0]}&end=${to[1]},${to[0]}`;
-  const res = await fetch(url, {
-    headers: { Authorization: key, Accept: "application/geo+json" },
-    next: { revalidate: DAY_S },
+  // POST so we can lift the 350 m snapping limit: a start in a park or a
+  // parking spot off the road network still gets a route to the nearest road.
+  const res = await fetch("https://api.openrouteservice.org/v2/directions/driving-car/geojson", {
+    method: "POST",
+    headers: { Authorization: key, Accept: "application/geo+json", "Content-Type": "application/json" },
+    body: JSON.stringify({
+      coordinates: [
+        [from[1], from[0]],
+        [to[1], to[0]],
+      ],
+      radiuses: [SNAP_M, SNAP_M],
+    }),
   });
   if (!res.ok) throw new Error(`ORS ${res.status}`);
   const data = await res.json();
@@ -73,8 +81,9 @@ async function viaOsrm(from: [number, number], to: [number, number]): Promise<Dr
 
 export async function GET(req: Request) {
   const params = new URL(req.url).searchParams;
-  const from = parsePoint(params.get("from"));
-  const to = parsePoint(params.get("to"));
+  // The visitor's start stays coarse (~100 m, never an exact home); the parking is a public place.
+  const from = parsePoint(params.get("from"), roundCoord);
+  const to = parsePoint(params.get("to"), (n) => Math.round(n * 1e5) / 1e5);
   if (!from || !to) {
     return Response.json({ error: "from/to must be lat,lon in or near Slovakia" }, { status: 400 });
   }

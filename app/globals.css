@@ -197,6 +197,12 @@ h2,
   opacity: 0.35;
 }
 
+/* Other parking spots stay tappable: picking one re-routes the trip. */
+.mt-pin-parking.mt-pin-dimmed {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
 .maplibregl-popup-content {
   color: #17213a;
   font-family: var(--font-figtree), system-ui, sans-serif;

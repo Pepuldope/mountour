@@ -1,3 +1,4 @@
+import { approachMin } from "@/lib/dayPlan";
 import { closureRulesFor, getAllTrips, getTrip } from "@/lib/trips";
 import type { Parking, TransitStop as TripStop, TripDetail, TripSummary } from "@/lib/tripSchema";
 import type { Closure, ParkingLot, TrailDetail, Trail, LatLng, TransitStop } from "@/lib/types";
@@ -11,11 +12,13 @@ function parkingLot(p: Parking, slug: string, i: number): ParkingLot {
   return {
     id: `${slug}:parking:${i}`,
     trailhead_id: `${slug}:start`,
-    name: p.name ?? `Parkovisko ${p.walk_m} m od začiatku trasy`,
+    name: p.name ?? "Parkovisko",
     location: p.location,
     surface_type: null,
     note: `${p.walk_m} m od začiatku trasy${fee}. Zdroj: OpenStreetMap.`,
     verified_on: null,
+    walk_m: p.walk_m,
+    fee: p.fee,
   };
 }
 
@@ -115,6 +118,11 @@ export function trailCenter(trail: Trail): LatLng | null {
 
 export function primaryTrailhead(detail: TrailDetail) {
   return detail.trailheads.find((t) => t.is_primary) ?? detail.trailheads[0] ?? null;
+}
+
+/** Walking time between the default parking and the trail start, one way (0 without parking). */
+export function defaultApproachMin(detail: TrailDetail): number {
+  return approachMin(detail.parkingLots[0]?.walk_m ?? 0);
 }
 
 /** Where the drive ends: the nearest parking lot, else the trailhead itself. */
