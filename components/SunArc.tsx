@@ -219,6 +219,8 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
     if (profile) climbed = w[i - 1].ele + (w[i].ele - w[i - 1].ele) * f - w[0].ele;
   }
   // On the trail it is colder the higher you are.
+  // With the walker right in front of the sun, its glow and white ring would sit round the head like a halo.
+  const behindWalker = onTrail && Math.hypot(sx - walker[0], sy - (walker[1] - 18)) < sunR + 18;
   const temp = now ? Math.round(now.temp - climbed * LAPSE_PER_M) : null;
 
   const marker = onTrail ? "walker" : inCar ? "car" : "dot";
@@ -372,8 +374,8 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
         <path d={scene.arc} fill="none" stroke="#fff" strokeWidth={4} strokeLinecap="round" opacity={0.75} />
         <path d={scene.arc} fill="none" stroke="#e08a00" strokeWidth={1.7} strokeDasharray="4 4" strokeLinecap="round" />
         <g transform={`translate(${sx} ${sy})`} opacity={alt > -1 ? sunShows : 0}>
-          <circle r={sunR + 8} fill="#ffd36b" opacity={0.45} />
-          <circle r={sunR + 2} fill="#fff" opacity={0.9} />
+          {!behindWalker && <circle r={sunR + 8} fill="#ffd36b" opacity={0.45} />}
+          {!behindWalker && <circle r={sunR + 2} fill="#fff" opacity={0.9} />}
           <circle r={sunR} fill={land.sun} />
           {scene.season === "leto" &&
             Array.from({ length: 10 }, (_, i) => {
