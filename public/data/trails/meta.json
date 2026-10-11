@@ -1,0 +1,225 @@
+{
+ "version": 1,
+ "generated_at": "2026-10-11T07:37:16+00:00",
+ "osm_data_at": "2026-10-09T20:21:04Z",
+ "attribution": "© OpenStreetMap contributors (ODbL); popularity from Wikipedia page views (Wikimedia, CC0)",
+ "grid": {
+  "lon0": 16.75,
+  "lat0": 47.7,
+  "dx": 0.5,
+  "dy": 0.25
+ },
+ "cells": [
+  "0_1",
+  "0_2",
+  "0_3",
+  "0_4",
+  "10_2",
+  "10_3",
+  "10_4",
+  "10_5",
+  "10_6",
+  "11_3",
+  "11_4",
+  "11_5",
+  "1_0",
+  "1_1",
+  "1_2",
+  "1_3",
+  "1_4",
+  "2_0",
+  "2_1",
+  "2_2",
+  "2_3",
+  "2_4",
+  "2_5",
+  "2_6",
+  "3_0",
+  "3_1",
+  "3_2",
+  "3_3",
+  "3_4",
+  "3_5",
+  "3_6",
+  "3_7",
+  "4_0",
+  "4_1",
+  "4_2",
+  "4_3",
+  "4_4",
+  "4_5",
+  "4_6",
+  "4_7",
+  "5_1",
+  "5_2",
+  "5_3",
+  "5_4",
+  "5_5",
+  "5_6",
+  "5_7",
+  "6_1",
+  "6_2",
+  "6_3",
+  "6_4",
+  "6_5",
+  "6_6",
+  "7_2",
+  "7_3",
+  "7_4",
+  "7_5",
+  "7_6",
+  "8_3",
+  "8_4",
+  "8_5",
+  "8_6",
+  "9_2",
+  "9_3",
+  "9_4",
+  "9_5",
+  "9_6",
+  "9_7"
+ ],
+ "levels": 5,
+ "km": 19864,
+ "pieces": 72191,
+ "level_km": [
+  7946,
+  4966,
+  3575,
+  2185,
+  1192
+ ],
+ "cuts": [
+  20,
+  60,
+  60,
+  339
+ ],
+ "top_goals": [
+  {
+   "name": "Lomnický štít",
+   "kind": "vrchol",
+   "views": 67855
+  },
+  {
+   "name": "Chopok",
+   "kind": "vrchol",
+   "views": 35691
+  },
+  {
+   "name": "Ľubovniansky hrad",
+   "kind": "hrad",
+   "views": 18740
+  },
+  {
+   "name": "Bystrá",
+   "kind": "vrchol",
+   "views": 15613
+  },
+  {
+   "name": "Ochtinská aragonitová jaskyňa",
+   "kind": "jaskyna",
+   "views": 14623
+  },
+  {
+   "name": "Gýmeš",
+   "kind": "hrad",
+   "views": 5430
+  },
+  {
+   "name": "Gombasecká jaskyňa",
+   "kind": "jaskyna",
+   "views": 5155
+  },
+  {
+   "name": "Likava",
+   "kind": "hrad",
+   "views": 5086
+  },
+  {
+   "name": "Čičva",
+   "kind": "hrad",
+   "views": 4499
+  },
+  {
+   "name": "Bystrianska jaskyňa",
+   "kind": "jaskyna",
+   "views": 3599
+  },
+  {
+   "name": "Slanec",
+   "kind": "hrad",
+   "views": 3218
+  },
+  {
+   "name": "Blatnica",
+   "kind": "hrad",
+   "views": 3039
+  },
+  {
+   "name": "Furkotský štít",
+   "kind": "vrchol",
+   "views": 2541
+  },
+  {
+   "name": "Zlatý Stôl",
+   "kind": "vrchol",
+   "views": 840
+  },
+  {
+   "name": "Ruiny Citadela",
+   "kind": "vyhliadka",
+   "views": 815
+  },
+  {
+   "name": "Ruiny Citadela",
+   "kind": "vyhliadka",
+   "views": 815
+  },
+  {
+   "name": "Žakýlske Pleso",
+   "kind": "pleso",
+   "views": 704
+  },
+  {
+   "name": "Siminy",
+   "kind": "vrchol",
+   "views": 570
+  },
+  {
+   "name": "Kuchyňa",
+   "kind": "hrad",
+   "views": 505
+  },
+  {
+   "name": "Živánska veža",
+   "kind": "vyhliadka",
+   "views": 453
+  },
+  {
+   "name": "Mošník",
+   "kind": "vrchol",
+   "views": 366
+  },
+  {
+   "name": "Nižné Kozie pleso",
+   "kind": "pleso",
+   "views": 322
+  },
+  {
+   "name": "Katruša",
+   "kind": "vrchol",
+   "views": 169
+  },
+  {
+   "name": "Stinská",
+   "kind": "vrchol",
+   "views": 160
+  },
+  {
+   "name": "Rozhľadňa Špicák",
+   "kind": "vyhliadka",
+   "views": 159
+  }
+ ]
+}
