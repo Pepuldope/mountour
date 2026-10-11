@@ -171,7 +171,8 @@ def pageviews(qids, cache_file):
     cache = {}
     if cache_file.exists():
         cache = json.loads(cache_file.read_text())
-    out = {q: c["views"] for q, c in cache.items() if c.get("end") == end}
+    # zeros are re-checked: an article with no views is rare, a failed lookup isn't
+    out = {q: c["views"] for q, c in cache.items() if c.get("end") == end and c.get("views")}
     todo = sorted(set(qids) - set(out))
     log(f"pageviews: {len(out)} cached, {len(todo)} to fetch")
 
