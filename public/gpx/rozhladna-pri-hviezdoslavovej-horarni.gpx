@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Rozhľadňa pri Hviezdoslavovej horárni</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Rozhľadňa pri Hviezdoslavovej horárni</name><trkseg>
+    <trkpt lat="49.526299" lon="19.473085"><ele>753</ele></trkpt>
+    <trkpt lat="49.526799" lon="19.473634"><ele>749</ele></trkpt>
+    <trkpt lat="49.526669" lon="19.474087"><ele>748</ele></trkpt>
+    <trkpt lat="49.526411" lon="19.474705"><ele>746</ele></trkpt>
+    <trkpt lat="49.526221" lon="19.475606"><ele>744</ele></trkpt>
+    <trkpt lat="49.526220" lon="19.475930"><ele>746</ele></trkpt>
+    <trkpt lat="49.526626" lon="19.477104"><ele>752</ele></trkpt>
+    <trkpt lat="49.526906" lon="19.477730"><ele>753</ele></trkpt>
+    <trkpt lat="49.528727" lon="19.480450"><ele>770</ele></trkpt>
+    <trkpt lat="49.534398" lon="19.489093"><ele>827</ele></trkpt>
+    <trkpt lat="49.535378" lon="19.490074"><ele>829</ele></trkpt>
+    <trkpt lat="49.538106" lon="19.493950"><ele>858</ele></trkpt>
+    <trkpt lat="49.538663" lon="19.494695"><ele>861</ele></trkpt>
+    <trkpt lat="49.541316" lon="19.497623"><ele>874</ele></trkpt>
+    <trkpt lat="49.541395" lon="19.497836"><ele>873</ele></trkpt>
+    <trkpt lat="49.541402" lon="19.498158"><ele>876</ele></trkpt>
+    <trkpt lat="49.540988" lon="19.500093"><ele>891</ele></trkpt>
+    <trkpt lat="49.540848" lon="19.501567"><ele>886</ele></trkpt>
+    <trkpt lat="49.541436" lon="19.501730"><ele>891</ele></trkpt>
+    <trkpt lat="49.540848" lon="19.501567"><ele>886</ele></trkpt>
+    <trkpt lat="49.540988" lon="19.500093"><ele>891</ele></trkpt>
+    <trkpt lat="49.541402" lon="19.498158"><ele>876</ele></trkpt>
+    <trkpt lat="49.541395" lon="19.497836"><ele>873</ele></trkpt>
+    <trkpt lat="49.541316" lon="19.497623"><ele>874</ele></trkpt>
+    <trkpt lat="49.538663" lon="19.494695"><ele>861</ele></trkpt>
+    <trkpt lat="49.538106" lon="19.493950"><ele>858</ele></trkpt>
+    <trkpt lat="49.535378" lon="19.490074"><ele>829</ele></trkpt>
+    <trkpt lat="49.534398" lon="19.489093"><ele>827</ele></trkpt>
+    <trkpt lat="49.528727" lon="19.480450"><ele>770</ele></trkpt>
+    <trkpt lat="49.526906" lon="19.477730"><ele>753</ele></trkpt>
+    <trkpt lat="49.526626" lon="19.477104"><ele>752</ele></trkpt>
+    <trkpt lat="49.526220" lon="19.475930"><ele>746</ele></trkpt>
+    <trkpt lat="49.526221" lon="19.475606"><ele>744</ele></trkpt>
+    <trkpt lat="49.526411" lon="19.474705"><ele>746</ele></trkpt>
+    <trkpt lat="49.526669" lon="19.474087"><ele>748</ele></trkpt>
+    <trkpt lat="49.526799" lon="19.473634"><ele>749</ele></trkpt>
+    <trkpt lat="49.526299" lon="19.473085"><ele>753</ele></trkpt>
+  </trkseg></trk>
+</gpx>

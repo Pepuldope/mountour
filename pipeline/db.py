@@ -1,8 +1,8 @@
 """Trip data as SQL for the Cloudflare D1 database behind /api/vylety.
 
-Reads what the weekly build writes (data/trips, data/drive-times.json,
-data/closure-rules.json) and prints one SQL file that drops and refills the
-trip tables. The visit counter's tables in the same database are not touched.
+Reads what the weekly build writes (public/data/trips, public/data/drive,
+data/towns.json, data/closure-rules.json) and prints one SQL file that drops
+and refills the trip tables. The visit counter's tables in the same database are not touched.
 The schema follows strategy/12-research/db/01_schema.sql, trimmed to what the
 site serves (no users or partners yet) plus the walk geometry per trip.
 
@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 # Child tables first, so DROP never trips over a foreign key.
 TABLES = [
-    "data_version", "drive_time", "town", "trip_fee", "fee", "trip_closure", "closure_rule",
+    "data_version", "town_drive", "drive_time", "town", "trip_fee", "fee", "trip_closure", "closure_rule",
     "poi", "trip_transit_stop", "transit_stop", "parking", "trip", "place", "protected_area", "region",
 ]
 
@@ -146,17 +146,18 @@ CREATE TABLE town (
   lat   REAL NOT NULL,
   lon   REAL NOT NULL
 );
-CREATE TABLE drive_time (
-  town_id  INTEGER NOT NULL REFERENCES town(id),
-  trip_id  INTEGER NOT NULL REFERENCES trip(id),
-  minutes  INTEGER NOT NULL CHECK (minutes >= 0),
-  km       REAL NOT NULL CHECK (km >= 0),
-  PRIMARY KEY (town_id, trip_id)
-) WITHOUT ROWID;
+-- Car minutes and km from one town to every trip, as JSON arrays in trip id
+-- order ([95, 103, null, ...]; null = no road). One row per town rather than
+-- one per town and trip: with thousands of trips that would be hundreds of
+-- thousands of rows, more than D1's free plan writes in a day.
+CREATE TABLE town_drive (
+  town_id       INTEGER PRIMARY KEY REFERENCES town(id),
+  minutes_json  TEXT NOT NULL,
+  km_json       TEXT NOT NULL
+);
 CREATE INDEX trip_region_idx ON trip (region_id);
 CREATE INDEX parking_trip_idx ON parking (trip_id);
 CREATE INDEX poi_trip_idx ON poi (trip_id);
-CREATE INDEX drive_time_trip_idx ON drive_time (trip_id);
 -- One row: which weekly build is loaded. Written last, so a reader that finds
 -- it knows every other table is complete.
 CREATE TABLE data_version (
@@ -203,8 +204,9 @@ def inserts(table, columns, rows):
 
 
 def build_sql(root=ROOT):
-    index = json.loads((root / "data" / "trips" / "index.json").read_text())
-    drive = json.loads((root / "data" / "drive-times.json").read_text())
+    tdir = root / "public" / "data" / "trips"
+    index = json.loads((tdir / "index.json").read_text())
+    town_list = json.loads((root / "data" / "towns.json").read_text())["towns"]
     closures = json.loads((root / "data" / "closure-rules.json").read_text())["rules"]
 
     regions, areas, places, trips = {}, {}, [], []
@@ -215,7 +217,7 @@ def build_sql(root=ROOT):
         return len(places)
 
     for tid, summary in enumerate(index["trips"], start=1):
-        detail = json.loads((root / "data" / "trips" / f"{summary['slug']}.json").read_text())
+        detail = json.loads((tdir / f"{summary['slug']}.json").read_text())
         rid = regions.setdefault(summary["region"], (len(regions) + 1, summary["region_name"]))[0]
         aid = None
         if summary.get("protected_area"):
@@ -254,13 +256,15 @@ def build_sql(root=ROOT):
                 len(fees) + 1, f["kind"], f["text"], f.get("amount_eur"), f["source"], f.get("source_url"), f.get("rule_id")))[0]
             trip_fees.append((tid, fid))
 
-    slug_to_id = {t[1]: t[0] for t in trips}
-    towns = [(i, t["id"], t["name"], t["location"]["lat"], t["location"]["lon"]) for i, t in enumerate(drive["towns"], start=1)]
+    order = [t[1] for t in trips]  # trip ids are 1..n in this order
+    towns = [(i, t["id"], t["name"], t["location"]["lat"], t["location"]["lon"]) for i, t in enumerate(town_list, start=1)]
     drive_rows = []
-    for town_i, (minutes, km) in enumerate(zip(drive["minutes"], drive["km"])):
-        for slug, m, k in zip(drive["slugs"], minutes, km):
-            if m is not None and k is not None and slug in slug_to_id:
-                drive_rows.append((town_i + 1, slug_to_id[slug], m, k))
+    for town_i, t in enumerate(town_list, start=1):
+        f = root / "public" / "data" / "drive" / f"{t['id']}.json"
+        if not f.exists():
+            continue
+        d = json.loads(f.read_text())
+        drive_rows.append((town_i, [d["minutes"].get(s) for s in order], [d["km"].get(s) for s in order]))
 
     sql = [f"DROP TABLE IF EXISTS {t};" for t in TABLES]
     sql.append(SCHEMA.strip())
@@ -282,7 +286,7 @@ def build_sql(root=ROOT):
     sql += inserts("fee", ["id", "kind", "text", "amount_eur", "source", "source_url", "rule_id"], list(fees.values()))
     sql += inserts("trip_fee", ["trip_id", "fee_id"], trip_fees)
     sql += inserts("town", ["id", "slug", "name", "lat", "lon"], towns)
-    sql += inserts("drive_time", ["town_id", "trip_id", "minutes", "km"], drive_rows)
+    sql += inserts("town_drive", ["town_id", "minutes_json", "km_json"], drive_rows)
     body = "\n".join(sql) + "\n"
     sql += inserts("data_version", ["id", "generated_at", "osm_data_at", "trips", "fingerprint"],
                    [(1, index["generated_at"], index.get("osm_data_at"), len(trips), fingerprint(body))])

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getAllTrails } from "@/lib/data";
+import { getAllTrails } from "@/lib/tripFiles";
 import { absoluteUrl } from "@/lib/site";
 
 // Rebuilt with the trail list, so new trips appear without touching this file.

@@ -80,8 +80,9 @@ def make_root(tmp_path):
 def test_end_to_end(tmp_path):
     pbf = make_root(tmp_path)
     assert run.main(["--pbf", str(pbf), "--root", str(tmp_path)]) == 0
-    index = json.loads((tmp_path / "data" / "trips" / "index.json").read_text())
+    index = json.loads((tmp_path / "public" / "data" / "trips" / "index.json").read_text())
     by_slug = {t["slug"]: t for t in index["trips"]}
+    assert len(by_slug) == len(index["trips"])  # slugs are unique
     # the pinned trip is built and the generated trip to the same peak is deduplicated
     assert "testovaci-pin" in by_slug
     assert not any(t["destination"]["name"] == "Testovací vrch" and not t["curated"] for t in index["trips"])
@@ -97,12 +98,14 @@ def test_end_to_end(tmp_path):
     assert any(f["rule_id"] == "slovensky-raj-rebriky" for f in falls["fees"])
     assert falls["parking"]["fee"] is True
 
-    detail = json.loads((tmp_path / "data" / "trips" / f"{falls['slug']}.json").read_text())
+    detail = json.loads((tmp_path / "public" / "data" / "trips" / f"{falls['slug']}.json").read_text())
     assert detail["path"][0][:2] == detail["path"][-1][:2]  # loop ends where it started
     assert 0 < detail["turnaround_index"] < len(detail["path"]) - 1
     assert (tmp_path / "public" / "gpx" / f"{falls['slug']}.gpx").exists()
-    loaders = (tmp_path / "data" / "trips" / "details.generated.ts").read_text()
-    assert f'"{falls["slug"]}"' in loaders
+    # the home list: every trip, without the text it never shows
+    listed = json.loads((tmp_path / "public" / "data" / "trips" / "list.json").read_text())["trips"]
+    assert [t["slug"] for t in listed] == [t["slug"] for t in index["trips"]]
+    assert "description" not in listed[0] and "osm" not in listed[0]["start"]
     report = (tmp_path / "data" / "pipeline-report.md").read_text()
     assert "testovaci-pin" in report
 

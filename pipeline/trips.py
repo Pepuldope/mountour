@@ -51,7 +51,8 @@ class TripBuilder:
         self.log = log
         self.car_ok = car_ok  # parking -> bool, True when a car can reach it (OSRM); None = no check
         self.proj = LocalProjection()
-        self.used_slugs = set()
+        # Hand-picked trips keep their own slugs; no generated trip may take one.
+        self.used_slugs = {p["slug"] for p in cfg.get("pinned", [])}
         self.report = dict(rejected={}, regression=[], regions={})
 
         def tree(feats):
@@ -172,10 +173,12 @@ class TripBuilder:
             cands = by_region.get(rid, [])
             chosen = []
             fam_needed = self.t["min_family_per_region"]
+            # No cap means every destination that makes a good trip (the full import).
+            cap = region.get("max_trips") or float("inf")
             for c in cands:
                 n_regular = len([x for x in chosen if not x.get("_extra")])
                 n_family = len([x for x in chosen if x["family_friendly"]])
-                if n_regular >= region["max_trips"] and n_family >= fam_needed:
+                if n_regular >= cap and n_family >= fam_needed:
                     break
                 if any(r == rid and haversine(c.feature.lat, c.feature.lon, la, lo) < self.t["dedupe_m"] for r, la, lo in taken):
                     continue
@@ -191,7 +194,7 @@ class TripBuilder:
                                      c.feature.lat, c.feature.lon) < 1500 for x in same_start):
                     self._reject("almost the same walk as another trip")
                     continue
-                if n_regular >= region["max_trips"]:
+                if n_regular >= cap:
                     if not trip["family_friendly"]:
                         continue
                     trip["_extra"] = True

@@ -1,12 +1,14 @@
 // Trip data schema, version 1. The weekly pipeline (pipeline/) writes these
 // files; the site only reads them. Full description: docs/TRIP-DATA.md.
 //
-//   data/trips/index.json      TripIndex       every trip, light enough for the home list
-//   data/trips/<slug>.json     TripDetail      one trip with its path, parking, stops, POIs
-//   data/closure-rules.json    ClosureRules    hand-kept, every rule has an official source
-//   data/fee-rules.json        FeeRules        hand-kept entry fees (vstupné) with sources
-//   data/drive-times.json      DriveTimes      precomputed car times, towns x trips
-//   public/gpx/<slug>.gpx                      full-resolution GPX per trip
+//   public/data/trips/index.json   TripIndex       every trip (server: sitemap, API, database load)
+//   public/data/trips/list.json    TripList        every trip, trimmed for the home list
+//   public/data/trips/<slug>.json  TripDetail      one trip with its path, parking, stops, POIs
+//   public/data/drive/<town>.json  TownDriveFile   car times from one town to every trip
+//   data/towns.json                Towns           the towns of the drive table
+//   data/closure-rules.json        ClosureRules    hand-kept, every rule has an official source
+//   data/fee-rules.json            FeeRules        hand-kept entry fees (vstupné) with sources
+//   public/gpx/<slug>.gpx                          full-resolution GPX per trip
 //
 // Rules for consumers:
 // - Never show a trip as "open" because closure_rule_ids is empty. No rule
@@ -50,7 +52,11 @@ export type RegionId =
   | "polana-muran"
   | "slovensky-kras"
   | "levocske-cergov"
-  | "vychod";
+  | "vychod"
+  | "zahorie-podunajsko"
+  | "krupina-cerova"
+  | "kosice-juh"
+  | "dalsie";
 
 export type TransitMode = "autobus" | "elektricka" | "vlak";
 
@@ -244,15 +250,29 @@ export interface Town {
   location: GeoPoint;
 }
 
-export interface DriveTimes {
+export interface Towns {
   version: number;
   generated_at: string;
   /** e.g. "OSRM, car profile, OpenStreetMap data". */
   source: string;
   towns: Town[];
-  /** Column order of `minutes` and `km`. */
-  slugs: string[];
-  /** minutes[townIndex][slugIndex], null = no route found. Drive ends at the trip's parking (or start). */
-  minutes: (number | null)[][];
-  km: (number | null)[][];
+}
+
+/** Car times from one town to every trip. Drive ends at the trip's parking (or start). */
+export interface TownDriveFile {
+  version: number;
+  generated_at: string;
+  town: string;
+  /** Minutes by trip slug, null = no route found. */
+  minutes: Record<string, number | null>;
+  km: Record<string, number | null>;
+}
+
+/** The fields of a TripSummary the home list leaves out (public/data/trips/list.json). */
+export type ListDropped = "description" | "gpx_url" | "marked_share" | "curated" | "protected_area" | "max_ele_m";
+
+export interface TripList {
+  version: number;
+  generated_at: string;
+  trips: Omit<TripSummary, ListDropped>[];
 }

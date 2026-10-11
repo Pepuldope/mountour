@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Rozhľadňa Pavčina Lehota</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Rozhľadňa Pavčina Lehota</name><trkseg>
+    <trkpt lat="49.026588" lon="19.545168"><ele>691</ele></trkpt>
+    <trkpt lat="49.026280" lon="19.545149"><ele>693</ele></trkpt>
+    <trkpt lat="49.025363" lon="19.545322"><ele>700</ele></trkpt>
+    <trkpt lat="49.025327" lon="19.545376"><ele>700</ele></trkpt>
+    <trkpt lat="49.025177" lon="19.546036"><ele>701</ele></trkpt>
+    <trkpt lat="49.025209" lon="19.547190"><ele>701</ele></trkpt>
+    <trkpt lat="49.025064" lon="19.548059"><ele>710</ele></trkpt>
+    <trkpt lat="49.025155" lon="19.549135"><ele>721</ele></trkpt>
+    <trkpt lat="49.024962" lon="19.549339"><ele>725</ele></trkpt>
+    <trkpt lat="49.024554" lon="19.549976"><ele>741</ele></trkpt>
+    <trkpt lat="49.024472" lon="19.550146"><ele>744</ele></trkpt>
+    <trkpt lat="49.024420" lon="19.550365"><ele>748</ele></trkpt>
+    <trkpt lat="49.024420" lon="19.550734"><ele>753</ele></trkpt>
+    <trkpt lat="49.024504" lon="19.551403"><ele>760</ele></trkpt>
+    <trkpt lat="49.024463" lon="19.551869"><ele>762</ele></trkpt>
+    <trkpt lat="49.024548" lon="19.552590"><ele>764</ele></trkpt>
+    <trkpt lat="49.024509" lon="19.553054"><ele>769</ele></trkpt>
+    <trkpt lat="49.024513" lon="19.553491"><ele>771</ele></trkpt>
+    <trkpt lat="49.024537" lon="19.553781"><ele>771</ele></trkpt>
+    <trkpt lat="49.024673" lon="19.554481"><ele>770</ele></trkpt>
+    <trkpt lat="49.024749" lon="19.555407"><ele>770</ele></trkpt>
+    <trkpt lat="49.024735" lon="19.556065"><ele>772</ele></trkpt>
+    <trkpt lat="49.025003" lon="19.556692"><ele>775</ele></trkpt>
+    <trkpt lat="49.025079" lon="19.557095"><ele>778</ele></trkpt>
+    <trkpt lat="49.025107" lon="19.557506"><ele>780</ele></trkpt>
+    <trkpt lat="49.025079" lon="19.557095"><ele>778</ele></trkpt>
+    <trkpt lat="49.025003" lon="19.556692"><ele>775</ele></trkpt>
+    <trkpt lat="49.024735" lon="19.556065"><ele>772</ele></trkpt>
+    <trkpt lat="49.024749" lon="19.555407"><ele>770</ele></trkpt>
+    <trkpt lat="49.024673" lon="19.554481"><ele>770</ele></trkpt>
+    <trkpt lat="49.024537" lon="19.553781"><ele>771</ele></trkpt>
+    <trkpt lat="49.024513" lon="19.553491"><ele>771</ele></trkpt>
+    <trkpt lat="49.024509" lon="19.553054"><ele>769</ele></trkpt>
+    <trkpt lat="49.024548" lon="19.552590"><ele>764</ele></trkpt>
+    <trkpt lat="49.024463" lon="19.551869"><ele>762</ele></trkpt>
+    <trkpt lat="49.024504" lon="19.551403"><ele>760</ele></trkpt>
+    <trkpt lat="49.024420" lon="19.550734"><ele>753</ele></trkpt>
+    <trkpt lat="49.024420" lon="19.550365"><ele>748</ele></trkpt>
+    <trkpt lat="49.024472" lon="19.550146"><ele>744</ele></trkpt>
+    <trkpt lat="49.024554" lon="19.549976"><ele>741</ele></trkpt>
+    <trkpt lat="49.024962" lon="19.549339"><ele>725</ele></trkpt>
+    <trkpt lat="49.025155" lon="19.549135"><ele>721</ele></trkpt>
+    <trkpt lat="49.025064" lon="19.548059"><ele>710</ele></trkpt>
+    <trkpt lat="49.025209" lon="19.547190"><ele>701</ele></trkpt>
+    <trkpt lat="49.025177" lon="19.546036"><ele>701</ele></trkpt>
+    <trkpt lat="49.025327" lon="19.545376"><ele>700</ele></trkpt>
+    <trkpt lat="49.025363" lon="19.545322"><ele>700</ele></trkpt>
+    <trkpt lat="49.026280" lon="19.545149"><ele>693</ele></trkpt>
+    <trkpt lat="49.026588" lon="19.545168"><ele>691</ele></trkpt>
+  </trkseg></trk>
+</gpx>

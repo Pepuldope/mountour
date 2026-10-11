@@ -4,7 +4,7 @@ import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import type { D1Like, D1Statement } from "@/lib/d1";
-import { getAllTrips, getTrip } from "@/lib/trips";
+import { getAllTrips, getTrip } from "@/lib/tripFiles";
 
 // node:sqlite (Node 22.5+) is newer than Vite's list of built-ins and this
 // project's Node types, so it is required directly and typed by hand.
@@ -39,7 +39,7 @@ beforeAll(() => {
 
 describe("trips from the database", () => {
   it("serves every trip exactly as the static files do", async () => {
-    for (const t of getAllTrips()) {
+    for (const t of await getAllTrips()) {
       const live = await getTripLive(t.slug);
       expect(live.source).toBe("databaza");
       expect(live.trip).toEqual(await getTrip(t.slug));
@@ -59,7 +59,7 @@ describe("trips from the database", () => {
     expect(fromDb.source).toBe("databaza");
     expect(fromFiles.source).toBe("subory");
     expect(fromDb.trips).toEqual(fromFiles.trips);
-    expect(fromDb.trips.length).toBe(getAllTrips().length);
+    expect(fromDb.trips.length).toBe(Math.min(500, (await getAllTrips()).length));
     const totals = fromDb.trips.map((t) => t.total_min ?? Infinity);
     expect(totals).toEqual([...totals].sort((a, b) => a - b));
     // Malá Fatra's spring closure covers Rozsutec on 1 April.
@@ -69,13 +69,19 @@ describe("trips from the database", () => {
   it("has drive minutes per town", async () => {
     const { minutes, source } = await townDriveMinutes("bratislava");
     expect(source).toBe("databaza");
-    expect(Object.keys(minutes).length).toBe(getAllTrips().length);
+    expect(Object.keys(minutes).length).toBe((await getAllTrips()).length);
+    const saved = db;
+    db = null;
+    const fromFiles = await townDriveMinutes("bratislava");
+    db = saved;
+    expect(fromFiles.source).toBe("subory");
+    expect(minutes).toEqual(fromFiles.minutes);
   });
 
   it("falls back to the files without a loaded database", async () => {
     const saved = db;
     db = null;
-    const live = await getTripLive(getAllTrips()[0].slug);
+    const live = await getTripLive((await getAllTrips())[0].slug);
     db = saved;
     expect(live.source).toBe("subory");
     expect(live.trip).not.toBeNull();

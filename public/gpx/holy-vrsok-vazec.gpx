@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Holý vŕšok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Holý vŕšok</name><trkseg>
+    <trkpt lat="49.059089" lon="19.979485"><ele>785</ele></trkpt>
+    <trkpt lat="49.059066" lon="19.979450"><ele>785</ele></trkpt>
+    <trkpt lat="49.058925" lon="19.979773"><ele>787</ele></trkpt>
+    <trkpt lat="49.058721" lon="19.979561"><ele>787</ele></trkpt>
+    <trkpt lat="49.058101" lon="19.978649"><ele>786</ele></trkpt>
+    <trkpt lat="49.057682" lon="19.977912"><ele>786</ele></trkpt>
+    <trkpt lat="49.057617" lon="19.977721"><ele>786</ele></trkpt>
+    <trkpt lat="49.057607" lon="19.976888"><ele>785</ele></trkpt>
+    <trkpt lat="49.055675" lon="19.977775"><ele>795</ele></trkpt>
+    <trkpt lat="49.055103" lon="19.977914"><ele>803</ele></trkpt>
+    <trkpt lat="49.054734" lon="19.977731"><ele>810</ele></trkpt>
+    <trkpt lat="49.054325" lon="19.977702"><ele>819</ele></trkpt>
+    <trkpt lat="49.053990" lon="19.977587"><ele>828</ele></trkpt>
+    <trkpt lat="49.053261" lon="19.977526"><ele>834</ele></trkpt>
+    <trkpt lat="49.052867" lon="19.977599"><ele>837</ele></trkpt>
+    <trkpt lat="49.052330" lon="19.977805"><ele>842</ele></trkpt>
+    <trkpt lat="49.052183" lon="19.977912"><ele>844</ele></trkpt>
+    <trkpt lat="49.051847" lon="19.978302"><ele>848</ele></trkpt>
+    <trkpt lat="49.051667" lon="19.978672"><ele>850</ele></trkpt>
+    <trkpt lat="49.051507" lon="19.978793"><ele>853</ele></trkpt>
+    <trkpt lat="49.051344" lon="19.979105"><ele>855</ele></trkpt>
+    <trkpt lat="49.050904" lon="19.980163"><ele>865</ele></trkpt>
+    <trkpt lat="49.050674" lon="19.980874"><ele>871</ele></trkpt>
+    <trkpt lat="49.050432" lon="19.982238"><ele>877</ele></trkpt>
+    <trkpt lat="49.050674" lon="19.980874"><ele>871</ele></trkpt>
+    <trkpt lat="49.050904" lon="19.980163"><ele>865</ele></trkpt>
+    <trkpt lat="49.051344" lon="19.979105"><ele>855</ele></trkpt>
+    <trkpt lat="49.051507" lon="19.978793"><ele>853</ele></trkpt>
+    <trkpt lat="49.051667" lon="19.978672"><ele>850</ele></trkpt>
+    <trkpt lat="49.051847" lon="19.978302"><ele>848</ele></trkpt>
+    <trkpt lat="49.052183" lon="19.977912"><ele>844</ele></trkpt>
+    <trkpt lat="49.052330" lon="19.977805"><ele>842</ele></trkpt>
+    <trkpt lat="49.052867" lon="19.977599"><ele>837</ele></trkpt>
+    <trkpt lat="49.053261" lon="19.977526"><ele>834</ele></trkpt>
+    <trkpt lat="49.053990" lon="19.977587"><ele>828</ele></trkpt>
+    <trkpt lat="49.054325" lon="19.977702"><ele>819</ele></trkpt>
+    <trkpt lat="49.054734" lon="19.977731"><ele>810</ele></trkpt>
+    <trkpt lat="49.055103" lon="19.977914"><ele>803</ele></trkpt>
+    <trkpt lat="49.055675" lon="19.977775"><ele>795</ele></trkpt>
+    <trkpt lat="49.057607" lon="19.976888"><ele>785</ele></trkpt>
+    <trkpt lat="49.057617" lon="19.977721"><ele>786</ele></trkpt>
+    <trkpt lat="49.057682" lon="19.977912"><ele>786</ele></trkpt>
+    <trkpt lat="49.058101" lon="19.978649"><ele>786</ele></trkpt>
+    <trkpt lat="49.058721" lon="19.979561"><ele>787</ele></trkpt>
+    <trkpt lat="49.058925" lon="19.979773"><ele>787</ele></trkpt>
+    <trkpt lat="49.059066" lon="19.979450"><ele>785</ele></trkpt>
+    <trkpt lat="49.059089" lon="19.979485"><ele>785</ele></trkpt>
+  </trkseg></trk>
+</gpx>

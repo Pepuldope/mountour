@@ -121,5 +121,6 @@ export function verdictText(plan: DayPlan): string {
 export function tripsCount(n: number): string {
   if (n === 1) return "1 výlet";
   if (n >= 2 && n <= 4) return `${n} výlety`;
-  return `${n} výletov`;
+  // Thousands get a space, as Slovak writes them: "1 460 výletov".
+  return `${n.toLocaleString("sk-SK")} výletov`;
 }

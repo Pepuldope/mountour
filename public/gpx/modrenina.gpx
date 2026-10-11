@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Modrenina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Modrenina</name><trkseg>
+    <trkpt lat="49.264040" lon="20.720321"><ele>703</ele></trkpt>
+    <trkpt lat="49.264029" lon="20.720185"><ele>703</ele></trkpt>
+    <trkpt lat="49.263772" lon="20.719127"><ele>712</ele></trkpt>
+    <trkpt lat="49.263725" lon="20.718726"><ele>716</ele></trkpt>
+    <trkpt lat="49.263725" lon="20.717917"><ele>724</ele></trkpt>
+    <trkpt lat="49.263661" lon="20.717662"><ele>725</ele></trkpt>
+    <trkpt lat="49.263350" lon="20.717088"><ele>727</ele></trkpt>
+    <trkpt lat="49.262991" lon="20.716525"><ele>730</ele></trkpt>
+    <trkpt lat="49.262833" lon="20.716418"><ele>732</ele></trkpt>
+    <trkpt lat="49.261514" lon="20.714099"><ele>754</ele></trkpt>
+    <trkpt lat="49.261279" lon="20.713571"><ele>768</ele></trkpt>
+    <trkpt lat="49.260429" lon="20.712165"><ele>797</ele></trkpt>
+    <trkpt lat="49.260500" lon="20.712139"><ele>797</ele></trkpt>
+    <trkpt lat="49.260815" lon="20.711785"><ele>797</ele></trkpt>
+    <trkpt lat="49.262317" lon="20.709712"><ele>803</ele></trkpt>
+    <trkpt lat="49.262768" lon="20.708842"><ele>814</ele></trkpt>
+    <trkpt lat="49.263112" lon="20.708413"><ele>816</ele></trkpt>
+    <trkpt lat="49.262768" lon="20.708842"><ele>814</ele></trkpt>
+    <trkpt lat="49.262317" lon="20.709712"><ele>803</ele></trkpt>
+    <trkpt lat="49.260815" lon="20.711785"><ele>797</ele></trkpt>
+    <trkpt lat="49.260500" lon="20.712139"><ele>797</ele></trkpt>
+    <trkpt lat="49.260429" lon="20.712165"><ele>797</ele></trkpt>
+    <trkpt lat="49.261279" lon="20.713571"><ele>768</ele></trkpt>
+    <trkpt lat="49.261514" lon="20.714099"><ele>754</ele></trkpt>
+    <trkpt lat="49.262833" lon="20.716418"><ele>732</ele></trkpt>
+    <trkpt lat="49.262991" lon="20.716525"><ele>730</ele></trkpt>
+    <trkpt lat="49.263350" lon="20.717088"><ele>727</ele></trkpt>
+    <trkpt lat="49.263661" lon="20.717662"><ele>725</ele></trkpt>
+    <trkpt lat="49.263725" lon="20.717917"><ele>724</ele></trkpt>
+    <trkpt lat="49.263725" lon="20.718726"><ele>716</ele></trkpt>
+    <trkpt lat="49.263772" lon="20.719127"><ele>712</ele></trkpt>
+    <trkpt lat="49.264029" lon="20.720185"><ele>703</ele></trkpt>
+    <trkpt lat="49.264040" lon="20.720321"><ele>703</ele></trkpt>
+  </trkseg></trk>
+</gpx>

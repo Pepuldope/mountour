@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Perúnova jaskyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Perúnova jaskyňa</name><trkseg>
+    <trkpt lat="49.213967" lon="20.914246"><ele>584</ele></trkpt>
+    <trkpt lat="49.214124" lon="20.914535"><ele>585</ele></trkpt>
+    <trkpt lat="49.214134" lon="20.914982"><ele>587</ele></trkpt>
+    <trkpt lat="49.214234" lon="20.915237"><ele>587</ele></trkpt>
+    <trkpt lat="49.214383" lon="20.915341"><ele>587</ele></trkpt>
+    <trkpt lat="49.214841" lon="20.915531"><ele>590</ele></trkpt>
+    <trkpt lat="49.215088" lon="20.915886"><ele>591</ele></trkpt>
+    <trkpt lat="49.214958" lon="20.918793"><ele>599</ele></trkpt>
+    <trkpt lat="49.214972" lon="20.919074"><ele>600</ele></trkpt>
+    <trkpt lat="49.215090" lon="20.919818"><ele>602</ele></trkpt>
+    <trkpt lat="49.215112" lon="20.920282"><ele>604</ele></trkpt>
+    <trkpt lat="49.214858" lon="20.925584"><ele>623</ele></trkpt>
+    <trkpt lat="49.214844" lon="20.926437"><ele>627</ele></trkpt>
+    <trkpt lat="49.214876" lon="20.926898"><ele>628</ele></trkpt>
+    <trkpt lat="49.214807" lon="20.926923"><ele>629</ele></trkpt>
+    <trkpt lat="49.214704" lon="20.927550"><ele>633</ele></trkpt>
+    <trkpt lat="49.214557" lon="20.927792"><ele>635</ele></trkpt>
+    <trkpt lat="49.214264" lon="20.927965"><ele>639</ele></trkpt>
+    <trkpt lat="49.213923" lon="20.928087"><ele>643</ele></trkpt>
+    <trkpt lat="49.213318" lon="20.928493"><ele>649</ele></trkpt>
+    <trkpt lat="49.212622" lon="20.929128"><ele>656</ele></trkpt>
+    <trkpt lat="49.211261" lon="20.930744"><ele>672</ele></trkpt>
+    <trkpt lat="49.211018" lon="20.931117"><ele>676</ele></trkpt>
+    <trkpt lat="49.210409" lon="20.931869"><ele>683</ele></trkpt>
+    <trkpt lat="49.210056" lon="20.932508"><ele>689</ele></trkpt>
+    <trkpt lat="49.209992" lon="20.932410"><ele>689</ele></trkpt>
+    <trkpt lat="49.209833" lon="20.932363"><ele>688</ele></trkpt>
+    <trkpt lat="49.209767" lon="20.932298"><ele>688</ele></trkpt>
+    <trkpt lat="49.209833" lon="20.932363"><ele>688</ele></trkpt>
+    <trkpt lat="49.209992" lon="20.932410"><ele>689</ele></trkpt>
+    <trkpt lat="49.210056" lon="20.932508"><ele>689</ele></trkpt>
+    <trkpt lat="49.210409" lon="20.931869"><ele>683</ele></trkpt>
+    <trkpt lat="49.211018" lon="20.931117"><ele>676</ele></trkpt>
+    <trkpt lat="49.211261" lon="20.930744"><ele>672</ele></trkpt>
+    <trkpt lat="49.212622" lon="20.929128"><ele>656</ele></trkpt>
+    <trkpt lat="49.213318" lon="20.928493"><ele>649</ele></trkpt>
+    <trkpt lat="49.213923" lon="20.928087"><ele>643</ele></trkpt>
+    <trkpt lat="49.214264" lon="20.927965"><ele>639</ele></trkpt>
+    <trkpt lat="49.214557" lon="20.927792"><ele>635</ele></trkpt>
+    <trkpt lat="49.214704" lon="20.927550"><ele>633</ele></trkpt>
+    <trkpt lat="49.214807" lon="20.926923"><ele>629</ele></trkpt>
+    <trkpt lat="49.214876" lon="20.926898"><ele>628</ele></trkpt>
+    <trkpt lat="49.214844" lon="20.926437"><ele>627</ele></trkpt>
+    <trkpt lat="49.214858" lon="20.925584"><ele>623</ele></trkpt>
+    <trkpt lat="49.215112" lon="20.920282"><ele>604</ele></trkpt>
+    <trkpt lat="49.215090" lon="20.919818"><ele>602</ele></trkpt>
+    <trkpt lat="49.214972" lon="20.919074"><ele>600</ele></trkpt>
+    <trkpt lat="49.214958" lon="20.918793"><ele>599</ele></trkpt>
+    <trkpt lat="49.215088" lon="20.915886"><ele>591</ele></trkpt>
+    <trkpt lat="49.214841" lon="20.915531"><ele>590</ele></trkpt>
+    <trkpt lat="49.214383" lon="20.915341"><ele>587</ele></trkpt>
+    <trkpt lat="49.214234" lon="20.915237"><ele>587</ele></trkpt>
+    <trkpt lat="49.214134" lon="20.914982"><ele>587</ele></trkpt>
+    <trkpt lat="49.214124" lon="20.914535"><ele>585</ele></trkpt>
+    <trkpt lat="49.213967" lon="20.914246"><ele>584</ele></trkpt>
+  </trkseg></trk>
+</gpx>

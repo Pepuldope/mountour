@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
-import { defaultApproachMin, driveDestination, nearestStop, primaryTrailhead, sunLocation } from "@/lib/data";
+import { defaultApproachMin, driveDestination, nearestStop, primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { activeClosures } from "@/lib/closures";
 import { approachMin, hikeMinutes } from "@/lib/dayPlan";
 import { dayFit, dayInSentence, isoDate } from "@/lib/days";
@@ -11,7 +11,8 @@ import { estimateDriveMin } from "@/lib/drive";
 import { GOAL_PLURAL, tripsCount } from "@/lib/format";
 import { GOAL_COLOUR } from "@/lib/palette";
 import { seasonOf } from "@/lib/season";
-import type { DestinationKind } from "@/lib/tripSchema";
+import type { DestinationKind, TripList } from "@/lib/tripSchema";
+import { summaryFromList } from "@/lib/trips";
 import { fetchTrack, gpxUrlFor } from "@/lib/gpx";
 import { haversineM } from "@/lib/geo";
 import { trackColor } from "@/lib/mapLayers";
@@ -31,8 +32,12 @@ import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
 
 interface Props {
+  /** The best known trips, rendered with the page; every trip loads after it. */
   trails: TrailDetail[];
 }
+
+/** Cards shown at first, and added by each "Ukázať ďalšie". */
+const PAGE = 30;
 
 const DESKTOP_QUERY = "(min-width: 1024px)";
 
@@ -67,12 +72,35 @@ function unionBounds(trails: TrailDetail[]): BBox | null {
   };
 }
 
+/** Every trip from public/data/trips/list.json, best known first; `initial` until it has loaded. */
+function useAllTrails(initial: TrailDetail[]): TrailDetail[] {
+  const [all, setAll] = useState<TrailDetail[] | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/data/trips/list.json")
+      .then((r) => (r.ok ? (r.json() as Promise<TripList>) : null))
+      .then((list) => {
+        if (cancelled || !list) return;
+        const trips = list.trips.map(summaryFromList).sort((a, b) => b.rank - a.rank);
+        setAll(trips.map(trailDetailFrom));
+      })
+      .catch(() => {
+        // Offline: the trips rendered with the page are still there.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+  return all ?? initial;
+}
+
 /**
  * "Kam dnes" home: answer first. Every trip is listed on arrival, sorted by
  * travel time once the start is known. Picking a day adds "Vyrazte najneskôr"
  * and moves trips that don't fit that day's daylight behind a button.
  */
-export function HomeExplorer({ trails }: Props) {
+export function HomeExplorer({ trails: initial }: Props) {
+  const trails = useAllTrails(initial);
   const { date, today, withKids, travel, update } = useTripSettings();
   const [goalFilter, setGoalFilter] = useState<DestinationKind | null>(null);
   const transit = travel === "transit";
@@ -166,6 +194,13 @@ export function HomeExplorer({ trails }: Props) {
     };
   }, [trails, destinations, drives, driveStatus, withKids, goalFilter, date, today, start, transit]);
 
+  // Cards come in pages; a new filter starts again from the first page.
+  const filterKey = [goalFilter, withKids, date, travel].join("|");
+  const [paging, setPaging] = useState({ key: filterKey, n: PAGE });
+  const limit = paging.key === filterKey ? paging.n : PAGE;
+  const listed = useMemo(() => (showHidden ? [...shown, ...hidden] : shown), [showHidden, shown, hidden]);
+  const visible = useMemo(() => listed.slice(0, limit), [listed, limit]);
+
   const season = seasonOf(date ? new Date(`${date}T12:00`) : new Date());
 
   const shownSlugs = useMemo(() => new Set(shown.map((m) => m.detail.trail.slug)), [shown]);
@@ -188,9 +223,10 @@ export function HomeExplorer({ trails }: Props) {
     [trails, trackPoints, activeSlug, shownSlugs]
   );
 
+  // Pins for the cards on the list only: a pin for each of thousands of trips would bury the map.
   const markers = useMemo<MapMarker[]>(
     () =>
-      trails.flatMap((detail) => {
+      visible.flatMap(({ detail }) => {
         const th = primaryTrailhead(detail);
         if (!th) return [];
         return [
@@ -208,10 +244,14 @@ export function HomeExplorer({ trails }: Props) {
           },
         ];
       }),
-    [trails, shownSlugs, activeSlug]
+    [visible, shownSlugs, activeSlug]
   );
 
-  const bounds = useMemo(() => unionBounds(trails), [trails]);
+  // With a start, frame the trips on the list (nearest first); without one, all of Slovakia.
+  const bounds = useMemo(
+    () => unionBounds(start && visible.length > 0 ? visible.map((i) => i.detail) : trails),
+    [start, visible, trails]
+  );
 
   const registerItem = useCallback((slug: string, el: HTMLElement | null) => {
     if (el) itemRefs.current.set(slug, el);
@@ -349,18 +389,30 @@ export function HomeExplorer({ trails }: Props) {
             </div>
           )}
 
-          {cardList(shown)}
+          {cardList(visible)}
 
-          {hidden.length > 0 && !showHidden && (
+          {listed.length > limit && (
             <button
               type="button"
-              onClick={() => setShowHidden(true)}
+              onClick={() => setPaging({ key: filterKey, n: limit + PAGE })}
+              className="w-fit rounded-full border border-[var(--border)] bg-[var(--card-bg)] px-4 py-2 text-sm font-semibold text-[var(--accent)]"
+            >
+              Ukázať ďalšie ({listed.length - limit})
+            </button>
+          )}
+
+          {hidden.length > 0 && !showHidden && limit >= shown.length && (
+            <button
+              type="button"
+              onClick={() => {
+                setShowHidden(true);
+                setPaging({ key: filterKey, n: shown.length + PAGE });
+              }}
               className="w-fit text-sm font-semibold text-[var(--accent)] underline"
             >
               {dayWord ? `Ukázať aj tie, čo ${dayWord} nestihnete` : "Ukázať aj výlety bez zastávky"} ({hidden.length})
             </button>
           )}
-          {showHidden && cardList(hidden)}
         </section>
 
         <SiteFooter />

@@ -1,11 +1,11 @@
 import { listTrips } from "@/lib/tripDb";
-import { getDriveTimes } from "@/lib/trips";
+import { getTowns } from "@/lib/trips";
 
 /**
  * GET /api/vylety?z=<town>&den=YYYY-MM-DD&limit=N -> { trips, zdroj, generated_at }
  *
  * The trip list from the database (static files when it is not loaded):
- * with a start town (an id from data/drive-times.json, e.g. "zilina") nearest
+ * with a start town (an id from data/towns.json, e.g. "zilina") nearest
  * first by drive there and back plus the walk, else best known first. `closed`
  * marks trips a closure rule covers on `den` (default today).
  */
@@ -23,7 +23,7 @@ export async function GET(req: Request) {
   const date = params.get("den") ?? todayInSlovakia();
   const limit = Number(params.get("limit") ?? MAX_LIMIT);
 
-  if (town !== null && !getDriveTimes().towns.some((t) => t.id === town)) {
+  if (town !== null && !getTowns().some((t) => t.id === town)) {
     return Response.json({ error: "z: neznáme mesto, napr. z=bratislava" }, { status: 400 });
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return Response.json({ error: "den: YYYY-MM-DD" }, { status: 400 });

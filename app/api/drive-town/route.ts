@@ -7,7 +7,7 @@ import { nearestTown } from "@/lib/trips";
  * GET /api/drive-town?from=lat,lon -> TownDrives
  *
  * Car times to every trip from the precomputed town nearest to the start
- * (routed weekly by the pipeline; read from the database, else data/drive-times.json). No upstream API, so
+ * (routed weekly by the pipeline; read from the database, else public/data/drive/<town>.json). No upstream API, so
  * the home list gets real road times without spending routing quota.
  */
 

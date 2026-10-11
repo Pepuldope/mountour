@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Widok na Tatry</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Widok na Tatry</name><trkseg>
+    <trkpt lat="49.461796" lon="19.228091"><ele>887</ele></trkpt>
+    <trkpt lat="49.462494" lon="19.228419"><ele>895</ele></trkpt>
+    <trkpt lat="49.463724" lon="19.228306"><ele>913</ele></trkpt>
+    <trkpt lat="49.464634" lon="19.227855"><ele>936</ele></trkpt>
+    <trkpt lat="49.465088" lon="19.227689"><ele>947</ele></trkpt>
+    <trkpt lat="49.465698" lon="19.227560"><ele>963</ele></trkpt>
+    <trkpt lat="49.466491" lon="19.227275"><ele>979</ele></trkpt>
+    <trkpt lat="49.466986" lon="19.227146"><ele>991</ele></trkpt>
+    <trkpt lat="49.467768" lon="19.224197"><ele>1020</ele></trkpt>
+    <trkpt lat="49.468148" lon="19.222072"><ele>1038</ele></trkpt>
+    <trkpt lat="49.468581" lon="19.220844"><ele>1051</ele></trkpt>
+    <trkpt lat="49.468745" lon="19.220581"><ele>1053</ele></trkpt>
+    <trkpt lat="49.469268" lon="19.220029"><ele>1053</ele></trkpt>
+    <trkpt lat="49.472035" lon="19.220372"><ele>1027</ele></trkpt>
+    <trkpt lat="49.473228" lon="19.220447"><ele>1039</ele></trkpt>
+    <trkpt lat="49.473831" lon="19.220560"><ele>1046</ele></trkpt>
+    <trkpt lat="49.475131" lon="19.221000"><ele>1057</ele></trkpt>
+    <trkpt lat="49.475682" lon="19.221445"><ele>1064</ele></trkpt>
+    <trkpt lat="49.476819" lon="19.222704"><ele>1080</ele></trkpt>
+    <trkpt lat="49.477166" lon="19.222882"><ele>1080</ele></trkpt>
+    <trkpt lat="49.477441" lon="19.223117"><ele>1079</ele></trkpt>
+    <trkpt lat="49.477493" lon="19.223289"><ele>1081</ele></trkpt>
+    <trkpt lat="49.478186" lon="19.224399"><ele>1087</ele></trkpt>
+    <trkpt lat="49.478543" lon="19.225051"><ele>1088</ele></trkpt>
+    <trkpt lat="49.478186" lon="19.224399"><ele>1087</ele></trkpt>
+    <trkpt lat="49.477493" lon="19.223289"><ele>1081</ele></trkpt>
+    <trkpt lat="49.477441" lon="19.223117"><ele>1079</ele></trkpt>
+    <trkpt lat="49.477166" lon="19.222882"><ele>1080</ele></trkpt>
+    <trkpt lat="49.476819" lon="19.222704"><ele>1080</ele></trkpt>
+    <trkpt lat="49.475682" lon="19.221445"><ele>1064</ele></trkpt>
+    <trkpt lat="49.475131" lon="19.221000"><ele>1057</ele></trkpt>
+    <trkpt lat="49.473831" lon="19.220560"><ele>1046</ele></trkpt>
+    <trkpt lat="49.473228" lon="19.220447"><ele>1039</ele></trkpt>
+    <trkpt lat="49.472035" lon="19.220372"><ele>1027</ele></trkpt>
+    <trkpt lat="49.469268" lon="19.220029"><ele>1053</ele></trkpt>
+    <trkpt lat="49.468745" lon="19.220581"><ele>1053</ele></trkpt>
+    <trkpt lat="49.468581" lon="19.220844"><ele>1051</ele></trkpt>
+    <trkpt lat="49.468148" lon="19.222072"><ele>1038</ele></trkpt>
+    <trkpt lat="49.467768" lon="19.224197"><ele>1020</ele></trkpt>
+    <trkpt lat="49.466986" lon="19.227146"><ele>991</ele></trkpt>
+    <trkpt lat="49.466491" lon="19.227275"><ele>979</ele></trkpt>
+    <trkpt lat="49.465698" lon="19.227560"><ele>963</ele></trkpt>
+    <trkpt lat="49.465088" lon="19.227689"><ele>947</ele></trkpt>
+    <trkpt lat="49.464634" lon="19.227855"><ele>936</ele></trkpt>
+    <trkpt lat="49.463724" lon="19.228306"><ele>913</ele></trkpt>
+    <trkpt lat="49.462494" lon="19.228419"><ele>895</ele></trkpt>
+    <trkpt lat="49.461796" lon="19.228091"><ele>887</ele></trkpt>
+  </trkseg></trk>
+</gpx>

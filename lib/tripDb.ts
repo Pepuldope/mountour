@@ -1,11 +1,12 @@
 // Trips from the D1 database (tables from pipeline/db.py, loaded weekly by
 // .github/workflows/db.yml). Every function falls back to the static files in
-// data/ when the database is missing (local dev, Vercel) or not loaded yet, so
+// public/data (lib/tripFiles.ts) when the database is missing (local dev, Vercel) or not loaded yet, so
 // the site works the same either way. Server only.
 import { isClosureActive } from "@/lib/closures";
 import { getDb } from "@/lib/d1";
 import type { D1Like } from "@/lib/d1";
-import { closureRulesFor, getAllTrips, getDriveTimes, getTrip, getTripIndex } from "@/lib/trips";
+import { getAllTrips, getTownDrives, getTrip, getTripIndex } from "@/lib/tripFiles";
+import { closureRulesFor } from "@/lib/trips";
 import type { Fee, Parking, Poi, TransitStop, TripDetail, TripSummary } from "@/lib/tripSchema";
 
 export type DataSource = "databaza" | "subory";
@@ -73,7 +74,7 @@ export async function tripDb(): Promise<D1Like | null> {
   return db && (await loadedVersion(db)) ? db : null;
 }
 
-/** One trip with its walk, parking, stops and places, as in data/trips/<slug>.json. */
+/** One trip with its walk, parking, stops and places, as in public/data/trips/<slug>.json. */
 export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail | null> {
   const t = await db.prepare(`${TRIP_SELECT} WHERE t.slug = ?1`).bind(slug).first<TripRow>();
   if (!t) return null;
@@ -166,7 +167,9 @@ export async function getTripLive(slug: string): Promise<{ trip: TripDetail | nu
   const db = await tripDb();
   if (db) {
     try {
-      return { trip: await tripFromDb(db, slug), source: "databaza" };
+      const trip = await tripFromDb(db, slug);
+      // Not in the database: maybe a trip newer than its last load, so ask the files.
+      if (trip) return { trip, source: "databaza" };
     } catch {
       // Fall through to the files: a database hiccup must not take the page down.
     }
@@ -179,21 +182,27 @@ export async function townDriveMinutes(townSlug: string): Promise<{ minutes: Rec
   const db = await tripDb();
   if (db) {
     try {
-      const rows = await db
-        .prepare(
-          `SELECT t.slug, dt.minutes FROM trip t
-           LEFT JOIN drive_time dt ON dt.trip_id = t.id AND dt.town_id = (SELECT id FROM town WHERE slug = ?1)`
-        )
-        .bind(townSlug)
-        .all<{ slug: string; minutes: number | null }>();
-      return { minutes: Object.fromEntries(rows.results.map((r) => [r.slug, r.minutes])), source: "databaza" };
+      const minutes = await dbTownMinutes(db, townSlug);
+      if (minutes) return { minutes, source: "databaza" };
     } catch {
       // Fall through to the files.
     }
   }
-  const table = getDriveTimes();
-  const row = table.minutes[table.towns.findIndex((t) => t.id === townSlug)] ?? [];
-  return { minutes: Object.fromEntries(table.slugs.map((slug, i) => [slug, row[i] ?? null])), source: "subory" };
+  return { minutes: await getTownDrives(townSlug), source: "subory" };
+}
+
+/** Car minutes by slug from the town's row of town_drive (an array in trip id order), or null without one. */
+async function dbTownMinutes(db: D1Like, townSlug: string): Promise<Record<string, number | null> | null> {
+  const [row, trips] = await Promise.all([
+    db
+      .prepare("SELECT td.minutes_json FROM town_drive td JOIN town ON town.id = td.town_id WHERE town.slug = ?1")
+      .bind(townSlug)
+      .first<{ minutes_json: string }>(),
+    db.prepare("SELECT id, slug FROM trip ORDER BY id").all<{ id: number; slug: string }>(),
+  ]);
+  if (!row) return null;
+  const minutes = JSON.parse(row.minutes_json) as (number | null)[];
+  return Object.fromEntries(trips.results.map((t) => [t.slug, minutes[t.id - 1] ?? null]));
 }
 
 export interface TripListItem {
@@ -218,7 +227,7 @@ export interface TripListItem {
 }
 
 export interface TripListQuery {
-  /** Town id from data/drive-times.json, e.g. "bratislava". */
+  /** Town id from data/towns.json, e.g. "bratislava". */
   town: string | null;
   /** YYYY-MM-DD for the closure check. */
   date: string;
@@ -245,20 +254,17 @@ export async function listTrips(q: TripListQuery): Promise<{ trips: TripListItem
   const db = await tripDb();
   if (db) {
     try {
-      const [rows, rules, version] = await Promise.all([
+      const [rows, rules, version, drives] = await Promise.all([
         db
           .prepare(
             `SELECT t.slug, t.name, r.slug AS region, r.name AS region_name, t.difficulty, t.family_friendly,
                     t.distance_m, t.ascent_m, t.duration_min, t.rank,
                     d.name AS d_name, d.kind AS d_kind, d.lat AS d_lat, d.lon AS d_lon, d.ele_m AS d_ele,
-                    dt.minutes AS drive_min,
                     (SELECT group_concat(rule_id) FROM trip_closure tc WHERE tc.trip_id = t.id) AS rule_ids
              FROM trip t
              JOIN region r ON r.id = t.region_id
-             JOIN place d ON d.id = t.destination_id
-             LEFT JOIN drive_time dt ON dt.trip_id = t.id AND dt.town_id = (SELECT id FROM town WHERE slug = ?1)`
+             JOIN place d ON d.id = t.destination_id`
           )
-          .bind(q.town ?? "")
           .all<{
             slug: string;
             name: string;
@@ -275,32 +281,35 @@ export async function listTrips(q: TripListQuery): Promise<{ trips: TripListItem
             d_lat: number;
             d_lon: number;
             d_ele: number | null;
-            drive_min: number | null;
             rule_ids: string | null;
           }>(),
         db
           .prepare("SELECT id, kind, starts_on, ends_on FROM closure_rule")
           .all<{ id: string; kind: "rocna" | "jednorazova"; starts_on: string; ends_on: string }>(),
         loadedVersion(db),
+        q.town ? dbTownMinutes(db, q.town) : null,
       ]);
       const active = activeRuleIds(rules.results, q.date);
-      const trips = rows.results.map((r) => ({
-        slug: r.slug,
-        name: r.name,
-        region: r.region,
-        region_name: r.region_name,
-        destination: { name: r.d_name, kind: r.d_kind, lat: r.d_lat, lon: r.d_lon, ele_m: r.d_ele },
-        difficulty: r.difficulty,
-        family_friendly: r.family_friendly === 1,
-        distance_m: r.distance_m,
-        ascent_m: r.ascent_m,
-        duration_min: r.duration_min,
-        rank: r.rank,
-        drive_min: r.drive_min,
-        total_min: r.drive_min === null ? null : 2 * r.drive_min + r.duration_min,
-        closed: (r.rule_ids ?? "").split(",").some((id) => active.has(id)),
-        url: `/trasa/${r.slug}`,
-      }));
+      const trips = rows.results.map((r) => {
+        const drive = drives?.[r.slug] ?? null;
+        return {
+          slug: r.slug,
+          name: r.name,
+          region: r.region,
+          region_name: r.region_name,
+          destination: { name: r.d_name, kind: r.d_kind, lat: r.d_lat, lon: r.d_lon, ele_m: r.d_ele },
+          difficulty: r.difficulty,
+          family_friendly: r.family_friendly === 1,
+          distance_m: r.distance_m,
+          ascent_m: r.ascent_m,
+          duration_min: r.duration_min,
+          rank: r.rank,
+          drive_min: drive,
+          total_min: drive === null ? null : 2 * drive + r.duration_min,
+          closed: (r.rule_ids ?? "").split(",").some((id) => active.has(id)),
+          url: `/trasa/${r.slug}`,
+        };
+      });
       return { trips: sortList(trips).slice(0, q.limit), source: "databaza", generated_at: version ?? "" };
     } catch {
       // Fall through to the files.
@@ -308,7 +317,7 @@ export async function listTrips(q: TripListQuery): Promise<{ trips: TripListItem
   }
 
   const { minutes } = await townDriveMinutes(q.town ?? "");
-  const trips = getAllTrips().map((t) => {
+  const trips = (await getAllTrips()).map((t) => {
     const drive = q.town ? (minutes[t.slug] ?? null) : null;
     const active = activeRuleIds(closureRulesFor(t), q.date);
     return {
@@ -335,5 +344,5 @@ export async function listTrips(q: TripListQuery): Promise<{ trips: TripListItem
       url: `/trasa/${t.slug}`,
     };
   });
-  return { trips: sortList(trips).slice(0, q.limit), source: "subory", generated_at: getTripIndex().generated_at };
+  return { trips: sortList(trips).slice(0, q.limit), source: "subory", generated_at: (await getTripIndex()).generated_at };
 }

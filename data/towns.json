@@ -1,0 +1,1135 @@
+{
+ "version": 1,
+ "generated_at": "2026-10-11T23:19:18+00:00",
+ "source": "OSRM car profile on OpenStreetMap data",
+ "towns": [
+  {
+   "id": "banovce-nad-bebravou",
+   "name": "Bánovce nad Bebravou",
+   "location": {
+    "lat": 48.72167,
+    "lon": 18.25983
+   }
+  },
+  {
+   "id": "banska-bystrica",
+   "name": "Banská Bystrica",
+   "location": {
+    "lat": 48.73543,
+    "lon": 19.14573
+   }
+  },
+  {
+   "id": "banska-stiavnica",
+   "name": "Banská Štiavnica",
+   "location": {
+    "lat": 48.45809,
+    "lon": 18.89884
+   }
+  },
+  {
+   "id": "bardejov",
+   "name": "Bardejov",
+   "location": {
+    "lat": 49.29269,
+    "lon": 21.2756
+   }
+  },
+  {
+   "id": "bojnice",
+   "name": "Bojnice",
+   "location": {
+    "lat": 48.77996,
+    "lon": 18.5822
+   }
+  },
+  {
+   "id": "bratislava",
+   "name": "Bratislava",
+   "location": {
+    "lat": 48.1435,
+    "lon": 17.10829
+   }
+  },
+  {
+   "id": "brezno",
+   "name": "Brezno",
+   "location": {
+    "lat": 48.80533,
+    "lon": 19.64096
+   }
+  },
+  {
+   "id": "brezova-pod-bradlom",
+   "name": "Brezová pod Bradlom",
+   "location": {
+    "lat": 48.66164,
+    "lon": 17.53703
+   }
+  },
+  {
+   "id": "bytca",
+   "name": "Bytča",
+   "location": {
+    "lat": 49.22357,
+    "lon": 18.55868
+   }
+  },
+  {
+   "id": "cadca",
+   "name": "Čadca",
+   "location": {
+    "lat": 49.43751,
+    "lon": 18.7896
+   }
+  },
+  {
+   "id": "cierna-nad-tisou",
+   "name": "Čierna nad Tisou",
+   "location": {
+    "lat": 48.41664,
+    "lon": 22.08874
+   }
+  },
+  {
+   "id": "detva",
+   "name": "Detva",
+   "location": {
+    "lat": 48.55957,
+    "lon": 19.42056
+   }
+  },
+  {
+   "id": "dobsina",
+   "name": "Dobšiná",
+   "location": {
+    "lat": 48.82114,
+    "lon": 20.36491
+   }
+  },
+  {
+   "id": "dolny-kubin",
+   "name": "Dolný Kubín",
+   "location": {
+    "lat": 49.21452,
+    "lon": 19.29532
+   }
+  },
+  {
+   "id": "dubnica-nad-vahom",
+   "name": "Dubnica nad Váhom",
+   "location": {
+    "lat": 48.9574,
+    "lon": 18.1663
+   }
+  },
+  {
+   "id": "dudince",
+   "name": "Dudince",
+   "location": {
+    "lat": 48.16919,
+    "lon": 18.88232
+   }
+  },
+  {
+   "id": "dunajska-streda",
+   "name": "Dunajská Streda",
+   "location": {
+    "lat": 47.99562,
+    "lon": 17.61629
+   }
+  },
+  {
+   "id": "filakovo",
+   "name": "Fiľakovo",
+   "location": {
+    "lat": 48.27016,
+    "lon": 19.82229
+   }
+  },
+  {
+   "id": "gabcikovo",
+   "name": "Gabčíkovo",
+   "location": {
+    "lat": 47.89511,
+    "lon": 17.57812
+   }
+  },
+  {
+   "id": "galanta",
+   "name": "Galanta",
+   "location": {
+    "lat": 48.19105,
+    "lon": 17.72706
+   }
+  },
+  {
+   "id": "gbely",
+   "name": "Gbely",
+   "location": {
+    "lat": 48.71819,
+    "lon": 17.11582
+   }
+  },
+  {
+   "id": "gelnica",
+   "name": "Gelnica",
+   "location": {
+    "lat": 48.85344,
+    "lon": 20.93779
+   }
+  },
+  {
+   "id": "giraltovce",
+   "name": "Giraltovce",
+   "location": {
+    "lat": 49.11353,
+    "lon": 21.51666
+   }
+  },
+  {
+   "id": "handlova",
+   "name": "Handlová",
+   "location": {
+    "lat": 48.73143,
+    "lon": 18.76269
+   }
+  },
+  {
+   "id": "hanusovce-nad-toplou",
+   "name": "Hanušovce nad Topľou",
+   "location": {
+    "lat": 49.02688,
+    "lon": 21.50225
+   }
+  },
+  {
+   "id": "hlohovec",
+   "name": "Hlohovec",
+   "location": {
+    "lat": 48.42788,
+    "lon": 17.79878
+   }
+  },
+  {
+   "id": "hnusta",
+   "name": "Hnúšťa",
+   "location": {
+    "lat": 48.57854,
+    "lon": 19.95344
+   }
+  },
+  {
+   "id": "holic",
+   "name": "Holíč",
+   "location": {
+    "lat": 48.80789,
+    "lon": 17.16214
+   }
+  },
+  {
+   "id": "hrinova",
+   "name": "Hriňová",
+   "location": {
+    "lat": 48.57646,
+    "lon": 19.52586
+   }
+  },
+  {
+   "id": "humenne",
+   "name": "Humenné",
+   "location": {
+    "lat": 48.935,
+    "lon": 21.90203
+   }
+  },
+  {
+   "id": "hurbanovo",
+   "name": "Hurbanovo",
+   "location": {
+    "lat": 47.87612,
+    "lon": 18.19831
+   }
+  },
+  {
+   "id": "ilava",
+   "name": "Ilava",
+   "location": {
+    "lat": 48.99857,
+    "lon": 18.23076
+   }
+  },
+  {
+   "id": "jelsava",
+   "name": "Jelšava",
+   "location": {
+    "lat": 48.62748,
+    "lon": 20.24103
+   }
+  },
+  {
+   "id": "kezmarok",
+   "name": "Kežmarok",
+   "location": {
+    "lat": 49.13621,
+    "lon": 20.43087
+   }
+  },
+  {
+   "id": "kolarovo",
+   "name": "Kolárovo",
+   "location": {
+    "lat": 47.91823,
+    "lon": 17.99666
+   }
+  },
+  {
+   "id": "komarno",
+   "name": "Komárno",
+   "location": {
+    "lat": 47.75741,
+    "lon": 18.12982
+   }
+  },
+  {
+   "id": "kosice",
+   "name": "Košice",
+   "location": {
+    "lat": 48.71723,
+    "lon": 21.24968
+   }
+  },
+  {
+   "id": "kralovsky-chlmec",
+   "name": "Kráľovský Chlmec",
+   "location": {
+    "lat": 48.42236,
+    "lon": 21.98048
+   }
+  },
+  {
+   "id": "krasno-nad-kysucou",
+   "name": "Krásno nad Kysucou",
+   "location": {
+    "lat": 49.38969,
+    "lon": 18.8322
+   }
+  },
+  {
+   "id": "kremnica",
+   "name": "Kremnica",
+   "location": {
+    "lat": 48.70421,
+    "lon": 18.91749
+   }
+  },
+  {
+   "id": "krompachy",
+   "name": "Krompachy",
+   "location": {
+    "lat": 48.91441,
+    "lon": 20.8755
+   }
+  },
+  {
+   "id": "krupina",
+   "name": "Krupina",
+   "location": {
+    "lat": 48.35273,
+    "lon": 19.06918
+   }
+  },
+  {
+   "id": "kysucke-nove-mesto",
+   "name": "Kysucké Nové Mesto",
+   "location": {
+    "lat": 49.29992,
+    "lon": 18.78651
+   }
+  },
+  {
+   "id": "leopoldov",
+   "name": "Leopoldov",
+   "location": {
+    "lat": 48.44418,
+    "lon": 17.76544
+   }
+  },
+  {
+   "id": "levice",
+   "name": "Levice",
+   "location": {
+    "lat": 48.21632,
+    "lon": 18.60009
+   }
+  },
+  {
+   "id": "levoca",
+   "name": "Levoča",
+   "location": {
+    "lat": 49.02509,
+    "lon": 20.58871
+   }
+  },
+  {
+   "id": "lipany",
+   "name": "Lipany",
+   "location": {
+    "lat": 49.15254,
+    "lon": 20.96408
+   }
+  },
+  {
+   "id": "liptovsky-hradok",
+   "name": "Liptovský Hrádok",
+   "location": {
+    "lat": 49.03718,
+    "lon": 19.72173
+   }
+  },
+  {
+   "id": "liptovsky-mikulas",
+   "name": "Liptovský Mikuláš",
+   "location": {
+    "lat": 49.08358,
+    "lon": 19.61278
+   }
+  },
+  {
+   "id": "lucenec",
+   "name": "Lučenec",
+   "location": {
+    "lat": 48.33039,
+    "lon": 19.66341
+   }
+  },
+  {
+   "id": "malacky",
+   "name": "Malacky",
+   "location": {
+    "lat": 48.4363,
+    "lon": 17.02004
+   }
+  },
+  {
+   "id": "martin",
+   "name": "Martin",
+   "location": {
+    "lat": 49.07249,
+    "lon": 18.92919
+   }
+  },
+  {
+   "id": "medzev",
+   "name": "Medzev",
+   "location": {
+    "lat": 48.70033,
+    "lon": 20.89227
+   }
+  },
+  {
+   "id": "medzilaborce",
+   "name": "Medzilaborce",
+   "location": {
+    "lat": 49.27113,
+    "lon": 21.90396
+   }
+  },
+  {
+   "id": "michalovce",
+   "name": "Michalovce",
+   "location": {
+    "lat": 48.75144,
+    "lon": 21.92119
+   }
+  },
+  {
+   "id": "modra",
+   "name": "Modra",
+   "location": {
+    "lat": 48.33573,
+    "lon": 17.30879
+   }
+  },
+  {
+   "id": "modry-kamen",
+   "name": "Modrý Kameň",
+   "location": {
+    "lat": 48.2406,
+    "lon": 19.33409
+   }
+  },
+  {
+   "id": "moldava-nad-bodvou",
+   "name": "Moldava nad Bodvou",
+   "location": {
+    "lat": 48.61414,
+    "lon": 20.99733
+   }
+  },
+  {
+   "id": "myjava",
+   "name": "Myjava",
+   "location": {
+    "lat": 48.75403,
+    "lon": 17.56502
+   }
+  },
+  {
+   "id": "namestovo",
+   "name": "Námestovo",
+   "location": {
+    "lat": 49.40951,
+    "lon": 19.48038
+   }
+  },
+  {
+   "id": "nemsova",
+   "name": "Nemšová",
+   "location": {
+    "lat": 48.96462,
+    "lon": 18.11757
+   }
+  },
+  {
+   "id": "nesvady",
+   "name": "Nesvady",
+   "location": {
+    "lat": 47.92852,
+    "lon": 18.12855
+   }
+  },
+  {
+   "id": "nitra",
+   "name": "Nitra",
+   "location": {
+    "lat": 48.31295,
+    "lon": 18.08946
+   }
+  },
+  {
+   "id": "nova-bana",
+   "name": "Nová Baňa",
+   "location": {
+    "lat": 48.4246,
+    "lon": 18.64137
+   }
+  },
+  {
+   "id": "nova-dubnica",
+   "name": "Nová Dubnica",
+   "location": {
+    "lat": 48.93587,
+    "lon": 18.14574
+   }
+  },
+  {
+   "id": "novaky",
+   "name": "Nováky",
+   "location": {
+    "lat": 48.71645,
+    "lon": 18.54083
+   }
+  },
+  {
+   "id": "nove-mesto-nad-vahom",
+   "name": "Nové Mesto nad Váhom",
+   "location": {
+    "lat": 48.76332,
+    "lon": 17.83039
+   }
+  },
+  {
+   "id": "nove-zamky",
+   "name": "Nové Zámky",
+   "location": {
+    "lat": 47.98618,
+    "lon": 18.16314
+   }
+  },
+  {
+   "id": "partizanske",
+   "name": "Partizánske",
+   "location": {
+    "lat": 48.62652,
+    "lon": 18.37176
+   }
+  },
+  {
+   "id": "pezinok",
+   "name": "Pezinok",
+   "location": {
+    "lat": 48.28545,
+    "lon": 17.27019
+   }
+  },
+  {
+   "id": "piestany",
+   "name": "Piešťany",
+   "location": {
+    "lat": 48.58952,
+    "lon": 17.82138
+   }
+  },
+  {
+   "id": "podolinec",
+   "name": "Podolínec",
+   "location": {
+    "lat": 49.25711,
+    "lon": 20.53379
+   }
+  },
+  {
+   "id": "poltar",
+   "name": "Poltár",
+   "location": {
+    "lat": 48.43083,
+    "lon": 19.79239
+   }
+  },
+  {
+   "id": "poprad",
+   "name": "Poprad",
+   "location": {
+    "lat": 49.05415,
+    "lon": 20.29764
+   }
+  },
+  {
+   "id": "povazska-bystrica",
+   "name": "Považská Bystrica",
+   "location": {
+    "lat": 49.11593,
+    "lon": 18.44699
+   }
+  },
+  {
+   "id": "presov",
+   "name": "Prešov",
+   "location": {
+    "lat": 49.00001,
+    "lon": 21.23921
+   }
+  },
+  {
+   "id": "prievidza",
+   "name": "Prievidza",
+   "location": {
+    "lat": 48.77184,
+    "lon": 18.62349
+   }
+  },
+  {
+   "id": "puchov",
+   "name": "Púchov",
+   "location": {
+    "lat": 49.12393,
+    "lon": 18.32396
+   }
+  },
+  {
+   "id": "rajec",
+   "name": "Rajec",
+   "location": {
+    "lat": 49.08863,
+    "lon": 18.63522
+   }
+  },
+  {
+   "id": "rajecke-teplice",
+   "name": "Rajecké Teplice",
+   "location": {
+    "lat": 49.12753,
+    "lon": 18.6829
+   }
+  },
+  {
+   "id": "revuca",
+   "name": "Revúca",
+   "location": {
+    "lat": 48.68333,
+    "lon": 20.11667
+   }
+  },
+  {
+   "id": "rimavska-sobota",
+   "name": "Rimavská Sobota",
+   "location": {
+    "lat": 48.38336,
+    "lon": 20.01806
+   }
+  },
+  {
+   "id": "roznava",
+   "name": "Rožňava",
+   "location": {
+    "lat": 48.66207,
+    "lon": 20.53286
+   }
+  },
+  {
+   "id": "ruzomberok",
+   "name": "Ružomberok",
+   "location": {
+    "lat": 49.08157,
+    "lon": 19.30342
+   }
+  },
+  {
+   "id": "sabinov",
+   "name": "Sabinov",
+   "location": {
+    "lat": 49.10267,
+    "lon": 21.09733
+   }
+  },
+  {
+   "id": "sahy",
+   "name": "Šahy",
+   "location": {
+    "lat": 48.06935,
+    "lon": 18.9483
+   }
+  },
+  {
+   "id": "sala",
+   "name": "Šaľa",
+   "location": {
+    "lat": 48.15138,
+    "lon": 17.87486
+   }
+  },
+  {
+   "id": "samorin",
+   "name": "Šamorín",
+   "location": {
+    "lat": 48.02758,
+    "lon": 17.31157
+   }
+  },
+  {
+   "id": "sastin-straze",
+   "name": "Šaštín-Stráže",
+   "location": {
+    "lat": 48.63804,
+    "lon": 17.14394
+   }
+  },
+  {
+   "id": "secovce",
+   "name": "Sečovce",
+   "location": {
+    "lat": 48.70151,
+    "lon": 21.6556
+   }
+  },
+  {
+   "id": "senec",
+   "name": "Senec",
+   "location": {
+    "lat": 48.21995,
+    "lon": 17.39699
+   }
+  },
+  {
+   "id": "senica",
+   "name": "Senica",
+   "location": {
+    "lat": 48.67876,
+    "lon": 17.36615
+   }
+  },
+  {
+   "id": "sered",
+   "name": "Sereď",
+   "location": {
+    "lat": 48.2889,
+    "lon": 17.73088
+   }
+  },
+  {
+   "id": "skalica",
+   "name": "Skalica",
+   "location": {
+    "lat": 48.8461,
+    "lon": 17.22878
+   }
+  },
+  {
+   "id": "sladkovicovo",
+   "name": "Sládkovičovo",
+   "location": {
+    "lat": 48.2053,
+    "lon": 17.64405
+   }
+  },
+  {
+   "id": "sliac",
+   "name": "Sliač",
+   "location": {
+    "lat": 48.61318,
+    "lon": 19.14237
+   }
+  },
+  {
+   "id": "snina",
+   "name": "Snina",
+   "location": {
+    "lat": 48.99006,
+    "lon": 22.15562
+   }
+  },
+  {
+   "id": "sobrance",
+   "name": "Sobrance",
+   "location": {
+    "lat": 48.74465,
+    "lon": 22.18066
+   }
+  },
+  {
+   "id": "spisska-bela",
+   "name": "Spišská Belá",
+   "location": {
+    "lat": 49.18934,
+    "lon": 20.45447
+   }
+  },
+  {
+   "id": "spisska-nova-ves",
+   "name": "Spišská Nová Ves",
+   "location": {
+    "lat": 48.94353,
+    "lon": 20.56296
+   }
+  },
+  {
+   "id": "spisska-stara-ves",
+   "name": "Spišská Stará Ves",
+   "location": {
+    "lat": 49.38315,
+    "lon": 20.35981
+   }
+  },
+  {
+   "id": "spisske-podhradie",
+   "name": "Spišské Podhradie",
+   "location": {
+    "lat": 49.00003,
+    "lon": 20.75107
+   }
+  },
+  {
+   "id": "spisske-vlachy",
+   "name": "Spišské Vlachy",
+   "location": {
+    "lat": 48.94665,
+    "lon": 20.79741
+   }
+  },
+  {
+   "id": "stara-lubovna",
+   "name": "Stará Ľubovňa",
+   "location": {
+    "lat": 49.30015,
+    "lon": 20.68892
+   }
+  },
+  {
+   "id": "stara-tura",
+   "name": "Stará Turá",
+   "location": {
+    "lat": 48.77822,
+    "lon": 17.69488
+   }
+  },
+  {
+   "id": "strazske",
+   "name": "Strážske",
+   "location": {
+    "lat": 48.87466,
+    "lon": 21.83377
+   }
+  },
+  {
+   "id": "stropkov",
+   "name": "Stropkov",
+   "location": {
+    "lat": 49.20201,
+    "lon": 21.65213
+   }
+  },
+  {
+   "id": "stupava",
+   "name": "Stupava",
+   "location": {
+    "lat": 48.27304,
+    "lon": 17.03295
+   }
+  },
+  {
+   "id": "sturovo",
+   "name": "Štúrovo",
+   "location": {
+    "lat": 47.7978,
+    "lon": 18.71588
+   }
+  },
+  {
+   "id": "surany",
+   "name": "Šurany",
+   "location": {
+    "lat": 48.08611,
+    "lon": 18.18683
+   }
+  },
+  {
+   "id": "svaty-jur",
+   "name": "Svätý Jur",
+   "location": {
+    "lat": 48.25419,
+    "lon": 17.21273
+   }
+  },
+  {
+   "id": "svidnik",
+   "name": "Svidník",
+   "location": {
+    "lat": 49.30851,
+    "lon": 21.57335
+   }
+  },
+  {
+   "id": "svit",
+   "name": "Svit",
+   "location": {
+    "lat": 49.05824,
+    "lon": 20.19653
+   }
+  },
+  {
+   "id": "tisovec",
+   "name": "Tisovec",
+   "location": {
+    "lat": 48.68128,
+    "lon": 19.94206
+   }
+  },
+  {
+   "id": "tlmace",
+   "name": "Tlmače",
+   "location": {
+    "lat": 48.28971,
+    "lon": 18.53113
+   }
+  },
+  {
+   "id": "topolcany",
+   "name": "Topoľčany",
+   "location": {
+    "lat": 48.55943,
+    "lon": 18.17544
+   }
+  },
+  {
+   "id": "tornala",
+   "name": "Tornaľa",
+   "location": {
+    "lat": 48.42216,
+    "lon": 20.32325
+   }
+  },
+  {
+   "id": "trebisov",
+   "name": "Trebišov",
+   "location": {
+    "lat": 48.62862,
+    "lon": 21.72017
+   }
+  },
+  {
+   "id": "trencianske-teplice",
+   "name": "Trenčianske Teplice",
+   "location": {
+    "lat": 48.90945,
+    "lon": 18.1703
+   }
+  },
+  {
+   "id": "trencin",
+   "name": "Trenčín",
+   "location": {
+    "lat": 48.89227,
+    "lon": 18.03875
+   }
+  },
+  {
+   "id": "trnava",
+   "name": "Trnava",
+   "location": {
+    "lat": 48.37677,
+    "lon": 17.58582
+   }
+  },
+  {
+   "id": "trstena",
+   "name": "Trstená",
+   "location": {
+    "lat": 49.35921,
+    "lon": 19.60861
+   }
+  },
+  {
+   "id": "turany",
+   "name": "Turany",
+   "location": {
+    "lat": 49.1164,
+    "lon": 19.03915
+   }
+  },
+  {
+   "id": "turcianske-teplice",
+   "name": "Turčianske Teplice",
+   "location": {
+    "lat": 48.86141,
+    "lon": 18.86081
+   }
+  },
+  {
+   "id": "turzovka",
+   "name": "Turzovka",
+   "location": {
+    "lat": 49.40515,
+    "lon": 18.62629
+   }
+  },
+  {
+   "id": "tvrdosin",
+   "name": "Tvrdošín",
+   "location": {
+    "lat": 49.33415,
+    "lon": 19.55543
+   }
+  },
+  {
+   "id": "velke-kapusany",
+   "name": "Veľké Kapušany",
+   "location": {
+    "lat": 48.55388,
+    "lon": 22.07737
+   }
+  },
+  {
+   "id": "velky-krtis",
+   "name": "Veľký Krtíš",
+   "location": {
+    "lat": 48.20934,
+    "lon": 19.34904
+   }
+  },
+  {
+   "id": "velky-meder",
+   "name": "Veľký Meder",
+   "location": {
+    "lat": 47.85578,
+    "lon": 17.76937
+   }
+  },
+  {
+   "id": "velky-saris",
+   "name": "Veľký Šariš",
+   "location": {
+    "lat": 49.04064,
+    "lon": 21.19727
+   }
+  },
+  {
+   "id": "vrable",
+   "name": "Vráble",
+   "location": {
+    "lat": 48.24428,
+    "lon": 18.30612
+   }
+  },
+  {
+   "id": "vranov-nad-toplou",
+   "name": "Vranov nad Topľou",
+   "location": {
+    "lat": 48.88915,
+    "lon": 21.68223
+   }
+  },
+  {
+   "id": "vrbove",
+   "name": "Vrbové",
+   "location": {
+    "lat": 48.61953,
+    "lon": 17.72388
+   }
+  },
+  {
+   "id": "vrutky",
+   "name": "Vrútky",
+   "location": {
+    "lat": 49.10886,
+    "lon": 18.92507
+   }
+  },
+  {
+   "id": "vysoke-tatry",
+   "name": "Vysoké Tatry",
+   "location": {
+    "lat": 49.13548,
+    "lon": 20.21668
+   }
+  },
+  {
+   "id": "zarnovica",
+   "name": "Žarnovica",
+   "location": {
+    "lat": 48.4834,
+    "lon": 18.72155
+   }
+  },
+  {
+   "id": "zeliezovce",
+   "name": "Želiezovce",
+   "location": {
+    "lat": 48.04923,
+    "lon": 18.65835
+   }
+  },
+  {
+   "id": "ziar-nad-hronom",
+   "name": "Žiar nad Hronom",
+   "location": {
+    "lat": 48.59102,
+    "lon": 18.85009
+   }
+  },
+  {
+   "id": "zilina",
+   "name": "Žilina",
+   "location": {
+    "lat": 49.22347,
+    "lon": 18.73931
+   }
+  },
+  {
+   "id": "zlate-moravce",
+   "name": "Zlaté Moravce",
+   "location": {
+    "lat": 48.38333,
+    "lon": 18.4
+   }
+  },
+  {
+   "id": "zvolen",
+   "name": "Zvolen",
+   "location": {
+    "lat": 48.57825,
+    "lon": 19.12471
+   }
+  }
+ ]
+}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Vlčia hora</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vlčia hora</name><trkseg>
+    <trkpt lat="49.121127" lon="18.646790"><ele>431</ele></trkpt>
+    <trkpt lat="49.121479" lon="18.646146"><ele>433</ele></trkpt>
+    <trkpt lat="49.121673" lon="18.645925"><ele>433</ele></trkpt>
+    <trkpt lat="49.122105" lon="18.645697"><ele>434</ele></trkpt>
+    <trkpt lat="49.122279" lon="18.645563"><ele>435</ele></trkpt>
+    <trkpt lat="49.122422" lon="18.645391"><ele>436</ele></trkpt>
+    <trkpt lat="49.122581" lon="18.645111"><ele>437</ele></trkpt>
+    <trkpt lat="49.122812" lon="18.644440"><ele>439</ele></trkpt>
+    <trkpt lat="49.123163" lon="18.643937"><ele>439</ele></trkpt>
+    <trkpt lat="49.123449" lon="18.643450"><ele>441</ele></trkpt>
+    <trkpt lat="49.123539" lon="18.643175"><ele>443</ele></trkpt>
+    <trkpt lat="49.123675" lon="18.642910"><ele>445</ele></trkpt>
+    <trkpt lat="49.124339" lon="18.642401"><ele>447</ele></trkpt>
+    <trkpt lat="49.124688" lon="18.642029"><ele>455</ele></trkpt>
+    <trkpt lat="49.124643" lon="18.641850"><ele>460</ele></trkpt>
+    <trkpt lat="49.124660" lon="18.641711"><ele>468</ele></trkpt>
+    <trkpt lat="49.124556" lon="18.641425"><ele>472</ele></trkpt>
+    <trkpt lat="49.124519" lon="18.640817"><ele>479</ele></trkpt>
+    <trkpt lat="49.124606" lon="18.640229"><ele>483</ele></trkpt>
+    <trkpt lat="49.124674" lon="18.640092"><ele>487</ele></trkpt>
+    <trkpt lat="49.124893" lon="18.639891"><ele>491</ele></trkpt>
+    <trkpt lat="49.124935" lon="18.639762"><ele>491</ele></trkpt>
+    <trkpt lat="49.124944" lon="18.639583"><ele>488</ele></trkpt>
+    <trkpt lat="49.124896" lon="18.639310"><ele>488</ele></trkpt>
+    <trkpt lat="49.124783" lon="18.638962"><ele>490</ele></trkpt>
+    <trkpt lat="49.124304" lon="18.637834"><ele>494</ele></trkpt>
+    <trkpt lat="49.124147" lon="18.637425"><ele>497</ele></trkpt>
+    <trkpt lat="49.124004" lon="18.636924"><ele>506</ele></trkpt>
+    <trkpt lat="49.123882" lon="18.636032"><ele>512</ele></trkpt>
+    <trkpt lat="49.123818" lon="18.634633"><ele>516</ele></trkpt>
+    <trkpt lat="49.123882" lon="18.636032"><ele>512</ele></trkpt>
+    <trkpt lat="49.124004" lon="18.636924"><ele>506</ele></trkpt>
+    <trkpt lat="49.124147" lon="18.637425"><ele>497</ele></trkpt>
+    <trkpt lat="49.124304" lon="18.637834"><ele>494</ele></trkpt>
+    <trkpt lat="49.124783" lon="18.638962"><ele>490</ele></trkpt>
+    <trkpt lat="49.124896" lon="18.639310"><ele>488</ele></trkpt>
+    <trkpt lat="49.124944" lon="18.639583"><ele>488</ele></trkpt>
+    <trkpt lat="49.124935" lon="18.639762"><ele>491</ele></trkpt>
+    <trkpt lat="49.124893" lon="18.639891"><ele>491</ele></trkpt>
+    <trkpt lat="49.124674" lon="18.640092"><ele>487</ele></trkpt>
+    <trkpt lat="49.124606" lon="18.640229"><ele>483</ele></trkpt>
+    <trkpt lat="49.124519" lon="18.640817"><ele>479</ele></trkpt>
+    <trkpt lat="49.124556" lon="18.641425"><ele>472</ele></trkpt>
+    <trkpt lat="49.124660" lon="18.641711"><ele>468</ele></trkpt>
+    <trkpt lat="49.124643" lon="18.641850"><ele>460</ele></trkpt>
+    <trkpt lat="49.124688" lon="18.642029"><ele>455</ele></trkpt>
+    <trkpt lat="49.124339" lon="18.642401"><ele>447</ele></trkpt>
+    <trkpt lat="49.123675" lon="18.642910"><ele>445</ele></trkpt>
+    <trkpt lat="49.123539" lon="18.643175"><ele>443</ele></trkpt>
+    <trkpt lat="49.123449" lon="18.643450"><ele>441</ele></trkpt>
+    <trkpt lat="49.123163" lon="18.643937"><ele>439</ele></trkpt>
+    <trkpt lat="49.122812" lon="18.644440"><ele>439</ele></trkpt>
+    <trkpt lat="49.122581" lon="18.645111"><ele>437</ele></trkpt>
+    <trkpt lat="49.122422" lon="18.645391"><ele>436</ele></trkpt>
+    <trkpt lat="49.122279" lon="18.645563"><ele>435</ele></trkpt>
+    <trkpt lat="49.122105" lon="18.645697"><ele>434</ele></trkpt>
+    <trkpt lat="49.121673" lon="18.645925"><ele>433</ele></trkpt>
+    <trkpt lat="49.121479" lon="18.646146"><ele>433</ele></trkpt>
+    <trkpt lat="49.121127" lon="18.646790"><ele>431</ele></trkpt>
+  </trkseg></trk>
+</gpx>

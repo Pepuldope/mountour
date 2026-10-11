@@ -1,45 +1,15 @@
-import tripIndex from "@/data/trips/index.json";
 import closureRules from "@/data/closure-rules.json";
 import feeRules from "@/data/fee-rules.json";
-import driveTimes from "@/data/drive-times.json";
-import { tripDetailLoaders } from "@/data/trips/details.generated";
-import type {
-  ClosureRule,
-  ClosureRules,
-  DriveTimes,
-  FeeRules,
-  GeoPoint,
-  Town,
-  TripDetail,
-  TripIndex,
-  TripSummary,
-} from "@/lib/tripSchema";
+import townsFile from "@/data/towns.json";
+import type { ClosureRule, ClosureRules, FeeRules, GeoPoint, Town, Towns, TripList, TripSummary } from "@/lib/tripSchema";
 
-// Static trip data written by the weekly pipeline (pipeline/, docs/TRIP-DATA.md).
-// Everything here is bundled at build time: no database, no network.
+// The small, hand-kept or rarely changing trip data, bundled at build time and
+// safe for the browser. The trips themselves (thousands) are static files in
+// public/data, read by lib/tripFiles.ts (server) and fetched by the home page.
 
-const INDEX = tripIndex as unknown as TripIndex;
 const CLOSURE_RULES = closureRules as unknown as ClosureRules;
 const FEE_RULES = feeRules as unknown as FeeRules;
-const DRIVE = driveTimes as unknown as DriveTimes;
-
-export function getTripIndex(): TripIndex {
-  return INDEX;
-}
-
-export function getAllTrips(): TripSummary[] {
-  return INDEX.trips;
-}
-
-export function getTripSummary(slug: string): TripSummary | null {
-  return INDEX.trips.find((t) => t.slug === slug) ?? null;
-}
-
-/** Full trip with path, alternatives and POIs, or null for an unknown slug. */
-export async function getTrip(slug: string): Promise<TripDetail | null> {
-  const load = Object.hasOwn(tripDetailLoaders, slug) ? tripDetailLoaders[slug] : undefined;
-  return load ? load() : null;
-}
+const TOWNS = townsFile as unknown as Towns;
 
 export function getClosureRules(): ClosureRule[] {
   return CLOSURE_RULES.rules;
@@ -54,16 +24,9 @@ export function getFeeRules(): FeeRules["rules"] {
   return FEE_RULES.rules;
 }
 
-export function getDriveTimes(): DriveTimes {
-  return DRIVE;
-}
-
-/** Precomputed car time from a town to a trip's parking, or null when unknown. */
-export function driveMinutes(townId: string, slug: string): number | null {
-  const ti = DRIVE.towns.findIndex((t) => t.id === townId);
-  const si = DRIVE.slugs.indexOf(slug);
-  if (ti < 0 || si < 0) return null;
-  return DRIVE.minutes[ti]?.[si] ?? null;
+/** The ~140 towns the weekly drive table starts from. */
+export function getTowns(): Town[] {
+  return TOWNS.towns;
 }
 
 /** The precomputed town closest to a point (straight line), e.g. to map GPS to a drive-table row. */
@@ -71,7 +34,7 @@ export function nearestTown(p: GeoPoint): Town | null {
   let best: Town | null = null;
   let bestD = Infinity;
   const k = Math.cos((p.lat * Math.PI) / 180);
-  for (const t of DRIVE.towns) {
+  for (const t of TOWNS.towns) {
     const d = (t.location.lat - p.lat) ** 2 + ((t.location.lon - p.lon) * k) ** 2;
     if (d < bestD) {
       bestD = d;
@@ -84,4 +47,22 @@ export function nearestTown(p: GeoPoint): Town | null {
 /** Where the drive ends: the trip's parking, else its start. */
 export function tripDriveDestination(trip: TripSummary): GeoPoint {
   return trip.parking?.location ?? trip.start.location;
+}
+
+/** A trip from the home list (public/data/trips/list.json) in the full summary shape. */
+export function summaryFromList(t: TripList["trips"][number]): TripSummary {
+  const noOsm = <T extends object>(p: T | null): (T & { osm: null }) | null => (p ? { ...p, osm: null } : null);
+  return {
+    ...t,
+    description: "",
+    gpx_url: `/gpx/${t.slug}.gpx`,
+    marked_share: 1,
+    curated: false,
+    protected_area: null,
+    max_ele_m: null,
+    destination: { ...t.destination, osm: null },
+    start: { ...t.start, osm: null },
+    parking: noOsm(t.parking),
+    transit: noOsm(t.transit),
+  };
 }

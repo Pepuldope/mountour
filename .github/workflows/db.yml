@@ -12,7 +12,7 @@ on:
     branches: [main]
   push:
     branches: [main]
-    paths: ["data/**", "pipeline/db.py", ".github/workflows/db.yml"]
+    paths: ["data/**", "public/data/trips/**", "public/data/drive/**", "pipeline/db.py", ".github/workflows/db.yml"]
   workflow_dispatch:
 
 permissions:
@@ -54,7 +54,7 @@ jobs:
       - if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         run: npm ci
 
-      # D1's free plan writes 100k rows a day and a full load writes ~65k: skip
+      # D1's free plan writes 100k rows a day and a full load of ~2,500 trips writes about 50k: skip
       # loads the database already holds.
       - name: Compare with the loaded data
         id: loaded

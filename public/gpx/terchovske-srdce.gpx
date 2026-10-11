@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Terchovské srdce</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Terchovské srdce</name><trkseg>
+    <trkpt lat="49.257573" lon="19.031474"><ele>517</ele></trkpt>
+    <trkpt lat="49.257638" lon="19.031384"><ele>516</ele></trkpt>
+    <trkpt lat="49.257747" lon="19.031422"><ele>517</ele></trkpt>
+    <trkpt lat="49.257892" lon="19.030766"><ele>515</ele></trkpt>
+    <trkpt lat="49.257955" lon="19.030754"><ele>516</ele></trkpt>
+    <trkpt lat="49.258378" lon="19.030378"><ele>516</ele></trkpt>
+    <trkpt lat="49.259252" lon="19.029916"><ele>515</ele></trkpt>
+    <trkpt lat="49.259347" lon="19.029739"><ele>515</ele></trkpt>
+    <trkpt lat="49.259824" lon="19.030372"><ele>515</ele></trkpt>
+    <trkpt lat="49.259887" lon="19.030281"><ele>515</ele></trkpt>
+    <trkpt lat="49.259994" lon="19.030214"><ele>515</ele></trkpt>
+    <trkpt lat="49.260080" lon="19.030080"><ele>520</ele></trkpt>
+    <trkpt lat="49.260086" lon="19.029932"><ele>524</ele></trkpt>
+    <trkpt lat="49.259856" lon="19.029447"><ele>528</ele></trkpt>
+    <trkpt lat="49.259755" lon="19.029079"><ele>529</ele></trkpt>
+    <trkpt lat="49.259756" lon="19.028685"><ele>530</ele></trkpt>
+    <trkpt lat="49.260149" lon="19.027175"><ele>547</ele></trkpt>
+    <trkpt lat="49.260451" lon="19.026330"><ele>552</ele></trkpt>
+    <trkpt lat="49.260584" lon="19.027654"><ele>575</ele></trkpt>
+    <trkpt lat="49.260636" lon="19.028590"><ele>580</ele></trkpt>
+    <trkpt lat="49.260712" lon="19.028839"><ele>582</ele></trkpt>
+    <trkpt lat="49.260898" lon="19.029028"><ele>588</ele></trkpt>
+    <trkpt lat="49.261042" lon="19.029100"><ele>594</ele></trkpt>
+    <trkpt lat="49.261166" lon="19.029090"><ele>598</ele></trkpt>
+    <trkpt lat="49.261436" lon="19.028974"><ele>603</ele></trkpt>
+    <trkpt lat="49.261454" lon="19.028889"><ele>605</ele></trkpt>
+    <trkpt lat="49.261317" lon="19.028644"><ele>609</ele></trkpt>
+    <trkpt lat="49.261280" lon="19.028465"><ele>609</ele></trkpt>
+    <trkpt lat="49.261320" lon="19.028249"><ele>612</ele></trkpt>
+    <trkpt lat="49.261409" lon="19.028091"><ele>614</ele></trkpt>
+    <trkpt lat="49.261389" lon="19.027894"><ele>614</ele></trkpt>
+    <trkpt lat="49.261409" lon="19.028091"><ele>614</ele></trkpt>
+    <trkpt lat="49.261320" lon="19.028249"><ele>612</ele></trkpt>
+    <trkpt lat="49.261280" lon="19.028465"><ele>609</ele></trkpt>
+    <trkpt lat="49.261317" lon="19.028644"><ele>609</ele></trkpt>
+    <trkpt lat="49.261454" lon="19.028889"><ele>605</ele></trkpt>
+    <trkpt lat="49.261436" lon="19.028974"><ele>603</ele></trkpt>
+    <trkpt lat="49.261166" lon="19.029090"><ele>598</ele></trkpt>
+    <trkpt lat="49.261042" lon="19.029100"><ele>594</ele></trkpt>
+    <trkpt lat="49.260898" lon="19.029028"><ele>588</ele></trkpt>
+    <trkpt lat="49.260712" lon="19.028839"><ele>582</ele></trkpt>
+    <trkpt lat="49.260636" lon="19.028590"><ele>580</ele></trkpt>
+    <trkpt lat="49.260584" lon="19.027654"><ele>575</ele></trkpt>
+    <trkpt lat="49.260451" lon="19.026330"><ele>552</ele></trkpt>
+    <trkpt lat="49.260149" lon="19.027175"><ele>547</ele></trkpt>
+    <trkpt lat="49.259756" lon="19.028685"><ele>530</ele></trkpt>
+    <trkpt lat="49.259755" lon="19.029079"><ele>529</ele></trkpt>
+    <trkpt lat="49.259856" lon="19.029447"><ele>528</ele></trkpt>
+    <trkpt lat="49.260086" lon="19.029932"><ele>524</ele></trkpt>
+    <trkpt lat="49.260080" lon="19.030080"><ele>520</ele></trkpt>
+    <trkpt lat="49.259994" lon="19.030214"><ele>515</ele></trkpt>
+    <trkpt lat="49.259887" lon="19.030281"><ele>515</ele></trkpt>
+    <trkpt lat="49.259824" lon="19.030372"><ele>515</ele></trkpt>
+    <trkpt lat="49.259347" lon="19.029739"><ele>515</ele></trkpt>
+    <trkpt lat="49.259252" lon="19.029916"><ele>515</ele></trkpt>
+    <trkpt lat="49.258378" lon="19.030378"><ele>516</ele></trkpt>
+    <trkpt lat="49.257955" lon="19.030754"><ele>516</ele></trkpt>
+    <trkpt lat="49.257892" lon="19.030766"><ele>515</ele></trkpt>
+    <trkpt lat="49.257747" lon="19.031422"><ele>517</ele></trkpt>
+    <trkpt lat="49.257638" lon="19.031384"><ele>516</ele></trkpt>
+    <trkpt lat="49.257573" lon="19.031474"><ele>517</ele></trkpt>
+  </trkseg></trk>
+</gpx>

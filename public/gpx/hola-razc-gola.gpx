@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Hoľa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hoľa</name><trkseg>
+    <trkpt lat="49.157303" lon="21.117291"><ele>815</ele></trkpt>
+    <trkpt lat="49.157824" lon="21.118093"><ele>832</ele></trkpt>
+    <trkpt lat="49.158346" lon="21.118393"><ele>831</ele></trkpt>
+    <trkpt lat="49.158632" lon="21.118367"><ele>832</ele></trkpt>
+    <trkpt lat="49.159261" lon="21.118157"><ele>841</ele></trkpt>
+    <trkpt lat="49.160407" lon="21.118031"><ele>868</ele></trkpt>
+    <trkpt lat="49.160498" lon="21.118057"><ele>869</ele></trkpt>
+    <trkpt lat="49.160696" lon="21.118226"><ele>874</ele></trkpt>
+    <trkpt lat="49.160808" lon="21.118365"><ele>879</ele></trkpt>
+    <trkpt lat="49.160874" lon="21.118572"><ele>883</ele></trkpt>
+    <trkpt lat="49.160931" lon="21.119358"><ele>889</ele></trkpt>
+    <trkpt lat="49.161132" lon="21.120059"><ele>893</ele></trkpt>
+    <trkpt lat="49.161358" lon="21.120674"><ele>901</ele></trkpt>
+    <trkpt lat="49.161540" lon="21.121560"><ele>912</ele></trkpt>
+    <trkpt lat="49.161774" lon="21.122259"><ele>916</ele></trkpt>
+    <trkpt lat="49.161869" lon="21.122695"><ele>916</ele></trkpt>
+    <trkpt lat="49.161979" lon="21.122342"><ele>917</ele></trkpt>
+    <trkpt lat="49.162202" lon="21.122116"><ele>918</ele></trkpt>
+    <trkpt lat="49.162933" lon="21.121763"><ele>918</ele></trkpt>
+    <trkpt lat="49.163256" lon="21.121377"><ele>927</ele></trkpt>
+    <trkpt lat="49.164161" lon="21.120476"><ele>933</ele></trkpt>
+    <trkpt lat="49.164406" lon="21.119950"><ele>936</ele></trkpt>
+    <trkpt lat="49.164161" lon="21.120476"><ele>933</ele></trkpt>
+    <trkpt lat="49.163256" lon="21.121377"><ele>927</ele></trkpt>
+    <trkpt lat="49.162933" lon="21.121763"><ele>918</ele></trkpt>
+    <trkpt lat="49.162202" lon="21.122116"><ele>918</ele></trkpt>
+    <trkpt lat="49.161979" lon="21.122342"><ele>917</ele></trkpt>
+    <trkpt lat="49.161869" lon="21.122695"><ele>916</ele></trkpt>
+    <trkpt lat="49.161774" lon="21.122259"><ele>916</ele></trkpt>
+    <trkpt lat="49.161540" lon="21.121560"><ele>912</ele></trkpt>
+    <trkpt lat="49.161358" lon="21.120674"><ele>901</ele></trkpt>
+    <trkpt lat="49.161132" lon="21.120059"><ele>893</ele></trkpt>
+    <trkpt lat="49.160931" lon="21.119358"><ele>889</ele></trkpt>
+    <trkpt lat="49.160874" lon="21.118572"><ele>883</ele></trkpt>
+    <trkpt lat="49.160808" lon="21.118365"><ele>879</ele></trkpt>
+    <trkpt lat="49.160696" lon="21.118226"><ele>874</ele></trkpt>
+    <trkpt lat="49.160498" lon="21.118057"><ele>869</ele></trkpt>
+    <trkpt lat="49.160407" lon="21.118031"><ele>868</ele></trkpt>
+    <trkpt lat="49.159261" lon="21.118157"><ele>841</ele></trkpt>
+    <trkpt lat="49.158632" lon="21.118367"><ele>832</ele></trkpt>
+    <trkpt lat="49.158346" lon="21.118393"><ele>831</ele></trkpt>
+    <trkpt lat="49.157824" lon="21.118093"><ele>832</ele></trkpt>
+    <trkpt lat="49.157303" lon="21.117291"><ele>815</ele></trkpt>
+  </trkseg></trk>
+</gpx>

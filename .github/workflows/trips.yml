@@ -8,7 +8,7 @@ on:
     - cron: "17 3 * * 1"
   workflow_dispatch:
   push:
-    branches: ["claude/osm-trip-pipeline-**", "claude/site-fixes-and-features-**"]
+    branches: ["claude/osm-trip-pipeline-**", "claude/site-fixes-and-features-**", "claude/import-all-trails-**"]
     paths: ["pipeline/**", ".github/workflows/trips.yml"]
   pull_request:
     paths: ["pipeline/**", ".github/workflows/trips.yml"]
@@ -48,7 +48,8 @@ jobs:
           cache: pip
           cache-dependency-path: pipeline/requirements.txt
       - run: pip install -r pipeline/requirements.txt
-      - run: python -m pytest -q pipeline/tests
+      # The database tests check the committed data, which this job is about to replace.
+      - run: python -m pytest -q pipeline/tests --ignore=pipeline/tests/test_db.py
 
       - name: Download OpenStreetMap extract (Geofabrik, Slovakia)
         run: |
@@ -93,13 +94,13 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Lay the fresh files on top of the branch as it is now, so a newer
           # data commit or code push never conflicts: the new build replaces it.
-          OUT="data/trips data/drive-times.json data/pipeline-report.md public/gpx pipeline/slugs.json"
+          OUT="public/data/trips public/data/drive data/towns.json data/pipeline-report.md public/gpx pipeline/slugs.json"
           for attempt in 1 2 3; do
             rm -rf "$RUNNER_TEMP/out" && mkdir -p "$RUNNER_TEMP/out"
             tar cf "$RUNNER_TEMP/out/new.tar" $OUT
             git fetch origin "${GITHUB_REF_NAME}"
             git checkout -f --detach "origin/${GITHUB_REF_NAME}"
-            rm -rf data/trips public/gpx && tar xf "$RUNNER_TEMP/out/new.tar"
+            rm -rf public/data/trips public/data/drive public/gpx && tar xf "$RUNNER_TEMP/out/new.tar"
             git add -A $OUT
             if git diff --cached --quiet; then
               echo "No changes."

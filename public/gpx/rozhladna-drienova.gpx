@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Rozhľadňa Drieňová</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Rozhľadňa Drieňová</name><trkseg>
+    <trkpt lat="48.471572" lon="18.494486"><ele>397</ele></trkpt>
+    <trkpt lat="48.471689" lon="18.494308"><ele>399</ele></trkpt>
+    <trkpt lat="48.471800" lon="18.493921"><ele>401</ele></trkpt>
+    <trkpt lat="48.471951" lon="18.493692"><ele>402</ele></trkpt>
+    <trkpt lat="48.472350" lon="18.493416"><ele>408</ele></trkpt>
+    <trkpt lat="48.472528" lon="18.493126"><ele>410</ele></trkpt>
+    <trkpt lat="48.473549" lon="18.492087"><ele>424</ele></trkpt>
+    <trkpt lat="48.473996" lon="18.491791"><ele>429</ele></trkpt>
+    <trkpt lat="48.474668" lon="18.491113"><ele>439</ele></trkpt>
+    <trkpt lat="48.475447" lon="18.490558"><ele>452</ele></trkpt>
+    <trkpt lat="48.475661" lon="18.490460"><ele>458</ele></trkpt>
+    <trkpt lat="48.476623" lon="18.490428"><ele>474</ele></trkpt>
+    <trkpt lat="48.477313" lon="18.489798"><ele>486</ele></trkpt>
+    <trkpt lat="48.477142" lon="18.489670"><ele>493</ele></trkpt>
+    <trkpt lat="48.476758" lon="18.489555"><ele>504</ele></trkpt>
+    <trkpt lat="48.476638" lon="18.489459"><ele>507</ele></trkpt>
+    <trkpt lat="48.476432" lon="18.489114"><ele>515</ele></trkpt>
+    <trkpt lat="48.476065" lon="18.488228"><ele>531</ele></trkpt>
+    <trkpt lat="48.475930" lon="18.487806"><ele>537</ele></trkpt>
+    <trkpt lat="48.475839" lon="18.487391"><ele>543</ele></trkpt>
+    <trkpt lat="48.475756" lon="18.486460"><ele>550</ele></trkpt>
+    <trkpt lat="48.475614" lon="18.486111"><ele>548</ele></trkpt>
+    <trkpt lat="48.475510" lon="18.485948"><ele>548</ele></trkpt>
+    <trkpt lat="48.475308" lon="18.485817"><ele>550</ele></trkpt>
+    <trkpt lat="48.475510" lon="18.485948"><ele>548</ele></trkpt>
+    <trkpt lat="48.475614" lon="18.486111"><ele>548</ele></trkpt>
+    <trkpt lat="48.475756" lon="18.486460"><ele>550</ele></trkpt>
+    <trkpt lat="48.475839" lon="18.487391"><ele>543</ele></trkpt>
+    <trkpt lat="48.475930" lon="18.487806"><ele>537</ele></trkpt>
+    <trkpt lat="48.476065" lon="18.488228"><ele>531</ele></trkpt>
+    <trkpt lat="48.476432" lon="18.489114"><ele>515</ele></trkpt>
+    <trkpt lat="48.476638" lon="18.489459"><ele>507</ele></trkpt>
+    <trkpt lat="48.476758" lon="18.489555"><ele>504</ele></trkpt>
+    <trkpt lat="48.477142" lon="18.489670"><ele>493</ele></trkpt>
+    <trkpt lat="48.477313" lon="18.489798"><ele>486</ele></trkpt>
+    <trkpt lat="48.476623" lon="18.490428"><ele>474</ele></trkpt>
+    <trkpt lat="48.475661" lon="18.490460"><ele>458</ele></trkpt>
+    <trkpt lat="48.475447" lon="18.490558"><ele>452</ele></trkpt>
+    <trkpt lat="48.474668" lon="18.491113"><ele>439</ele></trkpt>
+    <trkpt lat="48.473996" lon="18.491791"><ele>429</ele></trkpt>
+    <trkpt lat="48.473549" lon="18.492087"><ele>424</ele></trkpt>
+    <trkpt lat="48.472528" lon="18.493126"><ele>410</ele></trkpt>
+    <trkpt lat="48.472350" lon="18.493416"><ele>408</ele></trkpt>
+    <trkpt lat="48.471951" lon="18.493692"><ele>402</ele></trkpt>
+    <trkpt lat="48.471800" lon="18.493921"><ele>401</ele></trkpt>
+    <trkpt lat="48.471689" lon="18.494308"><ele>399</ele></trkpt>
+    <trkpt lat="48.471572" lon="18.494486"><ele>397</ele></trkpt>
+  </trkseg></trk>
+</gpx>

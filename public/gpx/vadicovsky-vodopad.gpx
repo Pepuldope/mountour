@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Vadičovský vodopád</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vadičovský vodopád</name><trkseg>
+    <trkpt lat="49.281806" lon="18.894071"><ele>549</ele></trkpt>
+    <trkpt lat="49.281712" lon="18.894215"><ele>546</ele></trkpt>
+    <trkpt lat="49.281691" lon="18.894353"><ele>545</ele></trkpt>
+    <trkpt lat="49.282519" lon="18.894157"><ele>547</ele></trkpt>
+    <trkpt lat="49.282849" lon="18.894170"><ele>542</ele></trkpt>
+    <trkpt lat="49.283161" lon="18.894260"><ele>543</ele></trkpt>
+    <trkpt lat="49.283391" lon="18.894380"><ele>543</ele></trkpt>
+    <trkpt lat="49.283993" lon="18.894782"><ele>543</ele></trkpt>
+    <trkpt lat="49.285149" lon="18.895758"><ele>544</ele></trkpt>
+    <trkpt lat="49.285558" lon="18.896029"><ele>547</ele></trkpt>
+    <trkpt lat="49.286063" lon="18.896867"><ele>560</ele></trkpt>
+    <trkpt lat="49.286385" lon="18.897918"><ele>555</ele></trkpt>
+    <trkpt lat="49.286454" lon="18.898052"><ele>556</ele></trkpt>
+    <trkpt lat="49.286590" lon="18.898269"><ele>559</ele></trkpt>
+    <trkpt lat="49.287115" lon="18.898806"><ele>565</ele></trkpt>
+    <trkpt lat="49.287681" lon="18.899527"><ele>568</ele></trkpt>
+    <trkpt lat="49.288032" lon="18.900260"><ele>569</ele></trkpt>
+    <trkpt lat="49.288276" lon="18.900618"><ele>568</ele></trkpt>
+    <trkpt lat="49.288509" lon="18.901143"><ele>571</ele></trkpt>
+    <trkpt lat="49.288771" lon="18.902347"><ele>585</ele></trkpt>
+    <trkpt lat="49.288823" lon="18.902707"><ele>591</ele></trkpt>
+    <trkpt lat="49.288831" lon="18.903154"><ele>588</ele></trkpt>
+    <trkpt lat="49.288893" lon="18.903873"><ele>588</ele></trkpt>
+    <trkpt lat="49.288677" lon="18.905059"><ele>585</ele></trkpt>
+    <trkpt lat="49.288326" lon="18.906523"><ele>597</ele></trkpt>
+    <trkpt lat="49.288004" lon="18.908193"><ele>598</ele></trkpt>
+    <trkpt lat="49.288326" lon="18.906523"><ele>597</ele></trkpt>
+    <trkpt lat="49.288677" lon="18.905059"><ele>585</ele></trkpt>
+    <trkpt lat="49.288893" lon="18.903873"><ele>588</ele></trkpt>
+    <trkpt lat="49.288831" lon="18.903154"><ele>588</ele></trkpt>
+    <trkpt lat="49.288823" lon="18.902707"><ele>591</ele></trkpt>
+    <trkpt lat="49.288771" lon="18.902347"><ele>585</ele></trkpt>
+    <trkpt lat="49.288509" lon="18.901143"><ele>571</ele></trkpt>
+    <trkpt lat="49.288276" lon="18.900618"><ele>568</ele></trkpt>
+    <trkpt lat="49.288032" lon="18.900260"><ele>569</ele></trkpt>
+    <trkpt lat="49.287681" lon="18.899527"><ele>568</ele></trkpt>
+    <trkpt lat="49.287115" lon="18.898806"><ele>565</ele></trkpt>
+    <trkpt lat="49.286590" lon="18.898269"><ele>559</ele></trkpt>
+    <trkpt lat="49.286454" lon="18.898052"><ele>556</ele></trkpt>
+    <trkpt lat="49.286385" lon="18.897918"><ele>555</ele></trkpt>
+    <trkpt lat="49.286063" lon="18.896867"><ele>560</ele></trkpt>
+    <trkpt lat="49.285558" lon="18.896029"><ele>547</ele></trkpt>
+    <trkpt lat="49.285149" lon="18.895758"><ele>544</ele></trkpt>
+    <trkpt lat="49.283993" lon="18.894782"><ele>543</ele></trkpt>
+    <trkpt lat="49.283391" lon="18.894380"><ele>543</ele></trkpt>
+    <trkpt lat="49.283161" lon="18.894260"><ele>543</ele></trkpt>
+    <trkpt lat="49.282849" lon="18.894170"><ele>542</ele></trkpt>
+    <trkpt lat="49.282519" lon="18.894157"><ele>547</ele></trkpt>
+    <trkpt lat="49.281691" lon="18.894353"><ele>545</ele></trkpt>
+    <trkpt lat="49.281712" lon="18.894215"><ele>546</ele></trkpt>
+    <trkpt lat="49.281806" lon="18.894071"><ele>549</ele></trkpt>
+  </trkseg></trk>
+</gpx>

@@ -2,7 +2,7 @@ import { getTripLive } from "@/lib/tripDb";
 
 /**
  * GET /api/vylety/<slug> -> one trip with its walk, parking, stops and places
- * (the shape of data/trips/<slug>.json), from the database or the files.
+ * (the shape of public/data/trips/<slug>.json), from the database or the files.
  */
 
 const HOUR_S = 3600;
