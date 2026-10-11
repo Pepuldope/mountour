@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTrailBySlug, primaryTrailhead, sunLocation } from "@/lib/data";
+import { cache } from "react";
+import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
-import { getTrip } from "@/lib/trips";
+import { getTripLive } from "@/lib/tripDb";
 import { buildProfile } from "@/lib/tripProfile";
 import { DIFFICULTY_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { MARKING_COLOR, MARKING_LABEL } from "@/lib/mapLayers";
@@ -27,9 +28,15 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+/** One database read per request, shared by the metadata and the page. */
+const loadTrip = cache(async (slug: string) => {
+  const { trip } = await getTripLive(slug);
+  return trip ? { trip, detail: trailDetailFrom(trip) } : null;
+});
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const detail = await getTrailBySlug(slug);
+  const detail = (await loadTrip(slug))?.detail;
   if (!detail) return { title: "Trasa sa nenašla", robots: { index: false } };
   const { trail } = detail;
   const facts = `${formatDistance(trail.distance_m)}, +${trail.ascent_m} m, ${formatDuration(trail.duration_min)} chôdze`;
@@ -74,13 +81,13 @@ function trailJsonLd(detail: TrailDetail) {
 
 export default async function TripSheetPage({ params }: Props) {
   const { slug } = await params;
-  const detail = await getTrailBySlug(slug);
-  if (!detail) notFound();
+  const loaded = await loadTrip(slug);
+  if (!loaded) notFound();
+  const { trip, detail } = loaded;
 
   const { trail, parkingLots, transitStops, closures, fees } = detail;
   const trailStart = primaryTrailhead(detail)?.location ?? null;
-  const trip = await getTrip(slug);
-  const profile = trip ? buildProfile(trip) : null;
+  const profile = buildProfile(trip);
   const gpxUrl = gpxUrlFor(trail.gpx_path);
   const sun = sunLocation(detail);
   const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
@@ -127,11 +134,12 @@ export default async function TripSheetPage({ params }: Props) {
             difficulty={trail.difficulty}
             familyFriendly={trail.family_friendly}
             sun={sun}
-            goal={
-              trip
-                ? { lat: trip.destination.location.lat, lon: trip.destination.location.lon, ele: trip.destination.ele_m, name: trip.destination.name }
-                : null
-            }
+            goal={{
+              lat: trip.destination.location.lat,
+              lon: trip.destination.location.lon,
+              ele: trip.destination.ele_m,
+              name: trip.destination.name,
+            }}
             baseHikeMin={trail.duration_min}
             profile={profile}
             gpxUrl={gpxUrl}
