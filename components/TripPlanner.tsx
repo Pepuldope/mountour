@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { SAFE_MARGIN_MIN } from "@/lib/dayPlan";
 import type { DayPlan } from "@/lib/dayPlan";
 import { dayInSentence, floorTo5, longDay } from "@/lib/days";
-import { formatDuration, formatTime, verdictText } from "@/lib/format";
+import { formatDuration, formatTime, stopLabel, verdictText } from "@/lib/format";
 import { searchPlaces } from "@/lib/geocode";
 import { googleMapsUrl, mapyUrl, readSharedPlan } from "@/lib/links";
 import { findTown } from "@/lib/towns";
@@ -127,7 +127,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
               {startName && hasDrive ? `Štart ${startName} · ` : ""}
               {capitalize(
                 `${date ? `${dayInSentence(date, new Date())} ` : ""}${
-                  hasDrive ? "vyrazte" : transit && stop ? `buďte na zastávke ${stop.name}` : "začnite túru"
+                  hasDrive ? "vyrazte" : transit && stop ? `buďte na zastávke ${stopLabel(stop.name)}` : "začnite túru"
                 } najneskôr`
               )}
             </p>
@@ -219,10 +219,13 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
 
 function Step({ label, time, approx = false }: { label: string; time: Date; approx?: boolean }) {
   return (
-    <li>
-      <span className="block font-sans text-[11px] font-medium text-[var(--muted)]">{label}</span>
-      {approx ? "~" : ""}
-      {formatTime(time)}
+    // Bottom-aligned: a label that wraps ("späť na zastávke") keeps the times on one line.
+    <li className="flex flex-col justify-end">
+      <span className="block font-sans text-[11px] leading-tight font-medium text-[var(--muted)]">{label}</span>
+      <span>
+        {approx ? "~" : ""}
+        {formatTime(time)}
+      </span>
     </li>
   );
 }

@@ -63,13 +63,13 @@ export function SavedTripsList() {
               <h2 className="text-lg font-semibold">{trip.name}</h2>
               <span className="text-sm tabular-nums">
                 {formatDateSk(trip.date)} o {trip.time}
-                {past && " - už prebehol"}
+                {past && " · už prebehol"}
               </span>
             </div>
             <p className="text-sm opacity-70">
               {trip.start ? `Štart: ${trip.start.label}` : "Bez miesta štartu"}
-              {trip.driveMin !== null && ` - autom ${formatDuration(trip.driveMin)}`}
-              {" - "}
+              {trip.driveMin !== null && ` · autom ${formatDuration(trip.driveMin)}`}
+              {" · "}
               {trip.offline === "ok" ? "dostupné offline" : "len online"}
             </p>
             {plan && (
@@ -79,7 +79,7 @@ export function SavedTripsList() {
                 </div>
                 <p className="text-sm">
                   <span className="opacity-70">koniec túry {formatTime(plan.hikeEnd)} </span>
-                  <span className={`font-medium ${good ? "text-[var(--accent)]" : "text-[var(--warn)]"}`}>
+                  <span className={`font-medium ${good ? "text-[var(--ok)]" : "text-[var(--warn)]"}`}>
                     {VERDICT_SHORT[plan.verdict]}
                   </span>
                 </p>
@@ -89,14 +89,14 @@ export function SavedTripsList() {
               <button
                 type="button"
                 onClick={() => open(trip)}
-                className="rounded-lg bg-[var(--accent)] px-3 py-2 text-sm font-medium text-[var(--accent-contrast)]"
+                className="rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-bold text-[var(--accent-contrast)]"
               >
                 Otvoriť
               </button>
               <button
                 type="button"
                 onClick={() => remove(trip.slug)}
-                className="rounded-lg border border-[var(--border)] px-3 py-2 text-sm"
+                className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-4 py-2.5 text-sm font-semibold hover:border-[var(--accent)]"
               >
                 Odstrániť
               </button>

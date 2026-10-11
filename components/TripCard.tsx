@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { EARLIEST_DEPARTURE_HOUR } from "@/lib/days";
 import type { DayFit } from "@/lib/days";
-import { DIFFICULTY_LABEL, GOAL_LABEL, formatDurationShort, formatFromUser, formatTime } from "@/lib/format";
+import { DIFFICULTY_LABEL, GOAL_LABEL, formatDurationShort, formatFromUser, formatTime, stopLabel } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
 import type { TrailDetail, TransitStop } from "@/lib/types";
@@ -121,9 +121,9 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
             <UiIcon name="car" size={15} />
             {carMin !== null ? `${approx}${formatDurationShort(carMin)}` : driveLoading ? "…" : distanceM !== null ? formatFromUser(distanceM) : "–"}
           </span>
-          <span className={leg(transit)} title={nearStop ? `Zastávka ${nearStop.name}` : "Bez zastávky pri štarte"}>
+          <span className={leg(transit)} title={nearStop ? `Zastávka ${stopLabel(nearStop.name)}, ${formatFromUser(nearStop.distance_m)} od štartu` : "Bez zastávky pri štarte"}>
             <UiIcon name="bus" size={15} />
-            {nearStop ? `${nearStop.distance_m} m` : "–"}
+            {nearStop ? formatFromUser(nearStop.distance_m) : "–"}
           </span>
           <span className="inline-flex items-center gap-1 text-[var(--foreground)]">
             <UiIcon name="boot" size={15} />
