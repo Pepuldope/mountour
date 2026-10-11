@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { EARLIEST_DEPARTURE_HOUR } from "@/lib/days";
 import type { DayFit } from "@/lib/days";
-import { DIFFICULTY_LABEL, GOAL_LABEL, formatDurationShort, formatFromUser, formatTime } from "@/lib/format";
+import { DIFFICULTY_LABEL, GOAL_LABEL, formatDurationShort, formatFromUser, formatTime, stopLabel } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
 import type { TrailDetail, TransitStop } from "@/lib/types";
@@ -84,7 +84,7 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
   const pill = pillFor(item, dayWord);
   const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
   const total = !transit && carMin !== null && !item.fit ? hikeMin + 2 * carMin : null;
-  const leg = (on: boolean) => `inline-flex items-center gap-1 ${on ? "text-[var(--foreground)]" : "text-[var(--muted)] opacity-80"}`;
+  const leg = (on: boolean) => `inline-flex items-center gap-1 ${on ? "text-[var(--foreground)]" : "text-[var(--muted)]"}`;
 
   return (
     <Link
@@ -109,7 +109,7 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
           <span className="shrink-0 text-xs font-semibold text-[var(--muted)]">{DIFFICULTY_LABEL[trail.difficulty].toLowerCase()}</span>
         </span>
         <span className="flex flex-wrap items-center gap-x-1.5 text-[12.5px] text-[var(--muted)]">
-          <span className="font-bold" style={{ color: colour }}>
+          <span className="kind-ink font-bold" style={{ "--kind": colour } as React.CSSProperties}>
             {GOAL_LABEL[goal]}
           </span>
           {trail.region_name && <span>· {trail.region_name}</span>}
@@ -121,9 +121,9 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
             <UiIcon name="car" size={15} />
             {carMin !== null ? `${approx}${formatDurationShort(carMin)}` : driveLoading ? "…" : distanceM !== null ? formatFromUser(distanceM) : "–"}
           </span>
-          <span className={leg(transit)} title={nearStop ? `Zastávka ${nearStop.name}` : "Bez zastávky pri štarte"}>
+          <span className={leg(transit)} title={nearStop ? `Zastávka ${stopLabel(nearStop.name)}, ${formatFromUser(nearStop.distance_m)} od štartu` : "Bez zastávky pri štarte"}>
             <UiIcon name="bus" size={15} />
-            {nearStop ? `${nearStop.distance_m} m` : "–"}
+            {nearStop ? formatFromUser(nearStop.distance_m) : "–"}
           </span>
           <span className="inline-flex items-center gap-1 text-[var(--foreground)]">
             <UiIcon name="boot" size={15} />

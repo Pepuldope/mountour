@@ -6,8 +6,8 @@ export function KindIcon({ kind, colour, size = 30 }: { kind: DestinationKind | 
   return (
     <span
       aria-hidden
-      className="grid shrink-0 place-items-center rounded-[9px]"
-      style={{ width: size, height: size, background: `${colour}1f`, color: colour }}
+      className="kind-chip grid shrink-0 place-items-center rounded-[9px]"
+      style={{ width: size, height: size, "--kind": colour } as React.CSSProperties}
       // Constant markup from lib/kindIcons.ts, no user data.
       dangerouslySetInnerHTML={{ __html: kindSvg(kind, Math.round(size * 0.57)) }}
     />

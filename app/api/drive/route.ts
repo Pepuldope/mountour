@@ -1,5 +1,5 @@
 import { roundCoord } from "@/lib/drive";
-import { driveRoute, finishDrive, walkRoute } from "@/lib/routing";
+import { driveRoute, finishDrive, simplifyLine, walkRoute } from "@/lib/routing";
 
 /**
  * GET /api/drive?from=lat,lon&to=lat,lon -> DriveRoute
@@ -12,7 +12,8 @@ import { driveRoute, finishDrive, walkRoute } from "@/lib/routing";
 
 // Slovakia plus a generous margin (Vienna, Brno, Budapest, Kraków starts).
 const AREA = { minLat: 45, maxLat: 52, minLon: 12, maxLon: 25 };
-const MAX_POINTS = 400;
+/** Simplify the drawn line to within this many metres of the road. */
+const SHAPE_TOL_M = 10;
 const DAY_S = 86400;
 /** How far from a road a point may be and still be routed (to the nearest road). */
 const SNAP_M = 3000;
@@ -25,15 +26,6 @@ function parsePoint(raw: string | null, round: (n: number) => number): [number, 
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
   if (lat < AREA.minLat || lat > AREA.maxLat || lon < AREA.minLon || lon > AREA.maxLon) return null;
   return [round(lat), round(lon)];
-}
-
-/** Keep every n-th point (plus the last) so long drives stay light to send and draw. */
-function thin(coords: [number, number][]): [number, number][] {
-  const step = Math.max(1, Math.ceil(coords.length / MAX_POINTS));
-  const out = coords.filter((_, i) => i % step === 0);
-  const last = coords[coords.length - 1];
-  if (last && out[out.length - 1] !== last) out.push(last);
-  return out;
 }
 
 export async function GET(req: Request) {
@@ -49,7 +41,7 @@ export async function GET(req: Request) {
     const key = process.env.ORS_API_KEY;
     const road = await driveRoute(key, from, to, SNAP_M);
     const full = await finishDrive(road, to, (a, b) => walkRoute(key, a, b, TAIL_SNAP_M));
-    const route = { ...full, points: thin(full.points) };
+    const route = { ...full, points: simplifyLine(full.points, SHAPE_TOL_M) };
     return Response.json(route, {
       headers: { "Cache-Control": `public, s-maxage=${DAY_S}, stale-while-revalidate=${DAY_S}` },
     });

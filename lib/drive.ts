@@ -24,15 +24,22 @@ export interface TownDrives {
   minutes: Record<string, number | null>;
 }
 
-/** Roads are ~1.4x the straight line here; ~60 km/h door to door; rounded to 5 min. */
-const ROAD_FACTOR = 1.4;
-const AVG_KMH = 60;
+/**
+ * Two rough models, the shorter wins: nearby, roads are ~1.4x the straight line at ~60 km/h;
+ * further away the motorway takes over (~1.3x at ~85 km/h, plus ~30 min of towns and the last
+ * valley road). Checked against the pipeline's 30k real town-to-trailhead drives
+ * (data/drive-times.json, 2026-10-11): typical error 15% instead of 26%; the old single model
+ * made Bratislava - Veľký Choč 4 h 35 for a 2 h 50 drive.
+ */
+const NEAR = { roadFactor: 1.4, kmh: 60, extraMin: 5 };
+const FAR = { roadFactor: 1.3, kmh: 85, extraMin: 30 };
 
 /**
  * Rough drive time from the straight-line distance, for when the routing API
  * is down or offline. Shown with "~" so it never reads as a real route.
  */
 export function estimateDriveMin(from: LatLng, to: LatLng): number {
-  const km = (haversineM(from, to) / 1000) * ROAD_FACTOR;
-  return Math.max(5, Math.round(((km / AVG_KMH) * 60 + 5) / 5) * 5);
+  const km = haversineM(from, to) / 1000;
+  const model = (m: typeof NEAR) => ((km * m.roadFactor) / m.kmh) * 60 + m.extraMin;
+  return Math.max(5, Math.round(Math.min(model(NEAR), model(FAR)) / 5) * 5);
 }

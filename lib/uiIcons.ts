@@ -23,3 +23,21 @@ export const UI_ICON = {
 } as const;
 
 export type UiIconName = keyof typeof UI_ICON;
+
+/**
+ * The same icon as a solid shape `w` wider on every side (in icon units), to
+ * draw underneath it as an outline of even weight: stroked lines get 2w more
+ * width, filled shapes a 2w stroke. A plain CSS stroke can't do this, since it
+ * replaces each line's own width instead of adding to it.
+ */
+export function iconEdge(markup: string, w = 1.2): string {
+  return markup.replace(/<(circle|rect|path)\b([^>]*?)\/>/g, (_, tag: string, attrs: string) => {
+    const width = /stroke-width="([\d.]+)"/.exec(attrs);
+    const rest = attrs
+      .replace(/\s(fill|stroke|stroke-width|stroke-linecap|stroke-linejoin)="[^"]*"/g, "")
+      .trim();
+    const filled = !/fill="none"/.test(attrs);
+    const sw = Math.round((width ? Number(width[1]) + 2 * w : 2 * w) * 100) / 100;
+    return `<${tag} ${rest} fill="${filled ? "currentColor" : "none"}" stroke="currentColor" stroke-width="${sw}" stroke-linejoin="round" stroke-linecap="round"/>`;
+  });
+}

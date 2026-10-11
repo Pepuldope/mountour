@@ -41,19 +41,22 @@ export const GOAL_PLURAL: Record<DestinationKind, string> = {
 };
 
 /** Compact, for chips and the sun arc: "45 min", "3 h", "3 h 05". */
+// Durations use non-breaking spaces so "4 h 2 min" never splits across two lines.
+const NB = "\u00a0";
+
 export function formatDurationShort(minutes: number): string {
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
-  if (h === 0) return `${m} min`;
-  return m === 0 ? `${h} h` : `${h} h ${String(m).padStart(2, "0")}`;
+  if (h === 0) return `${m}${NB}min`;
+  return m === 0 ? `${h}${NB}h` : `${h}${NB}h${NB}${String(m).padStart(2, "0")}`;
 }
 
 export function formatDuration(minutes: number): string {
   const h = Math.floor(minutes / 60);
   const m = minutes % 60;
-  if (h === 0) return `${m} min`;
-  if (m === 0) return `${h} h`;
-  return `${h} h ${m} min`;
+  if (h === 0) return `${m}${NB}min`;
+  if (m === 0) return `${h}${NB}h`;
+  return `${h}${NB}h${NB}${m}${NB}min`;
 }
 
 export function formatDistance(meters: number): string {
@@ -66,12 +69,8 @@ export function formatTime(date: Date): string {
 
 export function formatDateSk(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);
-  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("sk-SK", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-    timeZone: "UTC",
-  });
+  // Non-breaking spaces: "12. 10. 2026" never splits across two lines.
+  return `${d}.\u00a0${m}.\u00a0${y}`;
 }
 
 /** Straight-line distance for "X od teba": "850 m", "4,2 km", "12 km". */
@@ -79,6 +78,11 @@ export function formatFromUser(meters: number): string {
   if (meters < 1000) return `${Math.round(meters / 10) * 10} m`;
   if (meters < 10000) return `${(meters / 1000).toFixed(1).replace(".", ",")} km`;
   return `${Math.round(meters / 1000)} km`;
+}
+
+/** Stop names come in the cp.sk form "Valaská Dubová,,OcÚ" (town,,stop); shown as "Valaská Dubová, OcÚ". Links keep the raw name. */
+export function stopLabel(name: string): string {
+  return name.replace(/\s*,+\s*/g, ", ");
 }
 
 export const TRANSIT_LABEL: Record<TransitMode, string> = {

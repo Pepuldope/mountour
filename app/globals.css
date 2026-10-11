@@ -6,6 +6,7 @@
    carry the mood, colour is kept for things that mean something (goal kinds
    in lib/palette.ts, fit pills, KST trail colours). Variable names unchanged. */
 :root {
+  color-scheme: light;
   --background: #f5f9fc;      /* svetlá obloha */
   --foreground: #14233b;      /* atrament, 15.2:1 on background */
   --accent: #1769d1;          /* nebeská modrá, 4.9:1 on background, white on it 5.1:1 */
@@ -47,6 +48,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    color-scheme: dark;
     --background: #0f1724;
     --foreground: #e8eef6;    /* 15.9:1 */
     --accent: #6fb0ff;        /* 8.3:1 */
@@ -236,22 +238,23 @@ h2,
   }
 }
 
-/* White outline behind a pictogram drawn on a picture (sun arc markers). */
-.mt-halo {
-  color: #fff;
+/* Goal and place colours (lib/palette.ts) as text and tinted chips: set --kind
+   on the element. They are tuned for white cards, so dark mode lifts them. */
+.kind-ink {
+  /* A touch darker than the pin colour, so the lighter kinds (hrad, prameň) still reach 4.5:1 as small text. */
+  color: color-mix(in oklab, var(--kind) 82%, #000);
 }
-.mt-halo * {
-  stroke: #fff;
-  stroke-width: 4.5px;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-  fill: #fff;
+.kind-chip {
+  color: var(--kind);
+  background: color-mix(in srgb, var(--kind) 12%, transparent);
 }
-/* Thinner edge for the car on the sun dial, in the colour set on the group. */
-.mt-edge * {
-  stroke: currentColor;
-  stroke-width: 2.5px;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-  fill: currentColor;
+@media (prefers-color-scheme: dark) {
+  .kind-ink {
+    color: color-mix(in oklab, var(--kind) 55%, #fff);
+  }
+  .kind-chip {
+    color: color-mix(in oklab, var(--kind) 50%, #fff);
+    background: color-mix(in srgb, var(--kind) 30%, transparent);
+  }
 }
+

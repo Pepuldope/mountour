@@ -16,7 +16,7 @@ interface Props {
 
 const segment = "grid grid-cols-3 gap-[3px] rounded-xl bg-[var(--segment-bg)] p-[3px]";
 const segBtn = (on: boolean) =>
-  `inline-flex items-center justify-center gap-1.5 rounded-[10px] px-2 py-2 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
+  `inline-flex items-center justify-center gap-1.5 rounded-[10px] px-2 py-2 text-sm font-semibold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
     on ? "bg-[var(--accent)] text-[var(--accent-contrast)]" : "text-[var(--muted)] hover:text-[var(--foreground)]"
   }`;
 
@@ -44,6 +44,18 @@ export function FilterChips({ variant = "home", activeDate }: Props) {
     update({ date: variant === "home" && iso === date ? null : iso });
   }
 
+  // "Iný deň" is picked at once (the day after tomorrow), then the strip lets you move it.
+  function openOther() {
+    if (!days) return;
+    if (!other) {
+      const next = days.strip.find((d) => d.iso !== days.today && d.iso !== days.tomorrow);
+      if (next) update({ date: next.iso });
+      setStripOpen(true);
+      return;
+    }
+    setStripOpen((v) => !v);
+  }
+
   function openCalendar() {
     const el = dateInput.current;
     if (!el) return;
@@ -69,10 +81,13 @@ export function FilterChips({ variant = "home", activeDate }: Props) {
           type="button"
           aria-pressed={other}
           aria-expanded={showStrip}
-          onClick={() => setStripOpen((v) => !v)}
+          onClick={openOther}
           className={segBtn(other)}
         >
-          <UiIcon name="cal" size={15} />
+          {/* On a narrow phone the picked date ("St 14. 10.") needs the icon's room to stay on one line. */}
+          <span className={other ? "hidden min-[380px]:inline-flex" : "inline-flex"}>
+            <UiIcon name="cal" size={15} />
+          </span>
           {other && current ? shortDay(current) : "Iný deň"}
         </button>
       </div>
