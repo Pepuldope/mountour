@@ -253,8 +253,8 @@ export function HomeExplorer({ trails }: Props) {
 
   return (
     <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
-      <div className="flex w-full flex-col gap-5 px-4 pt-4 pb-6 lg:w-[440px] lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
-        <header className="relative -mx-4 -mt-4 flex flex-col">
+      <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 lg:mx-0 lg:w-[440px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
+        <header className="relative -mx-4 -mt-4 flex shrink-0 flex-col sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
           <SeasonScene season={season} width={440} height={250} seed={11} sunX={0.64} sunY={0.17} drop={0.2} className="absolute inset-0 h-full w-full" />
           <nav aria-label="Hlavná navigácia" className="relative flex items-center justify-between gap-3 px-4 pt-4">
             <Link href="/" aria-label="MounTour" className="block">

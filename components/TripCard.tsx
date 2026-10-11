@@ -84,7 +84,7 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
   const pill = pillFor(item, dayWord);
   const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
   const total = !transit && carMin !== null && !item.fit ? hikeMin + 2 * carMin : null;
-  const leg = (on: boolean) => `inline-flex items-center gap-1 ${on ? "text-[var(--foreground)]" : "text-[var(--muted)] opacity-80"}`;
+  const leg = (on: boolean) => `inline-flex items-center gap-1 ${on ? "text-[var(--foreground)]" : "text-[var(--muted)]"}`;
 
   return (
     <Link
