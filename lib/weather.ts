@@ -118,15 +118,110 @@ const WORDS: [string, string][] = [
 
 export function weatherWords(symbol: string): string {
   const showers = symbol.includes("showers") ? " (prehánky)" : "";
-  const hit = WORDS.find(([k]) => symbol.startsWith(k));
+  // "heavyrainandthunder" is a storm first.
+  const hit = WORDS.find(([k]) => (k === "thunder" ? symbol.includes(k) : symbol.startsWith(k)));
   return (hit ? hit[1] : "premenlivo") + showers;
 }
 
-/** Things worth a warning on a mountain walk. */
-export function weatherWarnings(s: WeatherSummary): string[] {
-  const out: string[] = [];
-  if (s.symbol.includes("thunder")) out.push("Hrozia búrky: na hrebeňoch a vrcholoch nebezpečné.");
-  if (s.windMax >= 15) out.push(`Silný vietor (do ${s.windMax} m/s), na hrebeni ešte silnejší.`);
-  if (s.tempMin <= 0) out.push("Mráz: chodník môže byť zľadovatený.");
+/** The weather of one forecast step, as the sun dial draws it. */
+export type SkyKind =
+  | "clear"
+  | "fair"
+  | "partly"
+  | "cloudy"
+  | "fog"
+  | "lightrain"
+  | "rain"
+  | "heavyrain"
+  | "sleet"
+  | "lightsnow"
+  | "snow"
+  | "heavysnow"
+  | "thunder";
+
+/** MET symbol code -> what to draw; checked in this order ("lightrainshowers" is light rain). */
+const KINDS: [string, SkyKind][] = [
+  ["thunder", "thunder"],
+  ["heavysnow", "heavysnow"],
+  ["lightsnow", "lightsnow"],
+  ["snow", "snow"],
+  ["sleet", "sleet"],
+  ["heavyrain", "heavyrain"],
+  ["lightrain", "lightrain"],
+  ["rain", "rain"],
+  ["fog", "fog"],
+  ["partlycloudy", "partly"],
+  ["cloudy", "cloudy"],
+  ["fair", "fair"],
+  ["clearsky", "clear"],
+];
+
+export function skyKind(symbol: string | null): SkyKind | null {
+  if (!symbol) return null;
+  const hit = KINDS.find(([k]) => symbol.includes(k));
+  return hit ? hit[1] : "cloudy";
+}
+
+/** The forecast step that covers `t` (ms), or null outside the forecast. */
+export function weatherAt(forecast: WeatherForecast, t: number): WeatherStep | null {
+  return (
+    forecast.steps.find((s) => {
+      const a = new Date(s.t).getTime();
+      return a <= t && t < a + s.hours * HOUR;
+    }) ?? null
+  );
+}
+
+/** Air cools about this much per metre of climb (standard lapse rate). */
+export const LAPSE_PER_M = 0.0065;
+
+export interface WeatherNote {
+  text: string;
+  /** Storms, heavy rain, heavy snow: dangerous on a mountain. Wind and frost are light notes. */
+  strong: boolean;
+}
+
+function hhmm(ms: number): string {
+  const d = new Date(ms);
+  return `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
+
+/**
+ * Short warnings for the hours of the walk, worst first, the way the sunset
+ * notes work: one line each, never a blocker. `top` is the forecast for the
+ * goal's height, when there is one (wind and frost are worse up there).
+ */
+export function weatherNotes(below: WeatherForecast, top: WeatherForecast | null, from: Date, to: Date): WeatherNote[] {
+  const a = from.getTime();
+  const b = to.getTime();
+  const during = (f: WeatherForecast) =>
+    f.steps.filter((s) => {
+      const t = new Date(s.t).getTime();
+      return t < b && t + s.hours * HOUR > a && s.symbol !== null;
+    });
+  const steps = during(below);
+  // "14:00–16:00": when it happens, clipped to the walk.
+  const when = (hit: (s: WeatherStep) => boolean): string | null => {
+    const h = steps.filter(hit);
+    if (h.length === 0) return null;
+    const last = h[h.length - 1];
+    return `${hhmm(Math.max(a, new Date(h[0].t).getTime()))}–${hhmm(Math.min(b, new Date(last.t).getTime() + last.hours * HOUR))}`;
+  };
+  const kind = (s: WeatherStep) => skyKind(s.symbol);
+
+  const out: WeatherNote[] = [];
+  const thunder = when((s) => kind(s) === "thunder");
+  if (thunder) out.push({ text: `Búrky ${thunder}. Na hrebeni a vrchole nebezpečné, buďte dole skôr.`, strong: true });
+  const heavy = when((s) => kind(s) === "heavyrain" || s.rain / s.hours >= 4);
+  if (heavy && !thunder) out.push({ text: `Silný dážď ${heavy}. Chodník bude šmykľavý.`, strong: true });
+  const snow = when((s) => kind(s) === "heavysnow");
+  if (snow) out.push({ text: `Husté sneženie ${snow}, značky aj chodník môžu zmiznúť pod snehom.`, strong: true });
+
+  const up = top ? during(top) : [];
+  const all = up.length ? up : steps;
+  const wind = Math.round(Math.max(0, ...all.map((s) => s.wind)));
+  if (wind >= 15) out.push({ text: `Silný vietor (do ${wind} m/s), na hrebeni ešte silnejší.`, strong: false });
+  const cold = Math.min(...all.map((s) => s.temp));
+  if (cold <= 0 && !snow) out.push({ text: "Mráz: chodník môže byť zľadovatený.", strong: false });
   return out;
 }

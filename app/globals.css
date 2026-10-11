@@ -247,3 +247,11 @@ h2,
   stroke-linecap: round;
   fill: #fff;
 }
+/* Thinner edge for the car on the sun dial, in the colour set on the group. */
+.mt-edge * {
+  stroke: currentColor;
+  stroke-width: 2.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  fill: currentColor;
+}

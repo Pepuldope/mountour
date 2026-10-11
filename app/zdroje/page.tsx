@@ -38,6 +38,10 @@ export default function SourcesPage() {
         </li>
         <li>Východ a západ slnka počítame priamo v aplikácii.</li>
         <li>
+          Predpoveď počasia: <a href="https://api.met.no">MET Norway</a> (Norwegian Meteorological Institute), licencia{" "}
+          <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+        </li>
+        <li>
           Spoje verejnej dopravy: odkaz na <a href="https://cp.sk">cp.sk</a>.
         </li>
       </ul>
