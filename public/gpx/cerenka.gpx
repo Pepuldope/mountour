@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Čerenka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Čerenka</name><trkseg>
+    <trkpt lat="49.345715" lon="18.502198"><ele>828</ele></trkpt>
+    <trkpt lat="49.345591" lon="18.501159"><ele>836</ele></trkpt>
+    <trkpt lat="49.345585" lon="18.500620"><ele>840</ele></trkpt>
+    <trkpt lat="49.345545" lon="18.500317"><ele>841</ele></trkpt>
+    <trkpt lat="49.345489" lon="18.500110"><ele>843</ele></trkpt>
+    <trkpt lat="49.344659" lon="18.497962"><ele>851</ele></trkpt>
+    <trkpt lat="49.344313" lon="18.495706"><ele>864</ele></trkpt>
+    <trkpt lat="49.344187" lon="18.494563"><ele>869</ele></trkpt>
+    <trkpt lat="49.344042" lon="18.494016"><ele>864</ele></trkpt>
+    <trkpt lat="49.343655" lon="18.492939"><ele>856</ele></trkpt>
+    <trkpt lat="49.343268" lon="18.492104"><ele>863</ele></trkpt>
+    <trkpt lat="49.342588" lon="18.490175"><ele>869</ele></trkpt>
+    <trkpt lat="49.342421" lon="18.489816"><ele>872</ele></trkpt>
+    <trkpt lat="49.341830" lon="18.488845"><ele>880</ele></trkpt>
+    <trkpt lat="49.341281" lon="18.487820"><ele>901</ele></trkpt>
+    <trkpt lat="49.340907" lon="18.487295"><ele>904</ele></trkpt>
+    <trkpt lat="49.340049" lon="18.486275"><ele>903</ele></trkpt>
+    <trkpt lat="49.339813" lon="18.485924"><ele>906</ele></trkpt>
+    <trkpt lat="49.339708" lon="18.485640"><ele>907</ele></trkpt>
+    <trkpt lat="49.339553" lon="18.484789"><ele>915</ele></trkpt>
+    <trkpt lat="49.339072" lon="18.483242"><ele>921</ele></trkpt>
+    <trkpt lat="49.338793" lon="18.482147"><ele>921</ele></trkpt>
+    <trkpt lat="49.338359" lon="18.481069"><ele>935</ele></trkpt>
+    <trkpt lat="49.338003" lon="18.479535"><ele>942</ele></trkpt>
+    <trkpt lat="49.337657" lon="18.478671"><ele>944</ele></trkpt>
+    <trkpt lat="49.337510" lon="18.477580"><ele>946</ele></trkpt>
+    <trkpt lat="49.337657" lon="18.478671"><ele>944</ele></trkpt>
+    <trkpt lat="49.338003" lon="18.479535"><ele>942</ele></trkpt>
+    <trkpt lat="49.338359" lon="18.481069"><ele>935</ele></trkpt>
+    <trkpt lat="49.338793" lon="18.482147"><ele>921</ele></trkpt>
+    <trkpt lat="49.339072" lon="18.483242"><ele>921</ele></trkpt>
+    <trkpt lat="49.339553" lon="18.484789"><ele>915</ele></trkpt>
+    <trkpt lat="49.339708" lon="18.485640"><ele>907</ele></trkpt>
+    <trkpt lat="49.339813" lon="18.485924"><ele>906</ele></trkpt>
+    <trkpt lat="49.340049" lon="18.486275"><ele>903</ele></trkpt>
+    <trkpt lat="49.340907" lon="18.487295"><ele>904</ele></trkpt>
+    <trkpt lat="49.341281" lon="18.487820"><ele>901</ele></trkpt>
+    <trkpt lat="49.341830" lon="18.488845"><ele>880</ele></trkpt>
+    <trkpt lat="49.342421" lon="18.489816"><ele>872</ele></trkpt>
+    <trkpt lat="49.342588" lon="18.490175"><ele>869</ele></trkpt>
+    <trkpt lat="49.343268" lon="18.492104"><ele>863</ele></trkpt>
+    <trkpt lat="49.343655" lon="18.492939"><ele>856</ele></trkpt>
+    <trkpt lat="49.344042" lon="18.494016"><ele>864</ele></trkpt>
+    <trkpt lat="49.344187" lon="18.494563"><ele>869</ele></trkpt>
+    <trkpt lat="49.344313" lon="18.495706"><ele>864</ele></trkpt>
+    <trkpt lat="49.344659" lon="18.497962"><ele>851</ele></trkpt>
+    <trkpt lat="49.345489" lon="18.500110"><ele>843</ele></trkpt>
+    <trkpt lat="49.345545" lon="18.500317"><ele>841</ele></trkpt>
+    <trkpt lat="49.345585" lon="18.500620"><ele>840</ele></trkpt>
+    <trkpt lat="49.345591" lon="18.501159"><ele>836</ele></trkpt>
+    <trkpt lat="49.345715" lon="18.502198"><ele>828</ele></trkpt>
+  </trkseg></trk>
+</gpx>

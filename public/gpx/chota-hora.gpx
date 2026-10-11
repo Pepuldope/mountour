@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Chotá hora</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Chotá hora</name><trkseg>
+    <trkpt lat="48.832249" lon="18.480740"><ele>343</ele></trkpt>
+    <trkpt lat="48.832265" lon="18.481396"><ele>345</ele></trkpt>
+    <trkpt lat="48.831939" lon="18.482168"><ele>350</ele></trkpt>
+    <trkpt lat="48.831982" lon="18.483186"><ele>357</ele></trkpt>
+    <trkpt lat="48.832037" lon="18.483545"><ele>359</ele></trkpt>
+    <trkpt lat="48.832196" lon="18.483698"><ele>359</ele></trkpt>
+    <trkpt lat="48.832305" lon="18.484223"><ele>361</ele></trkpt>
+    <trkpt lat="48.832724" lon="18.485677"><ele>369</ele></trkpt>
+    <trkpt lat="48.832838" lon="18.485903"><ele>371</ele></trkpt>
+    <trkpt lat="48.833090" lon="18.486569"><ele>372</ele></trkpt>
+    <trkpt lat="48.834698" lon="18.491102"><ele>412</ele></trkpt>
+    <trkpt lat="48.834999" lon="18.491779"><ele>421</ele></trkpt>
+    <trkpt lat="48.835693" lon="18.493519"><ele>445</ele></trkpt>
+    <trkpt lat="48.836065" lon="18.494614"><ele>463</ele></trkpt>
+    <trkpt lat="48.836670" lon="18.495473"><ele>493</ele></trkpt>
+    <trkpt lat="48.836802" lon="18.495609"><ele>498</ele></trkpt>
+    <trkpt lat="48.837243" lon="18.496424"><ele>528</ele></trkpt>
+    <trkpt lat="48.837590" lon="18.497283"><ele>557</ele></trkpt>
+    <trkpt lat="48.837628" lon="18.497971"><ele>571</ele></trkpt>
+    <trkpt lat="48.837762" lon="18.498124"><ele>576</ele></trkpt>
+    <trkpt lat="48.837628" lon="18.497971"><ele>571</ele></trkpt>
+    <trkpt lat="48.837590" lon="18.497283"><ele>557</ele></trkpt>
+    <trkpt lat="48.837243" lon="18.496424"><ele>528</ele></trkpt>
+    <trkpt lat="48.836802" lon="18.495609"><ele>498</ele></trkpt>
+    <trkpt lat="48.836670" lon="18.495473"><ele>493</ele></trkpt>
+    <trkpt lat="48.836065" lon="18.494614"><ele>463</ele></trkpt>
+    <trkpt lat="48.835693" lon="18.493519"><ele>445</ele></trkpt>
+    <trkpt lat="48.834999" lon="18.491779"><ele>421</ele></trkpt>
+    <trkpt lat="48.834698" lon="18.491102"><ele>412</ele></trkpt>
+    <trkpt lat="48.833090" lon="18.486569"><ele>372</ele></trkpt>
+    <trkpt lat="48.832838" lon="18.485903"><ele>371</ele></trkpt>
+    <trkpt lat="48.832724" lon="18.485677"><ele>369</ele></trkpt>
+    <trkpt lat="48.832305" lon="18.484223"><ele>361</ele></trkpt>
+    <trkpt lat="48.832196" lon="18.483698"><ele>359</ele></trkpt>
+    <trkpt lat="48.832037" lon="18.483545"><ele>359</ele></trkpt>
+    <trkpt lat="48.831982" lon="18.483186"><ele>357</ele></trkpt>
+    <trkpt lat="48.831939" lon="18.482168"><ele>350</ele></trkpt>
+    <trkpt lat="48.832265" lon="18.481396"><ele>345</ele></trkpt>
+    <trkpt lat="48.832249" lon="18.480740"><ele>343</ele></trkpt>
+  </trkseg></trk>
+</gpx>

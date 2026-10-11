@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Prameň Hlbokô</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Prameň Hlbokô</name><trkseg>
+    <trkpt lat="49.007857" lon="19.673364"><ele>728</ele></trkpt>
+    <trkpt lat="49.007806" lon="19.673376"><ele>728</ele></trkpt>
+    <trkpt lat="49.007013" lon="19.673078"><ele>758</ele></trkpt>
+    <trkpt lat="49.006669" lon="19.672659"><ele>764</ele></trkpt>
+    <trkpt lat="49.006565" lon="19.672606"><ele>765</ele></trkpt>
+    <trkpt lat="49.005787" lon="19.672630"><ele>764</ele></trkpt>
+    <trkpt lat="49.005553" lon="19.672729"><ele>761</ele></trkpt>
+    <trkpt lat="49.005036" lon="19.673322"><ele>744</ele></trkpt>
+    <trkpt lat="49.004772" lon="19.673467"><ele>745</ele></trkpt>
+    <trkpt lat="49.003903" lon="19.673630"><ele>747</ele></trkpt>
+    <trkpt lat="49.002752" lon="19.674121"><ele>759</ele></trkpt>
+    <trkpt lat="49.002613" lon="19.674151"><ele>760</ele></trkpt>
+    <trkpt lat="49.002171" lon="19.674126"><ele>760</ele></trkpt>
+    <trkpt lat="49.001851" lon="19.674194"><ele>759</ele></trkpt>
+    <trkpt lat="49.001685" lon="19.674302"><ele>763</ele></trkpt>
+    <trkpt lat="49.001427" lon="19.674591"><ele>766</ele></trkpt>
+    <trkpt lat="49.001031" lon="19.674934"><ele>766</ele></trkpt>
+    <trkpt lat="49.000350" lon="19.675720"><ele>775</ele></trkpt>
+    <trkpt lat="49.000019" lon="19.675765"><ele>777</ele></trkpt>
+    <trkpt lat="48.998699" lon="19.675594"><ele>771</ele></trkpt>
+    <trkpt lat="48.997997" lon="19.675776"><ele>778</ele></trkpt>
+    <trkpt lat="48.997395" lon="19.676103"><ele>782</ele></trkpt>
+    <trkpt lat="48.996533" lon="19.676313"><ele>780</ele></trkpt>
+    <trkpt lat="48.996239" lon="19.676570"><ele>785</ele></trkpt>
+    <trkpt lat="48.995326" lon="19.677571"><ele>793</ele></trkpt>
+    <trkpt lat="48.994282" lon="19.678842"><ele>798</ele></trkpt>
+    <trkpt lat="48.993763" lon="19.679553"><ele>797</ele></trkpt>
+    <trkpt lat="48.992624" lon="19.680380"><ele>794</ele></trkpt>
+    <trkpt lat="48.993763" lon="19.679553"><ele>797</ele></trkpt>
+    <trkpt lat="48.994282" lon="19.678842"><ele>798</ele></trkpt>
+    <trkpt lat="48.995326" lon="19.677571"><ele>793</ele></trkpt>
+    <trkpt lat="48.996239" lon="19.676570"><ele>785</ele></trkpt>
+    <trkpt lat="48.996533" lon="19.676313"><ele>780</ele></trkpt>
+    <trkpt lat="48.997395" lon="19.676103"><ele>782</ele></trkpt>
+    <trkpt lat="48.997997" lon="19.675776"><ele>778</ele></trkpt>
+    <trkpt lat="48.998699" lon="19.675594"><ele>771</ele></trkpt>
+    <trkpt lat="49.000019" lon="19.675765"><ele>777</ele></trkpt>
+    <trkpt lat="49.000350" lon="19.675720"><ele>775</ele></trkpt>
+    <trkpt lat="49.001031" lon="19.674934"><ele>766</ele></trkpt>
+    <trkpt lat="49.001427" lon="19.674591"><ele>766</ele></trkpt>
+    <trkpt lat="49.001685" lon="19.674302"><ele>763</ele></trkpt>
+    <trkpt lat="49.001851" lon="19.674194"><ele>759</ele></trkpt>
+    <trkpt lat="49.002171" lon="19.674126"><ele>760</ele></trkpt>
+    <trkpt lat="49.002613" lon="19.674151"><ele>760</ele></trkpt>
+    <trkpt lat="49.002752" lon="19.674121"><ele>759</ele></trkpt>
+    <trkpt lat="49.003903" lon="19.673630"><ele>747</ele></trkpt>
+    <trkpt lat="49.004772" lon="19.673467"><ele>745</ele></trkpt>
+    <trkpt lat="49.005036" lon="19.673322"><ele>744</ele></trkpt>
+    <trkpt lat="49.005553" lon="19.672729"><ele>761</ele></trkpt>
+    <trkpt lat="49.005787" lon="19.672630"><ele>764</ele></trkpt>
+    <trkpt lat="49.006565" lon="19.672606"><ele>765</ele></trkpt>
+    <trkpt lat="49.006669" lon="19.672659"><ele>764</ele></trkpt>
+    <trkpt lat="49.007013" lon="19.673078"><ele>758</ele></trkpt>
+    <trkpt lat="49.007806" lon="19.673376"><ele>728</ele></trkpt>
+    <trkpt lat="49.007857" lon="19.673364"><ele>728</ele></trkpt>
+  </trkseg></trk>
+</gpx>

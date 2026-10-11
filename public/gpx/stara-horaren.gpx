@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Stará horáreň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Stará horáreň</name><trkseg>
+    <trkpt lat="48.820978" lon="20.359067"><ele>471</ele></trkpt>
+    <trkpt lat="48.820939" lon="20.359277"><ele>471</ele></trkpt>
+    <trkpt lat="48.821390" lon="20.359142"><ele>474</ele></trkpt>
+    <trkpt lat="48.823415" lon="20.359141"><ele>481</ele></trkpt>
+    <trkpt lat="48.823926" lon="20.359072"><ele>482</ele></trkpt>
+    <trkpt lat="48.824264" lon="20.358877"><ele>484</ele></trkpt>
+    <trkpt lat="48.824463" lon="20.358710"><ele>484</ele></trkpt>
+    <trkpt lat="48.826088" lon="20.357112"><ele>495</ele></trkpt>
+    <trkpt lat="48.826247" lon="20.356863"><ele>496</ele></trkpt>
+    <trkpt lat="48.827515" lon="20.354435"><ele>512</ele></trkpt>
+    <trkpt lat="48.829201" lon="20.351863"><ele>521</ele></trkpt>
+    <trkpt lat="48.829441" lon="20.351433"><ele>524</ele></trkpt>
+    <trkpt lat="48.829987" lon="20.350169"><ele>536</ele></trkpt>
+    <trkpt lat="48.830525" lon="20.348564"><ele>548</ele></trkpt>
+    <trkpt lat="48.831002" lon="20.347551"><ele>560</ele></trkpt>
+    <trkpt lat="48.832869" lon="20.344723"><ele>578</ele></trkpt>
+    <trkpt lat="48.833259" lon="20.344040"><ele>579</ele></trkpt>
+    <trkpt lat="48.834067" lon="20.342247"><ele>591</ele></trkpt>
+    <trkpt lat="48.834635" lon="20.341398"><ele>596</ele></trkpt>
+    <trkpt lat="48.835053" lon="20.340215"><ele>607</ele></trkpt>
+    <trkpt lat="48.835532" lon="20.339302"><ele>606</ele></trkpt>
+    <trkpt lat="48.835682" lon="20.339143"><ele>607</ele></trkpt>
+    <trkpt lat="48.835845" lon="20.338632"><ele>610</ele></trkpt>
+    <trkpt lat="48.836147" lon="20.338114"><ele>617</ele></trkpt>
+    <trkpt lat="48.836217" lon="20.337905"><ele>619</ele></trkpt>
+    <trkpt lat="48.836430" lon="20.337648"><ele>621</ele></trkpt>
+    <trkpt lat="48.836366" lon="20.337566"><ele>622</ele></trkpt>
+    <trkpt lat="48.836472" lon="20.337300"><ele>626</ele></trkpt>
+    <trkpt lat="48.836488" lon="20.336908"><ele>632</ele></trkpt>
+    <trkpt lat="48.836472" lon="20.337300"><ele>626</ele></trkpt>
+    <trkpt lat="48.836366" lon="20.337566"><ele>622</ele></trkpt>
+    <trkpt lat="48.836430" lon="20.337648"><ele>621</ele></trkpt>
+    <trkpt lat="48.836217" lon="20.337905"><ele>619</ele></trkpt>
+    <trkpt lat="48.836147" lon="20.338114"><ele>617</ele></trkpt>
+    <trkpt lat="48.835845" lon="20.338632"><ele>610</ele></trkpt>
+    <trkpt lat="48.835682" lon="20.339143"><ele>607</ele></trkpt>
+    <trkpt lat="48.835532" lon="20.339302"><ele>606</ele></trkpt>
+    <trkpt lat="48.835053" lon="20.340215"><ele>607</ele></trkpt>
+    <trkpt lat="48.834635" lon="20.341398"><ele>596</ele></trkpt>
+    <trkpt lat="48.834067" lon="20.342247"><ele>591</ele></trkpt>
+    <trkpt lat="48.833259" lon="20.344040"><ele>579</ele></trkpt>
+    <trkpt lat="48.832869" lon="20.344723"><ele>578</ele></trkpt>
+    <trkpt lat="48.831002" lon="20.347551"><ele>560</ele></trkpt>
+    <trkpt lat="48.830525" lon="20.348564"><ele>548</ele></trkpt>
+    <trkpt lat="48.829987" lon="20.350169"><ele>536</ele></trkpt>
+    <trkpt lat="48.829441" lon="20.351433"><ele>524</ele></trkpt>
+    <trkpt lat="48.829201" lon="20.351863"><ele>521</ele></trkpt>
+    <trkpt lat="48.827515" lon="20.354435"><ele>512</ele></trkpt>
+    <trkpt lat="48.826247" lon="20.356863"><ele>496</ele></trkpt>
+    <trkpt lat="48.826088" lon="20.357112"><ele>495</ele></trkpt>
+    <trkpt lat="48.824463" lon="20.358710"><ele>484</ele></trkpt>
+    <trkpt lat="48.824264" lon="20.358877"><ele>484</ele></trkpt>
+    <trkpt lat="48.823926" lon="20.359072"><ele>482</ele></trkpt>
+    <trkpt lat="48.823415" lon="20.359141"><ele>481</ele></trkpt>
+    <trkpt lat="48.821390" lon="20.359142"><ele>474</ele></trkpt>
+    <trkpt lat="48.820939" lon="20.359277"><ele>471</ele></trkpt>
+    <trkpt lat="48.820978" lon="20.359067"><ele>471</ele></trkpt>
+  </trkseg></trk>
+</gpx>

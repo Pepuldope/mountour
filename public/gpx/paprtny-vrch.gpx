@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Paprtný vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Paprtný vrch</name><trkseg>
+    <trkpt lat="48.814080" lon="22.339116"><ele>451</ele></trkpt>
+    <trkpt lat="48.814074" lon="22.338948"><ele>451</ele></trkpt>
+    <trkpt lat="48.813894" lon="22.338606"><ele>450</ele></trkpt>
+    <trkpt lat="48.814403" lon="22.337675"><ele>483</ele></trkpt>
+    <trkpt lat="48.814897" lon="22.337419"><ele>496</ele></trkpt>
+    <trkpt lat="48.815077" lon="22.337078"><ele>498</ele></trkpt>
+    <trkpt lat="48.815565" lon="22.336627"><ele>494</ele></trkpt>
+    <trkpt lat="48.815937" lon="22.336684"><ele>500</ele></trkpt>
+    <trkpt lat="48.816358" lon="22.336456"><ele>504</ele></trkpt>
+    <trkpt lat="48.817022" lon="22.336516"><ele>514</ele></trkpt>
+    <trkpt lat="48.817349" lon="22.335459"><ele>530</ele></trkpt>
+    <trkpt lat="48.817442" lon="22.334464"><ele>543</ele></trkpt>
+    <trkpt lat="48.817749" lon="22.333144"><ele>555</ele></trkpt>
+    <trkpt lat="48.817930" lon="22.332093"><ele>567</ele></trkpt>
+    <trkpt lat="48.818143" lon="22.330068"><ele>587</ele></trkpt>
+    <trkpt lat="48.818340" lon="22.329668"><ele>590</ele></trkpt>
+    <trkpt lat="48.819329" lon="22.328267"><ele>609</ele></trkpt>
+    <trkpt lat="48.819466" lon="22.327859"><ele>613</ele></trkpt>
+    <trkpt lat="48.819533" lon="22.327178"><ele>619</ele></trkpt>
+    <trkpt lat="48.819377" lon="22.325073"><ele>626</ele></trkpt>
+    <trkpt lat="48.819533" lon="22.327178"><ele>619</ele></trkpt>
+    <trkpt lat="48.819466" lon="22.327859"><ele>613</ele></trkpt>
+    <trkpt lat="48.819329" lon="22.328267"><ele>609</ele></trkpt>
+    <trkpt lat="48.818340" lon="22.329668"><ele>590</ele></trkpt>
+    <trkpt lat="48.818143" lon="22.330068"><ele>587</ele></trkpt>
+    <trkpt lat="48.817930" lon="22.332093"><ele>567</ele></trkpt>
+    <trkpt lat="48.817749" lon="22.333144"><ele>555</ele></trkpt>
+    <trkpt lat="48.817442" lon="22.334464"><ele>543</ele></trkpt>
+    <trkpt lat="48.817349" lon="22.335459"><ele>530</ele></trkpt>
+    <trkpt lat="48.817022" lon="22.336516"><ele>514</ele></trkpt>
+    <trkpt lat="48.816358" lon="22.336456"><ele>504</ele></trkpt>
+    <trkpt lat="48.815937" lon="22.336684"><ele>500</ele></trkpt>
+    <trkpt lat="48.815565" lon="22.336627"><ele>494</ele></trkpt>
+    <trkpt lat="48.815077" lon="22.337078"><ele>498</ele></trkpt>
+    <trkpt lat="48.814897" lon="22.337419"><ele>496</ele></trkpt>
+    <trkpt lat="48.814403" lon="22.337675"><ele>483</ele></trkpt>
+    <trkpt lat="48.813894" lon="22.338606"><ele>450</ele></trkpt>
+    <trkpt lat="48.814074" lon="22.338948"><ele>451</ele></trkpt>
+    <trkpt lat="48.814080" lon="22.339116"><ele>451</ele></trkpt>
+  </trkseg></trk>
+</gpx>

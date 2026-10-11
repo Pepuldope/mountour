@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Hradisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hradisko</name><trkseg>
+    <trkpt lat="49.054456" lon="20.663121"><ele>956</ele></trkpt>
+    <trkpt lat="49.054335" lon="20.663916"><ele>953</ele></trkpt>
+    <trkpt lat="49.053785" lon="20.665599"><ele>943</ele></trkpt>
+    <trkpt lat="49.053487" lon="20.666267"><ele>936</ele></trkpt>
+    <trkpt lat="49.053873" lon="20.669800"><ele>913</ele></trkpt>
+    <trkpt lat="49.054150" lon="20.670575"><ele>912</ele></trkpt>
+    <trkpt lat="49.054226" lon="20.671121"><ele>910</ele></trkpt>
+    <trkpt lat="49.054353" lon="20.672512"><ele>906</ele></trkpt>
+    <trkpt lat="49.054787" lon="20.674487"><ele>911</ele></trkpt>
+    <trkpt lat="49.054947" lon="20.675380"><ele>913</ele></trkpt>
+    <trkpt lat="49.055270" lon="20.676770"><ele>909</ele></trkpt>
+    <trkpt lat="49.055375" lon="20.678323"><ele>910</ele></trkpt>
+    <trkpt lat="49.055312" lon="20.680106"><ele>916</ele></trkpt>
+    <trkpt lat="49.055529" lon="20.681801"><ele>905</ele></trkpt>
+    <trkpt lat="49.055644" lon="20.683084"><ele>901</ele></trkpt>
+    <trkpt lat="49.055509" lon="20.684040"><ele>898</ele></trkpt>
+    <trkpt lat="49.055346" lon="20.684497"><ele>897</ele></trkpt>
+    <trkpt lat="49.055022" lon="20.685211"><ele>899</ele></trkpt>
+    <trkpt lat="49.054674" lon="20.686509"><ele>912</ele></trkpt>
+    <trkpt lat="49.054658" lon="20.687500"><ele>924</ele></trkpt>
+    <trkpt lat="49.054792" lon="20.688244"><ele>926</ele></trkpt>
+    <trkpt lat="49.054813" lon="20.688611"><ele>930</ele></trkpt>
+    <trkpt lat="49.054928" lon="20.689047"><ele>928</ele></trkpt>
+    <trkpt lat="49.054813" lon="20.688611"><ele>930</ele></trkpt>
+    <trkpt lat="49.054792" lon="20.688244"><ele>926</ele></trkpt>
+    <trkpt lat="49.054658" lon="20.687500"><ele>924</ele></trkpt>
+    <trkpt lat="49.054674" lon="20.686509"><ele>912</ele></trkpt>
+    <trkpt lat="49.055022" lon="20.685211"><ele>899</ele></trkpt>
+    <trkpt lat="49.055346" lon="20.684497"><ele>897</ele></trkpt>
+    <trkpt lat="49.055509" lon="20.684040"><ele>898</ele></trkpt>
+    <trkpt lat="49.055644" lon="20.683084"><ele>901</ele></trkpt>
+    <trkpt lat="49.055529" lon="20.681801"><ele>905</ele></trkpt>
+    <trkpt lat="49.055312" lon="20.680106"><ele>916</ele></trkpt>
+    <trkpt lat="49.055375" lon="20.678323"><ele>910</ele></trkpt>
+    <trkpt lat="49.055270" lon="20.676770"><ele>909</ele></trkpt>
+    <trkpt lat="49.054947" lon="20.675380"><ele>913</ele></trkpt>
+    <trkpt lat="49.054787" lon="20.674487"><ele>911</ele></trkpt>
+    <trkpt lat="49.054353" lon="20.672512"><ele>906</ele></trkpt>
+    <trkpt lat="49.054226" lon="20.671121"><ele>910</ele></trkpt>
+    <trkpt lat="49.054150" lon="20.670575"><ele>912</ele></trkpt>
+    <trkpt lat="49.053873" lon="20.669800"><ele>913</ele></trkpt>
+    <trkpt lat="49.053487" lon="20.666267"><ele>936</ele></trkpt>
+    <trkpt lat="49.053785" lon="20.665599"><ele>943</ele></trkpt>
+    <trkpt lat="49.054335" lon="20.663916"><ele>953</ele></trkpt>
+    <trkpt lat="49.054456" lon="20.663121"><ele>956</ele></trkpt>
+  </trkseg></trk>
+</gpx>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Sklenený vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Sklenený vrch</name><trkseg>
+    <trkpt lat="48.376854" lon="17.275874"><ele>487</ele></trkpt>
+    <trkpt lat="48.376346" lon="17.275333"><ele>497</ele></trkpt>
+    <trkpt lat="48.376116" lon="17.275206"><ele>500</ele></trkpt>
+    <trkpt lat="48.375258" lon="17.274551"><ele>505</ele></trkpt>
+    <trkpt lat="48.374764" lon="17.274360"><ele>511</ele></trkpt>
+    <trkpt lat="48.374632" lon="17.274100"><ele>509</ele></trkpt>
+    <trkpt lat="48.374577" lon="17.273829"><ele>507</ele></trkpt>
+    <trkpt lat="48.374358" lon="17.273547"><ele>511</ele></trkpt>
+    <trkpt lat="48.374133" lon="17.273071"><ele>524</ele></trkpt>
+    <trkpt lat="48.373872" lon="17.273484"><ele>519</ele></trkpt>
+    <trkpt lat="48.373623" lon="17.273180"><ele>528</ele></trkpt>
+    <trkpt lat="48.373319" lon="17.273212"><ele>538</ele></trkpt>
+    <trkpt lat="48.372999" lon="17.273153"><ele>540</ele></trkpt>
+    <trkpt lat="48.372052" lon="17.272751"><ele>546</ele></trkpt>
+    <trkpt lat="48.371896" lon="17.272726"><ele>546</ele></trkpt>
+    <trkpt lat="48.371117" lon="17.272843"><ele>563</ele></trkpt>
+    <trkpt lat="48.369536" lon="17.272950"><ele>588</ele></trkpt>
+    <trkpt lat="48.369386" lon="17.272539"><ele>594</ele></trkpt>
+    <trkpt lat="48.369231" lon="17.271981"><ele>598</ele></trkpt>
+    <trkpt lat="48.369039" lon="17.271519"><ele>596</ele></trkpt>
+    <trkpt lat="48.368848" lon="17.271255"><ele>596</ele></trkpt>
+    <trkpt lat="48.368256" lon="17.270676"><ele>606</ele></trkpt>
+    <trkpt lat="48.368125" lon="17.270446"><ele>612</ele></trkpt>
+    <trkpt lat="48.367848" lon="17.269403"><ele>627</ele></trkpt>
+    <trkpt lat="48.367732" lon="17.268742"><ele>635</ele></trkpt>
+    <trkpt lat="48.367848" lon="17.269403"><ele>627</ele></trkpt>
+    <trkpt lat="48.368125" lon="17.270446"><ele>612</ele></trkpt>
+    <trkpt lat="48.368256" lon="17.270676"><ele>606</ele></trkpt>
+    <trkpt lat="48.368848" lon="17.271255"><ele>596</ele></trkpt>
+    <trkpt lat="48.369039" lon="17.271519"><ele>596</ele></trkpt>
+    <trkpt lat="48.369231" lon="17.271981"><ele>598</ele></trkpt>
+    <trkpt lat="48.369386" lon="17.272539"><ele>594</ele></trkpt>
+    <trkpt lat="48.369536" lon="17.272950"><ele>588</ele></trkpt>
+    <trkpt lat="48.371117" lon="17.272843"><ele>563</ele></trkpt>
+    <trkpt lat="48.371896" lon="17.272726"><ele>546</ele></trkpt>
+    <trkpt lat="48.372052" lon="17.272751"><ele>546</ele></trkpt>
+    <trkpt lat="48.372999" lon="17.273153"><ele>540</ele></trkpt>
+    <trkpt lat="48.373319" lon="17.273212"><ele>538</ele></trkpt>
+    <trkpt lat="48.373623" lon="17.273180"><ele>528</ele></trkpt>
+    <trkpt lat="48.373872" lon="17.273484"><ele>519</ele></trkpt>
+    <trkpt lat="48.374133" lon="17.273071"><ele>524</ele></trkpt>
+    <trkpt lat="48.374358" lon="17.273547"><ele>511</ele></trkpt>
+    <trkpt lat="48.374577" lon="17.273829"><ele>507</ele></trkpt>
+    <trkpt lat="48.374632" lon="17.274100"><ele>509</ele></trkpt>
+    <trkpt lat="48.374764" lon="17.274360"><ele>511</ele></trkpt>
+    <trkpt lat="48.375258" lon="17.274551"><ele>505</ele></trkpt>
+    <trkpt lat="48.376116" lon="17.275206"><ele>500</ele></trkpt>
+    <trkpt lat="48.376346" lon="17.275333"><ele>497</ele></trkpt>
+    <trkpt lat="48.376854" lon="17.275874"><ele>487</ele></trkpt>
+  </trkseg></trk>
+</gpx>

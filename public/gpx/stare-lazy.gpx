@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Staré lazy</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Staré lazy</name><trkseg>
+    <trkpt lat="49.055008" lon="19.293441"><ele>580</ele></trkpt>
+    <trkpt lat="49.054569" lon="19.293984"><ele>591</ele></trkpt>
+    <trkpt lat="49.054420" lon="19.293959"><ele>595</ele></trkpt>
+    <trkpt lat="49.054093" lon="19.293640"><ele>602</ele></trkpt>
+    <trkpt lat="49.053949" lon="19.293402"><ele>608</ele></trkpt>
+    <trkpt lat="49.053622" lon="19.292514"><ele>619</ele></trkpt>
+    <trkpt lat="49.053297" lon="19.291992"><ele>623</ele></trkpt>
+    <trkpt lat="49.052699" lon="19.290799"><ele>638</ele></trkpt>
+    <trkpt lat="49.052491" lon="19.290620"><ele>638</ele></trkpt>
+    <trkpt lat="49.052264" lon="19.290578"><ele>641</ele></trkpt>
+    <trkpt lat="49.052033" lon="19.290713"><ele>646</ele></trkpt>
+    <trkpt lat="49.051538" lon="19.291419"><ele>652</ele></trkpt>
+    <trkpt lat="49.051439" lon="19.291500"><ele>654</ele></trkpt>
+    <trkpt lat="49.051120" lon="19.291463"><ele>662</ele></trkpt>
+    <trkpt lat="49.050861" lon="19.291373"><ele>665</ele></trkpt>
+    <trkpt lat="49.050519" lon="19.290888"><ele>672</ele></trkpt>
+    <trkpt lat="49.050170" lon="19.290565"><ele>679</ele></trkpt>
+    <trkpt lat="49.049884" lon="19.290449"><ele>685</ele></trkpt>
+    <trkpt lat="49.049301" lon="19.290398"><ele>696</ele></trkpt>
+    <trkpt lat="49.049030" lon="19.290300"><ele>701</ele></trkpt>
+    <trkpt lat="49.048820" lon="19.290143"><ele>704</ele></trkpt>
+    <trkpt lat="49.048743" lon="19.289936"><ele>707</ele></trkpt>
+    <trkpt lat="49.048575" lon="19.289731"><ele>710</ele></trkpt>
+    <trkpt lat="49.048204" lon="19.289443"><ele>716</ele></trkpt>
+    <trkpt lat="49.047897" lon="19.289267"><ele>722</ele></trkpt>
+    <trkpt lat="49.047625" lon="19.289010"><ele>729</ele></trkpt>
+    <trkpt lat="49.047123" lon="19.288875"><ele>737</ele></trkpt>
+    <trkpt lat="49.046782" lon="19.288721"><ele>741</ele></trkpt>
+    <trkpt lat="49.047123" lon="19.288875"><ele>737</ele></trkpt>
+    <trkpt lat="49.047625" lon="19.289010"><ele>729</ele></trkpt>
+    <trkpt lat="49.047897" lon="19.289267"><ele>722</ele></trkpt>
+    <trkpt lat="49.048204" lon="19.289443"><ele>716</ele></trkpt>
+    <trkpt lat="49.048575" lon="19.289731"><ele>710</ele></trkpt>
+    <trkpt lat="49.048743" lon="19.289936"><ele>707</ele></trkpt>
+    <trkpt lat="49.048820" lon="19.290143"><ele>704</ele></trkpt>
+    <trkpt lat="49.049030" lon="19.290300"><ele>701</ele></trkpt>
+    <trkpt lat="49.049301" lon="19.290398"><ele>696</ele></trkpt>
+    <trkpt lat="49.049884" lon="19.290449"><ele>685</ele></trkpt>
+    <trkpt lat="49.050170" lon="19.290565"><ele>679</ele></trkpt>
+    <trkpt lat="49.050519" lon="19.290888"><ele>672</ele></trkpt>
+    <trkpt lat="49.050861" lon="19.291373"><ele>665</ele></trkpt>
+    <trkpt lat="49.051120" lon="19.291463"><ele>662</ele></trkpt>
+    <trkpt lat="49.051439" lon="19.291500"><ele>654</ele></trkpt>
+    <trkpt lat="49.051538" lon="19.291419"><ele>652</ele></trkpt>
+    <trkpt lat="49.052033" lon="19.290713"><ele>646</ele></trkpt>
+    <trkpt lat="49.052264" lon="19.290578"><ele>641</ele></trkpt>
+    <trkpt lat="49.052491" lon="19.290620"><ele>638</ele></trkpt>
+    <trkpt lat="49.052699" lon="19.290799"><ele>638</ele></trkpt>
+    <trkpt lat="49.053297" lon="19.291992"><ele>623</ele></trkpt>
+    <trkpt lat="49.053622" lon="19.292514"><ele>619</ele></trkpt>
+    <trkpt lat="49.053949" lon="19.293402"><ele>608</ele></trkpt>
+    <trkpt lat="49.054093" lon="19.293640"><ele>602</ele></trkpt>
+    <trkpt lat="49.054420" lon="19.293959"><ele>595</ele></trkpt>
+    <trkpt lat="49.054569" lon="19.293984"><ele>591</ele></trkpt>
+    <trkpt lat="49.055008" lon="19.293441"><ele>580</ele></trkpt>
+  </trkseg></trk>
+</gpx>

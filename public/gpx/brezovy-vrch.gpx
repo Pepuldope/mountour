@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Brezový vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Brezový vrch</name><trkseg>
+    <trkpt lat="48.496967" lon="18.926757"><ele>598</ele></trkpt>
+    <trkpt lat="48.497331" lon="18.926942"><ele>601</ele></trkpt>
+    <trkpt lat="48.497701" lon="18.926959"><ele>606</ele></trkpt>
+    <trkpt lat="48.497855" lon="18.926922"><ele>608</ele></trkpt>
+    <trkpt lat="48.498114" lon="18.926777"><ele>612</ele></trkpt>
+    <trkpt lat="48.498342" lon="18.926580"><ele>616</ele></trkpt>
+    <trkpt lat="48.498510" lon="18.926046"><ele>621</ele></trkpt>
+    <trkpt lat="48.498631" lon="18.925879"><ele>624</ele></trkpt>
+    <trkpt lat="48.498694" lon="18.925889"><ele>626</ele></trkpt>
+    <trkpt lat="48.498820" lon="18.926057"><ele>630</ele></trkpt>
+    <trkpt lat="48.499105" lon="18.926194"><ele>639</ele></trkpt>
+    <trkpt lat="48.500063" lon="18.926170"><ele>654</ele></trkpt>
+    <trkpt lat="48.500561" lon="18.926254"><ele>653</ele></trkpt>
+    <trkpt lat="48.500696" lon="18.926427"><ele>653</ele></trkpt>
+    <trkpt lat="48.500795" lon="18.926784"><ele>654</ele></trkpt>
+    <trkpt lat="48.500927" lon="18.927776"><ele>656</ele></trkpt>
+    <trkpt lat="48.500960" lon="18.927857"><ele>656</ele></trkpt>
+    <trkpt lat="48.501278" lon="18.927943"><ele>660</ele></trkpt>
+    <trkpt lat="48.501382" lon="18.928019"><ele>662</ele></trkpt>
+    <trkpt lat="48.502080" lon="18.928758"><ele>670</ele></trkpt>
+    <trkpt lat="48.502411" lon="18.929043"><ele>674</ele></trkpt>
+    <trkpt lat="48.502746" lon="18.929267"><ele>679</ele></trkpt>
+    <trkpt lat="48.503061" lon="18.929312"><ele>685</ele></trkpt>
+    <trkpt lat="48.503391" lon="18.929215"><ele>692</ele></trkpt>
+    <trkpt lat="48.503493" lon="18.929139"><ele>694</ele></trkpt>
+    <trkpt lat="48.504067" lon="18.928336"><ele>703</ele></trkpt>
+    <trkpt lat="48.504960" lon="18.928274"><ele>716</ele></trkpt>
+    <trkpt lat="48.505079" lon="18.928304"><ele>715</ele></trkpt>
+    <trkpt lat="48.505268" lon="18.928710"><ele>716</ele></trkpt>
+    <trkpt lat="48.505296" lon="18.928835"><ele>717</ele></trkpt>
+    <trkpt lat="48.505302" lon="18.929368"><ele>722</ele></trkpt>
+    <trkpt lat="48.505296" lon="18.928835"><ele>717</ele></trkpt>
+    <trkpt lat="48.505268" lon="18.928710"><ele>716</ele></trkpt>
+    <trkpt lat="48.505079" lon="18.928304"><ele>715</ele></trkpt>
+    <trkpt lat="48.504960" lon="18.928274"><ele>716</ele></trkpt>
+    <trkpt lat="48.504067" lon="18.928336"><ele>703</ele></trkpt>
+    <trkpt lat="48.503493" lon="18.929139"><ele>694</ele></trkpt>
+    <trkpt lat="48.503391" lon="18.929215"><ele>692</ele></trkpt>
+    <trkpt lat="48.503061" lon="18.929312"><ele>685</ele></trkpt>
+    <trkpt lat="48.502746" lon="18.929267"><ele>679</ele></trkpt>
+    <trkpt lat="48.502411" lon="18.929043"><ele>674</ele></trkpt>
+    <trkpt lat="48.502080" lon="18.928758"><ele>670</ele></trkpt>
+    <trkpt lat="48.501382" lon="18.928019"><ele>662</ele></trkpt>
+    <trkpt lat="48.501278" lon="18.927943"><ele>660</ele></trkpt>
+    <trkpt lat="48.500960" lon="18.927857"><ele>656</ele></trkpt>
+    <trkpt lat="48.500927" lon="18.927776"><ele>656</ele></trkpt>
+    <trkpt lat="48.500795" lon="18.926784"><ele>654</ele></trkpt>
+    <trkpt lat="48.500696" lon="18.926427"><ele>653</ele></trkpt>
+    <trkpt lat="48.500561" lon="18.926254"><ele>653</ele></trkpt>
+    <trkpt lat="48.500063" lon="18.926170"><ele>654</ele></trkpt>
+    <trkpt lat="48.499105" lon="18.926194"><ele>639</ele></trkpt>
+    <trkpt lat="48.498820" lon="18.926057"><ele>630</ele></trkpt>
+    <trkpt lat="48.498694" lon="18.925889"><ele>626</ele></trkpt>
+    <trkpt lat="48.498631" lon="18.925879"><ele>624</ele></trkpt>
+    <trkpt lat="48.498510" lon="18.926046"><ele>621</ele></trkpt>
+    <trkpt lat="48.498342" lon="18.926580"><ele>616</ele></trkpt>
+    <trkpt lat="48.498114" lon="18.926777"><ele>612</ele></trkpt>
+    <trkpt lat="48.497855" lon="18.926922"><ele>608</ele></trkpt>
+    <trkpt lat="48.497701" lon="18.926959"><ele>606</ele></trkpt>
+    <trkpt lat="48.497331" lon="18.926942"><ele>601</ele></trkpt>
+    <trkpt lat="48.496967" lon="18.926757"><ele>598</ele></trkpt>
+  </trkseg></trk>
+</gpx>

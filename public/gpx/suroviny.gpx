@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Suroviny</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Suroviny</name><trkseg>
+    <trkpt lat="49.045583" lon="19.266683"><ele>888</ele></trkpt>
+    <trkpt lat="49.044860" lon="19.263448"><ele>916</ele></trkpt>
+    <trkpt lat="49.044633" lon="19.262161"><ele>938</ele></trkpt>
+    <trkpt lat="49.044549" lon="19.261955"><ele>944</ele></trkpt>
+    <trkpt lat="49.044199" lon="19.261439"><ele>955</ele></trkpt>
+    <trkpt lat="49.043943" lon="19.260857"><ele>958</ele></trkpt>
+    <trkpt lat="49.043552" lon="19.259294"><ele>970</ele></trkpt>
+    <trkpt lat="49.043533" lon="19.259020"><ele>971</ele></trkpt>
+    <trkpt lat="49.043425" lon="19.258891"><ele>974</ele></trkpt>
+    <trkpt lat="49.043385" lon="19.258197"><ele>985</ele></trkpt>
+    <trkpt lat="49.043105" lon="19.257643"><ele>1004</ele></trkpt>
+    <trkpt lat="49.043075" lon="19.257484"><ele>1005</ele></trkpt>
+    <trkpt lat="49.043195" lon="19.256809"><ele>1010</ele></trkpt>
+    <trkpt lat="49.043470" lon="19.255839"><ele>1021</ele></trkpt>
+    <trkpt lat="49.043537" lon="19.255509"><ele>1027</ele></trkpt>
+    <trkpt lat="49.043531" lon="19.254933"><ele>1034</ele></trkpt>
+    <trkpt lat="49.043481" lon="19.254403"><ele>1036</ele></trkpt>
+    <trkpt lat="49.043563" lon="19.254140"><ele>1036</ele></trkpt>
+    <trkpt lat="49.043662" lon="19.253958"><ele>1039</ele></trkpt>
+    <trkpt lat="49.044002" lon="19.253693"><ele>1049</ele></trkpt>
+    <trkpt lat="49.043662" lon="19.253958"><ele>1039</ele></trkpt>
+    <trkpt lat="49.043563" lon="19.254140"><ele>1036</ele></trkpt>
+    <trkpt lat="49.043481" lon="19.254403"><ele>1036</ele></trkpt>
+    <trkpt lat="49.043531" lon="19.254933"><ele>1034</ele></trkpt>
+    <trkpt lat="49.043537" lon="19.255509"><ele>1027</ele></trkpt>
+    <trkpt lat="49.043470" lon="19.255839"><ele>1021</ele></trkpt>
+    <trkpt lat="49.043195" lon="19.256809"><ele>1010</ele></trkpt>
+    <trkpt lat="49.043075" lon="19.257484"><ele>1005</ele></trkpt>
+    <trkpt lat="49.043105" lon="19.257643"><ele>1004</ele></trkpt>
+    <trkpt lat="49.043385" lon="19.258197"><ele>985</ele></trkpt>
+    <trkpt lat="49.043425" lon="19.258891"><ele>974</ele></trkpt>
+    <trkpt lat="49.043533" lon="19.259020"><ele>971</ele></trkpt>
+    <trkpt lat="49.043552" lon="19.259294"><ele>970</ele></trkpt>
+    <trkpt lat="49.043943" lon="19.260857"><ele>958</ele></trkpt>
+    <trkpt lat="49.044199" lon="19.261439"><ele>955</ele></trkpt>
+    <trkpt lat="49.044549" lon="19.261955"><ele>944</ele></trkpt>
+    <trkpt lat="49.044633" lon="19.262161"><ele>938</ele></trkpt>
+    <trkpt lat="49.044860" lon="19.263448"><ele>916</ele></trkpt>
+    <trkpt lat="49.045583" lon="19.266683"><ele>888</ele></trkpt>
+  </trkseg></trk>
+</gpx>

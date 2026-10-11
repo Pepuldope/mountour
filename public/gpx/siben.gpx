@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Šibeň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Šibeň</name><trkseg>
+    <trkpt lat="48.986195" lon="20.528732"><ele>516</ele></trkpt>
+    <trkpt lat="48.985873" lon="20.529063"><ele>517</ele></trkpt>
+    <trkpt lat="48.985683" lon="20.529193"><ele>519</ele></trkpt>
+    <trkpt lat="48.985311" lon="20.529357"><ele>520</ele></trkpt>
+    <trkpt lat="48.984985" lon="20.529397"><ele>520</ele></trkpt>
+    <trkpt lat="48.984037" lon="20.529362"><ele>518</ele></trkpt>
+    <trkpt lat="48.979648" lon="20.528818"><ele>541</ele></trkpt>
+    <trkpt lat="48.977620" lon="20.528737"><ele>553</ele></trkpt>
+    <trkpt lat="48.976990" lon="20.528633"><ele>556</ele></trkpt>
+    <trkpt lat="48.976949" lon="20.528774"><ele>556</ele></trkpt>
+    <trkpt lat="48.976686" lon="20.529006"><ele>554</ele></trkpt>
+    <trkpt lat="48.976428" lon="20.529305"><ele>554</ele></trkpt>
+    <trkpt lat="48.976288" lon="20.529580"><ele>556</ele></trkpt>
+    <trkpt lat="48.976242" lon="20.529761"><ele>558</ele></trkpt>
+    <trkpt lat="48.976188" lon="20.530445"><ele>567</ele></trkpt>
+    <trkpt lat="48.976161" lon="20.532010"><ele>592</ele></trkpt>
+    <trkpt lat="48.975981" lon="20.534381"><ele>620</ele></trkpt>
+    <trkpt lat="48.976161" lon="20.532010"><ele>592</ele></trkpt>
+    <trkpt lat="48.976188" lon="20.530445"><ele>567</ele></trkpt>
+    <trkpt lat="48.976242" lon="20.529761"><ele>558</ele></trkpt>
+    <trkpt lat="48.976288" lon="20.529580"><ele>556</ele></trkpt>
+    <trkpt lat="48.976428" lon="20.529305"><ele>554</ele></trkpt>
+    <trkpt lat="48.976686" lon="20.529006"><ele>554</ele></trkpt>
+    <trkpt lat="48.976949" lon="20.528774"><ele>556</ele></trkpt>
+    <trkpt lat="48.976990" lon="20.528633"><ele>556</ele></trkpt>
+    <trkpt lat="48.977620" lon="20.528737"><ele>553</ele></trkpt>
+    <trkpt lat="48.979648" lon="20.528818"><ele>541</ele></trkpt>
+    <trkpt lat="48.984037" lon="20.529362"><ele>518</ele></trkpt>
+    <trkpt lat="48.984985" lon="20.529397"><ele>520</ele></trkpt>
+    <trkpt lat="48.985311" lon="20.529357"><ele>520</ele></trkpt>
+    <trkpt lat="48.985683" lon="20.529193"><ele>519</ele></trkpt>
+    <trkpt lat="48.985873" lon="20.529063"><ele>517</ele></trkpt>
+    <trkpt lat="48.986195" lon="20.528732"><ele>516</ele></trkpt>
+  </trkseg></trk>
+</gpx>
