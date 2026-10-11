@@ -27,18 +27,21 @@ const STORAGE_KEY = "mountour-trip-v2";
 /** After this hour "now" makes a poor default departure: plan tomorrow morning instead. */
 const LATE_HOUR = 15;
 const MORNING = "08:00";
+/** Before this hour "now" is still night: plan this morning at 08:00 instead of leaving in the dark. */
+const EARLY_HOUR = 6;
 
 function pad(n: number) {
   return String(n).padStart(2, "0");
 }
 
-/** Now rounded up to the next quarter hour, or tomorrow 08:00 when it's already late. */
+/** Now rounded up to the next quarter hour; 08:00 when it's still night; tomorrow 08:00 when it's already late. */
 export function defaultDeparture(now = new Date()): { date: string; time: string } {
   const d = new Date(Math.ceil(now.getTime() / (15 * 60000)) * 15 * 60000);
   if (d.getHours() >= LATE_HOUR || d.getDate() !== now.getDate()) {
     const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     return { date: isoDate(tomorrow), time: MORNING };
   }
+  if (d.getHours() < EARLY_HOUR) return { date: isoDate(d), time: MORNING };
   return { date: isoDate(d), time: `${pad(d.getHours())}:${pad(d.getMinutes())}` };
 }
 
