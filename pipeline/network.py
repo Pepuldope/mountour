@@ -24,6 +24,7 @@ import math
 import sys
 import time
 import urllib.parse
+import urllib.error
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -41,7 +42,7 @@ VERSION = 1
 PIECE_M = 600
 MERGE_MAX_M = 3000
 DETAIL_TOL_M = 8
-OVERVIEW_TOL_M = 40
+OVERVIEW_TOL_M = 60
 # A goal warms trails within this radius, halving about every 1.4 km (e-folding 2 km).
 HEAT_RADIUS_M = 10000
 HEAT_SCALE_M = 2000
@@ -123,10 +124,23 @@ def read(path):
 # ---------------------------------------------------------------- popularity
 
 
-def _get(url):
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return json.loads(r.read())
+def _get(url, tries=5):
+    """GET JSON with backoff on rate limits and server errors; 404 -> {} (no such article/data)."""
+    for k in range(tries):
+        req = urllib.request.Request(url, headers={"User-Agent": UA})
+        try:
+            with urllib.request.urlopen(req, timeout=60) as r:
+                return json.loads(r.read())
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                return {}
+            if e.code not in (429, 500, 502, 503, 504) or k == tries - 1:
+                raise
+        except (urllib.error.URLError, TimeoutError):
+            if k == tries - 1:
+                raise
+        time.sleep(2 ** k)
+    return {}
 
 
 def last_12_months(today=None):
@@ -138,6 +152,7 @@ def last_12_months(today=None):
 
 
 def article_views(wiki, title, start, end):
+    """Views of one article, or None when it couldn't be fetched (so it isn't cached as 0)."""
     project = f"{wiki[:-4]}.wikipedia"
     url = (
         "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/"
@@ -145,8 +160,9 @@ def article_views(wiki, title, start, end):
     )
     try:
         return sum(i["views"] for i in _get(url).get("items", []))
-    except Exception:
-        return 0
+    except Exception as e:
+        log(f"pageviews {wiki} {title}: {e}")
+        return None
 
 
 def pageviews(qids, cache_file):
@@ -168,17 +184,24 @@ def pageviews(qids, cache_file):
                 links = e.get("sitelinks", {})
                 titles[q] = [(w, links[w]["title"]) for w in WIKIS if w in links]
         except Exception as e:
-            log(f"wikidata: {e}")
-            break
+            log(f"wikidata batch {i}: {e}")
 
     jobs = [(q, w, t) for q, lst in titles.items() for w, t in lst]
-    with ThreadPoolExecutor(max_workers=4) as pool:
+    log(f"pageviews: {len(jobs)} articles for {len(titles)} goals")
+    with ThreadPoolExecutor(max_workers=3) as pool:
         views = list(pool.map(lambda j: article_views(j[1], j[2], start, end), jobs))
+    failed = set()
     for (q, _, _), v in zip(jobs, views):
-        out[q] = out.get(q, 0) + v
+        if v is None:
+            failed.add(q)
+        else:
+            out[q] = out.get(q, 0) + v
     for q in todo:
+        if q in failed or q not in titles:
+            continue  # try again next run
         out.setdefault(q, 0)
         cache[q] = {"views": out[q], "end": end}
+    log(f"pageviews: {len(failed)} goals failed, {sum(1 for v in out.values() if v)} with views")
     cache_file.parent.mkdir(parents=True, exist_ok=True)
     cache_file.write_text(json.dumps(cache))
     return out
@@ -295,14 +318,31 @@ def build(ways, goals, views, border=None):
     return runs, stats
 
 
-def feature(way, run, tol_m, digits):
-    sl = slice(run["i0"], run["i1"] + 1)
-    coords = simplify(way["lats"][sl], way["lons"][sl], tol_m, digits)
-    return {
-        "type": "Feature",
-        "properties": {"p": run["level"], "c": ",".join(sorted(way["colours"]))},
-        "geometry": {"type": "LineString", "coordinates": coords},
-    }
+def merged_features(lines_by_level):
+    """Join touching runs of the same level into long lines: far fewer features, far smaller files."""
+    from shapely.geometry import MultiLineString
+    from shapely.ops import linemerge
+
+    feats = []
+    for level in sorted(lines_by_level):
+        lines = [l for l in lines_by_level[level] if len(l) >= 2]
+        if not lines:
+            continue
+        merged = linemerge(MultiLineString(lines))
+        parts = list(merged.geoms) if hasattr(merged, "geoms") else [merged]
+        for g in parts:
+            feats.append({
+                "type": "Feature",
+                "properties": {"p": int(level)},
+                "geometry": {"type": "LineString", "coordinates": [list(c) for c in g.coords]},
+            })
+    return feats
+
+
+def dump_collection(path, feats):
+    """One feature per line, so a weekly re-run diffs (and compresses in git) line by line."""
+    body = ",\n".join(json.dumps(f, separators=(",", ":"), ensure_ascii=False) for f in feats)
+    path.write_text('{"type":"FeatureCollection","features":[\n' + body + "\n]}\n")
 
 
 def write(root, ways, runs, stats, osm_ts=None):
@@ -311,17 +351,18 @@ def write(root, ways, runs, stats, osm_ts=None):
     cells_dir.mkdir(parents=True, exist_ok=True)
     for f in cells_dir.glob("*.json"):
         f.unlink()
-    overview, cells = [], {}
+    overview, cells = {}, {}
     for run in runs:
         w = ways[run["way"]]
-        overview.append(feature(w, run, OVERVIEW_TOL_M, 4))
-        f = feature(w, run, DETAIL_TOL_M, 5)
-        mid = f["geometry"]["coordinates"][len(f["geometry"]["coordinates"]) // 2]
-        cells.setdefault(cell_of(mid[1], mid[0]), []).append(f)
-    dump = lambda p, obj: p.write_text(json.dumps(obj, ensure_ascii=False, separators=(",", ":")))
-    dump(out / "overview.json", {"type": "FeatureCollection", "features": overview})
-    for key, feats in cells.items():
-        dump(cells_dir / f"{key}.json", {"type": "FeatureCollection", "features": feats})
+        sl = slice(run["i0"], run["i1"] + 1)
+        lats, lons = w["lats"][sl], w["lons"][sl]
+        overview.setdefault(run["level"], []).append(simplify(lats, lons, OVERVIEW_TOL_M, 4))
+        detail = simplify(lats, lons, DETAIL_TOL_M, 5)
+        mid = detail[len(detail) // 2]
+        cells.setdefault(cell_of(mid[1], mid[0]), {}).setdefault(run["level"], []).append(detail)
+    dump_collection(out / "overview.json", merged_features(overview))
+    for key, by_level in cells.items():
+        dump_collection(cells_dir / f"{key}.json", merged_features(by_level))
     meta = dict(
         version=VERSION,
         generated_at=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),

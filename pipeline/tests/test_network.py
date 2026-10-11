@@ -49,7 +49,7 @@ def test_end_to_end(tmp_path):
     overview = json.loads((out / "overview.json").read_text())
     assert overview["features"] and all(0 <= f["properties"]["p"] <= 4 for f in overview["features"])
     # the trail at the famous peak is busier than the gorge 100 km away
-    by_colour = {f["properties"]["c"]: f["properties"]["p"] for f in overview["features"]}
-    assert by_colour["red"] > by_colour["green"]
+    level_at = {round(f["geometry"]["coordinates"][0][1]): f["properties"]["p"] for f in overview["features"]}
+    assert level_at[48] > level_at[49]
     assert meta["cells"] and all((out / "c" / f"{c}.json").exists() for c in meta["cells"])
     assert meta["top_goals"][0]["name"] == "Testovací vrch"
