@@ -247,7 +247,11 @@ export function HomeExplorer({ trails: initial }: Props) {
     [visible, shownSlugs, activeSlug]
   );
 
-  const bounds = useMemo(() => unionBounds(trails), [trails]);
+  // With a start, frame the trips on the list (nearest first); without one, all of Slovakia.
+  const bounds = useMemo(
+    () => unionBounds(start && visible.length > 0 ? visible.map((i) => i.detail) : trails),
+    [start, visible, trails]
+  );
 
   const registerItem = useCallback((slug: string, el: HTMLElement | null) => {
     if (el) itemRefs.current.set(slug, el);

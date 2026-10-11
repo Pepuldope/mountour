@@ -1,17 +1,21 @@
 # Trip data (schema v1)
 
 MounTour's trips are plain static files generated from OpenStreetMap by a weekly
-GitHub Actions job (`.github/workflows/trips.yml`, code in `pipeline/`). The site
-only reads them: no database on the display path. Types: `lib/tripSchema.ts`.
-Loader: `lib/trips.ts`.
+GitHub Actions job (`.github/workflows/trips.yml`, code in `pipeline/`). Every
+destination near a marked trail that makes a good day trip is kept (about 1,500
+trips; no per-region cap). The trip files are static assets in `public/data`, not
+part of the site's code, so their number never counts against Cloudflare's Worker
+size limit. Types: `lib/tripSchema.ts`. Server reads: `lib/tripFiles.ts` (ASSETS
+binding on Cloudflare, the disk elsewhere). Small bundled data: `lib/trips.ts`.
 
 | File | What | Written by |
 |---|---|---|
-| `data/trips/index.json` | `TripIndex`: every trip as a `TripSummary` (home list, filters, sitemap) | pipeline |
-| `data/trips/<slug>.json` | `TripDetail`: summary + path, marking colours, other parking/stops, POIs | pipeline |
-| `data/trips/details.generated.ts` | static `import()` per slug so the bundler includes every detail file | pipeline |
+| `public/data/trips/index.json` | `TripIndex`: every trip as a `TripSummary` (sitemap, API, database load) | pipeline |
+| `public/data/trips/list.json` | `TripList`: every trip without description and OSM ids; the home page fetches it | pipeline |
+| `public/data/trips/<slug>.json` | `TripDetail`: summary + path, marking colours, other parking/stops, POIs | pipeline |
+| `public/data/drive/<town>.json` | `TownDriveFile`: car minutes and km from one of ~140 towns to every trip's parking | pipeline (OSRM) |
+| `data/towns.json` | `Towns`: the towns of the drive table (bundled, small) | pipeline |
 | `public/gpx/<slug>.gpx` | full-resolution GPX of the whole walk | pipeline |
-| `data/drive-times.json` | `DriveTimes`: car minutes and km from ~140 Slovak towns to every trip's parking | pipeline (OSRM) |
 | `data/closure-rules.json` | `ClosureRules`: seasonal and one-off closures, each with an official source and check date | by hand |
 | `data/fee-rules.json` | `FeeRules`: entry fees OSM doesn't carry, each with a source | by hand |
 | `data/pipeline-report.md` | counts, regressions against the 10 hand-picked trips, unresolved rule names | pipeline |
@@ -43,9 +47,10 @@ Key fields of `TripSummary` (see `lib/tripSchema.ts` for all):
 
 ## Drive times
 
-`minutes[townIndex][slugIndex]` (and `km`) from each town centre to the trip's parking,
-by OSRM on the same OSM data. Use `nearestTown()` + `driveMinutes()` for a list sorted by
-travel time; refine the top results live with `/api/drive-matrix` when needed.
+`public/data/drive/<town>.json` holds car minutes (and km) by trip slug from one town
+centre to each trip's parking, by OSRM on the same OSM data. `/api/drive-town?from=lat,lon`
+picks the nearest town (`nearestTown()`) and returns its row; the home list adds the
+way from the user's start to that town.
 
 ## Database and API
 
@@ -53,21 +58,22 @@ After each weekly build, `.github/workflows/db.yml` loads the same data into the
 site's free Cloudflare D1 database (`python -m pipeline.db` writes the SQL; the visit
 counter's tables are untouched). Tables: `region`, `protected_area`, `place` (goals and
 starts), `trip` (with its walk as JSON), `parking`, `transit_stop` + `trip_transit_stop`,
-`poi`, `closure_rule` + `trip_closure`, `fee` + `trip_fee`, `town`, `drive_time`, and
+`poi`, `closure_rule` + `trip_closure`, `fee` + `trip_fee`, `town`, `town_drive` (one row
+per town, minutes and km as JSON arrays in trip id order), and
 `data_version` (written last, so a half-finished load is never used).
 
 - `GET /api/vylety?z=<town>&den=YYYY-MM-DD&limit=N`: trips nearest first from a town
-  (an id from `data/drive-times.json`), drive there and back plus the walk, with
+  (an id from `data/towns.json`), drive there and back plus the walk, with
   `closed` for that day.
 - `GET /api/vylety/<slug>`: one trip in the `TripDetail` shape.
 - Trip pages and `/api/drive-town` read the database too.
 
-Every read falls back to the files in `data/` when the database is missing or not
+Every read falls back to the files in `public/data` when the database is missing or not
 loaded (local dev, Vercel, before the first load); the `zdroj` field and `X-Zdroj`
 header say which one answered (`databaza` or `subory`). The loader needs the GitHub
 secrets `CLOUDFLARE_API_TOKEN` (D1 Edit) and `CLOUDFLARE_ACCOUNT_ID`; without them it
 only checks the SQL. It skips a load the database already holds (fingerprint in
-`data_version`), since D1's free plan writes 100k rows a day and one load writes ~65k (indexes included).
+`data_version`), since D1's free plan writes 100k rows a day; a load of ~1,500 trips writes about 15k rows (more with indexes).
 
 ## Licences and credit
 
