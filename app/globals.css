@@ -173,10 +173,15 @@ h2,
 }
 
 .mt-pin-poi {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 999px;
   background: var(--warn);
+}
+
+/* Pictograms are drawn in currentColor with white details; on a coloured pin, all white. */
+.mt-pin-poi svg {
+  color: #fff;
 }
 
 .mt-pin-start {

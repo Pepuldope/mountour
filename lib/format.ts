@@ -11,7 +11,7 @@ export const POI_LABEL: Record<PoiKind, string> = {
   vyhliadka: "Vyhliadka",
   chata: "Chata",
   obcerstvenie: "Občerstvenie",
-  pramen: "Pramen",
+  pramen: "Prameň",
   hrad: "Hrad",
   ihrisko: "Ihrisko",
   utulna: "Útulňa",

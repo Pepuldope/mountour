@@ -1,0 +1,83 @@
+name: Weekly trail map
+
+# Rebuilds the map's trail network (every marked hiking trail in Slovakia,
+# coloured by popularity) from OpenStreetMap and Wikipedia page views, and
+# commits it to public/data/trails, which redeploys the site. Code:
+# pipeline/network.py. Run it by hand from the Actions tab ("Run workflow").
+on:
+  schedule:
+    - cron: "47 4 * * 1"
+  workflow_dispatch:
+  push:
+    branches: ["claude/site-fixes-and-features-**"]
+    paths: ["pipeline/network.py", ".github/workflows/trails.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trails-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/requirements.txt
+      - run: pip install -r pipeline/requirements.txt
+      - run: python -m pytest -q pipeline/tests
+
+      - name: Download OpenStreetMap extract (Geofabrik, Slovakia)
+        run: |
+          mkdir -p osm
+          curl -fsSL --retry 3 -o osm/slovakia.osm.pbf https://download.geofabrik.de/europe/slovakia-latest.osm.pbf
+          TS=$(python -c "import osmium; r = osmium.io.Reader('osm/slovakia.osm.pbf', osmium.osm.NOTHING); print(r.header().get('osmosis_replication_timestamp', '')); r.close()")
+          echo "OSM_TS=$TS" >> "$GITHUB_ENV"
+
+      - name: Cache Wikipedia page views (refreshed monthly)
+        uses: actions/cache@v4
+        with:
+          path: pipeline/.cache/pageviews.json
+          key: pageviews-${{ github.run_id }}
+          restore-keys: pageviews-
+
+      - name: Build the trail map
+        run: |
+          python -m pipeline.network --pbf osm/slovakia.osm.pbf --pageviews --osm-timestamp "$OSM_TS"
+          du -sh public/data/trails public/data/trails/overview.json
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          m = json.load(open("public/data/trails/meta.json"))
+          print(f"## Trail map\n\n{m['km']} km of marked trails, {len(m['cells'])} cells, km per level (quiet to busy): {m['level_km']}\n")
+          print("| Goal | Kind | Page views / year |\n|---|---|---|")
+          for g in m["top_goals"]:
+              print(f"| {g['name']} | {g['kind']} | {g['views']} |")
+          PY
+
+      - name: Commit the new data
+        run: |
+          git config user.name "mountour-data-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Lay the fresh files on top of the branch as it is now, so a newer
+          # data commit or code push never conflicts: the new build replaces it.
+          for attempt in 1 2 3; do
+            rm -rf "$RUNNER_TEMP/trails" && cp -r public/data/trails "$RUNNER_TEMP/trails"
+            git fetch origin "${GITHUB_REF_NAME}"
+            git checkout -f --detach "origin/${GITHUB_REF_NAME}"
+            rm -rf public/data/trails && cp -r "$RUNNER_TEMP/trails" public/data/trails
+            git add -A public/data/trails
+            if git diff --cached --quiet; then
+              echo "No changes."
+              exit 0
+            fi
+            git commit -m "Trail map from OpenStreetMap ${OSM_TS:-}"
+            git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1

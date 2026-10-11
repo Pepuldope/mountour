@@ -1,4 +1,5 @@
 import { approachMin } from "@/lib/dayPlan";
+import { distanceAlongM } from "@/lib/geo";
 import { closureRulesFor, getAllTrips, getTrip } from "@/lib/trips";
 import type { Parking, TransitStop as TripStop, TripDetail, TripSummary } from "@/lib/tripSchema";
 import type { Closure, ParkingLot, TrailDetail, Trail, LatLng, TransitStop } from "@/lib/types";
@@ -73,14 +74,18 @@ function toTrailDetail(t: TripSummary | TripDetail): TrailDetail {
     transitStops: stops.map((s, i) => transitStop(s, t.slug, i)),
     closures,
     fees: t.fees,
-    pois: (d?.pois ?? []).map((p, i) => ({
-      id: `${t.slug}:poi:${i}`,
-      trail_id: t.slug,
-      kind: p.kind,
-      name: p.name,
-      location: p.location,
-      note: null,
-    })),
+    pois: (d?.pois ?? [])
+      .map((p, i) => ({
+        id: `${t.slug}:poi:${i}`,
+        trail_id: t.slug,
+        kind: p.kind,
+        name: p.name,
+        location: p.location,
+        note: null,
+        // Out-and-back paths stop at the goal, so this is the way up.
+        along_m: Math.round(distanceAlongM(d!.path, p.location)),
+      }))
+      .sort((a, b) => a.along_m - b.along_m),
   };
 }
 
@@ -123,6 +128,11 @@ export function primaryTrailhead(detail: TrailDetail) {
 /** Walking time between the default parking and the trail start, one way (0 without parking). */
 export function defaultApproachMin(detail: TrailDetail): number {
   return approachMin(detail.parkingLots[0]?.walk_m ?? 0);
+}
+
+/** The public-transport stop closest to the trail start, or null. */
+export function nearestStop(detail: TrailDetail): TransitStop | null {
+  return [...detail.transitStops].sort((a, b) => a.distance_m - b.distance_m)[0] ?? null;
 }
 
 /** Where the drive ends: the nearest parking lot, else the trailhead itself. */

@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import type { GeoJSONSource, Map as MlMap, Marker, StyleSpecification } from "maplibre-gl";
 import type { BBox, LatLng } from "@/lib/types";
 import { MAP_STYLE_URL } from "@/lib/mapLayers";
+import { POPULARITY_RAMP } from "@/lib/palette";
+import { attachTrailNetwork } from "@/lib/trailNetwork";
+import type { NetworkMode } from "@/lib/trailNetwork";
 import { useUserLocation } from "@/lib/userLocation";
 
 type MapLibre = typeof import("maplibre-gl");
@@ -35,6 +38,9 @@ export interface MapMarker {
   trailSlug?: string;
   /** Clicking the marker runs this (e.g. pick this parking). */
   onClick?: () => void;
+  /** Pin colour and pictogram (places on the way), instead of the kind's default look. */
+  colour?: string;
+  icon?: string;
 }
 
 interface Props {
@@ -47,6 +53,8 @@ interface Props {
   driveLeg?: [number, number][];
   /** On foot from where the car stops to the trail start, drawn dotted. */
   walkLeg?: [number, number][];
+  /** Every marked trail in Slovakia under ours: "full" coloured by popularity, "context" faint. */
+  network?: NetworkMode;
   ariaLabel: string;
   className?: string;
 }
@@ -121,10 +129,21 @@ const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: 
  * MapLibre map on OpenFreeMap vector tiles. Trails are our own lines in their
  * KST colour with a white casing (like the painted marks); drive leg dashed.
  */
-export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, walkLeg, ariaLabel, className }: Props) {
+export function TrailMap({
+  tracks,
+  markers,
+  bounds,
+  onSelectTrail,
+  driveLeg,
+  walkLeg,
+  network,
+  ariaLabel,
+  className,
+}: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [ctx, setCtx] = useState<{ ml: MapLibre; map: MlMap } | null>(null);
   const onSelectRef = useRef(onSelectTrail);
+  const networkRef = useRef(network);
   const boundsRef = useRef<BBox | null>(bounds);
   const markerRefs = useRef<Marker[]>([]);
   const userMarkerRefs = useRef<Marker[]>([]);
@@ -139,6 +158,7 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, wal
     let cancelled = false;
     let map: MlMap | null = null;
     let observer: ResizeObserver | null = null;
+    let detachNetwork: (() => void) | null = null;
 
     async function init() {
       const ml = await import("maplibre-gl");
@@ -167,6 +187,8 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, wal
 
       map.on("load", () => {
         if (!map || cancelled) return;
+        // Under everything of ours: the whole trail network.
+        if (networkRef.current) detachNetwork = attachTrailNetwork(map, networkRef.current, POPULARITY_RAMP);
         map.addSource("drive", { type: "geojson", data: EMPTY });
         map.addSource("tracks", { type: "geojson", data: EMPTY });
         map.addSource("walk", { type: "geojson", data: EMPTY });
@@ -251,6 +273,7 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, wal
     return () => {
       cancelled = true;
       observer?.disconnect();
+      detachNetwork?.();
       map?.remove();
       map = null;
       setCtx(null);
@@ -325,6 +348,9 @@ export function TrailMap({ tracks, markers, bounds, onSelectTrail, driveLeg, wal
           MARKER_GLYPH[m.kind],
           m.title
         );
+        if (m.colour) el.style.background = m.colour;
+        // Constant markup from lib/kindIcons.ts, no user data.
+        if (m.icon) el.innerHTML = m.icon;
         const marker = new ml.Marker({ element: el })
           .setLngLat([m.location.lon, m.location.lat])
           .setPopup(new ml.Popup({ offset: 14, closeButton: false }).setDOMContent(popupContent(m.title, m.lines)))

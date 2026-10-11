@@ -9,6 +9,7 @@ import { DIFFICULTY_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { MARKING_COLOR, MARKING_LABEL } from "@/lib/mapLayers";
 import { FeeBlock } from "@/components/FeeBlock";
 import { ParkingBlock } from "@/components/ParkingBlock";
+import { PoiList } from "@/components/PoiList";
 import { TransitBlock } from "@/components/TransitBlock";
 import { ClosureBanner } from "@/components/ClosureBanner";
 import { TripPlanner } from "@/components/TripPlanner";
@@ -85,7 +86,7 @@ export default async function TripSheetPage({ params }: Props) {
   const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
 
   return (
-    <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} trailStart={trailStart}>
+    <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} transitStops={transitStops} trailStart={trailStart}>
       <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
         <JsonLd data={trailJsonLd(detail)} />
         <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
@@ -126,6 +127,11 @@ export default async function TripSheetPage({ params }: Props) {
             difficulty={trail.difficulty}
             familyFriendly={trail.family_friendly}
             sun={sun}
+            goal={
+              trip
+                ? { lat: trip.destination.location.lat, lon: trip.destination.location.lon, ele: trip.destination.ele_m, name: trip.destination.name }
+                : null
+            }
             baseHikeMin={trail.duration_min}
             profile={profile}
             gpxUrl={gpxUrl}
@@ -136,7 +142,9 @@ export default async function TripSheetPage({ params }: Props) {
 
           {fees.length > 0 && <FeeBlock fees={fees} />}
 
-          <TransitBlock stops={transitStops} />
+          <TransitBlock />
+
+          <PoiList pois={detail.pois} />
 
           <div className="h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] lg:hidden">
             <TripMap detail={detail} gpxUrl={gpxUrl} />

@@ -5,7 +5,8 @@ import { EARLIEST_DEPARTURE_HOUR } from "@/lib/days";
 import type { DayFit } from "@/lib/days";
 import { DIFFICULTY_LABEL, formatDuration, formatFromUser, formatTime } from "@/lib/format";
 import { MARKING_COLOR, MARKING_LABEL } from "@/lib/mapLayers";
-import type { TrailDetail } from "@/lib/types";
+import { TRANSIT_LABEL } from "@/lib/format";
+import type { TrailDetail, TransitStop } from "@/lib/types";
 
 export interface TripCardItem {
   detail: TrailDetail;
@@ -22,6 +23,10 @@ export interface TripCardItem {
   fit: DayFit | null;
   /** A closure (e.g. TANAP winter) covers the picked day. */
   closed: boolean;
+  /** By train/bus: the stop the walk starts from. */
+  stop: TransitStop | null;
+  /** By train/bus, and no stop near the start. */
+  noStop: boolean;
 }
 
 interface Props {
@@ -37,7 +42,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /** One trip, one decision line: travel and walking time, then "Vyrazte najneskôr". */
 export function TripCard({ item, dayWord, active, onActive, registerItem }: Props) {
-  const { detail, hikeMin, driveMin, driveApprox, driveLoading, distanceM, fit, closed } = item;
+  const { detail, hikeMin, driveMin, driveApprox, driveLoading, distanceM, fit, closed, stop, noStop } = item;
   const { trail } = detail;
   const total = driveMin !== null ? hikeMin + 2 * driveMin : null;
   const approx = driveApprox ? "~" : "";
@@ -50,7 +55,7 @@ export function TripCard({ item, dayWord, active, onActive, registerItem }: Prop
       onFocus={() => onActive(trail.slug)}
       className={`flex flex-col gap-1.5 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-4 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
         active ? "border-[var(--accent)] ring-2 ring-[var(--accent)]" : "border-[var(--border)]"
-      } ${closed || (fit && fit.status !== "fits") ? "opacity-75" : ""}`}
+      } ${closed || noStop || (fit && fit.status !== "fits") ? "opacity-75" : ""}`}
     >
       <div className="flex items-start justify-between gap-3">
         <span className="flex items-center gap-2 text-lg leading-tight font-semibold">
@@ -67,7 +72,11 @@ export function TripCard({ item, dayWord, active, onActive, registerItem }: Prop
       </div>
 
       <p className="font-data flex flex-wrap gap-x-3 text-[15px] text-[var(--muted)]">
-        {driveMin !== null ? (
+        {stop ? (
+          <span>
+            {TRANSIT_LABEL[stop.mode].toLowerCase()} {stop.name}, {stop.distance_m} m pešo
+          </span>
+        ) : driveMin !== null ? (
           <span>
             autom {approx}
             {formatDuration(driveMin)}
@@ -86,12 +95,15 @@ export function TripCard({ item, dayWord, active, onActive, registerItem }: Prop
         )}
       </p>
 
+      {noStop && <p className="text-sm text-[var(--warn)]">Pri začiatku trasy nie je zastávka vlaku ani autobusu.</p>}
       {closed && (
         <p className="text-sm text-[var(--warn)]">{capitalize(dayWord ?? "v tento deň")} je chodník uzavretý (sezónna uzávera).</p>
       )}
       {!closed && fit && fit.status === "fits" && (
         <p className="flex items-baseline gap-2">
-          <span className="text-sm">{driveMin !== null ? "Vyrazte najneskôr" : "Začnite túru najneskôr"}</span>
+          <span className="text-sm">
+            {driveMin !== null ? "Vyrazte najneskôr" : stop ? "Na zastávke najneskôr" : "Začnite túru najneskôr"}
+          </span>
           <span className="font-data text-2xl leading-none text-[var(--time)]">{formatTime(fit.latest)}</span>
         </p>
       )}

@@ -111,6 +111,27 @@
           "8854"
         ]
       }
+    },
+    {
+      "id": "malafatra-jarna-uzavera",
+      "reason": "Jarná uzávera v NP Malá Fatra: chodník na Veľký Rozsutec je zatvorený od 1. marca do 15. júna (hniezdenie, ochrana prírody).",
+      "kind": "rocna",
+      "starts_on": "2027-03-01",
+      "ends_on": "2027-06-15",
+      "source_url": "https://www.npmalafatra.sk/navstevnici/uzavery-turistickych-chodnikov",
+      "verified_on": "2026-10-11",
+      "applies_to": "Červená Medziholie – Veľký Rozsutec – Medzirozsutce; modrá Obšívanka – Malé nocľahy; modrá Vendovka – Malý Kriváň. Výlety sa priraďujú cez vrchol Veľký Rozsutec; dva modré úseky zatiaľ automaticky nepriraďujeme, lebo vedú cez miesta, ktorými idú aj otvorené trasy.",
+      "selector": {
+        "bbox": [
+          18.95,
+          49.15,
+          19.15,
+          49.27
+        ],
+        "probes": [
+          "Veľký Rozsutec"
+        ]
+      }
     }
   ]
 }
