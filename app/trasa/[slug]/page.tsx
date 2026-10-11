@@ -94,7 +94,8 @@ function secondGoal(detail: TrailDetail): "chata" | "hrad" | "vyhliadka" | null 
 
 function Badge({ colour, icon, children }: { colour: string; icon: string; children: React.ReactNode }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full py-1 pr-2.5 pl-1.5 text-[12.5px] font-bold text-white" style={{ background: colour }}>
+    <span className="inline-flex items-center gap-1.5 rounded-full py-1 pr-2.5 pl-1.5 text-[12.5px] font-bold text-white" style={{ background: `color-mix(in oklab, ${colour} 88%, #000)` }}>
+      {/* Slightly deeper than the pin colour: white small text on it stays above 4.5:1. */}
       <span
         aria-hidden
         className="inline-flex"
@@ -146,8 +147,8 @@ export default async function TripSheetPage({ params }: Props) {
       <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
         <JsonLd data={trailJsonLd(detail)} />
         <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
-        <div className="flex w-full flex-col gap-5 px-4 pt-4 pb-6 lg:w-[460px] lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
-          <header className="relative -mx-4 -mt-4 flex h-[220px] shrink-0 flex-col justify-between">
+        <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 lg:mx-0 lg:w-[460px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
+          <header className="relative -mx-4 -mt-4 flex h-[220px] shrink-0 flex-col justify-between sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
             <SeasonScene season={seasonOf(new Date())} width={460} height={220} seed={3} sunX={0.2} sunY={0.28} shade className="absolute inset-0 h-full w-full" />
             <nav aria-label="Navigácia" className="relative flex items-center justify-between gap-2 px-4 pt-4">
               <Link

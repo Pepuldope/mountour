@@ -241,7 +241,8 @@ h2,
 /* Goal and place colours (lib/palette.ts) as text and tinted chips: set --kind
    on the element. They are tuned for white cards, so dark mode lifts them. */
 .kind-ink {
-  color: var(--kind);
+  /* A touch darker than the pin colour, so the lighter kinds (hrad, prameň) still reach 4.5:1 as small text. */
+  color: color-mix(in oklab, var(--kind) 82%, #000);
 }
 .kind-chip {
   color: var(--kind);
