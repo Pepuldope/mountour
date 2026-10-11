@@ -1,6 +1,6 @@
 {
  "version": 1,
- "generated_at": "2026-10-11T12:30:38+00:00",
+ "generated_at": "2026-10-11T17:36:28+00:00",
  "osm_data_at": "2026-10-09T20:21:04Z",
  "attribution": "© OpenStreetMap contributors (ODbL); popularity from Wikipedia page views (Wikimedia, CC0)",
  "grid": {
@@ -83,17 +83,17 @@
  "km": 19864,
  "pieces": 72191,
  "level_km": [
-  7946,
-  4965,
-  3576,
+  7945,
+  4966,
+  3575,
   2185,
   1192
  ],
  "cuts": [
-  416,
-  1221,
-  3003,
-  10844
+  405,
+  1189,
+  2961,
+  10626
  ],
  "top_goals": [
   {
@@ -179,7 +179,7 @@
   {
    "name": "Dóm svätej Alžbety",
    "kind": "vyhliadka",
-   "views": 49228
+   "views": 49315
   },
   {
    "name": "Svinica",
