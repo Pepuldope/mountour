@@ -1,9 +1,2783 @@
 {
  "version": 1,
- "generated_at": "2026-10-10T13:59:10+00:00",
+ "generated_at": "2026-10-11T12:18:54+00:00",
  "osm_data_at": "2026-10-09T20:21:04Z",
  "attribution": "© OpenStreetMap contributors (ODbL); elevation: Copernicus DEM GLO-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA",
  "trips": [
+  {
+   "slug": "vrsatec",
+   "name": "Vršatec",
+   "description": "Výlet k hradu: Vršatec. Štart: Sedlo Chotuč, späť rovnakou cestou. Po modrej značke.",
+   "region": "biele-karpaty",
+   "region_name": "Biele Karpaty",
+   "protected_area": "CHKO Biele Karpaty",
+   "destination": {
+    "name": "Vršatec",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.065933,
+     "lon": 18.150833
+    },
+    "ele_m": 702,
+    "osm": "way/905860073"
+   },
+   "start": {
+    "name": "Sedlo Chotuč",
+    "location": {
+     "lat": 49.071977,
+     "lon": 18.169546
+    },
+    "ele_m": 620,
+    "osm": "node/5715658913"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.07023,
+     "lon": 18.164091
+    },
+    "walk_m": 442,
+    "fee": false,
+    "osm": "node/14030474310"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 3726,
+   "ascent_m": 88,
+   "duration_min": 75,
+   "max_ele_m": 702,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 79,
+   "bbox": [
+    18.1519,
+    49.06426,
+    18.16946,
+    49.07197
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/vrsatec.gpx"
+  },
+  {
+   "slug": "lednica",
+   "name": "Lednica",
+   "description": "Výlet k hradu: Lednica. Štart: Červený Kameň, späť rovnakou cestou. Po modrej značke.",
+   "region": "biele-karpaty",
+   "region_name": "Biele Karpaty",
+   "protected_area": "CHKO Biele Karpaty",
+   "destination": {
+    "name": "Lednica",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.11049,
+     "lon": 18.211291
+    },
+    "ele_m": 405,
+    "osm": "node/11473947171"
+   },
+   "start": {
+    "name": "Červený Kameň",
+    "location": {
+     "lat": 49.086321,
+     "lon": 18.185464
+    },
+    "ele_m": 361,
+    "osm": "node/7260030988"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.086163,
+     "lon": 18.186204
+    },
+    "walk_m": 57,
+    "fee": false,
+    "osm": "way/1459081338"
+   },
+   "transit": {
+    "name": "Červený Kameň, Jednota",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.086312,
+     "lon": 18.185593
+    },
+    "walk_m": 9,
+    "osm": "node/3668083523"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 9619,
+   "ascent_m": 536,
+   "duration_min": 255,
+   "max_ele_m": 641,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 0.91,
+   "fees": [
+    {
+     "kind": "vstupne",
+     "text": "Vstupné: 2.50 EUR",
+     "amount_eur": 2.5,
+     "source": "osm",
+     "source_url": "https://www.openstreetmap.org/node/11473947171",
+     "rule_id": null
+    }
+   ],
+   "closure_rule_ids": [],
+   "rank": 72,
+   "bbox": [
+    18.1855,
+    49.08533,
+    18.21245,
+    49.11103
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/lednica.gpx"
+  },
+  {
+   "slug": "janosikova-jaskyna",
+   "name": "Jánošíkova jaskyňa",
+   "description": "Výlet k jaskyni: Jánošíkova jaskyňa. Štart: Sedlo pod Machnáčom, späť rovnakou cestou. Po modrej a červenej značke.",
+   "region": "biele-karpaty",
+   "region_name": "Biele Karpaty",
+   "protected_area": "CHKO Biele Karpaty",
+   "destination": {
+    "name": "Jánošíkova jaskyňa",
+    "kind": "jaskyna",
+    "location": {
+     "lat": 48.904719,
+     "lon": 18.178185
+    },
+    "ele_m": 433,
+    "osm": "node/499530700"
+   },
+   "start": {
+    "name": "Sedlo pod Machnáčom",
+    "location": {
+     "lat": 48.896691,
+     "lon": 18.178657
+    },
+    "ele_m": 504,
+    "osm": "node/2304640107"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.895793,
+     "lon": 18.172173
+    },
+    "walk_m": 484,
+    "fee": false,
+    "osm": "node/14213731381"
+   },
+   "transit": {
+    "name": "Trenčianske Teplice",
+    "mode": "vlak",
+    "location": {
+     "lat": 48.910149,
+     "lon": 18.17052
+    },
+    "walk_m": 1610,
+    "osm": "node/11926336367"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2205,
+   "ascent_m": 99,
+   "duration_min": 60,
+   "max_ele_m": 529,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 66,
+   "bbox": [
+    18.1781,
+    48.89669,
+    18.18084,
+    48.90483
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/janosikova-jaskyna.gpx"
+  },
+  {
+   "slug": "opatovska-jaskyna",
+   "name": "Opatovská jaskyňa",
+   "description": "Výlet k jaskyni: Opatovská jaskyňa. Štart: Malá Skalka, späť rovnakou cestou. Po zelenej značke.",
+   "region": "biele-karpaty",
+   "region_name": "Biele Karpaty",
+   "protected_area": "CHKO Biele Karpaty",
+   "destination": {
+    "name": "Opatovská jaskyňa",
+    "kind": "jaskyna",
+    "location": {
+     "lat": 48.915149,
+     "lon": 18.073164
+    },
+    "ele_m": 230,
+    "osm": "node/2985783947"
+   },
+   "start": {
+    "name": "Malá Skalka",
+    "location": {
+     "lat": 48.906229,
+     "lon": 18.073282
+    },
+    "ele_m": 263,
+    "osm": "node/2985783960"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.906406,
+     "lon": 18.073887
+    },
+    "walk_m": 48,
+    "fee": false,
+    "osm": "way/319261624"
+   },
+   "transit": {
+    "name": "Skalka n.Váhom,pútnicky kostol",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.90652,
+     "lon": 18.073739
+    },
+    "walk_m": 47,
+    "osm": "node/7392022938"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2369,
+   "ascent_m": 200,
+   "duration_min": 90,
+   "max_ele_m": 355,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 0.76,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 62,
+   "bbox": [
+    18.07118,
+    48.90625,
+    18.07376,
+    48.91512
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/opatovska-jaskyna.gpx"
+  },
+  {
+   "slug": "ostry-vrch",
+   "name": "Ostrý vrch",
+   "description": "Výstup na vrchol Ostrý vrch (768 m). Štart: Chata pod Ostrým vrchom, späť rovnakou cestou. Po červenej a zelenej značke.",
+   "region": "biele-karpaty",
+   "region_name": "Biele Karpaty",
+   "protected_area": "CHKO Biele Karpaty",
+   "destination": {
+    "name": "Ostrý vrch",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.847756,
+     "lon": 18.125073
+    },
+    "ele_m": 768,
+    "osm": "node/1722673782"
+   },
+   "start": {
+    "name": "Chata pod Ostrým vrchom",
+    "location": {
+     "lat": 48.845861,
+     "lon": 18.098964
+    },
+    "ele_m": 480,
+    "osm": "node/482904115"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.844485,
+     "lon": 18.102017
+    },
+    "walk_m": 271,
+    "fee": false,
+    "osm": "way/1255717503"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 4777,
+   "ascent_m": 328,
+   "duration_min": 150,
+   "max_ele_m": 774,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "green"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 57,
+   "bbox": [
+    18.09896,
+    48.84559,
+    18.12507,
+    48.84838
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/ostry-vrch.gpx"
+  },
+  {
+   "slug": "cvirigovec",
+   "name": "Čvirigovec",
+   "description": "Výstup na vrchol Čvirigovec (481 m). Štart: RS Slniečko, späť rovnakou cestou. Po modrej značke.",
+   "region": "biele-karpaty",
+   "region_name": "Biele Karpaty",
+   "protected_area": "CHKO Biele Karpaty",
+   "destination": {
+    "name": "Čvirigovec",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.908741,
+     "lon": 18.149616
+    },
+    "ele_m": 481,
+    "osm": "node/2613835636"
+   },
+   "start": {
+    "name": "RS Slniečko",
+    "location": {
+     "lat": 48.917041,
+     "lon": 18.142183
+    },
+    "ele_m": 256,
+    "osm": "node/9981604176"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.915733,
+     "lon": 18.140433
+    },
+    "walk_m": 194,
+    "fee": false,
+    "osm": "node/13589628708"
+   },
+   "transit": {
+    "name": "Kaňová",
+    "mode": "vlak",
+    "location": {
+     "lat": 48.921542,
+     "lon": 18.144694
+    },
+    "walk_m": 533,
+    "osm": "node/11926340488"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3770,
+   "ascent_m": 220,
+   "duration_min": 105,
+   "max_ele_m": 481,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 0.64,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 55,
+   "bbox": [
+    18.14052,
+    48.90711,
+    18.14957,
+    48.91708
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/cvirigovec.gpx"
+  },
+  {
+   "slug": "oravsky-hrad",
+   "name": "Oravský hrad",
+   "description": "Výlet k hradu: Oravský hrad. Štart: Príslop, späť rovnakou cestou. Po modrej a červenej značke.",
+   "region": "chocske-vrchy-orava",
+   "region_name": "Chočské vrchy a Orava",
+   "protected_area": null,
+   "destination": {
+    "name": "Oravský hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.262129,
+     "lon": 19.35887
+    },
+    "ele_m": 517,
+    "osm": "way/881997852"
+   },
+   "start": {
+    "name": "Príslop",
+    "location": {
+     "lat": 49.303454,
+     "lon": 19.353895
+    },
+    "ele_m": 808,
+    "osm": "node/976409855"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.303588,
+     "lon": 19.353327
+    },
+    "walk_m": 44,
+    "fee": null,
+    "osm": "way/1432231603"
+   },
+   "transit": {
+    "name": "Hruštín - Príslop",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.303637,
+     "lon": 19.353828
+    },
+    "walk_m": 21,
+    "osm": "node/972975785"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 15694,
+   "ascent_m": 925,
+   "duration_min": 420,
+   "max_ele_m": 1081,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "blue",
+    "red"
+   ],
+   "marked_share": 0.91,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 98,
+   "bbox": [
+    19.35385,
+    49.2609,
+    19.38204,
+    49.30445
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/oravsky-hrad.gpx"
+  },
+  {
+   "slug": "velky-choc",
+   "name": "Veľký Choč",
+   "description": "Výstup na vrchol Veľký Choč (1611 m). Štart: Valaská Dubová, späť rovnakou cestou. Po modrej, zelenej a červenej značke.",
+   "region": "chocske-vrchy-orava",
+   "region_name": "Chočské vrchy a Orava",
+   "protected_area": null,
+   "destination": {
+    "name": "Veľký Choč",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.150866,
+     "lon": 19.343382
+    },
+    "ele_m": 1611,
+    "osm": "node/428528977"
+   },
+   "start": {
+    "name": "Valaská Dubová",
+    "location": {
+     "lat": 49.141995,
+     "lon": 19.295911
+    },
+    "ele_m": 649,
+    "osm": "node/13521687697"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.1392,
+     "lon": 19.290904
+    },
+    "walk_m": 479,
+    "fee": true,
+    "osm": "node/10613496777"
+   },
+   "transit": {
+    "name": "Valaská Dubová,,OcÚ",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.140671,
+     "lon": 19.293333
+    },
+    "walk_m": 238,
+    "osm": "node/833340241"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 8615,
+   "ascent_m": 911,
+   "duration_min": 360,
+   "max_ele_m": 1602,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "blue",
+    "green",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 77,
+   "bbox": [
+    19.29581,
+    49.14199,
+    19.3434,
+    49.15099
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/velky-choc.gpx"
+  },
+  {
+   "slug": "liptovsky-hrad",
+   "name": "Liptovský hrad",
+   "description": "Výlet k hradu: Liptovský hrad. Štart: Kalameny, jazierko, späť rovnakou cestou. Po červenej a modrej značke.",
+   "region": "chocske-vrchy-orava",
+   "region_name": "Chočské vrchy a Orava",
+   "protected_area": null,
+   "destination": {
+    "name": "Liptovský hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.147586,
+     "lon": 19.430035
+    },
+    "ele_m": 989,
+    "osm": "node/442720666"
+   },
+   "start": {
+    "name": "Kalameny, jazierko",
+    "location": {
+     "lat": 49.133428,
+     "lon": 19.41986
+    },
+    "ele_m": 579,
+    "osm": "node/442715585"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.133223,
+     "lon": 19.419719
+    },
+    "walk_m": 25,
+    "fee": true,
+    "osm": "way/1329042648"
+   },
+   "transit": {
+    "name": "Kalameny, kult.dom",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.125987,
+     "lon": 19.414656
+    },
+    "walk_m": 910,
+    "osm": "node/1532657422"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 5204,
+   "ascent_m": 404,
+   "duration_min": 180,
+   "max_ele_m": 989,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "red",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 76,
+   "bbox": [
+    19.4198,
+    49.13338,
+    19.4344,
+    49.14758
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/liptovsky-hrad.gpx"
+  },
+  {
+   "slug": "sip",
+   "name": "Šíp",
+   "description": "Výstup na vrchol Šíp (1169 m). Štart: Rybka, späť rovnakou cestou. Po žltej a zelenej značke.",
+   "region": "chocske-vrchy-orava",
+   "region_name": "Chočské vrchy a Orava",
+   "protected_area": null,
+   "destination": {
+    "name": "Šíp",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.165398,
+     "lon": 19.179081
+    },
+    "ele_m": 1169,
+    "osm": "node/5181442705"
+   },
+   "start": {
+    "name": "Rybka",
+    "location": {
+     "lat": 49.150512,
+     "lon": 19.160564
+    },
+    "ele_m": 439,
+    "osm": "node/6040975716"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.148529,
+     "lon": 19.162149
+    },
+    "walk_m": 249,
+    "fee": true,
+    "osm": "way/1512457761"
+   },
+   "transit": {
+    "name": "Stankovany, Rojkov",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.148657,
+     "lon": 19.157367
+    },
+    "walk_m": 311,
+    "osm": "node/2503091838"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 8003,
+   "ascent_m": 784,
+   "duration_min": 315,
+   "max_ele_m": 1163,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "green"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 72,
+   "bbox": [
+    19.15717,
+    49.15052,
+    19.17906,
+    49.16656
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/sip.gpx"
+  },
+  {
+   "slug": "kubinska-hola",
+   "name": "Kubínska hoľa",
+   "description": "Výstup na vrchol Kubínska hoľa (1347 m). Štart: Chata na Kubínskej holi, späť rovnakou cestou. Po červenej, zelenej a modrej značke.",
+   "region": "chocske-vrchy-orava",
+   "region_name": "Chočské vrchy a Orava",
+   "protected_area": null,
+   "destination": {
+    "name": "Kubínska hoľa",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.273978,
+     "lon": 19.26919
+    },
+    "ele_m": 1347,
+    "osm": "node/1295262801"
+   },
+   "start": {
+    "name": "Chata na Kubínskej holi",
+    "location": {
+     "lat": 49.267862,
+     "lon": 19.267266
+    },
+    "ele_m": 1096,
+    "osm": "node/360611733"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.262027,
+     "lon": 19.26156
+    },
+    "walk_m": 770,
+    "fee": null,
+    "osm": "way/1021390482"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 2477,
+   "ascent_m": 239,
+   "duration_min": 105,
+   "max_ele_m": 1345,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "green",
+    "blue"
+   ],
+   "marked_share": 0.94,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 70,
+   "bbox": [
+    19.26239,
+    49.26787,
+    19.2691,
+    49.27395
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/kubinska-hola.gpx"
+  },
+  {
+   "slug": "budin",
+   "name": "Budín",
+   "description": "Výstup na vrchol Budín (1221 m). Štart: Lokca, bus, späť rovnakou cestou. Po zelenej značke.",
+   "region": "chocske-vrchy-orava",
+   "region_name": "Chočské vrchy a Orava",
+   "protected_area": null,
+   "destination": {
+    "name": "Budín",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.343892,
+     "lon": 19.452466
+    },
+    "ele_m": 1221,
+    "osm": "node/5143543656"
+   },
+   "start": {
+    "name": "Lokca, bus",
+    "location": {
+     "lat": 49.365803,
+     "lon": 19.409968
+    },
+    "ele_m": 645,
+    "osm": "node/6018920869"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.366401,
+     "lon": 19.411312
+    },
+    "walk_m": 118,
+    "fee": null,
+    "osm": "node/875681132"
+   },
+   "transit": {
+    "name": "Lokca",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.366242,
+     "lon": 19.410127
+    },
+    "walk_m": 50,
+    "osm": "node/701768111"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 9771,
+   "ascent_m": 585,
+   "duration_min": 270,
+   "max_ele_m": 1226,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 0.99,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 69,
+   "bbox": [
+    19.40995,
+    49.34391,
+    19.45241,
+    49.36589
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/budin.gpx"
+  },
+  {
+   "slug": "cierny-vrch",
+   "name": "Čierny vrch",
+   "description": "Výstup na vrchol Čierny vrch (1319 m). Štart: Chata na Kubínskej holi, späť rovnakou cestou. Po červenej, zelenej a modrej značke.",
+   "region": "chocske-vrchy-orava",
+   "region_name": "Chočské vrchy a Orava",
+   "protected_area": null,
+   "destination": {
+    "name": "Čierny vrch",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.277831,
+     "lon": 19.283864
+    },
+    "ele_m": 1319,
+    "osm": "node/5657434145"
+   },
+   "start": {
+    "name": "Chata na Kubínskej holi",
+    "location": {
+     "lat": 49.267862,
+     "lon": 19.267266
+    },
+    "ele_m": 1096,
+    "osm": "node/360611733"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.262027,
+     "lon": 19.26156
+    },
+    "walk_m": 770,
+    "fee": null,
+    "osm": "way/1021390482"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 4839,
+   "ascent_m": 286,
+   "duration_min": 135,
+   "max_ele_m": 1345,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "green",
+    "blue"
+   ],
+   "marked_share": 0.97,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 59,
+   "bbox": [
+    19.26239,
+    49.26787,
+    19.28396,
+    49.27787
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/cierny-vrch.gpx"
+  },
+  {
+   "slug": "chata-na-kubinskej-holi",
+   "name": "Chata na Kubínskej holi",
+   "description": "Výlet k horskej chate: Chata na Kubínskej holi. Štart: SKIALP trasa, späť rovnakou cestou. Po zelenej značke.",
+   "region": "chocske-vrchy-orava",
+   "region_name": "Chočské vrchy a Orava",
+   "protected_area": null,
+   "destination": {
+    "name": "Chata na Kubínskej holi",
+    "kind": "chata",
+    "location": {
+     "lat": 49.267616,
+     "lon": 19.266825
+    },
+    "ele_m": 1089,
+    "osm": "way/83724765"
+   },
+   "start": {
+    "name": "SKIALP trasa",
+    "location": {
+     "lat": 49.25199,
+     "lon": 19.26791
+    },
+    "ele_m": 769,
+    "osm": "node/11134815857"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.251922,
+     "lon": 19.267172
+    },
+    "walk_m": 54,
+    "fee": null,
+    "osm": "way/583519993"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 4573,
+   "ascent_m": 345,
+   "duration_min": 150,
+   "max_ele_m": 1112,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 56,
+   "bbox": [
+    19.26119,
+    49.25196,
+    19.2679,
+    49.26747
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/chata-na-kubinskej-holi.gpx"
+  },
+  {
+   "slug": "uhlisko",
+   "name": "Uhlisko",
+   "description": "Výstup na vrchol Uhlisko (860 m). Štart: Trstená, späť rovnakou cestou. Po červenej značke.",
+   "region": "chocske-vrchy-orava",
+   "region_name": "Chočské vrchy a Orava",
+   "protected_area": null,
+   "destination": {
+    "name": "Uhlisko",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.364972,
+     "lon": 19.577606
+    },
+    "ele_m": 860,
+    "osm": "node/3895102701"
+   },
+   "start": {
+    "name": "Trstená",
+    "location": {
+     "lat": 49.356827,
+     "lon": 19.595816
+    },
+    "ele_m": 604,
+    "osm": "node/5744358571"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.356969,
+     "lon": 19.597875
+    },
+    "walk_m": 150,
+    "fee": null,
+    "osm": "way/680071243"
+   },
+   "transit": {
+    "name": "Západ",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.355756,
+     "lon": 19.595025
+    },
+    "walk_m": 132,
+    "osm": "node/1535688873"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 6193,
+   "ascent_m": 271,
+   "duration_min": 150,
+   "max_ele_m": 880,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 0.89,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 40,
+   "bbox": [
+    19.57782,
+    49.3568,
+    19.59676,
+    49.37128
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/uhlisko.gpx"
+  },
+  {
+   "slug": "prislop-prislop",
+   "name": "Príslop",
+   "description": "Výstup na vrchol Príslop (1032 m). Štart: Príslop, späť rovnakou cestou. Po červenej značke.",
+   "region": "chocske-vrchy-orava",
+   "region_name": "Chočské vrchy a Orava",
+   "protected_area": null,
+   "destination": {
+    "name": "Príslop",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.300207,
+     "lon": 19.333821
+    },
+    "ele_m": 1032,
+    "osm": "node/5657431572"
+   },
+   "start": {
+    "name": "Príslop",
+    "location": {
+     "lat": 49.303454,
+     "lon": 19.353895
+    },
+    "ele_m": 810,
+    "osm": "node/976409855"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.303588,
+     "lon": 19.353327
+    },
+    "walk_m": 44,
+    "fee": null,
+    "osm": "way/1432231603"
+   },
+   "transit": {
+    "name": "Hruštín - Príslop",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.303637,
+     "lon": 19.353828
+    },
+    "walk_m": 21,
+    "osm": "node/972975785"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3769,
+   "ascent_m": 231,
+   "duration_min": 105,
+   "max_ele_m": 1043,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 0.88,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 38,
+   "bbox": [
+    19.33404,
+    49.30025,
+    19.35385,
+    49.30586
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/prislop-prislop.gpx"
+  },
+  {
+   "slug": "tematin",
+   "name": "Tematín",
+   "description": "Výlet k hradu: Tematín. Štart: Šport Chata, rázcestie, späť rovnakou cestou. Po modrej značke.",
+   "region": "inovec-tribec-vtacnik",
+   "region_name": "Považský Inovec, Tribeč a Vtáčnik",
+   "protected_area": null,
+   "destination": {
+    "name": "Tematín",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.677264,
+     "lon": 17.929114
+    },
+    "ele_m": 596,
+    "osm": "way/106110863"
+   },
+   "start": {
+    "name": "Šport Chata, rázcestie",
+    "location": {
+     "lat": 48.666204,
+     "lon": 17.96276
+    },
+    "ele_m": 615,
+    "osm": "node/303174329"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.664874,
+     "lon": 17.965035
+    },
+    "walk_m": 223,
+    "fee": null,
+    "osm": "node/5204637895"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 7442,
+   "ascent_m": 237,
+   "duration_min": 150,
+   "max_ele_m": 644,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [
+    {
+     "kind": "vstupne",
+     "text": "Vstupné: 3 EUR/day",
+     "amount_eur": 3.0,
+     "source": "osm",
+     "source_url": "https://www.openstreetmap.org/way/106110863",
+     "rule_id": null
+    }
+   ],
+   "closure_rule_ids": [],
+   "rank": 94,
+   "bbox": [
+    17.92869,
+    48.6662,
+    17.96276,
+    48.67741
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/tematin.gpx"
+  },
+  {
+   "slug": "gymes",
+   "name": "Gýmeš",
+   "description": "Výlet k hradu: Gýmeš. Štart: Kostoľany pod Tribečom, späť rovnakou cestou. Po žltej, zelenej a červenej značke.",
+   "region": "inovec-tribec-vtacnik",
+   "region_name": "Považský Inovec, Tribeč a Vtáčnik",
+   "protected_area": null,
+   "destination": {
+    "name": "Gýmeš",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.411458,
+     "lon": 18.222582
+    },
+    "ele_m": 498,
+    "osm": "way/37860987"
+   },
+   "start": {
+    "name": "Kostoľany pod Tribečom",
+    "location": {
+     "lat": 48.415975,
+     "lon": 18.239508
+    },
+    "ele_m": 250,
+    "osm": "node/409758616"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.415717,
+     "lon": 18.239582
+    },
+    "walk_m": 29,
+    "fee": false,
+    "osm": "way/659114067"
+   },
+   "transit": {
+    "name": "Kostoľany pod Tribečom, pomník",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.414502,
+     "lon": 18.243445
+    },
+    "walk_m": 334,
+    "osm": "node/3632420686"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4900,
+   "ascent_m": 239,
+   "duration_min": 120,
+   "max_ele_m": 498,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "yellow",
+    "green",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 83,
+   "bbox": [
+    18.22166,
+    48.40616,
+    18.23951,
+    48.41651
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/gymes.gpx"
+  },
+  {
+   "slug": "topolciansky-hrad",
+   "name": "Topoľčiansky hrad",
+   "description": "Výlet k hradu: Topoľčiansky hrad. Štart: Odbočka do Podhradia, späť rovnakou cestou. Po zelenej a modrej značke.",
+   "region": "inovec-tribec-vtacnik",
+   "region_name": "Považský Inovec, Tribeč a Vtáčnik",
+   "protected_area": null,
+   "destination": {
+    "name": "Topoľčiansky hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.658236,
+     "lon": 18.049004
+    },
+    "ele_m": 453,
+    "osm": "way/35956773"
+   },
+   "start": {
+    "name": "Odbočka do Podhradia",
+    "location": {
+     "lat": 48.664871,
+     "lon": 18.083892
+    },
+    "ele_m": 286,
+    "osm": "node/282779097"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.667139,
+     "lon": 18.088719
+    },
+    "walk_m": 435,
+    "fee": false,
+    "osm": "node/3712597245"
+   },
+   "transit": {
+    "name": "Prašice, Duchonka, Mier chata",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.663207,
+     "lon": 18.085252
+    },
+    "walk_m": 210,
+    "osm": "node/734038038"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 6702,
+   "ascent_m": 202,
+   "duration_min": 135,
+   "max_ele_m": 453,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 83,
+   "bbox": [
+    18.04856,
+    48.65719,
+    18.08389,
+    48.66487
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/topolciansky-hrad.gpx"
+  },
+  {
+   "slug": "uhrovec",
+   "name": "Uhrovec",
+   "description": "Výlet k hradu: Uhrovec. Štart: Čerešňová, späť rovnakou cestou. Po zelenej a modrej značke.",
+   "region": "inovec-tribec-vtacnik",
+   "region_name": "Považský Inovec, Tribeč a Vtáčnik",
+   "protected_area": null,
+   "destination": {
+    "name": "Uhrovec",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.754276,
+     "lon": 18.391322
+    },
+    "ele_m": 581,
+    "osm": "way/241338526"
+   },
+   "start": {
+    "name": "Čerešňová",
+    "location": {
+     "lat": 48.761805,
+     "lon": 18.383046
+    },
+    "ele_m": 338,
+    "osm": "node/614192074"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.761903,
+     "lon": 18.383065
+    },
+    "walk_m": 11,
+    "fee": false,
+    "osm": "way/1328726388"
+   },
+   "transit": {
+    "name": "Uhrovské Podhradie",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.763376,
+     "lon": 18.379809
+    },
+    "walk_m": 295,
+    "osm": "node/6880545310"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2553,
+   "ascent_m": 242,
+   "duration_min": 105,
+   "max_ele_m": 581,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 83,
+   "bbox": [
+    18.38292,
+    48.75402,
+    18.39105,
+    48.76182
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/uhrovec.gpx"
+  },
+  {
+   "slug": "oponicky-hrad",
+   "name": "Oponický hrad",
+   "description": "Výlet k hradu: Oponický hrad. Štart: Oponice, za kaštieľom, späť rovnakou cestou. Po zelenej značke.",
+   "region": "inovec-tribec-vtacnik",
+   "region_name": "Považský Inovec, Tribeč a Vtáčnik",
+   "protected_area": null,
+   "destination": {
+    "name": "Oponický hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.448338,
+     "lon": 18.15631
+    },
+    "ele_m": 333,
+    "osm": "way/114666421"
+   },
+   "start": {
+    "name": "Oponice, za kaštieľom",
+    "location": {
+     "lat": 48.462689,
+     "lon": 18.150556
+    },
+    "ele_m": 175,
+    "osm": "node/7528223825"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.464726,
+     "lon": 18.144487
+    },
+    "walk_m": 502,
+    "fee": false,
+    "osm": "node/1459149699"
+   },
+   "transit": {
+    "name": "Oponice, námestie",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.467497,
+     "lon": 18.144952
+    },
+    "walk_m": 676,
+    "osm": "node/12598919928"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4735,
+   "ascent_m": 162,
+   "duration_min": 105,
+   "max_ele_m": 341,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 0.98,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 79,
+   "bbox": [
+    18.1505,
+    48.44768,
+    18.161,
+    48.46269
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/oponicky-hrad.gpx"
+  },
+  {
+   "slug": "reviste",
+   "name": "Revište",
+   "description": "Výlet k hradu: Revište. Štart: Revištské Podzámčie, späť rovnakou cestou. Po žltej značke.",
+   "region": "inovec-tribec-vtacnik",
+   "region_name": "Považský Inovec, Tribeč a Vtáčnik",
+   "protected_area": null,
+   "destination": {
+    "name": "Revište",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.521476,
+     "lon": 18.722748
+    },
+    "ele_m": 306,
+    "osm": "way/778864549"
+   },
+   "start": {
+    "name": "Revištské Podzámčie",
+    "location": {
+     "lat": 48.51099,
+     "lon": 18.733071
+    },
+    "ele_m": 218,
+    "osm": "node/6418937543"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.510627,
+     "lon": 18.730605
+    },
+    "walk_m": 186,
+    "fee": null,
+    "osm": "way/685050132"
+   },
+   "transit": {
+    "name": "Žarnovica, R. Podzámčie, rázc.",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.511013,
+     "lon": 18.733055
+    },
+    "walk_m": 3,
+    "osm": "node/3366469123"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3647,
+   "ascent_m": 81,
+   "duration_min": 75,
+   "max_ele_m": 306,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "yellow"
+   ],
+   "marked_share": 0.84,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 79,
+   "bbox": [
+    18.72219,
+    48.5111,
+    18.73311,
+    48.5219
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/reviste.gpx"
+  },
+  {
+   "slug": "breznicky-hrad",
+   "name": "Breznický hrad",
+   "description": "Výlet k hradu: Breznický hrad. Štart: Tekovská Breznica, späť rovnakou cestou. Po zelenej značke.",
+   "region": "inovec-tribec-vtacnik",
+   "region_name": "Považský Inovec, Tribeč a Vtáčnik",
+   "protected_area": null,
+   "destination": {
+    "name": "Breznický hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.378505,
+     "lon": 18.626862
+    },
+    "ele_m": 438,
+    "osm": "way/1340064328"
+   },
+   "start": {
+    "name": "Tekovská Breznica",
+    "location": {
+     "lat": 48.384611,
+     "lon": 18.616166
+    },
+    "ele_m": 200,
+    "osm": "node/5243320696"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.383272,
+     "lon": 18.617534
+    },
+    "walk_m": 180,
+    "fee": null,
+    "osm": "way/1187332042"
+   },
+   "transit": {
+    "name": "Tekovská Breznica, OcÚ",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.385382,
+     "lon": 18.616569
+    },
+    "walk_m": 91,
+    "osm": "node/3366737179"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2486,
+   "ascent_m": 236,
+   "duration_min": 105,
+   "max_ele_m": 440,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 0.62,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 72,
+   "bbox": [
+    18.616,
+    48.37847,
+    18.62701,
+    48.38457
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/breznicky-hrad.gpx"
+  },
+  {
+   "slug": "buchlov",
+   "name": "Buchlov",
+   "description": "Výstup na vrchol Buchlov (1040 m). Štart: Ľubianka, späť rovnakou cestou. Po žltej značke.",
+   "region": "inovec-tribec-vtacnik",
+   "region_name": "Považský Inovec, Tribeč a Vtáčnik",
+   "protected_area": null,
+   "destination": {
+    "name": "Buchlov",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.611443,
+     "lon": 18.572143
+    },
+    "ele_m": 1040,
+    "osm": "node/734536547"
+   },
+   "start": {
+    "name": "Ľubianka",
+    "location": {
+     "lat": 48.612596,
+     "lon": 18.502516
+    },
+    "ele_m": 347,
+    "osm": "node/673609307"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.611942,
+     "lon": 18.503424
+    },
+    "walk_m": 99,
+    "fee": null,
+    "osm": "node/1946086294"
+   },
+   "transit": {
+    "name": "Horná Ves, Jednota",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.608628,
+     "lon": 18.490844
+    },
+    "walk_m": 965,
+    "osm": "node/2379880738"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 12785,
+   "ascent_m": 891,
+   "duration_min": 390,
+   "max_ele_m": 990,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "yellow"
+   ],
+   "marked_share": 0.99,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 71,
+   "bbox": [
+    18.50249,
+    48.60282,
+    18.57121,
+    48.61254
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/buchlov.gpx"
+  },
+  {
+   "slug": "hrad-lietava",
+   "name": "Hrad Lietava",
+   "description": "Výlet k hradu: Hrad Lietava. Štart: Lietavská Svinná, späť rovnakou cestou. Po zelenej, červenej a modrej značke.",
+   "region": "kysuce-javorniky",
+   "region_name": "Kysuce a Javorníky",
+   "protected_area": null,
+   "destination": {
+    "name": "Hrad Lietava",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.160753,
+     "lon": 18.684969
+    },
+    "ele_m": 629,
+    "osm": "way/1547428454"
+   },
+   "start": {
+    "name": "Lietavská Svinná",
+    "location": {
+     "lat": 49.152635,
+     "lon": 18.676584
+    },
+    "ele_m": 420,
+    "osm": "node/355507220"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.152844,
+     "lon": 18.676606
+    },
+    "walk_m": 23,
+    "fee": null,
+    "osm": "node/11476687997"
+   },
+   "transit": {
+    "name": "Lietavská Svinná, ObÚ",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.152457,
+     "lon": 18.676931
+    },
+    "walk_m": 32,
+    "osm": "node/2422192228"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2451,
+   "ascent_m": 205,
+   "duration_min": 90,
+   "max_ele_m": 629,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green",
+    "red",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 98,
+   "bbox": [
+    18.6766,
+    49.15267,
+    18.68451,
+    49.1609
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/hrad-lietava.gpx"
+  },
+  {
+   "slug": "sulov",
+   "name": "Súľov",
+   "description": "Výlet k hradu: Súľov. Štart: Súľov, parkovisko, späť rovnakou cestou. Po zelenej značke.",
+   "region": "kysuce-javorniky",
+   "region_name": "Kysuce a Javorníky",
+   "protected_area": null,
+   "destination": {
+    "name": "Súľov",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.174674,
+     "lon": 18.583446
+    },
+    "ele_m": 618,
+    "osm": "way/848764318"
+   },
+   "start": {
+    "name": "Súľov, parkovisko",
+    "location": {
+     "lat": 49.166386,
+     "lon": 18.578571
+    },
+    "ele_m": 360,
+    "osm": "node/4763987145"
+   },
+   "parking": {
+    "name": "Parkovisko Hrad Súľov",
+    "location": {
+     "lat": 49.166038,
+     "lon": 18.578766
+    },
+    "walk_m": 41,
+    "fee": true,
+    "osm": "way/605191044"
+   },
+   "transit": {
+    "name": "Súľov, turist. nocľaháreň",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.167843,
+     "lon": 18.576031
+    },
+    "walk_m": 246,
+    "osm": "node/2422192264"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2843,
+   "ascent_m": 240,
+   "duration_min": 105,
+   "max_ele_m": 618,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 79,
+   "bbox": [
+    18.57864,
+    49.16635,
+    18.58352,
+    49.17474
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/sulov.gpx"
+  },
+  {
+   "slug": "hrad-hricov",
+   "name": "Hrad Hričov",
+   "description": "Výlet k hradu: Hrad Hričov. Štart: Hričovské Podhradie, späť rovnakou cestou. Po červenej a zelenej značke.",
+   "region": "kysuce-javorniky",
+   "region_name": "Kysuce a Javorníky",
+   "protected_area": null,
+   "destination": {
+    "name": "Hrad Hričov",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.211638,
+     "lon": 18.619744
+    },
+    "ele_m": 538,
+    "osm": "node/7263784909"
+   },
+   "start": {
+    "name": "Hričovské Podhradie",
+    "location": {
+     "lat": 49.22131,
+     "lon": 18.62287
+    },
+    "ele_m": 320,
+    "osm": "node/243470176"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.220512,
+     "lon": 18.622428
+    },
+    "walk_m": 94,
+    "fee": false,
+    "osm": "way/1543289786"
+   },
+   "transit": {
+    "name": "Hričovské Podhradie, Čvapek",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.221505,
+     "lon": 18.62283
+    },
+    "walk_m": 22,
+    "osm": "node/1395263143"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3072,
+   "ascent_m": 212,
+   "duration_min": 105,
+   "max_ele_m": 540,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "green"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 76,
+   "bbox": [
+    18.61978,
+    49.21034,
+    18.62283,
+    49.22138
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/hrad-hricov.gpx"
+  },
+  {
+   "slug": "velky-javornik",
+   "name": "Veľký Javorník",
+   "description": "Výstup na vrchol Veľký Javorník (1072 m). Štart: Butorky, späť rovnakou cestou. Po červenej a zelenej značke.",
+   "region": "kysuce-javorniky",
+   "region_name": "Kysuce a Javorníky",
+   "protected_area": null,
+   "destination": {
+    "name": "Veľký Javorník",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.319036,
+     "lon": 18.367825
+    },
+    "ele_m": 1072,
+    "osm": "node/291202802"
+   },
+   "start": {
+    "name": "Butorky",
+    "location": {
+     "lat": 49.32357,
+     "lon": 18.387358
+    },
+    "ele_m": 982,
+    "osm": "node/8993117158"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.327604,
+     "lon": 18.380387
+    },
+    "walk_m": 676,
+    "fee": null,
+    "osm": "way/228055744"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 3558,
+   "ascent_m": 110,
+   "duration_min": 75,
+   "max_ele_m": 1078,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "green"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 75,
+   "bbox": [
+    18.36778,
+    49.31871,
+    18.3876,
+    49.3241
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/velky-javornik.gpx"
+  },
+  {
+   "slug": "kykula",
+   "name": "Kykula",
+   "description": "Výstup na vrchol Kykula (1087 m). Štart: Oščadnica, Lalík, späť rovnakou cestou. Po žltej značke.",
+   "region": "kysuce-javorniky",
+   "region_name": "Kysuce a Javorníky",
+   "protected_area": null,
+   "destination": {
+    "name": "Kykula",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.454695,
+     "lon": 18.960808
+    },
+    "ele_m": 1087,
+    "osm": "node/5657425319"
+   },
+   "start": {
+    "name": "Oščadnica, Lalík",
+    "location": {
+     "lat": 49.435537,
+     "lon": 18.939341
+    },
+    "ele_m": 570,
+    "osm": "node/7881546868"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.43556,
+     "lon": 18.939062
+    },
+    "walk_m": 20,
+    "fee": null,
+    "osm": "way/1348491196"
+   },
+   "transit": {
+    "name": "Oščadnica, Lalík",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.435398,
+     "lon": 18.939531
+    },
+    "walk_m": 21,
+    "osm": "node/13188472583"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 7641,
+   "ascent_m": 519,
+   "duration_min": 225,
+   "max_ele_m": 1086,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "yellow"
+   ],
+   "marked_share": 0.71,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 68,
+   "bbox": [
+    18.93948,
+    49.43554,
+    18.96078,
+    49.45472
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/kykula.gpx"
+  },
+  {
+   "slug": "ladonhora",
+   "name": "Ľadonhora",
+   "description": "Výstup na vrchol Ľadonhora (999 m). Štart: Nad Kubaščíkovcami, späť rovnakou cestou. Po modrej značke.",
+   "region": "kysuce-javorniky",
+   "region_name": "Kysuce a Javorníky",
+   "protected_area": null,
+   "destination": {
+    "name": "Ľadonhora",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.281298,
+     "lon": 18.879047
+    },
+    "ele_m": 999,
+    "osm": "node/2599639282"
+   },
+   "start": {
+    "name": "Nad Kubaščíkovcami",
+    "location": {
+     "lat": 49.280983,
+     "lon": 18.888932
+    },
+    "ele_m": 630,
+    "osm": "node/11350447287"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.283776,
+     "lon": 18.894732
+    },
+    "walk_m": 523,
+    "fee": null,
+    "osm": "way/279193265"
+   },
+   "transit": {
+    "name": "Horný Vadičov, Kubaščíkovci",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.281365,
+     "lon": 18.894396
+    },
+    "walk_m": 399,
+    "osm": "node/9140189562"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2038,
+   "ascent_m": 353,
+   "duration_min": 135,
+   "max_ele_m": 996,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 67,
+   "bbox": [
+    18.87908,
+    49.28058,
+    18.88894,
+    49.28229
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/ladonhora.gpx"
+  },
+  {
+   "slug": "stranik",
+   "name": "Straník",
+   "description": "Výstup na vrchol Straník (769 m). Štart: Zástranie, späť rovnakou cestou. Po žltej a červenej značke.",
+   "region": "kysuce-javorniky",
+   "region_name": "Kysuce a Javorníky",
+   "protected_area": null,
+   "destination": {
+    "name": "Straník",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.237364,
+     "lon": 18.82728
+    },
+    "ele_m": 769,
+    "osm": "node/1250840191"
+   },
+   "start": {
+    "name": "Zástranie",
+    "location": {
+     "lat": 49.23919,
+     "lon": 18.812677
+    },
+    "ele_m": 550,
+    "osm": "node/243486521"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.238636,
+     "lon": 18.814784
+    },
+    "walk_m": 165,
+    "fee": null,
+    "osm": "way/1489839073"
+   },
+   "transit": {
+    "name": "Na Straník",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.239103,
+     "lon": 18.812742
+    },
+    "walk_m": 11,
+    "osm": "node/4273554038"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2687,
+   "ascent_m": 214,
+   "duration_min": 90,
+   "max_ele_m": 764,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "yellow",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 65,
+   "bbox": [
+    18.81271,
+    49.23655,
+    18.82712,
+    49.23947
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/stranik.gpx"
+  },
+  {
+   "slug": "sarissky-hrad",
+   "name": "Šarišský hrad",
+   "description": "Výlet k hradu: Šarišský hrad. Štart: Šarišské Michaľany, späť rovnakou cestou. Po žltej značke.",
+   "region": "levocske-cergov",
+   "region_name": "Levočské vrchy, Branisko a Čergov",
+   "protected_area": null,
+   "destination": {
+    "name": "Šarišský hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.05233,
+     "lon": 21.176149
+    },
+    "ele_m": 558,
+    "osm": "node/7264260978"
+   },
+   "start": {
+    "name": "Šarišské Michaľany",
+    "location": {
+     "lat": 49.064553,
+     "lon": 21.140194
+    },
+    "ele_m": 313,
+    "osm": "node/1151805620"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.061636,
+     "lon": 21.138632
+    },
+    "walk_m": 344,
+    "fee": null,
+    "osm": "way/1178145193"
+   },
+   "transit": {
+    "name": "Šarišské Michaľany",
+    "mode": "vlak",
+    "location": {
+     "lat": 49.065249,
+     "lon": 21.139152
+    },
+    "walk_m": 108,
+    "osm": "node/1151804641"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 8340,
+   "ascent_m": 278,
+   "duration_min": 180,
+   "max_ele_m": 558,
+   "difficulty": "lahka",
+   "family_friendly": false,
+   "marking": [
+    "yellow"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 98,
+   "bbox": [
+    21.14019,
+    49.05119,
+    21.17687,
+    49.06486
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/sarissky-hrad.gpx"
+  },
+  {
+   "slug": "kamenica",
+   "name": "Kamenica",
+   "description": "Výlet k hradu: Kamenica. Štart: Kamenica, kostol, späť rovnakou cestou. Po červenej, zelenej a žltej značke.",
+   "region": "levocske-cergov",
+   "region_name": "Levočské vrchy, Branisko a Čergov",
+   "protected_area": null,
+   "destination": {
+    "name": "Kamenica",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.195891,
+     "lon": 20.97006
+    },
+    "ele_m": 707,
+    "osm": "node/3526490898"
+   },
+   "start": {
+    "name": "Kamenica, kostol",
+    "location": {
+     "lat": 49.192013,
+     "lon": 20.960373
+    },
+    "ele_m": 494,
+    "osm": "node/13965314763"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.191882,
+     "lon": 20.960572
+    },
+    "walk_m": 21,
+    "fee": false,
+    "osm": "way/1206684752"
+   },
+   "transit": {
+    "name": "Kamenica, kostol",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.191806,
+     "lon": 20.960338
+    },
+    "walk_m": 23,
+    "osm": "node/2613130343"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3291,
+   "ascent_m": 208,
+   "duration_min": 105,
+   "max_ele_m": 707,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "green",
+    "yellow"
+   ],
+   "marked_share": 0.89,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 76,
+   "bbox": [
+    20.96035,
+    49.19201,
+    20.97079,
+    49.19663
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/kamenica.gpx"
+  },
+  {
+   "slug": "busov",
+   "name": "Busov",
+   "description": "Výstup na vrchol Busov (1002 m). Štart: Cigeľka, rázcestie, späť rovnakou cestou. Po zelenej značke.",
+   "region": "levocske-cergov",
+   "region_name": "Levočské vrchy, Branisko a Čergov",
+   "protected_area": null,
+   "destination": {
+    "name": "Busov",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.388105,
+     "lon": 21.162586
+    },
+    "ele_m": 1002,
+    "osm": "node/2610887809"
+   },
+   "start": {
+    "name": "Cigeľka, rázcestie",
+    "location": {
+     "lat": 49.399341,
+     "lon": 21.144146
+    },
+    "ele_m": 540,
+    "osm": "node/1493609325"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.400839,
+     "lon": 21.137935
+    },
+    "walk_m": 479,
+    "fee": null,
+    "osm": "node/14178487215"
+   },
+   "transit": {
+    "name": "Cigeľka,,osada",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.400075,
+     "lon": 21.144935
+    },
+    "walk_m": 100,
+    "osm": "node/9237132705"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 5614,
+   "ascent_m": 488,
+   "duration_min": 210,
+   "max_ele_m": 1004,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 71,
+   "bbox": [
+    21.14408,
+    49.38638,
+    21.16719,
+    49.39934
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/busov.gpx"
+  },
+  {
+   "slug": "smrekovica-zidovsky-cintorin",
+   "name": "Smrekovica",
+   "description": "Výstup na vrchol Smrekovica (1200 m). Štart: Židovský cintorín, späť rovnakou cestou. Po žltej a modrej značke.",
+   "region": "levocske-cergov",
+   "region_name": "Levočské vrchy, Branisko a Čergov",
+   "protected_area": null,
+   "destination": {
+    "name": "Smrekovica",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.046351,
+     "lon": 20.871578
+    },
+    "ele_m": 1200,
+    "osm": "node/1480459493"
+   },
+   "start": {
+    "name": "Židovský cintorín",
+    "location": {
+     "lat": 49.067068,
+     "lon": 20.856104
+    },
+    "ele_m": 577,
+    "osm": "node/1479485220"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.073942,
+     "lon": 20.855382
+    },
+    "walk_m": 766,
+    "fee": null,
+    "osm": "way/388083051"
+   },
+   "transit": {
+    "name": "Vyšný Slavkov, OcÚ",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.07136,
+     "lon": 20.854605
+    },
+    "walk_m": 490,
+    "osm": "node/6876694000"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 8124,
+   "ascent_m": 619,
+   "duration_min": 270,
+   "max_ele_m": 1201,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "blue"
+   ],
+   "marked_share": 0.77,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 69,
+   "bbox": [
+    20.85575,
+    49.0464,
+    20.87153,
+    49.06708
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/smrekovica-zidovsky-cintorin.gpx"
+  },
+  {
+   "slug": "hanigovsky-hrad",
+   "name": "Hanigovský hrad",
+   "description": "Výlet k hradu: Hanigovský hrad. Štart: Jakovany, Kríž, späť rovnakou cestou. Po žltej a modrej značke.",
+   "region": "levocske-cergov",
+   "region_name": "Levočské vrchy, Branisko a Čergov",
+   "protected_area": null,
+   "destination": {
+    "name": "Hanigovský hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.190014,
+     "lon": 21.039435
+    },
+    "ele_m": 756,
+    "osm": "node/1403747149"
+   },
+   "start": {
+    "name": "Jakovany, Kríž",
+    "location": {
+     "lat": 49.154812,
+     "lon": 21.069529
+    },
+    "ele_m": 508,
+    "osm": "node/14257569642"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.153106,
+     "lon": 21.071471
+    },
+    "walk_m": 237,
+    "fee": null,
+    "osm": "way/1565770124"
+   },
+   "transit": {
+    "name": "Jakovany, nám.",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.153652,
+     "lon": 21.071242
+    },
+    "walk_m": 179,
+    "osm": "node/14257569645"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 12189,
+   "ascent_m": 480,
+   "duration_min": 270,
+   "max_ele_m": 756,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 68,
+   "bbox": [
+    21.03918,
+    49.15241,
+    21.06957,
+    49.18989
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/hanigovsky-hrad.gpx"
+  },
+  {
+   "slug": "mincol-kyjov",
+   "name": "Minčol",
+   "description": "Výstup na vrchol Minčol (1153 m). Štart: Kyjov, späť rovnakou cestou. Po modrej značke.",
+   "region": "levocske-cergov",
+   "region_name": "Levočské vrchy, Branisko a Čergov",
+   "protected_area": null,
+   "destination": {
+    "name": "Minčol",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.234525,
+     "lon": 20.98904
+    },
+    "ele_m": 1153,
+    "osm": "node/26863700"
+   },
+   "start": {
+    "name": "Kyjov",
+    "location": {
+     "lat": 49.22131,
+     "lon": 20.94304
+    },
+    "ele_m": 673,
+    "osm": "node/12945095462"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.218255,
+     "lon": 20.940007
+    },
+    "walk_m": 405,
+    "fee": null,
+    "osm": "way/1408614684"
+   },
+   "transit": {
+    "name": "Kyjov, stred",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.21745,
+     "lon": 20.938769
+    },
+    "walk_m": 530,
+    "osm": "node/6875395724"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 9593,
+   "ascent_m": 480,
+   "duration_min": 240,
+   "max_ele_m": 1149,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 65,
+   "bbox": [
+    20.94301,
+    49.21951,
+    20.98909,
+    49.23583
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/mincol-kyjov.gpx"
+  },
+  {
+   "slug": "eliasovka",
+   "name": "Eliášovka",
+   "description": "Výstup na vrchol Eliášovka (1023 m). Štart: Odbočka na horu Zvir, späť rovnakou cestou. Po modrej a žltej značke.",
+   "region": "levocske-cergov",
+   "region_name": "Levočské vrchy, Branisko a Čergov",
+   "protected_area": null,
+   "destination": {
+    "name": "Eliášovka",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.400828,
+     "lon": 20.642577
+    },
+    "ele_m": 1023,
+    "osm": "node/1160857533"
+   },
+   "start": {
+    "name": "Odbočka na horu Zvir",
+    "location": {
+     "lat": 49.391138,
+     "lon": 20.645637
+    },
+    "ele_m": 824,
+    "osm": "node/13245274172"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.390614,
+     "lon": 20.635809
+    },
+    "walk_m": 714,
+    "fee": null,
+    "osm": "way/1444318780"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 2691,
+   "ascent_m": 192,
+   "duration_min": 90,
+   "max_ele_m": 1024,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue",
+    "yellow"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 60,
+   "bbox": [
+    20.64071,
+    49.39113,
+    20.64563,
+    49.40078
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/eliasovka.gpx"
+  },
+  {
+   "slug": "mindzova",
+   "name": "Mindžová",
+   "description": "Výstup na vrchol Mindžová (920 m). Štart: Buče, sedlo, späť rovnakou cestou. Po červenej značke.",
+   "region": "levocske-cergov",
+   "region_name": "Levočské vrchy, Branisko a Čergov",
+   "protected_area": null,
+   "destination": {
+    "name": "Mindžová",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.074925,
+     "lon": 20.965696
+    },
+    "ele_m": 920,
+    "osm": "node/2630293290"
+   },
+   "start": {
+    "name": "Buče, sedlo",
+    "location": {
+     "lat": 49.074416,
+     "lon": 20.951806
+    },
+    "ele_m": 870,
+    "osm": "node/1399128421"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.079722,
+     "lon": 20.950187
+    },
+    "walk_m": 602,
+    "fee": false,
+    "osm": "way/316108430"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 2168,
+   "ascent_m": 85,
+   "duration_min": 60,
+   "max_ele_m": 918,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 52,
+   "bbox": [
+    20.95176,
+    49.07409,
+    20.96585,
+    49.07546
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/mindzova.gpx"
+  },
+  {
+   "slug": "bucie",
+   "name": "Bučie",
+   "description": "Výstup na vrchol Bučie (1006 m). Štart: Buče, sedlo, späť rovnakou cestou. Po červenej značke.",
+   "region": "levocske-cergov",
+   "region_name": "Levočské vrchy, Branisko a Čergov",
+   "protected_area": null,
+   "destination": {
+    "name": "Bučie",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.074504,
+     "lon": 20.936493
+    },
+    "ele_m": 1006,
+    "osm": "node/1490771393"
+   },
+   "start": {
+    "name": "Buče, sedlo",
+    "location": {
+     "lat": 49.074416,
+     "lon": 20.951806
+    },
+    "ele_m": 870,
+    "osm": "node/1399128421"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.079722,
+     "lon": 20.950187
+    },
+    "walk_m": 602,
+    "fee": false,
+    "osm": "way/316108430"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 2283,
+   "ascent_m": 121,
+   "duration_min": 60,
+   "max_ele_m": 1001,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 43,
+   "bbox": [
+    20.93653,
+    49.07435,
+    20.95176,
+    49.07549
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/bucie.gpx"
+  },
+  {
+   "slug": "lysa",
+   "name": "Lysá",
+   "description": "Výstup na vrchol Lysá (1068 m). Štart: Pod Bogušom, späť rovnakou cestou. Po červenej a zelenej značke.",
+   "region": "levocske-cergov",
+   "region_name": "Levočské vrchy, Branisko a Čergov",
+   "protected_area": null,
+   "destination": {
+    "name": "Lysá",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.163391,
+     "lon": 21.142845
+    },
+    "ele_m": 1068,
+    "osm": "node/1322800700"
+   },
+   "start": {
+    "name": "Pod Bogušom",
+    "location": {
+     "lat": 49.151429,
+     "lon": 21.1321
+    },
+    "ele_m": 820,
+    "osm": "node/10575232099"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.152017,
+     "lon": 21.121535
+    },
+    "walk_m": 771,
+    "fee": null,
+    "osm": "way/972599466"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 4233,
+   "ascent_m": 251,
+   "duration_min": 120,
+   "max_ele_m": 1064,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "green"
+   ],
+   "marked_share": 0.82,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 42,
+   "bbox": [
+    21.13209,
+    49.15087,
+    21.14275,
+    49.16343
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/lysa.gpx"
+  },
   {
    "slug": "velky-krivan",
    "name": "Veľký Kriváň",
@@ -361,6 +3135,67 @@
    ],
    "curated": false,
    "gpx_url": "/gpx/sutovsky-vodopad.gpx"
+  },
+  {
+   "slug": "stratenec",
+   "name": "Stratenec",
+   "description": "Výstup na vrchol Stratenec (1513 m). Štart: Starohradská dolina 15 min., späť rovnakou cestou. Po červenej a žltej značke.",
+   "region": "mala-fatra",
+   "region_name": "Malá Fatra",
+   "protected_area": "NP Malá Fatra",
+   "destination": {
+    "name": "Stratenec",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.180338,
+     "lon": 18.967699
+    },
+    "ele_m": 1513,
+    "osm": "node/1329906967"
+   },
+   "start": {
+    "name": "Starohradská dolina 15 min.",
+    "location": {
+     "lat": 49.178825,
+     "lon": 18.89904
+    },
+    "ele_m": 645,
+    "osm": "node/13121497295"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.173916,
+     "lon": 18.895551
+    },
+    "walk_m": 602,
+    "fee": null,
+    "osm": "way/813885555"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 12027,
+   "ascent_m": 902,
+   "duration_min": 390,
+   "max_ele_m": 1500,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "red",
+    "yellow"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 76,
+   "bbox": [
+    18.89897,
+    49.17224,
+    18.96772,
+    49.18031
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/stratenec.gpx"
   },
   {
    "slug": "maly-rozsutec",
@@ -978,78 +3813,6 @@
    ],
    "curated": false,
    "gpx_url": "/gpx/steny-severny-vrchol.gpx"
-  },
-  {
-   "slug": "hole",
-   "name": "Hole",
-   "description": "Výstup na vrchol Hole (1466 m). Štart: Stará dolina, späť rovnakou cestou. Po zelenej, modrej a žltej značke.",
-   "region": "mala-fatra",
-   "region_name": "Malá Fatra",
-   "protected_area": "NP Malá Fatra",
-   "destination": {
-    "name": "Hole",
-    "kind": "vrchol",
-    "location": {
-     "lat": 49.197176,
-     "lon": 19.004026
-    },
-    "ele_m": 1466,
-    "osm": "node/5485801649"
-   },
-   "start": {
-    "name": "Stará dolina",
-    "location": {
-     "lat": 49.212419,
-     "lon": 19.038784
-    },
-    "ele_m": 700,
-    "osm": "node/2697740801"
-   },
-   "parking": {
-    "name": null,
-    "location": {
-     "lat": 49.211443,
-     "lon": 19.040072
-    },
-    "walk_m": 143,
-    "fee": true,
-    "osm": "way/1357863053"
-   },
-   "transit": {
-    "name": "Terchová, Vrátna - výťah",
-    "mode": "autobus",
-    "location": {
-     "lat": 49.208789,
-     "lon": 19.042107
-    },
-    "walk_m": 470,
-    "osm": "node/824351953"
-   },
-   "route": "tam-a-spat",
-   "distance_m": 9597,
-   "ascent_m": 919,
-   "duration_min": 375,
-   "max_ele_m": 1533,
-   "difficulty": "tazka",
-   "family_friendly": false,
-   "marking": [
-    "green",
-    "blue",
-    "yellow",
-    "red"
-   ],
-   "marked_share": 1.0,
-   "fees": [],
-   "closure_rule_ids": [],
-   "rank": 68,
-   "bbox": [
-    19.00401,
-    49.19289,
-    19.03878,
-    49.21242
-   ],
-   "curated": false,
-   "gpx_url": "/gpx/hole.gpx"
   },
   {
    "slug": "sokolie",
@@ -2845,6 +5608,3078 @@
    "gpx_url": "/gpx/skalnata.gpx"
   },
   {
+   "slug": "dumbier",
+   "name": "Ďumbier",
+   "description": "Výstup na vrchol Ďumbier (2046 m). Štart: Srdiečko, späť rovnakou cestou. Po červenej, modrej a žltej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Ďumbier",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.9364,
+     "lon": 19.640266
+    },
+    "ele_m": 2046,
+    "osm": "node/26862807"
+   },
+   "start": {
+    "name": "Srdiečko",
+    "location": {
+     "lat": 48.924067,
+     "lon": 19.602686
+    },
+    "ele_m": 1216,
+    "osm": "node/6033672890"
+   },
+   "parking": {
+    "name": "Srdiečko",
+    "location": {
+     "lat": 48.924235,
+     "lon": 19.602456
+    },
+    "walk_m": 25,
+    "fee": true,
+    "osm": "way/119226358"
+   },
+   "transit": {
+    "name": "Srdiečko",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.924512,
+     "lon": 19.602513
+    },
+    "walk_m": 51,
+    "osm": "node/245950952"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 10010,
+   "ascent_m": 824,
+   "duration_min": 345,
+   "max_ele_m": 2035,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "red",
+    "blue",
+    "yellow"
+   ],
+   "marked_share": 0.7,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 96,
+   "bbox": [
+    19.59743,
+    48.92407,
+    19.64061,
+    48.93931
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/dumbier.gpx"
+  },
+  {
+   "slug": "chopok",
+   "name": "Chopok",
+   "description": "Výstup na vrchol Chopok (2024 m). Štart: Srdiečko, späť rovnakou cestou. Po žltej a červenej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Chopok",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.94301,
+     "lon": 19.592716
+    },
+    "ele_m": 2024,
+    "osm": "node/245954616"
+   },
+   "start": {
+    "name": "Srdiečko",
+    "location": {
+     "lat": 48.924067,
+     "lon": 19.602686
+    },
+    "ele_m": 1216,
+    "osm": "node/6033672890"
+   },
+   "parking": {
+    "name": "Srdiečko",
+    "location": {
+     "lat": 48.924235,
+     "lon": 19.602456
+    },
+    "walk_m": 25,
+    "fee": true,
+    "osm": "way/119226358"
+   },
+   "transit": {
+    "name": "Srdiečko",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.924512,
+     "lon": 19.602513
+    },
+    "walk_m": 51,
+    "osm": "node/245950952"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 6148,
+   "ascent_m": 803,
+   "duration_min": 315,
+   "max_ele_m": 2014,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "red"
+   ],
+   "marked_share": 0.61,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 95,
+   "bbox": [
+    19.5896,
+    48.92407,
+    19.60269,
+    48.94335
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/chopok.gpx"
+  },
+  {
+   "slug": "derese",
+   "name": "Dereše",
+   "description": "Výstup na vrchol Dereše (2004 m). Štart: Srdiečko, späť rovnakou cestou. Po žltej, červenej a zelenej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Dereše",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.940531,
+     "lon": 19.572804
+    },
+    "ele_m": 2004,
+    "osm": "node/458431807"
+   },
+   "start": {
+    "name": "Srdiečko",
+    "location": {
+     "lat": 48.924067,
+     "lon": 19.602686
+    },
+    "ele_m": 1216,
+    "osm": "node/6033672890"
+   },
+   "parking": {
+    "name": "Srdiečko",
+    "location": {
+     "lat": 48.924235,
+     "lon": 19.602456
+    },
+    "walk_m": 25,
+    "fee": true,
+    "osm": "way/119226358"
+   },
+   "transit": {
+    "name": "Srdiečko",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.924512,
+     "lon": 19.602513
+    },
+    "walk_m": 51,
+    "osm": "node/245950952"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 8801,
+   "ascent_m": 883,
+   "duration_min": 360,
+   "max_ele_m": 1985,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "red",
+    "green"
+   ],
+   "marked_share": 0.71,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 95,
+   "bbox": [
+    19.57262,
+    48.92407,
+    19.60269,
+    48.94309
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/derese.gpx"
+  },
+  {
+   "slug": "kralova-hola",
+   "name": "Kráľova hoľa",
+   "description": "Výstup na vrchol Kráľova hoľa (1948 m). Štart: Krížová cesta, späť rovnakou cestou. Po modrej a červenej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Kráľova hoľa",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.882802,
+     "lon": 20.139128
+    },
+    "ele_m": 1948,
+    "osm": "node/26863430"
+   },
+   "start": {
+    "name": "Krížová cesta",
+    "location": {
+     "lat": 48.845956,
+     "lon": 20.135029
+    },
+    "ele_m": 1021,
+    "osm": "node/14116262389"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.845402,
+     "lon": 20.131825
+    },
+    "walk_m": 242,
+    "fee": true,
+    "osm": "way/754894495"
+   },
+   "transit": {
+    "name": "Šumiac, OcÚ",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.839964,
+     "lon": 20.130133
+    },
+    "walk_m": 756,
+    "osm": "node/3426502509"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 9371,
+   "ascent_m": 913,
+   "duration_min": 375,
+   "max_ele_m": 1941,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "blue",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 95,
+   "bbox": [
+    20.13428,
+    48.84592,
+    20.14191,
+    48.88285
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/kralova-hola.gpx"
+  },
+  {
+   "slug": "demanovska-jaskyna-slobody",
+   "name": "Demänovská jaskyňa Slobody",
+   "description": "Výlet k jaskyni: Demänovská jaskyňa Slobody. Štart: Lúčky, chata, späť rovnakou cestou. Po zelenej a modrej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Demänovská jaskyňa Slobody",
+    "kind": "jaskyna",
+    "location": {
+     "lat": 48.998165,
+     "lon": 19.585398
+    },
+    "ele_m": 906,
+    "osm": "node/2126843897"
+   },
+   "start": {
+    "name": "Lúčky, chata",
+    "location": {
+     "lat": 48.981248,
+     "lon": 19.592575
+    },
+    "ele_m": 930,
+    "osm": "node/2126845520"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.981958,
+     "lon": 19.591962
+    },
+    "walk_m": 91,
+    "fee": null,
+    "osm": "way/1150576240"
+   },
+   "transit": {
+    "name": "Lúčky",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.981324,
+     "lon": 19.592599
+    },
+    "walk_m": 9,
+    "osm": "node/2126843907"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 5008,
+   "ascent_m": 187,
+   "duration_min": 120,
+   "max_ele_m": 930,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green",
+    "blue"
+   ],
+   "marked_share": 0.97,
+   "fees": [
+    {
+     "kind": "vstupne",
+     "text": "Vstupné",
+     "amount_eur": null,
+     "source": "osm",
+     "source_url": "https://www.openstreetmap.org/node/2126843897",
+     "rule_id": null
+    }
+   ],
+   "closure_rule_ids": [],
+   "rank": 91,
+   "bbox": [
+    19.58334,
+    48.98126,
+    19.59312,
+    48.99826
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/demanovska-jaskyna-slobody.gpx"
+  },
+  {
+   "slug": "chabenec",
+   "name": "Chabenec",
+   "description": "Výstup na vrchol Chabenec (1955 m). Štart: Chata Magurka, späť rovnakou cestou. Po červenej a zelenej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Chabenec",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.941347,
+     "lon": 19.494896
+    },
+    "ele_m": 1955,
+    "osm": "node/208520896"
+   },
+   "start": {
+    "name": "Chata Magurka",
+    "location": {
+     "lat": 48.944074,
+     "lon": 19.432513
+    },
+    "ele_m": 1042,
+    "osm": "node/5809929269"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.944051,
+     "lon": 19.432085
+    },
+    "walk_m": 31,
+    "fee": null,
+    "osm": "way/534321751"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 11357,
+   "ascent_m": 911,
+   "duration_min": 390,
+   "max_ele_m": 1954,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "red",
+    "green"
+   ],
+   "marked_share": 0.61,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 84,
+   "bbox": [
+    19.4326,
+    48.93278,
+    19.49499,
+    48.94501
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/chabenec.gpx"
+  },
+  {
+   "slug": "stolica",
+   "name": "Stolica",
+   "description": "Výstup na vrchol Stolica (1477 m). Štart: Rejdová, späť rovnakou cestou. Po žltej, zelenej a červenej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Stolica",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.773665,
+     "lon": 20.206754
+    },
+    "ele_m": 1477,
+    "osm": "node/727686297"
+   },
+   "start": {
+    "name": "Rejdová",
+    "location": {
+     "lat": 48.790111,
+     "lon": 20.283738
+    },
+    "ele_m": 582,
+    "osm": "node/1738688791"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.792612,
+     "lon": 20.286202
+    },
+    "walk_m": 332,
+    "fee": null,
+    "osm": "way/1136836740"
+   },
+   "transit": {
+    "name": "Rejdová, Jednota",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.789833,
+     "lon": 20.283648
+    },
+    "walk_m": 32,
+    "osm": "node/8268273937"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 16841,
+   "ascent_m": 950,
+   "duration_min": 435,
+   "max_ele_m": 1479,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "green",
+    "red"
+   ],
+   "marked_share": 0.81,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 83,
+   "bbox": [
+    20.20689,
+    48.76116,
+    20.28374,
+    48.79048
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/stolica.gpx"
+  },
+  {
+   "slug": "polana",
+   "name": "Poľana",
+   "description": "Výstup na vrchol Poľana (1890 m). Štart: Mikulášska chata, späť rovnakou cestou. Po žltej a červenej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Poľana",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.947248,
+     "lon": 19.539914
+    },
+    "ele_m": 1890,
+    "osm": "node/208520692"
+   },
+   "start": {
+    "name": "Mikulášska chata",
+    "location": {
+     "lat": 48.968829,
+     "lon": 19.575453
+    },
+    "ele_m": 1113,
+    "osm": "node/245947535"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.969053,
+     "lon": 19.575385
+    },
+    "walk_m": 25,
+    "fee": null,
+    "osm": "way/772813929"
+   },
+   "transit": {
+    "name": "Biela Púť Jasná",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.971766,
+     "lon": 19.583799
+    },
+    "walk_m": 691,
+    "osm": "node/7243673368"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 10006,
+   "ascent_m": 748,
+   "duration_min": 315,
+   "max_ele_m": 1884,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 79,
+   "bbox": [
+    19.53998,
+    48.94293,
+    19.5756,
+    48.96889
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/polana.gpx"
+  },
+  {
+   "slug": "durkova",
+   "name": "Ďurková",
+   "description": "Výstup na vrchol Ďurková (1750 m). Štart: Bašovňa, späť rovnakou cestou. Po červenej, zelenej a žltej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Ďurková",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.931114,
+     "lon": 19.458368
+    },
+    "ele_m": 1750,
+    "osm": "node/457955143"
+   },
+   "start": {
+    "name": "Bašovňa",
+    "location": {
+     "lat": 48.941404,
+     "lon": 19.430107
+    },
+    "ele_m": 1112,
+    "osm": "node/5609421615"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.944051,
+     "lon": 19.432085
+    },
+    "walk_m": 328,
+    "fee": null,
+    "osm": "way/534321751"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 7639,
+   "ascent_m": 666,
+   "duration_min": 285,
+   "max_ele_m": 1748,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "red",
+    "green",
+    "yellow",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 78,
+   "bbox": [
+    19.42885,
+    48.92727,
+    19.4583,
+    48.94145
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/durkova.gpx"
+  },
+  {
+   "slug": "latiborska-hola",
+   "name": "Latiborská hoľa",
+   "description": "Výstup na vrchol Latiborská hoľa (1648 m). Štart: Kilian štôlňa, späť rovnakou cestou. Po modrej a červenej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Latiborská hoľa",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.924931,
+     "lon": 19.404562
+    },
+    "ele_m": 1648,
+    "osm": "node/1511370799"
+   },
+   "start": {
+    "name": "Kilian štôlňa",
+    "location": {
+     "lat": 48.937053,
+     "lon": 19.428526
+    },
+    "ele_m": 1172,
+    "osm": "node/7949390451"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.944001,
+     "lon": 19.426264
+    },
+    "walk_m": 790,
+    "fee": null,
+    "osm": "node/6286068722"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 7782,
+   "ascent_m": 474,
+   "duration_min": 225,
+   "max_ele_m": 1646,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "blue",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 77,
+   "bbox": [
+    19.40456,
+    48.92495,
+    19.42862,
+    48.93739
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/latiborska-hola.gpx"
+  },
+  {
+   "slug": "skalka-mikulasska-chata",
+   "name": "Skalka",
+   "description": "Výstup na vrchol Skalka (1981 m). Štart: Mikulášska chata, späť rovnakou cestou. Po žltej a červenej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Skalka",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.92898,
+     "lon": 19.519095
+    },
+    "ele_m": 1981,
+    "osm": "node/5128975763"
+   },
+   "start": {
+    "name": "Mikulášska chata",
+    "location": {
+     "lat": 48.968829,
+     "lon": 19.575453
+    },
+    "ele_m": 1113,
+    "osm": "node/245947535"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.969053,
+     "lon": 19.575385
+    },
+    "walk_m": 25,
+    "fee": null,
+    "osm": "way/772813929"
+   },
+   "transit": {
+    "name": "Biela Púť Jasná",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.971766,
+     "lon": 19.583799
+    },
+    "walk_m": 691,
+    "osm": "node/7243673368"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 16094,
+   "ascent_m": 1151,
+   "duration_min": 495,
+   "max_ele_m": 1976,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 77,
+   "bbox": [
+    19.51764,
+    48.92932,
+    19.5756,
+    48.96889
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/skalka-mikulasska-chata.gpx"
+  },
+  {
+   "slug": "kotliska",
+   "name": "Kotliská",
+   "description": "Výstup na vrchol Kotliská (1937 m). Štart: Mikulášska chata, späť rovnakou cestou. Po žltej a červenej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Kotliská",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.938892,
+     "lon": 19.51742
+    },
+    "ele_m": 1937,
+    "osm": "node/208520865"
+   },
+   "start": {
+    "name": "Mikulášska chata",
+    "location": {
+     "lat": 48.968829,
+     "lon": 19.575453
+    },
+    "ele_m": 1113,
+    "osm": "node/245947535"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.969053,
+     "lon": 19.575385
+    },
+    "walk_m": 25,
+    "fee": null,
+    "osm": "way/772813929"
+   },
+   "transit": {
+    "name": "Biela Púť Jasná",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.971766,
+     "lon": 19.583799
+    },
+    "walk_m": 691,
+    "osm": "node/7243673368"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 13997,
+   "ascent_m": 1001,
+   "duration_min": 435,
+   "max_ele_m": 1924,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 76,
+   "bbox": [
+    19.51717,
+    48.93832,
+    19.5756,
+    48.96889
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/kotliska.gpx"
+  },
+  {
+   "slug": "lajstroch",
+   "name": "Lajštroch",
+   "description": "Výstup na vrchol Lajštroch (1602 m). Štart: Sedlo Čertovica, späť rovnakou cestou. Po červenej a žltej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Lajštroch",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.911997,
+     "lon": 19.712943
+    },
+    "ele_m": 1602,
+    "osm": "node/4015271494"
+   },
+   "start": {
+    "name": "Sedlo Čertovica",
+    "location": {
+     "lat": 48.905181,
+     "lon": 19.736285
+    },
+    "ele_m": 1235,
+    "osm": "node/6919174022"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.90481,
+     "lon": 19.735936
+    },
+    "walk_m": 49,
+    "fee": true,
+    "osm": "way/397268281"
+   },
+   "transit": {
+    "name": "Čertovica, motorest",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.905399,
+     "lon": 19.735569
+    },
+    "walk_m": 58,
+    "osm": "node/6919187306"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4393,
+   "ascent_m": 359,
+   "duration_min": 150,
+   "max_ele_m": 1596,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "yellow"
+   ],
+   "marked_share": 0.98,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 62,
+   "bbox": [
+    19.7129,
+    48.90516,
+    19.73622,
+    48.91198
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/lajstroch.gpx"
+  },
+  {
+   "slug": "rovienky",
+   "name": "Rovienky",
+   "description": "Výstup na vrchol Rovienky (1588 m). Štart: Sedlo Čertovica, späť rovnakou cestou. Po červenej a žltej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Rovienky",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.911275,
+     "lon": 19.718432
+    },
+    "ele_m": 1588,
+    "osm": "node/457955057"
+   },
+   "start": {
+    "name": "Sedlo Čertovica",
+    "location": {
+     "lat": 48.905181,
+     "lon": 19.736285
+    },
+    "ele_m": 1235,
+    "osm": "node/6919174022"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.90481,
+     "lon": 19.735936
+    },
+    "walk_m": 49,
+    "fee": true,
+    "osm": "way/397268281"
+   },
+   "transit": {
+    "name": "Čertovica, motorest",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.905399,
+     "lon": 19.735569
+    },
+    "walk_m": 58,
+    "osm": "node/6919187306"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3551,
+   "ascent_m": 347,
+   "duration_min": 150,
+   "max_ele_m": 1584,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "yellow"
+   ],
+   "marked_share": 0.97,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 30,
+   "bbox": [
+    19.71839,
+    48.90516,
+    19.73622,
+    48.91119
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/rovienky.gpx"
+  },
+  {
+   "slug": "hajny-grun",
+   "name": "Hájny grúň",
+   "description": "Výstup na vrchol Hájny grúň (832 m). Štart: Hronec, späť rovnakou cestou. Po modrej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Hájny grúň",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.774687,
+     "lon": 19.567085
+    },
+    "ele_m": 832,
+    "osm": "node/1517012667"
+   },
+   "start": {
+    "name": "Hronec",
+    "location": {
+     "lat": 48.794917,
+     "lon": 19.582059
+    },
+    "ele_m": 486,
+    "osm": "node/206255063"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.795393,
+     "lon": 19.582425
+    },
+    "walk_m": 59,
+    "fee": null,
+    "osm": "node/2014762116"
+   },
+   "transit": {
+    "name": "Hronec, námestie",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.795414,
+     "lon": 19.582412
+    },
+    "walk_m": 61,
+    "osm": "node/2014774079"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 5418,
+   "ascent_m": 337,
+   "duration_min": 150,
+   "max_ele_m": 824,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 23,
+   "bbox": [
+    19.56654,
+    48.77528,
+    19.58321,
+    48.79492
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/hajny-grun.gpx"
+  },
+  {
+   "slug": "horny-kopec",
+   "name": "Horný kopec",
+   "description": "Výstup na vrchol Horný kopec (884 m). Štart: Polomka, stanica (vlak), späť rovnakou cestou. Po zelenej značke.",
+   "region": "nizke-tatry",
+   "region_name": "Nízke Tatry",
+   "protected_area": "NAPANT",
+   "destination": {
+    "name": "Horný kopec",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.833424,
+     "lon": 19.850483
+    },
+    "ele_m": 884,
+    "osm": "node/2623551958"
+   },
+   "start": {
+    "name": "Polomka, stanica (vlak)",
+    "location": {
+     "lat": 48.84668,
+     "lon": 19.854734
+    },
+    "ele_m": 585,
+    "osm": "node/442108298"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.851777,
+     "lon": 19.851884
+    },
+    "walk_m": 604,
+    "fee": null,
+    "osm": "way/1458466398"
+   },
+   "transit": {
+    "name": "Polomka",
+    "mode": "vlak",
+    "location": {
+     "lat": 48.846414,
+     "lon": 19.854664
+    },
+    "walk_m": 30,
+    "osm": "node/101185883"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 5652,
+   "ascent_m": 283,
+   "duration_min": 135,
+   "max_ele_m": 874,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 0.96,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 23,
+   "bbox": [
+    19.84072,
+    48.833,
+    19.85667,
+    48.84692
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/horny-kopec.gpx"
+  },
+  {
+   "slug": "lazna-skala",
+   "name": "Lažna Skala",
+   "description": "Výstup na vrchol Lažna Skala (770 m). Štart: Sedlo pod Šafranovkou, štátna hranica, späť rovnakou cestou. Po modrej a červenej značke.",
+   "region": "pieniny",
+   "region_name": "Pieniny",
+   "protected_area": "PIENAP",
+   "destination": {
+    "name": "Lažna Skala",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.406066,
+     "lon": 20.492416
+    },
+    "ele_m": 770,
+    "osm": "node/2663427890"
+   },
+   "start": {
+    "name": "Sedlo pod Šafranovkou, štátna hranica",
+    "location": {
+     "lat": 49.415949,
+     "lon": 20.464238
+    },
+    "ele_m": 630,
+    "osm": "node/4979451315"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.412629,
+     "lon": 20.457774
+    },
+    "walk_m": 596,
+    "fee": null,
+    "osm": "way/1153078103"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 4958,
+   "ascent_m": 237,
+   "duration_min": 120,
+   "max_ele_m": 748,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 65,
+   "bbox": [
+    20.46425,
+    49.40674,
+    20.49228,
+    49.4161
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/lazna-skala.gpx"
+  },
+  {
+   "slug": "veterny-vrch",
+   "name": "Veterný vrch",
+   "description": "Výstup na vrchol Veterný vrch (1113 m). Štart: Veľký Lipník, späť rovnakou cestou. Po červenej značke.",
+   "region": "pieniny",
+   "region_name": "Pieniny",
+   "protected_area": "PIENAP",
+   "destination": {
+    "name": "Veterný vrch",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.335284,
+     "lon": 20.509648
+    },
+    "ele_m": 1113,
+    "osm": "node/848714973"
+   },
+   "start": {
+    "name": "Veľký Lipník",
+    "location": {
+     "lat": 49.374106,
+     "lon": 20.500973
+    },
+    "ele_m": 580,
+    "osm": "node/1500712954"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.37492,
+     "lon": 20.496718
+    },
+    "walk_m": 321,
+    "fee": null,
+    "osm": "node/8629603598"
+   },
+   "transit": {
+    "name": "Veľký Lipník, centrum",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.375233,
+     "lon": 20.496875
+    },
+    "walk_m": 322,
+    "osm": "node/1504015001"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 10290,
+   "ascent_m": 532,
+   "duration_min": 255,
+   "max_ele_m": 1108,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 0.97,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 39,
+   "bbox": [
+    20.50094,
+    49.33504,
+    20.51139,
+    49.37411
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/veterny-vrch.gpx"
+  },
+  {
+   "slug": "kvasnik",
+   "name": "Kvasník",
+   "description": "Výstup na vrchol Kvasník (1019 m). Štart: Veľký Lipník, späť rovnakou cestou. Po červenej značke.",
+   "region": "pieniny",
+   "region_name": "Pieniny",
+   "protected_area": "PIENAP",
+   "destination": {
+    "name": "Kvasník",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.345113,
+     "lon": 20.510728
+    },
+    "ele_m": 1019,
+    "osm": "node/2610887834"
+   },
+   "start": {
+    "name": "Veľký Lipník",
+    "location": {
+     "lat": 49.374106,
+     "lon": 20.500973
+    },
+    "ele_m": 580,
+    "osm": "node/1500712954"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.37492,
+     "lon": 20.496718
+    },
+    "walk_m": 321,
+    "fee": null,
+    "osm": "node/8629603598"
+   },
+   "transit": {
+    "name": "Veľký Lipník, centrum",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.375233,
+     "lon": 20.496875
+    },
+    "walk_m": 322,
+    "osm": "node/1504015001"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 7543,
+   "ascent_m": 392,
+   "duration_min": 195,
+   "max_ele_m": 969,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 0.96,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 25,
+   "bbox": [
+    20.50094,
+    49.34506,
+    20.50915,
+    49.37411
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/kvasnik.gpx"
+  },
+  {
+   "slug": "horbalova",
+   "name": "Horbáľová",
+   "description": "Výstup na vrchol Horbáľová (1010 m). Štart: Vyšné Ružbachy, späť rovnakou cestou. Po zelenej značke.",
+   "region": "pieniny",
+   "region_name": "Pieniny",
+   "protected_area": "PIENAP",
+   "destination": {
+    "name": "Horbáľová",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.346764,
+     "lon": 20.547086
+    },
+    "ele_m": 1010,
+    "osm": "node/2610887817"
+   },
+   "start": {
+    "name": "Vyšné Ružbachy",
+    "location": {
+     "lat": 49.303313,
+     "lon": 20.566326
+    },
+    "ele_m": 614,
+    "osm": "node/283647848"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.303127,
+     "lon": 20.56672
+    },
+    "walk_m": 35,
+    "fee": false,
+    "osm": "way/870675100"
+   },
+   "transit": {
+    "name": "Vyšné Ružbachy-obec",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.303414,
+     "lon": 20.563675
+    },
+    "walk_m": 193,
+    "osm": "node/2903102041"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 12076,
+   "ascent_m": 428,
+   "duration_min": 255,
+   "max_ele_m": 998,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 0.92,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 24,
+   "bbox": [
+    20.54303,
+    49.30331,
+    20.56787,
+    49.34651
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/horbalova.gpx"
+  },
+  {
+   "slug": "plasna",
+   "name": "Plašná",
+   "description": "Výstup na vrchol Plašná (889 m). Štart: Sedlo Cerla, späť rovnakou cestou. Po červenej značke.",
+   "region": "pieniny",
+   "region_name": "Pieniny",
+   "protected_area": "PIENAP",
+   "destination": {
+    "name": "Plašná",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.387312,
+     "lon": 20.453621
+    },
+    "ele_m": 889,
+    "osm": "node/2610887848"
+   },
+   "start": {
+    "name": "Sedlo Cerla",
+    "location": {
+     "lat": 49.391556,
+     "lon": 20.431546
+    },
+    "ele_m": 610,
+    "osm": "node/5629102647"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.389671,
+     "lon": 20.42122
+    },
+    "walk_m": 776,
+    "fee": null,
+    "osm": "way/1300742101"
+   },
+   "transit": {
+    "name": "Červený Kláštor, kúpele",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.388861,
+     "lon": 20.421953
+    },
+    "walk_m": 756,
+    "osm": "node/1504512946"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4566,
+   "ascent_m": 315,
+   "duration_min": 150,
+   "max_ele_m": 892,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 0.82,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 23,
+   "bbox": [
+    20.4315,
+    49.38708,
+    20.45318,
+    49.39186
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/plasna.gpx"
+  },
+  {
+   "slug": "polianka",
+   "name": "Polianka",
+   "description": "Výstup na vrchol Polianka (706 m). Štart: Lesnica, škola, späť rovnakou cestou. Po modrej značke.",
+   "region": "pieniny",
+   "region_name": "Pieniny",
+   "protected_area": "PIENAP",
+   "destination": {
+    "name": "Polianka",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.397701,
+     "lon": 20.459555
+    },
+    "ele_m": 706,
+    "osm": "node/4015271825"
+   },
+   "start": {
+    "name": "Lesnica, škola",
+    "location": {
+     "lat": 49.406613,
+     "lon": 20.464708
+    },
+    "ele_m": 480,
+    "osm": "node/269043659"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.412264,
+     "lon": 20.458055
+    },
+    "walk_m": 791,
+    "fee": true,
+    "osm": "way/293587349"
+   },
+   "transit": {
+    "name": "Lesnica, materská škola",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.402859,
+     "lon": 20.469197
+    },
+    "walk_m": 529,
+    "osm": "node/1500770261"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4404,
+   "ascent_m": 203,
+   "duration_min": 105,
+   "max_ele_m": 687,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 22,
+   "bbox": [
+    20.4601,
+    49.3971,
+    20.47295,
+    49.40661
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/polianka.gpx"
+  },
+  {
+   "slug": "aksamitka",
+   "name": "Aksamitka",
+   "description": "Výstup na vrchol Aksamitka. Štart: Lesnické sedlo - parking, späť rovnakou cestou. Po červenej značke.",
+   "region": "pieniny",
+   "region_name": "Pieniny",
+   "protected_area": "PIENAP",
+   "destination": {
+    "name": "Aksamitka",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.384716,
+     "lon": 20.470458
+    },
+    "ele_m": 821,
+    "osm": "node/5657427803"
+   },
+   "start": {
+    "name": "Lesnické sedlo - parking",
+    "location": {
+     "lat": 49.382777,
+     "lon": 20.493416
+    },
+    "ele_m": 720,
+    "osm": "node/1500712939"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.382663,
+     "lon": 20.493732
+    },
+    "walk_m": 26,
+    "fee": true,
+    "osm": "way/881865775"
+   },
+   "transit": {
+    "name": "Lesnica, Lesnické sedlo",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.382735,
+     "lon": 20.494048
+    },
+    "walk_m": 46,
+    "osm": "node/3658558408"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3492,
+   "ascent_m": 120,
+   "duration_min": 75,
+   "max_ele_m": 826,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 15,
+   "bbox": [
+    20.4708,
+    49.38274,
+    20.49342,
+    49.38522
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/aksamitka.gpx"
+  },
+  {
+   "slug": "haligovcik",
+   "name": "Haligovčík",
+   "description": "Výstup na vrchol Haligovčík. Štart: Lesnica, škola, späť rovnakou cestou. Po modrej a zelenej značke.",
+   "region": "pieniny",
+   "region_name": "Pieniny",
+   "protected_area": "PIENAP",
+   "destination": {
+    "name": "Haligovčík",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.394477,
+     "lon": 20.469206
+    },
+    "ele_m": 623,
+    "osm": "node/5657425494"
+   },
+   "start": {
+    "name": "Lesnica, škola",
+    "location": {
+     "lat": 49.406613,
+     "lon": 20.464708
+    },
+    "ele_m": 480,
+    "osm": "node/269043659"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.412264,
+     "lon": 20.458055
+    },
+    "walk_m": 791,
+    "fee": true,
+    "osm": "way/293587349"
+   },
+   "transit": {
+    "name": "Lesnica, materská škola",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.402859,
+     "lon": 20.469197
+    },
+    "walk_m": 529,
+    "osm": "node/1500770261"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3739,
+   "ascent_m": 142,
+   "duration_min": 90,
+   "max_ele_m": 623,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue",
+    "green"
+   ],
+   "marked_share": 0.7,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 15,
+   "bbox": [
+    20.46471,
+    49.39384,
+    20.47295,
+    49.40661
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/haligovcik.gpx"
+  },
+  {
+   "slug": "polana-horsky-hotel-polana",
+   "name": "Poľana",
+   "description": "Výstup na vrchol Poľana (1458 m). Štart: Horský hotel Poľana, späť rovnakou cestou. Po červenej značke.",
+   "region": "polana-muran",
+   "region_name": "Poľana a Muránska planina",
+   "protected_area": null,
+   "destination": {
+    "name": "Poľana",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.636758,
+     "lon": 19.483501
+    },
+    "ele_m": 1458,
+    "osm": "node/26864346"
+   },
+   "start": {
+    "name": "Horský hotel Poľana",
+    "location": {
+     "lat": 48.624534,
+     "lon": 19.464632
+    },
+    "ele_m": 1256,
+    "osm": "node/253715508"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.624246,
+     "lon": 19.463108
+    },
+    "walk_m": 117,
+    "fee": null,
+    "osm": "way/19794847"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 4356,
+   "ascent_m": 271,
+   "duration_min": 120,
+   "max_ele_m": 1457,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 72,
+   "bbox": [
+    19.46464,
+    48.6245,
+    19.48304,
+    48.63697
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/polana-horsky-hotel-polana.gpx"
+  },
+  {
+   "slug": "drienok-teply-vrch-namestie",
+   "name": "Drienok",
+   "description": "Výlet k hradu: Drienok. Štart: Teplý Vrch, námestie, späť rovnakou cestou. Po zelenej a modrej značke.",
+   "region": "polana-muran",
+   "region_name": "Poľana a Muránska planina",
+   "protected_area": null,
+   "destination": {
+    "name": "Drienok",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.527811,
+     "lon": 20.097272
+    },
+    "ele_m": 366,
+    "osm": "node/4976129028"
+   },
+   "start": {
+    "name": "Teplý Vrch, námestie",
+    "location": {
+     "lat": 48.470255,
+     "lon": 20.101229
+    },
+    "ele_m": 214,
+    "osm": "node/4976129290"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.471774,
+     "lon": 20.099111
+    },
+    "walk_m": 230,
+    "fee": null,
+    "osm": "way/39275746"
+   },
+   "transit": {
+    "name": "Teplý Vrch",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.470072,
+     "lon": 20.101338
+    },
+    "walk_m": 22,
+    "osm": "node/9573666235"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 20051,
+   "ascent_m": 493,
+   "duration_min": 390,
+   "max_ele_m": 398,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "green",
+    "blue"
+   ],
+   "marked_share": 0.96,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 68,
+   "bbox": [
+    20.07484,
+    48.4702,
+    20.103,
+    48.52853
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/drienok-teply-vrch-namestie.gpx"
+  },
+  {
+   "slug": "rakos",
+   "name": "Rákoš",
+   "description": "Výlet k hradu: Rákoš. Štart: Rákošská baňa, späť rovnakou cestou. Po zelenej značke.",
+   "region": "polana-muran",
+   "region_name": "Poľana a Muránska planina",
+   "protected_area": null,
+   "destination": {
+    "name": "Rákoš",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.611163,
+     "lon": 20.144401
+    },
+    "ele_m": 518,
+    "osm": "node/5163974176"
+   },
+   "start": {
+    "name": "Rákošská baňa",
+    "location": {
+     "lat": 48.602941,
+     "lon": 20.129508
+    },
+    "ele_m": 360,
+    "osm": "node/5157767637"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.602463,
+     "lon": 20.129356
+    },
+    "walk_m": 54,
+    "fee": null,
+    "osm": "way/1136022004"
+   },
+   "transit": {
+    "name": "Rákoš, Rákošská Baňa, rázcestie",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.602454,
+     "lon": 20.129593
+    },
+    "walk_m": 55,
+    "osm": "node/9561136591"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4148,
+   "ascent_m": 158,
+   "duration_min": 90,
+   "max_ele_m": 518,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 0.96,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 68,
+   "bbox": [
+    20.12945,
+    48.60272,
+    20.14672,
+    48.61089
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/rakos.gpx"
+  },
+  {
+   "slug": "kohut",
+   "name": "Kohút",
+   "description": "Výstup na vrchol Kohút (1409 m). Štart: Slavošovce, závod, späť rovnakou cestou. Po zelenej a modrej značke.",
+   "region": "polana-muran",
+   "region_name": "Poľana a Muránska planina",
+   "protected_area": null,
+   "destination": {
+    "name": "Kohút",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.730267,
+     "lon": 20.182773
+    },
+    "ele_m": 1409,
+    "osm": "node/4433075320"
+   },
+   "start": {
+    "name": "Slavošovce, závod",
+    "location": {
+     "lat": 48.718844,
+     "lon": 20.268678
+    },
+    "ele_m": 455,
+    "osm": "node/1314171993"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.718418,
+     "lon": 20.270019
+    },
+    "walk_m": 109,
+    "fee": null,
+    "osm": "way/979670388"
+   },
+   "transit": {
+    "name": "Slavošovce",
+    "mode": "vlak",
+    "location": {
+     "lat": 48.719294,
+     "lon": 20.269875
+    },
+    "walk_m": 101,
+    "osm": "node/1314175060"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 17213,
+   "ascent_m": 986,
+   "duration_min": 450,
+   "max_ele_m": 1415,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "green",
+    "blue"
+   ],
+   "marked_share": 0.64,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 67,
+   "bbox": [
+    20.18224,
+    48.71311,
+    20.26865,
+    48.73048
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/kohut.gpx"
+  },
+  {
+   "slug": "vepor",
+   "name": "Vepor",
+   "description": "Výstup na vrchol Vepor (1277 m). Štart: Včelinec, späť rovnakou cestou. Po červenej a modrej značke.",
+   "region": "polana-muran",
+   "region_name": "Poľana a Muránska planina",
+   "protected_area": null,
+   "destination": {
+    "name": "Vepor",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.715136,
+     "lon": 19.458043
+    },
+    "ele_m": 1277,
+    "osm": "node/578077476"
+   },
+   "start": {
+    "name": "Včelinec",
+    "location": {
+     "lat": 48.728107,
+     "lon": 19.434436
+    },
+    "ele_m": 840,
+    "osm": "node/578077238"
+   },
+   "parking": {
+    "name": "Parkovisko na Včelinci",
+    "location": {
+     "lat": 48.728328,
+     "lon": 19.434684
+    },
+    "walk_m": 31,
+    "fee": false,
+    "osm": "way/1351513019"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 9700,
+   "ascent_m": 567,
+   "duration_min": 255,
+   "max_ele_m": 1284,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "red",
+    "blue"
+   ],
+   "marked_share": 0.98,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 66,
+   "bbox": [
+    19.43447,
+    48.71514,
+    19.45817,
+    48.73653
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/vepor.gpx"
+  },
+  {
+   "slug": "hajny-grun-kyslinky-centrum",
+   "name": "Hájny grúň",
+   "description": "Výstup na vrchol Hájny grúň (1208 m). Štart: Kyslinky, centrum kaldery Poľany, späť rovnakou cestou. Po zelenej, červenej a modrej značke.",
+   "region": "polana-muran",
+   "region_name": "Poľana a Muránska planina",
+   "protected_area": null,
+   "destination": {
+    "name": "Hájny grúň",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.690854,
+     "lon": 19.467281
+    },
+    "ele_m": 1208,
+    "osm": "node/578076500"
+   },
+   "start": {
+    "name": "Kyslinky, centrum kaldery Poľany",
+    "location": {
+     "lat": 48.65433,
+     "lon": 19.433625
+    },
+    "ele_m": 765,
+    "osm": "node/290002044"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.654397,
+     "lon": 19.431244
+    },
+    "walk_m": 175,
+    "fee": false,
+    "osm": "way/1116871327"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 12484,
+   "ascent_m": 474,
+   "duration_min": 270,
+   "max_ele_m": 1218,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "green",
+    "red",
+    "blue"
+   ],
+   "marked_share": 0.94,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 65,
+   "bbox": [
+    19.4317,
+    48.65429,
+    19.46916,
+    48.69083
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/hajny-grun-kyslinky-centrum.gpx"
+  },
+  {
+   "slug": "hrb",
+   "name": "Hrb",
+   "description": "Výstup na vrchol Hrb (1255 m). Štart: Včelinec, späť rovnakou cestou. Po modrej a červenej značke.",
+   "region": "polana-muran",
+   "region_name": "Poľana a Muránska planina",
+   "protected_area": null,
+   "destination": {
+    "name": "Hrb",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.730605,
+     "lon": 19.457408
+    },
+    "ele_m": 1255,
+    "osm": "node/578077745"
+   },
+   "start": {
+    "name": "Včelinec",
+    "location": {
+     "lat": 48.728107,
+     "lon": 19.434436
+    },
+    "ele_m": 840,
+    "osm": "node/578077238"
+   },
+   "parking": {
+    "name": "Parkovisko na Včelinci",
+    "location": {
+     "lat": 48.728328,
+     "lon": 19.434684
+    },
+    "walk_m": 31,
+    "fee": false,
+    "osm": "way/1351513019"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 5741,
+   "ascent_m": 408,
+   "duration_min": 180,
+   "max_ele_m": 1225,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "blue",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 62,
+   "bbox": [
+    19.43447,
+    48.72814,
+    19.45749,
+    48.73653
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/hrb.gpx"
+  },
+  {
+   "slug": "trstie",
+   "name": "Tŕstie",
+   "description": "Výstup na vrchol Tŕstie (1121 m). Štart: Rimavská Píla, zast., späť rovnakou cestou. Po zelenej, žltej a červenej značke.",
+   "region": "polana-muran",
+   "region_name": "Poľana a Muránska planina",
+   "protected_area": null,
+   "destination": {
+    "name": "Tŕstie",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.651202,
+     "lon": 19.988088
+    },
+    "ele_m": 1121,
+    "osm": "node/5657430218"
+   },
+   "start": {
+    "name": "Rimavská Píla, zast.",
+    "location": {
+     "lat": 48.650591,
+     "lon": 19.947519
+    },
+    "ele_m": 357,
+    "osm": "node/81563655"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.645791,
+     "lon": 19.945772
+    },
+    "walk_m": 549,
+    "fee": null,
+    "osm": "way/677595553"
+   },
+   "transit": {
+    "name": "Rimavská Píla",
+    "mode": "vlak",
+    "location": {
+     "lat": 48.650527,
+     "lon": 19.947584
+    },
+    "walk_m": 9,
+    "osm": "node/81287610"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 7159,
+   "ascent_m": 752,
+   "duration_min": 300,
+   "max_ele_m": 1124,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "green",
+    "yellow",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 61,
+   "bbox": [
+    19.94747,
+    48.65061,
+    19.9872,
+    48.65381
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/trstie.gpx"
+  },
+  {
+   "slug": "drabovka",
+   "name": "Drábovka",
+   "description": "Výstup na vrchol Drábovka (1251 m). Štart: Horský hotel Poľana, späť rovnakou cestou. Po žltej a červenej značke.",
+   "region": "polana-muran",
+   "region_name": "Poľana a Muránska planina",
+   "protected_area": null,
+   "destination": {
+    "name": "Drábovka",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.632869,
+     "lon": 19.438341
+    },
+    "ele_m": 1251,
+    "osm": "node/2623551940"
+   },
+   "start": {
+    "name": "Horský hotel Poľana",
+    "location": {
+     "lat": 48.624534,
+     "lon": 19.464632
+    },
+    "ele_m": 1256,
+    "osm": "node/253715508"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.624246,
+     "lon": 19.463108
+    },
+    "walk_m": 117,
+    "fee": null,
+    "osm": "way/19794847"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 4628,
+   "ascent_m": 123,
+   "duration_min": 90,
+   "max_ele_m": 1292,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "yellow",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 55,
+   "bbox": [
+    19.43904,
+    48.62432,
+    19.46464,
+    48.63246
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/drabovka.gpx"
+  },
+  {
+   "slug": "vrchdetva",
+   "name": "Vrchdetva",
+   "description": "Výstup na vrchol Vrchdetva (1062 m). Štart: Vrchdetva, rázc., späť rovnakou cestou. Po modrej a červenej značke.",
+   "region": "polana-muran",
+   "region_name": "Poľana a Muránska planina",
+   "protected_area": null,
+   "destination": {
+    "name": "Vrchdetva",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.610774,
+     "lon": 19.460306
+    },
+    "ele_m": 1062,
+    "osm": "node/293761602"
+   },
+   "start": {
+    "name": "Vrchdetva, rázc.",
+    "location": {
+     "lat": 48.620744,
+     "lon": 19.462876
+    },
+    "ele_m": 1200,
+    "osm": "node/293567036"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.623404,
+     "lon": 19.463509
+    },
+    "walk_m": 299,
+    "fee": null,
+    "osm": "way/26730130"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 2514,
+   "ascent_m": 167,
+   "duration_min": 75,
+   "max_ele_m": 1224,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 53,
+   "bbox": [
+    19.45851,
+    48.61051,
+    19.46291,
+    48.62072
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/vrchdetva.gpx"
+  },
+  {
+   "slug": "bykovo",
+   "name": "Bykovo",
+   "description": "Výstup na vrchol Bykovo (1110 m). Štart: Sedlo Prašivá, späť rovnakou cestou. Po červenej značke.",
+   "region": "polana-muran",
+   "region_name": "Poľana a Muránska planina",
+   "protected_area": null,
+   "destination": {
+    "name": "Bykovo",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.58214,
+     "lon": 19.664024
+    },
+    "ele_m": 1110,
+    "osm": "node/269825477"
+   },
+   "start": {
+    "name": "Sedlo Prašivá",
+    "location": {
+     "lat": 48.601546,
+     "lon": 19.660687
+    },
+    "ele_m": 962,
+    "osm": "node/269563192"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.597762,
+     "lon": 19.660641
+    },
+    "walk_m": 421,
+    "fee": null,
+    "osm": "way/12138946"
+   },
+   "transit": {
+    "name": "Látky, Prašivá",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.601532,
+     "lon": 19.660311
+    },
+    "walk_m": 28,
+    "osm": "node/3438023634"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 5464,
+   "ascent_m": 179,
+   "duration_min": 120,
+   "max_ele_m": 1127,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 35,
+   "bbox": [
+    19.66066,
+    48.58224,
+    19.66757,
+    48.60167
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/bykovo.gpx"
+  },
+  {
+   "slug": "gombasecka-jaskyna",
+   "name": "Gombasecká jaskyňa",
+   "description": "Výlet k jaskyni: Gombasecká jaskyňa. Štart: Odbočka k Silickej ľadnici, späť rovnakou cestou. Po žltej a zelenej značke.",
+   "region": "slovensky-kras",
+   "region_name": "Slovenský kras a Volovské vrchy",
+   "protected_area": "NP Slovenský kras",
+   "destination": {
+    "name": "Gombasecká jaskyňa",
+    "kind": "jaskyna",
+    "location": {
+     "lat": 48.562417,
+     "lon": 20.465365
+    },
+    "ele_m": 274,
+    "osm": "node/35608663"
+   },
+   "start": {
+    "name": "Odbočka k Silickej ľadnici",
+    "location": {
+     "lat": 48.550704,
+     "lon": 20.505581
+    },
+    "ele_m": 510,
+    "osm": "node/3388262818"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.556956,
+     "lon": 20.504965
+    },
+    "walk_m": 697,
+    "fee": null,
+    "osm": "node/4193819826"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 7652,
+   "ascent_m": 285,
+   "duration_min": 165,
+   "max_ele_m": 505,
+   "difficulty": "lahka",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "green"
+   ],
+   "marked_share": 1.0,
+   "fees": [
+    {
+     "kind": "vstupne",
+     "text": "Vstupné",
+     "amount_eur": null,
+     "source": "osm",
+     "source_url": "https://www.openstreetmap.org/node/35608663",
+     "rule_id": null
+    }
+   ],
+   "closure_rule_ids": [],
+   "rank": 91,
+   "bbox": [
+    20.46546,
+    48.55037,
+    20.50553,
+    48.5629
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/gombasecka-jaskyna.gpx"
+  },
+  {
+   "slug": "krasnohorska-jaskyna",
+   "name": "Krásnohorská jaskyňa",
+   "description": "Výlet k jaskyni: Krásnohorská jaskyňa. Štart: Krásnohorská Dlhá Lúka, späť rovnakou cestou. Po zelenej značke.",
+   "region": "slovensky-kras",
+   "region_name": "Slovenský kras a Volovské vrchy",
+   "protected_area": "NP Slovenský kras",
+   "destination": {
+    "name": "Krásnohorská jaskyňa",
+    "kind": "jaskyna",
+    "location": {
+     "lat": 48.617744,
+     "lon": 20.587235
+    },
+    "ele_m": 341,
+    "osm": "node/1273200677"
+   },
+   "start": {
+    "name": "Krásnohorská Dlhá Lúka",
+    "location": {
+     "lat": 48.624669,
+     "lon": 20.577853
+    },
+    "ele_m": 315,
+    "osm": "node/248058857"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.622597,
+     "lon": 20.574839
+    },
+    "walk_m": 320,
+    "fee": true,
+    "osm": "way/1187204055"
+   },
+   "transit": {
+    "name": "Krásnohorská Dlhá Lúka",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.624703,
+     "lon": 20.577895
+    },
+    "walk_m": 5,
+    "osm": "node/3754517165"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2700,
+   "ascent_m": 37,
+   "duration_min": 60,
+   "max_ele_m": 341,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 0.97,
+   "fees": [
+    {
+     "kind": "vstupne",
+     "text": "Vstupné",
+     "amount_eur": null,
+     "source": "osm",
+     "source_url": "https://www.openstreetmap.org/node/1273200677",
+     "rule_id": null
+    }
+   ],
+   "closure_rule_ids": [],
+   "rank": 91,
+   "bbox": [
+    20.57681,
+    48.61786,
+    20.58738,
+    48.62456
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/krasnohorska-jaskyna.gpx"
+  },
+  {
+   "slug": "ochtinska-aragonitova-jaskyna",
+   "name": "Ochtinská aragonitová jaskyňa",
+   "description": "Výlet k jaskyni: Ochtinská aragonitová jaskyňa. Štart: Hrádok, horáreň, späť rovnakou cestou. Po modrej značke.",
+   "region": "slovensky-kras",
+   "region_name": "Slovenský kras a Volovské vrchy",
+   "protected_area": "NP Slovenský kras",
+   "destination": {
+    "name": "Ochtinská aragonitová jaskyňa",
+    "kind": "jaskyna",
+    "location": {
+     "lat": 48.664435,
+     "lon": 20.309203
+    },
+    "ele_m": 664,
+    "osm": "node/35172446"
+   },
+   "start": {
+    "name": "Hrádok, horáreň",
+    "location": {
+     "lat": 48.659414,
+     "lon": 20.295918
+    },
+    "ele_m": 666,
+    "osm": "node/15196149"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.659666,
+     "lon": 20.295924
+    },
+    "walk_m": 28,
+    "fee": false,
+    "osm": "way/1389727995"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 2270,
+   "ascent_m": 34,
+   "duration_min": 45,
+   "max_ele_m": 669,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [
+    {
+     "kind": "vstupne",
+     "text": "Vstupné",
+     "amount_eur": null,
+     "source": "osm",
+     "source_url": "https://www.openstreetmap.org/node/35172446",
+     "rule_id": null
+    }
+   ],
+   "closure_rule_ids": [],
+   "rank": 91,
+   "bbox": [
+    20.29602,
+    48.65942,
+    20.30884,
+    48.66465
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/ochtinska-aragonitova-jaskyna.gpx"
+  },
+  {
+   "slug": "kojsovska-hola",
+   "name": "Kojšovská hoľa",
+   "description": "Výstup na vrchol Kojšovská hoľa (1246 m). Štart: Zlatá Idka, späť rovnakou cestou. Po modrej a červenej značke.",
+   "region": "slovensky-kras",
+   "region_name": "Slovenský kras a Volovské vrchy",
+   "protected_area": "NP Slovenský kras",
+   "destination": {
+    "name": "Kojšovská hoľa",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.782182,
+     "lon": 20.987918
+    },
+    "ele_m": 1246,
+    "osm": "node/2619394245"
+   },
+   "start": {
+    "name": "Zlatá Idka",
+    "location": {
+     "lat": 48.752306,
+     "lon": 21.005917
+    },
+    "ele_m": 659,
+    "osm": "node/244142186"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.754422,
+     "lon": 20.999165
+    },
+    "walk_m": 548,
+    "fee": null,
+    "osm": "way/22752988"
+   },
+   "transit": {
+    "name": "Zlatá Idka, pošta",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.752761,
+     "lon": 21.005242
+    },
+    "walk_m": 71,
+    "osm": "node/2321216539"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 9827,
+   "ascent_m": 577,
+   "duration_min": 270,
+   "max_ele_m": 1241,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "blue",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 73,
+   "bbox": [
+    20.97994,
+    48.75231,
+    21.00592,
+    48.78219
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/kojsovska-hola.gpx"
+  },
+  {
+   "slug": "babina",
+   "name": "Babiná",
+   "description": "Výstup na vrchol Babiná (1278 m). Štart: Prostredný Hámor, späť rovnakou cestou. Po žltej, zelenej a červenej značke.",
+   "region": "slovensky-kras",
+   "region_name": "Slovenský kras a Volovské vrchy",
+   "protected_area": "NP Slovenský kras",
+   "destination": {
+    "name": "Babiná",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.830064,
+     "lon": 20.462549
+    },
+    "ele_m": 1278,
+    "osm": "node/5657428541"
+   },
+   "start": {
+    "name": "Prostredný Hámor",
+    "location": {
+     "lat": 48.855265,
+     "lon": 20.407112
+    },
+    "ele_m": 745,
+    "osm": "node/1641977189"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.855408,
+     "lon": 20.411289
+    },
+    "walk_m": 306,
+    "fee": null,
+    "osm": "way/1141460365"
+   },
+   "transit": {
+    "name": "Mlynky,,motorest",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.855343,
+     "lon": 20.407167
+    },
+    "walk_m": 10,
+    "osm": "node/107753569"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 17284,
+   "ascent_m": 982,
+   "duration_min": 450,
+   "max_ele_m": 1275,
+   "difficulty": "tazka",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "green",
+    "red",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 70,
+   "bbox": [
+    20.40223,
+    48.8296,
+    20.46269,
+    48.85527
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/babina.gpx"
+  },
+  {
+   "slug": "kysacky-hrad",
+   "name": "Kysacký hrad",
+   "description": "Výlet k hradu: Kysacký hrad. Štart: Kysak, späť rovnakou cestou. Po červenej značke.",
+   "region": "slovensky-kras",
+   "region_name": "Slovenský kras a Volovské vrchy",
+   "protected_area": "NP Slovenský kras",
+   "destination": {
+    "name": "Kysacký hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.859224,
+     "lon": 21.206319
+    },
+    "ele_m": 503,
+    "osm": "node/639181302"
+   },
+   "start": {
+    "name": "Kysak",
+    "location": {
+     "lat": 48.855718,
+     "lon": 21.22435
+    },
+    "ele_m": 250,
+    "osm": "node/680114796"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.856609,
+     "lon": 21.216036
+    },
+    "walk_m": 616,
+    "fee": null,
+    "osm": "way/995948113"
+   },
+   "transit": {
+    "name": "Kysak, most",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.85738,
+     "lon": 21.228318
+    },
+    "walk_m": 344,
+    "osm": "node/7246184119"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3571,
+   "ascent_m": 247,
+   "duration_min": 120,
+   "max_ele_m": 503,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 68,
+   "bbox": [
+    21.20624,
+    48.8555,
+    21.22435,
+    48.86001
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/kysacky-hrad.gpx"
+  },
+  {
+   "slug": "velky-radzim",
+   "name": "Veľký Radzim",
+   "description": "Výstup na vrchol Veľký Radzim (991 m). Štart: Vlachovo, späť rovnakou cestou. Po žltej značke.",
+   "region": "slovensky-kras",
+   "region_name": "Slovenský kras a Volovské vrchy",
+   "protected_area": "NP Slovenský kras",
+   "destination": {
+    "name": "Veľký Radzim",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.777316,
+     "lon": 20.339271
+    },
+    "ele_m": 991,
+    "osm": "node/2630293580"
+   },
+   "start": {
+    "name": "Vlachovo",
+    "location": {
+     "lat": 48.773924,
+     "lon": 20.410955
+    },
+    "ele_m": 400,
+    "osm": "node/2645216344"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.774069,
+     "lon": 20.411047
+    },
+    "walk_m": 17,
+    "fee": null,
+    "osm": "node/3500427108"
+   },
+   "transit": {
+    "name": "Vlachovo, kult. dom",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.773579,
+     "lon": 20.411862
+    },
+    "walk_m": 77,
+    "osm": "node/8268146585"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 13242,
+   "ascent_m": 720,
+   "duration_min": 330,
+   "max_ele_m": 999,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "yellow"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 60,
+   "bbox": [
+    20.33831,
+    48.7669,
+    20.41094,
+    48.77726
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/velky-radzim.gpx"
+  },
+  {
+   "slug": "vysoky-vrch",
+   "name": "Vysoký vrch",
+   "description": "Výstup na vrchol Vysoký vrch (851 m). Štart: Veľká Lodina, späť rovnakou cestou. Po modrej a červenej značke.",
+   "region": "slovensky-kras",
+   "region_name": "Slovenský kras a Volovské vrchy",
+   "protected_area": "NP Slovenský kras",
+   "destination": {
+    "name": "Vysoký vrch",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.824692,
+     "lon": 21.155928
+    },
+    "ele_m": 851,
+    "osm": "node/1317635368"
+   },
+   "start": {
+    "name": "Veľká Lodina",
+    "location": {
+     "lat": 48.856769,
+     "lon": 21.155269
+    },
+    "ele_m": 259,
+    "osm": "node/662535081"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.856845,
+     "lon": 21.154898
+    },
+    "walk_m": 28,
+    "fee": null,
+    "osm": "way/866219592"
+   },
+   "transit": {
+    "name": "Veľká Lodina",
+    "mode": "vlak",
+    "location": {
+     "lat": 48.856209,
+     "lon": 21.155642
+    },
+    "walk_m": 68,
+    "osm": "node/719650903"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 9164,
+   "ascent_m": 574,
+   "duration_min": 255,
+   "max_ele_m": 810,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "blue",
+    "red"
+   ],
+   "marked_share": 0.92,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 55,
+   "bbox": [
+    21.1488,
+    48.82537,
+    21.15815,
+    48.8581
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/vysoky-vrch.gpx"
+  },
+  {
+   "slug": "dobsinsky-kopec",
+   "name": "Dobšinský kopec",
+   "description": "Výstup na vrchol Dobšinský kopec (974 m). Štart: Prostredný Hámor, späť rovnakou cestou. Po žltej, červenej a modrej značke.",
+   "region": "slovensky-kras",
+   "region_name": "Slovenský kras a Volovské vrchy",
+   "protected_area": "NP Slovenský kras",
+   "destination": {
+    "name": "Dobšinský kopec",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.847871,
+     "lon": 20.3903
+    },
+    "ele_m": 974,
+    "osm": "node/11326593312"
+   },
+   "start": {
+    "name": "Prostredný Hámor",
+    "location": {
+     "lat": 48.855265,
+     "lon": 20.407112
+    },
+    "ele_m": 745,
+    "osm": "node/1641977189"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.855408,
+     "lon": 20.411289
+    },
+    "walk_m": 306,
+    "fee": null,
+    "osm": "way/1141460365"
+   },
+   "transit": {
+    "name": "Mlynky,,motorest",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.855343,
+     "lon": 20.407167
+    },
+    "walk_m": 10,
+    "osm": "node/107753569"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4588,
+   "ascent_m": 219,
+   "duration_min": 105,
+   "max_ele_m": 958,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "yellow",
+    "red",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 45,
+   "bbox": [
+    20.39053,
+    48.84536,
+    20.40743,
+    48.85527
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/dobsinsky-kopec.gpx"
+  },
+  {
+   "slug": "stary-jelsavsky-hrad",
+   "name": "Starý Jelšavský hrad",
+   "description": "Výlet k hradu: Starý Jelšavský hrad. Štart: Jelšava nám. SNP, späť rovnakou cestou. Po modrej značke.",
+   "region": "slovensky-kras",
+   "region_name": "Slovenský kras a Volovské vrchy",
+   "protected_area": "NP Slovenský kras",
+   "destination": {
+    "name": "Starý Jelšavský hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.630167,
+     "lon": 20.200479
+    },
+    "ele_m": 409,
+    "osm": "node/7266376298"
+   },
+   "start": {
+    "name": "Jelšava nám. SNP",
+    "location": {
+     "lat": 48.631307,
+     "lon": 20.235566
+    },
+    "ele_m": 264,
+    "osm": "node/8870103677"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.631362,
+     "lon": 20.235714
+    },
+    "walk_m": 12,
+    "fee": null,
+    "osm": "way/1389745619"
+   },
+   "transit": {
+    "name": "Jelšava, námestie",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.630364,
+     "lon": 20.235029
+    },
+    "walk_m": 112,
+    "osm": "node/4976641020"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 7676,
+   "ascent_m": 191,
+   "duration_min": 150,
+   "max_ele_m": 409,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 0.98,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 37,
+   "bbox": [
+    20.20066,
+    48.63024,
+    20.23561,
+    48.63842
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/stary-jelsavsky-hrad.gpx"
+  },
+  {
    "slug": "havrania-skala",
    "name": "Havrania skala",
    "description": "Výstup na vrchol Havrania skala (1156 m). Štart: Stratenský kaňon, späť rovnakou cestou. Po žltej značke.",
@@ -3842,6 +9677,1331 @@
    ],
    "curated": false,
    "gpx_url": "/gpx/ogurciak.gpx"
+  },
+  {
+   "slug": "pusty-dolny-hrad",
+   "name": "Pustý (Dolný) hrad",
+   "description": "Výlet k hradu: Pustý (Dolný) hrad. Štart: Haputka, späť rovnakou cestou. Po modrej značke.",
+   "region": "stiavnicke-kremnicke-vrchy",
+   "region_name": "Štiavnické a Kremnické vrchy",
+   "protected_area": "CHKO Štiavnické vrchy",
+   "destination": {
+    "name": "Pustý (Dolný) hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.56137,
+     "lon": 19.114692
+    },
+    "ele_m": 483,
+    "osm": "way/463259100"
+   },
+   "start": {
+    "name": "Haputka",
+    "location": {
+     "lat": 48.565916,
+     "lon": 19.117611
+    },
+    "ele_m": 285,
+    "osm": "node/7527018355"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.566117,
+     "lon": 19.118221
+    },
+    "walk_m": 50,
+    "fee": false,
+    "osm": "way/1424623621"
+   },
+   "transit": {
+    "name": "Balkán",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.566851,
+     "lon": 19.114404
+    },
+    "walk_m": 258,
+    "osm": "node/3092882083"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2670,
+   "ascent_m": 194,
+   "duration_min": 90,
+   "max_ele_m": 483,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 0.91,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 90,
+   "bbox": [
+    19.11224,
+    48.56053,
+    19.11765,
+    48.5659
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/pusty-dolny-hrad.gpx"
+  },
+  {
+   "slug": "pusty-horny-hrad",
+   "name": "Pustý (horný) hrad",
+   "description": "Výlet k hradu: Pustý (horný) hrad. Štart: Pod Haputkou, späť rovnakou cestou. Po modrej a žltej značke.",
+   "region": "stiavnicke-kremnicke-vrchy",
+   "region_name": "Štiavnické a Kremnické vrchy",
+   "protected_area": "CHKO Štiavnické vrchy",
+   "destination": {
+    "name": "Pustý (horný) hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.557055,
+     "lon": 19.109189
+    },
+    "ele_m": 559,
+    "osm": "way/354337655"
+   },
+   "start": {
+    "name": "Pod Haputkou",
+    "location": {
+     "lat": 48.565311,
+     "lon": 19.116482
+    },
+    "ele_m": 284,
+    "osm": "node/4585466545"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.565288,
+     "lon": 19.116037
+    },
+    "walk_m": 33,
+    "fee": false,
+    "osm": "way/602731103"
+   },
+   "transit": {
+    "name": "Balkán",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.566851,
+     "lon": 19.114404
+    },
+    "walk_m": 230,
+    "osm": "node/3092882083"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3255,
+   "ascent_m": 268,
+   "duration_min": 120,
+   "max_ele_m": 559,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue",
+    "yellow"
+   ],
+   "marked_share": 0.93,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 90,
+   "bbox": [
+    19.10961,
+    48.55697,
+    19.11667,
+    48.56541
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/pusty-horny-hrad.gpx"
+  },
+  {
+   "slug": "stary-zamok",
+   "name": "Starý zámok",
+   "description": "Výlet k hradu: Starý zámok. Štart: Červená studňa (bežkárske trate), späť rovnakou cestou. Po červenej značke.",
+   "region": "stiavnicke-kremnicke-vrchy",
+   "region_name": "Štiavnické a Kremnické vrchy",
+   "protected_area": "CHKO Štiavnické vrchy",
+   "destination": {
+    "name": "Starý zámok",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.459593,
+     "lon": 18.891024
+    },
+    "ele_m": 627,
+    "osm": "way/1490512231"
+   },
+   "start": {
+    "name": "Červená studňa (bežkárske trate)",
+    "location": {
+     "lat": 48.468745,
+     "lon": 18.882369
+    },
+    "ele_m": 791,
+    "osm": "node/4428677282"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.469408,
+     "lon": 18.882026
+    },
+    "walk_m": 78,
+    "fee": false,
+    "osm": "way/1540716844"
+   },
+   "transit": {
+    "name": "Banská Štiavnica, Červená studňa",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.469139,
+     "lon": 18.88347
+    },
+    "walk_m": 92,
+    "osm": "node/3363152504"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2653,
+   "ascent_m": 163,
+   "duration_min": 75,
+   "max_ele_m": 793,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 0.98,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 90,
+   "bbox": [
+    18.88227,
+    48.45974,
+    18.8916,
+    48.46896
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/stary-zamok.gpx"
+  },
+  {
+   "slug": "sitno",
+   "name": "Sitno",
+   "description": "Výstup na vrchol Sitno (1011 m). Štart: Počúvadlianske jazero, späť rovnakou cestou. Po zelenej a modrej značke.",
+   "region": "stiavnicke-kremnicke-vrchy",
+   "region_name": "Štiavnické a Kremnické vrchy",
+   "protected_area": "CHKO Štiavnické vrchy",
+   "destination": {
+    "name": "Sitno",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.403246,
+     "lon": 18.877247
+    },
+    "ele_m": 1011,
+    "osm": "node/26864658"
+   },
+   "start": {
+    "name": "Počúvadlianske jazero",
+    "location": {
+     "lat": 48.404657,
+     "lon": 18.856132
+    },
+    "ele_m": 684,
+    "osm": "node/40825465"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.404921,
+     "lon": 18.85681
+    },
+    "walk_m": 58,
+    "fee": true,
+    "osm": "way/367113078"
+   },
+   "transit": {
+    "name": "Počúvadlo, jazero",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.403332,
+     "lon": 18.856075
+    },
+    "walk_m": 147,
+    "osm": "node/2413828492"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3871,
+   "ascent_m": 328,
+   "duration_min": 135,
+   "max_ele_m": 1007,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 85,
+   "bbox": [
+    18.85612,
+    48.40299,
+    18.87712,
+    48.40622
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/sitno.gpx"
+  },
+  {
+   "slug": "sitno-pocuvadlianske-jazero",
+   "name": "Sitno",
+   "description": "Výlet k hradu: Sitno. Štart: Počúvadlianske jazero, späť rovnakou cestou. Po zelenej a modrej značke.",
+   "region": "stiavnicke-kremnicke-vrchy",
+   "region_name": "Štiavnické a Kremnické vrchy",
+   "protected_area": "CHKO Štiavnické vrchy",
+   "destination": {
+    "name": "Sitno",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.401584,
+     "lon": 18.886976
+    },
+    "ele_m": 878,
+    "osm": "way/367113080"
+   },
+   "start": {
+    "name": "Počúvadlianske jazero",
+    "location": {
+     "lat": 48.404657,
+     "lon": 18.856132
+    },
+    "ele_m": 684,
+    "osm": "node/40825465"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.404921,
+     "lon": 18.85681
+    },
+    "walk_m": 58,
+    "fee": true,
+    "osm": "way/367113078"
+   },
+   "transit": {
+    "name": "Počúvadlo, jazero",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.403332,
+     "lon": 18.856075
+    },
+    "walk_m": 147,
+    "osm": "node/2413828492"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 5298,
+   "ascent_m": 314,
+   "duration_min": 150,
+   "max_ele_m": 920,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 83,
+   "bbox": [
+    18.85612,
+    48.40128,
+    18.88641,
+    48.40622
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/sitno-pocuvadlianske-jazero.gpx"
+  },
+  {
+   "slug": "zakylsky-hrad",
+   "name": "Žakýlsky hrad",
+   "description": "Výlet k hradu: Žakýlsky hrad. Štart: Žakýl, späť rovnakou cestou. Po modrej značke.",
+   "region": "stiavnicke-kremnicke-vrchy",
+   "region_name": "Štiavnické a Kremnické vrchy",
+   "protected_area": "CHKO Štiavnické vrchy",
+   "destination": {
+    "name": "Žakýlsky hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.508389,
+     "lon": 18.935927
+    },
+    "ele_m": 825,
+    "osm": "node/265932131"
+   },
+   "start": {
+    "name": "Žakýl",
+    "location": {
+     "lat": 48.496983,
+     "lon": 18.926738
+    },
+    "ele_m": 599,
+    "osm": "node/11564468468"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.4982,
+     "lon": 18.920124
+    },
+    "walk_m": 506,
+    "fee": null,
+    "osm": "way/1376112552"
+   },
+   "transit": {
+    "name": "Podhorie",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.498305,
+     "lon": 18.919975
+    },
+    "walk_m": 520,
+    "osm": "node/3121115160"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3902,
+   "ascent_m": 223,
+   "duration_min": 105,
+   "max_ele_m": 825,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 72,
+   "bbox": [
+    18.92588,
+    48.49697,
+    18.93545,
+    48.5093
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/zakylsky-hrad.gpx"
+  },
+  {
+   "slug": "zlata-studna",
+   "name": "Zlatá studňa",
+   "description": "Výstup na vrchol Zlatá studňa (1265 m). Štart: Skalka, križ. S - J okruh, späť rovnakou cestou. Po červenej a modrej značke.",
+   "region": "stiavnicke-kremnicke-vrchy",
+   "region_name": "Štiavnické a Kremnické vrchy",
+   "protected_area": "CHKO Štiavnické vrchy",
+   "destination": {
+    "name": "Zlatá studňa",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.715436,
+     "lon": 19.004803
+    },
+    "ele_m": 1265,
+    "osm": "node/2611277432"
+   },
+   "start": {
+    "name": "Skalka, križ. S - J okruh",
+    "location": {
+     "lat": 48.738263,
+     "lon": 18.9982
+    },
+    "ele_m": 1195,
+    "osm": "node/6779649133"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.739833,
+     "lon": 18.991878
+    },
+    "walk_m": 495,
+    "fee": true,
+    "osm": "way/802644081"
+   },
+   "transit": {
+    "name": "Kremnica, Skalka rázc.",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.738787,
+     "lon": 18.988236
+    },
+    "walk_m": 733,
+    "osm": "node/3409325270"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 5979,
+   "ascent_m": 174,
+   "duration_min": 120,
+   "max_ele_m": 1270,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 70,
+   "bbox": [
+    18.99804,
+    48.71546,
+    19.00563,
+    48.73819
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/zlata-studna.gpx"
+  },
+  {
+   "slug": "velestur",
+   "name": "Velestúr",
+   "description": "Výstup na vrchol Velestúr (1254 m). Štart: Skalka, križ. S - J okruh, späť rovnakou cestou. Po červenej a modrej značke.",
+   "region": "stiavnicke-kremnicke-vrchy",
+   "region_name": "Štiavnické a Kremnické vrchy",
+   "protected_area": "CHKO Štiavnické vrchy",
+   "destination": {
+    "name": "Velestúr",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.708709,
+     "lon": 19.003752
+    },
+    "ele_m": 1254,
+    "osm": "node/663316383"
+   },
+   "start": {
+    "name": "Skalka, križ. S - J okruh",
+    "location": {
+     "lat": 48.738263,
+     "lon": 18.9982
+    },
+    "ele_m": 1195,
+    "osm": "node/6779649133"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.739833,
+     "lon": 18.991878
+    },
+    "walk_m": 495,
+    "fee": true,
+    "osm": "way/802644081"
+   },
+   "transit": {
+    "name": "Kremnica, Skalka rázc.",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.738787,
+     "lon": 18.988236
+    },
+    "walk_m": 733,
+    "osm": "node/3409325270"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 7604,
+   "ascent_m": 192,
+   "duration_min": 150,
+   "max_ele_m": 1269,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 66,
+   "bbox": [
+    18.99804,
+    48.70894,
+    19.00669,
+    48.73819
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/velestur.gpx"
+  },
+  {
+   "slug": "strazov",
+   "name": "Strážov",
+   "description": "Výstup na vrchol Strážov (1215 m). Štart: Zliechov, vyše dediny, späť rovnakou cestou. Po červenej značke.",
+   "region": "strazovske-vrchy",
+   "region_name": "Strážovské vrchy a Súľovské skaly",
+   "protected_area": "CHKO Strážovské vrchy",
+   "destination": {
+    "name": "Strážov",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.954906,
+     "lon": 18.463084
+    },
+    "ele_m": 1215,
+    "osm": "node/8420172326"
+   },
+   "start": {
+    "name": "Zliechov, vyše dediny",
+    "location": {
+     "lat": 48.955008,
+     "lon": 18.436113
+    },
+    "ele_m": 610,
+    "osm": "node/13765819562"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.956599,
+     "lon": 18.4401
+    },
+    "walk_m": 341,
+    "fee": false,
+    "osm": "way/1341260774"
+   },
+   "transit": {
+    "name": "Zliechov, konečná",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.953119,
+     "lon": 18.43472
+    },
+    "walk_m": 233,
+    "osm": "node/2580908337"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 7099,
+   "ascent_m": 581,
+   "duration_min": 240,
+   "max_ele_m": 1208,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 0.99,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 84,
+   "bbox": [
+    18.43614,
+    48.9549,
+    18.46853,
+    48.96094
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/strazov.gpx"
+  },
+  {
+   "slug": "klacky-vodopad",
+   "name": "Kľacký vodopád",
+   "description": "Výlet k vodopádu: Kľacký vodopád. Štart: Staré cesty, späť rovnakou cestou. Po žltej a zelenej značke.",
+   "region": "strazovske-vrchy",
+   "region_name": "Strážovské vrchy a Súľovské skaly",
+   "protected_area": "CHKO Strážovské vrchy",
+   "destination": {
+    "name": "Kľacký vodopád",
+    "kind": "vodopad",
+    "location": {
+     "lat": 48.982384,
+     "lon": 18.655771
+    },
+    "ele_m": 1016,
+    "osm": "node/5575282268"
+   },
+   "start": {
+    "name": "Staré cesty",
+    "location": {
+     "lat": 48.962546,
+     "lon": 18.620122
+    },
+    "ele_m": 835,
+    "osm": "node/12074782745"
+   },
+   "parking": {
+    "name": "Odstavná plocha na Fačkovskom sedle",
+    "location": {
+     "lat": 48.963732,
+     "lon": 18.612406
+    },
+    "walk_m": 578,
+    "fee": true,
+    "osm": "way/318812538"
+   },
+   "transit": {
+    "name": "Kľačno, Fačkovské sedlo",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.963265,
+     "lon": 18.612238
+    },
+    "walk_m": 581,
+    "osm": "node/2210272097"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 8924,
+   "ascent_m": 750,
+   "duration_min": 315,
+   "max_ele_m": 1294,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "green"
+   ],
+   "marked_share": 0.94,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 73,
+   "bbox": [
+    18.62011,
+    48.96255,
+    18.65559,
+    48.98266
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/klacky-vodopad.gpx"
+  },
+  {
+   "slug": "klak",
+   "name": "Kľak",
+   "description": "Výstup na vrchol Kľak (1351 m). Štart: Staré cesty, späť rovnakou cestou. Po žltej a zelenej značke.",
+   "region": "strazovske-vrchy",
+   "region_name": "Strážovské vrchy a Súľovské skaly",
+   "protected_area": "CHKO Strážovské vrchy",
+   "destination": {
+    "name": "Kľak",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.981509,
+     "lon": 18.640927
+    },
+    "ele_m": 1351,
+    "osm": "node/1803579837"
+   },
+   "start": {
+    "name": "Staré cesty",
+    "location": {
+     "lat": 48.962546,
+     "lon": 18.620122
+    },
+    "ele_m": 835,
+    "osm": "node/12074782745"
+   },
+   "parking": {
+    "name": "Odstavná plocha na Fačkovskom sedle",
+    "location": {
+     "lat": 48.963732,
+     "lon": 18.612406
+    },
+    "walk_m": 578,
+    "fee": true,
+    "osm": "way/318812538"
+   },
+   "transit": {
+    "name": "Kľačno, Fačkovské sedlo",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.963265,
+     "lon": 18.612238
+    },
+    "walk_m": 581,
+    "osm": "node/2210272097"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 7258,
+   "ascent_m": 526,
+   "duration_min": 225,
+   "max_ele_m": 1339,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "green"
+   ],
+   "marked_share": 0.93,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 70,
+   "bbox": [
+    18.62011,
+    48.96255,
+    18.64297,
+    48.98142
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/klak.gpx"
+  },
+  {
+   "slug": "revan",
+   "name": "Reváň",
+   "description": "Výstup na vrchol Reváň (1205 m). Štart: Staré cesty, späť rovnakou cestou. Po žltej značke.",
+   "region": "strazovske-vrchy",
+   "region_name": "Strážovské vrchy a Súľovské skaly",
+   "protected_area": "CHKO Strážovské vrchy",
+   "destination": {
+    "name": "Reváň",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.964863,
+     "lon": 18.633468
+    },
+    "ele_m": 1205,
+    "osm": "node/7218227380"
+   },
+   "start": {
+    "name": "Staré cesty",
+    "location": {
+     "lat": 48.962546,
+     "lon": 18.620122
+    },
+    "ele_m": 835,
+    "osm": "node/12074782745"
+   },
+   "parking": {
+    "name": "Odstavná plocha na Fačkovskom sedle",
+    "location": {
+     "lat": 48.963732,
+     "lon": 18.612406
+    },
+    "walk_m": 578,
+    "fee": true,
+    "osm": "way/318812538"
+   },
+   "transit": {
+    "name": "Kľačno, Fačkovské sedlo",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.963265,
+     "lon": 18.612238
+    },
+    "walk_m": 581,
+    "osm": "node/2210272097"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2965,
+   "ascent_m": 362,
+   "duration_min": 150,
+   "max_ele_m": 1200,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "yellow"
+   ],
+   "marked_share": 0.83,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 69,
+   "bbox": [
+    18.62011,
+    48.96255,
+    18.6335,
+    48.96709
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/revan.gpx"
+  },
+  {
+   "slug": "hruba-kecka",
+   "name": "Hrubá Kečka",
+   "description": "Výstup na vrchol Hrubá Kečka (1037 m). Štart: Čičmany, späť rovnakou cestou. Po žltej a zelenej značke.",
+   "region": "strazovske-vrchy",
+   "region_name": "Strážovské vrchy a Súľovské skaly",
+   "protected_area": "CHKO Strážovské vrchy",
+   "destination": {
+    "name": "Hrubá Kečka",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.983763,
+     "lon": 18.513501
+    },
+    "ele_m": 1037,
+    "osm": "node/2107889545"
+   },
+   "start": {
+    "name": "Čičmany",
+    "location": {
+     "lat": 48.954714,
+     "lon": 18.515861
+    },
+    "ele_m": 646,
+    "osm": "node/3706201154"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.956325,
+     "lon": 18.516798
+    },
+    "walk_m": 192,
+    "fee": true,
+    "osm": "way/262231319"
+   },
+   "transit": {
+    "name": "Čičmany, OcÚ",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.954498,
+     "lon": 18.515629
+    },
+    "walk_m": 29,
+    "osm": "node/357521645"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 9416,
+   "ascent_m": 440,
+   "duration_min": 225,
+   "max_ele_m": 1019,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "yellow",
+    "green"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 67,
+   "bbox": [
+    18.50605,
+    48.95471,
+    18.52521,
+    48.9838
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/hruba-kecka.gpx"
+  },
+  {
+   "slug": "vapec",
+   "name": "Vápeč",
+   "description": "Výstup na vrchol Vápeč (955 m). Štart: Horná Poruba, bus, späť rovnakou cestou. Po červenej, žltej a modrej značke.",
+   "region": "strazovske-vrchy",
+   "region_name": "Strážovské vrchy a Súľovské skaly",
+   "protected_area": "CHKO Strážovské vrchy",
+   "destination": {
+    "name": "Vápeč",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.939225,
+     "lon": 18.326362
+    },
+    "ele_m": 955,
+    "osm": "node/503872684"
+   },
+   "start": {
+    "name": "Horná Poruba, bus",
+    "location": {
+     "lat": 48.938742,
+     "lon": 18.305879
+    },
+    "ele_m": 405,
+    "osm": "node/663782604"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.943342,
+     "lon": 18.304046
+    },
+    "walk_m": 529,
+    "fee": false,
+    "osm": "way/1328417381"
+   },
+   "transit": {
+    "name": "Horná Poruba, u Brdárov",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.936013,
+     "lon": 18.306459
+    },
+    "walk_m": 306,
+    "osm": "node/9057895723"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4917,
+   "ascent_m": 520,
+   "duration_min": 210,
+   "max_ele_m": 940,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "red",
+    "yellow",
+    "blue",
+    "green"
+   ],
+   "marked_share": 0.85,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 67,
+   "bbox": [
+    18.30588,
+    48.93804,
+    18.32828,
+    48.94198
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/vapec.gpx"
+  },
+  {
+   "slug": "velky-manin",
+   "name": "Veľký Manín",
+   "description": "Výstup na vrchol Veľký Manín (891 m). Štart: Vápencová jaskyňa, späť rovnakou cestou. Po zelenej značke.",
+   "region": "strazovske-vrchy",
+   "region_name": "Strážovské vrchy a Súľovské skaly",
+   "protected_area": "CHKO Strážovské vrchy",
+   "destination": {
+    "name": "Veľký Manín",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.125706,
+     "lon": 18.4961
+    },
+    "ele_m": 891,
+    "osm": "node/1261509324"
+   },
+   "start": {
+    "name": "Vápencová jaskyňa",
+    "location": {
+     "lat": 49.134954,
+     "lon": 18.501001
+    },
+    "ele_m": 820,
+    "osm": "node/5047767498"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.139987,
+     "lon": 18.508543
+    },
+    "walk_m": 784,
+    "fee": true,
+    "osm": "node/12887295447"
+   },
+   "transit": {
+    "name": "Považská Teplá,vodojem",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.142146,
+     "lon": 18.500875
+    },
+    "walk_m": 800,
+    "osm": "node/6898099767"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2521,
+   "ascent_m": 124,
+   "duration_min": 60,
+   "max_ele_m": 888,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 66,
+   "bbox": [
+    18.49611,
+    49.12569,
+    18.50098,
+    49.13495
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/velky-manin.gpx"
+  },
+  {
+   "slug": "zibrid",
+   "name": "Žibrid",
+   "description": "Výstup na vrchol Žibrid (868 m). Štart: Zbyňov, späť rovnakou cestou. Po zelenej, žltej a modrej značke.",
+   "region": "strazovske-vrchy",
+   "region_name": "Strážovské vrchy a Súľovské skaly",
+   "protected_area": "CHKO Strážovské vrchy",
+   "destination": {
+    "name": "Žibrid",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.127564,
+     "lon": 18.609467
+    },
+    "ele_m": 868,
+    "osm": "node/2463024331"
+   },
+   "start": {
+    "name": "Zbyňov",
+    "location": {
+     "lat": 49.121098,
+     "lon": 18.64673
+    },
+    "ele_m": 429,
+    "osm": "node/372868462"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.122046,
+     "lon": 18.651251
+    },
+    "walk_m": 346,
+    "fee": null,
+    "osm": "way/1231411980"
+   },
+   "transit": {
+    "name": "Zbyňov",
+    "mode": "vlak",
+    "location": {
+     "lat": 49.117389,
+     "lon": 18.65589
+    },
+    "walk_m": 784,
+    "osm": "node/2389918229"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 8278,
+   "ascent_m": 473,
+   "duration_min": 225,
+   "max_ele_m": 860,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "green",
+    "yellow",
+    "blue",
+    "red"
+   ],
+   "marked_share": 0.96,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 66,
+   "bbox": [
+    18.60957,
+    49.12113,
+    18.64679,
+    49.13167
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/zibrid.gpx"
+  },
+  {
+   "slug": "homolka",
+   "name": "Homôľka",
+   "description": "Výstup na vrchol Homôľka (1073 m). Štart: Fačkovské sedlo, späť rovnakou cestou. Po červenej značke.",
+   "region": "strazovske-vrchy",
+   "region_name": "Strážovské vrchy a Súľovské skaly",
+   "protected_area": "CHKO Strážovské vrchy",
+   "destination": {
+    "name": "Homôľka",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.956428,
+     "lon": 18.601149
+    },
+    "ele_m": 1073,
+    "osm": "node/1360141539"
+   },
+   "start": {
+    "name": "Fačkovské sedlo",
+    "location": {
+     "lat": 48.96354,
+     "lon": 18.611076
+    },
+    "ele_m": 792,
+    "osm": "node/32461688"
+   },
+   "parking": {
+    "name": "Odstavná plocha na Fačkovskom sedle",
+    "location": {
+     "lat": 48.963732,
+     "lon": 18.612406
+    },
+    "walk_m": 99,
+    "fee": true,
+    "osm": "way/318812538"
+   },
+   "transit": {
+    "name": "Kľačno, Fačkovské sedlo",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.963804,
+     "lon": 18.611013
+    },
+    "walk_m": 30,
+    "osm": "node/2210272098"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2482,
+   "ascent_m": 260,
+   "duration_min": 105,
+   "max_ele_m": 1063,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 60,
+   "bbox": [
+    18.60058,
+    48.95662,
+    18.61115,
+    48.9636
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/homolka.gpx"
+  },
+  {
+   "slug": "mojtinska-jaskyna",
+   "name": "Mojtínska jaskyňa",
+   "description": "Výlet k jaskyni: Mojtínska jaskyňa. Štart: Mojtín, bus, späť rovnakou cestou. Po modrej značke.",
+   "region": "strazovske-vrchy",
+   "region_name": "Strážovské vrchy a Súľovské skaly",
+   "protected_area": "CHKO Strážovské vrchy",
+   "destination": {
+    "name": "Mojtínska jaskyňa",
+    "kind": "jaskyna",
+    "location": {
+     "lat": 48.988291,
+     "lon": 18.421765
+    },
+    "ele_m": 590,
+    "osm": "node/1617032154"
+   },
+   "start": {
+    "name": "Mojtín, bus",
+    "location": {
+     "lat": 48.98702,
+     "lon": 18.408883
+    },
+    "ele_m": 653,
+    "osm": "node/7670887130"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.987228,
+     "lon": 18.409902
+    },
+    "walk_m": 78,
+    "fee": null,
+    "osm": "node/1993471928"
+   },
+   "transit": {
+    "name": "Mojtín, Gombár",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.987041,
+     "lon": 18.408857
+    },
+    "walk_m": 3,
+    "osm": "node/1520948971"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2816,
+   "ascent_m": 113,
+   "duration_min": 75,
+   "max_ele_m": 655,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 59,
+   "bbox": [
+    18.40898,
+    48.98399,
+    18.4205,
+    48.98897
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/mojtinska-jaskyna.gpx"
+  },
+  {
+   "slug": "dubova",
+   "name": "Dubová",
+   "description": "Výstup na vrchol Dubová (728 m). Štart: Pri Čierňanke, späť rovnakou cestou. Po červenej značke.",
+   "region": "strazovske-vrchy",
+   "region_name": "Strážovské vrchy a Súľovské skaly",
+   "protected_area": "CHKO Strážovské vrchy",
+   "destination": {
+    "name": "Dubová",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.102737,
+     "lon": 18.615242
+    },
+    "ele_m": 728,
+    "osm": "node/2463024259"
+   },
+   "start": {
+    "name": "Pri Čierňanke",
+    "location": {
+     "lat": 49.092084,
+     "lon": 18.630345
+    },
+    "ele_m": 450,
+    "osm": "node/7775488913"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.089941,
+     "lon": 18.634814
+    },
+    "walk_m": 403,
+    "fee": null,
+    "osm": "way/1003020103"
+   },
+   "transit": {
+    "name": "Rajec, Kostolná ul.",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.088254,
+     "lon": 18.633198
+    },
+    "walk_m": 474,
+    "osm": "node/4291032092"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3720,
+   "ascent_m": 274,
+   "duration_min": 120,
+   "max_ele_m": 729,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 50,
+   "bbox": [
+    18.61528,
+    49.09197,
+    18.63049,
+    49.10271
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/dubova.gpx"
   },
   {
    "slug": "krivan",
@@ -6105,6 +13265,1346 @@
    ],
    "curated": false,
    "gpx_url": "/gpx/polianky.gpx"
+  },
+  {
+   "slug": "blatnica",
+   "name": "Blatnica",
+   "description": "Výlet k hradu: Blatnica. Štart: Ústie Konského Dolu, späť rovnakou cestou. Po žltej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Blatnica",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.94718,
+     "lon": 18.947077
+    },
+    "ele_m": 622,
+    "osm": "way/111989326"
+   },
+   "start": {
+    "name": "Ústie Konského Dolu",
+    "location": {
+     "lat": 48.936166,
+     "lon": 18.937517
+    },
+    "ele_m": 512,
+    "osm": "node/1385733874"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.931861,
+     "lon": 18.932307
+    },
+    "walk_m": 612,
+    "fee": true,
+    "osm": "way/1161110505"
+   },
+   "transit": {
+    "name": "Blatnica, konečná",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.932181,
+     "lon": 18.931021
+    },
+    "walk_m": 649,
+    "osm": "node/1915592091"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3127,
+   "ascent_m": 86,
+   "duration_min": 75,
+   "max_ele_m": 622,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "yellow"
+   ],
+   "marked_share": 0.88,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 98,
+   "bbox": [
+    18.93752,
+    48.93617,
+    18.94703,
+    48.94701
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/blatnica.gpx"
+  },
+  {
+   "slug": "ostredok-kralova-studna-hotel",
+   "name": "Ostredok",
+   "description": "Výstup na vrchol Ostredok (1595 m). Štart: Kráľova studňa, hotel, späť rovnakou cestou. Po červenej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Ostredok",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.899782,
+     "lon": 19.08116
+    },
+    "ele_m": 1595,
+    "osm": "node/3731581137"
+   },
+   "start": {
+    "name": "Kráľova studňa, hotel",
+    "location": {
+     "lat": 48.876436,
+     "lon": 19.040557
+    },
+    "ele_m": 1264,
+    "osm": "node/453272636"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.875939,
+     "lon": 19.041366
+    },
+    "walk_m": 81,
+    "fee": null,
+    "osm": "way/1116080621"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 12143,
+   "ascent_m": 418,
+   "duration_min": 255,
+   "max_ele_m": 1592,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 0.94,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 91,
+   "bbox": [
+    19.04049,
+    48.87642,
+    19.08154,
+    48.8998
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/ostredok-kralova-studna-hotel.gpx"
+  },
+  {
+   "slug": "harmanecka-jaskyna",
+   "name": "Harmanecká jaskyňa",
+   "description": "Výlet k jaskyni: Harmanecká jaskyňa. Štart: Pod Kordíckym sedlom, späť rovnakou cestou. Po modrej, žltej a červenej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Harmanecká jaskyňa",
+    "kind": "jaskyna",
+    "location": {
+     "lat": 48.813839,
+     "lon": 19.040013
+    },
+    "ele_m": 834,
+    "osm": "node/7285185807"
+   },
+   "start": {
+    "name": "Pod Kordíckym sedlom",
+    "location": {
+     "lat": 48.773785,
+     "lon": 19.017209
+    },
+    "ele_m": 973,
+    "osm": "node/6779649160"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.772523,
+     "lon": 19.023215
+    },
+    "walk_m": 462,
+    "fee": null,
+    "osm": "way/697857321"
+   },
+   "transit": {
+    "name": "Kordíky, Jednota",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.772415,
+     "lon": 19.02305
+    },
+    "walk_m": 454,
+    "osm": "node/3101752163"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 12528,
+   "ascent_m": 742,
+   "duration_min": 345,
+   "max_ele_m": 1189,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "blue",
+    "yellow",
+    "red"
+   ],
+   "marked_share": 0.75,
+   "fees": [
+    {
+     "kind": "vstupne",
+     "text": "Vstupné",
+     "amount_eur": null,
+     "source": "osm",
+     "source_url": "https://www.openstreetmap.org/node/7285185807",
+     "rule_id": null
+    }
+   ],
+   "closure_rule_ids": [],
+   "rank": 88,
+   "bbox": [
+    19.01436,
+    48.77375,
+    19.03996,
+    48.81404
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/harmanecka-jaskyna.gpx"
+  },
+  {
+   "slug": "likava",
+   "name": "Likava",
+   "description": "Výlet k hradu: Likava. Štart: Likavka, späť rovnakou cestou. Po červenej a modrej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Likava",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.105279,
+     "lon": 19.312187
+    },
+    "ele_m": 629,
+    "osm": "way/234164950"
+   },
+   "start": {
+    "name": "Likavka",
+    "location": {
+     "lat": 49.092051,
+     "lon": 19.310181
+    },
+    "ele_m": 520,
+    "osm": "node/832611695"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.094812,
+     "lon": 19.311615
+    },
+    "walk_m": 324,
+    "fee": null,
+    "osm": "way/320837853"
+   },
+   "transit": {
+    "name": "Doprastav",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.087475,
+     "lon": 19.302693
+    },
+    "walk_m": 746,
+    "osm": "node/459163924"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4920,
+   "ascent_m": 135,
+   "duration_min": 105,
+   "max_ele_m": 629,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "blue"
+   ],
+   "marked_share": 0.98,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 87,
+   "bbox": [
+    19.30565,
+    49.09198,
+    19.31381,
+    49.10624
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/likava.gpx"
+  },
+  {
+   "slug": "ploska",
+   "name": "Ploská",
+   "description": "Výstup na vrchol Ploská (1532 m). Štart: Vyšná Revúca, späť rovnakou cestou. Po zelenej a žltej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Ploská",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.934057,
+     "lon": 19.117008
+    },
+    "ele_m": 1532,
+    "osm": "node/1420132035"
+   },
+   "start": {
+    "name": "Vyšná Revúca",
+    "location": {
+     "lat": 48.909134,
+     "lon": 19.165636
+    },
+    "ele_m": 725,
+    "osm": "node/4796700795"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.907503,
+     "lon": 19.164494
+    },
+    "walk_m": 200,
+    "fee": null,
+    "osm": "way/1448618119"
+   },
+   "transit": {
+    "name": "Lipt.Revúce,Vyšná Revúca,Jednota",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.907277,
+     "lon": 19.16475
+    },
+    "walk_m": 216,
+    "osm": "node/1081905832"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 10621,
+   "ascent_m": 820,
+   "duration_min": 345,
+   "max_ele_m": 1532,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "green",
+    "yellow"
+   ],
+   "marked_share": 0.96,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 87,
+   "bbox": [
+    19.11695,
+    48.90915,
+    19.16569,
+    48.93393
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/ploska.gpx"
+  },
+  {
+   "slug": "rakytov",
+   "name": "Rakytov",
+   "description": "Výstup na vrchol Rakytov (1567 m). Štart: Močidlo, hotel Smrekovica, späť rovnakou cestou. Po zelenej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Rakytov",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.960684,
+     "lon": 19.179157
+    },
+    "ele_m": 1567,
+    "osm": "node/476280908"
+   },
+   "start": {
+    "name": "Močidlo, hotel Smrekovica",
+    "location": {
+     "lat": 48.990104,
+     "lon": 19.20102
+    },
+    "ele_m": 1338,
+    "osm": "node/1522340780"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.990089,
+     "lon": 19.201366
+    },
+    "walk_m": 25,
+    "fee": null,
+    "osm": "way/1330833746"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 7954,
+   "ascent_m": 384,
+   "duration_min": 195,
+   "max_ele_m": 1561,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 0.98,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 87,
+   "bbox": [
+    19.17918,
+    48.96068,
+    19.201,
+    48.99008
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/rakytov.gpx"
+  },
+  {
+   "slug": "tlsta",
+   "name": "Tlstá",
+   "description": "Výstup na vrchol Tlstá (1373 m). Štart: Ústie Konského Dolu, späť rovnakou cestou. Po modrej a žltej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Tlstá",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.93413,
+     "lon": 18.971405
+    },
+    "ele_m": 1373,
+    "osm": "node/3873530843"
+   },
+   "start": {
+    "name": "Ústie Konského Dolu",
+    "location": {
+     "lat": 48.936166,
+     "lon": 18.937517
+    },
+    "ele_m": 512,
+    "osm": "node/1385733874"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.931861,
+     "lon": 18.932307
+    },
+    "walk_m": 612,
+    "fee": true,
+    "osm": "way/1161110505"
+   },
+   "transit": {
+    "name": "Blatnica, konečná",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.932181,
+     "lon": 18.931021
+    },
+    "walk_m": 649,
+    "osm": "node/1915592091"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 9621,
+   "ascent_m": 848,
+   "duration_min": 345,
+   "max_ele_m": 1370,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "blue",
+    "yellow"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 85,
+   "bbox": [
+    18.93752,
+    48.93408,
+    18.97137,
+    48.94458
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/tlsta.gpx"
+  },
+  {
+   "slug": "frckov",
+   "name": "Frčkov",
+   "description": "Výstup na vrchol Frčkov (1586 m). Štart: Kráľova studňa, hotel, späť rovnakou cestou. Po červenej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Frčkov",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.893229,
+     "lon": 19.078694
+    },
+    "ele_m": 1586,
+    "osm": "node/1744280436"
+   },
+   "start": {
+    "name": "Kráľova studňa, hotel",
+    "location": {
+     "lat": 48.876436,
+     "lon": 19.040557
+    },
+    "ele_m": 1264,
+    "osm": "node/453272636"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.875939,
+     "lon": 19.041366
+    },
+    "walk_m": 81,
+    "fee": null,
+    "osm": "way/1116080621"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 10633,
+   "ascent_m": 362,
+   "duration_min": 225,
+   "max_ele_m": 1582,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 0.94,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 73,
+   "bbox": [
+    19.04049,
+    48.87642,
+    19.08154,
+    48.89327
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/frckov.gpx"
+  },
+  {
+   "slug": "siprun",
+   "name": "Šiprúň",
+   "description": "Výstup na vrchol Šiprúň (1461 m). Štart: Ústie Suchého Hrabova (Vlkolínske lúky), späť rovnakou cestou. Po zelenej, červenej a modrej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Šiprúň",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.024031,
+     "lon": 19.228302
+    },
+    "ele_m": 1461,
+    "osm": "node/1218038125"
+   },
+   "start": {
+    "name": "Ústie Suchého Hrabova (Vlkolínske lúky)",
+    "location": {
+     "lat": 49.045612,
+     "lon": 19.266584
+    },
+    "ele_m": 890,
+    "osm": "node/5574160212"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.04961,
+     "lon": 19.26869
+    },
+    "walk_m": 470,
+    "fee": null,
+    "osm": "way/340712908"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 10593,
+   "ascent_m": 661,
+   "duration_min": 300,
+   "max_ele_m": 1457,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "green",
+    "red",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 72,
+   "bbox": [
+    19.22465,
+    49.02407,
+    19.26668,
+    49.0461
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/siprun.gpx"
+  },
+  {
+   "slug": "nova-hola",
+   "name": "Nová hoľa",
+   "description": "Výstup na vrchol Nová hoľa (1370 m). Štart: Donovaly, rekreačné stredisko, späť rovnakou cestou. Po červenej a žltej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Nová hoľa",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.888958,
+     "lon": 19.229662
+    },
+    "ele_m": 1370,
+    "osm": "node/5589735770"
+   },
+   "start": {
+    "name": "Donovaly, rekreačné stredisko",
+    "location": {
+     "lat": 48.878107,
+     "lon": 19.224453
+    },
+    "ele_m": 960,
+    "osm": "node/984991779"
+   },
+   "parking": {
+    "name": "P4",
+    "location": {
+     "lat": 48.877332,
+     "lon": 19.224952
+    },
+    "walk_m": 94,
+    "fee": false,
+    "osm": "way/159153388"
+   },
+   "transit": {
+    "name": "Donovaly, centrum",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.878372,
+     "lon": 19.223429
+    },
+    "walk_m": 80,
+    "osm": "node/8395458634"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3415,
+   "ascent_m": 368,
+   "duration_min": 150,
+   "max_ele_m": 1359,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "yellow"
+   ],
+   "marked_share": 0.82,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 71,
+   "bbox": [
+    19.22351,
+    48.87811,
+    19.22963,
+    48.88956
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/nova-hola.gpx"
+  },
+  {
+   "slug": "smrekov",
+   "name": "Smrekov",
+   "description": "Výstup na vrchol Smrekov (1441 m). Štart: Kráľova studňa, hotel, späť rovnakou cestou. Po zelenej a červenej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Smrekov",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.88542,
+     "lon": 19.023584
+    },
+    "ele_m": 1441,
+    "osm": "node/2611277394"
+   },
+   "start": {
+    "name": "Kráľova studňa, hotel",
+    "location": {
+     "lat": 48.876436,
+     "lon": 19.040557
+    },
+    "ele_m": 1264,
+    "osm": "node/453272636"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.875939,
+     "lon": 19.041366
+    },
+    "walk_m": 81,
+    "fee": null,
+    "osm": "way/1116080621"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 4229,
+   "ascent_m": 263,
+   "duration_min": 120,
+   "max_ele_m": 1435,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green",
+    "red"
+   ],
+   "marked_share": 0.87,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 71,
+   "bbox": [
+    19.02359,
+    48.87642,
+    19.04159,
+    48.88542
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/smrekov.gpx"
+  },
+  {
+   "slug": "vyhnatova",
+   "name": "Vyhnatová",
+   "description": "Výstup na vrchol Vyhnatová (1283 m). Štart: Skalka, ferrata, späť rovnakou cestou. Po červenej značke.",
+   "region": "velka-fatra",
+   "region_name": "Veľká Fatra",
+   "protected_area": "NP Veľká Fatra",
+   "destination": {
+    "name": "Vyhnatová",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.756511,
+     "lon": 19.003556
+    },
+    "ele_m": 1283,
+    "osm": "node/2622523037"
+   },
+   "start": {
+    "name": "Skalka, ferrata",
+    "location": {
+     "lat": 48.742568,
+     "lon": 18.996927
+    },
+    "ele_m": 1183,
+    "osm": "node/14139744028"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.739833,
+     "lon": 18.991878
+    },
+    "walk_m": 479,
+    "fee": true,
+    "osm": "way/802644081"
+   },
+   "transit": {
+    "name": "Kremnica, Skalka rázc.",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.738787,
+     "lon": 18.988236
+    },
+    "walk_m": 763,
+    "osm": "node/3409325270"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3527,
+   "ascent_m": 209,
+   "duration_min": 105,
+   "max_ele_m": 1284,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 70,
+   "bbox": [
+    18.99689,
+    48.74257,
+    19.00371,
+    48.75647
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/vyhnatova.gpx"
+  },
+  {
+   "slug": "brekov",
+   "name": "Brekov",
+   "description": "Výlet k hradu: Brekov. Štart: Brekov, späť rovnakou cestou. Po zelenej, žltej a modrej značke.",
+   "region": "vychod",
+   "region_name": "Slanské vrchy, Vihorlat a Poloniny",
+   "protected_area": null,
+   "destination": {
+    "name": "Brekov",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.902312,
+     "lon": 21.832102
+    },
+    "ele_m": 274,
+    "osm": "node/206244311"
+   },
+   "start": {
+    "name": "Brekov",
+    "location": {
+     "lat": 48.902496,
+     "lon": 21.839716
+    },
+    "ele_m": 140,
+    "osm": "node/290878271"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.901989,
+     "lon": 21.839544
+    },
+    "walk_m": 58,
+    "fee": null,
+    "osm": "way/1225235174"
+   },
+   "transit": {
+    "name": "Brekov",
+    "mode": "vlak",
+    "location": {
+     "lat": 48.902407,
+     "lon": 21.840809
+    },
+    "walk_m": 81,
+    "osm": "node/1831154539"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 3032,
+   "ascent_m": 129,
+   "duration_min": 75,
+   "max_ele_m": 274,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green",
+    "yellow",
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 87,
+   "bbox": [
+    21.83011,
+    48.90154,
+    21.83972,
+    48.90629
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/brekov.gpx"
+  },
+  {
+   "slug": "jasenov",
+   "name": "Jasenov",
+   "description": "Výlet k hradu: Jasenov. Štart: Jasenov, späť rovnakou cestou. Po modrej značke.",
+   "region": "vychod",
+   "region_name": "Slanské vrchy, Vihorlat a Poloniny",
+   "protected_area": null,
+   "destination": {
+    "name": "Jasenov",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.890947,
+     "lon": 21.910761
+    },
+    "ele_m": 395,
+    "osm": "node/293390040"
+   },
+   "start": {
+    "name": "Jasenov",
+    "location": {
+     "lat": 48.900454,
+     "lon": 21.905271
+    },
+    "ele_m": 180,
+    "osm": "node/413527755"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.897525,
+     "lon": 21.905767
+    },
+    "walk_m": 328,
+    "fee": false,
+    "osm": "node/7446873485"
+   },
+   "transit": {
+    "name": "Jasenov, otočka",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.900549,
+     "lon": 21.905564
+    },
+    "walk_m": 24,
+    "osm": "node/413527754"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2448,
+   "ascent_m": 219,
+   "duration_min": 90,
+   "max_ele_m": 395,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "blue"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 87,
+   "bbox": [
+    21.90527,
+    48.89125,
+    21.91032,
+    48.90045
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/jasenov.gpx"
+  },
+  {
+   "slug": "sninsky-kamen",
+   "name": "Sninský kameň",
+   "description": "Výstup na vrchol Sninský kameň (1006 m). Štart: Pod tromi Tablami, späť rovnakou cestou. Po červenej a modrej značke.",
+   "region": "vychod",
+   "region_name": "Slanské vrchy, Vihorlat a Poloniny",
+   "protected_area": null,
+   "destination": {
+    "name": "Sninský kameň",
+    "kind": "vrchol",
+    "location": {
+     "lat": 48.929377,
+     "lon": 22.189252
+    },
+    "ele_m": 1006,
+    "osm": "node/615539499"
+   },
+   "start": {
+    "name": "Pod tromi Tablami",
+    "location": {
+     "lat": 48.920479,
+     "lon": 22.188647
+    },
+    "ele_m": 759,
+    "osm": "node/704611585"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.918281,
+     "lon": 22.19733
+    },
+    "walk_m": 680,
+    "fee": null,
+    "osm": "node/5757065954"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 3131,
+   "ascent_m": 233,
+   "duration_min": 105,
+   "max_ele_m": 994,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red",
+    "blue"
+   ],
+   "marked_share": 0.96,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 85,
+   "bbox": [
+    22.18365,
+    48.92031,
+    22.18983,
+    48.9295
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/sninsky-kamen.gpx"
+  },
+  {
+   "slug": "slanec",
+   "name": "Slanec",
+   "description": "Výlet k hradu: Slanec. Štart: Slanec, späť rovnakou cestou. Po červenej značke.",
+   "region": "vychod",
+   "region_name": "Slanské vrchy, Vihorlat a Poloniny",
+   "protected_area": null,
+   "destination": {
+    "name": "Slanec",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.637234,
+     "lon": 21.470955
+    },
+    "ele_m": 505,
+    "osm": "node/7265843699"
+   },
+   "start": {
+    "name": "Slanec",
+    "location": {
+     "lat": 48.636237,
+     "lon": 21.478265
+    },
+    "ele_m": 355,
+    "osm": "node/2951025156"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.636378,
+     "lon": 21.478801
+    },
+    "walk_m": 42,
+    "fee": false,
+    "osm": "way/291617273"
+   },
+   "transit": {
+    "name": "Slanec, centrum",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.636123,
+     "lon": 21.478372
+    },
+    "walk_m": 15,
+    "osm": "node/4368486839"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 2745,
+   "ascent_m": 156,
+   "duration_min": 75,
+   "max_ele_m": 505,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 0.7,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 79,
+   "bbox": [
+    21.46851,
+    48.63525,
+    21.47827,
+    48.6387
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/slanec.gpx"
+  },
+  {
+   "slug": "viniansky-hrad",
+   "name": "Viniansky hrad",
+   "description": "Výlet k hradu: Viniansky hrad. Štart: Trnava pri Laborci, späť rovnakou cestou. Po žltej a červenej značke.",
+   "region": "vychod",
+   "region_name": "Slanské vrchy, Vihorlat a Poloniny",
+   "protected_area": null,
+   "destination": {
+    "name": "Viniansky hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.820027,
+     "lon": 21.950022
+    },
+    "ele_m": 333,
+    "osm": "way/73765911"
+   },
+   "start": {
+    "name": "Trnava pri Laborci",
+    "location": {
+     "lat": 48.817413,
+     "lon": 21.932955
+    },
+    "ele_m": 150,
+    "osm": "node/253222185"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.817458,
+     "lon": 21.933222
+    },
+    "walk_m": 20,
+    "fee": null,
+    "osm": "way/953413367"
+   },
+   "transit": null,
+   "route": "tam-a-spat",
+   "distance_m": 3033,
+   "ascent_m": 194,
+   "duration_min": 90,
+   "max_ele_m": 333,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "yellow",
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 79,
+   "bbox": [
+    21.93295,
+    48.81567,
+    21.94977,
+    48.82014
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/viniansky-hrad.gpx"
+  },
+  {
+   "slug": "zbojnicky-hrad",
+   "name": "Zbojnícky hrad",
+   "description": "Výlet k hradu: Zbojnícky hrad. Štart: Ruská Nová Ves, späť rovnakou cestou. Po červenej značke.",
+   "region": "vychod",
+   "region_name": "Slanské vrchy, Vihorlat a Poloniny",
+   "protected_area": null,
+   "destination": {
+    "name": "Zbojnícky hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 48.974714,
+     "lon": 21.346516
+    },
+    "ele_m": 653,
+    "osm": "node/410269028"
+   },
+   "start": {
+    "name": "Ruská Nová Ves",
+    "location": {
+     "lat": 48.977835,
+     "lon": 21.324503
+    },
+    "ele_m": 420,
+    "osm": "node/410246753"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 48.977957,
+     "lon": 21.33463
+    },
+    "walk_m": 739,
+    "fee": null,
+    "osm": "way/1193418310"
+   },
+   "transit": {
+    "name": "Na Záhumní",
+    "mode": "autobus",
+    "location": {
+     "lat": 48.977878,
+     "lon": 21.324388
+    },
+    "walk_m": 10,
+    "osm": "node/1117482523"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4731,
+   "ascent_m": 238,
+   "duration_min": 120,
+   "max_ele_m": 656,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "red"
+   ],
+   "marked_share": 1.0,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 76,
+   "bbox": [
+    21.3245,
+    48.97435,
+    21.3491,
+    48.97942
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/zbojnicky-hrad.gpx"
+  },
+  {
+   "slug": "durkovec",
+   "name": "Ďurkovec",
+   "description": "Výstup na vrchol Ďurkovec (1189 m). Štart: Runina, späť rovnakou cestou. Po zelenej a červenej značke.",
+   "region": "vychod",
+   "region_name": "Slanské vrchy, Vihorlat a Poloniny",
+   "protected_area": null,
+   "destination": {
+    "name": "Ďurkovec",
+    "kind": "vrchol",
+    "location": {
+     "lat": 49.098478,
+     "lon": 22.428455
+    },
+    "ele_m": 1189,
+    "osm": "node/513454679"
+   },
+   "start": {
+    "name": "Runina",
+    "location": {
+     "lat": 49.073362,
+     "lon": 22.405409
+    },
+    "ele_m": 549,
+    "osm": "node/719098646"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.07499,
+     "lon": 22.408047
+    },
+    "walk_m": 264,
+    "fee": null,
+    "osm": "way/910854464"
+   },
+   "transit": {
+    "name": "Runina, kostol",
+    "mode": "autobus",
+    "location": {
+     "lat": 49.073358,
+     "lon": 22.405373
+    },
+    "walk_m": 3,
+    "osm": "node/719098754"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 8095,
+   "ascent_m": 633,
+   "duration_min": 270,
+   "max_ele_m": 1186,
+   "difficulty": "stredna",
+   "family_friendly": false,
+   "marking": [
+    "green",
+    "red"
+   ],
+   "marked_share": 0.92,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 73,
+   "bbox": [
+    22.40538,
+    49.07329,
+    22.42841,
+    49.09946
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/durkovec.gpx"
+  },
+  {
+   "slug": "kapusiansky-hrad",
+   "name": "Kapušiansky hrad",
+   "description": "Výlet k hradu: Kapušiansky hrad. Štart: Kapušany, stanica, späť rovnakou cestou. Po zelenej značke.",
+   "region": "vychod",
+   "region_name": "Slanské vrchy, Vihorlat a Poloniny",
+   "protected_area": null,
+   "destination": {
+    "name": "Kapušiansky hrad",
+    "kind": "hrad",
+    "location": {
+     "lat": 49.054872,
+     "lon": 21.320526
+    },
+    "ele_m": 490,
+    "osm": "way/512612224"
+   },
+   "start": {
+    "name": "Kapušany, stanica",
+    "location": {
+     "lat": 49.043665,
+     "lon": 21.321231
+    },
+    "ele_m": 275,
+    "osm": "node/1117684428"
+   },
+   "parking": {
+    "name": null,
+    "location": {
+     "lat": 49.044716,
+     "lon": 21.326913
+    },
+    "walk_m": 430,
+    "fee": false,
+    "osm": "way/1433408441"
+   },
+   "transit": {
+    "name": "Kapušany pri Prešove",
+    "mode": "vlak",
+    "location": {
+     "lat": 49.043869,
+     "lon": 21.32054
+    },
+    "walk_m": 55,
+    "osm": "node/330448175"
+   },
+   "route": "tam-a-spat",
+   "distance_m": 4163,
+   "ascent_m": 226,
+   "duration_min": 105,
+   "max_ele_m": 490,
+   "difficulty": "lahka",
+   "family_friendly": true,
+   "marking": [
+    "green"
+   ],
+   "marked_share": 0.95,
+   "fees": [],
+   "closure_rule_ids": [],
+   "rank": 72,
+   "bbox": [
+    21.3204,
+    49.04357,
+    21.32883,
+    49.05512
+   ],
+   "curated": false,
+   "gpx_url": "/gpx/kapusiansky-hrad.gpx"
   }
  ]
 }

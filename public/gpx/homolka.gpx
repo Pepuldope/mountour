@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Homôľka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Homôľka</name><trkseg>
+    <trkpt lat="48.963600" lon="18.611148"><ele>801</ele></trkpt>
+    <trkpt lat="48.963394" lon="18.610706"><ele>803</ele></trkpt>
+    <trkpt lat="48.963188" lon="18.609166"><ele>817</ele></trkpt>
+    <trkpt lat="48.962737" lon="18.608020"><ele>828</ele></trkpt>
+    <trkpt lat="48.962469" lon="18.607162"><ele>836</ele></trkpt>
+    <trkpt lat="48.962174" lon="18.606524"><ele>844</ele></trkpt>
+    <trkpt lat="48.962145" lon="18.606296"><ele>847</ele></trkpt>
+    <trkpt lat="48.961916" lon="18.605750"><ele>855</ele></trkpt>
+    <trkpt lat="48.961767" lon="18.605616"><ele>858</ele></trkpt>
+    <trkpt lat="48.961411" lon="18.605737"><ele>863</ele></trkpt>
+    <trkpt lat="48.961281" lon="18.605739"><ele>868</ele></trkpt>
+    <trkpt lat="48.960944" lon="18.605599"><ele>884</ele></trkpt>
+    <trkpt lat="48.960675" lon="18.605398"><ele>895</ele></trkpt>
+    <trkpt lat="48.960535" lon="18.605221"><ele>902</ele></trkpt>
+    <trkpt lat="48.960196" lon="18.604588"><ele>919</ele></trkpt>
+    <trkpt lat="48.960055" lon="18.604203"><ele>928</ele></trkpt>
+    <trkpt lat="48.959944" lon="18.603285"><ele>943</ele></trkpt>
+    <trkpt lat="48.959682" lon="18.602388"><ele>970</ele></trkpt>
+    <trkpt lat="48.959273" lon="18.601584"><ele>1003</ele></trkpt>
+    <trkpt lat="48.959026" lon="18.601232"><ele>1018</ele></trkpt>
+    <trkpt lat="48.958676" lon="18.600845"><ele>1023</ele></trkpt>
+    <trkpt lat="48.958375" lon="18.600658"><ele>1027</ele></trkpt>
+    <trkpt lat="48.958033" lon="18.600579"><ele>1036</ele></trkpt>
+    <trkpt lat="48.957705" lon="18.600682"><ele>1046</ele></trkpt>
+    <trkpt lat="48.957144" lon="18.600951"><ele>1061</ele></trkpt>
+    <trkpt lat="48.956619" lon="18.600721"><ele>1064</ele></trkpt>
+    <trkpt lat="48.957144" lon="18.600951"><ele>1061</ele></trkpt>
+    <trkpt lat="48.957705" lon="18.600682"><ele>1046</ele></trkpt>
+    <trkpt lat="48.958033" lon="18.600579"><ele>1036</ele></trkpt>
+    <trkpt lat="48.958375" lon="18.600658"><ele>1027</ele></trkpt>
+    <trkpt lat="48.958676" lon="18.600845"><ele>1023</ele></trkpt>
+    <trkpt lat="48.959026" lon="18.601232"><ele>1018</ele></trkpt>
+    <trkpt lat="48.959273" lon="18.601584"><ele>1003</ele></trkpt>
+    <trkpt lat="48.959682" lon="18.602388"><ele>970</ele></trkpt>
+    <trkpt lat="48.959944" lon="18.603285"><ele>943</ele></trkpt>
+    <trkpt lat="48.960055" lon="18.604203"><ele>928</ele></trkpt>
+    <trkpt lat="48.960196" lon="18.604588"><ele>919</ele></trkpt>
+    <trkpt lat="48.960535" lon="18.605221"><ele>902</ele></trkpt>
+    <trkpt lat="48.960675" lon="18.605398"><ele>895</ele></trkpt>
+    <trkpt lat="48.960944" lon="18.605599"><ele>884</ele></trkpt>
+    <trkpt lat="48.961281" lon="18.605739"><ele>868</ele></trkpt>
+    <trkpt lat="48.961411" lon="18.605737"><ele>863</ele></trkpt>
+    <trkpt lat="48.961767" lon="18.605616"><ele>858</ele></trkpt>
+    <trkpt lat="48.961916" lon="18.605750"><ele>855</ele></trkpt>
+    <trkpt lat="48.962145" lon="18.606296"><ele>847</ele></trkpt>
+    <trkpt lat="48.962174" lon="18.606524"><ele>844</ele></trkpt>
+    <trkpt lat="48.962469" lon="18.607162"><ele>836</ele></trkpt>
+    <trkpt lat="48.962737" lon="18.608020"><ele>828</ele></trkpt>
+    <trkpt lat="48.963188" lon="18.609166"><ele>817</ele></trkpt>
+    <trkpt lat="48.963394" lon="18.610706"><ele>803</ele></trkpt>
+    <trkpt lat="48.963600" lon="18.611148"><ele>801</ele></trkpt>
+  </trkseg></trk>
+</gpx>
