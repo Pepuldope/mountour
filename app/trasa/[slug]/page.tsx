@@ -15,7 +15,7 @@ import { UiIcon } from "@/components/UiIcon";
 import { FeeBlock } from "@/components/FeeBlock";
 import { ParkingBlock } from "@/components/ParkingBlock";
 import { PoiList } from "@/components/PoiList";
-import { TransitBlock } from "@/components/TransitBlock";
+import { StopsBlock } from "@/components/TransitBlock";
 import { ClosureBanner } from "@/components/ClosureBanner";
 import { TripPlanner } from "@/components/TripPlanner";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
@@ -190,10 +190,9 @@ export default async function TripSheetPage({ params }: Props) {
           />
 
           <ParkingBlock />
+          <StopsBlock />
 
           {fees.length > 0 && <FeeBlock fees={fees} />}
-
-          <TransitBlock />
 
           <PoiList pois={detail.pois} />
 
