@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { haversineM } from "./geo";
+import { distanceAlongM, haversineM } from "./geo";
 
 describe("haversineM", () => {
   it("is zero for identical points", () => {
@@ -18,5 +18,17 @@ describe("haversineM", () => {
     const a = { lat: 48.17, lon: 17.0 };
     const b = { lat: 48.4, lon: 17.3 };
     expect(haversineM(a, b)).toBeCloseTo(haversineM(b, a), 6);
+  });
+});
+
+describe("distanceAlongM", () => {
+  const path: [number, number][] = [
+    [19.0, 49.0],
+    [19.0, 49.01],
+    [19.0, 49.02],
+  ];
+  it("measures to the nearest path point", () => {
+    expect(distanceAlongM(path, { lat: 49.0, lon: 19.0 })).toBe(0);
+    expect(Math.round(distanceAlongM(path, { lat: 49.0199, lon: 19.0005 }) / 10)).toBe(222);
   });
 });

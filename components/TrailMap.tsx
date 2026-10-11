@@ -38,6 +38,9 @@ export interface MapMarker {
   trailSlug?: string;
   /** Clicking the marker runs this (e.g. pick this parking). */
   onClick?: () => void;
+  /** Pin colour and pictogram (places on the way), instead of the kind's default look. */
+  colour?: string;
+  icon?: string;
 }
 
 interface Props {
@@ -345,6 +348,9 @@ export function TrailMap({
           MARKER_GLYPH[m.kind],
           m.title
         );
+        if (m.colour) el.style.background = m.colour;
+        // Constant markup from lib/kindIcons.ts, no user data.
+        if (m.icon) el.innerHTML = m.icon;
         const marker = new ml.Marker({ element: el })
           .setLngLat([m.location.lon, m.location.lat])
           .setPopup(new ml.Popup({ offset: 14, closeButton: false }).setDOMContent(popupContent(m.title, m.lines)))

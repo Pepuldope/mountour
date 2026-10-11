@@ -9,6 +9,7 @@ import { DIFFICULTY_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { MARKING_COLOR, MARKING_LABEL } from "@/lib/mapLayers";
 import { FeeBlock } from "@/components/FeeBlock";
 import { ParkingBlock } from "@/components/ParkingBlock";
+import { PoiList } from "@/components/PoiList";
 import { TransitBlock } from "@/components/TransitBlock";
 import { ClosureBanner } from "@/components/ClosureBanner";
 import { TripPlanner } from "@/components/TripPlanner";
@@ -142,6 +143,8 @@ export default async function TripSheetPage({ params }: Props) {
           {fees.length > 0 && <FeeBlock fees={fees} />}
 
           <TransitBlock />
+
+          <PoiList pois={detail.pois} />
 
           <div className="h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] lg:hidden">
             <TripMap detail={detail} gpxUrl={gpxUrl} />

@@ -7,6 +7,8 @@ import { useDriveRoute, useWalkRoute } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { fetchTrack } from "@/lib/gpx";
 import { POI_LABEL, TRANSIT_LABEL } from "@/lib/format";
+import { kindSvg } from "@/lib/kindIcons";
+import { POI_COLOUR } from "@/lib/palette";
 import { trackColor } from "@/lib/mapLayers";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
@@ -105,6 +107,8 @@ export function TripMap({ detail, gpxUrl }: Props) {
         location: p.location,
         title: p.name,
         lines: [POI_LABEL[p.kind]],
+        colour: POI_COLOUR[p.kind],
+        icon: kindSvg(p.kind, 14),
       })),
     ],
     [trailheads, parkingLots, choice, choose, transitStops, pois, transit, stop]
