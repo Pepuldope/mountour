@@ -1,6 +1,6 @@
 # Trip pipeline report
 
-Run: 2026-10-11T22:08:03+00:00 · OSM data: 2026-10-10T20:21:21Z
+Run: 2026-10-11T23:19:18+00:00 · OSM data: 2026-10-10T20:21:21Z
 
 **1460 trips**
 
@@ -834,7 +834,7 @@ Flag ⚠ when off by more than 15 %.
 | maly-salatin | nizke-tatry | Železné | 14.6 | 1059 | 7:30 | tazka |  |
 | mesiacik | nizke-tatry | Tále, hotel Partizán | 5.1 | 629 | 4:00 | stredna |  |
 | utulna-andrejcova | nizke-tatry | Pohorelský medokýš | 8.3 | 647 | 4:30 | stredna | osm fee |
-| vysoka | nizke-tatry | Čierna | 8.6 | 665 | 4:45 | stredna |  |
+| vysoka-cierna | nizke-tatry | Čierna | 8.6 | 665 | 4:45 | stredna |  |
 | ziar | nizke-tatry | Hlboké | 8.8 | 725 | 5:00 | stredna |  |
 | predna-magura | nizke-tatry | Partizánska Ľupča | 12.8 | 590 | 5:00 | stredna |  |
 | zadna-siroka | nizke-tatry | Horáreň Kolesárová | 16.8 | 1047 | 7:45 | tazka |  |
