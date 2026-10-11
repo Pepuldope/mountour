@@ -22,6 +22,73 @@ regions:
     protected_area: CHKO Malé Karpaty
     bboxes: [[16.95, 48.14, 17.80, 48.76]]
     max_trips: 12
+  # The rest of Slovakia, so the trip list covers the whole country. First match
+  # wins, so these sit after the national parks above.
+  - id: velka-fatra
+    name: Veľká Fatra
+    protected_area: NP Veľká Fatra
+    bboxes: [[18.85, 48.75, 19.35, 49.12]]
+    max_trips: 10
+  - id: nizke-tatry
+    name: Nízke Tatry
+    protected_area: NAPANT
+    bboxes: [[19.15, 48.75, 20.25, 49.02]]
+    max_trips: 12
+  - id: chocske-vrchy-orava
+    name: Chočské vrchy a Orava
+    protected_area: null
+    bboxes: [[19.15, 49.08, 19.45, 49.20], [19.25, 49.20, 19.75, 49.50]]
+    max_trips: 6
+  - id: pieniny
+    name: Pieniny
+    protected_area: PIENAP
+    bboxes: [[20.25, 49.33, 20.60, 49.45]]
+    max_trips: 4
+  - id: kysuce-javorniky
+    name: Kysuce a Javorníky
+    protected_area: null
+    bboxes: [[18.20, 49.15, 19.00, 49.55]]
+    max_trips: 6
+  - id: strazovske-vrchy
+    name: Strážovské vrchy a Súľovské skaly
+    protected_area: CHKO Strážovské vrchy
+    bboxes: [[18.25, 48.85, 18.75, 49.15]]
+    max_trips: 8
+  - id: biele-karpaty
+    name: Biele Karpaty
+    protected_area: CHKO Biele Karpaty
+    bboxes: [[17.40, 48.76, 18.25, 49.15]]
+    max_trips: 5
+  - id: inovec-tribec-vtacnik
+    name: Považský Inovec, Tribeč a Vtáčnik
+    protected_area: null
+    bboxes: [[17.80, 48.30, 18.80, 48.85]]
+    max_trips: 8
+  - id: stiavnicke-kremnicke-vrchy
+    name: Štiavnické a Kremnické vrchy
+    protected_area: CHKO Štiavnické vrchy
+    bboxes: [[18.70, 48.30, 19.15, 48.85]]
+    max_trips: 8
+  - id: polana-muran
+    name: Poľana a Muránska planina
+    protected_area: null
+    bboxes: [[19.15, 48.50, 20.20, 48.75], [19.85, 48.75, 20.20, 48.86]]
+    max_trips: 8
+  - id: slovensky-kras
+    name: Slovenský kras a Volovské vrchy
+    protected_area: NP Slovenský kras
+    bboxes: [[20.20, 48.45, 21.30, 48.86]]
+    max_trips: 8
+  - id: levocske-cergov
+    name: Levočské vrchy, Branisko a Čergov
+    protected_area: null
+    bboxes: [[20.45, 48.86, 21.30, 49.40], [20.60, 49.32, 21.30, 49.45]]
+    max_trips: 6
+  - id: vychod
+    name: Slanské vrchy, Vihorlat a Poloniny
+    protected_area: null
+    bboxes: [[21.30, 48.55, 22.60, 49.25]]
+    max_trips: 8
 
 trips:
   # a trailhead is a KST guidepost with public parking or a stop nearby

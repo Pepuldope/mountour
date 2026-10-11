@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Mindžová</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Mindžová</name><trkseg>
+    <trkpt lat="49.074355" lon="20.951758"><ele>876</ele></trkpt>
+    <trkpt lat="49.074263" lon="20.952499"><ele>875</ele></trkpt>
+    <trkpt lat="49.074196" lon="20.954087"><ele>865</ele></trkpt>
+    <trkpt lat="49.074085" lon="20.954703"><ele>864</ele></trkpt>
+    <trkpt lat="49.074086" lon="20.955076"><ele>868</ele></trkpt>
+    <trkpt lat="49.074156" lon="20.955336"><ele>870</ele></trkpt>
+    <trkpt lat="49.074622" lon="20.956135"><ele>863</ele></trkpt>
+    <trkpt lat="49.074693" lon="20.956343"><ele>861</ele></trkpt>
+    <trkpt lat="49.074715" lon="20.956560"><ele>859</ele></trkpt>
+    <trkpt lat="49.074688" lon="20.957237"><ele>857</ele></trkpt>
+    <trkpt lat="49.074584" lon="20.957685"><ele>856</ele></trkpt>
+    <trkpt lat="49.074574" lon="20.957948"><ele>854</ele></trkpt>
+    <trkpt lat="49.074676" lon="20.958312"><ele>850</ele></trkpt>
+    <trkpt lat="49.074735" lon="20.958390"><ele>850</ele></trkpt>
+    <trkpt lat="49.074752" lon="20.958516"><ele>850</ele></trkpt>
+    <trkpt lat="49.074694" lon="20.958803"><ele>853</ele></trkpt>
+    <trkpt lat="49.075025" lon="20.959929"><ele>865</ele></trkpt>
+    <trkpt lat="49.075111" lon="20.960529"><ele>871</ele></trkpt>
+    <trkpt lat="49.075421" lon="20.961927"><ele>901</ele></trkpt>
+    <trkpt lat="49.075450" lon="20.962311"><ele>906</ele></trkpt>
+    <trkpt lat="49.075461" lon="20.963158"><ele>913</ele></trkpt>
+    <trkpt lat="49.075387" lon="20.964032"><ele>916</ele></trkpt>
+    <trkpt lat="49.075012" lon="20.965854"><ele>919</ele></trkpt>
+    <trkpt lat="49.075387" lon="20.964032"><ele>916</ele></trkpt>
+    <trkpt lat="49.075461" lon="20.963158"><ele>913</ele></trkpt>
+    <trkpt lat="49.075450" lon="20.962311"><ele>906</ele></trkpt>
+    <trkpt lat="49.075421" lon="20.961927"><ele>901</ele></trkpt>
+    <trkpt lat="49.075111" lon="20.960529"><ele>871</ele></trkpt>
+    <trkpt lat="49.075025" lon="20.959929"><ele>865</ele></trkpt>
+    <trkpt lat="49.074694" lon="20.958803"><ele>853</ele></trkpt>
+    <trkpt lat="49.074752" lon="20.958516"><ele>850</ele></trkpt>
+    <trkpt lat="49.074735" lon="20.958390"><ele>850</ele></trkpt>
+    <trkpt lat="49.074676" lon="20.958312"><ele>850</ele></trkpt>
+    <trkpt lat="49.074574" lon="20.957948"><ele>854</ele></trkpt>
+    <trkpt lat="49.074584" lon="20.957685"><ele>856</ele></trkpt>
+    <trkpt lat="49.074688" lon="20.957237"><ele>857</ele></trkpt>
+    <trkpt lat="49.074715" lon="20.956560"><ele>859</ele></trkpt>
+    <trkpt lat="49.074693" lon="20.956343"><ele>861</ele></trkpt>
+    <trkpt lat="49.074622" lon="20.956135"><ele>863</ele></trkpt>
+    <trkpt lat="49.074156" lon="20.955336"><ele>870</ele></trkpt>
+    <trkpt lat="49.074086" lon="20.955076"><ele>868</ele></trkpt>
+    <trkpt lat="49.074085" lon="20.954703"><ele>864</ele></trkpt>
+    <trkpt lat="49.074196" lon="20.954087"><ele>865</ele></trkpt>
+    <trkpt lat="49.074263" lon="20.952499"><ele>875</ele></trkpt>
+    <trkpt lat="49.074355" lon="20.951758"><ele>876</ele></trkpt>
+  </trkseg></trk>
+</gpx>

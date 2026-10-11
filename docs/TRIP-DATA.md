@@ -27,7 +27,7 @@ Key fields of `TripSummary` (see `lib/tripSchema.ts` for all):
 
 - `slug`: one per destination and stable across runs, even when a better start is found (`pipeline/slugs.json`); safe for URLs, saved trips and share links.
 - `name`, `description`: generated in Slovak; curated trips and `pipeline/overrides.yaml` can override.
-- `region` (`tatry`, `slovensky-raj`, `mala-fatra`, `male-karpaty`), `region_name`, `protected_area`.
+- `region` (one of the regions in `pipeline/config.yaml`: the national parks first, then the rest of Slovakia), `region_name`, `protected_area`.
 - `destination` (`kind`, `ele_m`, `location`), `start`, `parking` (drive destination, `fee`), `transit` (nearest stop).
 - `distance_m`, `ascent_m`, `duration_min` are for the **whole walk**. Time is DIN 33466 without breaks, rounded up to 15 min.
 - `difficulty`: `lahka` ≤ 3 h and ≤ 400 m up and nothing harder than T2; `tazka` ≥ 6 h or ≥ 1,000 m up or any T4+; else `stredna`.

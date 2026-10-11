@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Bučie</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Bučie</name><trkseg>
+    <trkpt lat="49.074355" lon="20.951758"><ele>876</ele></trkpt>
+    <trkpt lat="49.074405" lon="20.950872"><ele>878</ele></trkpt>
+    <trkpt lat="49.074370" lon="20.949566"><ele>890</ele></trkpt>
+    <trkpt lat="49.074386" lon="20.949231"><ele>895</ele></trkpt>
+    <trkpt lat="49.074795" lon="20.945596"><ele>935</ele></trkpt>
+    <trkpt lat="49.074988" lon="20.944226"><ele>939</ele></trkpt>
+    <trkpt lat="49.074960" lon="20.943610"><ele>948</ele></trkpt>
+    <trkpt lat="49.075009" lon="20.942785"><ele>965</ele></trkpt>
+    <trkpt lat="49.075067" lon="20.942406"><ele>966</ele></trkpt>
+    <trkpt lat="49.075177" lon="20.941946"><ele>966</ele></trkpt>
+    <trkpt lat="49.075313" lon="20.941629"><ele>965</ele></trkpt>
+    <trkpt lat="49.075348" lon="20.941260"><ele>965</ele></trkpt>
+    <trkpt lat="49.075491" lon="20.940760"><ele>971</ele></trkpt>
+    <trkpt lat="49.075489" lon="20.940579"><ele>974</ele></trkpt>
+    <trkpt lat="49.075302" lon="20.940072"><ele>986</ele></trkpt>
+    <trkpt lat="49.074931" lon="20.938572"><ele>995</ele></trkpt>
+    <trkpt lat="49.074864" lon="20.937637"><ele>999</ele></trkpt>
+    <trkpt lat="49.074931" lon="20.936527"><ele>1001</ele></trkpt>
+    <trkpt lat="49.074864" lon="20.937637"><ele>999</ele></trkpt>
+    <trkpt lat="49.074931" lon="20.938572"><ele>995</ele></trkpt>
+    <trkpt lat="49.075302" lon="20.940072"><ele>986</ele></trkpt>
+    <trkpt lat="49.075489" lon="20.940579"><ele>974</ele></trkpt>
+    <trkpt lat="49.075491" lon="20.940760"><ele>971</ele></trkpt>
+    <trkpt lat="49.075348" lon="20.941260"><ele>965</ele></trkpt>
+    <trkpt lat="49.075313" lon="20.941629"><ele>965</ele></trkpt>
+    <trkpt lat="49.075177" lon="20.941946"><ele>966</ele></trkpt>
+    <trkpt lat="49.075067" lon="20.942406"><ele>966</ele></trkpt>
+    <trkpt lat="49.075009" lon="20.942785"><ele>965</ele></trkpt>
+    <trkpt lat="49.074960" lon="20.943610"><ele>948</ele></trkpt>
+    <trkpt lat="49.074988" lon="20.944226"><ele>939</ele></trkpt>
+    <trkpt lat="49.074795" lon="20.945596"><ele>935</ele></trkpt>
+    <trkpt lat="49.074386" lon="20.949231"><ele>895</ele></trkpt>
+    <trkpt lat="49.074370" lon="20.949566"><ele>890</ele></trkpt>
+    <trkpt lat="49.074405" lon="20.950872"><ele>878</ele></trkpt>
+    <trkpt lat="49.074355" lon="20.951758"><ele>876</ele></trkpt>
+  </trkseg></trk>
+</gpx>

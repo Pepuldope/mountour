@@ -32,7 +32,25 @@ export type DestinationKind =
   | "jaskyna" // show cave
   | "ine";
 
-export type RegionId = "tatry" | "slovensky-raj" | "mala-fatra" | "male-karpaty";
+/** pipeline/config.yaml regions. */
+export type RegionId =
+  | "tatry"
+  | "slovensky-raj"
+  | "mala-fatra"
+  | "male-karpaty"
+  | "velka-fatra"
+  | "nizke-tatry"
+  | "chocske-vrchy-orava"
+  | "pieniny"
+  | "kysuce-javorniky"
+  | "strazovske-vrchy"
+  | "biele-karpaty"
+  | "inovec-tribec-vtacnik"
+  | "stiavnicke-kremnicke-vrchy"
+  | "polana-muran"
+  | "slovensky-kras"
+  | "levocske-cergov"
+  | "vychod";
 
 export type TransitMode = "autobus" | "elektricka" | "vlak";
 

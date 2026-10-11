@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Ochtinská aragonitová jaskyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ochtinská aragonitová jaskyňa</name><trkseg>
+    <trkpt lat="48.659416" lon="20.296015"><ele>666</ele></trkpt>
+    <trkpt lat="48.660225" lon="20.298201"><ele>657</ele></trkpt>
+    <trkpt lat="48.661268" lon="20.301323"><ele>649</ele></trkpt>
+    <trkpt lat="48.661555" lon="20.302095"><ele>652</ele></trkpt>
+    <trkpt lat="48.661768" lon="20.302472"><ele>651</ele></trkpt>
+    <trkpt lat="48.662457" lon="20.303394"><ele>651</ele></trkpt>
+    <trkpt lat="48.663412" lon="20.304873"><ele>644</ele></trkpt>
+    <trkpt lat="48.663577" lon="20.305153"><ele>647</ele></trkpt>
+    <trkpt lat="48.663600" lon="20.305378"><ele>650</ele></trkpt>
+    <trkpt lat="48.663664" lon="20.305529"><ele>652</ele></trkpt>
+    <trkpt lat="48.663795" lon="20.305529"><ele>650</ele></trkpt>
+    <trkpt lat="48.664026" lon="20.306180"><ele>660</ele></trkpt>
+    <trkpt lat="48.664234" lon="20.306994"><ele>662</ele></trkpt>
+    <trkpt lat="48.664461" lon="20.308531"><ele>665</ele></trkpt>
+    <trkpt lat="48.664651" lon="20.308844"><ele>664</ele></trkpt>
+    <trkpt lat="48.664461" lon="20.308531"><ele>665</ele></trkpt>
+    <trkpt lat="48.664234" lon="20.306994"><ele>662</ele></trkpt>
+    <trkpt lat="48.664026" lon="20.306180"><ele>660</ele></trkpt>
+    <trkpt lat="48.663795" lon="20.305529"><ele>650</ele></trkpt>
+    <trkpt lat="48.663664" lon="20.305529"><ele>652</ele></trkpt>
+    <trkpt lat="48.663600" lon="20.305378"><ele>650</ele></trkpt>
+    <trkpt lat="48.663577" lon="20.305153"><ele>647</ele></trkpt>
+    <trkpt lat="48.663412" lon="20.304873"><ele>644</ele></trkpt>
+    <trkpt lat="48.662457" lon="20.303394"><ele>651</ele></trkpt>
+    <trkpt lat="48.661768" lon="20.302472"><ele>651</ele></trkpt>
+    <trkpt lat="48.661555" lon="20.302095"><ele>652</ele></trkpt>
+    <trkpt lat="48.661268" lon="20.301323"><ele>649</ele></trkpt>
+    <trkpt lat="48.660225" lon="20.298201"><ele>657</ele></trkpt>
+    <trkpt lat="48.659416" lon="20.296015"><ele>666</ele></trkpt>
+  </trkseg></trk>
+</gpx>
