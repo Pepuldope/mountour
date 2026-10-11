@@ -66,7 +66,7 @@ export function shareText(i: ShareTextInput): string {
     ? `${i.town ? `Štart ${i.town}, odchod` : "Odchod"} ${hhmm(i.departure)}, späť okolo ${hhmm(i.back)}${light}`
     : `Začiatok túry ${hhmm(i.departure)}, dole okolo ${hhmm(i.back)}${light}`;
   const facts = [
-    `${formatDuration(i.hikeMin)} chôdze`,
+    `${formatDuration(i.hikeMin).replaceAll("\u00a0", " ")} chôdze`,
     DIFFICULTY_LABEL[i.difficulty].toLowerCase(),
     ...(i.familyFriendly ? ["vhodné pre deti"] : []),
   ].join(", ");

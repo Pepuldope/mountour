@@ -11,6 +11,8 @@ type SearchState = "idle" | "searching" | "results" | "empty" | "error";
 
 const chip =
   "rounded-[var(--radius-chip)] border border-[var(--border)] bg-[var(--card-bg)] px-3 py-1.5 text-sm font-medium hover:border-[var(--accent)]";
+// Notes sit on a card: on the home page they would otherwise land on the illustrated hills.
+const note = "w-fit rounded-lg bg-[var(--card-bg)] px-2.5 py-1.5 text-xs font-medium";
 
 /**
  * "Odkiaľ vyrážate?": one chip that opens location / town chips / search.
@@ -116,9 +118,9 @@ export function StartChip({ folded = false }: { folded?: boolean }) {
               Hľadať
             </button>
           </form>
-          {search === "searching" && <p className="text-xs opacity-70">Hľadám miesto...</p>}
-          {search === "empty" && <p className="text-xs text-[var(--warn)]">Také miesto sme nenašli.</p>}
-          {search === "error" && <p className="text-xs text-[var(--warn)]">Toto sa nenačítalo. Skúste to znova.</p>}
+          {search === "searching" && <p className={`${note} text-[var(--muted)]`}>Hľadám miesto...</p>}
+          {search === "empty" && <p className={`${note} text-[var(--warn)]`}>Také miesto sme nenašli.</p>}
+          {search === "error" && <p className={`${note} text-[var(--warn)]`}>Toto sa nenačítalo. Skúste to znova.</p>}
           {search === "results" && (
             <ul className="flex flex-col overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--card-bg)]">
               {results.map((p) => (
@@ -138,7 +140,7 @@ export function StartChip({ folded = false }: { folded?: boolean }) {
       )}
 
       {message && status !== "locating" && (
-        <p role="status" className="text-xs text-[var(--warn)]">
+        <p role="status" className={`${note} text-[var(--warn)]`}>
           {message}
         </p>
       )}
