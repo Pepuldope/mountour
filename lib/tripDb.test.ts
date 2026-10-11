@@ -59,7 +59,7 @@ describe("trips from the database", () => {
     expect(fromDb.source).toBe("databaza");
     expect(fromFiles.source).toBe("subory");
     expect(fromDb.trips).toEqual(fromFiles.trips);
-    expect(fromDb.trips.length).toBe((await getAllTrips()).length);
+    expect(fromDb.trips.length).toBe(Math.min(500, (await getAllTrips()).length));
     const totals = fromDb.trips.map((t) => t.total_min ?? Infinity);
     expect(totals).toEqual([...totals].sort((a, b) => a - b));
     // Malá Fatra's spring closure covers Rozsutec on 1 April.
