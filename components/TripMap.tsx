@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
-import { haversineM } from "@/lib/geo";
+import { haversineM, nearestOnPath } from "@/lib/geo";
 import { useDriveRoute, useWalkRoute } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { useHomeStop } from "@/lib/useHomeStop";
@@ -33,7 +33,7 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  */
 export function TripMap({ detail, gpxUrl }: Props) {
   const { trail, trailheads, pois } = detail;
-  const { parkingLots, choice, choose, destination, trailJoin, walkFrom, transit, stops, stopChoice, chooseStop } = useTripAccess();
+  const { parkingLots, choice, choose, destination, trailJoin, walkFrom, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
   const [points, setPoints] = useState<[number, number][]>([]);
   const { start } = useUserLocation();
   const homeStop = useHomeStop(transit ? start : null);
@@ -71,10 +71,26 @@ export function TripMap({ detail, gpxUrl }: Props) {
     };
   }, [gpxUrl]);
 
-  const tracks = useMemo<MapTrack[]>(
-    () => [{ slug: trail.slug, points, color: trackColor(trail.marking), state: "selected" }],
-    [trail.slug, trail.marking, points]
-  );
+  // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
+  // There-and-back tracks run out and back, so that stretch is cut at both ends.
+  const tracks = useMemo<MapTrack[]>(() => {
+    const color = trackColor(trail.marking);
+    const whole: MapTrack[] = [{ slug: trail.slug, points, color, state: "selected" }];
+    if (!skip || !trailJoin || points.length < 3) return whole;
+    const ll = points.map(([lat, lon]) => ({ lat, lon }));
+    const mid = Math.floor((points.length - 1) / 2);
+    const out = nearestOnPath(ll.slice(0, mid + 1), trailJoin);
+    const back = nearestOnPath(ll.slice(mid), trailJoin);
+    if (!out || !back) return whole;
+    const a: [number, number] = [out.point.lat, out.point.lon];
+    const b: [number, number] = [back.point.lat, back.point.lon];
+    const bi = mid + back.i;
+    return [
+      { slug: `${trail.slug}-skipped-out`, points: [...points.slice(0, out.i + 1), a], color, state: "dimmed" },
+      { slug: `${trail.slug}-skipped-back`, points: [b, ...points.slice(bi + 1)], color, state: "dimmed" },
+      { slug: trail.slug, points: [a, ...points.slice(out.i + 1, bi + 1), b], color, state: "selected" },
+    ];
+  }, [trail.slug, trail.marking, points, skip, trailJoin]);
 
   const markers = useMemo<MapMarker[]>(
     () => [

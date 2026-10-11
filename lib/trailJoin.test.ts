@@ -38,3 +38,20 @@ describe("joinedMinutes", () => {
     expect(joinedMinutes(120, { skip_out: 0.3, skip_back: 0.2 })).toBe(60);
   });
 });
+
+describe("trailJoin on a long straight stretch", () => {
+  // Two points 1.1 km apart: the parking sits beside the middle, far from both.
+  const long: [number, number, number | null][] = [
+    [19.0, 49.0, 500],
+    [19.0, 49.01, 600],
+  ];
+  it("joins at the closest point of the line, not the nearest vertex", () => {
+    const j = trailJoin(long, { lat: 49.005, lon: 19.0004 }, 560, false)!;
+    expect(j.location.lat).toBeCloseTo(49.005, 4);
+    expect(j.location.lon).toBeCloseTo(19.0, 5);
+    expect(j.walk_m).toBeLessThan(35);
+    expect(j.skip_m).toBeGreaterThan(1050);
+    expect(j.skip_m).toBeLessThan(1170);
+    expect(j.skip_ascent_m).toBe(50);
+  });
+});
