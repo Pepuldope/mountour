@@ -102,8 +102,10 @@ export function TransitLegs({ plan }: { plan: DayPlan }) {
   const { start, fix } = useUserLocation();
   const { date } = useTripDay();
   const homeStop = useHomeStop(start);
-  // cp.sk finds connections between stops; the start's own stop beats the town name.
-  const home = homeStop?.name ?? startTown(start, fix?.town);
+  const town = startTown(start, fix?.town);
+  // cp.sk finds connections between stops; the start's own stop beats the town name, unless it is a
+  // city-bus stop named without its town ("Hodžovo nám."), which cp.sk can't place: then the town.
+  const home = homeStop && (homeStop.mode === "vlak" || homeStop.name.includes(",") || !town) ? homeStop.name : (town ?? homeStop?.name ?? null);
 
   if (!stop) {
     return (
