@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
-import { defaultApproachMin, driveDestination, primaryTrailhead, sunLocation } from "@/lib/data";
+import { defaultApproachMin, driveDestination, nearestStop, primaryTrailhead, sunLocation } from "@/lib/data";
 import { activeClosures } from "@/lib/closures";
-import { hikeMinutes } from "@/lib/dayPlan";
+import { approachMin, hikeMinutes } from "@/lib/dayPlan";
 import { HALF_DAY_MIN, dayFit, dayInSentence, isoDate } from "@/lib/days";
 import { estimateDriveMin } from "@/lib/drive";
 import { tripsCount } from "@/lib/format";
@@ -19,6 +19,8 @@ import { FilterChips } from "@/components/FilterChips";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { SiteFooter } from "@/components/SiteFooter";
 import { StartChip } from "@/components/StartChip";
+import { TravelSwitch } from "@/components/TravelSwitch";
+import { NETWORK_ON } from "@/lib/trailNetwork";
 import { TripCard } from "@/components/TripCard";
 import type { TripCardItem } from "@/components/TripCard";
 import { TrailMap } from "@/components/TrailMapClient";
@@ -64,7 +66,8 @@ function unionBounds(trails: TrailDetail[]): BBox | null {
  * and moves trips that don't fit that day's daylight behind a button.
  */
 export function HomeExplorer({ trails }: Props) {
-  const { date, today, withKids, halfDay, update } = useTripSettings();
+  const { date, today, withKids, halfDay, travel, update } = useTripSettings();
+  const transit = travel === "transit";
   const { start } = useUserLocation();
   const [activeSlug, setActiveSlug] = useState<string | null>(null);
   const [showMapOnPhone, setShowMapOnPhone] = useState(false);
@@ -74,13 +77,17 @@ export function HomeExplorer({ trails }: Props) {
   const isDesktop = useIsDesktop();
   const mapShown = isDesktop || showMapOnPhone;
 
-  // Tracks only matter once a map is on screen.
+  // With the trail network on, only the trip in focus is drawn, so only its GPX is fetched.
+  const wanted = useMemo(
+    () => (NETWORK_ON ? trails.filter(({ trail }) => trail.slug === activeSlug) : trails).map(({ trail }) => trail),
+    [trails, activeSlug]
+  );
   useEffect(() => {
     if (!mapShown) return;
     let cancelled = false;
-    for (const { trail } of trails) {
+    for (const trail of wanted) {
       const url = gpxUrlFor(trail.gpx_path);
-      if (!url) continue;
+      if (!url || trackPoints[trail.slug]) continue;
       fetchTrack(url).then((track) => {
         if (cancelled || track.length === 0) return;
         setTrackPoints((prev) => ({ ...prev, [trail.slug]: track.map((p) => [p.lat, p.lon]) }));
@@ -89,11 +96,13 @@ export function HomeExplorer({ trails }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [trails, mapShown]);
+    // trackPoints is read to skip loaded tracks, not to refetch when it changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wanted, mapShown]);
 
   // Drive time to every trail from the weekly precomputed table, via the town nearest the start.
   const destinations = useMemo(() => trails.map((t) => driveDestination(t)), [trails]);
-  const { drives, status: driveStatus } = useTownDrives(start);
+  const { drives, status: driveStatus } = useTownDrives(transit ? null : start);
 
   const { shown, hidden } = useMemo(() => {
     const now = new Date();
@@ -102,19 +111,20 @@ export function HomeExplorer({ trails }: Props) {
     const toTownKm = start && town ? haversineM(start, town) / 1000 : null;
     const accessMin = start && town && toTownKm! > 2 ? estimateDriveMin(start, town) : 0;
     const all = trails.flatMap((detail, i): TripCardItem[] => {
-      const dest = destinations[i];
+      const dest = transit ? null : destinations[i];
+      const stop = nearestStop(detail);
       const table = drives?.minutes[detail.trail.slug] ?? null;
       if (withKids && !detail.trail.family_friendly) return [];
       // Table missing (offline, or a trip newer than the table): a straight-line estimate beats a blank, marked with "~".
-      const estimate = table === null && driveStatus !== "loading" && start !== null && dest !== null;
+      const estimate = !transit && table === null && driveStatus !== "loading" && start !== null && dest !== null;
       const viaTown = table !== null ? table + accessMin : null;
       // Far from the table town (e.g. Ždiar -> Belianska jaskyňa), the straight-line guess can be much closer.
       const direct = viaTown !== null && toTownKm! > TOWN_EXACT_KM && dest ? estimateDriveMin(start!, dest) : null;
       const driveMin =
         viaTown !== null ? Math.min(viaTown, direct ?? Infinity) : estimate ? estimateDriveMin(start!, dest!) : null;
       const approx = estimate || (viaTown !== null && toTownKm! > TOWN_EXACT_KM);
-      // By car, the walk from the parking to the trail start and back is part of the day.
-      const approach = driveMin !== null ? 2 * defaultApproachMin(detail) : 0;
+      // The walk from the parking (by car) or the stop (by train/bus) to the trail and back is part of the day.
+      const approach = transit ? (stop ? 2 * approachMin(stop.distance_m) : 0) : driveMin !== null ? 2 * defaultApproachMin(detail) : 0;
       const hikeMin = hikeMinutes(detail.trail.duration_min + approach, withKids);
       if (halfDay && hikeMin + 2 * (driveMin ?? 0) > HALF_DAY_MIN) return [];
       const th = primaryTrailhead(detail);
@@ -129,6 +139,8 @@ export function HomeExplorer({ trails }: Props) {
           distanceM: start && th ? haversineM(start, th.location) : null,
           fit: date && today && sun ? dayFit({ date, now, driveMin, hikeMin, location: sun }) : null,
           closed: date !== null && activeClosures(detail.closures, date).length > 0,
+          stop: transit ? stop : null,
+          noStop: transit && !stop,
         },
       ];
     });
@@ -137,23 +149,28 @@ export function HomeExplorer({ trails }: Props) {
       all.sort((a, b) => key(a) - key(b));
     }
     return {
-      shown: all.filter((i) => !i.closed && (!i.fit || i.fit.status === "fits")),
-      hidden: all.filter((i) => i.closed || (i.fit && i.fit.status !== "fits")),
+      shown: all.filter((i) => !i.closed && !i.noStop && (!i.fit || i.fit.status === "fits")),
+      hidden: all.filter((i) => i.closed || i.noStop || (i.fit && i.fit.status !== "fits")),
     };
-  }, [trails, destinations, drives, driveStatus, withKids, halfDay, date, today, start]);
+  }, [trails, destinations, drives, driveStatus, withKids, halfDay, date, today, start, transit]);
 
   const shownSlugs = useMemo(() => new Set(shown.map((m) => m.detail.trail.slug)), [shown]);
   const dayWord = date && today ? dayInSentence(date, new Date()) : null;
 
   const tracks = useMemo<MapTrack[]>(
     () =>
-      trails.map(({ trail }) => ({
-        slug: trail.slug,
-        label: trail.name,
-        points: trackPoints[trail.slug] ?? [],
-        color: trackColor(trail.marking),
-        state: trail.slug === activeSlug ? "selected" : shownSlugs.has(trail.slug) ? "normal" : "dimmed",
-      })),
+      // The whole trail network is drawn underneath, coloured by popularity;
+      // of our trips only the one in focus is drawn, in its painted KST colour.
+      // (Until NETWORK_ON, every trip is drawn, dimmed when it doesn't fit.)
+      trails
+        .filter(({ trail }) => !NETWORK_ON || trail.slug === activeSlug)
+        .map(({ trail }) => ({
+          slug: trail.slug,
+          label: trail.name,
+          points: trackPoints[trail.slug] ?? [],
+          color: trackColor(trail.marking),
+          state: trail.slug === activeSlug ? "selected" : shownSlugs.has(trail.slug) ? "normal" : "dimmed",
+        })),
     [trails, trackPoints, activeSlug, shownSlugs]
   );
 
@@ -196,6 +213,7 @@ export function HomeExplorer({ trails }: Props) {
       markers={markers}
       bounds={bounds}
       onSelectTrail={handleMapSelect}
+      network={NETWORK_ON ? "full" : undefined}
       ariaLabel="Mapa všetkých výletov"
     />
   );
@@ -232,6 +250,7 @@ export function HomeExplorer({ trails }: Props) {
 
         <header className="flex flex-col gap-3">
           <h1 className="text-[1.65rem] leading-tight font-extrabold">Kam dnes, aby ste boli späť za svetla?</h1>
+          <TravelSwitch />
           <StartChip />
           <FilterChips />
         </header>
@@ -295,7 +314,7 @@ export function HomeExplorer({ trails }: Props) {
               onClick={() => setShowHidden(true)}
               className="w-fit text-sm font-semibold text-[var(--accent)] underline"
             >
-              Ukázať aj tie, čo {dayWord} nestihnete ({hidden.length})
+              {dayWord ? `Ukázať aj tie, čo ${dayWord} nestihnete` : "Ukázať aj výlety bez zastávky"} ({hidden.length})
             </button>
           )}
           {showHidden && cardList(hidden)}

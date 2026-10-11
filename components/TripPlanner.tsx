@@ -19,6 +19,9 @@ import type { ShareInfo } from "@/components/ShareButton";
 import { StartChip } from "@/components/StartChip";
 import { SunArc } from "@/components/SunArc";
 import { useTripAccess } from "@/components/TripAccess";
+import { WeatherBlock } from "@/components/WeatherBlock";
+import { TransitLegs } from "@/components/TransitBlock";
+import { TravelSwitch } from "@/components/TravelSwitch";
 import { GOAL_WORDS } from "@/lib/tripProfile";
 import type { TripProfile } from "@/lib/tripProfile";
 
@@ -26,6 +29,8 @@ interface Props extends ShareInfo {
   sun: LatLng | null;
   /** The trail's own walking time (parking approach is added here). */
   baseHikeMin: number;
+  /** The trip's goal, for the weather up there. */
+  goal: (LatLng & { ele: number | null; name: string }) | null;
   profile: TripProfile | null;
   gpxUrl: string | null;
   bbox: BBox | null;
@@ -44,12 +49,12 @@ const navButton =
  * The trip page's answer: "vyrazte najneskôr", the day and departure, the
  * timeline, then Uložiť (main), share and navigation hand-offs.
  */
-export function TripPlanner({ sun, baseHikeMin: trailHikeMin, profile, gpxUrl, bbox, ...trip }: Props) {
+export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile, gpxUrl, bbox, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
-  const { destination, approachMin } = useTripAccess();
-  // By car, the walk from the chosen parking to the trail start and back belongs to the day.
-  const baseHikeMin = trailHikeMin + (start ? 2 * approachMin : 0);
+  const { destination, approachMin, trailStart, transit, stop } = useTripAccess();
+  // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day.
+  const baseHikeMin = trailHikeMin + (transit || start ? 2 * approachMin : 0);
   const { plan, date, time, driveMin, driveApprox, driveStatus } = useTripPlan(sun, destination, baseHikeMin);
   const [shared, setShared] = useState<SharedPlan | null>(null);
 
@@ -114,7 +119,11 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, profile, gpxUrl, b
           <div className="flex flex-col gap-1 px-4 pt-3.5 pb-2">
             <p className="text-sm text-[var(--muted)]">
               {startName && hasDrive ? `Štart ${startName} · ` : ""}
-              {capitalize(`${date ? `${dayInSentence(date, new Date())} ` : ""}${hasDrive ? "vyrazte" : "začnite túru"} najneskôr`)}
+              {capitalize(
+                `${date ? `${dayInSentence(date, new Date())} ` : ""}${
+                  hasDrive ? "vyrazte" : transit && stop ? `buďte na zastávke ${stop.name}` : "začnite túru"
+                } najneskôr`
+              )}
             </p>
             <p className="font-data text-5xl leading-none text-[var(--time)]">{formatTime(latest!)}</p>
             <p className="text-sm">
@@ -126,18 +135,21 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, profile, gpxUrl, b
             {driveApprox && (
               <p className="pt-1 text-xs text-[var(--muted)]">Cestu autom teraz odhadujeme podľa vzdialenosti (~{formatDuration(driveMin!)}).</p>
             )}
-            {!start && <p className="pt-1 text-xs text-[var(--muted)]">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>}
+            {!start && !transit && (
+              <p className="pt-1 text-xs text-[var(--muted)]">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>
+            )}
           </div>
           {sun && <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} />}
         </section>
       )}
 
       <section aria-label="Deň a odchod" className="flex flex-col gap-3">
+        <TravelSwitch />
         <StartChip />
         <FilterChips variant="trip" activeDate={date} />
         <div className="flex flex-wrap items-center gap-3">
           <label className="flex items-center gap-2 text-sm font-semibold">
-            {hasDrive ? "Odchod" : "Začiatok túry"}
+            {hasDrive ? "Odchod" : transit && stop ? "Na zastávke" : "Začiatok túry"}
             <input
               type="time"
               step={300}
@@ -168,14 +180,16 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, profile, gpxUrl, b
             {verdictText(plan)}
           </p>
           {plan.startsInDark && <p className="text-sm text-[var(--warn)]">Túra začína pred východom slnka, vezmite si čelovku.</p>}
+          {trailStart && <WeatherBlock plan={plan} start={trailStart} goal={goal} />}
+          {transit && <TransitLegs plan={plan} />}
           <ol className="font-data grid grid-cols-4 gap-x-3 text-[16px]">
             {hasDrive ? (
               <Step label="odchod" time={plan.segments[0].start} />
             ) : (
-              <Step label="túra" time={plan.hikeStart} />
+              <Step label={transit && stop ? "zastávka" : "túra"} time={plan.hikeStart} />
             )}
             {profile && <Step label={GOAL_WORDS[profile.goalKind].noun} time={goalTime(plan, profile)} approx />}
-            <Step label="späť" time={plan.hikeEnd} />
+            <Step label={transit && stop ? "späť na zastávke" : "späť"} time={plan.hikeEnd} />
             {hasDrive && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
         </section>

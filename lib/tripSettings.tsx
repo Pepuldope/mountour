@@ -13,7 +13,11 @@ export interface TripSettings {
   /** "pol dňa": the whole outing fits in HALF_DAY_MIN. */
   halfDay: boolean;
   withKids: boolean;
+  /** How the group gets there: by car, or by train/bus (then the plan starts at the stop). */
+  travel: Travel;
 }
+
+export type Travel = "car" | "transit";
 
 interface TripSettingsState extends TripSettings {
   /** Today's date in the visitor's timezone; null until hydrated (the server has no "now"). */
@@ -46,7 +50,7 @@ export function defaultTimeFor(date: string, now = new Date()): string {
   return soon.date === date ? soon.time : MORNING;
 }
 
-const DEFAULTS: TripSettings = { date: null, time: null, halfDay: false, withKids: false };
+const DEFAULTS: TripSettings = { date: null, time: null, halfDay: false, withKids: false, travel: "car" };
 
 function readStored(): Partial<TripSettings> | null {
   try {
@@ -65,6 +69,26 @@ function store(s: TripSettings) {
   }
 }
 
+// Car or not is a fact about the visitor, not about one visit: remembered across visits.
+const TRAVEL_KEY = "mountour-travel";
+
+function readTravel(): Travel | null {
+  try {
+    const v = localStorage.getItem(TRAVEL_KEY);
+    return v === "car" || v === "transit" ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+function storeTravel(t: Travel) {
+  try {
+    localStorage.setItem(TRAVEL_KEY, t);
+  } catch {
+    // Storage blocked: back to the car default next visit.
+  }
+}
+
 const TripSettingsContext = createContext<TripSettingsState>({ ...DEFAULTS, today: null, update: () => {} });
 
 export function TripSettingsProvider({ children }: { children: ReactNode }) {
@@ -79,10 +103,12 @@ export function TripSettingsProvider({ children }: { children: ReactNode }) {
     const stale = !!stored?.date && stored.date < now;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setToday(now);
-    setSettings({ ...DEFAULTS, ...stored, ...(stale ? { date: null, time: null } : {}) });
+    const travel = readTravel();
+    setSettings({ ...DEFAULTS, ...stored, ...(stale ? { date: null, time: null } : {}), ...(travel ? { travel } : {}) });
   }, []);
 
   const update = useCallback((patch: Partial<TripSettings>) => {
+    if (patch.travel) storeTravel(patch.travel);
     setSettings((prev) => {
       // A new day resets a hand-picked departure: 08:00 on Saturday isn't 15:30 today.
       const next = { ...prev, ...patch };

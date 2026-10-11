@@ -11,6 +11,7 @@ import { trackColor } from "@/lib/mapLayers";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
 import { useTripAccess } from "@/components/TripAccess";
+import { NETWORK_ON } from "@/lib/trailNetwork";
 
 interface Props {
   detail: TrailDetail;
@@ -29,15 +30,14 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  */
 export function TripMap({ detail, gpxUrl }: Props) {
   const { trail, trailheads, transitStops, pois } = detail;
-  const { parkingLots, choice, choose, destination, trailStart } = useTripAccess();
+  const { parkingLots, choice, choose, destination, trailStart, walkFrom, transit, stop } = useTripAccess();
   const [points, setPoints] = useState<[number, number][]>([]);
   const { start } = useUserLocation();
   const drive = useDriveRoute(start, destination);
 
-  // Where the car really stops: the chosen parking, else the end of the road route.
+  // Where the walk to the trail begins: the stop, the chosen parking, else the end of the road route.
   const driveEnd = drive.route?.points[drive.route.points.length - 1];
-  const carStop: LatLng | null =
-    parkingLots[choice]?.location ?? (driveEnd ? { lat: driveEnd[0], lon: driveEnd[1] } : null);
+  const carStop: LatLng | null = walkFrom ?? (!transit && driveEnd ? { lat: driveEnd[0], lon: driveEnd[1] } : null);
   const needsWalk = carStop !== null && trailStart !== null && haversineM(carStop, trailStart) > AT_TRAIL_M;
   const walk = useWalkRoute(needsWalk ? carStop : null, needsWalk ? trailStart : null);
   const walkLeg = useMemo<[number, number][] | undefined>(() => {
@@ -86,8 +86,8 @@ export function TripMap({ detail, gpxUrl }: Props) {
         location: p.location,
         title: p.name,
         lines: [...(p.note ? [p.note] : []), ...(i === choice ? ["Vybraté parkovisko"] : [])],
-        active: i === choice,
-        dimmed: i !== choice,
+        active: !transit && i === choice,
+        dimmed: transit || i !== choice,
         // Tapping another parking picks it (the plan and both routes follow).
         onClick: i === choice ? undefined : () => choose(i),
       })),
@@ -97,6 +97,7 @@ export function TripMap({ detail, gpxUrl }: Props) {
         location: s.location,
         title: s.name,
         lines: [TRANSIT_LABEL[s.mode], `${s.distance_m} m od začiatku trasy`],
+        active: transit && s.id === stop?.id,
       })),
       ...pois.map((p) => ({
         id: `poi-${p.id}`,
@@ -106,14 +107,13 @@ export function TripMap({ detail, gpxUrl }: Props) {
         lines: [POI_LABEL[p.kind]],
       })),
     ],
-    [trailheads, parkingLots, choice, choose, transitStops, pois]
+    [trailheads, parkingLots, choice, choose, transitStops, pois, transit, stop]
   );
 
   // The trail plus where the car stops; with a drive, the whole day (start -> parking -> trail).
-  const parkingAt = parkingLots[choice]?.location ?? null;
   const bounds = useMemo<BBox | null>(() => {
     const pts: [number, number][] = [...(drive.route?.points ?? [])];
-    if (parkingAt) pts.push(pair(parkingAt));
+    if (carStop) pts.push(pair(carStop));
     if (trail.bbox) pts.push(pair(trail.bbox.sw), pair(trail.bbox.ne));
     if (pts.length === 0) return null;
     const lats = pts.map((p) => p[0]);
@@ -122,7 +122,7 @@ export function TripMap({ detail, gpxUrl }: Props) {
       sw: { lat: Math.min(...lats), lon: Math.min(...lons) },
       ne: { lat: Math.max(...lats), lon: Math.max(...lons) },
     };
-  }, [drive.route, parkingAt, trail.bbox]);
+  }, [drive.route, carStop?.lat, carStop?.lon, trail.bbox]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <TrailMap
@@ -131,6 +131,7 @@ export function TripMap({ detail, gpxUrl }: Props) {
       bounds={bounds}
       driveLeg={driveLeg}
       walkLeg={walkLeg}
+      network={NETWORK_ON ? "context" : undefined}
       ariaLabel="Mapa trasy"
     />
   );

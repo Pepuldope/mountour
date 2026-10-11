@@ -85,8 +85,17 @@ export function mapyUrl(to: LatLng, from: LatLng | null): string {
     : `https://mapy.com/fnc/v1/showmap?mapset=outdoor&center=${p(to)}&zoom=16&marker=true`;
 }
 
-/** cp.sk (official SK train/bus search), prefilled with from, to, day and time. */
-export function cpSkUrl(to: string, from: string | null, date: string | null, time: string | null): string {
+/**
+ * cp.sk (official SK train/bus search), prefilled with from, to, day and time.
+ * `arrive`: the time is when you want to be there (cp.sk "príchod"), not when you leave.
+ */
+export function cpSkUrl(
+  to: string,
+  from: string | null,
+  date: string | null,
+  time: string | null,
+  arrive = false
+): string {
   const q = new URLSearchParams();
   if (from) q.set("f", from);
   q.set("t", to);
@@ -95,5 +104,19 @@ export function cpSkUrl(to: string, from: string | null, date: string | null, ti
     q.set("date", `${d}.${m}.${y}`);
   }
   if (time) q.set("time", time);
+  if (arrive) q.set("arr", "true");
+  return `https://cp.sk/vlakbusmhd/spojenie/?${q.toString()}`;
+}
+
+/** The way back: from the stop to home, leaving after you are off the trail. */
+export function cpSkBackUrl(stop: string, home: string | null, date: string | null, after: string | null): string {
+  const q = new URLSearchParams();
+  q.set("f", stop);
+  if (home) q.set("t", home);
+  if (date) {
+    const [y, m, d] = date.split("-").map(Number);
+    q.set("date", `${d}.${m}.${y}`);
+  }
+  if (after) q.set("time", after);
   return `https://cp.sk/vlakbusmhd/spojenie/?${q.toString()}`;
 }

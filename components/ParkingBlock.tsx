@@ -22,8 +22,9 @@ function walkLabel(p: ParkingLot): string {
  * visitor picks one; the drive, the walk to the trail and the plan follow.
  */
 export function ParkingBlock() {
-  const { parkingLots, choice, choose, parking } = useTripAccess();
+  const { parkingLots, choice, choose, parking, transit } = useTripAccess();
   const options = parkingLots.slice(0, MAX_OPTIONS);
+  if (transit) return null;
 
   return (
     <section className="flex flex-col gap-2 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4">

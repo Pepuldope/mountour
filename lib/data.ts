@@ -125,6 +125,11 @@ export function defaultApproachMin(detail: TrailDetail): number {
   return approachMin(detail.parkingLots[0]?.walk_m ?? 0);
 }
 
+/** The public-transport stop closest to the trail start, or null. */
+export function nearestStop(detail: TrailDetail): TransitStop | null {
+  return [...detail.transitStops].sort((a, b) => a.distance_m - b.distance_m)[0] ?? null;
+}
+
 /** Where the drive ends: the nearest parking lot, else the trailhead itself. */
 export function driveDestination(detail: TrailDetail): LatLng | null {
   return detail.parkingLots[0]?.location ?? primaryTrailhead(detail)?.location ?? trailCenter(detail.trail);

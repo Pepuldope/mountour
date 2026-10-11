@@ -29,7 +29,7 @@ function pt(p: LatLng): string {
   return `${roundCoord(p.lat)},${roundCoord(p.lon)}`;
 }
 
-function useCachedJson<T>(url: string | null): { status: DriveStatus; data: T | null } {
+export function useCachedJson<T>(url: string | null): { status: DriveStatus; data: T | null } {
   const [state, setState] = useState<{ url: string | null; status: DriveStatus; data: T | null }>({
     url: null,
     status: "idle",
