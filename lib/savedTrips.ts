@@ -2,6 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import type { LatLng } from "@/lib/types";
+import type { TripProfile } from "@/lib/tripProfile";
 
 /**
  * A saved trip: one trail + the day it's planned for, kept on this device only
@@ -18,6 +19,8 @@ export interface SavedTrip {
   driveMin: number | null;
   hikeMin: number;
   sun: LatLng;
+  /** Height profile for the sun-arc picture; missing on trips saved before it existed. */
+  profile?: TripProfile | null;
   savedAt: string;
   /** Offline copy state: the page, GPX and map tiles. */
   offline: "ok" | "failed" | "pending";

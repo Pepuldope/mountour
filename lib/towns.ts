@@ -16,3 +16,16 @@ export const TOWNS: Town[] = [
   { label: "Trenčín", lat: 48.8945, lon: 18.0444 },
   { label: "Poprad", lat: 49.0598, lon: 20.2975 },
 ];
+
+const fold = (s: string) =>
+  s
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+    .toLowerCase()
+    .trim();
+
+/** One of the one-tap towns by name, ignoring case and diacritics ("zilina" finds Žilina). */
+export function findTown(name: string): Town | null {
+  const key = fold(name);
+  return TOWNS.find((t) => fold(t.label) === key) ?? null;
+}

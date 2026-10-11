@@ -92,6 +92,19 @@ body {
   font-family: var(--font-figtree), system-ui, sans-serif;
 }
 
+/* Desktop is a fixed two-pane layout (list scrolls, map stays): no rubber-band
+   bounce of the whole page, which dragged the map along at the top/bottom. */
+@media (min-width: 1024px) {
+  html,
+  body {
+    overscroll-behavior: none;
+  }
+}
+
+.maplibregl-map {
+  overscroll-behavior: contain;
+}
+
 h1,
 h2,
 .font-display {
