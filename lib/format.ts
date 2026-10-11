@@ -66,12 +66,8 @@ export function formatTime(date: Date): string {
 
 export function formatDateSk(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);
-  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("sk-SK", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-    timeZone: "UTC",
-  });
+  // Non-breaking spaces: "12. 10. 2026" never splits across two lines.
+  return `${d}.\u00a0${m}.\u00a0${y}`;
 }
 
 /** Straight-line distance for "X od teba": "850 m", "4,2 km", "12 km". */
@@ -79,6 +75,11 @@ export function formatFromUser(meters: number): string {
   if (meters < 1000) return `${Math.round(meters / 10) * 10} m`;
   if (meters < 10000) return `${(meters / 1000).toFixed(1).replace(".", ",")} km`;
   return `${Math.round(meters / 1000)} km`;
+}
+
+/** Stop names come in the cp.sk form "Valaská Dubová,,OcÚ" (town,,stop); shown as "Valaská Dubová, OcÚ". Links keep the raw name. */
+export function stopLabel(name: string): string {
+  return name.replace(/\s*,+\s*/g, ", ");
 }
 
 export const TRANSIT_LABEL: Record<TransitMode, string> = {

@@ -2,7 +2,7 @@
 
 import type { DayPlan } from "@/lib/dayPlan";
 import { approachMin } from "@/lib/dayPlan";
-import { formatDuration, formatTime, TRANSIT_LABEL } from "@/lib/format";
+import { formatDuration, formatFromUser, formatTime, stopLabel, TRANSIT_LABEL } from "@/lib/format";
 import { cpSkBackUrl, cpSkUrl, startTown } from "@/lib/links";
 import { useTripDay } from "@/lib/tripSettings";
 import { useHomeStop } from "@/lib/useHomeStop";
@@ -21,7 +21,7 @@ const MAX_OPTIONS = 4;
 function walkLabel(s: TransitStop): string {
   const m = s.join?.walk_m ?? s.distance_m;
   const min = approachMin(m);
-  const walk = min > 0 ? `${m} m pešo k ${s.join ? "trase" : "začiatku"} (~${formatDuration(min)})` : s.join ? "priamo pri trase" : "pri začiatku trasy";
+  const walk = min > 0 ? `${formatFromUser(m)} pešo k ${s.join ? "trase" : "začiatku"} (~${formatDuration(min)})` : s.join ? "priamo pri trase" : "pri začiatku trasy";
   return s.join && s.join.skip_m > 0 ? `${walk}, túra kratšia o ${(s.join.skip_m / 1000).toFixed(1).replace(".", ",")} km` : walk;
 }
 
@@ -75,7 +75,7 @@ export function StopsBlock() {
                       <StopIcon mode={s.mode} />
                     </span>
                     <span className="flex flex-col">
-                      <span className="font-semibold">{s.name}</span>
+                      <span className="font-semibold">{stopLabel(s.name)}</span>
                       <span className="text-[var(--muted)]">
                         {TRANSIT_LABEL[s.mode]}, {walkLabel(s)}
                       </span>
@@ -125,18 +125,18 @@ export function TransitLegs({ plan }: { plan: DayPlan }) {
           <span className="font-semibold">Tam:</span>{" "}
           {homeStop ? (
             <>
-              zo zastávky <strong>{homeStop.name}</strong> ({TRANSIT_LABEL[homeStop.mode].toLowerCase()},{" "}
-              <span className="font-data">{homeStop.distance_m} m</span> od štartu)
+              zo zastávky <strong>{stopLabel(homeStop.name)}</strong> ({TRANSIT_LABEL[homeStop.mode].toLowerCase()},{" "}
+              <span className="font-data leading-none">{formatFromUser(homeStop.distance_m)}</span> od štartu)
             </>
           ) : home ? (
             <>
-              z <strong>{home}</strong>
+              z <strong>{stopLabel(home)}</strong>
             </>
           ) : (
             "zo štartu"
           )}{" "}
-          na zastávku <strong>{stop.name}</strong>, buďte tam do <span className="font-data text-base">{formatTime(plan.hikeStart)}</span>.
-          Odtiaľ <span className="font-data">{walkM} m</span> pešo k {stop.join ? "trase" : "začiatku trasy"}.
+          na zastávku <strong>{stopLabel(stop.name)}</strong>, buďte tam do <span className="font-data text-base leading-none">{formatTime(plan.hikeStart)}</span>.
+          Odtiaľ <span className="font-data leading-none">{formatFromUser(walkM)}</span> pešo k {stop.join ? "trase" : "začiatku trasy"}.
         </p>
         <a href={cpSkUrl(stop.name, home, date, there, true)} data-umami-event="transit_open" data-umami-event-leg="there" target="_blank" rel="noopener noreferrer" className={link}>
           Spoje tam na cp.sk ↗
@@ -144,14 +144,14 @@ export function TransitLegs({ plan }: { plan: DayPlan }) {
       </div>
       <div className="flex flex-col gap-0.5">
         <p>
-          <span className="font-semibold">Späť:</span> zo zastávky <strong>{stop.name}</strong>
+          <span className="font-semibold">Späť:</span> zo zastávky <strong>{stopLabel(stop.name)}</strong>
           {home ? (
             <>
               {" "}
-              do <strong>{home}</strong>
+              do <strong>{stopLabel(home)}</strong>
             </>
           ) : null}
-          , na zastávke budete okolo <span className="font-data text-base">{formatTime(plan.hikeEnd)}</span>, hľadáme spoje odvtedy.
+          , na zastávke budete okolo <span className="font-data text-base leading-none">{formatTime(plan.hikeEnd)}</span>, hľadáme spoje odvtedy.
         </p>
         <a href={cpSkBackUrl(stop.name, home, date, back)} data-umami-event="transit_open" data-umami-event-leg="back" target="_blank" rel="noopener noreferrer" className={link}>
           Spoje späť na cp.sk ↗

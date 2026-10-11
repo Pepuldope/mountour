@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SavedTripsList } from "@/components/SavedTripsList";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "Moje výlety",
@@ -14,10 +15,11 @@ export default function SavedTripsPage() {
         ← Kam dnes
       </Link>
       <header className="flex flex-col gap-1">
-        <h1 className="text-[1.65rem] font-extrabold">Moje výlety</h1>
+        <h1 className="text-[1.65rem] leading-tight font-extrabold">Moje výlety</h1>
         <p className="text-sm text-[var(--muted)]">Uložené len v tomto zariadení. Fungujú aj bez signálu.</p>
       </header>
       <SavedTripsList />
+      <SiteFooter />
     </main>
   );
 }
