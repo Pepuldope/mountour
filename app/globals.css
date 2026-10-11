@@ -172,12 +172,20 @@ h2,
   background: #1d4fa0;
 }
 
+/* Like a stop sign: the bus or train on white. */
 .mt-pin-transit {
-  width: 22px;
-  height: 22px;
-  border-radius: 5px;
-  background: #334155;
-  font-size: 0.7rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: #fff;
+  color: #1d3a6e;
+  border-color: #1d3a6e;
+}
+
+.mt-pin-transit.is-active {
+  width: 28px;
+  height: 28px;
+  border-width: 3px;
 }
 
 .mt-pin-poi {
@@ -210,8 +218,9 @@ h2,
   opacity: 0.35;
 }
 
-/* Other parking spots stay tappable: picking one re-routes the trip. */
-.mt-pin-parking.mt-pin-dimmed {
+/* Other parking spots and stops stay tappable: picking one re-routes the trip. */
+.mt-pin-parking.mt-pin-dimmed,
+.mt-pin-transit.mt-pin-dimmed {
   opacity: 0.6;
   cursor: pointer;
 }

@@ -5,6 +5,7 @@ import type { BBox, LatLng, TrailDetail } from "@/lib/types";
 import { haversineM } from "@/lib/geo";
 import { useDriveRoute, useWalkRoute } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
+import { useHomeStop } from "@/lib/useHomeStop";
 import { fetchTrack } from "@/lib/gpx";
 import { POI_LABEL, TRANSIT_LABEL } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
@@ -31,10 +32,11 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  * walk from there to the trail (dotted), then the trail itself.
  */
 export function TripMap({ detail, gpxUrl }: Props) {
-  const { trail, trailheads, transitStops, pois } = detail;
-  const { parkingLots, choice, choose, destination, trailJoin, walkFrom, transit, stop } = useTripAccess();
+  const { trail, trailheads, pois } = detail;
+  const { parkingLots, choice, choose, destination, trailJoin, walkFrom, transit, stops, stopChoice, chooseStop } = useTripAccess();
   const [points, setPoints] = useState<[number, number][]>([]);
   const { start } = useUserLocation();
+  const homeStop = useHomeStop(transit ? start : null);
   const drive = useDriveRoute(start, destination);
 
   // Where the walk to the trail begins: the stop, the chosen parking, else the end of the road route.
@@ -83,25 +85,47 @@ export function TripMap({ detail, gpxUrl }: Props) {
         title: t.name,
         lines: ["Začiatok trasy"],
       })),
-      ...parkingLots.map((p, i) => ({
-        id: `pk-${p.id}`,
-        kind: "parking" as const,
-        location: p.location,
-        title: p.name,
-        lines: [...(p.note ? [p.note] : []), ...(i === choice ? ["Vybraté parkovisko"] : [])],
-        active: !transit && i === choice,
-        dimmed: transit || i !== choice,
-        // Tapping another parking picks it (the plan and both routes follow).
-        onClick: i === choice ? undefined : () => choose(i),
-      })),
-      ...transitStops.map((s) => ({
-        id: `ts-${s.id}`,
-        kind: `transit-${s.mode}` as const,
-        location: s.location,
-        title: s.name,
-        lines: [TRANSIT_LABEL[s.mode], `${s.distance_m} m od začiatku trasy`],
-        active: transit && s.id === stop?.id,
-      })),
+      // By car only parking, by train or bus only the stops: never both.
+      ...(transit
+        ? []
+        : parkingLots.map((p, i) => ({
+            id: `pk-${p.id}`,
+            kind: "parking" as const,
+            location: p.location,
+            title: p.name,
+            lines: [...(p.note ? [p.note] : []), ...(i === choice ? ["Vybraté parkovisko"] : [])],
+            active: i === choice,
+            dimmed: i !== choice,
+            // Tapping another parking picks it (the plan and both routes follow).
+            onClick: i === choice ? undefined : () => choose(i),
+          }))),
+      ...(transit
+        ? stops.map((s, i) => ({
+            id: `ts-${s.id}`,
+            kind: `transit-${s.mode}` as const,
+            location: s.location,
+            title: s.name,
+            lines: [
+              TRANSIT_LABEL[s.mode],
+              s.join ? `${s.join.walk_m} m od trasy` : `${s.distance_m} m od začiatku trasy`,
+              ...(i === stopChoice ? ["Tu vystúpite"] : []),
+            ],
+            active: i === stopChoice,
+            dimmed: i !== stopChoice,
+            onClick: i === stopChoice ? undefined : () => chooseStop(i),
+          }))
+        : []),
+      ...(transit && homeStop
+        ? [
+            {
+              id: "home-stop",
+              kind: `transit-${homeStop.mode}` as const,
+              location: homeStop.location,
+              title: homeStop.name,
+              lines: [`Tu nastúpite, ${homeStop.distance_m} m od štartu`],
+            },
+          ]
+        : []),
       ...pois.map((p) => ({
         id: `poi-${p.id}`,
         kind: "poi" as const,
@@ -112,7 +136,7 @@ export function TripMap({ detail, gpxUrl }: Props) {
         icon: kindSvg(p.kind, 14),
       })),
     ],
-    [trailheads, parkingLots, choice, choose, transitStops, pois, transit, stop]
+    [trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit]
   );
 
   // The trail plus where the car stops; with a drive, the whole day (start -> parking -> trail).

@@ -2,15 +2,16 @@ name: Weekly trail map
 
 # Rebuilds the map's trail network (every marked hiking trail in Slovakia,
 # coloured by popularity) from OpenStreetMap and Wikipedia page views, and
-# commits it to public/data/trails, which redeploys the site. Code:
-# pipeline/network.py. Run it by hand from the Actions tab ("Run workflow").
+# every named bus stop and train station, and commits them to
+# public/data/trails and public/data/stops, which redeploys the site. Code:
+# pipeline/network.py, pipeline/stops.py. Run it by hand from the Actions tab ("Run workflow").
 on:
   schedule:
     - cron: "47 4 * * 1"
   workflow_dispatch:
   push:
-    branches: ["claude/site-fixes-and-features-**"]
-    paths: ["pipeline/network.py", ".github/workflows/trails.yml"]
+    branches: ["claude/site-fixes-and-features-**", "claude/project-thread-l7lzd3"]
+    paths: ["pipeline/network.py", "pipeline/stops.py", ".github/workflows/trails.yml"]
 
 permissions:
   contents: write
@@ -60,6 +61,11 @@ jobs:
               print(f"| {g['name']} | {g['kind']} | {g['views']} |")
           PY
 
+      - name: Build the stops file
+        run: |
+          python -m pipeline.stops --pbf osm/slovakia.osm.pbf --osm-timestamp "$OSM_TS"
+          du -sh public/data/stops
+
       - name: Commit the new data
         run: |
           git config user.name "mountour-data-bot"
@@ -67,11 +73,13 @@ jobs:
           # Lay the fresh files on top of the branch as it is now, so a newer
           # data commit or code push never conflicts: the new build replaces it.
           for attempt in 1 2 3; do
-            rm -rf "$RUNNER_TEMP/trails" && cp -r public/data/trails "$RUNNER_TEMP/trails"
+            rm -rf "$RUNNER_TEMP/trails" "$RUNNER_TEMP/stops"
+            cp -r public/data/trails "$RUNNER_TEMP/trails" && cp -r public/data/stops "$RUNNER_TEMP/stops"
             git fetch origin "${GITHUB_REF_NAME}"
             git checkout -f --detach "origin/${GITHUB_REF_NAME}"
-            rm -rf public/data/trails && cp -r "$RUNNER_TEMP/trails" public/data/trails
-            git add -A public/data/trails
+            rm -rf public/data/trails public/data/stops
+            cp -r "$RUNNER_TEMP/trails" public/data/trails && cp -r "$RUNNER_TEMP/stops" public/data/stops
+            git add -A public/data/trails public/data/stops
             if git diff --cached --quiet; then
               echo "No changes."
               exit 0

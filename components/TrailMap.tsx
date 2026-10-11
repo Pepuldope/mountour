@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { GeoJSONSource, Map as MlMap, Marker, StyleSpecification } from "maplibre-gl";
 import type { BBox, LatLng } from "@/lib/types";
 import { MAP_STYLE_URL } from "@/lib/mapLayers";
+import { UI_ICON } from "@/lib/uiIcons";
 import { POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
 import { attachTrailNetwork } from "@/lib/trailNetwork";
 import type { NetworkMode } from "@/lib/trailNetwork";
@@ -62,11 +63,36 @@ interface Props {
 const MARKER_GLYPH: Record<MarkerKind, string> = {
   trailhead: "",
   parking: "P",
-  "transit-autobus": "A",
-  "transit-elektricka": "E",
-  "transit-vlak": "V",
+  "transit-autobus": "",
+  "transit-elektricka": "",
+  "transit-vlak": "",
   poi: "*",
 };
+
+const pictogram = (svg: string) => `<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">${svg}</svg>`;
+
+/** Stops show the bus or train, as in the rest of the page. */
+const MARKER_ICON: Partial<Record<MarkerKind, string>> = {
+  "transit-autobus": pictogram(UI_ICON.bus),
+  "transit-elektricka": pictogram(UI_ICON.bus),
+  "transit-vlak": pictogram(UI_ICON.train),
+};
+
+/**
+ * The base map's own points of interest (shops, stops, peaks, parkings...)
+ * would double ours: hide them and keep only our pins. Place, road and water
+ * names stay.
+ */
+const BASE_POI_SOURCE_LAYERS = new Set(["poi", "mountain_peak", "aerodrome_label"]);
+
+function hideBasePois(map: MlMap) {
+  for (const layer of map.getStyle()?.layers ?? []) {
+    const sourceLayer = (layer as { "source-layer"?: string })["source-layer"];
+    if (layer.type === "symbol" && sourceLayer && BASE_POI_SOURCE_LAYERS.has(sourceLayer)) {
+      map.setLayoutProperty(layer.id, "visibility", "none");
+    }
+  }
+}
 
 const MARKER_CLASS: Record<MarkerKind, string> = {
   trailhead: "mt-pin-trailhead",
@@ -187,6 +213,7 @@ export function TrailMap({
 
       map.on("load", () => {
         if (!map || cancelled) return;
+        hideBasePois(map);
         // Under everything of ours: the whole trail network.
         if (networkRef.current) detachNetwork = attachTrailNetwork(map, networkRef.current, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE);
         map.addSource("drive", { type: "geojson", data: EMPTY });
@@ -349,8 +376,9 @@ export function TrailMap({
           m.title
         );
         if (m.colour) el.style.background = m.colour;
-        // Constant markup from lib/kindIcons.ts, no user data.
-        if (m.icon) el.innerHTML = m.icon;
+        // Constant markup from lib/kindIcons.ts and lib/uiIcons.ts, no user data.
+        const icon = m.icon ?? MARKER_ICON[m.kind];
+        if (icon) el.innerHTML = icon;
         const marker = new ml.Marker({ element: el })
           .setLngLat([m.location.lon, m.location.lat])
           .setPopup(new ml.Popup({ offset: 14, closeButton: false }).setDOMContent(popupContent(m.title, m.lines)))
