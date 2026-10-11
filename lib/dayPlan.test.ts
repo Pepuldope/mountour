@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { approachMin, hikeMinutes, planDay, SAFE_MARGIN_MIN } from "./dayPlan";
+import { approachMin, COMFORT_MARGIN_MIN, hikeMinutes, planDay, SAFE_MARGIN_MIN } from "./dayPlan";
 
 const BRATISLAVA = { lat: 48.1486, lon: 17.1077 };
 const MIN = 60000;
@@ -30,9 +30,9 @@ describe("planDay", () => {
     const p = planDay(input)!;
     expect(p.latestStart.getTime() + (60 + 240 + SAFE_MARGIN_MIN) * MIN).toBe(p.sunset.getTime());
 
-    // Leaving at the latest start (minute rounded down) is "ok"; a few minutes later is only "tight".
+    // Leaving at the latest start (minute rounded down) is fine with a light note; a few minutes later is "tight".
     const atLatest = planDay({ ...input, start: hhmm(p.latestStart) })!;
-    expect(atLatest.verdict).toBe("ok");
+    expect(atLatest.verdict).toBe("close");
     const late = new Date(p.latestStart.getTime() + 5 * MIN);
     expect(planDay({ ...input, start: hhmm(late) })!.verdict).toBe("tight");
   });
@@ -43,13 +43,14 @@ describe("planDay", () => {
     expect(hikeMinutes(100, true)).toBe(130);
   });
 
-  it("grades the finish: ok, tight, after sunset, after dusk", () => {
+  it("grades the finish: ok, close, tight, after sunset, after dusk", () => {
     const base = { date: "2026-10-10", driveMin: 0, hikeMin: 60, location: BRATISLAVA };
     const ref = planDay({ ...base, start: "09:00" })!;
     const startAt = (minutesBeforeSunset: number) =>
       hhmm(new Date(ref.sunset.getTime() - (60 + minutesBeforeSunset) * MIN));
 
-    expect(planDay({ ...base, start: startAt(SAFE_MARGIN_MIN + 10) })!.verdict).toBe("ok");
+    expect(planDay({ ...base, start: startAt(COMFORT_MARGIN_MIN + 10) })!.verdict).toBe("ok");
+    expect(planDay({ ...base, start: startAt(SAFE_MARGIN_MIN + 10) })!.verdict).toBe("close");
     expect(planDay({ ...base, start: startAt(10) })!.verdict).toBe("tight");
     expect(planDay({ ...base, start: startAt(-5) })!.verdict).toBe("after-sunset");
     expect(planDay({ ...base, start: startAt(-90) })!.verdict).toBe("after-dusk");

@@ -91,7 +91,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile, gpx
   const adopted = sharedTown !== null && start?.label === (findTown(sharedTown)?.label ?? sharedTown);
 
   const hasDrive = driveMin !== null;
-  const good = plan?.verdict === "ok";
+  const good = plan?.verdict === "ok" || plan?.verdict === "close";
   const startName = start?.label.split(",")[0];
   const latest = plan ? floorTo5(plan.latestStart) : null;
   const latestPassed = latest && date === today && latest < new Date();

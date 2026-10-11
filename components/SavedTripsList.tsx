@@ -53,7 +53,7 @@ export function SavedTripsList() {
           location: trip.sun,
         });
         const past = trip.date < today;
-        const good = plan?.verdict === "ok";
+        const good = plan?.verdict === "ok" || plan?.verdict === "close";
         return (
           <li
             key={trip.slug}

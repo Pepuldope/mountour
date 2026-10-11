@@ -59,6 +59,7 @@ export const TRANSIT_LABEL: Record<TransitMode, string> = {
 /** One-line verdict for list items. */
 export const VERDICT_SHORT: Record<Verdict, string> = {
   ok: "stihnete za svetla",
+  close: "za svetla, rezerva pod hodinu",
   tight: "tesne pred západom",
   "after-sunset": "končíte po západe",
   "after-dusk": "končíte potme",
@@ -70,8 +71,10 @@ export function verdictText(plan: DayPlan): string {
   switch (plan.verdict) {
     case "ok":
       return `Stihnete to za svetla. Z túry budete späť ${formatDuration(m)} pred západom slnka.`;
+    case "close":
+      return `Stihnete to za svetla, späť ${formatDuration(m)} pred západom slnka. Rezerva je menej ako hodina.`;
     case "tight":
-      return `Tesné. Z túry budete späť len ${formatDuration(m)} pred západom slnka. Ak sa dá, vyrazte skôr.`;
+      return `Tesné: späť len ${formatDuration(m)} pred západom slnka. Vyrazte skôr.`;
     case "after-sunset":
       return `Koniec túry vychádza ${formatDuration(m)} po západe slnka, v šere. Vyrazte skôr.`;
     case "after-dusk":

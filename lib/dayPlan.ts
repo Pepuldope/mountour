@@ -18,12 +18,13 @@ export interface Segment {
 }
 
 /**
- * ok          - off the trail at least SAFE_MARGIN_MIN before sunset
+ * ok          - off the trail at least COMFORT_MARGIN_MIN (an hour) before sunset
+ * close       - SAFE_MARGIN_MIN..COMFORT_MARGIN_MIN before sunset: fine, a light note
  * tight       - before sunset, but with less than SAFE_MARGIN_MIN to spare
  * after-sunset - finishing in twilight (sunset .. civil dusk)
  * after-dusk  - finishing in the dark
  */
-export type Verdict = "ok" | "tight" | "after-sunset" | "after-dusk";
+export type Verdict = "ok" | "close" | "tight" | "after-sunset" | "after-dusk";
 
 export interface DayPlan {
   segments: Segment[];
@@ -58,6 +59,8 @@ export interface DayPlanInput {
 
 /** "Vyraz najneskôr" gets you off the trail this long before sunset (PD4; tune after tests). */
 export const SAFE_MARGIN_MIN = 30;
+/** HZS advises being down about an hour before dark; less than this gets a light note. */
+export const COMFORT_MARGIN_MIN = 60;
 /** With kids, walking takes this much longer (PD4; tune after tests). */
 export const KIDS_PACE = 1.3;
 
@@ -119,7 +122,9 @@ export function planDay(input: DayPlanInput): DayPlan | null {
         ? "after-sunset"
         : marginMin < SAFE_MARGIN_MIN
           ? "tight"
-          : "ok";
+          : marginMin < COMFORT_MARGIN_MIN
+            ? "close"
+            : "ok";
 
   return {
     segments,

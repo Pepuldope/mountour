@@ -47,7 +47,7 @@ export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Posl
       departure: plan.segments[0].start,
       back,
       hasDrive,
-      inDaylight: plan.verdict === "ok" || plan.verdict === "tight",
+      inDaylight: plan.verdict === "ok" || plan.verdict === "close" || plan.verdict === "tight",
       town,
       hikeMin,
       difficulty: trip.difficulty,

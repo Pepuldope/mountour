@@ -136,7 +136,7 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
     return { lo, hi, x, y, walk, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, ridge, hill, hours };
   }, [first, home, hs, he, sunrise, sunset, dusk, plan.dawn, profile, sun.lat, sun.lon]);
 
-  const ok = plan.verdict === "ok";
+  const ok = plan.verdict === "ok" || plan.verdict === "close";
   const restT = ok ? scene.goalT : Math.max(hs, he - 10 * MIN);
 
   // One sweep from departure to the resting point when the picture first appears.
