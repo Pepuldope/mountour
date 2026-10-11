@@ -1,10 +1,10 @@
-import { getAllTrails } from "@/lib/data";
+import { getAllTrails } from "@/lib/tripFiles";
 import { HomeExplorer } from "@/components/HomeExplorer";
 import { JsonLd } from "@/components/JsonLd";
 import { pageMetadata } from "@/lib/seo";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, absoluteUrl } from "@/lib/site";
 
-// Rebuild the trail list from Supabase at most every 5 minutes.
+// Rebuild the page at most every 5 minutes, so a new weekly build shows up.
 export const revalidate = 300;
 
 export const metadata = pageMetadata({
@@ -14,8 +14,11 @@ export const metadata = pageMetadata({
   absoluteTitle: true,
 });
 
+const HOME_FIRST = 30;
+
 export default async function Home() {
-  const trails = await getAllTrails();
+  // The best known trips are in the page itself; the browser then loads every trip.
+  const trails = (await getAllTrails()).slice(0, HOME_FIRST);
 
   return (
     <>

@@ -2,7 +2,7 @@ import { approachMin } from "@/lib/dayPlan";
 import { distanceAlongM } from "@/lib/geo";
 import { trailJoin } from "@/lib/trailJoin";
 import type { TrailJoin } from "@/lib/trailJoin";
-import { closureRulesFor, getAllTrips, getTrip } from "@/lib/trips";
+import { closureRulesFor } from "@/lib/trips";
 import type { Parking, TransitStop as TripStop, TripDetail, TripSummary } from "@/lib/tripSchema";
 import type { Closure, ParkingLot, TrailDetail, Trail, LatLng, TransitStop } from "@/lib/types";
 
@@ -96,15 +96,6 @@ export function trailDetailFrom(t: TripSummary | TripDetail): TrailDetail {
       }))
       .sort((a, b) => a.along_m - b.along_m),
   };
-}
-
-export async function getAllTrails(): Promise<TrailDetail[]> {
-  return getAllTrips().map(trailDetailFrom);
-}
-
-export async function getTrailBySlug(slug: string): Promise<TrailDetail | null> {
-  const trip = await getTrip(slug);
-  return trip ? trailDetailFrom(trip) : null;
 }
 
 export interface TrailSearchFilters {

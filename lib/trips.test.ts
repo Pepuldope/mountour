@@ -1,12 +1,15 @@
 import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { closureRulesFor, driveMinutes, getAllTrips, getClosureRules, getDriveTimes, getTrip } from "@/lib/trips";
+import { closureRulesFor, getClosureRules, getTowns, summaryFromList } from "@/lib/trips";
+import { getAllTrips, getTownDrives, getTrip } from "@/lib/tripFiles";
+import list from "@/public/data/trips/list.json";
+import type { TripList } from "@/lib/tripSchema";
 import { isClosureActive } from "@/lib/closures";
 
 // Checks the static trip files the pipeline writes (docs/TRIP-DATA.md).
-describe("trip data", () => {
-  const trips = getAllTrips();
+const trips = await getAllTrips();
 
+describe("trip data", () => {
   it("has unique slugs, a detail file and a GPX file for every trip", async () => {
     expect(new Set(trips.map((t) => t.slug)).size).toBe(trips.length);
     for (const t of trips) {
@@ -38,11 +41,34 @@ describe("trip data", () => {
     expect(closureRulesFor({ closure_rule_ids: [] })).toEqual([]);
   });
 
-  it("has a drive-time column per trip once the table is built", () => {
-    const dt = getDriveTimes();
-    if (dt.towns.length === 0) return;
-    expect(dt.slugs).toEqual(trips.map((t) => t.slug));
-    expect(dt.minutes.length).toBe(dt.towns.length);
-    expect(driveMinutes(dt.towns[0].id, "no-such-trip")).toBeNull();
+  it("has a drive time from every town to every trip", async () => {
+    const towns = getTowns();
+    if (towns.length === 0) return;
+    const minutes = await getTownDrives(towns[0].id);
+    expect(Object.keys(minutes).sort()).toEqual(trips.map((t) => t.slug).sort());
+    expect(await getTownDrives("no-such-town")).toEqual({});
+  });
+
+  it("lists every trip for the home page, filling in what the list leaves out", () => {
+    const listed = (list as unknown as TripList).trips;
+    expect(listed.map((t) => t.slug)).toEqual(trips.map((t) => t.slug));
+    const full = summaryFromList(listed[0]);
+    expect(full.gpx_url).toBe(trips[0].gpx_url);
+    expect({ ...full, description: "", marked_share: 1, curated: false, protected_area: null, max_ele_m: null }).toEqual({
+      ...trips[0],
+      description: "",
+      marked_share: 1,
+      curated: false,
+      protected_area: null,
+      max_ele_m: null,
+      destination: { ...trips[0].destination, osm: null },
+      start: { ...trips[0].start, osm: null },
+      parking: trips[0].parking && { ...trips[0].parking, osm: null },
+      transit: trips[0].transit && { ...trips[0].transit, osm: null },
+    });
+  });
+
+  it("refuses slugs that could leave the data folder", async () => {
+    expect(await getTrip("../index")).toBeNull();
   });
 });

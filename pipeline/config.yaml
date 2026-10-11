@@ -6,89 +6,90 @@ regions:
     name: Tatry
     protected_area: TANAP
     bboxes: [[19.45, 49.07, 20.40, 49.32]]
-    max_trips: 30
   - id: slovensky-raj
     name: Slovenský raj
     protected_area: NP Slovenský raj
     bboxes: [[20.15, 48.86, 20.60, 48.99]]
-    max_trips: 12
   - id: mala-fatra
     name: Malá Fatra
     protected_area: NP Malá Fatra
     bboxes: [[18.95, 49.13, 19.17, 49.26], [18.68, 48.98, 18.92, 49.14]]
-    max_trips: 15
   - id: male-karpaty
     name: Malé Karpaty
     protected_area: CHKO Malé Karpaty
     bboxes: [[16.95, 48.14, 17.80, 48.76]]
-    max_trips: 12
   # The rest of Slovakia, so the trip list covers the whole country. First match
-  # wins, so these sit after the national parks above.
+  # wins, so these sit after the national parks above. No region has a trip cap:
+  # every destination that makes a good trip is kept (max_trips: N would cap one).
   - id: velka-fatra
     name: Veľká Fatra
     protected_area: NP Veľká Fatra
     bboxes: [[18.85, 48.75, 19.35, 49.12]]
-    max_trips: 10
   - id: nizke-tatry
     name: Nízke Tatry
     protected_area: NAPANT
     bboxes: [[19.15, 48.75, 20.25, 49.02]]
-    max_trips: 12
   - id: chocske-vrchy-orava
     name: Chočské vrchy a Orava
     protected_area: null
     bboxes: [[19.15, 49.08, 19.45, 49.20], [19.25, 49.20, 19.75, 49.50]]
-    max_trips: 6
   - id: pieniny
     name: Pieniny
     protected_area: PIENAP
     bboxes: [[20.25, 49.33, 20.60, 49.45]]
-    max_trips: 4
   - id: kysuce-javorniky
     name: Kysuce a Javorníky
     protected_area: null
     bboxes: [[18.20, 49.15, 19.00, 49.55]]
-    max_trips: 6
   - id: strazovske-vrchy
     name: Strážovské vrchy a Súľovské skaly
     protected_area: CHKO Strážovské vrchy
     bboxes: [[18.25, 48.85, 18.75, 49.15]]
-    max_trips: 8
   - id: biele-karpaty
     name: Biele Karpaty
     protected_area: CHKO Biele Karpaty
     bboxes: [[17.40, 48.76, 18.25, 49.15]]
-    max_trips: 5
   - id: inovec-tribec-vtacnik
     name: Považský Inovec, Tribeč a Vtáčnik
     protected_area: null
     bboxes: [[17.80, 48.30, 18.80, 48.85]]
-    max_trips: 8
   - id: stiavnicke-kremnicke-vrchy
     name: Štiavnické a Kremnické vrchy
     protected_area: CHKO Štiavnické vrchy
     bboxes: [[18.70, 48.30, 19.15, 48.85]]
-    max_trips: 8
   - id: polana-muran
     name: Poľana a Muránska planina
     protected_area: null
     bboxes: [[19.15, 48.50, 20.20, 48.75], [19.85, 48.75, 20.20, 48.86]]
-    max_trips: 8
   - id: slovensky-kras
     name: Slovenský kras a Volovské vrchy
     protected_area: NP Slovenský kras
     bboxes: [[20.20, 48.45, 21.30, 48.86]]
-    max_trips: 8
   - id: levocske-cergov
     name: Levočské vrchy, Branisko a Čergov
     protected_area: null
     bboxes: [[20.45, 48.86, 21.30, 49.40], [20.60, 49.32, 21.30, 49.45]]
-    max_trips: 6
   - id: vychod
     name: Slanské vrchy, Vihorlat a Poloniny
     protected_area: null
     bboxes: [[21.30, 48.55, 22.60, 49.25]]
-    max_trips: 8
+  # Everything the boxes above miss, so every marked trail in Slovakia can give trips.
+  - id: zahorie-podunajsko
+    name: Záhorie a Podunajsko
+    protected_area: null
+    bboxes: [[16.80, 47.70, 18.80, 48.30], [16.80, 48.30, 17.40, 48.95]]
+  - id: krupina-cerova
+    name: Krupinská planina, Ipeľ a Cerová vrchovina
+    protected_area: null
+    bboxes: [[18.80, 47.70, 20.20, 48.50]]
+  - id: kosice-juh
+    name: Košická kotlina a juh východu
+    protected_area: null
+    bboxes: [[20.20, 47.70, 22.60, 48.55]]
+  - id: dalsie
+    name: Ďalšie miesta na Slovensku
+    protected_area: null
+    bboxes: [[16.80, 47.70, 22.60, 49.65]]
 
 trips:
   # a trailhead is a KST guidepost with public parking or a stop nearby
@@ -104,10 +105,10 @@ trips:
   min_marked_share: 0.6
   # two destinations closer than this count as one (e.g. a hut at a tarn)
   dedupe_m: 400
-  # keep at least this many family trips per region when the region has them
+  # keep at least this many family trips per region when the region has them (only matters with max_trips)
   min_family_per_region: 5
   # variety: at most this many trips from one start
-  max_trips_per_start: 3
+  max_trips_per_start: 8
   # generated trips need some climb, so city sights don't count as trips (tarns, waterfalls, caves excepted)
   min_ascent_m: 80
   # a parking must sit this close to a public car road (checked with OSRM; drops hotel-only roads)

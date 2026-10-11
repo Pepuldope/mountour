@@ -92,7 +92,7 @@ def main(argv=None):
     tb.report["unresolved"] = {**cm.unresolved, **fm.unresolved}
     log(f"{len(trips)} trips")
 
-    prev = root / "data" / "trips" / "index.json"
+    prev = root / "public" / "data" / "trips" / "index.json"
     if prev.exists() and not a.force:
         n_prev = len(json.loads(prev.read_text())["trips"])
         if n_prev >= 20 and len(trips) < 0.7 * n_prev:
