@@ -67,7 +67,7 @@ loaded (local dev, Vercel, before the first load); the `zdroj` field and `X-Zdro
 header say which one answered (`databaza` or `subory`). The loader needs the GitHub
 secrets `CLOUDFLARE_API_TOKEN` (D1 Edit) and `CLOUDFLARE_ACCOUNT_ID`; without them it
 only checks the SQL. It skips a load the database already holds (fingerprint in
-`data_version`), since D1's free plan writes 100k rows a day and one load is ~35k.
+`data_version`), since D1's free plan writes 100k rows a day and one load writes ~65k (indexes included).
 
 ## Licences and credit
 
