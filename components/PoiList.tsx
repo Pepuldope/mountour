@@ -2,6 +2,7 @@ import { KindIcon } from "@/components/KindIcon";
 import { POI_LABEL } from "@/lib/format";
 import { POI_COLOUR } from "@/lib/palette";
 import type { Poi } from "@/lib/types";
+import { UiIcon } from "@/components/UiIcon";
 
 function km(m: number): string {
   return m < 150 ? "pri štarte" : `${(m / 1000).toLocaleString("sk-SK", { maximumFractionDigits: 1, minimumFractionDigits: 1 })} km`;
@@ -12,11 +13,14 @@ export function PoiList({ pois }: { pois: Poi[] }) {
   if (pois.length === 0) return null;
   const word = pois.length === 1 ? "miesto" : pois.length < 5 ? "miesta" : "miest";
   return (
-    <details open className="rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)]">
-      <summary className="flex cursor-pointer items-center justify-between gap-2 px-4 py-3 text-base font-bold">
+    <details open className="group rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)]">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-base font-bold [&::-webkit-details-marker]:hidden">
         Na trase
         <span className="ml-auto text-sm font-medium text-[var(--muted)]">
           {pois.length} {word}
+        </span>
+        <span className="text-[var(--muted)] transition-transform group-open:rotate-90">
+          <UiIcon name="chev" size={16} />
         </span>
       </summary>
       <ul className="flex flex-col gap-2 px-4 pb-3">

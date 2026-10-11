@@ -3,6 +3,7 @@
 import { formatDuration } from "@/lib/format";
 import { useTripAccess } from "@/components/TripAccess";
 import { approachMin } from "@/lib/dayPlan";
+import { UiIcon } from "@/components/UiIcon";
 import type { ParkingLot } from "@/lib/types";
 
 /** How many parking options to offer; the rest are far or duplicates. */
@@ -27,8 +28,20 @@ export function ParkingBlock() {
   if (transit) return null;
 
   return (
-    <section className="flex flex-col gap-2 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4">
-      <h2 className="text-base font-bold">Parkovanie</h2>
+    <details className="group rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)]">
+      <summary className="flex cursor-pointer list-none items-center gap-2 px-4 py-3 text-base font-bold [&::-webkit-details-marker]:hidden">
+        <span className="mt-pin mt-pin-parking shrink-0 scale-90" aria-hidden>
+          P
+        </span>
+        Parkovanie
+        <span className="ml-auto truncate text-sm font-medium text-[var(--muted)]">
+          {parking ? [parking.walk_m < 150 ? "pri štarte" : `${parking.walk_m} m`, feeLabel(parking)].filter(Boolean).join(", ") : "bez parkoviska"}
+        </span>
+        <span className="text-[var(--muted)] transition-transform group-open:rotate-90">
+          <UiIcon name="chev" size={16} />
+        </span>
+      </summary>
+      <div className="flex flex-col gap-2 px-4 pb-3.5">
       {!parking && (
         <p className="text-sm">
           Pri začiatku trasy nemáme parkovisko. Navigácia vás dovedie na najbližšiu cestu, odtiaľ pešo. Skúste aj vlak
@@ -78,6 +91,7 @@ export function ParkingBlock() {
           · Zdroj: OpenStreetMap
         </p>
       )}
-    </section>
+      </div>
+    </details>
   );
 }

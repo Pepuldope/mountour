@@ -3,7 +3,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import type { DayPlan } from "@/lib/dayPlan";
-import { formatDuration, formatTime } from "@/lib/format";
+import { formatDuration, formatDurationShort, formatTime } from "@/lib/format";
+import { LAND, seasonDetails, seasonOf, seeded, snowSvg } from "@/lib/season";
+import { UI_ICON } from "@/lib/uiIcons";
 import { MARKING_COLOR } from "@/lib/mapLayers";
 import { sunAltitude } from "@/lib/sun";
 import { GOAL_WORDS } from "@/lib/tripProfile";
@@ -116,7 +118,6 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
     for (let t = sunrise; t <= sunset; t += 5 * MIN) {
       arc += `${arc ? "L" : "M"}${x(t).toFixed(1)},${y(sunAltitude(new Date(t), sun.lat, sun.lon)).toFixed(1)}`;
     }
-    arc += `L${x(sunset).toFixed(1)},${HOR}`;
 
     let ridge = `M0,${HOR}`;
     for (let px = 0; px <= W; px += 6) {
@@ -133,8 +134,26 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
     const hours: number[] = [];
     for (let t = lo; t <= hi; t += HOUR) hours.push(t);
 
-    return { lo, hi, x, y, walk, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, ridge, hill, hours };
+    // Season: hill colour, snow on the top, trees or flowers on the ground away from the hill.
+    const season = seasonOf(new Date(hs));
+    const r = seeded(5);
+    const hillL = walk[0].x - 14;
+    const hillR = walk[walk.length - 1].x + 14;
+    const spots: [number, number][] = [];
+    for (let i = 0; i < 16; i++) {
+      const sx0 = PAD + r() * (W - 2 * PAD);
+      if (sx0 > hillL && sx0 < hillR) continue;
+      spots.push([sx0, HOR + 1 + r() * 2]);
+    }
+    const deco = seasonDetails(season, r, (i) => spots[i], spots.length);
+    const snow = season === "zima" ? snowSvg(W, HOR, 9, 20) : "";
+    const topY = Math.min(...walk.map((p) => p.y));
+    const capY = topY + (HOR - topY) * 0.28;
+
+    return { lo, hi, x, y, walk, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, ridge, hill, hours, season, deco, snow, capY };
   }, [first, home, hs, he, sunrise, sunset, dusk, plan.dawn, profile, sun.lat, sun.lon]);
+  const land = LAND[scene.season];
+  const sunR = 8.5 * land.sunScale;
 
   const ok = plan.verdict === "ok" || plan.verdict === "close";
   const restT = ok ? scene.goalT : Math.max(hs, he - 10 * MIN);
@@ -172,6 +191,7 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
     walker = [w[i - 1].x + (w[i].x - w[i - 1].x) * f, w[i - 1].y + (w[i].y - w[i - 1].y) * f];
   }
 
+  const marker = onTrail ? "walker" : inCar ? "car" : "dot";
   const goalWords = profile ? GOAL_WORDS[profile.goalKind] : null;
   const what =
     t < first || t >= home
@@ -217,8 +237,6 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
   };
 
   const label = (x: number) => Math.max(34, Math.min(W - 34, x));
-  const departX = Math.max(30, scene.x(first));
-  const backX = Math.min(W - 30, scene.x(he));
   const ground = "Figtree, system-ui, sans-serif";
 
   return (
@@ -259,18 +277,41 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
             <circle key={`${x}-${y}`} cx={x} cy={y} r={1.1} fill="#fff" />
           ))}
         </g>
-        <path d={scene.arc} fill="none" stroke="#fff" strokeWidth={1.6} strokeDasharray="1.5 5" strokeLinecap="round" opacity={0.9} />
-        <path d={scene.ridge} fill="#6d7fa6" opacity={0.22} />
-        <path d={scene.hill} fill="var(--ground-edge)" />
-        <rect x={0} y={HOR} width={W} height={H - HOR} fill="var(--ground)" />
-        <line x1={0} x2={W} y1={HOR} y2={HOR} stroke="var(--ground-edge)" />
+        {/* Constant markup from lib/season.ts. */}
+        <g dangerouslySetInnerHTML={{ __html: scene.snow }} />
+        <path d={scene.ridge} fill="#6d7fa6" opacity={0.18} />
+        <clipPath id="sunarc-cap">
+          <rect x={0} y={0} width={W} height={scene.capY} />
+        </clipPath>
+        <path d={scene.hill} fill={land.hill} />
+        {(scene.season === "zima" || scene.season === "jar") && <path d={scene.hill} fill="#fff" clipPath="url(#sunarc-cap)" />}
+        <rect x={0} y={HOR} width={W} height={H - HOR} fill="var(--card-bg)" />
+        <rect x={0} y={HOR} width={W} height={9} fill={land.front} />
+        <g dangerouslySetInnerHTML={{ __html: scene.deco }} />
 
-        {hasDrive && (
-          <>
-            <line x1={scene.x(first)} x2={scene.x(hs)} y1={HOR} y2={HOR} stroke="var(--drive)" strokeWidth={3.2} strokeLinecap="round" strokeDasharray="5 3" />
-            <line x1={scene.x(he)} x2={scene.x(home)} y1={HOR} y2={HOR} stroke="var(--drive)" strokeWidth={3.2} strokeLinecap="round" strokeDasharray="5 3" />
-          </>
-        )}
+        {hasDrive &&
+          [
+            [first, hs],
+            [he, home],
+          ].map(([a, b]) => {
+            const x1 = scene.x(a);
+            const x2 = scene.x(b);
+            const mid = (x1 + x2) / 2;
+            return (
+              <g key={a}>
+                <rect x={x1} y={HOR - 1} width={Math.max(0, x2 - x1)} height={8} rx={4} fill="var(--foreground)" opacity={0.82} />
+                <line x1={x1 + 4} x2={x2 - 4} y1={HOR + 3} y2={HOR + 3} stroke="#fff" strokeWidth={1.2} strokeDasharray="4 3.5" opacity={0.9} />
+                {x2 - x1 > 30 && (
+                  <g transform={`translate(${mid} ${HOR + 19})`} fill="var(--foreground)" style={{ color: "var(--foreground)" }}>
+                    <g transform="translate(-27 -9) scale(.62)" dangerouslySetInnerHTML={{ __html: UI_ICON.car }} />
+                    <text x={-11} y={2.5} fontSize={13.5} fontWeight={700} className="font-data">
+                      {formatDurationShort(Math.round((b - a) / MIN))}
+                    </text>
+                  </g>
+                )}
+              </g>
+            );
+          })}
 
         <path
           d={"M" + scene.walk.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join("L")}
@@ -297,8 +338,20 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
           );
         })}
 
-        <circle cx={sx} cy={sy} r={16} fill="#f4a51c" opacity={alt > -1 ? 0.25 : 0} />
-        <circle cx={sx} cy={sy} r={8.5} fill="#f4a51c" stroke="#fff" strokeWidth={1.5} opacity={alt > -1 ? 1 : 0} />
+        <path d={scene.arc} fill="none" stroke="#fff" strokeWidth={4} strokeLinecap="round" opacity={0.75} />
+        <path d={scene.arc} fill="none" stroke="#e08a00" strokeWidth={1.7} strokeDasharray="4 4" strokeLinecap="round" />
+        <g transform={`translate(${sx} ${sy})`} opacity={alt > -1 ? 1 : 0}>
+          <circle r={sunR + 8} fill="#ffd36b" opacity={0.45} />
+          <circle r={sunR + 2} fill="#fff" opacity={0.9} />
+          <circle r={sunR} fill={land.sun} />
+          {scene.season === "leto" &&
+            Array.from({ length: 10 }, (_, i) => {
+              const a = (i * Math.PI) / 5;
+              return (
+                <line key={i} x1={Math.cos(a) * (sunR + 3)} y1={Math.sin(a) * (sunR + 3)} x2={Math.cos(a) * (sunR + 8)} y2={Math.sin(a) * (sunR + 8)} stroke="#ffaa00" strokeWidth={2} strokeLinecap="round" />
+              );
+            })}
+        </g>
 
         {profile && (
           <g>
@@ -345,15 +398,6 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
           </g>
         ))}
 
-        <text x={departX} y={HOR + 17} textAnchor="middle" fontSize={11} fontWeight={600} fill="var(--foreground)" fontFamily={ground}>
-          {hasDrive ? "odchod" : "začiatok"} {formatTime(plan.segments[0].start)}
-        </text>
-        {Math.abs(backX - departX) > 70 && (
-          <text x={backX} y={HOR + 17} textAnchor="middle" fontSize={11} fontWeight={700} fill={ok ? "var(--ok)" : "var(--time)"} fontFamily={ground}>
-            späť {formatTime(plan.hikeEnd)}
-          </text>
-        )}
-
         <line x1={PAD} x2={W - PAD} y1={RULER} y2={RULER} stroke="var(--muted)" strokeWidth={0.8} opacity={0.6} />
         {scene.hours.map((h) => {
           const x = scene.x(h);
@@ -379,12 +423,18 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
           );
         })}
 
-        <line x1={sx} x2={sx} y1={HOR - 2} y2={RULER} stroke="var(--foreground)" opacity={0.35} strokeDasharray="2 2" />
-        {inCar ? (
-          <rect x={sx - 6} y={HOR - 8} width={12} height={7} rx={2.5} fill="#17213a" stroke="#fff" strokeWidth={1.2} />
-        ) : (
-          <circle cx={walker[0]} cy={walker[1]} r={5.5} fill="#17213a" stroke="#fff" strokeWidth={2} />
-        )}
+        {/* Who is where: the car on the road, the walker on the trail, a dot at home. */}
+        <g transform={`translate(${onTrail ? walker[0] : sx} ${onTrail ? walker[1] - 12 : inCar ? HOR - 11 : HOR + 3}) translate(-12.5 -12.5) scale(1.04)`}>
+          <g className="mt-halo" dangerouslySetInnerHTML={{ __html: UI_ICON[marker] }} />
+          <g style={{ color: onTrail ? "var(--accent)" : "var(--foreground)" }} dangerouslySetInnerHTML={{ __html: UI_ICON[marker] }} />
+        </g>
+
+        <g transform={`translate(${W - 8} 8)`}>
+          <rect x={-50} y={0} width={50} height={22} rx={11} fill="#fff" opacity={0.92} />
+          <text x={-25} y={16} textAnchor="middle" fontSize={16} fontWeight={700} fill="#14233b" className="font-data">
+            {formatTime(new Date(t))}
+          </text>
+        </g>
       </svg>
 
       <div className="flex justify-between gap-3 border-t border-[var(--border)] px-4 pt-2.5 pb-3.5 text-sm" aria-live="polite">

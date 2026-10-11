@@ -1,76 +1,84 @@
 @import "tailwindcss";
 @import "maplibre-gl/dist/maplibre-gl.css";
 
-/* Brand tokens v1, direction B "Za svetla" + a hint of A "Značka"
-   (strategy/06-identity/final/tokens.css). Contrast notes live there.
-   v1.1 (sun arc): neutrals warmed from blue-grey to sunlit paper; dusk, sun
-   and night blue unchanged. */
+/* Brand tokens v2 "Jasný deň" (Feel Lab, 2026-10-11; strategy/12-feel/).
+   Light and sky-blue instead of night blue on paper: the sky and the season
+   carry the mood, colour is kept for things that mean something (goal kinds
+   in lib/palette.ts, fit pills, KST trail colours). Variable names unchanged. */
 :root {
-  /* existing names, new values */
-  --background: #fbf6ec;      /* slnečný papier */
-  --foreground: #17213a;      /* nočná modrá, 14.8:1 on background */
-  --accent: #2b4c9b;          /* súmrak, 7.5:1 on background, white on it 8.0:1 */
+  --background: #f5f9fc;      /* svetlá obloha */
+  --foreground: #14233b;      /* atrament, 15.2:1 on background */
+  --accent: #1769d1;          /* nebeská modrá, 4.9:1 on background, white on it 5.1:1 */
   --accent-contrast: #ffffff;
+  --accent-soft: #e3effc;     /* secondary buttons, tinted chips */
   --warn: #9a4a06;            /* jantár, 5.6:1 on --warn-bg */
-  --warn-bg: #fdf1dc;
-  --ok-bg: #e6f2ea;
-  --card-bg: #fffdf8;
-  --border: #eadfcb;
-  --sky-night: #17213a;       /* daylight band */
+  --warn-bg: #fff0d2;
+  --ok-bg: #e1f4e7;
+  --card-bg: #ffffff;
+  --border: #dde7f1;
+  --segment-bg: #edf3f9;      /* track behind segmented buttons */
+  --sky-night: #14233b;
   --sky-twilight: #f7c9b5;
   --sky-day: #fbe3a8;
-  --drive: #8b7d6b;           /* road in the sun arc */
-  --ground: #f4ecdc;          /* ground under the sun arc */
-  --ground-edge: #d9c7a6;     /* hills in the sun arc */
+  --drive: #55627a;           /* road legs in the sun arc */
+  --ground: #f2f6ef;          /* ground under the sun arc */
+  --ground-edge: #b9c9a6;
 
-  /* new */
-  --muted: #66594a;           /* 6.3:1 on background, 6.7:1 on card */
-  --sun: #f4a51c;             /* fill only; night text on it 7.8:1 */
-  --time: #9a4a06;            /* departure times as text, 6.3:1 on card */
-  --ok: #1e7a3e;              /* "stihnete", 4.7:1 on --ok-bg */
+  --muted: #556274;           /* 6.1:1 on background, 6.4:1 on card */
+  --sun: #ffb81c;             /* fill only */
+  --sun-soft: #fff3d1;        /* the "vyrazte najneskôr" card */
+  --time: #a35200;            /* departure times as text, 5.6:1 on --sun-soft */
+  --ok: #17663a;              /* "stihnete", 6.2:1 on --ok-bg */
+  --neutral-bg: #eceef1;      /* "nestihnete" pill */
   --danger: #b3261e;          /* closures, 5.6:1 on --danger-bg */
   --danger-bg: #fbe9e7;
-  /* KST trail colours (hint of A): route lines and trail chips only, always with white bands */
-  --trail-red: #c4122f;       /* 5.6:1 on background */
+  /* KST trail colours: route lines and trail chips only, always with white bands */
+  --trail-red: #c4122f;
   --trail-blue: #1d4fa0;
   --trail-green: #1e7a3e;
   --trail-yellow: #f2c200;    /* never as text; give the chip an ink outline */
   --trail-white: #ffffff;
 
-  --radius-card: 14px;
+  --radius-card: 16px;
   --radius-chip: 999px;
   --radius-marker: 3px;       /* trail chips stay square like the painted marks */
+  --shadow-float: 0 6px 20px rgba(20, 35, 59, 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #121827;
-    --foreground: #e9eef7;    /* 15.7:1 */
-    --accent: #9db8ff;        /* 9.4:1 */
-    --accent-contrast: #0e1426;
-    --warn: #ffb53d;          /* 7.9:1 on --warn-bg */
+    --background: #0f1724;
+    --foreground: #e8eef6;    /* 15.9:1 */
+    --accent: #6fb0ff;        /* 8.3:1 */
+    --accent-contrast: #0b1830;
+    --accent-soft: #1b2c47;
+    --warn: #ffb53d;
     --warn-bg: #3a2a10;
-    --ok-bg: #163724;
-    --card-bg: #1a2135;
-    --border: #2c3450;
+    --ok-bg: #143322;
+    --card-bg: #172233;
+    --border: #283750;
+    --segment-bg: #1d2a3e;
     --sky-night: #05080f;
     --sky-twilight: #5b3a4a;
     --sky-day: #3b3524;
-    --drive: #a39682;
-    --ground: #2a2c36;
-    --ground-edge: #474651;
+    --drive: #9fb0c8;
+    --ground: #1e2a26;
+    --ground-edge: #3e5446;
 
-    --muted: #b5a993;         /* 7.6:1, 6.9:1 on card */
-    --sun: #ffb53d;
-    --time: #ffb53d;          /* 9.4:1 on card */
-    --ok: #5cc283;            /* 5.9:1 on --ok-bg */
-    --danger: #ff8a80;        /* 7.0:1 on --danger-bg */
+    --muted: #a8b6c8;         /* 8.4:1 */
+    --sun: #ffc23d;
+    --sun-soft: #2e2614;
+    --time: #ffc23d;          /* 10:1 on --sun-soft */
+    --ok: #5cc283;
+    --neutral-bg: #253041;
+    --danger: #ff8a80;
     --danger-bg: #3a1714;
     --trail-red: #ff6b78;
     --trail-blue: #7fa6f0;
     --trail-green: #5cc283;
     --trail-yellow: #f2c200;
-    --trail-white: #e9eef7;
+    --trail-white: #e8eef6;
+    --shadow-float: 0 6px 20px rgba(0, 0, 0, 0.35);
   }
 }
 
@@ -211,4 +219,22 @@ h2,
 .maplibregl-popup-content {
   color: #17213a;
   font-family: var(--font-figtree), system-ui, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-flake {
+    display: none;
+  }
+}
+
+/* White outline behind a pictogram drawn on a picture (sun arc markers). */
+.mt-halo {
+  color: #fff;
+}
+.mt-halo * {
+  stroke: #fff;
+  stroke-width: 4.5px;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  fill: #fff;
 }

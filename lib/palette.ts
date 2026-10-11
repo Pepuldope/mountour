@@ -1,10 +1,17 @@
 // Colours that carry meaning on the map and in lists, kept in one place so the
 // visual identity work can swap them without touching the features.
-// Current values follow the "Feel Lab" prototype (2026-10-11); not final.
+// Values decided with Peter in the "Feel Lab" prototype (2026-10-11, strategy/12-feel/).
 import type { DestinationKind, PoiKind } from "@/lib/tripSchema";
 
-/** Trail popularity, quiet (0) to busiest (4): pipeline/network.py levels. */
-export const POPULARITY_RAMP = ["#fde4a0", "#f9bb47", "#ef8a2c", "#d9541f", "#a5301c"] as const;
+/**
+ * Trail popularity, quiet (0) to busiest (4): pipeline/network.py levels.
+ * Light yellow to red; quiet trails thin (and dotted in the prototype), the
+ * reddest are the most popular and get a very thin white outline.
+ */
+export const POPULARITY_RAMP = ["#f7d54a", "#f3a12f", "#e8682a", "#d9481f", "#c8261b"] as const;
+
+/** Outline around the busiest level only, about 0.8 px each side. */
+export const POPULARITY_TOP_OUTLINE = "#ffffff";
 
 export const POPULARITY_LABEL = ["málo chodená", "", "", "", "najobľúbenejšia"] as const;
 

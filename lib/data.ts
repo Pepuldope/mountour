@@ -48,6 +48,8 @@ function toTrail(t: TripSummary): Trail {
     family_friendly: t.family_friendly,
     gpx_path: t.gpx_url.replace(/^\//, ""),
     marking: t.marking[0] ?? null,
+    goal: t.destination.kind,
+    region_name: t.region_name,
     bbox: { sw: { lat: s, lon: w }, ne: { lat: n, lon: e } },
     created_at: "",
   };
