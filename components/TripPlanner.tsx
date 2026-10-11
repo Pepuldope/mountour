@@ -19,7 +19,7 @@ import type { ShareInfo } from "@/components/ShareButton";
 import { StartChip } from "@/components/StartChip";
 import { SunArc } from "@/components/SunArc";
 import { useTripAccess } from "@/components/TripAccess";
-import { WeatherBlock } from "@/components/WeatherBlock";
+import { WeatherNotes, useTripWeather } from "@/components/WeatherBlock";
 import { TransitLegs } from "@/components/TransitBlock";
 import { TravelSwitch } from "@/components/TravelSwitch";
 import { GOAL_WORDS, trimProfile } from "@/lib/tripProfile";
@@ -60,6 +60,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
   const profile = useMemo(() => (fullProfile && skip ? trimProfile(fullProfile, skip.skip_out, skip.skip_back) : fullProfile), [fullProfile, skip]);
   const { plan, date, time, driveMin, driveApprox, driveStatus } = useTripPlan(sun, destination, baseHikeMin);
   const [shared, setShared] = useState<SharedPlan | null>(null);
+  const weather = useTripWeather(plan, trailStart, goal, profile?.points[0]?.ele ?? null);
 
   // A shared link opens the sender's day and departure (once, then it's ours to change).
   useEffect(() => {
@@ -144,7 +145,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
               <p className="pt-1 text-xs text-[var(--muted)]">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>
             )}
           </div>
-          {sun && <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} />}
+          {sun && <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} weather={weather.below} />}
         </section>
       )}
 
@@ -184,7 +185,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
             {verdictText(plan)}
           </p>
           {plan.startsInDark && <p className="text-sm text-[var(--warn)]">Túra začína pred východom slnka, vezmite si čelovku.</p>}
-          {trailStart && <WeatherBlock plan={plan} start={trailStart} goal={goal} />}
+          <WeatherNotes plan={plan} weather={weather} goal={goal} />
           {transit && <TransitLegs plan={plan} />}
           <ol className="font-data grid grid-cols-4 gap-x-3 text-[16px]">
             {hasDrive ? (

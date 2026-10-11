@@ -9,6 +9,9 @@ import { UI_ICON } from "@/lib/uiIcons";
 import { MARKING_COLOR } from "@/lib/mapLayers";
 import { sunAltitude } from "@/lib/sun";
 import { GOAL_WORDS } from "@/lib/tripProfile";
+import { LAPSE_PER_M, baseSymbol, skyKind, weatherAt, weatherWords } from "@/lib/weather";
+import type { WeatherForecast } from "@/lib/weather";
+import { SKY_GREY, SUN_SHOWS, weatherIconSvg, weatherSkySvg } from "@/lib/weatherSky";
 import type { TripProfile } from "@/lib/tripProfile";
 import type { LatLng } from "@/lib/types";
 
@@ -57,12 +60,15 @@ interface Props {
   profile: TripProfile | null;
   sun: LatLng;
   hasDrive: boolean;
+  /** Forecast at the trail start, asked for at the start's height; drawn into the sky when given. */
+  weather?: WeatherForecast | null;
 }
 
 interface WalkPoint {
   t: number;
   x: number;
   y: number;
+  ele: number;
   colour: string;
 }
 
@@ -71,7 +77,7 @@ interface WalkPoint {
  * a timeline of the whole trip, and the walk is drawn as the trail's own
  * height profile. Hover (or drag on touch) to move through the day.
  */
-export function SunArc({ plan, profile, sun, hasDrive }: Props) {
+export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [scrub, setScrub] = useState<number | null>(null);
   const [intro, setIntro] = useState<number | null>(null);
@@ -106,6 +112,7 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
         t,
         x: x(t),
         y: HOR - ((p.ele - mn) / (mx - mn || 1)) * rise,
+        ele: p.ele,
         colour: p.colour ? MARKING_COLOR[p.colour] : "var(--drive)",
       };
     });
@@ -150,8 +157,10 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
     const topY = Math.min(...walk.map((p) => p.y));
     const capY = topY + (HOR - topY) * 0.28;
 
-    return { lo, hi, x, y, walk, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, ridge, hill, hours, season, deco, snow, capY };
-  }, [first, home, hs, he, sunrise, sunset, dusk, plan.dawn, profile, sun.lat, sun.lon]);
+    const sky = weather ? weatherSkySvg(weather, lo, hi, x, HOR, (at) => sunAltitude(new Date(at), sun.lat, sun.lon) < -3) : null;
+
+    return { lo, hi, x, y, walk, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, ridge, hill, hours, season, deco, snow, capY };
+  }, [first, home, hs, he, sunrise, sunset, dusk, plan.dawn, profile, sun.lat, sun.lon, weather]);
   const land = LAND[scene.season];
   const sunR = 8.5 * land.sunScale;
 
@@ -177,19 +186,32 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
 
   const t = Math.max(scene.lo, Math.min(scene.hi, scrub ?? intro ?? restT));
   const alt = sunAltitude(new Date(t), sun.lat, sun.lon);
-  const [skyTop, skyBottom] = skyAt(alt);
+  // The weather at this moment greys the sky and dims the sun.
+  const now = weather ? weatherAt(weather, t) : null;
+  const kind = skyKind(now?.symbol ?? null);
+  let [skyTop, skyBottom] = skyAt(alt);
+  const grey = kind ? SKY_GREY[kind] ?? 0 : 0;
+  if (grey && alt > -4) {
+    skyTop = mix(skyTop, kind === "thunder" ? "#7c8698" : "#b8c2cf", grey);
+    skyBottom = mix(skyBottom, "#d5dbe3", grey);
+  }
+  const sunShows = kind ? SUN_SHOWS[kind] ?? 1 : 1;
   const sx = scene.x(t);
   const sy = scene.y(alt);
 
   const onTrail = t >= hs && t <= he;
   const inCar = hasDrive && ((t >= first && t < hs) || (t > he && t < home));
   let walker: [number, number] = [sx, HOR];
+  let climbed = 0;
   if (onTrail) {
     const w = scene.walk;
     const i = Math.max(1, w.findIndex((p) => p.t >= t));
     const f = (t - w[i - 1].t) / (w[i].t - w[i - 1].t || 1);
     walker = [w[i - 1].x + (w[i].x - w[i - 1].x) * f, w[i - 1].y + (w[i].y - w[i - 1].y) * f];
+    if (profile) climbed = w[i - 1].ele + (w[i].ele - w[i - 1].ele) * f - w[0].ele;
   }
+  // On the trail it is colder the higher you are.
+  const temp = now ? Math.round(now.temp - climbed * LAPSE_PER_M) : null;
 
   const marker = onTrail ? "walker" : inCar ? "car" : "dot";
   const goalWords = profile ? GOAL_WORDS[profile.goalKind] : null;
@@ -279,6 +301,7 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
         </g>
         {/* Constant markup from lib/season.ts. */}
         <g dangerouslySetInnerHTML={{ __html: scene.snow }} />
+        {scene.sky && <g dangerouslySetInnerHTML={{ __html: scene.sky.back }} />}
         <path d={scene.ridge} fill="#6d7fa6" opacity={0.18} />
         <clipPath id="sunarc-cap">
           <rect x={0} y={0} width={W} height={scene.capY} />
@@ -340,7 +363,7 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
 
         <path d={scene.arc} fill="none" stroke="#fff" strokeWidth={4} strokeLinecap="round" opacity={0.75} />
         <path d={scene.arc} fill="none" stroke="#e08a00" strokeWidth={1.7} strokeDasharray="4 4" strokeLinecap="round" />
-        <g transform={`translate(${sx} ${sy})`} opacity={alt > -1 ? 1 : 0}>
+        <g transform={`translate(${sx} ${sy})`} opacity={alt > -1 ? sunShows : 0}>
           <circle r={sunR + 8} fill="#ffd36b" opacity={0.45} />
           <circle r={sunR + 2} fill="#fff" opacity={0.9} />
           <circle r={sunR} fill={land.sun} />
@@ -352,6 +375,7 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
               );
             })}
         </g>
+        {scene.sky && <g dangerouslySetInnerHTML={{ __html: scene.sky.front }} />}
 
         {profile && (
           <g>
@@ -442,7 +466,15 @@ export function SunArc({ plan, profile, sun, hasDrive }: Props) {
           <div className="font-data text-[22px] leading-none">{formatTime(new Date(t))}</div>
           <div className="font-semibold">{what}</div>
         </div>
-        <div className="text-right text-[13px] text-[var(--muted)]">{sunNote}</div>
+        <div className="flex flex-col items-end gap-0.5 text-right text-[13px] text-[var(--muted)]">
+          {kind && now && (
+            <span className="inline-flex items-center gap-1 font-semibold text-[var(--foreground)]">
+              <svg viewBox="0 0 22 22" className="h-[18px] w-[22px]" aria-hidden="true" dangerouslySetInnerHTML={{ __html: weatherIconSvg(kind) }} />
+              {weatherWords(baseSymbol(now.symbol!)).split(" (")[0]}, {temp} °C
+            </span>
+          )}
+          <div>{sunNote}</div>
+        </div>
       </div>
     </div>
   );

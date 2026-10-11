@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { baseSymbol, summarize, weatherWarnings, weatherWords } from "@/lib/weather";
+import { baseSymbol, skyKind, summarize, weatherAt, weatherNotes, weatherWords } from "@/lib/weather";
 import type { WeatherForecast } from "@/lib/weather";
 
 const hourly = (h: number, temp: number, rain: number, symbol: string) => ({
@@ -42,9 +42,45 @@ describe("words and warnings", () => {
   it("names the weather in Slovak", () => {
     expect(weatherWords(baseSymbol("lightrainshowers_day"))).toBe("slabý dážď (prehánky)");
     expect(weatherWords("clearsky")).toBe("jasno");
+    expect(weatherWords("heavyrainandthunder")).toBe("búrky");
   });
-  it("warns about storms, wind and frost", () => {
-    expect(weatherWarnings({ tempMin: -2, tempMax: 3, windMax: 18, rainMm: 0, symbol: "heavyrainandthunder" })).toHaveLength(3);
-    expect(weatherWarnings({ tempMin: 8, tempMax: 15, windMax: 5, rainMm: 0, symbol: "fair" })).toEqual([]);
+  it("maps MET symbols to what the sun dial draws", () => {
+    expect(skyKind("lightrainshowers_day")).toBe("lightrain");
+    expect(skyKind("heavyrainandthunder")).toBe("thunder");
+    expect(skyKind("partlycloudy_night")).toBe("partly");
+    expect(skyKind("lightsleet")).toBe("sleet");
+    expect(skyKind("cloudy")).toBe("cloudy");
+    expect(skyKind(null)).toBeNull();
+  });
+  it("finds the step covering a moment", () => {
+    expect(weatherAt(forecast, Date.parse("2026-10-17T09:30:00Z"))?.symbol).toBe("lightrainshowers_day");
+    expect(weatherAt(forecast, Date.parse("2026-10-17T16:00:00Z"))?.symbol).toBe("rain");
+    expect(weatherAt(forecast, Date.parse("2026-10-17T19:00:00Z"))).toBeNull();
+  });
+});
+
+describe("weather notes", () => {
+  const day = (rows: [number, string, number, number, number][]): WeatherForecast => ({
+    updated: "",
+    steps: rows.map(([h, symbol, rain, wind, temp]) => ({ ...hourly(h, temp, rain, symbol), wind })),
+  });
+  const from = new Date("2026-10-17T08:00:00Z");
+  const to = new Date("2026-10-17T14:00:00Z");
+
+  it("says nothing on a calm day", () => {
+    const f = day([[8, "fair_day", 0, 3, 9], [10, "partlycloudy_day", 0, 4, 12], [12, "cloudy", 0, 5, 11], [13, "cloudy", 0, 5, 10]]);
+    expect(weatherNotes(f, null, from, to)).toEqual([]);
+  });
+  it("warns about storms with their hours, and about wind and frost up top", () => {
+    const below = day([[8, "fair_day", 0, 3, 9], [11, "rainandthunder", 5, 8, 12], [12, "heavyrainandthunder", 7, 9, 11], [13, "cloudy", 0, 5, 10]]);
+    const top = day([[8, "fair_day", 0, 16, -1], [13, "cloudy", 0, 9, 1]]);
+    const notes = weatherNotes(below, top, from, to);
+    expect(notes.map((n) => n.strong)).toEqual([true, false, false]);
+    expect(notes[0].text).toContain("Búrky");
+    expect(notes.some((n) => n.text.startsWith("Silný dážď"))).toBe(false);
+  });
+  it("warns about heavy rain by amount even without a heavy symbol", () => {
+    const f = day([[8, "rain", 4.5, 3, 9], [9, "rain", 1, 3, 9], [13, "cloudy", 0, 3, 9]]);
+    expect(weatherNotes(f, null, from, to)[0]).toMatchObject({ strong: true });
   });
 });
