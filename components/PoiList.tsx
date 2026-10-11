@@ -30,7 +30,7 @@ export function PoiList({ pois }: { pois: Poi[] }) {
             <span className="flex min-w-0 flex-col">
               <span className="truncate text-sm font-semibold">{p.name}</span>
               <span className="text-xs text-[var(--muted)]">
-                <span className="font-bold" style={{ color: POI_COLOUR[p.kind] }}>
+                <span className="kind-ink font-bold" style={{ "--kind": POI_COLOUR[p.kind] } as React.CSSProperties}>
                   {POI_LABEL[p.kind]}
                 </span>
                 {p.along_m !== null ? ` · ${km(p.along_m)}` : ""}

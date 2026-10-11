@@ -109,7 +109,7 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
           <span className="shrink-0 text-xs font-semibold text-[var(--muted)]">{DIFFICULTY_LABEL[trail.difficulty].toLowerCase()}</span>
         </span>
         <span className="flex flex-wrap items-center gap-x-1.5 text-[12.5px] text-[var(--muted)]">
-          <span className="font-bold" style={{ color: colour }}>
+          <span className="kind-ink font-bold" style={{ "--kind": colour } as React.CSSProperties}>
             {GOAL_LABEL[goal]}
           </span>
           {trail.region_name && <span>· {trail.region_name}</span>}
