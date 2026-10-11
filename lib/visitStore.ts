@@ -1,21 +1,9 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { getDb } from "@/lib/d1";
+import type { D1Like } from "@/lib/d1";
 
-// Visit days live in Cloudflare D1 (free, bound as VISITS_DB in
-// wrangler.jsonc, created automatically on the first deploy). No other
-// account, key or secret. Outside Cloudflare (local dev, Vercel) there is no
-// database and every function here quietly does nothing.
-
-/** The slice of the D1 API used here. */
-interface D1Statement {
-  bind(...values: unknown[]): D1Statement;
-  run(): Promise<unknown>;
-  first<T>(): Promise<T | null>;
-  all<T>(): Promise<{ results: T[] }>;
-}
-interface D1Like {
-  prepare(sql: string): D1Statement;
-  batch(statements: D1Statement[]): Promise<unknown>;
-}
+// Visit days live in the site's Cloudflare D1 database (lib/d1.ts). No other
+// account, key or secret. Without the database every function here quietly
+// does nothing.
 
 export interface MonthStats {
   month: string;
@@ -23,15 +11,6 @@ export interface MonthStats {
   visitors_2plus_days: number;
   visitors_4plus_days: number;
   avg_days: number;
-}
-
-async function getDb(): Promise<D1Like | null> {
-  try {
-    const { env } = await getCloudflareContext({ async: true });
-    return ((env as unknown as Record<string, unknown>).VISITS_DB as D1Like | undefined) ?? null;
-  } catch {
-    return null;
-  }
 }
 
 const SCHEMA = [
