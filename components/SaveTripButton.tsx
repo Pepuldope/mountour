@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { BBox, LatLng } from "@/lib/types";
+import type { TripProfile } from "@/lib/tripProfile";
 import { offlineMapUrls } from "@/lib/tiles";
 import { longDay } from "@/lib/days";
 import { useSavedTrips } from "@/lib/savedTrips";
@@ -19,6 +20,7 @@ interface Props extends ShareInfo {
   destination: LatLng | null;
   /** Walking time before the kids pace. */
   baseHikeMin: number;
+  profile: TripProfile | null;
 }
 
 type Status = "idle" | "saving" | "error";
@@ -57,7 +59,7 @@ const secondary =
  * device and stores it for offline use. Right after saving, one tap offers to
  * send the plan to the group.
  */
-export function SaveTripButton({ gpxUrl, bbox, sun, destination, baseHikeMin, ...trip }: Props) {
+export function SaveTripButton({ gpxUrl, bbox, sun, destination, baseHikeMin, profile, ...trip }: Props) {
   const { slug, name } = trip;
   const { trips, save, patch, remove } = useSavedTrips();
   const { start } = useUserLocation();
@@ -84,6 +86,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, destination, baseHikeMin, ..
       driveMin,
       hikeMin,
       sun,
+      profile,
       savedAt: new Date().toISOString(),
       offline: "pending",
     });

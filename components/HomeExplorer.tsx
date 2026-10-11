@@ -215,8 +215,8 @@ export function HomeExplorer({ trails }: Props) {
     ));
 
   return (
-    <main className="flex flex-1 flex-col lg:h-dvh lg:flex-row">
-      <div className="flex w-full flex-col gap-5 px-4 pt-4 pb-6 lg:w-[440px] lg:shrink-0 lg:overflow-y-auto">
+    <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
+      <div className="flex w-full flex-col gap-5 px-4 pt-4 pb-6 lg:w-[440px] lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
         <nav aria-label="Hlavná navigácia" className="flex items-center justify-between gap-3">
           <Link href="/" aria-label="MounTour" className="block">
             <picture>

@@ -7,7 +7,7 @@ import { useSavedTrips } from "@/lib/savedTrips";
 import type { SavedTrip } from "@/lib/savedTrips";
 import { useTripSettings } from "@/lib/tripSettings";
 import { useUserLocation } from "@/lib/userLocation";
-import { TimelineBar } from "@/components/TimelineBar";
+import { SunArc } from "@/components/SunArc";
 
 function todayIso(): string {
   const d = new Date();
@@ -74,7 +74,9 @@ export function SavedTripsList() {
             </p>
             {plan && (
               <>
-                <TimelineBar plan={plan} good={good} hasDrive={trip.driveMin !== null} compact />
+                <div className="-mx-4 overflow-hidden border-y border-[var(--border)]">
+                  <SunArc plan={plan} profile={trip.profile ?? null} sun={trip.sun} hasDrive={trip.driveMin !== null} />
+                </div>
                 <p className="text-sm">
                   <span className="opacity-70">koniec túry {formatTime(plan.hikeEnd)} </span>
                   <span className={`font-medium ${good ? "text-[var(--accent)]" : "text-[var(--warn)]"}`}>

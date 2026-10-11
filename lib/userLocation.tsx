@@ -25,6 +25,8 @@ export type LocationStatus = "idle" | "locating" | "ok" | "denied" | "unsupporte
 
 interface UserLocationState {
   status: LocationStatus;
+  /** Stored start restored from this device (false during the first render). */
+  ready: boolean;
   fix: UserFix | null;
   /** The trip's start: the typed place if any, else the GPS fix, else null. */
   start: StartPoint | null;
@@ -87,6 +89,7 @@ function writeManual(place: Omit<StartPoint, "source"> | null) {
 
 const UserLocationContext = createContext<UserLocationState>({
   status: "idle",
+  ready: false,
   fix: null,
   start: null,
   setManualStart: () => {},
@@ -98,6 +101,7 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<LocationStatus>("idle");
   const [fix, setFix] = useState<UserFix | null>(null);
   const [manual, setManual] = useState<Omit<StartPoint, "source"> | null>(null);
+  const [ready, setReady] = useState(false);
 
   // Restore after hydration (browser storage doesn't exist on the server).
   useEffect(() => {
@@ -108,6 +112,7 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
       setFix(cached);
       setStatus("ok");
     }
+    setReady(true);
   }, []);
 
   const locate = useCallback(() => {
@@ -156,8 +161,8 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
   }, [manual, fix]);
 
   const value = useMemo<UserLocationState>(
-    () => ({ status, fix, start, setManualStart, message: MESSAGES[status] ?? null, locate }),
-    [status, fix, start, setManualStart, locate]
+    () => ({ status, ready, fix, start, setManualStart, message: MESSAGES[status] ?? null, locate }),
+    [status, ready, fix, start, setManualStart, locate]
   );
 
   return <UserLocationContext.Provider value={value}>{children}</UserLocationContext.Provider>;

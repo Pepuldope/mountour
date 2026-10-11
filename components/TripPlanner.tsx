@@ -5,7 +5,9 @@ import { SAFE_MARGIN_MIN } from "@/lib/dayPlan";
 import type { DayPlan } from "@/lib/dayPlan";
 import { dayInSentence, floorTo5, longDay } from "@/lib/days";
 import { formatDuration, formatTime, verdictText } from "@/lib/format";
+import { searchPlaces } from "@/lib/geocode";
 import { googleMapsUrl, mapyUrl, readSharedPlan } from "@/lib/links";
+import { findTown } from "@/lib/towns";
 import type { SharedPlan } from "@/lib/links";
 import { useTripSettings } from "@/lib/tripSettings";
 import { useTripPlan } from "@/lib/useTripPlan";
@@ -42,7 +44,7 @@ const navButton =
  * timeline, then Uložiť (main), share and navigation hand-offs.
  */
 export function TripPlanner({ sun, destination, baseHikeMin, profile, gpxUrl, bbox, ...trip }: Props) {
-  const { start } = useUserLocation();
+  const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
   const { plan, date, time, driveMin, driveApprox, driveStatus } = useTripPlan(sun, destination, baseHikeMin);
   const [shared, setShared] = useState<SharedPlan | null>(null);
@@ -56,6 +58,28 @@ export function TripPlanner({ sun, destination, baseHikeMin, profile, gpxUrl, bb
     update({ date: fromLink.date, time: fromLink.time });
     window.history.replaceState(null, "", window.location.pathname);
   }, [today, update]);
+
+  // No start of our own yet: plan from the sender's town, so the times match theirs.
+  const sharedTown = shared?.town ?? null;
+  useEffect(() => {
+    if (!ready || start || !sharedTown) return;
+    const known = findTown(sharedTown);
+    if (known) {
+      setManualStart(known);
+      return;
+    }
+    const ctrl = new AbortController();
+    searchPlaces(sharedTown, ctrl.signal)
+      .then(([place]) => {
+        if (!place) return;
+        setManualStart({ ...place, label: sharedTown });
+      })
+      .catch(() => {});
+    return () => ctrl.abort();
+    // Once per link: `start` is checked when the town arrives, not watched.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, sharedTown, setManualStart]);
+  const adopted = sharedTown !== null && start?.label === (findTown(sharedTown)?.label ?? sharedTown);
 
   const hasDrive = driveMin !== null;
   const good = plan?.verdict === "ok";
@@ -72,7 +96,9 @@ export function TripPlanner({ sun, destination, baseHikeMin, profile, gpxUrl, bb
             <strong className="font-data text-base">{shared.time}</strong>
             {shared.town ? `, štart ${shared.town}` : ""}.
           </p>
-          <p className="opacity-80">Nižšie je prepočítaný z vášho miesta.</p>
+          <p className="opacity-80">
+            {adopted ? `Nižšie je prepočítaný zo štartu ${start?.label}. Zmeniť ho môžete pod plánom.` : "Nižšie je prepočítaný z vášho miesta."}
+          </p>
         </div>
       )}
 
@@ -152,7 +178,7 @@ export function TripPlanner({ sun, destination, baseHikeMin, profile, gpxUrl, bb
       )}
 
       <section aria-label="Uložiť a zdieľať" className="flex flex-col gap-3">
-        <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} destination={destination} baseHikeMin={baseHikeMin} {...trip} />
+        <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} destination={destination} baseHikeMin={baseHikeMin} profile={profile} {...trip} />
         {destination && (
           <div className="flex gap-2">
             <a href={googleMapsUrl(destination)} data-umami-event="nav_open" data-umami-event-app="google" target="_blank" rel="noopener noreferrer" className={navButton}>

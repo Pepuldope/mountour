@@ -84,10 +84,10 @@ export default async function TripSheetPage({ params }: Props) {
   const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
 
   return (
-    <main className="flex flex-1 flex-col lg:h-dvh lg:flex-row">
+    <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
       <JsonLd data={trailJsonLd(detail)} />
       <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
-      <div className="flex w-full flex-col gap-5 px-4 pt-4 pb-6 lg:w-[460px] lg:shrink-0 lg:overflow-y-auto">
+      <div className="flex w-full flex-col gap-5 px-4 pt-4 pb-6 lg:w-[460px] lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
         <nav aria-label="Navigácia" className="flex items-center justify-between gap-2">
           <Link href="/" className="text-sm font-semibold text-[var(--accent)]">
             ← Kam dnes
