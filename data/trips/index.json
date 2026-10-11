@@ -136,7 +136,9 @@
    ],
    "marked_share": 0.98,
    "fees": [],
-   "closure_rule_ids": [],
+   "closure_rule_ids": [
+    "malafatra-jarna-uzavera"
+   ],
    "rank": 91,
    "bbox": [
     19.06403,
