@@ -44,6 +44,18 @@ export function FilterChips({ variant = "home", activeDate }: Props) {
     update({ date: variant === "home" && iso === date ? null : iso });
   }
 
+  // "Iný deň" is picked at once (the day after tomorrow), then the strip lets you move it.
+  function openOther() {
+    if (!days) return;
+    if (!other) {
+      const next = days.strip.find((d) => d.iso !== days.today && d.iso !== days.tomorrow);
+      if (next) update({ date: next.iso });
+      setStripOpen(true);
+      return;
+    }
+    setStripOpen((v) => !v);
+  }
+
   function openCalendar() {
     const el = dateInput.current;
     if (!el) return;
@@ -69,7 +81,7 @@ export function FilterChips({ variant = "home", activeDate }: Props) {
           type="button"
           aria-pressed={other}
           aria-expanded={showStrip}
-          onClick={() => setStripOpen((v) => !v)}
+          onClick={openOther}
           className={segBtn(other)}
         >
           <UiIcon name="cal" size={15} />

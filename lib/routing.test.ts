@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { finishDrive } from "./routing";
+import { finishDrive, simplifyLine } from "./routing";
 
 const road = { durationMin: 30, distanceM: 30000, points: [[48.0, 19.0], [49.0, 19.0]] as [number, number][] };
 
@@ -23,5 +23,18 @@ describe("finishDrive", () => {
     const far = { durationMin: 60, distanceM: 9000, points: [[49.0, 19.0], [49.008, 19.0]] as [number, number][] };
     expect(await finishDrive(road, [49.008, 19.0], async () => far)).toBe(road);
     expect(await finishDrive(road, [49.008, 19.0], () => Promise.reject(new Error("down")))).toBe(road);
+  });
+});
+
+describe("simplifyLine", () => {
+  it("drops points on a straight road and keeps the bends", () => {
+    const straight: [number, number][] = Array.from({ length: 50 }, (_, i) => [49 + i * 0.0001, 19]);
+    expect(simplifyLine(straight, 10)).toEqual([straight[0], straight[49]]);
+    // A hairpin: out north, then back south 200 m to the east.
+    const hairpin: [number, number][] = [...straight, [49.0049, 19.003], [49.0, 19.003]];
+    const s = simplifyLine(hairpin, 10);
+    expect(s).toContainEqual([49.0049, 19.0]);
+    expect(s).toContainEqual([49.0049, 19.003]);
+    expect(s.length).toBeLessThan(6);
   });
 });

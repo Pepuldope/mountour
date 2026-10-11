@@ -106,3 +106,41 @@ export async function finishDrive(route: DriveRoute, to: Pt, tail: (from: Pt, to
     return route;
   }
 }
+
+/**
+ * Fewer points with the shape kept (Douglas-Peucker, `tolM` metres): a long
+ * drive stays light to send and draw, and still follows every bend when zoomed in.
+ */
+export function simplifyLine(points: Pt[], tolM: number): Pt[] {
+  if (points.length <= 2) return points;
+  const lat0 = points[0][0];
+  const kx = 111320 * Math.cos((lat0 * Math.PI) / 180);
+  const ky = 110540;
+  const xy = points.map(([lat, lon]) => [lon * kx, lat * ky]);
+  const keep = new Uint8Array(points.length);
+  keep[0] = keep[points.length - 1] = 1;
+  const stack: [number, number][] = [[0, points.length - 1]];
+  while (stack.length) {
+    const [a, b] = stack.pop()!;
+    const [ax, ay] = xy[a];
+    const [bx, by] = xy[b];
+    const dx = bx - ax;
+    const dy = by - ay;
+    const len = Math.hypot(dx, dy);
+    let far = -1;
+    let farD = tolM;
+    for (let i = a + 1; i < b; i++) {
+      const [px, py] = xy[i];
+      const d = len > 0 ? Math.abs(dy * (px - ax) - dx * (py - ay)) / len : Math.hypot(px - ax, py - ay);
+      if (d > farD) {
+        farD = d;
+        far = i;
+      }
+    }
+    if (far >= 0) {
+      keep[far] = 1;
+      stack.push([a, far], [far, b]);
+    }
+  }
+  return points.filter((_, i) => keep[i]);
+}
