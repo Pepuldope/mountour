@@ -53,12 +53,17 @@ function useCachedJson<T>(url: string | null): { status: DriveStatus; data: T | 
   return { status: state.status, data: state.data };
 }
 
-/** One drive, with geometry, for the trip page. */
+/** A public place (parking, trail start): precise enough to tell parking spots 50 m apart. */
+function place(p: LatLng): string {
+  return `${p.lat.toFixed(5)},${p.lon.toFixed(5)}`;
+}
+
+/** One drive, with geometry, for the trip page: from the visitor (rounded) to a parking (exact). */
 export function useDriveRoute(
   from: LatLng | null,
   to: LatLng | null
 ): { status: DriveStatus; route: DriveRoute | null } {
-  const url = from && to ? `/api/drive?from=${pt(from)}&to=${pt(to)}` : null;
+  const url = from && to ? `/api/drive?from=${pt(from)}&to=${place(to)}` : null;
   const { status, data } = useCachedJson<DriveRoute>(url);
   return { status, route: data };
 }
@@ -68,4 +73,14 @@ export function useTownDrives(from: LatLng | null): { status: DriveStatus; drive
   const url = from ? `/api/drive-town?from=${pt(from)}` : null;
   const { status, data } = useCachedJson<TownDrives>(url);
   return { status, drives: data };
+}
+
+/** The walk from where the car stops to the trail start (both public places). */
+export function useWalkRoute(
+  from: LatLng | null,
+  to: LatLng | null
+): { status: DriveStatus; route: DriveRoute | null } {
+  const url = from && to ? `/api/walk?from=${place(from)}&to=${place(to)}` : null;
+  const { status, data } = useCachedJson<DriveRoute>(url);
+  return { status, route: data };
 }

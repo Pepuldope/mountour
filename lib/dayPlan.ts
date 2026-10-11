@@ -66,6 +66,18 @@ export function hikeMinutes(baseMin: number, withKids: boolean): number {
   return withKids ? Math.round((baseMin * KIDS_PACE) / 5) * 5 : baseMin;
 }
 
+/** Walking pace for the stretch from the car to the trail start: 4 km/h on paths ~1.25x the straight line. */
+const APPROACH_M_PER_MIN = 4000 / 60 / 1.25;
+
+/**
+ * Minutes to walk from the parking to the trail start, one way, rounded up to
+ * 5. Under 150 m it's part of getting ready, not worth a line in the plan.
+ */
+export function approachMin(walkM: number): number {
+  if (walkM < 150) return 0;
+  return Math.ceil(walkM / APPROACH_M_PER_MIN / 5) * 5;
+}
+
 const MIN = 60000;
 
 function addMin(d: Date, minutes: number): Date {

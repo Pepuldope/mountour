@@ -61,6 +61,10 @@ export interface ParkingLot {
   location: LatLng;
   surface_type: string | null;
   note: string | null;
+  /** Straight-line walk from the parking to the trail start, metres. */
+  walk_m: number;
+  /** true = paid, false = free, null = unknown. */
+  fee: boolean | null;
   verified_on: string | null;
 }
 
