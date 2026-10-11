@@ -55,7 +55,8 @@ function toTrail(t: TripSummary): Trail {
   };
 }
 
-function toTrailDetail(t: TripSummary | TripDetail): TrailDetail {
+/** A trip from the files or the database, in the shape the pages use. */
+export function trailDetailFrom(t: TripSummary | TripDetail): TrailDetail {
   const d = "path" in t ? t : null;
   const parking = [t.parking, ...(d?.parking_alternatives ?? [])].filter((p): p is Parking => p != null);
   const stops = [t.transit, ...(d?.transit_alternatives ?? [])].filter((s): s is TripStop => s != null);
@@ -92,12 +93,12 @@ function toTrailDetail(t: TripSummary | TripDetail): TrailDetail {
 }
 
 export async function getAllTrails(): Promise<TrailDetail[]> {
-  return getAllTrips().map(toTrailDetail);
+  return getAllTrips().map(trailDetailFrom);
 }
 
 export async function getTrailBySlug(slug: string): Promise<TrailDetail | null> {
   const trip = await getTrip(slug);
-  return trip ? toTrailDetail(trip) : null;
+  return trip ? trailDetailFrom(trip) : null;
 }
 
 export interface TrailSearchFilters {

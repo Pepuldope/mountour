@@ -1,0 +1,81 @@
+name: Trip database
+
+# Loads the trips into the site's Cloudflare D1 database (pipeline/db.py), which
+# /api/vylety and the trip pages read. Runs after every weekly trip refresh,
+# whenever trip data reaches main, and by hand from the Actions tab. Until the
+# CLOUDFLARE_API_TOKEN secret exists it only builds and checks the SQL; the
+# site then keeps serving the static files in data/, exactly as before.
+on:
+  workflow_run:
+    workflows: ["Weekly trip data"]
+    types: [completed]
+    branches: [main]
+  push:
+    branches: [main]
+    paths: ["data/**", "pipeline/db.py", ".github/workflows/db.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: trip-database
+  cancel-in-progress: false
+
+jobs:
+  load:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      DB: mountour-visits
+    steps:
+      # The weekly run commits to main; take main as it is now, not the commit that started it.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pytest -q pipeline/tests/test_db.py
+      - run: python -m pipeline.db --out build/db.sql
+
+      - name: Skip without Cloudflare access
+        if: env.CLOUDFLARE_API_TOKEN == '' || env.CLOUDFLARE_ACCOUNT_ID == ''
+        run: echo "::notice::CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID secret not set; the site keeps using the static files."
+
+      - uses: actions/setup-node@v4
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
+        with:
+          node-version: 22
+          cache: npm
+      - if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
+        run: npm ci
+
+      # D1's free plan writes 100k rows a day and a full load is ~35k: skip
+      # loads the database already holds.
+      - name: Compare with the loaded data
+        id: loaded
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
+        run: |
+          want=$(python -m pipeline.db --fingerprint)
+          have=$(npx wrangler d1 execute "$DB" --remote --json \
+            --command "SELECT fingerprint FROM data_version WHERE id = 1" 2>/dev/null \
+            | python -c "import json,sys; print(json.load(sys.stdin)[0]['results'][0]['fingerprint'])" 2>/dev/null || true)
+          echo "want=$want have=${have:-none}"
+          if [ "$want" = "$have" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            echo "same=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::The database already holds this data ($want)."
+          fi
+
+      - name: Load into D1
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && steps.loaded.outputs.same != 'true'
+        run: |
+          for attempt in 1 2 3; do
+            npx wrangler d1 execute "$DB" --remote --file build/db.sql -y && break
+            [ "$attempt" = 3 ] && exit 1
+            sleep $((attempt * 20))
+          done
+          npx wrangler d1 execute "$DB" --remote --json \
+            --command "SELECT generated_at, trips, fingerprint FROM data_version"

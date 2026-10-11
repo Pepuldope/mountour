@@ -47,6 +47,28 @@ Key fields of `TripSummary` (see `lib/tripSchema.ts` for all):
 by OSRM on the same OSM data. Use `nearestTown()` + `driveMinutes()` for a list sorted by
 travel time; refine the top results live with `/api/drive-matrix` when needed.
 
+## Database and API
+
+After each weekly build, `.github/workflows/db.yml` loads the same data into the
+site's free Cloudflare D1 database (`python -m pipeline.db` writes the SQL; the visit
+counter's tables are untouched). Tables: `region`, `protected_area`, `place` (goals and
+starts), `trip` (with its walk as JSON), `parking`, `transit_stop` + `trip_transit_stop`,
+`poi`, `closure_rule` + `trip_closure`, `fee` + `trip_fee`, `town`, `drive_time`, and
+`data_version` (written last, so a half-finished load is never used).
+
+- `GET /api/vylety?z=<town>&den=YYYY-MM-DD&limit=N`: trips nearest first from a town
+  (an id from `data/drive-times.json`), drive there and back plus the walk, with
+  `closed` for that day.
+- `GET /api/vylety/<slug>`: one trip in the `TripDetail` shape.
+- Trip pages and `/api/drive-town` read the database too.
+
+Every read falls back to the files in `data/` when the database is missing or not
+loaded (local dev, Vercel, before the first load); the `zdroj` field and `X-Zdroj`
+header say which one answered (`databaza` or `subory`). The loader needs the GitHub
+secrets `CLOUDFLARE_API_TOKEN` (D1 Edit) and `CLOUDFLARE_ACCOUNT_ID`; without them it
+only checks the SQL. It skips a load the database already holds (fingerprint in
+`data_version`), since D1's free plan writes 100k rows a day and one load is ~35k.
+
 ## Licences and credit
 
 - OpenStreetMap data, © OpenStreetMap contributors, ODbL 1.0. Commercial use allowed;
