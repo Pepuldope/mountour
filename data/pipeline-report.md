@@ -1,15 +1,15 @@
 # Trip pipeline report
 
-Run: 2026-10-11T23:19:18+00:00 · OSM data: 2026-10-10T20:21:21Z
+Run: 2026-10-12T10:49:40+00:00 · OSM data: 2026-10-11T20:21:06Z
 
-**1460 trips**
+**1458 trips**
 
 | Region | Trips | Family | Candidates |
 |---|---|---|---|
 | tatry | 123 | 32 | 282 |
 | slovensky-raj | 25 | 11 | 56 |
 | mala-fatra | 49 | 6 | 80 |
-| male-karpaty | 89 | 66 | 175 |
+| male-karpaty | 87 | 65 | 175 |
 | velka-fatra | 103 | 37 | 186 |
 | nizke-tatry | 86 | 15 | 139 |
 | chocske-vrchy-orava | 40 | 16 | 87 |
@@ -48,12 +48,12 @@ Flag ⚠ when off by more than 15 %.
 ## Rejected candidates
 
 - almost the same walk as another trip: 74
-- mostly unmarked: 423
+- mostly unmarked: 424
 - no trailhead within reach: 18
 - start already has enough trips: 15
 - too flat (city walk): 93
 - too long: 46
-- too short: 253
+- too short: 254
 - trailheads too close: 1
 
 ## Rule place names not found in OSM (check spelling in the rule files)
@@ -582,7 +582,7 @@ Flag ⚠ when off by more than 15 %.
 | zbojnicka-diera | levocske-cergov | Rázc. Gola | 3.7 | 147 | 1:30 | lahka |  |
 | solisko-krize | levocske-cergov | Kríže | 12.0 | 576 | 4:45 | stredna |  |
 | tok | levocske-cergov | Levočská dolina, osada | 17.8 | 572 | 6:00 | tazka |  |
-| kravcova | levocske-cergov | Židovský cintorín | 10.4 | 502 | 4:00 | stredna |  |
+| kravcova | levocske-cergov | Židovský cintorín | 10.4 | 509 | 4:15 | stredna |  |
 | lysa-hora | levocske-cergov | Pod Bogušom | 5.4 | 286 | 2:15 | lahka |  |
 | bisar | levocske-cergov | Brutovce | 8.1 | 131 | 2:30 | lahka |  |
 | brezova-uhliska | levocske-cergov | Uhliská | 7.1 | 255 | 2:30 | lahka |  |
@@ -596,7 +596,7 @@ Flag ⚠ when off by more than 15 %.
 | rohalanka | levocske-cergov | Čirč, obec | 19.1 | 706 | 6:45 | tazka |  |
 | ryzova | levocske-cergov | Nižné Ružbachy, kostol | 16.9 | 469 | 5:30 | stredna |  |
 | sedlo | levocske-cergov | Nižné Ružbachy, kostol | 13.6 | 391 | 4:30 | stredna |  |
-| velka-skala-zidovsky-cintorin | levocske-cergov | Židovský cintorín | 6.1 | 362 | 2:45 | lahka |  |
+| velka-skala-zidovsky-cintorin | levocske-cergov | Židovský cintorín | 6.2 | 363 | 2:45 | lahka |  |
 | balazova | levocske-cergov | Jakovany, Most | 4.5 | 378 | 2:45 | lahka |  |
 | grun-margecany-stanica | levocske-cergov | Margecany, stanica | 6.2 | 570 | 4:00 | stredna |  |
 | javor-kurovske-sedlo-statna | levocske-cergov | Kurovské sedlo, štátna hranica | 2.5 | 127 | 1:00 | lahka |  |
@@ -620,7 +620,7 @@ Flag ⚠ when off by more than 15 %.
 | skalka-kysak | levocske-cergov | Kysak | 5.8 | 175 | 2:00 | lahka |  |
 | sluchta | levocske-cergov | Margecany | 8.1 | 539 | 4:00 | stredna |  |
 | spicaty-vrch | levocske-cergov | Slovenské Cechy | 5.3 | 288 | 2:15 | lahka |  |
-| velka-skala-2 | levocske-cergov | Židovský cintorín | 5.2 | 301 | 2:30 | lahka |  |
+| velka-skala-2 | levocske-cergov | Židovský cintorín | 5.3 | 300 | 2:30 | lahka |  |
 | vyhladna-pod-carnu-kopu | levocske-cergov | Krásna Lúka | 6.9 | 460 | 3:30 | stredna |  |
 | vyhliadkove-kreslo | levocske-cergov | Slovenské Cechy | 3.2 | 212 | 1:45 | lahka |  |
 | gavart | levocske-cergov | Richnava | 4.7 | 266 | 2:15 | lahka |  |
@@ -734,7 +734,7 @@ Flag ⚠ when off by more than 15 %.
 | horny-vrch | male-karpaty | Pod Malou Vápennou | 9.4 | 509 | 4:00 | stredna |  |
 | konske-hlavy | male-karpaty | Pezinská Baba | 4.0 | 169 | 1:30 | lahka |  |
 | prostredny-vrch | male-karpaty | Pezinská Baba, rázcestie | 5.9 | 271 | 2:15 | lahka |  |
-| protipoziarna-monitorovacia-veza-klenova | male-karpaty | Horná Pustá Ves | 7.4 | 177 | 2:30 | lahka |  |
+| protipoziarna-monitorovacia-veza-klenova | male-karpaty | Horná Pustá Ves | 7.3 | 188 | 2:30 | lahka |  |
 | rozhladna-lipky | male-karpaty | Unín, obecný úrad | 5.5 | 156 | 2:00 | lahka |  |
 | rozhladna-velky-peterklin | male-karpaty | Pod Malou Vápennou | 5.3 | 463 | 3:15 | stredna |  |
 | jagrova | male-karpaty | Pezinská Baba, rázcestie | 6.9 | 336 | 2:45 | lahka |  |
@@ -743,10 +743,9 @@ Flag ⚠ when off by more than 15 %.
 | kozlisko | male-karpaty | Borinka, obecný úrad | 5.4 | 311 | 2:30 | lahka |  |
 | nora | male-karpaty | Košarisko | 5.3 | 69 | 1:45 | lahka |  |
 | tri-kamenne-kopce | male-karpaty | Pezinská Baba | 8.4 | 300 | 3:00 | lahka |  |
-| velka-pec | male-karpaty | Pustá Ves, pam.SNP | 4.6 | 201 | 1:45 | lahka |  |
 | velky-plesivec | male-karpaty | Hrachovište | 4.2 | 264 | 2:00 | lahka |  |
 | holy-vrch-mileniovy-kriz | male-karpaty | Miléniový kríž | 4.4 | 99 | 1:30 | lahka |  |
-| hradok | male-karpaty | Horná Pustá Ves | 6.2 | 169 | 2:15 | lahka |  |
+| hradok | male-karpaty | Horná Pustá Ves | 6.2 | 168 | 2:00 | lahka |  |
 | jelenia-hora | male-karpaty | Plavecký Mikuláš | 4.7 | 167 | 1:45 | lahka |  |
 | na-zahorsku-nizinu | male-karpaty | Rusniaky | 7.9 | 251 | 2:45 | lahka |  |
 | pozorovatelna-zvierat-vydrica | male-karpaty | Pod Bielym krížom | 5.4 | 140 | 1:45 | lahka |  |
@@ -759,7 +758,7 @@ Flag ⚠ when off by more than 15 %.
 | biela-skala-pod-malou-vapennou | male-karpaty | Pod Malou Vápennou | 9.3 | 446 | 3:45 | stredna |  |
 | cervenica | male-karpaty | Plavecké Podhradie | 5.5 | 301 | 2:30 | lahka |  |
 | kamenista | male-karpaty | Plavecký hrad | 6.6 | 275 | 2:30 | lahka |  |
-| kopec-dolne-kosariska | male-karpaty | Dolné Košariská | 6.1 | 191 | 2:15 | lahka |  |
+| kopec-dolne-kosariska | male-karpaty | Dolné Košariská, rázcestie | 4.8 | 174 | 1:45 | lahka |  |
 | skala | male-karpaty | Košarisko | 8.7 | 254 | 3:00 | lahka |  |
 | stare-hajne | male-karpaty | Košarisko | 5.3 | 249 | 2:00 | lahka |  |
 | bratislavsky-drienovec | male-karpaty | Pod Chlmcom | 4.0 | 134 | 1:30 | lahka |  |
@@ -783,7 +782,7 @@ Flag ⚠ when off by more than 15 %.
 | kopanicka | male-karpaty | Rusniaky | 5.7 | 165 | 2:00 | lahka |  |
 | kozie-rebra | male-karpaty | Kamzík, lúka | 2.7 | 151 | 1:15 | lahka |  |
 | lozornianske-breziny | male-karpaty | Rusniaky | 3.8 | 95 | 1:15 | lahka |  |
-| mala-pec | male-karpaty | Pustá Ves, pam.SNP | 7.2 | 260 | 2:30 | lahka |  |
+| mala-pec | male-karpaty | Barónov hrob, rázcestie | 4.3 | 114 | 1:30 | lahka |  |
 | maly-drienovec | male-karpaty | Pod Chlmcom | 6.2 | 238 | 2:15 | lahka |  |
 | pri-hajovni | male-karpaty | Klanec | 5.2 | 117 | 1:45 | lahka |  |
 | smachy | male-karpaty | Pod Chlmcom | 7.2 | 243 | 2:30 | lahka |  |
@@ -791,7 +790,6 @@ Flag ⚠ when off by more than 15 %.
 | vajnorska-hora | male-karpaty | Mechy, Javorník | 3.2 | 191 | 1:30 | lahka |  |
 | boricky | male-karpaty | Dechtice, námestie | 3.8 | 115 | 1:30 | lahka |  |
 | cerveny-most | male-karpaty | Klanec | 3.7 | 105 | 1:15 | lahka |  |
-| chrib | male-karpaty | Pustá Ves, pam.SNP | 11.0 | 326 | 3:45 | stredna |  |
 | murmannova-vysina | male-karpaty | Mlynská dolina | 3.4 | 138 | 1:15 | lahka |  |
 | stary-grunt-i | male-karpaty | Karlova Ves, Kútiky | 2.3 | 102 | 1:00 | lahka |  |
 | skleny-vrch | male-karpaty | Pod Malou Vápennou | 10.6 | 643 | 5:00 | stredna |  |
@@ -1526,4 +1524,4 @@ Flag ⚠ when off by more than 15 %.
 | dlhy-vrch | zahorie-podunajsko | Podhájska, Belek | 8.7 | 210 | 2:45 | lahka |  |
 | vystrkov | zahorie-podunajsko | Veľké Lovce | 5.2 | 95 | 1:45 | lahka |  |
 
-Drive table: 141 towns x 1460 trips, 0 pairs without a route.
+Drive table: 141 towns x 1458 trips, 0 pairs without a route.

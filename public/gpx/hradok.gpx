@@ -2,11 +2,10 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Hrádok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Hrádok</name><trkseg>
-    <trkpt lat="48.637017" lon="17.633275"><ele>248</ele></trkpt>
-    <trkpt lat="48.637110" lon="17.632855"><ele>247</ele></trkpt>
+    <trkpt lat="48.637080" lon="17.632992"><ele>247</ele></trkpt>
     <trkpt lat="48.637340" lon="17.632224"><ele>249</ele></trkpt>
     <trkpt lat="48.637459" lon="17.631400"><ele>253</ele></trkpt>
-    <trkpt lat="48.637623" lon="17.631012"><ele>253</ele></trkpt>
+    <trkpt lat="48.637701" lon="17.630854"><ele>254</ele></trkpt>
     <trkpt lat="48.638245" lon="17.629855"><ele>255</ele></trkpt>
     <trkpt lat="48.638574" lon="17.629327"><ele>255</ele></trkpt>
     <trkpt lat="48.639203" lon="17.628096"><ele>258</ele></trkpt>
@@ -126,10 +125,9 @@
     <trkpt lat="48.639203" lon="17.628096"><ele>258</ele></trkpt>
     <trkpt lat="48.638574" lon="17.629327"><ele>255</ele></trkpt>
     <trkpt lat="48.638245" lon="17.629855"><ele>255</ele></trkpt>
-    <trkpt lat="48.637623" lon="17.631012"><ele>253</ele></trkpt>
+    <trkpt lat="48.637701" lon="17.630854"><ele>254</ele></trkpt>
     <trkpt lat="48.637459" lon="17.631400"><ele>253</ele></trkpt>
     <trkpt lat="48.637340" lon="17.632224"><ele>249</ele></trkpt>
-    <trkpt lat="48.637110" lon="17.632855"><ele>247</ele></trkpt>
-    <trkpt lat="48.637017" lon="17.633275"><ele>248</ele></trkpt>
+    <trkpt lat="48.637080" lon="17.632992"><ele>247</ele></trkpt>
   </trkseg></trk>
 </gpx>
