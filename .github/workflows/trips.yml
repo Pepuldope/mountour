@@ -88,6 +88,20 @@ jobs:
             --osrm http://localhost:5000 --wikidata --osm-timestamp "$OSM_TS"
           cat data/pipeline-report.md >> "$GITHUB_STEP_SUMMARY"
 
+      # Error 1102 guard (lib/assetBudget.test.ts has the same limits): the Worker parses these
+      # files on requests; too big and it runs out of CPU. Keep last week's data rather than ship that.
+      - name: Check the files the site reads stay small
+        run: |
+          python - <<'PY'
+          import pathlib, sys
+          d = pathlib.Path("public/data")
+          big = [(p, p.stat().st_size) for p in [*d.glob("trips/*.json"), *d.glob("drive/*.json")]
+                 if p.stat().st_size > (2.5 * 2**20 if p.name in ("index.json", "list.json") else 200 * 2**10)]
+          for p, n in big:
+              print(f"::error::{p} is {n / 2**20:.2f} MB, over the Worker's budget")
+          sys.exit(1 if big else 0)
+          PY
+
       - name: Commit the new data
         run: |
           git config user.name "mountour-data-bot"
