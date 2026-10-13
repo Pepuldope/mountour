@@ -93,7 +93,7 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
       onMouseEnter={() => onActive(trail.slug)}
       onFocus={() => onActive(trail.slug)}
       className={`grid grid-cols-[54px_1fr] gap-3 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-3 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
-        active ? "border-[var(--accent)] ring-2 ring-[var(--accent)]" : "border-[var(--border)]"
+        active ? "trip-card-active border-[var(--accent)]" : "border-[var(--border)]"
       } ${pill?.tone === "no" ? "opacity-70" : ""}`}
     >
       <span
@@ -114,7 +114,7 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
           </span>
           {trail.region_name && <span>· {trail.region_name}</span>}
           <span>· {km} km</span>
-          {trail.family_friendly && <span className="font-semibold text-[var(--ok)]">· pre deti</span>}
+          {trail.family_friendly && <span className="on-card-ok font-semibold text-[var(--ok)]">· pre deti</span>}
         </span>
         <span className="font-data flex flex-wrap items-center gap-x-3 text-[15px]">
           <span className={leg(!transit)}>
