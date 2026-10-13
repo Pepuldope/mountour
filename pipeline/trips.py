@@ -93,7 +93,7 @@ class TripBuilder:
         self.log(f"town streets: {len(street)} cells, metres per cell p50/p90/p99/max "
                  f"{np.percentile(vals, [50, 90, 99]).round().tolist()} / {vals.max():.0f}; "
                  f">=800: {(vals >= 800).sum()}, >=1500: {(vals >= 1500).sum()}")
-        return {c for c, L in street.items() if L >= self.t.get("town_street_m", 1500)}
+        return {c for c, L in street.items() if L >= self.t.get("town_street_m", 700)}
 
     def _in_town(self, lat, lon):
         size = self.t.get("town_cell_m", 250)

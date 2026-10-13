@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { formatDuration } from "@/lib/format";
-import { ROUTE_COLOURS } from "@/lib/palette";
 import type { RouteBrief } from "@/lib/tripSchema";
+import { RouteRows } from "@/components/RouteRows";
+import { Dot, routeLabel } from "@/components/routeBits";
+
+const plural = (n: number) => (n >= 5 ? `${n} ciest` : `${n} cesty`);
 
 interface Props {
   /** The trip on screen. */
@@ -9,15 +11,6 @@ interface Props {
   destination: string;
   /** The main route first, then the others (the trip file's "routes"). */
   routes: RouteBrief[];
-}
-
-export const routeLabel = (r: RouteBrief) => r.route_label ?? (r.variant_of ? "Iná cesta" : "Hlavná cesta");
-export const routeAccess = (r: RouteBrief) => (r.transit && !r.parking ? "len autobusom" : r.transit ? "autom aj autobusom" : "autom");
-export const routeKm = (r: RouteBrief) => `${(r.distance_m / 1000).toFixed(1).replace(".", ",")} km`;
-const plural = (n: number) => (n >= 5 ? `${n} ciest` : `${n} cesty`);
-
-function Dot({ i }: { i: number }) {
-  return <span aria-hidden className="h-3 w-3 shrink-0 rounded-full" style={{ background: ROUTE_COLOURS[i % ROUTE_COLOURS.length] }} />;
 }
 
 /**
@@ -31,30 +24,7 @@ export function RouteChoice({ slug, destination, routes }: Props) {
   const current = routes[at];
   const compare = `/trasa/${slug}/cesty`;
 
-  const rows = routes.map((r, i) => (
-    <li key={r.slug}>
-      <Link
-        href={`/trasa/${r.slug}`}
-        aria-current={i === at ? "page" : undefined}
-        scroll={false}
-        className={`flex items-center gap-3 px-3.5 py-2.5 ${i === at ? "bg-[var(--accent-soft)]" : ""}`}
-      >
-        <Dot i={i} />
-        <span className="flex min-w-0 flex-col">
-          <span className="text-[15px] font-bold">{routeLabel(r)}</span>
-          <span className="text-[13px] text-[var(--muted)]">
-            štart {r.start_name} · {routeAccess(r)}
-          </span>
-        </span>
-        <span className="font-data ml-auto shrink-0 text-right text-[16px] leading-tight">
-          {formatDuration(r.duration_min)}
-          <span className="block font-sans text-[12px] text-[var(--muted)]">
-            {routeKm(r)} · +{r.ascent_m} m
-          </span>
-        </span>
-      </Link>
-    </li>
-  ));
+  const rows = <RouteRows routes={routes} at={at} />;
 
   return (
     <section aria-label={`Cesty na ${destination}`} className="flex flex-col gap-2">

@@ -15,6 +15,7 @@ import { trackColor } from "@/lib/mapLayers";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
 import { useTripAccess } from "@/components/TripAccess";
+import { setHoveredRoute, useHoveredRoute } from "@/lib/routeHover";
 import { NETWORK_ON } from "@/lib/trailNetwork";
 
 /** Another route to the same place: drawn faint, a tap opens it. */
@@ -32,6 +33,8 @@ interface Props {
 
 /** Other routes in a muted slate: clearly not the walk you picked (that one keeps its trail colour), still easy to see. */
 const OTHER_ROUTE_COLOUR = "#6b7a93";
+/** An other route under the pointer (on the map or in the route list) lights up. */
+const OTHER_ROUTE_HOVER = "#1769d1";
 
 /** Closer than this, the car is at the trail: no walking link. */
 const AT_TRAIL_M = 60;
@@ -86,9 +89,15 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
 
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
   // There-and-back tracks run out and back, so that stretch is cut at both ends.
+  const hovered = useHoveredRoute();
   const otherTracks = useMemo<MapTrack[]>(
-    () => others.map((o) => ({ slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal" })),
-    [others]
+    () =>
+      others.map((o) =>
+        o.slug === hovered
+          ? { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_HOVER, state: "selected" }
+          : { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal" }
+      ),
+    [others, hovered]
   );
   const tracks = useMemo<MapTrack[]>(() => {
     const color = trackColor(trail.marking);
@@ -183,9 +192,8 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
   const bounds = useMemo<BBox | null>(() => {
     const pts: [number, number][] = [...(drive.route?.points ?? [])];
     if (carStop) pts.push(pair(carStop));
+    // The trail itself: switching to another route glides over to it (the others stay drawn around it).
     if (trail.bbox) pts.push(pair(trail.bbox.sw), pair(trail.bbox.ne));
-    // The other routes to the place too, so you see where else you could start.
-    for (const o of others) pts.push(...o.points);
     if (pts.length === 0) return null;
     const lats = pts.map((p) => p[0]);
     const lons = pts.map((p) => p[1]);
@@ -206,6 +214,7 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
       onSelectTrail={(slug) => {
         if (others.some((o) => o.slug === slug)) router.push(`/trasa/${slug}`, { scroll: false });
       }}
+      onHoverTrail={others.length ? (slug) => setHoveredRoute(others.some((o) => o.slug === slug) ? slug : null) : undefined}
       ariaLabel="Mapa trasy"
     />
   );

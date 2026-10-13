@@ -9,7 +9,7 @@ import type { GeoPoint, RouteBrief } from "@/lib/tripSchema";
 import type { BBox } from "@/lib/types";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
-import { routeAccess, routeKm, routeLabel } from "@/components/RouteChoice";
+import { routeAccess, routeKm, routeLabel } from "@/components/routeBits";
 
 interface Props {
   /** The trip the visitor came from. */
@@ -27,6 +27,12 @@ const letter = (i: number) => ROUTE_LETTERS[i % ROUTE_LETTERS.length];
 /** All routes to a place on one map, each with its letter and colour; tap one to bring it forward. */
 export function RouteCompare({ slug, destination, goal, routes, children }: Props) {
   const [sel, setSel] = useState(Math.max(0, routes.findIndex((r) => r.slug === slug)));
+  // Under the pointer, on a card or on the map: lit up on the map, outlined in the list.
+  const [hover, setHover] = useState<number | null>(null);
+  const onHoverTrail = (s: string | null) => {
+    const i = routes.findIndex((r) => r.slug === s);
+    setHover(i >= 0 ? i : null);
+  };
   const maxMin = Math.max(...routes.map((r) => r.duration_min));
   const maxUp = Math.max(1, ...routes.map((r) => r.ascent_m));
 
@@ -35,7 +41,7 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
     label: routeLabel(r),
     points: r.up.map(([lon, lat]) => [lat, lon]),
     color: colour(i),
-    state: i === sel ? "selected" : "dimmed",
+    state: i === sel || i === hover ? "selected" : "dimmed",
   }));
   const markers: MapMarker[] = [
     ...routes.map((r, i) => ({
@@ -63,7 +69,7 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
       <div className="flex w-full flex-col gap-4 lg:w-[460px] lg:shrink-0 lg:overflow-y-auto lg:overscroll-contain">
         <div className="px-4 pt-4">{children}</div>
         <div className="h-[42vh] border-y border-[var(--border)] lg:hidden">
-          <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} ariaLabel={`Cesty na ${destination} na mape`} />
+          <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} onHoverTrail={onHoverTrail} ariaLabel={`Cesty na ${destination} na mape`} />
         </div>
         <ul className="flex flex-col gap-2 px-4 pb-6">
           {routes.map((r, i) => (
@@ -73,6 +79,8 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
                 tabIndex={0}
                 aria-pressed={i === sel}
                 onClick={() => setSel(i)}
+                onMouseEnter={() => setHover(i)}
+                onMouseLeave={() => setHover(null)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
@@ -80,7 +88,11 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
                   }
                 }}
                 className={`flex cursor-pointer flex-col gap-2 rounded-[var(--radius-card)] border bg-[var(--card-bg)] px-3.5 py-3 ${
-                  i === sel ? "border-[var(--accent)] shadow-[0_0_0_1px_var(--accent)]" : "border-[var(--border)]"
+                  i === sel
+                    ? "border-[var(--accent)] shadow-[0_0_0_1px_var(--accent)]"
+                    : i === hover
+                      ? "border-[var(--foreground)] shadow-[0_0_0_1px_var(--foreground)]"
+                      : "border-[var(--border)]"
                 }`}
               >
                 <span className="flex items-center gap-2.5">
@@ -120,7 +132,7 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
         </ul>
       </div>
       <div className="hidden lg:block lg:h-dvh lg:flex-1 lg:border-l lg:border-[var(--border)]">
-        <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} ariaLabel={`Cesty na ${destination} na mape`} />
+        <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} onHoverTrail={onHoverTrail} ariaLabel={`Cesty na ${destination} na mape`} />
       </div>
     </>
   );
