@@ -12,8 +12,8 @@ import { driveRoute, finishDrive, simplifyLine, walkRoute } from "@/lib/routing"
 
 // Slovakia plus a generous margin (Vienna, Brno, Budapest, Kraków starts).
 const AREA = { minLat: 45, maxLat: 52, minLon: 12, maxLon: 25 };
-/** Simplify the drawn line to within this many metres of the road. */
-const SHAPE_TOL_M = 10;
+/** Simplify the drawn line to within this many metres of the road (small, so bends stay on the road when zoomed in). */
+const SHAPE_TOL_M = 2;
 const DAY_S = 86400;
 /** How far from a road a point may be and still be routed (to the nearest road). */
 const SNAP_M = 3000;
