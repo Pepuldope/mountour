@@ -507,9 +507,9 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
 
         {/* Who is where: the car on the road, the walker on the trail, a dot at home. */}
         <g transform={`translate(${onTrail ? walker[0] : sx} ${onTrail ? walker[1] - 12 : inCar ? HOR - 11 : HOR + 3}) translate(-12.5 -12.5) scale(1.04)`}>
-          {/* A thin edge keeps the marker apart from what is behind it: dark around the walker (a white ring
-              round the head read as a halo), white around the dark car by day, dark around the white car at night. */}
-          <g style={{ color: onTrail || night ? INK : "#fff" }} dangerouslySetInnerHTML={{ __html: EDGE[marker] }} />
+          {/* A thin even edge keeps the marker apart from what is behind it: white around the blue walker
+              (a dark one made him hard to read on phones) and the dark car by day, dark around the white car at night. */}
+          <g style={{ color: !onTrail && night ? INK : "#fff" }} dangerouslySetInnerHTML={{ __html: EDGE[marker] }} />
           <g
             style={{ color: onTrail ? WALKER : night ? "#fff" : INK }}
             dangerouslySetInnerHTML={{ __html: night && marker === "car" ? CAR_AT_NIGHT : UI_ICON[marker] }}
