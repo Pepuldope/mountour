@@ -88,6 +88,8 @@ only checks the SQL. It skips a load the database already holds (fingerprint in
 ## Changing things
 
 - Regions, limits, hand-picked trips: `pipeline/config.yaml`.
+  Hand-picked trips are routed like all others, preferring marked trails, so their
+  `expect` values in the report can drift from the 2026-10-07 build.
 - Rename a trip, rewrite its description or drop it: `pipeline/overrides.yaml`.
 - Closure or fee: edit the JSON rule files (needs a source URL and a check date). Dates
   and texts apply at the next site build; a new rule area needs the next pipeline run

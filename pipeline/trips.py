@@ -260,7 +260,9 @@ class TripBuilder:
         if s_node is None or d_node is None:
             self.report["regression"].append(dict(slug=p["slug"], error="start or destination not on the walking graph"))
             return None
-        dist, succ = self.g.costs_to(d_node, ROUTE_LIMIT * 2, plain=True)
+        # Same preference for marked trails as every other trip: plain shortest paths cut through
+        # unmarked forest tracks (Vysoká z Kuchyne ran half its length off the marked trails).
+        dist, succ = self.g.costs_to(d_node, ROUTE_LIMIT * 2)
         out_path = self.g.walk_to_target(succ, s_node, d_node) if np.isfinite(dist[s_node]) else None
         if out_path is None:
             self.report["regression"].append(dict(slug=p["slug"], error="no path"))
