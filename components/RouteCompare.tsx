@@ -1,0 +1,135 @@
+"use client";
+
+import Link from "next/link";
+import { useMemo, useState } from "react";
+import type { ReactNode } from "react";
+import { formatDuration } from "@/lib/format";
+import { ROUTE_COLOURS, ROUTE_LETTERS } from "@/lib/palette";
+import type { GeoPoint, RouteBrief } from "@/lib/tripSchema";
+import type { BBox } from "@/lib/types";
+import { TrailMap } from "@/components/TrailMapClient";
+import type { MapMarker, MapTrack } from "@/components/TrailMap";
+import { routeAccess, routeKm, routeLabel } from "@/components/RouteChoice";
+
+interface Props {
+  /** The trip the visitor came from. */
+  slug: string;
+  destination: string;
+  goal: GeoPoint;
+  routes: RouteBrief[];
+  /** The page header (back link and title). */
+  children: ReactNode;
+}
+
+const colour = (i: number) => ROUTE_COLOURS[i % ROUTE_COLOURS.length];
+const letter = (i: number) => ROUTE_LETTERS[i % ROUTE_LETTERS.length];
+
+/** All routes to a place on one map, each with its letter and colour; tap one to bring it forward. */
+export function RouteCompare({ slug, destination, goal, routes, children }: Props) {
+  const [sel, setSel] = useState(Math.max(0, routes.findIndex((r) => r.slug === slug)));
+  const maxMin = Math.max(...routes.map((r) => r.duration_min));
+  const maxUp = Math.max(1, ...routes.map((r) => r.ascent_m));
+
+  const tracks: MapTrack[] = routes.map((r, i) => ({
+    slug: r.slug,
+    label: routeLabel(r),
+    points: r.up.map(([lon, lat]) => [lat, lon]),
+    color: colour(i),
+    state: i === sel ? "selected" : "dimmed",
+  }));
+  const markers: MapMarker[] = [
+    ...routes.map((r, i) => ({
+      id: `start-${r.slug}`,
+      kind: "poi" as const,
+      location: { lat: r.up[0][1], lon: r.up[0][0] },
+      title: `${letter(i)} · ${r.start_name}`,
+      lines: [routeLabel(r), formatDuration(r.duration_min)],
+      colour: colour(i),
+      icon: letter(i),
+      active: i === sel,
+      onClick: () => setSel(i),
+    })),
+    { id: "goal", kind: "trailhead" as const, location: goal, title: destination },
+  ];
+  const bounds = useMemo<BBox>(() => {
+    const pts = routes.flatMap((r) => r.up);
+    const lons = pts.map((p) => p[0]);
+    const lats = pts.map((p) => p[1]);
+    return { sw: { lat: Math.min(...lats), lon: Math.min(...lons) }, ne: { lat: Math.max(...lats), lon: Math.max(...lons) } };
+  }, [routes]);
+
+  return (
+    <>
+      <div className="flex w-full flex-col gap-4 lg:w-[460px] lg:shrink-0 lg:overflow-y-auto lg:overscroll-contain">
+        <div className="px-4 pt-4">{children}</div>
+        <div className="h-[42vh] border-y border-[var(--border)] lg:hidden">
+          <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} ariaLabel={`Cesty na ${destination} na mape`} />
+        </div>
+        <ul className="flex flex-col gap-2 px-4 pb-6">
+          {routes.map((r, i) => (
+            <li key={r.slug}>
+              <div
+                role="button"
+                tabIndex={0}
+                aria-pressed={i === sel}
+                onClick={() => setSel(i)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setSel(i);
+                  }
+                }}
+                className={`flex cursor-pointer flex-col gap-2 rounded-[var(--radius-card)] border bg-[var(--card-bg)] px-3.5 py-3 ${
+                  i === sel ? "border-[var(--accent)] shadow-[0_0_0_1px_var(--accent)]" : "border-[var(--border)]"
+                }`}
+              >
+                <span className="flex items-center gap-2.5">
+                  <span aria-hidden className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold text-white" style={{ background: colour(i) }}>
+                    {letter(i)}
+                  </span>
+                  <span className="flex min-w-0 flex-col">
+                    <span className="text-[15px] font-bold">{routeLabel(r)}</span>
+                    <span className="text-[13px] text-[var(--muted)]">
+                      štart {r.start_name} · {routeAccess(r)}
+                    </span>
+                  </span>
+                </span>
+                <span className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-[12.5px] text-[var(--muted)]">
+                  <span>Čas</span>
+                  <Bar share={r.duration_min / maxMin} colour={colour(i)} />
+                  <span className="font-data text-right text-[15px] text-[var(--foreground)]">{formatDuration(r.duration_min)}</span>
+                  <span>Do kopca</span>
+                  <Bar share={r.ascent_m / maxUp} colour={colour(i)} />
+                  <span className="font-data text-right text-[15px] text-[var(--foreground)]">+{r.ascent_m} m</span>
+                  <span>Dĺžka</span>
+                  <span />
+                  <span className="font-data text-right text-[15px] text-[var(--foreground)]">{routeKm(r)}</span>
+                </span>
+                {i === sel && (
+                  <Link
+                    href={`/trasa/${r.slug}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-fit rounded-full bg-[var(--accent)] px-4 py-1.5 text-sm font-bold text-[var(--accent-contrast)]"
+                  >
+                    {r.slug === slug ? "Späť na túto cestu" : "Vybrať túto cestu"}
+                  </Link>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="hidden lg:block lg:h-dvh lg:flex-1 lg:border-l lg:border-[var(--border)]">
+        <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} ariaLabel={`Cesty na ${destination} na mape`} />
+      </div>
+    </>
+  );
+}
+
+function Bar({ share, colour }: { share: number; colour: string }) {
+  return (
+    <span className="h-1.5 overflow-hidden rounded-full bg-[var(--segment-bg)]">
+      <span className="block h-full rounded-full" style={{ width: `${Math.round(share * 100)}%`, background: colour }} />
+    </span>
+  );
+}
