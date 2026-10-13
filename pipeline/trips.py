@@ -354,8 +354,6 @@ class TripBuilder:
         """Slugs and labels for up to max_routes_per_destination - 1 other routes."""
         main.pop("_known", None)
         main.pop("_edges", None)
-        main["variant_of"] = None
-        main["route_label"] = "Hlavná cesta" if others else None
         keep = sorted(others, key=lambda r: (-r["_known"], r["duration_min"]))
         keep = keep[: self.t.get("max_routes_per_destination", 3) - 1]
         out = []
@@ -368,7 +366,9 @@ class TripBuilder:
             r["route_label"] = self._label(r, main)
             r["region"], r["region_name"], r["protected_area"] = main["region"], main["region_name"], main["protected_area"]
             out.append(r)
-        main["route_count"] = 1 + len(out)
+        if out:  # one route only: no route fields at all
+            main["route_label"] = "Hlavná cesta"
+            main["route_count"] = 1 + len(out)
         return out
 
     def _label(self, r, main):

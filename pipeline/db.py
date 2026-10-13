@@ -72,6 +72,7 @@ CREATE TABLE trip (
   -- Another route to a place: the slug of its main trip, and why someone would pick it
   variant_of         TEXT,
   route_label        TEXT,
+  route_count        INTEGER,
   CHECK (start_id <> destination_id)
 );
 CREATE TABLE parking (
@@ -234,7 +235,7 @@ def build_sql(root=ROOT):
             summary["marked_share"], summary["rank"], summary["curated"], summary["gpx_url"],
             summary["marking"], summary["bbox"],
             detail.get("path"), detail.get("turnaround_index"), detail.get("marking_runs"),
-            summary.get("variant_of"), summary.get("route_label"),
+            summary.get("variant_of"), summary.get("route_label"), summary.get("route_count"),
         ))
         for i, p in enumerate([summary["parking"], *detail.get("parking_alternatives", [])]):
             if p is None:
@@ -279,7 +280,7 @@ def build_sql(root=ROOT):
         "id", "slug", "name", "description", "region_id", "protected_area_id", "destination_id", "start_id",
         "route_type", "distance_m", "ascent_m", "duration_min", "max_ele_m", "difficulty", "family_friendly",
         "marked_share", "rank", "curated", "gpx_url", "marking_json", "bbox_json",
-        "path_json", "turnaround_index", "marking_runs_json", "variant_of", "route_label"], trips)
+        "path_json", "turnaround_index", "marking_runs_json", "variant_of", "route_label", "route_count"], trips)
     sql += inserts("parking", ["id", "trip_id", "name", "lat", "lon", "walk_m", "fee_paid", "is_primary", "osm_ref"], parkings)
     sql += inserts("transit_stop", ["id", "name", "mode", "lat", "lon", "osm_ref"], list(stops.values()))
     sql += inserts("trip_transit_stop", ["trip_id", "stop_id", "walk_m", "is_primary", "position"], trip_stops)

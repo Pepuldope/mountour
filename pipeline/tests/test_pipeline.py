@@ -132,8 +132,8 @@ def test_end_to_end(tmp_path):
     # two routes to one peak: the known start is the main trip, the other is a variant of it
     peak = [t for t in index["trips"] if t["destination"]["name"] == "Druhý vrch"]
     assert len(peak) == 2
-    main = next(t for t in peak if not t["variant_of"])
-    other = next(t for t in peak if t["variant_of"])
+    main = next(t for t in peak if not t.get("variant_of"))
+    other = next(t for t in peak if t.get("variant_of"))
     assert main["start"]["name"] == "Sedlo" and main["route_label"] == "Hlavná cesta" and main["route_count"] == 2
     assert other["start"]["name"] == "Dolina" and other["variant_of"] == main["slug"] and other["route_label"]
     assert other["rank"] == main["rank"] and other["slug"] != main["slug"]

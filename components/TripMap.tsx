@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
 import { haversineM, nearestOnPath } from "@/lib/geo";
 import { useDriveRoute, useWalkRoute } from "@/lib/useDriveRoute";
@@ -16,10 +17,21 @@ import type { MapMarker, MapTrack } from "@/components/TrailMap";
 import { useTripAccess } from "@/components/TripAccess";
 import { NETWORK_ON } from "@/lib/trailNetwork";
 
+/** Another route to the same place: drawn faint, a tap opens it. */
+export interface OtherRoute {
+  slug: string;
+  label: string;
+  points: [number, number][];
+}
+
 interface Props {
   detail: TrailDetail;
   gpxUrl: string | null;
+  others?: OtherRoute[];
 }
+
+/** Other routes in ink, faint: clearly not the walk you picked, still easy to see. */
+const OTHER_ROUTE_COLOUR = "#14233b";
 
 /** Closer than this, the car is at the trail: no walking link. */
 const AT_TRAIL_M = 60;
@@ -31,8 +43,9 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  * With a start, the whole way: the drive (dashed) to the chosen parking, the
  * walk from there to the trail (dotted), then the trail itself.
  */
-export function TripMap({ detail, gpxUrl }: Props) {
+export function TripMap({ detail, gpxUrl, others = [] }: Props) {
   const { trail, trailheads, pois } = detail;
+  const router = useRouter();
   const { parkingLots, choice, choose, destination, trailJoin, walkFrom, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
   const [points, setPoints] = useState<[number, number][]>([]);
   const { start } = useUserLocation();
@@ -73,9 +86,14 @@ export function TripMap({ detail, gpxUrl }: Props) {
 
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
   // There-and-back tracks run out and back, so that stretch is cut at both ends.
+  const otherTracks = useMemo<MapTrack[]>(
+    () => others.map((o) => ({ slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "dimmed" })),
+    [others]
+  );
   const tracks = useMemo<MapTrack[]>(() => {
     const color = trackColor(trail.marking);
-    const whole: MapTrack[] = [{ slug: trail.slug, points, color, state: "selected" }];
+    // Other routes first, so the one you picked draws on top where they share a trail.
+    const whole: MapTrack[] = [...otherTracks, { slug: trail.slug, points, color, state: "selected" }];
     if (!skip || !trailJoin || points.length < 3) return whole;
     const ll = points.map(([lat, lon]) => ({ lat, lon }));
     const mid = Math.floor((points.length - 1) / 2);
@@ -86,11 +104,12 @@ export function TripMap({ detail, gpxUrl }: Props) {
     const b: [number, number] = [back.point.lat, back.point.lon];
     const bi = mid + back.i;
     return [
+      ...otherTracks,
       { slug: `${trail.slug}-skipped-out`, points: [...points.slice(0, out.i + 1), a], color, state: "dimmed" },
       { slug: `${trail.slug}-skipped-back`, points: [b, ...points.slice(bi + 1)], color, state: "dimmed" },
       { slug: trail.slug, points: [a, ...points.slice(out.i + 1, bi + 1), b], color, state: "selected" },
     ];
-  }, [trail.slug, trail.marking, points, skip, trailJoin]);
+  }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks]);
 
   const markers = useMemo<MapMarker[]>(
     () => [
@@ -182,6 +201,9 @@ export function TripMap({ detail, gpxUrl }: Props) {
       driveLeg={driveLeg}
       walkLeg={walkLeg}
       network={NETWORK_ON ? "context" : undefined}
+      onSelectTrail={(slug) => {
+        if (others.some((o) => o.slug === slug)) router.push(`/trasa/${slug}`, { scroll: false });
+      }}
       ariaLabel="Mapa trasy"
     />
   );
