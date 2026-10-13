@@ -1,15 +1,15 @@
 # Trip pipeline report
 
-Run: 2026-10-13T11:29:21+00:00 · OSM data: 2026-10-12T20:21:35Z
+Run: 2026-10-13T11:39:10+00:00 · OSM data: 2026-10-12T20:21:35Z
 
-**5054 trips**
+**5053 trips**
 
 | Region | Trips | Family | Candidates |
 |---|---|---|---|
 | tatry | 327 | 55 | 282 |
 | slovensky-raj | 89 | 32 | 56 |
 | mala-fatra | 161 | 14 | 80 |
-| male-karpaty | 385 | 168 | 175 |
+| male-karpaty | 384 | 167 | 175 |
 | velka-fatra | 335 | 79 | 186 |
 | nizke-tatry | 258 | 34 | 139 |
 | chocske-vrchy-orava | 150 | 30 | 87 |
@@ -2699,7 +2699,6 @@ Flag ⚠ when off by more than 15 %.
 | bozajvrsok | male-karpaty | Šaštín, nám. | 21.5 | 163 | 6:00 | tazka |  |
 | bozajvrsok-plavecky-mikulas | male-karpaty | Plavecký Mikuláš | 20.8 | 166 | 5:45 | stredna |  |
 | bozajvrsok-tomky-chaty | male-karpaty | Tomky, chaty | 25.5 | 148 | 7:00 | tazka |  |
-| cerveny-most | male-karpaty | Kamzík, lúka | 5.1 | 283 | 2:15 | lahka |  |
 | cerveny-most-klanec | male-karpaty | Klanec | 3.7 | 105 | 1:15 | lahka |  |
 | cerveny-most-slavin | male-karpaty | Slavín | 7.1 | 124 | 2:15 | lahka |  |
 | chrib | male-karpaty | Pustá Ves, pam.SNP | 11.0 | 326 | 3:45 | stredna |  |
@@ -5186,4 +5185,4 @@ Flag ⚠ when off by more than 15 %.
 | vystrkov-podhajska-belek | zahorie-podunajsko | Podhájska, Belek | 10.3 | 196 | 3:15 | stredna |  |
 | vystrkov-velke-lovce | zahorie-podunajsko | Veľké Lovce | 5.2 | 95 | 1:45 | lahka |  |
 
-Drive table: 141 towns x 5054 trips, 0 pairs without a route.
+Drive table: 141 towns x 5053 trips, 0 pairs without a route.
