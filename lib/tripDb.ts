@@ -198,19 +198,19 @@ export async function townDriveMinutes(townSlug: string): Promise<{ minutes: Rec
   return { minutes: await getTownDrives(townSlug), source: "subory" };
 }
 
-/** Car minutes by slug from the town's row of town_drive (an array in trip id order), or null without one. */
+/** Car minutes by slug from the town's row of town_drive (an array over the main trips in id order), or null without one. */
 async function dbTownMinutes(db: D1Like, townSlug: string): Promise<Record<string, number | null> | null> {
   const [row, trips] = await Promise.all([
     db
       .prepare("SELECT td.minutes_json FROM town_drive td JOIN town ON town.id = td.town_id WHERE town.slug = ?1")
       .bind(townSlug)
       .first<{ minutes_json: string }>(),
-    db.prepare("SELECT id, slug FROM trip ORDER BY id").all<{ id: number; slug: string }>(),
+    db.prepare("SELECT slug FROM trip WHERE variant_of IS NULL ORDER BY id").all<{ slug: string }>(),
   ]);
   if (!row) return null;
   const minutes = JSON.parse(row.minutes_json) as (number | null)[];
-  // Main trips come first; other routes to a place have no drive times (the home list never shows them).
-  return Object.fromEntries(trips.results.filter((t) => t.id <= minutes.length).map((t) => [t.slug, minutes[t.id - 1] ?? null]));
+  // One entry per main trip in id order; other routes to a place have no drive times (the home list never shows them).
+  return Object.fromEntries(trips.results.map((t, i) => [t.slug, minutes[i] ?? null]));
 }
 
 export interface TripListItem {
@@ -251,10 +251,11 @@ function activeRuleIds(rules: { id: string; kind: "rocna" | "jednorazova"; start
   );
 }
 
+/** Nearest first (or best known without a town); ties by rank, then name, so both sources agree. */
 function sortList(items: TripListItem[]): TripListItem[] {
-  return items.sort((a, b) =>
-    a.total_min !== null && b.total_min !== null ? a.total_min - b.total_min : a.total_min !== null ? -1 : b.total_min !== null ? 1 : b.rank - a.rank
-  );
+  const byTime = (a: TripListItem, b: TripListItem) =>
+    a.total_min !== null && b.total_min !== null ? a.total_min - b.total_min : a.total_min !== null ? -1 : b.total_min !== null ? 1 : 0;
+  return items.sort((a, b) => byTime(a, b) || b.rank - a.rank || (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0));
 }
 
 /** Trips for GET /api/vylety: nearest first from a town, or best known first. One per place (its main route). */

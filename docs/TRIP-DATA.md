@@ -76,7 +76,10 @@ loaded (local dev, Vercel, before the first load); the `zdroj` field and `X-Zdro
 header say which one answered (`databaza` or `subory`). The loader needs the GitHub
 secrets `CLOUDFLARE_API_TOKEN` (D1 Edit) and `CLOUDFLARE_ACCOUNT_ID`; without them it
 only checks the SQL. It skips a load the database already holds (fingerprint in
-`data_version`), since D1's free plan writes 100k rows a day; a load of ~1,500 trips writes about 15k rows (more with indexes).
+`data_version`), since D1's free plan writes 100k rows a day. Otherwise it reads which trips the
+database holds (each trip row carries a `content_hash` of itself and its parking, stops and POIs; ids
+are hashes of the slug, so they stay the same week to week) and writes only the trips and shared rows
+that changed. A full load (the first one, or after a schema change) writes about 55k rows.
 
 ## Licences and credit
 
