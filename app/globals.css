@@ -276,6 +276,18 @@ h2,
 
 /* Goal and place colours (lib/palette.ts) as text and tinted chips: set --kind
    on the element. They are tuned for white cards, so dark mode lifts them. */
+/* The trip picked on the desktop map: the card turns to the selected colours, like a pressed chip. */
+.trip-card-active {
+  --card-bg: var(--accent);
+  --foreground: var(--accent-contrast);
+  --muted: color-mix(in srgb, var(--accent-contrast) 82%, transparent);
+  color: var(--foreground);
+}
+.trip-card-active .kind-ink,
+.trip-card-active .on-card-ok {
+  color: var(--accent-contrast);
+}
+
 .kind-ink {
   /* A touch darker than the pin colour, so the lighter kinds (hrad, prameň) still reach 4.5:1 as small text. */
   color: color-mix(in oklab, var(--kind) 82%, #000);
