@@ -89,6 +89,10 @@ class TripBuilder:
             seg = np.hypot(*np.diff(xy, axis=0).T)
             for c, L in zip(map(tuple, ((xy[:-1] + xy[1:]) / 2 // size).astype(int)), seg):
                 street[c] = street.get(c, 0.0) + float(L)
+        vals = np.array(list(street.values())) if street else np.zeros(1)
+        self.log(f"town streets: {len(street)} cells, metres per cell p50/p90/p99/max "
+                 f"{np.percentile(vals, [50, 90, 99]).round().tolist()} / {vals.max():.0f}; "
+                 f">=800: {(vals >= 800).sum()}, >=1500: {(vals >= 1500).sum()}")
         return {c for c, L in street.items() if L >= self.t.get("town_street_m", 1500)}
 
     def _in_town(self, lat, lon):
