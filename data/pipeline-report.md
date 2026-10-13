@@ -1,6 +1,6 @@
 # Trip pipeline report
 
-Run: 2026-10-13T12:05:09+00:00 · OSM data: 2026-10-12T20:21:35Z
+Run: 2026-10-13T16:00:43+00:00 · OSM data: 2026-10-12T20:21:35Z
 
 **5050 trips**
 
@@ -111,6 +111,13 @@ Flag ⚠ when off by more than 15 %.
 | sitno-pocuvadlianske-jazero | Počúvadlianske jazero 2:30 | Na celý deň: Beluj 5:45; Iná cesta: Sedlo Krížna 3:00 |
 | batizovske-pleso | Velická poľana 3:00 | Autobusom: Odbočka pri Heliose 8:30; Autobusom: Tatranská polianka 6:45 |
 | baranec | Odbočka na Baranec a Plačlivé 8:15 | Iná cesta: Odbočka nad Orešnicou 8:45; Iná cesta: Rázcestie pod Holým vrchom 8:15 |
+
+## Town filter
+
+0 sights in towns left out; 0 routes left out as city walks.
+
+| Goal | Kind | Why | Start | Town metres |
+|---|---|---|---|---|
 
 ## Rejected candidates
 
