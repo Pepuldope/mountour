@@ -130,7 +130,9 @@ def test_end_to_end(tmp_path):
     assert 0 < detail["turnaround_index"] < len(detail["path"]) - 1
     assert (tmp_path / "public" / "gpx" / f"{falls['slug']}.gpx").exists()
     # two routes to one peak: the known start is the main trip, the other is a variant of it
-    peak = [t for t in index["trips"] if t["destination"]["name"] == "Druhý vrch"]
+    variants = json.loads((tmp_path / "data" / "trip-variants.json").read_text())["trips"]
+    assert variants and not any(t.get("variant_of") for t in index["trips"])  # the site's index: main routes only
+    peak = [t for t in index["trips"] + variants if t["destination"]["name"] == "Druhý vrch"]
     assert len(peak) == 2
     main = next(t for t in peak if not t.get("variant_of"))
     other = next(t for t in peak if t.get("variant_of"))
@@ -138,6 +140,11 @@ def test_end_to_end(tmp_path):
     assert other["start"]["name"] == "Dolina" and other["variant_of"] == main["slug"] and other["route_label"]
     assert other["rank"] == main["rank"] and other["slug"] != main["slug"]
     assert (tmp_path / "public" / "gpx" / f"{other['slug']}.gpx").exists()
+    # each route's file lists both, main first, with its way up, so the trip page reads only that file
+    for t in (main, other):
+        routes = json.loads((tmp_path / "public" / "data" / "trips" / f"{t['slug']}.json").read_text())["routes"]
+        assert [r["slug"] for r in routes] == [main["slug"], other["slug"]]
+        assert routes[0]["start_name"] == "Sedlo" and len(routes[1]["up"]) >= 2
     mains = [t["slug"] for t in index["trips"] if not t.get("variant_of")]
 
     # the home list: every place once, without the text it never shows

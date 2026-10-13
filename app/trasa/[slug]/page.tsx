@@ -5,7 +5,7 @@ import { cache } from "react";
 import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
 import { getTripLive } from "@/lib/tripDb";
-import { getTrip, getTripIndex } from "@/lib/tripFiles";
+import { getTrip } from "@/lib/tripFiles";
 import { buildProfile } from "@/lib/tripProfile";
 import { GOAL_LABEL, POI_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
@@ -24,7 +24,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { TripFacts } from "@/components/TripFacts";
 import { TripMap } from "@/components/TripMap";
 import type { OtherRoute } from "@/components/TripMap";
-import { RouteChoice, groupRoutes } from "@/components/RouteChoice";
+import { RouteChoice } from "@/components/RouteChoice";
 import { TripAccessProvider } from "@/components/TripAccess";
 import { JsonLd } from "@/components/JsonLd";
 import { TrackEvent } from "@/components/TrackEvent";
@@ -144,18 +144,13 @@ export default async function TripSheetPage({ params }: Props) {
   const goal = trail.goal ?? "ine";
   const also = secondGoal(detail);
   const goalEle = trip?.destination.ele_m;
-  // Other routes to the same place: listed under the facts, drawn faint on the map.
-  const routes = groupRoutes((await getTripIndex()).trips, trail.slug);
-  const others: OtherRoute[] = (
-    await Promise.all(routes.filter((r) => r.slug !== trail.slug).map((r) => getTrip(r.slug)))
-  )
-    .filter((t) => t != null)
-    .map((t) => ({
-      slug: t.slug,
-      label: t.route_label ?? t.start.name,
-      // The way up only: a there-and-back walk comes back the same way.
-      points: t.path.slice(0, t.route === "okruh" ? undefined : t.turnaround_index + 1).map(([lon, lat]) => [lat, lon]),
-    }));
+  // Other routes to the same place: listed under the facts, drawn faint on the map. They come
+  // with the trip's own file (the database row doesn't carry them), never from the whole index.
+  const routes =
+    trip.routes ?? (trip.variant_of || trip.route_count ? ((await getTrip(trail.slug))?.routes ?? []) : []);
+  const others: OtherRoute[] = routes
+    .filter((r) => r.slug !== trail.slug)
+    .map((r) => ({ slug: r.slug, label: r.route_label ?? r.start_name, points: r.up.map(([lon, lat]) => [lat, lon]) }));
 
   return (
     <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} transitStops={transitStops} trailStart={trailStart}>

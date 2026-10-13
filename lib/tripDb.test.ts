@@ -42,7 +42,10 @@ describe("trips from the database", () => {
     for (const t of await getAllTrips()) {
       const live = await getTripLive(t.slug);
       expect(live.source).toBe("databaza");
-      expect(live.trip).toEqual(await getTrip(t.slug));
+      // The list of a place's routes stays in the files; the page reads it from there.
+      const file = (await getTrip(t.slug))!;
+      delete file.routes;
+      expect(live.trip).toEqual(file);
     }
   }, 60_000);
 

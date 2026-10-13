@@ -9,7 +9,7 @@ import numpy as np
 
 from .geo import LocalProjection, rdp_indices
 
-DETAIL_ONLY = ("path", "turnaround_index", "marking_runs", "parking_alternatives", "transit_alternatives", "pois")
+DETAIL_ONLY = ("path", "turnaround_index", "marking_runs", "parking_alternatives", "transit_alternatives", "pois", "routes")
 ATTRIBUTION = ("© OpenStreetMap contributors (ODbL); elevation: Copernicus DEM GLO-30 © DLR e.V. 2010-2014 and "
                "© Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA")
 
@@ -34,6 +34,7 @@ def write(root, trips, dem, drive, slugs, report, osm_data_at, now=None):
         if f.stem not in keep:
             f.unlink()
 
+    _attach_routes(trips)
     summaries = []
     for t in trips:
         gpx = t.pop("_gpx")
@@ -41,11 +42,15 @@ def write(root, trips, dem, drive, slugs, report, osm_data_at, now=None):
         _dump(tdir / f"{t['slug']}.json", t)
         summaries.append({k: v for k, v in t.items() if k not in DETAIL_ONLY})
 
-    index = dict(version=1, generated_at=now, osm_data_at=osm_data_at, attribution=ATTRIBUTION, trips=summaries)
-    _dump(tdir / "index.json", index)
+    # The site reads index.json at run time, so it holds the main routes only; the other routes
+    # are in their own trip files, listed by each trip of the place ("routes"). The database
+    # load still takes every route, from data/trip-variants.json.
+    mains = [t for t in summaries if not t.get("variant_of")]
+    _dump(tdir / "index.json", dict(version=1, generated_at=now, osm_data_at=osm_data_at, attribution=ATTRIBUTION, trips=mains))
+    _dump(root / "data" / "trip-variants.json", dict(version=1, generated_at=now,
+                                                    trips=[t for t in summaries if t.get("variant_of")]))
     # The home list and map show one trip per place; its other routes are on the trip page.
-    _dump(tdir / "list.json", dict(version=1, generated_at=now,
-                                   trips=[_list_item(t) for t in summaries if not t.get("variant_of")]))
+    _dump(tdir / "list.json", dict(version=1, generated_at=now, trips=[_list_item(t) for t in mains]))
 
     if drive is not None:
         towns, minutes, km, source = drive
@@ -65,6 +70,32 @@ def write(root, trips, dem, drive, slugs, report, osm_data_at, now=None):
 
     (root / "pipeline" / "slugs.json").write_text(json.dumps(dict(sorted(slugs.items())), ensure_ascii=False, indent=1) + "\n")
     (root / "data" / "pipeline-report.md").write_text(_report(trips, report, now, osm_data_at, drive))
+
+
+def _attach_routes(trips):
+    """Every route of a place that has several gets the list of them all, main first, with the
+    way up of each, so the trip page needs nothing but its own file."""
+    groups = {}
+    for t in trips:
+        groups.setdefault(t.get("variant_of") or t["slug"], []).append(t)
+    for group in groups.values():
+        if len(group) < 2:
+            continue
+        group = sorted(group, key=lambda t: (bool(t.get("variant_of")), t["duration_min"]))
+        briefs = [_route_brief(t) for t in group]
+        for t in group:
+            t["routes"] = briefs
+
+
+def _route_brief(t):
+    up = t["path"] if t["route"] == "okruh" else t["path"][: t["turnaround_index"] + 1]
+    b = dict(slug=t["slug"], route_label=t.get("route_label"), start_name=t["start"]["name"],
+             parking=t.get("parking") is not None, transit=t.get("transit") is not None,
+             duration_min=t["duration_min"], distance_m=t["distance_m"], ascent_m=t["ascent_m"],
+             up=[[p[0], p[1]] for p in up])
+    if t.get("variant_of"):
+        b["variant_of"] = t["variant_of"]
+    return b
 
 
 def _dump(path, obj):
