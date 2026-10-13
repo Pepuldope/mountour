@@ -1,8 +1,8 @@
 # Trip pipeline report
 
-Run: 2026-10-13T20:57:55+00:00 · OSM data: 2026-10-12T20:21:35Z
+Run: 2026-10-13T21:11:02+00:00 · OSM data: 2026-10-12T20:21:35Z
 
-**5006 trips**
+**5027 trips**
 
 | Region | Trips | Family | Candidates |
 |---|---|---|---|
@@ -14,12 +14,12 @@ Run: 2026-10-13T20:57:55+00:00 · OSM data: 2026-10-12T20:21:35Z
 | nizke-tatry | 257 | 33 | 139 |
 | chocske-vrchy-orava | 147 | 30 | 87 |
 | pieniny | 30 | 8 | 11 |
-| kysuce-javorniky | 356 | 89 | 165 |
+| kysuce-javorniky | 359 | 92 | 165 |
 | strazovske-vrchy | 202 | 45 | 89 |
-| biele-karpaty | 211 | 89 | 105 |
-| inovec-tribec-vtacnik | 437 | 101 | 217 |
-| stiavnicke-kremnicke-vrchy | 357 | 151 | 196 |
-| polana-muran | 261 | 45 | 114 |
+| biele-karpaty | 218 | 95 | 105 |
+| inovec-tribec-vtacnik | 439 | 102 | 217 |
+| stiavnicke-kremnicke-vrchy | 363 | 156 | 196 |
+| polana-muran | 264 | 47 | 114 |
 | slovensky-kras | 286 | 53 | 147 |
 | levocske-cergov | 463 | 105 | 206 |
 | vychod | 256 | 63 | 142 |
@@ -47,7 +47,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Places with more than one route
 
-1743 of 2012 places have other routes; 2996 other routes in all.
+1750 of 2020 places have other routes; 3009 other routes in all.
 
 | Place | Main route (start, time) | Other routes |
 |---|---|---|
@@ -55,6 +55,7 @@ Flag ⚠ when off by more than 15 %.
 | hrad-lietava | Lietavská Svinná 1:30 | Dlhšia: Babkov, Imrišek 2:15; Dlhšia: Lietavská Lúčka 3:30 |
 | lubovniansky-hrad | Stará Ľubovňa 1:30 | Na celý deň: Malý Lipník 7:45; Na celý deň: Údol 7:00 |
 | sarissky-hrad | Šarišské Michaľany 3:00 | Iná cesta: Veľký Šariš, obec 3:00 |
+| banska-bystrica | Odbočka na Urpín, vyhliadku 1:30 | Dlhšia: Šalková 3:30; Iná cesta: Urpín, vyhliadka 1:45 |
 | novy-zamok | tajch Klinger 1:00 | Dlhšia: Červená studňa (bežkárske trate) 1:45; Dlhšia: Pamätný kameň 1:45 |
 | popradske-pleso | Odbočka pri Heliose 3:00 | Kratšia: Holá Úboč 2:30; Na celý deň: Velická poľana 8:45 |
 | strbske-pleso | Odbočka pri Heliose 0:45 | Na celý deň: Bývalá Važecká chata 5:30; Dlhšia: Tatranská Štrba 4:15 |
@@ -110,17 +111,16 @@ Flag ⚠ when off by more than 15 %.
 | batizovske-pleso | Velická poľana 3:00 | Autobusom: Odbočka pri Heliose 8:30; Autobusom: Tatranská polianka 6:45 |
 | baranec | Odbočka na Baranec a Plačlivé 8:15 | Iná cesta: Odbočka nad Orešnicou 8:45; Iná cesta: Rázcestie pod Holým vrchom 8:15 |
 | placlive | Rázcestie Šindľovec 7:45 | Na celý deň: Úzka dolina, ústie 9:00; Autobusom: Žiarska dolina (ústie) 8:45 |
-| zobor | Svoradov prameň 1:45 | Dlhšia: Barohať 3:30; Dlhšia: Podhorany, viadukt 3:30 |
 
 ## Town filter
 
-24 goals in city centres and 4 sights in towns left out; 18 routes left out as city walks.
+8 goals in city centres and 8 sights in towns left out; 18 routes left out as city walks.
 
 | Goal | Kind | Why | Start | Town metres |
 |---|---|---|---|---|
 | Kamzík | vrchol | city walk | Horský park, hor. | 1760 |
 | Bratislavský hrad | hrad | city centre |  | 0 |
-| Mestská veža | vyhliadka | city centre |  | 0 |
+| Mestská veža | vyhliadka | in town |  | 0 |
 | Revín | vrchol | city walk | Horský park, hor. | 1760 |
 | Revín | vrchol | city walk | Bratislava, hlavná stanica | 1253 |
 | Revín | vrchol | city walk | Slavín | 2031 |
@@ -135,26 +135,14 @@ Flag ⚠ when off by more than 15 %.
 | na Ružomberok | vyhliadka | city walk | Ružomberok | 1105 |
 | Kopanica | vrchol | city walk | Námestovo, bus | 1580 |
 | Kopanica | vrchol | city walk | Námestovo | 1575 |
-| Vyhliadková veža Dubeň | vyhliadka | city centre |  | 0 |
-| Trenčiansky hrad | hrad | city centre |  | 0 |
-| Štefánikova vyhliadka | vyhliadka | city centre |  | 0 |
-| Matúšova veža | vyhliadka | city centre |  | 0 |
-| Kozí vrch | vrchol | city centre |  | 0 |
-| Hradná jaskyňa | jaskyna | city centre |  | 0 |
-| Jaskyňa pod nitrianskym hradom | jaskyna | city centre |  | 0 |
 | Nový zámok | hrad | city walk | Michal štôlňa | 891 |
 | Nový zámok | hrad | city walk | Banská Štiavnica, križovatka | 1009 |
-| Banská Bystrica | hrad | city centre |  | 0 |
-| Urpín | vrchol | city centre |  | 0 |
-| Barbakan | hrad | city centre |  | 0 |
 | Zvolenská veža | vyhliadka | in town |  | 0 |
-| Urpín, vyhliadka | vyhliadka | city centre |  | 0 |
 | Na Drieňovú | vyhliadka | city walk | Štefultov, pôsobisko Dr. Téryho | 1773 |
 | Nad Reslou | vyhliadka | in town |  | 0 |
-| Vartovka | vrchol | city centre |  | 0 |
-| Kalvária | vyhliadka | city centre |  | 0 |
-| Veža Konkatedrály sv. Mikuláša | vyhliadka | city centre |  | 0 |
-| Kalvária | vyhliadka | city centre |  | 0 |
+| Kalvária | vyhliadka | in town |  | 0 |
+| Veža Konkatedrály sv. Mikuláša | vyhliadka | in town |  | 0 |
+| Kalvária | vyhliadka | in town |  | 0 |
 | UFO | vyhliadka | city centre |  | 0 |
 | UFO | vyhliadka | city centre |  | 0 |
 | Kalvária | vyhliadka | city walk | Nad Zlatníckou dolinou | 1790 |
@@ -170,8 +158,8 @@ Flag ⚠ when off by more than 15 %.
 - almost the same walk as another trip: 109
 - mostly unmarked: 33
 - no trailhead within reach: 18
-- sight in a city centre: 24
-- sight in a town: 4
+- sight in a city centre: 8
+- sight in a town: 8
 - start already has enough trips: 29
 - too flat (city walk): 9
 - too long: 43
@@ -186,6 +174,7 @@ Flag ⚠ when off by more than 15 %.
 
 | Slug | Region | Start | km | ↑ m | Time | Diff. | Rules |
 |---|---|---|---|---|---|---|---|
+| trenciansky-hrad | biele-karpaty | Brezina | 3.2 | 118 | 1:15 | lahka |  |
 | velka-javorina | biele-karpaty | Kachľové Grúne | 3.0 | 116 | 1:15 | lahka |  |
 | velka-javorina-hamovanie | biele-karpaty | Hamovanie | 14.7 | 499 | 5:15 | stredna |  |
 | velka-javorina-narcie | biele-karpaty | Narcie | 18.4 | 594 | 6:15 | tazka |  |
@@ -314,6 +303,9 @@ Flag ⚠ when off by more than 15 %.
 | sokolovica-pod-grofovcom | biele-karpaty | Pod Grófovcom | 6.5 | 309 | 2:30 | lahka |  |
 | stary-haj-kamenne-vrata | biele-karpaty | Kamenné vráta | 3.6 | 232 | 1:45 | lahka |  |
 | stary-haj-kamenne-vrata-omsenie | biele-karpaty | Omšenie | 5.3 | 404 | 3:00 | stredna |  |
+| stefanikova-vyhliadka | biele-karpaty | Trenčín, Železničná stanica | 2.4 | 117 | 1:00 | lahka |  |
+| stefanikova-vyhliadka-brezina-memento | biele-karpaty | Brezina, Memento | 2.2 | 83 | 1:00 | lahka |  |
+| stefanikova-vyhliadka-zlatovce | biele-karpaty | Zlatovce | 7.0 | 124 | 2:15 | lahka |  |
 | vyhliadka-vrsok | biele-karpaty | Omšenie | 2.1 | 118 | 1:00 | lahka |  |
 | vyhliadka-vrsok-baracka | biele-karpaty | Baračka | 8.4 | 195 | 2:45 | lahka |  |
 | ciernachov | biele-karpaty | Chata pod Ostrým vrchom | 2.8 | 194 | 1:30 | lahka |  |
@@ -375,6 +367,9 @@ Flag ⚠ when off by more than 15 %.
 | roh-lubina-skalka | biele-karpaty | Cetuna | 5.5 | 186 | 2:00 | lahka |  |
 | roh-lubina-skalka-lubina-skalka | biele-karpaty | Lubina, skalka | 5.2 | 213 | 2:00 | lahka |  |
 | hradiste-dubodiel | biele-karpaty | Inovecká chata | 11.3 | 522 | 4:15 | stredna |  |
+| kozi-vrch | biele-karpaty | Trenčín, hotel Elizabeth | 4.7 | 161 | 1:45 | lahka |  |
+| kozi-vrch-kubra | biele-karpaty | Kubrá | 8.1 | 214 | 2:45 | lahka |  |
+| kozi-vrch-soblahov-obec | biele-karpaty | Soblahov, obec | 6.6 | 165 | 2:15 | lahka |  |
 | lagin | biele-karpaty | Melčice - Lieskové, OcÚ | 5.5 | 176 | 2:00 | lahka |  |
 | malenie | biele-karpaty | RS Slniečko | 3.6 | 162 | 1:30 | lahka |  |
 | malenie-cvirigovec-hradisko | biele-karpaty | Čvirigovec,hradisko | 4.1 | 214 | 1:45 | lahka |  |
@@ -980,6 +975,8 @@ Flag ⚠ when off by more than 15 %.
 | uhrad | inovec-tribec-vtacnik | Podhradie | 5.2 | 310 | 2:30 | lahka |  |
 | uhrad-horaren-modrova-bus | inovec-tribec-vtacnik | Horáreň Modrová (bus) | 23.8 | 950 | 8:30 | tazka |  |
 | uhrad-nova-lehota | inovec-tribec-vtacnik | Nová Lehota | 9.7 | 436 | 3:45 | stredna |  |
+| hradna-jaskyna | inovec-tribec-vtacnik | Nitra, Šindolka | 3.3 | 32 | 1:00 | lahka |  |
+| hradna-jaskyna-podhorany-viadukt | inovec-tribec-vtacnik | Podhorany, viadukt | 17.2 | 799 | 6:30 | tazka |  |
 | jankov-vrsok | inovec-tribec-vtacnik | Uhrovec | 5.9 | 286 | 2:30 | lahka |  |
 | jankov-vrsok-ceresnova | inovec-tribec-vtacnik | Čerešňová | 10.6 | 562 | 4:30 | stredna |  |
 | jankov-vrsok-dolne-vestenice | inovec-tribec-vtacnik | Dolné Vestenice | 15.2 | 768 | 6:15 | tazka |  |
@@ -1517,6 +1514,9 @@ Flag ⚠ when off by more than 15 %.
 | velky-polom-nad-kurajkou | kysuce-javorniky | Nad Kurajkou | 7.4 | 419 | 3:15 | stredna |  |
 | rozhladna-na-bobovci | kysuce-javorniky | Pod Bobovcom, cyklomagistrála | 2.1 | 229 | 1:30 | lahka |  |
 | rozhladna-na-bobovci-stara-bystrica-lany | kysuce-javorniky | Stará Bystrica, Lány | 4.3 | 282 | 2:15 | lahka |  |
+| vyhliadkova-veza-duben | kysuce-javorniky | Budatín | 3.4 | 247 | 1:45 | lahka |  |
+| vyhliadkova-veza-duben-zadubnie-pripojna | kysuce-javorniky | Zádubnie, Prípojná | 3.6 | 200 | 1:45 | lahka |  |
+| vyhliadkova-veza-duben-zastranie-odbocka-na | kysuce-javorniky | Zástranie, odbočka na Salaš | 6.3 | 211 | 2:15 | lahka |  |
 | obelec | kysuce-javorniky | Horný Vadičov, Kubaščíkovci | 6.2 | 351 | 2:45 | lahka |  |
 | obelec-lutise | kysuce-javorniky | Lutiše | 11.9 | 419 | 4:15 | stredna |  |
 | obelec-stara-bystrica | kysuce-javorniky | Stará Bystrica | 13.5 | 732 | 5:45 | stredna |  |
@@ -3149,6 +3149,9 @@ Flag ⚠ when off by more than 15 %.
 | termalny-vodopad | polana-muran | Sliač | 2.2 | 74 | 0:45 | lahka |  |
 | termalny-vodopad-bakova-jama | polana-muran | Bakova Jama | 4.9 | 98 | 1:30 | lahka |  |
 | termalny-vodopad-sampor | polana-muran | Sampor | 11.0 | 265 | 3:30 | stredna |  |
+| vartovka | polana-muran | Urpín, vyhliadka | 2.6 | 95 | 1:00 | lahka |  |
+| vartovka-horna-micina | polana-muran | Horná Mičiná | 12.8 | 511 | 4:45 | stredna |  |
+| vartovka-radvan-stanica | polana-muran | Radvaň, stanica | 3.0 | 230 | 1:45 | lahka |  |
 | faltenov-vrch | polana-muran | Muránska Zdychava | 12.1 | 828 | 6:00 | tazka |  |
 | faltenov-vrch-cierna-lehota | polana-muran | Čierna Lehota | 15.5 | 827 | 6:30 | tazka |  |
 | klepana-skala | polana-muran | Revúca, námestie | 15.3 | 863 | 6:45 | tazka |  |
@@ -3683,6 +3686,9 @@ Flag ⚠ when off by more than 15 %.
 | trubacovec | slovensky-raj | Bindt - Šuferland | 5.3 | 168 | 2:00 | lahka |  |
 | trubacovec-sedlo-grainar | slovensky-raj | sedlo Grainár | 11.6 | 342 | 4:00 | stredna |  |
 | trubacovec-strazanska-huta | slovensky-raj | Stražanská huta | 5.5 | 259 | 2:15 | lahka |  |
+| banska-bystrica | stiavnicke-kremnicke-vrchy | Odbočka na Urpín, vyhliadku | 4.3 | 153 | 1:30 | lahka |  |
+| banska-bystrica-salkova | stiavnicke-kremnicke-vrchy | Šalková | 12.4 | 125 | 3:30 | stredna |  |
+| banska-bystrica-urpin-vyhliadka | stiavnicke-kremnicke-vrchy | Urpín, vyhliadka | 4.7 | 191 | 1:45 | lahka |  |
 | novy-zamok | stiavnicke-kremnicke-vrchy | tajch Klinger | 2.3 | 95 | 1:00 | lahka |  |
 | novy-zamok-cervena-studna | stiavnicke-kremnicke-vrchy | Červená studňa (bežkárske trate) | 3.7 | 211 | 1:45 | lahka |  |
 | novy-zamok-pamatny-kamen | stiavnicke-kremnicke-vrchy | Pamätný kameň | 4.9 | 118 | 1:45 | lahka |  |
@@ -3761,6 +3767,9 @@ Flag ⚠ when off by more than 15 %.
 | zakylske-pleso | stiavnicke-kremnicke-vrchy | Žakýl | 4.4 | 252 | 2:00 | lahka |  |
 | zakylske-pleso-radosovo | stiavnicke-kremnicke-vrchy | Radošovo | 15.7 | 959 | 7:15 | tazka |  |
 | zakylske-pleso-sklene-teplice | stiavnicke-kremnicke-vrchy | Sklené Teplice | 17.0 | 622 | 6:00 | tazka |  |
+| urpin | stiavnicke-kremnicke-vrchy | Banská Bystrica - Mesto | 3.2 | 151 | 1:15 | lahka |  |
+| urpin-banska-bystrica-hamor | stiavnicke-kremnicke-vrchy | Banská Bystrica, Hámor | 6.6 | 200 | 2:15 | lahka |  |
+| urpin-radvan-stanica | stiavnicke-kremnicke-vrchy | Radvaň, stanica | 3.2 | 196 | 1:30 | lahka |  |
 | zabastie | stiavnicke-kremnicke-vrchy | Žiar nad Hronom, stanica | 6.7 | 356 | 2:45 | lahka |  |
 | zabastie-sklene-teplice | stiavnicke-kremnicke-vrchy | Sklené Teplice | 17.9 | 902 | 7:15 | tazka |  |
 | zabastie-stara-kremnicka-vodojem | stiavnicke-kremnicke-vrchy | Stará Kremnička vodojem | 8.7 | 403 | 3:15 | stredna |  |
@@ -5193,4 +5202,4 @@ Flag ⚠ when off by more than 15 %.
 | vystrkov-podhajska | zahorie-podunajsko | Podhájska | 9.3 | 171 | 3:00 | lahka |  |
 | vystrkov-podhajska-belek | zahorie-podunajsko | Podhájska, Belek | 10.3 | 196 | 3:15 | stredna |  |
 
-Drive table: 141 towns x 2012 main trips, 0 pairs without a route.
+Drive table: 141 towns x 2020 main trips, 0 pairs without a route.
