@@ -145,6 +145,13 @@ function fit(map: MlMap, b: BBox, duration = 0) {
   );
 }
 
+/**
+ * Where the last trip map stood. Opening another route is a new page, so its map is a new
+ * one; it starts where the last left off and glides to its trail instead of jumping there.
+ */
+let lastCamera: { center: [number, number]; zoom: number; at: number } | null = null;
+const GLIDE_WITHIN_MS = 15_000;
+
 export const FALLBACK_STYLE: StyleSpecification = {
   version: 8,
   sources: {},
@@ -196,16 +203,23 @@ export function TrailMap({
       const ml = await import("maplibre-gl");
       if (cancelled || !containerRef.current) return;
 
+      const from = lastCamera && Date.now() - lastCamera.at < GLIDE_WITHIN_MS ? lastCamera : null;
+      if (from) fittedRef.current = true; // the first fit glides from there
       map = new ml.Map({
         container: containerRef.current,
         style: MAP_STYLE_URL,
-        bounds: SLOVAKIA,
+        ...(from ? { center: from.center, zoom: from.zoom } : { bounds: SLOVAKIA }),
         attributionControl: { compact: true },
         cooperativeGestures: false,
         dragRotate: false,
         pitchWithRotate: false,
       });
       map.touchZoomRotate.disableRotation();
+      map.on("moveend", () => {
+        if (!map) return;
+        const c = map.getCenter();
+        lastCamera = { center: [c.lng, c.lat], zoom: map.getZoom(), at: Date.now() };
+      });
       map.addControl(new ml.NavigationControl({ showCompass: false }), "top-right");
 
       // Base map unreachable (offline, blocked): fall back to a plain background
@@ -304,8 +318,14 @@ export function TrailMap({
 
       // The map sits in flex/sticky containers whose size can change: keep the
       // requested area in view rather than whatever zoom fit the old size.
+      let firstResize = true;
       observer = new ResizeObserver(() => {
         if (!map) return;
+        // The first call is the initial size: the bounds effect places the view (maybe gliding).
+        if (firstResize) {
+          firstResize = false;
+          return;
+        }
         map.resize();
         if (boundsRef.current) fit(map, boundsRef.current);
       });
@@ -316,6 +336,10 @@ export function TrailMap({
 
     return () => {
       cancelled = true;
+      if (map) {
+        const c = map.getCenter();
+        lastCamera = { center: [c.lng, c.lat], zoom: map.getZoom(), at: Date.now() };
+      }
       observer?.disconnect();
       detachNetwork?.();
       map?.remove();
