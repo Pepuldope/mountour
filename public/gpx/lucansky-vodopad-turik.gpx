@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Čiapka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Čiapka</name><trkseg>
+  <metadata><name>Lúčanský vodopád</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Lúčanský vodopád</name><trkseg>
     <trkpt lat="49.097554" lon="19.388074"><ele>512</ele></trkpt>
     <trkpt lat="49.097725" lon="19.387866"><ele>512</ele></trkpt>
     <trkpt lat="49.097913" lon="19.387725"><ele>513</ele></trkpt>
@@ -110,21 +110,17 @@
     <trkpt lat="49.127912" lon="19.403476"><ele>578</ele></trkpt>
     <trkpt lat="49.128417" lon="19.403570"><ele>580</ele></trkpt>
     <trkpt lat="49.128603" lon="19.403546"><ele>581</ele></trkpt>
-    <trkpt lat="49.128822" lon="19.403450"><ele>582</ele></trkpt>
+    <trkpt lat="49.129059" lon="19.403290"><ele>585</ele></trkpt>
     <trkpt lat="49.129142" lon="19.403223"><ele>587</ele></trkpt>
     <trkpt lat="49.129280" lon="19.402899"><ele>592</ele></trkpt>
     <trkpt lat="49.129422" lon="19.402839"><ele>596</ele></trkpt>
     <trkpt lat="49.129464" lon="19.402924"><ele>595</ele></trkpt>
-    <trkpt lat="49.129821" lon="19.402657"><ele>604</ele></trkpt>
-    <trkpt lat="49.130104" lon="19.402585"><ele>609</ele></trkpt>
-    <trkpt lat="49.130414" lon="19.402340"><ele>611</ele></trkpt>
-    <trkpt lat="49.130104" lon="19.402585"><ele>609</ele></trkpt>
-    <trkpt lat="49.129821" lon="19.402657"><ele>604</ele></trkpt>
+    <trkpt lat="49.129645" lon="19.402813"><ele>600</ele></trkpt>
     <trkpt lat="49.129464" lon="19.402924"><ele>595</ele></trkpt>
     <trkpt lat="49.129422" lon="19.402839"><ele>596</ele></trkpt>
     <trkpt lat="49.129280" lon="19.402899"><ele>592</ele></trkpt>
     <trkpt lat="49.129142" lon="19.403223"><ele>587</ele></trkpt>
-    <trkpt lat="49.128822" lon="19.403450"><ele>582</ele></trkpt>
+    <trkpt lat="49.129059" lon="19.403290"><ele>585</ele></trkpt>
     <trkpt lat="49.128603" lon="19.403546"><ele>581</ele></trkpt>
     <trkpt lat="49.128417" lon="19.403570"><ele>580</ele></trkpt>
     <trkpt lat="49.127912" lon="19.403476"><ele>578</ele></trkpt>
