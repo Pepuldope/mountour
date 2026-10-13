@@ -94,6 +94,8 @@ CREATE TABLE parking (
   fee_paid   INTEGER CHECK (fee_paid IN (0,1)),
   is_primary INTEGER NOT NULL CHECK (is_primary IN (0,1)),
   osm_ref    TEXT,
+  -- The walk to the trail on paths: {"line": [[lon, lat], ...], "m": 420, "min": 6} (pipeline/walks.py)
+  walk_json  TEXT,
   PRIMARY KEY (trip_id, id)
 ) WITHOUT ROWID;
 CREATE TABLE transit_stop (
@@ -110,6 +112,7 @@ CREATE TABLE trip_transit_stop (
   walk_m      INTEGER NOT NULL CHECK (walk_m >= 0),
   is_primary  INTEGER NOT NULL CHECK (is_primary IN (0,1)),
   position    INTEGER NOT NULL,
+  walk_json   TEXT,
   PRIMARY KEY (trip_id, stop_id)
 ) WITHOUT ROWID;
 CREATE TABLE poi (
@@ -227,8 +230,8 @@ COLUMNS = {
         "route_type", "distance_m", "ascent_m", "duration_min", "max_ele_m", "difficulty", "family_friendly",
         "marked_share", "rank", "curated", "gpx_url", "marking_json", "bbox_json",
         "path_json", "turnaround_index", "marking_runs_json", "variant_of", "route_label", "route_count", "content_hash"],
-    "parking": ["trip_id", "id", "name", "lat", "lon", "walk_m", "fee_paid", "is_primary", "osm_ref"],
-    "trip_transit_stop": ["trip_id", "stop_id", "walk_m", "is_primary", "position"],
+    "parking": ["trip_id", "id", "name", "lat", "lon", "walk_m", "fee_paid", "is_primary", "osm_ref", "walk_json"],
+    "trip_transit_stop": ["trip_id", "stop_id", "walk_m", "is_primary", "position", "walk_json"],
     "poi": ["trip_id", "position", "kind", "name", "lat", "lon", "osm_ref"],
     "trip_closure": ["trip_id", "rule_id"],
     "trip_fee": ["trip_id", "fee_id"],
@@ -315,12 +318,13 @@ def build_rows(root=ROOT):
             (tid * 2, dest["name"] or "", dest["kind"], dest["location"]["lat"], dest["location"]["lon"], dest.get("ele_m"), dest.get("osm")),
             (tid * 2 + 1, start["name"] or "", "start", start["location"]["lat"], start["location"]["lon"], start.get("ele_m"), start.get("osm")),
         ]
-        for i, p in enumerate([summary["parking"], *detail.get("parking_alternatives", [])]):
+        # The trip's own file: its parking and stop carry the walk to the trail, the index's don't.
+        for i, p in enumerate([detail.get("parking", summary["parking"]), *detail.get("parking_alternatives", [])]):
             if p is None:
                 continue
-            own["parking"].append((tid, i, p.get("name"), p["location"]["lat"], p["location"]["lon"], p["walk_m"], p.get("fee"), i == 0, p.get("osm")))
+            own["parking"].append((tid, i, p.get("name"), p["location"]["lat"], p["location"]["lon"], p["walk_m"], p.get("fee"), i == 0, p.get("osm"), p.get("walk")))
         seen = set()
-        for i, s in enumerate([summary["transit"], *detail.get("transit_alternatives", [])]):
+        for i, s in enumerate([detail.get("transit", summary["transit"]), *detail.get("transit_alternatives", [])]):
             if s is None:
                 continue
             sid = stop_id[stop_key(s)]
@@ -328,7 +332,7 @@ def build_rows(root=ROOT):
             if sid in seen:
                 continue
             seen.add(sid)
-            own["trip_transit_stop"].append((tid, sid, s["walk_m"], i == 0, i))
+            own["trip_transit_stop"].append((tid, sid, s["walk_m"], i == 0, i, s.get("walk")))
         for i, p in enumerate(detail.get("pois", [])):
             own["poi"].append((tid, i, p["kind"], p["name"], p["location"]["lat"], p["location"]["lon"], p.get("osm")))
         for rule in summary["closure_rule_ids"]:

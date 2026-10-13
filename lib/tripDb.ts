@@ -83,16 +83,16 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
   if (!t) return null;
   const [parking, stops, pois, closures, fees] = await Promise.all([
     db
-      .prepare("SELECT name, lat, lon, walk_m, fee_paid, is_primary, osm_ref FROM parking WHERE trip_id = ?1 ORDER BY is_primary DESC, id")
+      .prepare("SELECT name, lat, lon, walk_m, fee_paid, is_primary, osm_ref, walk_json FROM parking WHERE trip_id = ?1 ORDER BY is_primary DESC, id")
       .bind(t.id)
-      .all<{ name: string | null; lat: number; lon: number; walk_m: number; fee_paid: number | null; is_primary: number; osm_ref: string | null }>(),
+      .all<{ name: string | null; lat: number; lon: number; walk_m: number; fee_paid: number | null; is_primary: number; osm_ref: string | null; walk_json: string | null }>(),
     db
       .prepare(
-        `SELECT s.name, s.mode, s.lat, s.lon, s.osm_ref, ts.walk_m, ts.is_primary FROM trip_transit_stop ts
+        `SELECT s.name, s.mode, s.lat, s.lon, s.osm_ref, ts.walk_m, ts.is_primary, ts.walk_json FROM trip_transit_stop ts
          JOIN transit_stop s ON s.id = ts.stop_id WHERE ts.trip_id = ?1 ORDER BY ts.position`
       )
       .bind(t.id)
-      .all<{ name: string; mode: TransitStop["mode"]; lat: number; lon: number; osm_ref: string | null; walk_m: number; is_primary: number }>(),
+      .all<{ name: string; mode: TransitStop["mode"]; lat: number; lon: number; osm_ref: string | null; walk_m: number; is_primary: number; walk_json: string | null }>(),
     db
       .prepare("SELECT kind, name, lat, lon, osm_ref FROM poi WHERE trip_id = ?1 ORDER BY position")
       .bind(t.id)
@@ -113,6 +113,7 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
     walk_m: p.walk_m,
     fee: p.fee_paid === null ? null : p.fee_paid === 1,
     osm: p.osm_ref,
+    ...(p.walk_json ? { walk: JSON.parse(p.walk_json) } : {}),
   });
   const toStop = (s: (typeof stops.results)[number]): TransitStop => ({
     name: s.name,
@@ -120,6 +121,7 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
     location: { lat: s.lat, lon: s.lon },
     walk_m: s.walk_m,
     osm: s.osm_ref,
+    ...(s.walk_json ? { walk: JSON.parse(s.walk_json) } : {}),
   });
   const primaryParking = parking.results.find((p) => p.is_primary === 1);
   const primaryStop = stops.results.find((s) => s.is_primary === 1);

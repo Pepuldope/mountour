@@ -1,5 +1,5 @@
 import type { TrailJoin } from "@/lib/trailJoin";
-import type { DestinationKind, Fee } from "@/lib/tripSchema";
+import type { DestinationKind, Fee, WalkLine } from "@/lib/tripSchema";
 
 // Shared domain types for MounTour. Mirrors supabase/migrations/0001_init.sql.
 
@@ -77,6 +77,8 @@ export interface ParkingLot {
   verified_on: string | null;
   /** Parked up the trail: where the walk joins it (null = at the start). */
   join: TrailJoin | null;
+  /** The walk to the trail on paths, worked out weekly; null = ask the router. */
+  walk: WalkLine | null;
 }
 
 export interface Closure {
@@ -101,6 +103,8 @@ export interface TransitStop {
   distance_m: number;
   /** A stop up the trail: where the walk joins it (null = at the start). */
   join: TrailJoin | null;
+  /** As on ParkingLot. */
+  walk: WalkLine | null;
 }
 
 export interface Poi {

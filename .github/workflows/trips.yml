@@ -8,7 +8,7 @@ on:
     - cron: "17 3 * * 1"
   workflow_dispatch:
   push:
-    branches: ["claude/osm-trip-pipeline-**", "claude/site-fixes-and-features-**", "claude/import-all-trails-**"]
+    branches: ["claude/osm-trip-pipeline-**", "claude/site-fixes-and-features-**", "claude/import-all-trails-**", "claude/project-thread-yog954"]
     paths: ["pipeline/**", ".github/workflows/trips.yml"]
   pull_request:
     paths: ["pipeline/**", ".github/workflows/trips.yml"]
@@ -82,10 +82,26 @@ jobs:
           done
           curl -sf "http://localhost:5000/route/v1/driving/17.107,48.148;19.146,48.736" | head -c 300; echo
 
+      # The walks from parking spots and stops to the trail (pipeline/walks.py): worked out here
+      # once a week, so the trip page doesn't ask a rate-limited router on every visit.
+      - name: Start OSRM for walks to the trail
+        run: |
+          mkdir -p osrm-foot && cp osrm/slovakia.osm.pbf osrm-foot/
+          docker run --rm -v "$PWD/osrm-foot:/data" "$OSRM_IMAGE" osrm-extract -p /opt/foot.lua /data/slovakia.osm.pbf
+          docker run --rm -v "$PWD/osrm-foot:/data" "$OSRM_IMAGE" osrm-partition /data/slovakia.osrm
+          docker run --rm -v "$PWD/osrm-foot:/data" "$OSRM_IMAGE" osrm-customize /data/slovakia.osrm
+          docker run -d --name osrm-foot -p 5001:5000 -v "$PWD/osrm-foot:/data" "$OSRM_IMAGE" \
+            osrm-routed --algorithm mld /data/slovakia.osrm
+          for i in $(seq 1 60); do
+            curl -sf "http://localhost:5001/route/v1/foot/17.107,48.148;17.11,48.15" >/dev/null && break
+            sleep 2
+          done
+          curl -sf "http://localhost:5001/route/v1/foot/17.107,48.148;17.11,48.15" | head -c 300; echo
+
       - name: Build trips
         run: |
           python -m pipeline.run --pbf osrm/slovakia.osm.pbf --dem pipeline/.cache/dem \
-            --osrm http://localhost:5000 --wikidata --osm-timestamp "$OSM_TS"
+            --osrm http://localhost:5000 --osrm-foot http://localhost:5001 --wikidata --osm-timestamp "$OSM_TS"
           cat data/pipeline-report.md >> "$GITHUB_STEP_SUMMARY"
 
       # Error 1102 guard (lib/assetBudget.test.ts has the same limits): the Worker parses these
@@ -108,7 +124,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Lay the fresh files on top of the branch as it is now, so a newer
           # data commit or code push never conflicts: the new build replaces it.
-          OUT="public/data/trips public/data/drive public/data/map data/towns.json data/pipeline-report.md public/gpx pipeline/slugs.json"
+          OUT="public/data/trips public/data/drive public/data/map data/towns.json data/trip-variants.json data/pipeline-report.md public/gpx pipeline/slugs.json"
           for attempt in 1 2 3; do
             rm -rf "$RUNNER_TEMP/out" && mkdir -p "$RUNNER_TEMP/out"
             tar cf "$RUNNER_TEMP/out/new.tar" $OUT

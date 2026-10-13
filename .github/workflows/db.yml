@@ -12,7 +12,9 @@ on:
     branches: [main]
   push:
     branches: [main]
-    paths: ["data/**", "public/data/trips/**", "public/data/drive/**", "pipeline/db.py", ".github/workflows/db.yml"]
+    # Data only: a change to the loader itself loads with the next data change (or by hand),
+    # so merging loader code never spends a day's D1 writes on its own.
+    paths: ["data/**", "public/data/trips/**", "public/data/drive/**"]
   workflow_dispatch:
 
 permissions:
