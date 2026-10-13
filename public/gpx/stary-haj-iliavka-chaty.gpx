@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Starý háj</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Starý háj</name><trkseg>
+    <trkpt lat="48.960300" lon="18.273037"><ele>435</ele></trkpt>
+    <trkpt lat="48.960429" lon="18.272891"><ele>434</ele></trkpt>
+    <trkpt lat="48.960584" lon="18.272860"><ele>433</ele></trkpt>
+    <trkpt lat="48.961016" lon="18.273007"><ele>434</ele></trkpt>
+    <trkpt lat="48.961440" lon="18.273051"><ele>437</ele></trkpt>
+    <trkpt lat="48.961932" lon="18.273281"><ele>442</ele></trkpt>
+    <trkpt lat="48.962137" lon="18.273197"><ele>445</ele></trkpt>
+    <trkpt lat="48.962474" lon="18.272603"><ele>445</ele></trkpt>
+    <trkpt lat="48.962609" lon="18.272199"><ele>439</ele></trkpt>
+    <trkpt lat="48.962696" lon="18.272134"><ele>438</ele></trkpt>
+    <trkpt lat="48.963699" lon="18.272108"><ele>445</ele></trkpt>
+    <trkpt lat="48.964499" lon="18.271974"><ele>457</ele></trkpt>
+    <trkpt lat="48.966357" lon="18.270975"><ele>454</ele></trkpt>
+    <trkpt lat="48.966978" lon="18.270125"><ele>461</ele></trkpt>
+    <trkpt lat="48.968080" lon="18.269549"><ele>473</ele></trkpt>
+    <trkpt lat="48.968597" lon="18.269482"><ele>481</ele></trkpt>
+    <trkpt lat="48.969042" lon="18.269743"><ele>489</ele></trkpt>
+    <trkpt lat="48.969147" lon="18.269903"><ele>488</ele></trkpt>
+    <trkpt lat="48.970048" lon="18.268910"><ele>519</ele></trkpt>
+    <trkpt lat="48.969147" lon="18.269903"><ele>488</ele></trkpt>
+    <trkpt lat="48.969042" lon="18.269743"><ele>489</ele></trkpt>
+    <trkpt lat="48.968597" lon="18.269482"><ele>481</ele></trkpt>
+    <trkpt lat="48.968080" lon="18.269549"><ele>473</ele></trkpt>
+    <trkpt lat="48.966978" lon="18.270125"><ele>461</ele></trkpt>
+    <trkpt lat="48.966357" lon="18.270975"><ele>454</ele></trkpt>
+    <trkpt lat="48.964499" lon="18.271974"><ele>457</ele></trkpt>
+    <trkpt lat="48.963699" lon="18.272108"><ele>445</ele></trkpt>
+    <trkpt lat="48.962696" lon="18.272134"><ele>438</ele></trkpt>
+    <trkpt lat="48.962609" lon="18.272199"><ele>439</ele></trkpt>
+    <trkpt lat="48.962474" lon="18.272603"><ele>445</ele></trkpt>
+    <trkpt lat="48.962137" lon="18.273197"><ele>445</ele></trkpt>
+    <trkpt lat="48.961932" lon="18.273281"><ele>442</ele></trkpt>
+    <trkpt lat="48.961440" lon="18.273051"><ele>437</ele></trkpt>
+    <trkpt lat="48.961016" lon="18.273007"><ele>434</ele></trkpt>
+    <trkpt lat="48.960584" lon="18.272860"><ele>433</ele></trkpt>
+    <trkpt lat="48.960429" lon="18.272891"><ele>434</ele></trkpt>
+    <trkpt lat="48.960300" lon="18.273037"><ele>435</ele></trkpt>
+  </trkseg></trk>
+</gpx>

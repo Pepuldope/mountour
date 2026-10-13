@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>jaskyňa sv. Leonarda</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>jaskyňa sv. Leonarda</name><trkseg>
+    <trkpt lat="48.414266" lon="17.381117"><ele>238</ele></trkpt>
+    <trkpt lat="48.414377" lon="17.381007"><ele>239</ele></trkpt>
+    <trkpt lat="48.415191" lon="17.379737"><ele>243</ele></trkpt>
+    <trkpt lat="48.415043" lon="17.379544"><ele>242</ele></trkpt>
+    <trkpt lat="48.415589" lon="17.378684"><ele>245</ele></trkpt>
+    <trkpt lat="48.415660" lon="17.378778"><ele>245</ele></trkpt>
+    <trkpt lat="48.415861" lon="17.378283"><ele>247</ele></trkpt>
+    <trkpt lat="48.415893" lon="17.378122"><ele>247</ele></trkpt>
+    <trkpt lat="48.415879" lon="17.377878"><ele>248</ele></trkpt>
+    <trkpt lat="48.415509" lon="17.376485"><ele>247</ele></trkpt>
+    <trkpt lat="48.415498" lon="17.376367"><ele>247</ele></trkpt>
+    <trkpt lat="48.415546" lon="17.376272"><ele>248</ele></trkpt>
+    <trkpt lat="48.417129" lon="17.374744"><ele>256</ele></trkpt>
+    <trkpt lat="48.417633" lon="17.374131"><ele>259</ele></trkpt>
+    <trkpt lat="48.418245" lon="17.373529"><ele>260</ele></trkpt>
+    <trkpt lat="48.419068" lon="17.372876"><ele>265</ele></trkpt>
+    <trkpt lat="48.419498" lon="17.373760"><ele>265</ele></trkpt>
+    <trkpt lat="48.419780" lon="17.374155"><ele>273</ele></trkpt>
+    <trkpt lat="48.419792" lon="17.374810"><ele>285</ele></trkpt>
+    <trkpt lat="48.419828" lon="17.374920"><ele>287</ele></trkpt>
+    <trkpt lat="48.420056" lon="17.375193"><ele>293</ele></trkpt>
+    <trkpt lat="48.420186" lon="17.375283"><ele>293</ele></trkpt>
+    <trkpt lat="48.420375" lon="17.375249"><ele>291</ele></trkpt>
+    <trkpt lat="48.420428" lon="17.375187"><ele>291</ele></trkpt>
+    <trkpt lat="48.420634" lon="17.374511"><ele>294</ele></trkpt>
+    <trkpt lat="48.420428" lon="17.375187"><ele>291</ele></trkpt>
+    <trkpt lat="48.420375" lon="17.375249"><ele>291</ele></trkpt>
+    <trkpt lat="48.420186" lon="17.375283"><ele>293</ele></trkpt>
+    <trkpt lat="48.420056" lon="17.375193"><ele>293</ele></trkpt>
+    <trkpt lat="48.419828" lon="17.374920"><ele>287</ele></trkpt>
+    <trkpt lat="48.419792" lon="17.374810"><ele>285</ele></trkpt>
+    <trkpt lat="48.419780" lon="17.374155"><ele>273</ele></trkpt>
+    <trkpt lat="48.419498" lon="17.373760"><ele>265</ele></trkpt>
+    <trkpt lat="48.419068" lon="17.372876"><ele>265</ele></trkpt>
+    <trkpt lat="48.418245" lon="17.373529"><ele>260</ele></trkpt>
+    <trkpt lat="48.417633" lon="17.374131"><ele>259</ele></trkpt>
+    <trkpt lat="48.417129" lon="17.374744"><ele>256</ele></trkpt>
+    <trkpt lat="48.415546" lon="17.376272"><ele>248</ele></trkpt>
+    <trkpt lat="48.415498" lon="17.376367"><ele>247</ele></trkpt>
+    <trkpt lat="48.415509" lon="17.376485"><ele>247</ele></trkpt>
+    <trkpt lat="48.415879" lon="17.377878"><ele>248</ele></trkpt>
+    <trkpt lat="48.415893" lon="17.378122"><ele>247</ele></trkpt>
+    <trkpt lat="48.415861" lon="17.378283"><ele>247</ele></trkpt>
+    <trkpt lat="48.415660" lon="17.378778"><ele>245</ele></trkpt>
+    <trkpt lat="48.415589" lon="17.378684"><ele>245</ele></trkpt>
+    <trkpt lat="48.415043" lon="17.379544"><ele>242</ele></trkpt>
+    <trkpt lat="48.415191" lon="17.379737"><ele>243</ele></trkpt>
+    <trkpt lat="48.414377" lon="17.381007"><ele>239</ele></trkpt>
+    <trkpt lat="48.414266" lon="17.381117"><ele>238</ele></trkpt>
+  </trkseg></trk>
+</gpx>

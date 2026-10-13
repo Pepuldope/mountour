@@ -41,17 +41,18 @@ describe("trip data", () => {
     expect(closureRulesFor({ closure_rule_ids: [] })).toEqual([]);
   });
 
-  it("has a drive time from every town to every trip", async () => {
+  it("has a drive time from every town to every place (its main route)", async () => {
     const towns = getTowns();
     if (towns.length === 0) return;
     const minutes = await getTownDrives(towns[0].id);
-    expect(Object.keys(minutes).sort()).toEqual(trips.map((t) => t.slug).sort());
+    expect(Object.keys(minutes).sort()).toEqual(trips.filter((t) => !t.variant_of).map((t) => t.slug).sort());
     expect(await getTownDrives("no-such-town")).toEqual({});
   });
 
   it("lists every trip for the home page, filling in what the list leaves out", () => {
     const listed = (list as unknown as TripList).trips;
-    expect(listed.map((t) => t.slug)).toEqual(trips.map((t) => t.slug));
+    // One trip per place: other routes to it are only on its trip page.
+    expect(listed.map((t) => t.slug)).toEqual(trips.filter((t) => !t.variant_of).map((t) => t.slug));
     const full = summaryFromList(listed[0]);
     expect(full.gpx_url).toBe(trips[0].gpx_url);
     expect({ ...full, description: "", marked_share: 1, curated: false, protected_area: null, max_ele_m: null }).toEqual({

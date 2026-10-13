@@ -7,4 +7,6 @@
 # drop:
 #   - some-bad-trip
 trips: {}
-drop: []
+drop:
+  # Červený most is the car park side of Železná studnička, where people start, not a goal (Peter, 2026-10-13).
+  - cerveny-most

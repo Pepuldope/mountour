@@ -5,6 +5,7 @@ import { cache } from "react";
 import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
 import { getTripLive } from "@/lib/tripDb";
+import { getTrip, getTripIndex } from "@/lib/tripFiles";
 import { buildProfile } from "@/lib/tripProfile";
 import { GOAL_LABEL, POI_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
@@ -22,6 +23,8 @@ import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { SiteFooter } from "@/components/SiteFooter";
 import { TripFacts } from "@/components/TripFacts";
 import { TripMap } from "@/components/TripMap";
+import type { OtherRoute } from "@/components/TripMap";
+import { RouteChoice, groupRoutes } from "@/components/RouteChoice";
 import { TripAccessProvider } from "@/components/TripAccess";
 import { JsonLd } from "@/components/JsonLd";
 import { TrackEvent } from "@/components/TrackEvent";
@@ -141,6 +144,18 @@ export default async function TripSheetPage({ params }: Props) {
   const goal = trail.goal ?? "ine";
   const also = secondGoal(detail);
   const goalEle = trip?.destination.ele_m;
+  // Other routes to the same place: listed under the facts, drawn faint on the map.
+  const routes = groupRoutes((await getTripIndex()).trips, trail.slug);
+  const others: OtherRoute[] = (
+    await Promise.all(routes.filter((r) => r.slug !== trail.slug).map((r) => getTrip(r.slug)))
+  )
+    .filter((t) => t != null)
+    .map((t) => ({
+      slug: t.slug,
+      label: t.route_label ?? t.start.name,
+      // The way up only: a there-and-back walk comes back the same way.
+      points: t.path.slice(0, t.route === "okruh" ? undefined : t.turnaround_index + 1).map(([lon, lat]) => [lat, lon]),
+    }));
 
   return (
     <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} transitStops={transitStops} trailStart={trailStart}>
@@ -190,6 +205,8 @@ export default async function TripSheetPage({ params }: Props) {
             {trail.description && <p className="text-sm text-[var(--muted)]">{trail.description}</p>}
           </div>
 
+          <RouteChoice slug={trail.slug} destination={trip.destination.name} routes={routes} />
+
           <ClosureBanner closures={closures} />
 
           <TripPlanner
@@ -218,7 +235,7 @@ export default async function TripSheetPage({ params }: Props) {
           <PoiList pois={detail.pois} />
 
           <div className="h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] lg:hidden">
-            <TripMap detail={detail} gpxUrl={gpxUrl} />
+            <TripMap detail={detail} gpxUrl={gpxUrl} others={others} />
           </div>
 
           {gpxUrl && (
@@ -234,7 +251,7 @@ export default async function TripSheetPage({ params }: Props) {
         </div>
 
         <div className="hidden lg:sticky lg:top-0 lg:block lg:h-dvh lg:flex-1 lg:border-l lg:border-[var(--border)]">
-          <TripMap detail={detail} gpxUrl={gpxUrl} />
+          <TripMap detail={detail} gpxUrl={gpxUrl} others={others} />
         </div>
       </main>
     </TripAccessProvider>

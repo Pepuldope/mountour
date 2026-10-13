@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Lozornianske breziny</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Lozornianske breziny</name><trkseg>
+    <trkpt lat="48.324927" lon="17.072630"><ele>232</ele></trkpt>
+    <trkpt lat="48.324674" lon="17.074202"><ele>239</ele></trkpt>
+    <trkpt lat="48.324357" lon="17.075706"><ele>243</ele></trkpt>
+    <trkpt lat="48.324137" lon="17.076941"><ele>247</ele></trkpt>
+    <trkpt lat="48.324073" lon="17.077890"><ele>251</ele></trkpt>
+    <trkpt lat="48.324043" lon="17.079440"><ele>252</ele></trkpt>
+    <trkpt lat="48.324246" lon="17.079552"><ele>253</ele></trkpt>
+    <trkpt lat="48.324304" lon="17.079627"><ele>254</ele></trkpt>
+    <trkpt lat="48.324910" lon="17.080691"><ele>249</ele></trkpt>
+    <trkpt lat="48.325251" lon="17.080909"><ele>253</ele></trkpt>
+    <trkpt lat="48.326913" lon="17.081685"><ele>274</ele></trkpt>
+    <trkpt lat="48.327776" lon="17.082723"><ele>282</ele></trkpt>
+    <trkpt lat="48.327886" lon="17.082967"><ele>282</ele></trkpt>
+    <trkpt lat="48.328135" lon="17.085012"><ele>297</ele></trkpt>
+    <trkpt lat="48.328247" lon="17.085396"><ele>300</ele></trkpt>
+    <trkpt lat="48.328509" lon="17.086038"><ele>307</ele></trkpt>
+    <trkpt lat="48.329158" lon="17.087068"><ele>300</ele></trkpt>
+    <trkpt lat="48.329460" lon="17.087721"><ele>298</ele></trkpt>
+    <trkpt lat="48.329802" lon="17.088853"><ele>304</ele></trkpt>
+    <trkpt lat="48.329871" lon="17.089266"><ele>304</ele></trkpt>
+    <trkpt lat="48.329837" lon="17.089808"><ele>308</ele></trkpt>
+    <trkpt lat="48.329641" lon="17.090853"><ele>322</ele></trkpt>
+    <trkpt lat="48.329396" lon="17.093037"><ele>332</ele></trkpt>
+    <trkpt lat="48.329409" lon="17.093208"><ele>330</ele></trkpt>
+    <trkpt lat="48.329555" lon="17.093586"><ele>324</ele></trkpt>
+    <trkpt lat="48.329409" lon="17.093208"><ele>330</ele></trkpt>
+    <trkpt lat="48.329396" lon="17.093037"><ele>332</ele></trkpt>
+    <trkpt lat="48.329641" lon="17.090853"><ele>322</ele></trkpt>
+    <trkpt lat="48.329837" lon="17.089808"><ele>308</ele></trkpt>
+    <trkpt lat="48.329871" lon="17.089266"><ele>304</ele></trkpt>
+    <trkpt lat="48.329802" lon="17.088853"><ele>304</ele></trkpt>
+    <trkpt lat="48.329460" lon="17.087721"><ele>298</ele></trkpt>
+    <trkpt lat="48.329158" lon="17.087068"><ele>300</ele></trkpt>
+    <trkpt lat="48.328509" lon="17.086038"><ele>307</ele></trkpt>
+    <trkpt lat="48.328247" lon="17.085396"><ele>300</ele></trkpt>
+    <trkpt lat="48.328135" lon="17.085012"><ele>297</ele></trkpt>
+    <trkpt lat="48.327886" lon="17.082967"><ele>282</ele></trkpt>
+    <trkpt lat="48.327776" lon="17.082723"><ele>282</ele></trkpt>
+    <trkpt lat="48.326913" lon="17.081685"><ele>274</ele></trkpt>
+    <trkpt lat="48.325251" lon="17.080909"><ele>253</ele></trkpt>
+    <trkpt lat="48.324910" lon="17.080691"><ele>249</ele></trkpt>
+    <trkpt lat="48.324304" lon="17.079627"><ele>254</ele></trkpt>
+    <trkpt lat="48.324246" lon="17.079552"><ele>253</ele></trkpt>
+    <trkpt lat="48.324043" lon="17.079440"><ele>252</ele></trkpt>
+    <trkpt lat="48.324073" lon="17.077890"><ele>251</ele></trkpt>
+    <trkpt lat="48.324137" lon="17.076941"><ele>247</ele></trkpt>
+    <trkpt lat="48.324357" lon="17.075706"><ele>243</ele></trkpt>
+    <trkpt lat="48.324674" lon="17.074202"><ele>239</ele></trkpt>
+    <trkpt lat="48.324927" lon="17.072630"><ele>232</ele></trkpt>
+  </trkseg></trk>
+</gpx>

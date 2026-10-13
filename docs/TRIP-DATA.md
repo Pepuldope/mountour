@@ -41,6 +41,7 @@ Key fields of `TripSummary` (see `lib/tripSchema.ts` for all):
 - `fees`: entry fees from OSM tags or `fee-rules.json`. Empty means "none known", not "free".
 - `closure_rule_ids`: rules from `closure-rules.json` that cover this trip. **Empty means "Stav chodníka neoverený", never "otvorené".** Use `isClosureActive()` in `lib/closures.ts` with the trip date to decide whether a rule is in force.
 - `rank` 0..100 (how well known the destination is), `curated` (one of the 10 hand-picked trips), `gpx_url`, `bbox`.
+- Several routes per place (since 2026-10-13): `variant_of` is the main trip's slug on the other routes (absent on main routes); `route_label` (absent when a place has one route) says why to pick a route ("Hlavná cesta", "Kratšia", "Dlhšia", "Na celý deň", "Autobusom", "Menej do kopca", "Cez <miesto>", "Iná cesta"); main trips carry `route_count`. The main route is the best-known start (big car park, stop, food, several trails meeting, a village; see `known_score` in pipeline/trips.py), unless it is much longer. Other routes are full trips with their own file, GPX and drive times, but they are left out of `list.json` and the map lines.
 
 `TripDetail` adds `path` (`[lon, lat, ele]`, ~10 m), `turnaround_index`, `marking_runs`
 (index ranges of `path` with a KST colour, for drawing the route in trail colours),

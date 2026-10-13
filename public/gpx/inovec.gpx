@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Inovec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Inovec</name><trkseg>
+    <trkpt lat="48.784998" lon="18.047618"><ele>787</ele></trkpt>
+    <trkpt lat="48.784723" lon="18.047382"><ele>790</ele></trkpt>
+    <trkpt lat="48.784382" lon="18.046944"><ele>799</ele></trkpt>
+    <trkpt lat="48.783593" lon="18.046299"><ele>818</ele></trkpt>
+    <trkpt lat="48.782122" lon="18.045479"><ele>842</ele></trkpt>
+    <trkpt lat="48.781601" lon="18.044822"><ele>854</ele></trkpt>
+    <trkpt lat="48.781104" lon="18.044552"><ele>874</ele></trkpt>
+    <trkpt lat="48.780104" lon="18.044172"><ele>905</ele></trkpt>
+    <trkpt lat="48.779671" lon="18.044051"><ele>921</ele></trkpt>
+    <trkpt lat="48.779075" lon="18.043544"><ele>946</ele></trkpt>
+    <trkpt lat="48.778805" lon="18.043478"><ele>958</ele></trkpt>
+    <trkpt lat="48.778676" lon="18.043375"><ele>960</ele></trkpt>
+    <trkpt lat="48.778135" lon="18.042518"><ele>975</ele></trkpt>
+    <trkpt lat="48.777793" lon="18.041692"><ele>984</ele></trkpt>
+    <trkpt lat="48.777420" lon="18.040934"><ele>999</ele></trkpt>
+    <trkpt lat="48.777208" lon="18.040636"><ele>1006</ele></trkpt>
+    <trkpt lat="48.777006" lon="18.040436"><ele>1009</ele></trkpt>
+    <trkpt lat="48.776599" lon="18.040308"><ele>1018</ele></trkpt>
+    <trkpt lat="48.776462" lon="18.040304"><ele>1019</ele></trkpt>
+    <trkpt lat="48.775625" lon="18.040942"><ele>1036</ele></trkpt>
+    <trkpt lat="48.775199" lon="18.041129"><ele>1045</ele></trkpt>
+    <trkpt lat="48.775018" lon="18.041341"><ele>1048</ele></trkpt>
+    <trkpt lat="48.774799" lon="18.041445"><ele>1047</ele></trkpt>
+    <trkpt lat="48.775018" lon="18.041341"><ele>1048</ele></trkpt>
+    <trkpt lat="48.775199" lon="18.041129"><ele>1045</ele></trkpt>
+    <trkpt lat="48.775625" lon="18.040942"><ele>1036</ele></trkpt>
+    <trkpt lat="48.776462" lon="18.040304"><ele>1019</ele></trkpt>
+    <trkpt lat="48.776599" lon="18.040308"><ele>1018</ele></trkpt>
+    <trkpt lat="48.777006" lon="18.040436"><ele>1009</ele></trkpt>
+    <trkpt lat="48.777208" lon="18.040636"><ele>1006</ele></trkpt>
+    <trkpt lat="48.777420" lon="18.040934"><ele>999</ele></trkpt>
+    <trkpt lat="48.777793" lon="18.041692"><ele>984</ele></trkpt>
+    <trkpt lat="48.778135" lon="18.042518"><ele>975</ele></trkpt>
+    <trkpt lat="48.778676" lon="18.043375"><ele>960</ele></trkpt>
+    <trkpt lat="48.778805" lon="18.043478"><ele>958</ele></trkpt>
+    <trkpt lat="48.779075" lon="18.043544"><ele>946</ele></trkpt>
+    <trkpt lat="48.779671" lon="18.044051"><ele>921</ele></trkpt>
+    <trkpt lat="48.780104" lon="18.044172"><ele>905</ele></trkpt>
+    <trkpt lat="48.781104" lon="18.044552"><ele>874</ele></trkpt>
+    <trkpt lat="48.781601" lon="18.044822"><ele>854</ele></trkpt>
+    <trkpt lat="48.782122" lon="18.045479"><ele>842</ele></trkpt>
+    <trkpt lat="48.783593" lon="18.046299"><ele>818</ele></trkpt>
+    <trkpt lat="48.784382" lon="18.046944"><ele>799</ele></trkpt>
+    <trkpt lat="48.784723" lon="18.047382"><ele>790</ele></trkpt>
+    <trkpt lat="48.784998" lon="18.047618"><ele>787</ele></trkpt>
+  </trkseg></trk>
+</gpx>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Štefanová - nový vchod</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Štefanová - nový vchod</name><trkseg>
+    <trkpt lat="48.980282" lon="19.592506"><ele>934</ele></trkpt>
+    <trkpt lat="48.980295" lon="19.592633"><ele>935</ele></trkpt>
+    <trkpt lat="48.980639" lon="19.592625"><ele>936</ele></trkpt>
+    <trkpt lat="48.981256" lon="19.592792"><ele>932</ele></trkpt>
+    <trkpt lat="48.981523" lon="19.592789"><ele>930</ele></trkpt>
+    <trkpt lat="48.981689" lon="19.592703"><ele>929</ele></trkpt>
+    <trkpt lat="48.981972" lon="19.592787"><ele>927</ele></trkpt>
+    <trkpt lat="48.982270" lon="19.592815"><ele>923</ele></trkpt>
+    <trkpt lat="48.983030" lon="19.592689"><ele>919</ele></trkpt>
+    <trkpt lat="48.983187" lon="19.592615"><ele>917</ele></trkpt>
+    <trkpt lat="48.983452" lon="19.592609"><ele>916</ele></trkpt>
+    <trkpt lat="48.983583" lon="19.592553"><ele>915</ele></trkpt>
+    <trkpt lat="48.984227" lon="19.592754"><ele>921</ele></trkpt>
+    <trkpt lat="48.984958" lon="19.592702"><ele>921</ele></trkpt>
+    <trkpt lat="48.985411" lon="19.593100"><ele>924</ele></trkpt>
+    <trkpt lat="48.985692" lon="19.593117"><ele>922</ele></trkpt>
+    <trkpt lat="48.986250" lon="19.592949"><ele>922</ele></trkpt>
+    <trkpt lat="48.986489" lon="19.592762"><ele>920</ele></trkpt>
+    <trkpt lat="48.986937" lon="19.592528"><ele>915</ele></trkpt>
+    <trkpt lat="48.987237" lon="19.592242"><ele>903</ele></trkpt>
+    <trkpt lat="48.987515" lon="19.591734"><ele>888</ele></trkpt>
+    <trkpt lat="48.987760" lon="19.591433"><ele>889</ele></trkpt>
+    <trkpt lat="48.987992" lon="19.591293"><ele>889</ele></trkpt>
+    <trkpt lat="48.988319" lon="19.591208"><ele>890</ele></trkpt>
+    <trkpt lat="48.988552" lon="19.590806"><ele>889</ele></trkpt>
+    <trkpt lat="48.988779" lon="19.590656"><ele>891</ele></trkpt>
+    <trkpt lat="48.988552" lon="19.590806"><ele>889</ele></trkpt>
+    <trkpt lat="48.988319" lon="19.591208"><ele>890</ele></trkpt>
+    <trkpt lat="48.987992" lon="19.591293"><ele>889</ele></trkpt>
+    <trkpt lat="48.987760" lon="19.591433"><ele>889</ele></trkpt>
+    <trkpt lat="48.987515" lon="19.591734"><ele>888</ele></trkpt>
+    <trkpt lat="48.987237" lon="19.592242"><ele>903</ele></trkpt>
+    <trkpt lat="48.986937" lon="19.592528"><ele>915</ele></trkpt>
+    <trkpt lat="48.986489" lon="19.592762"><ele>920</ele></trkpt>
+    <trkpt lat="48.986250" lon="19.592949"><ele>922</ele></trkpt>
+    <trkpt lat="48.985692" lon="19.593117"><ele>922</ele></trkpt>
+    <trkpt lat="48.985411" lon="19.593100"><ele>924</ele></trkpt>
+    <trkpt lat="48.984958" lon="19.592702"><ele>921</ele></trkpt>
+    <trkpt lat="48.984227" lon="19.592754"><ele>921</ele></trkpt>
+    <trkpt lat="48.983583" lon="19.592553"><ele>915</ele></trkpt>
+    <trkpt lat="48.983452" lon="19.592609"><ele>916</ele></trkpt>
+    <trkpt lat="48.983187" lon="19.592615"><ele>917</ele></trkpt>
+    <trkpt lat="48.983030" lon="19.592689"><ele>919</ele></trkpt>
+    <trkpt lat="48.982270" lon="19.592815"><ele>923</ele></trkpt>
+    <trkpt lat="48.981972" lon="19.592787"><ele>927</ele></trkpt>
+    <trkpt lat="48.981689" lon="19.592703"><ele>929</ele></trkpt>
+    <trkpt lat="48.981523" lon="19.592789"><ele>930</ele></trkpt>
+    <trkpt lat="48.981256" lon="19.592792"><ele>932</ele></trkpt>
+    <trkpt lat="48.980639" lon="19.592625"><ele>936</ele></trkpt>
+    <trkpt lat="48.980295" lon="19.592633"><ele>935</ele></trkpt>
+    <trkpt lat="48.980282" lon="19.592506"><ele>934</ele></trkpt>
+  </trkseg></trk>
+</gpx>

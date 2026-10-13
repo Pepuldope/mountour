@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Biela hora</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Biela hora</name><trkseg>
+    <trkpt lat="48.547331" lon="17.431942"><ele>244</ele></trkpt>
+    <trkpt lat="48.547157" lon="17.431846"><ele>244</ele></trkpt>
+    <trkpt lat="48.547333" lon="17.431037"><ele>251</ele></trkpt>
+    <trkpt lat="48.547406" lon="17.430524"><ele>250</ele></trkpt>
+    <trkpt lat="48.547433" lon="17.429879"><ele>251</ele></trkpt>
+    <trkpt lat="48.547397" lon="17.429479"><ele>250</ele></trkpt>
+    <trkpt lat="48.546612" lon="17.426042"><ele>255</ele></trkpt>
+    <trkpt lat="48.546289" lon="17.424190"><ele>266</ele></trkpt>
+    <trkpt lat="48.546122" lon="17.423801"><ele>270</ele></trkpt>
+    <trkpt lat="48.545972" lon="17.423608"><ele>274</ele></trkpt>
+    <trkpt lat="48.545493" lon="17.423222"><ele>272</ele></trkpt>
+    <trkpt lat="48.544717" lon="17.422490"><ele>271</ele></trkpt>
+    <trkpt lat="48.544492" lon="17.422459"><ele>267</ele></trkpt>
+    <trkpt lat="48.543931" lon="17.422169"><ele>260</ele></trkpt>
+    <trkpt lat="48.543680" lon="17.422164"><ele>259</ele></trkpt>
+    <trkpt lat="48.543481" lon="17.422221"><ele>259</ele></trkpt>
+    <trkpt lat="48.543074" lon="17.422182"><ele>264</ele></trkpt>
+    <trkpt lat="48.543004" lon="17.422004"><ele>265</ele></trkpt>
+    <trkpt lat="48.542687" lon="17.421503"><ele>264</ele></trkpt>
+    <trkpt lat="48.542586" lon="17.421451"><ele>264</ele></trkpt>
+    <trkpt lat="48.542400" lon="17.421408"><ele>266</ele></trkpt>
+    <trkpt lat="48.541812" lon="17.421457"><ele>274</ele></trkpt>
+    <trkpt lat="48.541433" lon="17.421615"><ele>280</ele></trkpt>
+    <trkpt lat="48.540825" lon="17.422133"><ele>283</ele></trkpt>
+    <trkpt lat="48.539890" lon="17.422797"><ele>277</ele></trkpt>
+    <trkpt lat="48.539413" lon="17.423315"><ele>297</ele></trkpt>
+    <trkpt lat="48.538854" lon="17.423810"><ele>311</ele></trkpt>
+    <trkpt lat="48.538547" lon="17.424031"><ele>313</ele></trkpt>
+    <trkpt lat="48.537839" lon="17.424439"><ele>318</ele></trkpt>
+    <trkpt lat="48.538547" lon="17.424031"><ele>313</ele></trkpt>
+    <trkpt lat="48.538854" lon="17.423810"><ele>311</ele></trkpt>
+    <trkpt lat="48.539413" lon="17.423315"><ele>297</ele></trkpt>
+    <trkpt lat="48.539890" lon="17.422797"><ele>277</ele></trkpt>
+    <trkpt lat="48.540825" lon="17.422133"><ele>283</ele></trkpt>
+    <trkpt lat="48.541433" lon="17.421615"><ele>280</ele></trkpt>
+    <trkpt lat="48.541812" lon="17.421457"><ele>274</ele></trkpt>
+    <trkpt lat="48.542400" lon="17.421408"><ele>266</ele></trkpt>
+    <trkpt lat="48.542586" lon="17.421451"><ele>264</ele></trkpt>
+    <trkpt lat="48.542687" lon="17.421503"><ele>264</ele></trkpt>
+    <trkpt lat="48.543004" lon="17.422004"><ele>265</ele></trkpt>
+    <trkpt lat="48.543074" lon="17.422182"><ele>264</ele></trkpt>
+    <trkpt lat="48.543481" lon="17.422221"><ele>259</ele></trkpt>
+    <trkpt lat="48.543680" lon="17.422164"><ele>259</ele></trkpt>
+    <trkpt lat="48.543931" lon="17.422169"><ele>260</ele></trkpt>
+    <trkpt lat="48.544492" lon="17.422459"><ele>267</ele></trkpt>
+    <trkpt lat="48.544717" lon="17.422490"><ele>271</ele></trkpt>
+    <trkpt lat="48.545493" lon="17.423222"><ele>272</ele></trkpt>
+    <trkpt lat="48.545972" lon="17.423608"><ele>274</ele></trkpt>
+    <trkpt lat="48.546122" lon="17.423801"><ele>270</ele></trkpt>
+    <trkpt lat="48.546289" lon="17.424190"><ele>266</ele></trkpt>
+    <trkpt lat="48.546612" lon="17.426042"><ele>255</ele></trkpt>
+    <trkpt lat="48.547397" lon="17.429479"><ele>250</ele></trkpt>
+    <trkpt lat="48.547433" lon="17.429879"><ele>251</ele></trkpt>
+    <trkpt lat="48.547406" lon="17.430524"><ele>250</ele></trkpt>
+    <trkpt lat="48.547333" lon="17.431037"><ele>251</ele></trkpt>
+    <trkpt lat="48.547157" lon="17.431846"><ele>244</ele></trkpt>
+    <trkpt lat="48.547331" lon="17.431942"><ele>244</ele></trkpt>
+  </trkseg></trk>
+</gpx>

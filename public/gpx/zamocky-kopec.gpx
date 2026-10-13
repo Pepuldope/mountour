@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Zámocký kopec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Zámocký kopec</name><trkseg>
+    <trkpt lat="49.144491" lon="20.434224"><ele>617</ele></trkpt>
+    <trkpt lat="49.143636" lon="20.435388"><ele>622</ele></trkpt>
+    <trkpt lat="49.143586" lon="20.435524"><ele>623</ele></trkpt>
+    <trkpt lat="49.143620" lon="20.435658"><ele>624</ele></trkpt>
+    <trkpt lat="49.143873" lon="20.436065"><ele>632</ele></trkpt>
+    <trkpt lat="49.144369" lon="20.436728"><ele>644</ele></trkpt>
+    <trkpt lat="49.144673" lon="20.437070"><ele>648</ele></trkpt>
+    <trkpt lat="49.144648" lon="20.437266"><ele>650</ele></trkpt>
+    <trkpt lat="49.144754" lon="20.437569"><ele>660</ele></trkpt>
+    <trkpt lat="49.144620" lon="20.437692"><ele>659</ele></trkpt>
+    <trkpt lat="49.144590" lon="20.437802"><ele>661</ele></trkpt>
+    <trkpt lat="49.144599" lon="20.437926"><ele>664</ele></trkpt>
+    <trkpt lat="49.144561" lon="20.438181"><ele>669</ele></trkpt>
+    <trkpt lat="49.144599" lon="20.438655"><ele>682</ele></trkpt>
+    <trkpt lat="49.144571" lon="20.438840"><ele>683</ele></trkpt>
+    <trkpt lat="49.145236" lon="20.439162"><ele>702</ele></trkpt>
+    <trkpt lat="49.145412" lon="20.439524"><ele>704</ele></trkpt>
+    <trkpt lat="49.145489" lon="20.440464"><ele>701</ele></trkpt>
+    <trkpt lat="49.144626" lon="20.441018"><ele>705</ele></trkpt>
+    <trkpt lat="49.144359" lon="20.441147"><ele>708</ele></trkpt>
+    <trkpt lat="49.143433" lon="20.441362"><ele>713</ele></trkpt>
+    <trkpt lat="49.142688" lon="20.441608"><ele>716</ele></trkpt>
+    <trkpt lat="49.141636" lon="20.442209"><ele>717</ele></trkpt>
+    <trkpt lat="49.142688" lon="20.441608"><ele>716</ele></trkpt>
+    <trkpt lat="49.143433" lon="20.441362"><ele>713</ele></trkpt>
+    <trkpt lat="49.144359" lon="20.441147"><ele>708</ele></trkpt>
+    <trkpt lat="49.144626" lon="20.441018"><ele>705</ele></trkpt>
+    <trkpt lat="49.145489" lon="20.440464"><ele>701</ele></trkpt>
+    <trkpt lat="49.145412" lon="20.439524"><ele>704</ele></trkpt>
+    <trkpt lat="49.145236" lon="20.439162"><ele>702</ele></trkpt>
+    <trkpt lat="49.144571" lon="20.438840"><ele>683</ele></trkpt>
+    <trkpt lat="49.144599" lon="20.438655"><ele>682</ele></trkpt>
+    <trkpt lat="49.144561" lon="20.438181"><ele>669</ele></trkpt>
+    <trkpt lat="49.144599" lon="20.437926"><ele>664</ele></trkpt>
+    <trkpt lat="49.144590" lon="20.437802"><ele>661</ele></trkpt>
+    <trkpt lat="49.144620" lon="20.437692"><ele>659</ele></trkpt>
+    <trkpt lat="49.144754" lon="20.437569"><ele>660</ele></trkpt>
+    <trkpt lat="49.144648" lon="20.437266"><ele>650</ele></trkpt>
+    <trkpt lat="49.144673" lon="20.437070"><ele>648</ele></trkpt>
+    <trkpt lat="49.144369" lon="20.436728"><ele>644</ele></trkpt>
+    <trkpt lat="49.143873" lon="20.436065"><ele>632</ele></trkpt>
+    <trkpt lat="49.143620" lon="20.435658"><ele>624</ele></trkpt>
+    <trkpt lat="49.143586" lon="20.435524"><ele>623</ele></trkpt>
+    <trkpt lat="49.143636" lon="20.435388"><ele>622</ele></trkpt>
+    <trkpt lat="49.144491" lon="20.434224"><ele>617</ele></trkpt>
+  </trkseg></trk>
+</gpx>

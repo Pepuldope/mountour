@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Černákovec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Černákovec</name><trkseg>
+    <trkpt lat="49.147138" lon="20.789770"><ele>525</ele></trkpt>
+    <trkpt lat="49.147188" lon="20.788725"><ele>526</ele></trkpt>
+    <trkpt lat="49.147184" lon="20.786616"><ele>527</ele></trkpt>
+    <trkpt lat="49.147111" lon="20.785894"><ele>528</ele></trkpt>
+    <trkpt lat="49.147031" lon="20.785743"><ele>528</ele></trkpt>
+    <trkpt lat="49.145410" lon="20.784965"><ele>538</ele></trkpt>
+    <trkpt lat="49.144277" lon="20.783861"><ele>547</ele></trkpt>
+    <trkpt lat="49.140664" lon="20.781404"><ele>580</ele></trkpt>
+    <trkpt lat="49.138267" lon="20.779987"><ele>602</ele></trkpt>
+    <trkpt lat="49.137271" lon="20.779327"><ele>606</ele></trkpt>
+    <trkpt lat="49.135981" lon="20.778399"><ele>627</ele></trkpt>
+    <trkpt lat="49.134844" lon="20.777789"><ele>621</ele></trkpt>
+    <trkpt lat="49.133938" lon="20.777416"><ele>627</ele></trkpt>
+    <trkpt lat="49.131611" lon="20.777288"><ele>648</ele></trkpt>
+    <trkpt lat="49.133938" lon="20.777416"><ele>627</ele></trkpt>
+    <trkpt lat="49.134844" lon="20.777789"><ele>621</ele></trkpt>
+    <trkpt lat="49.135981" lon="20.778399"><ele>627</ele></trkpt>
+    <trkpt lat="49.137271" lon="20.779327"><ele>606</ele></trkpt>
+    <trkpt lat="49.138267" lon="20.779987"><ele>602</ele></trkpt>
+    <trkpt lat="49.140664" lon="20.781404"><ele>580</ele></trkpt>
+    <trkpt lat="49.144277" lon="20.783861"><ele>547</ele></trkpt>
+    <trkpt lat="49.145410" lon="20.784965"><ele>538</ele></trkpt>
+    <trkpt lat="49.147031" lon="20.785743"><ele>528</ele></trkpt>
+    <trkpt lat="49.147111" lon="20.785894"><ele>528</ele></trkpt>
+    <trkpt lat="49.147184" lon="20.786616"><ele>527</ele></trkpt>
+    <trkpt lat="49.147188" lon="20.788725"><ele>526</ele></trkpt>
+    <trkpt lat="49.147138" lon="20.789770"><ele>525</ele></trkpt>
+  </trkseg></trk>
+</gpx>

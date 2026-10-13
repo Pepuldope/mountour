@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Nocľahy</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Nocľahy</name><trkseg>
+    <trkpt lat="49.348011" lon="18.965133"><ele>498</ele></trkpt>
+    <trkpt lat="49.348065" lon="18.965359"><ele>498</ele></trkpt>
+    <trkpt lat="49.348104" lon="18.966231"><ele>502</ele></trkpt>
+    <trkpt lat="49.348070" lon="18.966651"><ele>502</ele></trkpt>
+    <trkpt lat="49.347983" lon="18.967200"><ele>501</ele></trkpt>
+    <trkpt lat="49.347944" lon="18.967316"><ele>501</ele></trkpt>
+    <trkpt lat="49.347613" lon="18.967248"><ele>506</ele></trkpt>
+    <trkpt lat="49.346936" lon="18.966497"><ele>527</ele></trkpt>
+    <trkpt lat="49.345928" lon="18.965588"><ele>566</ele></trkpt>
+    <trkpt lat="49.343893" lon="18.963507"><ele>665</ele></trkpt>
+    <trkpt lat="49.343389" lon="18.962912"><ele>684</ele></trkpt>
+    <trkpt lat="49.343161" lon="18.962550"><ele>692</ele></trkpt>
+    <trkpt lat="49.342841" lon="18.961758"><ele>708</ele></trkpt>
+    <trkpt lat="49.342521" lon="18.961144"><ele>718</ele></trkpt>
+    <trkpt lat="49.342365" lon="18.961341"><ele>717</ele></trkpt>
+    <trkpt lat="49.342029" lon="18.961402"><ele>719</ele></trkpt>
+    <trkpt lat="49.341177" lon="18.961660"><ele>724</ele></trkpt>
+    <trkpt lat="49.340913" lon="18.960925"><ele>733</ele></trkpt>
+    <trkpt lat="49.340899" lon="18.960726"><ele>736</ele></trkpt>
+    <trkpt lat="49.340596" lon="18.959414"><ele>748</ele></trkpt>
+    <trkpt lat="49.340501" lon="18.959242"><ele>750</ele></trkpt>
+    <trkpt lat="49.340416" lon="18.958726"><ele>750</ele></trkpt>
+    <trkpt lat="49.340320" lon="18.958383"><ele>751</ele></trkpt>
+    <trkpt lat="49.340320" lon="18.958148"><ele>752</ele></trkpt>
+    <trkpt lat="49.340320" lon="18.958383"><ele>751</ele></trkpt>
+    <trkpt lat="49.340416" lon="18.958726"><ele>750</ele></trkpt>
+    <trkpt lat="49.340501" lon="18.959242"><ele>750</ele></trkpt>
+    <trkpt lat="49.340596" lon="18.959414"><ele>748</ele></trkpt>
+    <trkpt lat="49.340899" lon="18.960726"><ele>736</ele></trkpt>
+    <trkpt lat="49.340913" lon="18.960925"><ele>733</ele></trkpt>
+    <trkpt lat="49.341177" lon="18.961660"><ele>724</ele></trkpt>
+    <trkpt lat="49.342029" lon="18.961402"><ele>719</ele></trkpt>
+    <trkpt lat="49.342365" lon="18.961341"><ele>717</ele></trkpt>
+    <trkpt lat="49.342521" lon="18.961144"><ele>718</ele></trkpt>
+    <trkpt lat="49.342841" lon="18.961758"><ele>708</ele></trkpt>
+    <trkpt lat="49.343161" lon="18.962550"><ele>692</ele></trkpt>
+    <trkpt lat="49.343389" lon="18.962912"><ele>684</ele></trkpt>
+    <trkpt lat="49.343893" lon="18.963507"><ele>665</ele></trkpt>
+    <trkpt lat="49.345928" lon="18.965588"><ele>566</ele></trkpt>
+    <trkpt lat="49.346936" lon="18.966497"><ele>527</ele></trkpt>
+    <trkpt lat="49.347613" lon="18.967248"><ele>506</ele></trkpt>
+    <trkpt lat="49.347944" lon="18.967316"><ele>501</ele></trkpt>
+    <trkpt lat="49.347983" lon="18.967200"><ele>501</ele></trkpt>
+    <trkpt lat="49.348070" lon="18.966651"><ele>502</ele></trkpt>
+    <trkpt lat="49.348104" lon="18.966231"><ele>502</ele></trkpt>
+    <trkpt lat="49.348065" lon="18.965359"><ele>498</ele></trkpt>
+    <trkpt lat="49.348011" lon="18.965133"><ele>498</ele></trkpt>
+  </trkseg></trk>
+</gpx>

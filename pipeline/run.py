@@ -103,7 +103,8 @@ def main(argv=None):
     drive = None
     if a.osrm:
         town_list = drive_mod.towns(osm)
-        minutes, km = drive_mod.table(a.osrm, town_list, trips, log)
+        # The home list is the only user of the town table, and it lists main routes only.
+        minutes, km = drive_mod.table(a.osrm, town_list, [t for t in trips if not t.get("variant_of")], log)
         drive = (town_list, minutes, km, "OSRM car profile on OpenStreetMap data")
 
     publish.write(root, trips, dem, drive, slugs, tb.report, a.osm_timestamp)
@@ -117,7 +118,7 @@ def apply_overrides(trips, overrides):
     edits = overrides.get("trips", {}) or {}
     out = []
     for t in trips:
-        if t["slug"] in drop:
+        if t["slug"] in drop or t.get("variant_of") in drop:
             continue
         for k in ("name", "description"):
             if edits.get(t["slug"], {}).get(k):

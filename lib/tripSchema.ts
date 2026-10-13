@@ -158,6 +158,15 @@ export interface TripSummary {
   /** true = one of the hand-picked trips (also the regression test set). */
   curated: boolean;
   gpx_url: string;
+  /**
+   * Most places have several marked routes. The main one (no variant_of) is on the home
+   * list and map; the others carry the main trip's slug and show only on its trip page.
+   */
+  variant_of?: string;
+  /** Why someone would pick this route: "Hlavná cesta", "Kratšia", "Cez Likavský hrad"… Absent when the place has one route. */
+  route_label?: string;
+  /** Main trips: how many routes lead to the place, this one included. */
+  route_count?: number;
 }
 
 export interface MarkingRun {

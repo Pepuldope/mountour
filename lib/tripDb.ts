@@ -35,6 +35,9 @@ interface TripRow {
   path_json: string | null;
   turnaround_index: number | null;
   marking_runs_json: string | null;
+  variant_of: string | null;
+  route_label: string | null;
+  route_count: number | null;
   d_name: string;
   d_kind: TripSummary["destination"]["kind"];
   d_lat: number;
@@ -153,6 +156,10 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
     bbox: JSON.parse(t.bbox_json),
     curated: t.curated === 1,
     gpx_url: t.gpx_url,
+    // Only set when a place has more than one route, as in the files.
+    ...(t.variant_of != null ? { variant_of: t.variant_of } : {}),
+    ...(t.route_label != null ? { route_label: t.route_label } : {}),
+    ...(t.route_count != null ? { route_count: t.route_count } : {}),
     path: t.path_json ? JSON.parse(t.path_json) : [],
     turnaround_index: t.turnaround_index ?? 0,
     marking_runs: t.marking_runs_json ? JSON.parse(t.marking_runs_json) : [],
@@ -202,7 +209,8 @@ async function dbTownMinutes(db: D1Like, townSlug: string): Promise<Record<strin
   ]);
   if (!row) return null;
   const minutes = JSON.parse(row.minutes_json) as (number | null)[];
-  return Object.fromEntries(trips.results.map((t) => [t.slug, minutes[t.id - 1] ?? null]));
+  // Main trips come first; other routes to a place have no drive times (the home list never shows them).
+  return Object.fromEntries(trips.results.filter((t) => t.id <= minutes.length).map((t) => [t.slug, minutes[t.id - 1] ?? null]));
 }
 
 export interface TripListItem {
@@ -249,7 +257,7 @@ function sortList(items: TripListItem[]): TripListItem[] {
   );
 }
 
-/** Trips for GET /api/vylety: nearest first from a town, or best known first. */
+/** Trips for GET /api/vylety: nearest first from a town, or best known first. One per place (its main route). */
 export async function listTrips(q: TripListQuery): Promise<{ trips: TripListItem[]; source: DataSource; generated_at: string }> {
   const db = await tripDb();
   if (db) {
@@ -263,7 +271,8 @@ export async function listTrips(q: TripListQuery): Promise<{ trips: TripListItem
                     (SELECT group_concat(rule_id) FROM trip_closure tc WHERE tc.trip_id = t.id) AS rule_ids
              FROM trip t
              JOIN region r ON r.id = t.region_id
-             JOIN place d ON d.id = t.destination_id`
+             JOIN place d ON d.id = t.destination_id
+             WHERE t.variant_of IS NULL`
           )
           .all<{
             slug: string;
@@ -317,7 +326,7 @@ export async function listTrips(q: TripListQuery): Promise<{ trips: TripListItem
   }
 
   const { minutes } = await townDriveMinutes(q.town ?? "");
-  const trips = (await getAllTrips()).map((t) => {
+  const trips = (await getAllTrips()).filter((t) => !t.variant_of).map((t) => {
     const drive = q.town ? (minutes[t.slug] ?? null) : null;
     const active = activeRuleIds(closureRulesFor(t), q.date);
     return {

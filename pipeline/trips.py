@@ -14,6 +14,7 @@ COLOUR_SK = {"red": "červenej", "blue": "modrej", "green": "zelenej", "yellow":
 KIND_BONUS = {"hrad": 30, "pleso": 30, "vodopad": 25, "jaskyna": 25, "chata": 20, "vyhliadka": 18, "vrchol": 12, "ine": 5}
 GENERIC_NAMES = {"vyhliadka", "výhľad", "rozhľadňa", "altánok", "vyhliadkové miesto", "chata", "hrad", "pleso"}
 ROUTE_LIMIT = 18000  # weighted metres one way, generous; time limits are applied afterwards
+PENDING = "__pending__"  # slug of a route until it is known whether it is the main one
 
 
 @dataclass
@@ -65,6 +66,13 @@ class TripBuilder:
         self.poi_feats = [f for _, f in osm.pois]
         self.poi_kinds = [k for k, _ in osm.pois]
         self.poi_tree = tree(self.poi_feats)
+        self.place_tree = tree(getattr(osm, "places", []))
+        # marked routes through each graph node: a start where several trails meet is a known one
+        self.node_routes = {}
+        for w in graph.ways:
+            if w.routes:
+                for i in np.searchsorted(graph.node_ids, w.nodes):
+                    self.node_routes.setdefault(int(i), set()).update(w.routes)
 
     # ----------------------------------------------------------- helpers --
     def in_country(self, lat, lon):
@@ -156,12 +164,15 @@ class TripBuilder:
         ths = self.trailheads()
         th_nodes = np.array(sorted(ths), dtype=np.int64)
         trips = []
+        variants = []  # other routes to a trip's destination; not on the home list
         taken = []  # (region id, lat, lon)
 
         for p in self.cfg.get("pinned", []):
-            trip = self.build_pinned(p)
+            trip = self.build_pinned(p, ths, th_nodes)
             if trip:
+                others = trip.pop("_others")
                 trips.append(trip)
+                variants += self._finish_variants(trip, others)
                 taken.append((trip["region"], trip["destination"]["location"]["lat"], trip["destination"]["location"]["lon"]))
 
         by_region = {}
@@ -185,6 +196,7 @@ class TripBuilder:
                 trip = self.build_generated(c, ths, th_nodes)
                 if not trip:
                     continue
+                others = trip.pop("_others")
                 same_start = [x for x in chosen if x["start"]["osm"] == trip["start"]["osm"]]
                 if len(same_start) >= self.t["max_trips_per_start"]:
                     self._reject("start already has enough trips")
@@ -199,6 +211,7 @@ class TripBuilder:
                         continue
                     trip["_extra"] = True
                 chosen.append(trip)
+                variants += self._finish_variants(trip, others)
                 taken.append((rid, c.feature.lat, c.feature.lon))
             self.report["regions"][rid] = dict(candidates=len(cands), trips=len(chosen))
             self.log(f"{rid}: {len(chosen)} trips from {len(cands)} candidates")
@@ -207,53 +220,207 @@ class TripBuilder:
         for t in trips:
             t.pop("_extra", None)
         self._rank(trips)
-        return trips
+        primary_rank = {t["slug"]: t["rank"] for t in trips}
+        by_slug = {t["slug"]: t for t in trips}
+        # "Cez Pajštún": the route passes another place people go to (a goal of a known trip).
+        # Plain huts and viewpoints along the way are often cottages or nameless spots, so not those.
+        goals = {t["destination"]["osm"]: t["destination"]["name"] for t in trips
+                 if t["destination"]["osm"] and t["rank"] >= 40}
+        for v in variants:
+            v.pop("_score", None)
+            main = by_slug[v["variant_of"]]
+            v["rank"] = primary_rank[v["variant_of"]]
+            on_main = {p["osm"] for p in main["pois"]}
+            via = next((goals[p["osm"]] for p in v["pois"] if p["osm"] in goals and p["osm"] not in on_main
+                        and goals[p["osm"]] != v["destination"]["name"] and len(goals[p["osm"]]) <= 26), None)
+            if via:
+                v["route_label"] = f"Cez {via}"
+        self.report["variants"] = len(variants)
+        return trips + variants
 
     def _reject(self, why):
         self.report["rejected"][why] = self.report["rejected"].get(why, 0) + 1
         return None
 
     def build_generated(self, c, ths, th_nodes):
-        dist, succ = self.g.costs_to(c.node, ROUTE_LIMIT)
-        costs = dist[th_nodes]
-        ok = np.isfinite(costs)
-        if not ok.any():
-            return self._reject("no trailhead within reach")
-        order = np.argsort(costs)
-        best = None
-        for i in order:
-            if not np.isfinite(costs[i]):
-                break
-            st = ths[int(th_nodes[i])]
-            if haversine(st.lat, st.lon, c.feature.lat, c.feature.lon) < self.t["min_round_trip_m"] / 4:
-                continue
-            if st.parking:
-                best = st
-                break
-            if best is None:
-                best = st
-        if best is None:
-            return self._reject("trailheads too close")
-        out_path = self.g.walk_to_target(succ, best.node, c.node)
-        if out_path is None:
-            return self._reject("path broken")
+        """The main route to a destination, with the other routes to it under `_others`."""
         dest = dict(name=c.feature.name, kind=c.kind, lat=c.feature.lat, lon=c.feature.lon,
                     ele=_num(c.feature.tags.get("ele")), osm=c.feature.osm, tags=c.feature.tags)
-        trip = self.make_trip(best, dest, out_path, c.region, curated=False)
-        if trip is None:
-            return None
-        if trip["duration_min"] > self.t["max_duration_min"]:
-            return self._reject("too long")
-        if trip["distance_m"] < self.t["min_round_trip_m"]:
-            return self._reject("too short")
-        if trip["marked_share"] < self.t["min_marked_share"]:
-            return self._reject("mostly unmarked")
-        if trip["ascent_m"] < self.t["min_ascent_m"] and c.kind not in ("pleso", "vodopad", "jaskyna"):
-            return self._reject("too flat (city walk)")
-        trip["_score"] = c.score
-        return trip
+        routes, why = self.routes_to(c.node, dest, c.region, ths, th_nodes)
+        if not routes:
+            return self._reject(why)
+        main = self._pick_main(routes)
+        st = main["start"]
+        self._set_slug(main, self._slug(f"{dest['osm'] or dest['name']}|{st['osm'] or st['name']}", dest["name"], st["name"]))
+        main["_score"] = c.score
+        main["_others"] = [r for r in routes if r is not main]
+        return main
 
-    def build_pinned(self, p):
+    def routes_to(self, target, dest, region, ths, th_nodes, known=(), limits=None):
+        """Good routes to `target` from different trailheads, cheapest first.
+
+        Routes that share more than route_overlap_max of their length count as one
+        (two guideposts in one village, or the same trail joined a little lower).
+        `known` holds edge sets of routes already built (a hand-picked trip); `limits` can
+        lower min_round_trip_m and min_ascent_m for one place (a short stroll from a car park
+        that everyone takes, like Kamzík)."""
+        lim = {**self.t, **(limits or {})}
+        dist, succ = self.g.costs_to(target, ROUTE_LIMIT)
+        costs = dist[th_nodes]
+        if not np.isfinite(costs).any():
+            return [], "no trailhead within reach"
+        seen = list(known)
+        out, why, looked = [], "trailheads too close", 0
+        for i in np.argsort(costs):
+            if not np.isfinite(costs[i]) or looked >= self.t.get("route_trailheads_max", 25):
+                break
+            st = ths[int(th_nodes[i])]
+            if haversine(st.lat, st.lon, dest["lat"], dest["lon"]) < lim["min_round_trip_m"] / 4:
+                continue
+            looked += 1
+            path = self.g.walk_to_target(succ, st.node, target)
+            if path is None:
+                why = "path broken"
+                continue
+            edges = self._edge_set(path)
+            if any(self._overlap(edges, e) for e in seen):
+                continue
+            trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
+            bad = self._quality(trip, dest["kind"], lim) if trip else "could not build"
+            if bad:
+                why = bad
+                continue
+            trip["_known"] = self.known_score(st)
+            trip["_edges"] = edges
+            seen.append(edges)
+            out.append(trip)
+            if len(out) >= 2 * self.t.get("max_routes_per_destination", 3):
+                break
+        return out, why
+
+    def _quality(self, trip, kind, lim):
+        if trip["duration_min"] > lim["max_duration_min"]:
+            return "too long"
+        if trip["distance_m"] < lim["min_round_trip_m"]:
+            return "too short"
+        if trip["marked_share"] < lim["min_marked_share"]:
+            return "mostly unmarked"
+        if trip["ascent_m"] < lim["min_ascent_m"] and kind not in ("pleso", "vodopad", "jaskyna"):
+            return "too flat (city walk)"
+        return None
+
+    def _edge_set(self, path):
+        g = self.g
+        e = g.edges(path) if len(path) > 1 else np.zeros(0, int)
+        return {(min(a, b), max(a, b)): float(L) for a, b, L in zip(path[:-1], path[1:], g.edge_len[e])}
+
+    def _overlap(self, a, b):
+        la, lb = sum(a.values()), sum(b.values())
+        if la <= 0 or lb <= 0:
+            return True
+        shared = sum(L for k, L in a.items() if k in b)
+        return shared > self.t.get("route_overlap_max", 0.5) * min(la, lb)
+
+    def known_score(self, st):
+        """How well known a start is, from what OSM shows around it: a big car park, a stop,
+        a place to eat, several marked trails meeting, a village. No per-route popularity
+        data is free for commercial use, so these stand in for it."""
+        s = 0.0
+        cars = [_cars(f) for d, f in st.parking if d <= 400]
+        if cars:
+            c = max(cars)
+            s += 25 if c >= 100 else 18 if c >= 40 else 10 if c >= 15 else 5
+        if any(d <= 500 for d, _ in st.stops):
+            s += 10
+        kinds = {k for _, k in self._near_pois(st.lat, st.lon, 300)}
+        s += 6 * len(kinds & {"obcerstvenie", "chata"})
+        routes = set()
+        for n in self._nodes_near(st.lat, st.lon, 60):
+            routes |= self.node_routes.get(n, set())
+        s += min(12, 4 * max(0, len(routes) - 1))
+        if self.place_tree is not None and self._near(self.place_tree, self.osm.places, st.lat, st.lon, 800):
+            s += 6
+        return s
+
+    def _near_pois(self, lat, lon, radius):
+        if self.poi_tree is None:
+            return []
+        p = self.proj.xy([lat], [lon])[0]
+        return [(self.poi_feats[i], self.poi_kinds[i]) for i in self.poi_tree.query_ball_point(p, radius)]
+
+    def _nodes_near(self, lat, lon, radius):
+        g = self.g
+        if g.marked_tree is None:
+            return []
+        p = g.proj.xy([lat], [lon])[0]
+        return [int(g.marked_nodes[i]) for i in g.marked_tree.query_ball_point(p, radius)]
+
+    def _pick_main(self, routes):
+        """The route most people would take: the best-known start, unless it is a lot longer.
+        By car the main route needs parking, so a start with only a bus stop is never it
+        when another route has parking."""
+        with_parking = [r for r in routes if r["parking"]] or routes
+        shortest = min(r["duration_min"] for r in with_parking)
+        # A big car park at an aquapark must not send people on a walk two hours longer (Veľký Choč).
+        ok = [r for r in with_parking if r["duration_min"] <= min(1.5 * shortest, shortest + 60)]
+        return max(ok, key=lambda r: (r["_known"] - (r["duration_min"] - shortest) / 10, -r["duration_min"]))
+
+    def _finish_variants(self, main, others):
+        """Slugs and labels for up to max_routes_per_destination - 1 other routes."""
+        main.pop("_known", None)
+        main.pop("_edges", None)
+        # A hand-picked route always stays; then the best-known starts.
+        keep = sorted(others, key=lambda r: (not r["curated"], -r["_known"], r["duration_min"]))
+        keep = keep[: self.t.get("max_routes_per_destination", 3) - 1]
+        out = []
+        for r in keep:
+            r.pop("_known", None)
+            r.pop("_edges", None)
+            if r["slug"] == PENDING:
+                self._set_slug(r, self._variant_slug(main, r))
+            r["variant_of"] = main["slug"]
+            r["route_label"] = self._label(r, main)
+            r["region"], r["region_name"], r["protected_area"] = main["region"], main["region_name"], main["protected_area"]
+            out.append(r)
+        if out:  # one route only: no route fields at all
+            main["route_label"] = "Hlavná cesta"
+            main["route_count"] = 1 + len(out)
+        return out
+
+    def _label(self, r, main):
+        """One or two words on why someone would pick this route over the main one."""
+        if r["transit"] and not main["transit"]:
+            return "Autobusom"
+        if r["duration_min"] <= main["duration_min"] - 30:
+            return "Kratšia"
+        if r["duration_min"] >= 300 and r["duration_min"] >= main["duration_min"] + 60:
+            return "Na celý deň"
+        if r["duration_min"] >= main["duration_min"] + 45:
+            return "Dlhšia"
+        if main["ascent_m"] and r["ascent_m"] <= 0.7 * main["ascent_m"]:
+            return "Menej do kopca"
+        return "Iná cesta"
+
+    def _set_slug(self, trip, slug):
+        trip["slug"] = slug
+        trip["gpx_url"] = f"/gpx/{slug}.gpx"
+
+    def _variant_slug(self, main, r):
+        """Stable per destination and start: '<main slug>-<start>'."""
+        key = f"v|{main['destination']['osm'] or main['destination']['name']}|{r['start']['osm'] or r['start']['name']}"
+        s = self.slugs.get(key)
+        if not s or s in self.used_slugs:
+            base = f"{main['slug']}-{slugify(r['start']['name'], 24)}"
+            s, n = base, 2
+            taken = set(self.slugs.values()) | self.used_slugs
+            while s in taken:
+                s = f"{base}-{n}"
+                n += 1
+        self.slugs[key] = s
+        self.used_slugs.add(s)
+        return s
+
+    def build_pinned(self, p, ths=None, th_nodes=None):
         s, d = p["start"], p["destination"]
         s_node = self.g.snap(s["lat"], s["lon"], 300)
         d_node = self.g.snap(d["lat"], d["lon"], 300)
@@ -281,8 +448,23 @@ class TripBuilder:
             if exp.get(k):
                 row[k] = (trip[k], exp[k], (trip[k] - exp[k]) / exp[k])
         self.report["regression"].append(row)
-        trip["_score"] = 60
-        return trip
+        trip["_known"] = self.known_score(st)
+        others = []
+        if ths is not None and len(th_nodes):
+            others, _ = self.routes_to(d_node, dest, region, ths, th_nodes, known=[self._edge_set(out_path)],
+                                       limits=p.get("route_limits"))
+        main = trip
+        if p.get("main") == "auto" and others:
+            main = self._pick_main([trip] + others)
+            if main is not trip:
+                # The page keeps its address (people saved and shared it); the hand-picked route moves.
+                self._set_slug(main, p["slug"])
+                self._set_slug(trip, PENDING)
+                # Not hand-picked itself: the hand-picked route stays curated (the regression set).
+                main["name"] = d["name"]
+        main["_score"] = 60
+        main["_others"] = [r for r in [trip] + others if r is not main]
+        return main
 
     # ------------------------------------------------------- trip record --
     def make_trip(self, st, dest, out_path, region, curated, slug=None, name=None, description=None):
@@ -517,6 +699,15 @@ def _int(v):
 
 def _loc(lat, lon):
     return dict(lat=round(float(lat), 6), lon=round(float(lon), 6))
+
+
+def _cars(f):
+    """Cars a car park holds: its capacity tag, else from its area, else a small one."""
+    cap = _num(f.tags.get("capacity"))
+    if cap:
+        return cap
+    area = f.tags.get("_area_m2")
+    return area / 25 if area else 8
 
 
 def _parking(d, f):

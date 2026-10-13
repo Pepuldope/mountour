@@ -109,6 +109,13 @@ trips:
   min_family_per_region: 5
   # variety: at most this many trips from one start
   max_trips_per_start: 8
+  # several marked routes lead to most places: keep the main one plus up to two others
+  # (the main one = the best-known start: big car park, stop, food, trail hub, village)
+  max_routes_per_destination: 3
+  # two routes are the same route when they share more than this part of the shorter one
+  route_overlap_max: 0.5
+  # trailheads tried per destination, nearest first
+  route_trailheads_max: 25
   # generated trips need some climb, so city sights don't count as trips (tarns, waterfalls, caves excepted)
   min_ascent_m: 80
   # a parking must sit this close to a public car road (checked with OSRM; drops hotel-only roads)
@@ -130,6 +137,10 @@ pinned:
     expect: {distance_m: 6836, ascent_m: 370, duration_min: 180}
   - slug: kamzik
     name: "Kamzík zo Železnej studničky"
+    # Most people walk up from the car park on the far side (Koliba); this route stays as another way up.
+    # That walk is short and nearly flat, so this place accepts shorter routes than the defaults.
+    main: auto
+    route_limits: {min_round_trip_m: 1000, min_ascent_m: 30}
     start: {name: "Železná studnička", lat: 48.19031, lon: 17.08224}
     destination: {name: "Kamzík", lat: 48.18185, lon: 17.09337}
     kind: vrchol

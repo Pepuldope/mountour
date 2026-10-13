@@ -2,32 +2,7 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Ferencky</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Ferencky</name><trkseg>
-    <trkpt lat="48.473599" lon="18.723080"><ele>215</ele></trkpt>
-    <trkpt lat="48.473384" lon="18.723246"><ele>215</ele></trkpt>
-    <trkpt lat="48.473195" lon="18.723000"><ele>215</ele></trkpt>
-    <trkpt lat="48.472670" lon="18.722208"><ele>216</ele></trkpt>
-    <trkpt lat="48.471460" lon="18.720172"><ele>216</ele></trkpt>
-    <trkpt lat="48.470645" lon="18.719072"><ele>216</ele></trkpt>
-    <trkpt lat="48.469858" lon="18.718116"><ele>219</ele></trkpt>
-    <trkpt lat="48.469517" lon="18.717778"><ele>218</ele></trkpt>
-    <trkpt lat="48.469147" lon="18.717500"><ele>217</ele></trkpt>
-    <trkpt lat="48.468445" lon="18.717176"><ele>217</ele></trkpt>
-    <trkpt lat="48.468173" lon="18.716986"><ele>220</ele></trkpt>
-    <trkpt lat="48.468077" lon="18.716860"><ele>223</ele></trkpt>
-    <trkpt lat="48.467970" lon="18.716548"><ele>225</ele></trkpt>
-    <trkpt lat="48.467921" lon="18.715677"><ele>223</ele></trkpt>
-    <trkpt lat="48.467761" lon="18.714317"><ele>223</ele></trkpt>
-    <trkpt lat="48.467625" lon="18.713909"><ele>222</ele></trkpt>
-    <trkpt lat="48.467433" lon="18.713539"><ele>221</ele></trkpt>
-    <trkpt lat="48.466871" lon="18.712261"><ele>224</ele></trkpt>
-    <trkpt lat="48.466765" lon="18.711896"><ele>221</ele></trkpt>
-    <trkpt lat="48.466628" lon="18.711164"><ele>223</ele></trkpt>
-    <trkpt lat="48.466543" lon="18.710888"><ele>223</ele></trkpt>
-    <trkpt lat="48.465906" lon="18.709618"><ele>224</ele></trkpt>
-    <trkpt lat="48.465750" lon="18.709398"><ele>224</ele></trkpt>
-    <trkpt lat="48.464770" lon="18.708477"><ele>226</ele></trkpt>
-    <trkpt lat="48.464381" lon="18.708010"><ele>225</ele></trkpt>
-    <trkpt lat="48.464267" lon="18.708062"><ele>230</ele></trkpt>
+    <trkpt lat="48.464289" lon="18.708041"><ele>229</ele></trkpt>
     <trkpt lat="48.464134" lon="18.708247"><ele>238</ele></trkpt>
     <trkpt lat="48.464091" lon="18.708264"><ele>239</ele></trkpt>
     <trkpt lat="48.463961" lon="18.708196"><ele>240</ele></trkpt>
@@ -115,31 +90,6 @@
     <trkpt lat="48.463961" lon="18.708196"><ele>240</ele></trkpt>
     <trkpt lat="48.464091" lon="18.708264"><ele>239</ele></trkpt>
     <trkpt lat="48.464134" lon="18.708247"><ele>238</ele></trkpt>
-    <trkpt lat="48.464267" lon="18.708062"><ele>230</ele></trkpt>
-    <trkpt lat="48.464381" lon="18.708010"><ele>225</ele></trkpt>
-    <trkpt lat="48.464770" lon="18.708477"><ele>226</ele></trkpt>
-    <trkpt lat="48.465750" lon="18.709398"><ele>224</ele></trkpt>
-    <trkpt lat="48.465906" lon="18.709618"><ele>224</ele></trkpt>
-    <trkpt lat="48.466543" lon="18.710888"><ele>223</ele></trkpt>
-    <trkpt lat="48.466628" lon="18.711164"><ele>223</ele></trkpt>
-    <trkpt lat="48.466765" lon="18.711896"><ele>221</ele></trkpt>
-    <trkpt lat="48.466871" lon="18.712261"><ele>224</ele></trkpt>
-    <trkpt lat="48.467433" lon="18.713539"><ele>221</ele></trkpt>
-    <trkpt lat="48.467625" lon="18.713909"><ele>222</ele></trkpt>
-    <trkpt lat="48.467761" lon="18.714317"><ele>223</ele></trkpt>
-    <trkpt lat="48.467921" lon="18.715677"><ele>223</ele></trkpt>
-    <trkpt lat="48.467970" lon="18.716548"><ele>225</ele></trkpt>
-    <trkpt lat="48.468077" lon="18.716860"><ele>223</ele></trkpt>
-    <trkpt lat="48.468173" lon="18.716986"><ele>220</ele></trkpt>
-    <trkpt lat="48.468445" lon="18.717176"><ele>217</ele></trkpt>
-    <trkpt lat="48.469147" lon="18.717500"><ele>217</ele></trkpt>
-    <trkpt lat="48.469517" lon="18.717778"><ele>218</ele></trkpt>
-    <trkpt lat="48.469858" lon="18.718116"><ele>219</ele></trkpt>
-    <trkpt lat="48.470645" lon="18.719072"><ele>216</ele></trkpt>
-    <trkpt lat="48.471460" lon="18.720172"><ele>216</ele></trkpt>
-    <trkpt lat="48.472670" lon="18.722208"><ele>216</ele></trkpt>
-    <trkpt lat="48.473195" lon="18.723000"><ele>215</ele></trkpt>
-    <trkpt lat="48.473384" lon="18.723246"><ele>215</ele></trkpt>
-    <trkpt lat="48.473599" lon="18.723080"><ele>215</ele></trkpt>
+    <trkpt lat="48.464289" lon="18.708041"><ele>229</ele></trkpt>
   </trkseg></trk>
 </gpx>

@@ -1,6 +1,7 @@
 """End-to-end run on a tiny hand-made OSM file, plus unit checks of the helpers."""
 
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -15,8 +16,9 @@ from pipeline.rules import RuleMatcher
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def osm_xml():
-    """A guidepost with parking and a bus stop, a red-marked path up to a peak, a one-way gorge loop."""
+def osm_xml(two_routes=False):
+    """A guidepost with parking and a bus stop, a red-marked path up to a peak, a one-way gorge loop
+    (and with two_routes, a second peak reached from two starts)."""
     nodes, ways = [], []
 
     def node(i, lat, lon, **tags):
@@ -42,6 +44,23 @@ def osm_xml():
     node(12, 48.9302, 20.2995, amenity="parking", fee="yes")
     node(13, 48.9400, 20.30005, waterway="waterfall", name="Závojový vodopád")
 
+    # a peak with two routes: a quiet start with a small car park, and a known one (big car park, bus, food)
+    for k in range(10 if two_routes else 0):
+        node(600 + k, 49.190 + 0.001 * k, 19.040 + 0.001 * k)
+        node(700 + k, 49.212 - 0.0012 * k, 19.062 - 0.0012 * k)
+    if two_routes:
+        node(21, 49.19001, 19.04001, tourism="information", information="guidepost", name="Dolina", ele="500")
+        node(22, 49.1902, 19.0398, amenity="parking")
+        node(23, 49.21201, 19.06201, tourism="information", information="guidepost", name="Sedlo", ele="550")
+        node(24, 49.2122, 19.0622, amenity="parking", capacity="150")
+        node(25, 49.2121, 19.0619, highway="bus_stop", name="Sedlo, rázcestie")
+        node(26, 49.2119, 19.0623, amenity="restaurant", name="Koliba pod sedlom")
+        node(27, 49.2001, 19.0501, natural="peak", name="Druhý vrch", ele="900", wikipedia="sk:Druhý vrch")
+
+        ways.append(('<way id="3000" version="1">' + "".join(f'<nd ref="{600 + k}"/>' for k in range(10))
+                     + '<nd ref="27"/><tag k="highway" v="path"/></way>'))
+        ways.append(('<way id="3001" version="1">' + "".join(f'<nd ref="{700 + k}"/>' for k in range(10))
+                     + '<nd ref="27"/><tag k="highway" v="path"/></way>'))
     ways.append(('<way id="1000" version="1">' + "".join(f'<nd ref="{100 + k}"/>' for k in range(10))
                  + '<tag k="highway" v="path"/><tag k="sac_scale" v="mountain_hiking"/></way>'))
     ways.append(('<way id="2000" version="1">' + "".join(f'<nd ref="{200 + k}"/>' for k in range(6))
@@ -55,7 +74,15 @@ def osm_xml():
         '<relation id="5001" version="1"><member type="way" ref="2000" role=""/><member type="way" ref="2001" role=""/>'
         '<tag k="type" v="route"/><tag k="route" v="hiking"/><tag k="ref" v="8888"/>'
         '<tag k="osmc:symbol" v="green:white:green_bar"/></relation>',
-    ]
+    ] + ([
+        '<relation id="5002" version="1"><member type="way" ref="3000" role=""/>'
+        '<tag k="type" v="route"/><tag k="route" v="hiking"/><tag k="osmc:symbol" v="blue:white:blue_bar"/></relation>',
+        '<relation id="5003" version="1"><member type="way" ref="3001" role=""/>'
+        '<tag k="type" v="route"/><tag k="route" v="hiking"/><tag k="osmc:symbol" v="yellow:white:yellow_bar"/></relation>',
+    ] if two_routes else [])
+    key = lambda x: int(re.search(r'id="(\d+)"', x).group(1))
+    nodes.sort(key=key)
+    ways.sort(key=key)
     return ('<?xml version="1.0" encoding="UTF-8"?>\n<osm version="0.6" generator="test">\n'
             + "\n".join(nodes + ways + rels) + "\n</osm>\n")
 
@@ -73,7 +100,7 @@ def make_root(tmp_path):
     for f in ("closure-rules.json", "fee-rules.json"):
         shutil.copy(ROOT / "data" / f, tmp_path / "data" / f)
     pbf = tmp_path / "test.osm"
-    pbf.write_text(osm_xml())
+    pbf.write_text(osm_xml(two_routes=True))
     return pbf
 
 
@@ -102,9 +129,20 @@ def test_end_to_end(tmp_path):
     assert detail["path"][0][:2] == detail["path"][-1][:2]  # loop ends where it started
     assert 0 < detail["turnaround_index"] < len(detail["path"]) - 1
     assert (tmp_path / "public" / "gpx" / f"{falls['slug']}.gpx").exists()
-    # the home list: every trip, without the text it never shows
+    # two routes to one peak: the known start is the main trip, the other is a variant of it
+    peak = [t for t in index["trips"] if t["destination"]["name"] == "Druhý vrch"]
+    assert len(peak) == 2
+    main = next(t for t in peak if not t.get("variant_of"))
+    other = next(t for t in peak if t.get("variant_of"))
+    assert main["start"]["name"] == "Sedlo" and main["route_label"] == "Hlavná cesta" and main["route_count"] == 2
+    assert other["start"]["name"] == "Dolina" and other["variant_of"] == main["slug"] and other["route_label"]
+    assert other["rank"] == main["rank"] and other["slug"] != main["slug"]
+    assert (tmp_path / "public" / "gpx" / f"{other['slug']}.gpx").exists()
+    mains = [t["slug"] for t in index["trips"] if not t.get("variant_of")]
+
+    # the home list: every place once, without the text it never shows
     listed = json.loads((tmp_path / "public" / "data" / "trips" / "list.json").read_text())["trips"]
-    assert [t["slug"] for t in listed] == [t["slug"] for t in index["trips"]]
+    assert [t["slug"] for t in listed] == mains
     assert "description" not in listed[0] and "osm" not in listed[0]["start"]
     report = (tmp_path / "data" / "pipeline-report.md").read_text()
     assert "testovaci-pin" in report
@@ -112,10 +150,10 @@ def test_end_to_end(tmp_path):
     mdir = tmp_path / "public" / "data" / "map"
     meta = json.loads((mdir / "meta.json").read_text())
     overview = json.loads((mdir / "overview.json").read_text())["features"]
-    assert sorted(f["properties"]["s"] for f in overview) == sorted(by_slug)
+    assert sorted(f["properties"]["s"] for f in overview) == sorted(mains)
     assert meta["cells"] and all((mdir / "c" / f"{k}.json").exists() for k in meta["cells"])
     in_cells = {f["properties"]["s"] for k in meta["cells"] for f in json.loads((mdir / "c" / f"{k}.json").read_text())["features"]}
-    assert in_cells == set(by_slug)
+    assert in_cells == set(mains)
 
     # slugs are stable: a second run reuses them
     slugs_before = json.loads((tmp_path / "pipeline" / "slugs.json").read_text())

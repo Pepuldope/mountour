@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Chata pod Ostrým vrchom</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Chata pod Ostrým vrchom</name><trkseg>
+    <trkpt lat="48.852452" lon="18.091639"><ele>349</ele></trkpt>
+    <trkpt lat="48.852252" lon="18.091770"><ele>348</ele></trkpt>
+    <trkpt lat="48.852047" lon="18.092039"><ele>357</ele></trkpt>
+    <trkpt lat="48.850361" lon="18.095964"><ele>416</ele></trkpt>
+    <trkpt lat="48.850152" lon="18.096375"><ele>418</ele></trkpt>
+    <trkpt lat="48.849941" lon="18.096608"><ele>423</ele></trkpt>
+    <trkpt lat="48.849801" lon="18.096639"><ele>425</ele></trkpt>
+    <trkpt lat="48.849677" lon="18.096836"><ele>427</ele></trkpt>
+    <trkpt lat="48.849362" lon="18.097672"><ele>437</ele></trkpt>
+    <trkpt lat="48.849220" lon="18.097930"><ele>442</ele></trkpt>
+    <trkpt lat="48.849074" lon="18.098332"><ele>450</ele></trkpt>
+    <trkpt lat="48.848817" lon="18.098781"><ele>462</ele></trkpt>
+    <trkpt lat="48.848620" lon="18.098952"><ele>466</ele></trkpt>
+    <trkpt lat="48.848222" lon="18.098998"><ele>470</ele></trkpt>
+    <trkpt lat="48.847940" lon="18.099171"><ele>475</ele></trkpt>
+    <trkpt lat="48.847553" lon="18.099624"><ele>483</ele></trkpt>
+    <trkpt lat="48.846982" lon="18.100579"><ele>500</ele></trkpt>
+    <trkpt lat="48.846872" lon="18.100675"><ele>500</ele></trkpt>
+    <trkpt lat="48.846692" lon="18.100688"><ele>500</ele></trkpt>
+    <trkpt lat="48.846530" lon="18.100589"><ele>499</ele></trkpt>
+    <trkpt lat="48.846428" lon="18.100589"><ele>498</ele></trkpt>
+    <trkpt lat="48.846328" lon="18.100697"><ele>494</ele></trkpt>
+    <trkpt lat="48.846316" lon="18.100941"><ele>488</ele></trkpt>
+    <trkpt lat="48.846138" lon="18.100974"><ele>484</ele></trkpt>
+    <trkpt lat="48.846025" lon="18.101325"><ele>482</ele></trkpt>
+    <trkpt lat="48.845774" lon="18.101305"><ele>485</ele></trkpt>
+    <trkpt lat="48.845720" lon="18.101251"><ele>487</ele></trkpt>
+    <trkpt lat="48.845637" lon="18.100995"><ele>492</ele></trkpt>
+    <trkpt lat="48.845590" lon="18.100296"><ele>503</ele></trkpt>
+    <trkpt lat="48.845628" lon="18.099662"><ele>498</ele></trkpt>
+    <trkpt lat="48.845692" lon="18.099260"><ele>496</ele></trkpt>
+    <trkpt lat="48.845628" lon="18.099662"><ele>498</ele></trkpt>
+    <trkpt lat="48.845590" lon="18.100296"><ele>503</ele></trkpt>
+    <trkpt lat="48.845637" lon="18.100995"><ele>492</ele></trkpt>
+    <trkpt lat="48.845742" lon="18.101285"><ele>486</ele></trkpt>
+    <trkpt lat="48.846025" lon="18.101325"><ele>482</ele></trkpt>
+    <trkpt lat="48.846138" lon="18.100974"><ele>484</ele></trkpt>
+    <trkpt lat="48.846316" lon="18.100941"><ele>488</ele></trkpt>
+    <trkpt lat="48.846328" lon="18.100697"><ele>494</ele></trkpt>
+    <trkpt lat="48.846428" lon="18.100589"><ele>498</ele></trkpt>
+    <trkpt lat="48.846530" lon="18.100589"><ele>499</ele></trkpt>
+    <trkpt lat="48.846692" lon="18.100688"><ele>500</ele></trkpt>
+    <trkpt lat="48.846872" lon="18.100675"><ele>500</ele></trkpt>
+    <trkpt lat="48.846982" lon="18.100579"><ele>500</ele></trkpt>
+    <trkpt lat="48.847553" lon="18.099624"><ele>483</ele></trkpt>
+    <trkpt lat="48.847940" lon="18.099171"><ele>475</ele></trkpt>
+    <trkpt lat="48.848222" lon="18.098998"><ele>470</ele></trkpt>
+    <trkpt lat="48.848620" lon="18.098952"><ele>466</ele></trkpt>
+    <trkpt lat="48.848740" lon="18.098868"><ele>464</ele></trkpt>
+    <trkpt lat="48.849074" lon="18.098332"><ele>450</ele></trkpt>
+    <trkpt lat="48.849220" lon="18.097930"><ele>442</ele></trkpt>
+    <trkpt lat="48.849362" lon="18.097672"><ele>437</ele></trkpt>
+    <trkpt lat="48.849677" lon="18.096836"><ele>427</ele></trkpt>
+    <trkpt lat="48.849801" lon="18.096639"><ele>425</ele></trkpt>
+    <trkpt lat="48.849941" lon="18.096608"><ele>423</ele></trkpt>
+    <trkpt lat="48.850152" lon="18.096375"><ele>418</ele></trkpt>
+    <trkpt lat="48.850361" lon="18.095964"><ele>416</ele></trkpt>
+    <trkpt lat="48.852047" lon="18.092039"><ele>357</ele></trkpt>
+    <trkpt lat="48.852252" lon="18.091770"><ele>348</ele></trkpt>
+    <trkpt lat="48.852452" lon="18.091639"><ele>349</ele></trkpt>
+  </trkseg></trk>
+</gpx>

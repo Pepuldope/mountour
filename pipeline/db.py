@@ -69,6 +69,10 @@ CREATE TABLE trip (
   path_json          TEXT,
   turnaround_index   INTEGER,
   marking_runs_json  TEXT,
+  -- Another route to a place: the slug of its main trip, and why someone would pick it
+  variant_of         TEXT,
+  route_label        TEXT,
+  route_count        INTEGER,
   CHECK (start_id <> destination_id)
 );
 CREATE TABLE parking (
@@ -216,7 +220,8 @@ def build_sql(root=ROOT):
         places.append((len(places) + 1, p["name"] or "", kind, p["location"]["lat"], p["location"]["lon"], p.get("ele_m"), p.get("osm")))
         return len(places)
 
-    for tid, summary in enumerate(index["trips"], start=1):
+    # Main trips first: town_drive arrays hold only them (other routes have no drive times).
+    for tid, summary in enumerate(sorted(index["trips"], key=lambda t: bool(t.get("variant_of"))), start=1):
         detail = json.loads((tdir / f"{summary['slug']}.json").read_text())
         rid = regions.setdefault(summary["region"], (len(regions) + 1, summary["region_name"]))[0]
         aid = None
@@ -231,6 +236,7 @@ def build_sql(root=ROOT):
             summary["marked_share"], summary["rank"], summary["curated"], summary["gpx_url"],
             summary["marking"], summary["bbox"],
             detail.get("path"), detail.get("turnaround_index"), detail.get("marking_runs"),
+            summary.get("variant_of"), summary.get("route_label"), summary.get("route_count"),
         ))
         for i, p in enumerate([summary["parking"], *detail.get("parking_alternatives", [])]):
             if p is None:
@@ -256,7 +262,8 @@ def build_sql(root=ROOT):
                 len(fees) + 1, f["kind"], f["text"], f.get("amount_eur"), f["source"], f.get("source_url"), f.get("rule_id")))[0]
             trip_fees.append((tid, fid))
 
-    order = [t[1] for t in trips]  # trip ids are 1..n in this order
+    n_main = sum(1 for t in index["trips"] if not t.get("variant_of"))
+    order = [t[1] for t in trips][:n_main]  # main trip ids are 1..n_main in this order
     towns = [(i, t["id"], t["name"], t["location"]["lat"], t["location"]["lon"]) for i, t in enumerate(town_list, start=1)]
     drive_rows = []
     for town_i, t in enumerate(town_list, start=1):
@@ -275,7 +282,7 @@ def build_sql(root=ROOT):
         "id", "slug", "name", "description", "region_id", "protected_area_id", "destination_id", "start_id",
         "route_type", "distance_m", "ascent_m", "duration_min", "max_ele_m", "difficulty", "family_friendly",
         "marked_share", "rank", "curated", "gpx_url", "marking_json", "bbox_json",
-        "path_json", "turnaround_index", "marking_runs_json"], trips)
+        "path_json", "turnaround_index", "marking_runs_json", "variant_of", "route_label", "route_count"], trips)
     sql += inserts("parking", ["id", "trip_id", "name", "lat", "lon", "walk_m", "fee_paid", "is_primary", "osm_ref"], parkings)
     sql += inserts("transit_stop", ["id", "name", "mode", "lat", "lon", "osm_ref"], list(stops.values()))
     sql += inserts("trip_transit_stop", ["trip_id", "stop_id", "walk_m", "is_primary", "position"], trip_stops)

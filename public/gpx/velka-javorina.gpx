@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Veľká Javorina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Veľká Javorina</name><trkseg>
+    <trkpt lat="48.851077" lon="17.675874"><ele>849</ele></trkpt>
+    <trkpt lat="48.851284" lon="17.675920"><ele>856</ele></trkpt>
+    <trkpt lat="48.852329" lon="17.676827"><ele>861</ele></trkpt>
+    <trkpt lat="48.852469" lon="17.676971"><ele>861</ele></trkpt>
+    <trkpt lat="48.852700" lon="17.677310"><ele>864</ele></trkpt>
+    <trkpt lat="48.852939" lon="17.677925"><ele>870</ele></trkpt>
+    <trkpt lat="48.853358" lon="17.679875"><ele>876</ele></trkpt>
+    <trkpt lat="48.853521" lon="17.680549"><ele>877</ele></trkpt>
+    <trkpt lat="48.853664" lon="17.680973"><ele>879</ele></trkpt>
+    <trkpt lat="48.853922" lon="17.681569"><ele>885</ele></trkpt>
+    <trkpt lat="48.854307" lon="17.682281"><ele>895</ele></trkpt>
+    <trkpt lat="48.854495" lon="17.682524"><ele>895</ele></trkpt>
+    <trkpt lat="48.854833" lon="17.682770"><ele>894</ele></trkpt>
+    <trkpt lat="48.855005" lon="17.682837"><ele>895</ele></trkpt>
+    <trkpt lat="48.855176" lon="17.682840"><ele>896</ele></trkpt>
+    <trkpt lat="48.855632" lon="17.682685"><ele>899</ele></trkpt>
+    <trkpt lat="48.856678" lon="17.682181"><ele>906</ele></trkpt>
+    <trkpt lat="48.857110" lon="17.682084"><ele>907</ele></trkpt>
+    <trkpt lat="48.857705" lon="17.682025"><ele>908</ele></trkpt>
+    <trkpt lat="48.857870" lon="17.681906"><ele>909</ele></trkpt>
+    <trkpt lat="48.857772" lon="17.681596"><ele>914</ele></trkpt>
+    <trkpt lat="48.857867" lon="17.680134"><ele>936</ele></trkpt>
+    <trkpt lat="48.857828" lon="17.678724"><ele>952</ele></trkpt>
+    <trkpt lat="48.857858" lon="17.678352"><ele>955</ele></trkpt>
+    <trkpt lat="48.857955" lon="17.677824"><ele>958</ele></trkpt>
+    <trkpt lat="48.857965" lon="17.677485"><ele>960</ele></trkpt>
+    <trkpt lat="48.857782" lon="17.676175"><ele>967</ele></trkpt>
+    <trkpt lat="48.857789" lon="17.675826"><ele>969</ele></trkpt>
+    <trkpt lat="48.857729" lon="17.675834"><ele>968</ele></trkpt>
+    <trkpt lat="48.857789" lon="17.675826"><ele>969</ele></trkpt>
+    <trkpt lat="48.857782" lon="17.676175"><ele>967</ele></trkpt>
+    <trkpt lat="48.857965" lon="17.677485"><ele>960</ele></trkpt>
+    <trkpt lat="48.857955" lon="17.677824"><ele>958</ele></trkpt>
+    <trkpt lat="48.857858" lon="17.678352"><ele>955</ele></trkpt>
+    <trkpt lat="48.857828" lon="17.678724"><ele>952</ele></trkpt>
+    <trkpt lat="48.857867" lon="17.680134"><ele>936</ele></trkpt>
+    <trkpt lat="48.857772" lon="17.681596"><ele>914</ele></trkpt>
+    <trkpt lat="48.857870" lon="17.681906"><ele>909</ele></trkpt>
+    <trkpt lat="48.857705" lon="17.682025"><ele>908</ele></trkpt>
+    <trkpt lat="48.857110" lon="17.682084"><ele>907</ele></trkpt>
+    <trkpt lat="48.856678" lon="17.682181"><ele>906</ele></trkpt>
+    <trkpt lat="48.855632" lon="17.682685"><ele>899</ele></trkpt>
+    <trkpt lat="48.855176" lon="17.682840"><ele>896</ele></trkpt>
+    <trkpt lat="48.855005" lon="17.682837"><ele>895</ele></trkpt>
+    <trkpt lat="48.854833" lon="17.682770"><ele>894</ele></trkpt>
+    <trkpt lat="48.854495" lon="17.682524"><ele>895</ele></trkpt>
+    <trkpt lat="48.854307" lon="17.682281"><ele>895</ele></trkpt>
+    <trkpt lat="48.853922" lon="17.681569"><ele>885</ele></trkpt>
+    <trkpt lat="48.853664" lon="17.680973"><ele>879</ele></trkpt>
+    <trkpt lat="48.853521" lon="17.680549"><ele>877</ele></trkpt>
+    <trkpt lat="48.852939" lon="17.677925"><ele>870</ele></trkpt>
+    <trkpt lat="48.852700" lon="17.677310"><ele>864</ele></trkpt>
+    <trkpt lat="48.852469" lon="17.676971"><ele>861</ele></trkpt>
+    <trkpt lat="48.852329" lon="17.676827"><ele>861</ele></trkpt>
+    <trkpt lat="48.851284" lon="17.675920"><ele>856</ele></trkpt>
+    <trkpt lat="48.851077" lon="17.675874"><ele>849</ele></trkpt>
+  </trkseg></trk>
+</gpx>

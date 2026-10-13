@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Turková</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Turková</name><trkseg>
+    <trkpt lat="49.152880" lon="19.499364"><ele>618</ele></trkpt>
+    <trkpt lat="49.153229" lon="19.499012"><ele>619</ele></trkpt>
+    <trkpt lat="49.153754" lon="19.498694"><ele>621</ele></trkpt>
+    <trkpt lat="49.153982" lon="19.498606"><ele>621</ele></trkpt>
+    <trkpt lat="49.154583" lon="19.498448"><ele>623</ele></trkpt>
+    <trkpt lat="49.155333" lon="19.498469"><ele>626</ele></trkpt>
+    <trkpt lat="49.155416" lon="19.498550"><ele>626</ele></trkpt>
+    <trkpt lat="49.155871" lon="19.499439"><ele>627</ele></trkpt>
+    <trkpt lat="49.156213" lon="19.499955"><ele>630</ele></trkpt>
+    <trkpt lat="49.156828" lon="19.500673"><ele>640</ele></trkpt>
+    <trkpt lat="49.157682" lon="19.501415"><ele>653</ele></trkpt>
+    <trkpt lat="49.157806" lon="19.501579"><ele>655</ele></trkpt>
+    <trkpt lat="49.158042" lon="19.502107"><ele>660</ele></trkpt>
+    <trkpt lat="49.158096" lon="19.502180"><ele>661</ele></trkpt>
+    <trkpt lat="49.158407" lon="19.502311"><ele>665</ele></trkpt>
+    <trkpt lat="49.158472" lon="19.502383"><ele>666</ele></trkpt>
+    <trkpt lat="49.158924" lon="19.503192"><ele>673</ele></trkpt>
+    <trkpt lat="49.159276" lon="19.503629"><ele>680</ele></trkpt>
+    <trkpt lat="49.159390" lon="19.503829"><ele>682</ele></trkpt>
+    <trkpt lat="49.159889" lon="19.504902"><ele>697</ele></trkpt>
+    <trkpt lat="49.160182" lon="19.505371"><ele>705</ele></trkpt>
+    <trkpt lat="49.160239" lon="19.505514"><ele>706</ele></trkpt>
+    <trkpt lat="49.160234" lon="19.506088"><ele>710</ele></trkpt>
+    <trkpt lat="49.160353" lon="19.506531"><ele>718</ele></trkpt>
+    <trkpt lat="49.160318" lon="19.506973"><ele>717</ele></trkpt>
+    <trkpt lat="49.160431" lon="19.507621"><ele>715</ele></trkpt>
+    <trkpt lat="49.160318" lon="19.506973"><ele>717</ele></trkpt>
+    <trkpt lat="49.160353" lon="19.506531"><ele>718</ele></trkpt>
+    <trkpt lat="49.160234" lon="19.506088"><ele>710</ele></trkpt>
+    <trkpt lat="49.160239" lon="19.505514"><ele>706</ele></trkpt>
+    <trkpt lat="49.160182" lon="19.505371"><ele>705</ele></trkpt>
+    <trkpt lat="49.159889" lon="19.504902"><ele>697</ele></trkpt>
+    <trkpt lat="49.159390" lon="19.503829"><ele>682</ele></trkpt>
+    <trkpt lat="49.159276" lon="19.503629"><ele>680</ele></trkpt>
+    <trkpt lat="49.158924" lon="19.503192"><ele>673</ele></trkpt>
+    <trkpt lat="49.158472" lon="19.502383"><ele>666</ele></trkpt>
+    <trkpt lat="49.158407" lon="19.502311"><ele>665</ele></trkpt>
+    <trkpt lat="49.158096" lon="19.502180"><ele>661</ele></trkpt>
+    <trkpt lat="49.158042" lon="19.502107"><ele>660</ele></trkpt>
+    <trkpt lat="49.157806" lon="19.501579"><ele>655</ele></trkpt>
+    <trkpt lat="49.157682" lon="19.501415"><ele>653</ele></trkpt>
+    <trkpt lat="49.156828" lon="19.500673"><ele>640</ele></trkpt>
+    <trkpt lat="49.156213" lon="19.499955"><ele>630</ele></trkpt>
+    <trkpt lat="49.155871" lon="19.499439"><ele>627</ele></trkpt>
+    <trkpt lat="49.155416" lon="19.498550"><ele>626</ele></trkpt>
+    <trkpt lat="49.155333" lon="19.498469"><ele>626</ele></trkpt>
+    <trkpt lat="49.154583" lon="19.498448"><ele>623</ele></trkpt>
+    <trkpt lat="49.153982" lon="19.498606"><ele>621</ele></trkpt>
+    <trkpt lat="49.153754" lon="19.498694"><ele>621</ele></trkpt>
+    <trkpt lat="49.153229" lon="19.499012"><ele>619</ele></trkpt>
+    <trkpt lat="49.152880" lon="19.499364"><ele>618</ele></trkpt>
+  </trkseg></trk>
+</gpx>
