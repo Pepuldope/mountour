@@ -1,6 +1,6 @@
 # Trip pipeline report
 
-Run: 2026-10-13T11:53:24+00:00 · OSM data: 2026-10-12T20:21:35Z
+Run: 2026-10-13T12:05:09+00:00 · OSM data: 2026-10-12T20:21:35Z
 
 **5050 trips**
 
