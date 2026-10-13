@@ -105,7 +105,8 @@ export function verdictText(plan: DayPlan): string {
   const m = Math.abs(plan.marginMin);
   switch (plan.verdict) {
     case "ok":
-      return `Stihnete to za svetla. Z túry budete späť ${formatDuration(m)} pred západom slnka.`;
+      // Hours of light to spare: how many exactly doesn't matter.
+      return m > 150 ? "Stihnete to za svetla." : `Stihnete to za svetla. Z túry budete späť ${formatDuration(m)} pred západom slnka.`;
     case "close":
       return `Stihnete to za svetla, späť ${formatDuration(m)} pred západom slnka. Rezerva je menej ako hodina.`;
     case "tight":
