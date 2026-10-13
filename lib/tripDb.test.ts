@@ -51,15 +51,15 @@ describe("trips from the database", () => {
   });
 
   it("lists trips nearest first from a town, the same from both sources", async () => {
-    const fromDb = await listTrips({ town: "zilina", date: "2027-04-01", limit: 500 });
+    const fromDb = await listTrips({ town: "zilina", date: "2027-04-01", limit: 5000 });
     const saved = db;
     db = null;
-    const fromFiles = await listTrips({ town: "zilina", date: "2027-04-01", limit: 500 });
+    const fromFiles = await listTrips({ town: "zilina", date: "2027-04-01", limit: 5000 });
     db = saved;
     expect(fromDb.source).toBe("databaza");
     expect(fromFiles.source).toBe("subory");
     expect(fromDb.trips).toEqual(fromFiles.trips);
-    expect(fromDb.trips.length).toBe(Math.min(500, (await getAllTrips()).filter((t) => !t.variant_of).length));
+    expect(fromDb.trips.length).toBe(Math.min(5000, (await getAllTrips()).filter((t) => !t.variant_of).length));
     const totals = fromDb.trips.map((t) => t.total_min ?? Infinity);
     expect(totals).toEqual([...totals].sort((a, b) => a - b));
     // Malá Fatra's spring closure covers Rozsutec on 1 April.

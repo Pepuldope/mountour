@@ -41,11 +41,11 @@ describe("trip data", () => {
     expect(closureRulesFor({ closure_rule_ids: [] })).toEqual([]);
   });
 
-  it("has a drive time from every town to every trip", async () => {
+  it("has a drive time from every town to every place (its main route)", async () => {
     const towns = getTowns();
     if (towns.length === 0) return;
     const minutes = await getTownDrives(towns[0].id);
-    expect(Object.keys(minutes).sort()).toEqual(trips.map((t) => t.slug).sort());
+    expect(Object.keys(minutes).sort()).toEqual(trips.filter((t) => !t.variant_of).map((t) => t.slug).sort());
     expect(await getTownDrives("no-such-town")).toEqual({});
   });
 

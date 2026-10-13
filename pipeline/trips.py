@@ -460,7 +460,8 @@ class TripBuilder:
                 # The page keeps its address (people saved and shared it); the hand-picked route moves.
                 self._set_slug(main, p["slug"])
                 self._set_slug(trip, PENDING)
-                main["name"], main["curated"] = d["name"], True
+                # Not hand-picked itself: the hand-picked route stays curated (the regression set).
+                main["name"] = d["name"]
         main["_score"] = 60
         main["_others"] = [r for r in [trip] + others if r is not main]
         return main
