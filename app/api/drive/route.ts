@@ -1,5 +1,6 @@
 import { roundCoord } from "@/lib/drive";
-import { driveRoute, finishDrive, simplifyLine, walkRoute } from "@/lib/routing";
+import { withEdgeCache } from "@/lib/edgeCache";
+import { RateLimited, driveRoute, finishDrive, simplifyLine, walkRoute } from "@/lib/routing";
 
 /**
  * GET /api/drive?from=lat,lon&to=lat,lon -> DriveRoute
@@ -15,6 +16,8 @@ const AREA = { minLat: 45, maxLat: 52, minLon: 12, maxLon: 25 };
 /** Simplify the drawn line to within this many metres of the road (small, so bends stay on the road when zoomed in). */
 const SHAPE_TOL_M = 2;
 const DAY_S = 86400;
+/** The router counts per minute: a few seconds' wait usually gets through. */
+const RETRY_S = 8;
 /** How far from a road a point may be and still be routed (to the nearest road). */
 const SNAP_M = 3000;
 /** The last stretch starts on a road and ends at the parking, both close to a way. */
@@ -37,16 +40,23 @@ export async function GET(req: Request) {
     return Response.json({ error: "from/to must be lat,lon in or near Slovakia" }, { status: 400 });
   }
 
-  try {
-    const key = process.env.ORS_API_KEY;
-    const road = await driveRoute(key, from, to, SNAP_M);
-    const full = await finishDrive(road, to, (a, b) => walkRoute(key, a, b, TAIL_SNAP_M));
-    const route = { ...full, points: simplifyLine(full.points, SHAPE_TOL_M) };
-    return Response.json(route, {
-      headers: { "Cache-Control": `public, s-maxage=${DAY_S}, stale-while-revalidate=${DAY_S}` },
-    });
-  } catch (err) {
-    console.error("drive route failed", err);
-    return Response.json({ error: "Trasu autom sa nepodarilo vypočítať." }, { status: 502 });
-  }
+  // Same places, same answer for everyone: Cloudflare keeps it a day, the router is asked once.
+  return withEdgeCache(req, DAY_S, async () => {
+    try {
+      const key = process.env.ORS_API_KEY;
+      const road = await driveRoute(key, from, to, SNAP_M);
+      const full = await finishDrive(road, to, (a, b) => walkRoute(key, a, b, TAIL_SNAP_M));
+      const route = { ...full, points: simplifyLine(full.points, SHAPE_TOL_M) };
+      return Response.json(route, {
+        headers: { "Cache-Control": `public, s-maxage=${DAY_S}, stale-while-revalidate=${DAY_S}` },
+      });
+    } catch (err) {
+      console.error("drive route failed", err);
+      // The router's per-minute limit: say when to ask again (the page waits and retries once).
+      if (err instanceof RateLimited) {
+        return Response.json({ error: "Trasu autom sa nepodarilo vypočítať." }, { status: 503, headers: { "Retry-After": String(RETRY_S) } });
+      }
+      return Response.json({ error: "Trasu autom sa nepodarilo vypočítať." }, { status: 502 });
+    }
+  });
 }
