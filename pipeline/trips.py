@@ -106,7 +106,7 @@ class TripBuilder:
 
     def _city_core(self, lat, lon):
         return any(
-            f.tags.get("place") == "city" and (_int(f.tags.get("population")) or 0) >= CITY_CORE_POP
+            f.tags.get("place") == "city" and _population(f.tags) >= CITY_CORE_POP
             and haversine(lat, lon, f.lat, f.lon) < CITY_CORE_M
             for f in self.osm.towns
         )
@@ -752,6 +752,13 @@ def _num(v):
         return float(str(v).replace(",", ".").split()[0].rstrip("m"))
     except (ValueError, IndexError):
         return None
+
+
+def _population(tags):
+    try:
+        return int(str(tags.get("population", "0")).replace(" ", "").replace(",", "").split(".")[0] or 0)
+    except ValueError:
+        return 0
 
 
 def _int(v):
