@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Pahor</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Pahor</name><trkseg>
+    <trkpt lat="48.962830" lon="20.844709"><ele>480</ele></trkpt>
+    <trkpt lat="48.962815" lon="20.844965"><ele>481</ele></trkpt>
+    <trkpt lat="48.962760" lon="20.845195"><ele>482</ele></trkpt>
+    <trkpt lat="48.962691" lon="20.845328"><ele>483</ele></trkpt>
+    <trkpt lat="48.962334" lon="20.845687"><ele>485</ele></trkpt>
+    <trkpt lat="48.961225" lon="20.848035"><ele>504</ele></trkpt>
+    <trkpt lat="48.960398" lon="20.849883"><ele>527</ele></trkpt>
+    <trkpt lat="48.960142" lon="20.850911"><ele>539</ele></trkpt>
+    <trkpt lat="48.960097" lon="20.851503"><ele>547</ele></trkpt>
+    <trkpt lat="48.960103" lon="20.851853"><ele>551</ele></trkpt>
+    <trkpt lat="48.960240" lon="20.852570"><ele>560</ele></trkpt>
+    <trkpt lat="48.960341" lon="20.852787"><ele>562</ele></trkpt>
+    <trkpt lat="48.960449" lon="20.852871"><ele>566</ele></trkpt>
+    <trkpt lat="48.961086" lon="20.853095"><ele>582</ele></trkpt>
+    <trkpt lat="48.961332" lon="20.853247"><ele>589</ele></trkpt>
+    <trkpt lat="48.962412" lon="20.854206"><ele>621</ele></trkpt>
+    <trkpt lat="48.963213" lon="20.855167"><ele>638</ele></trkpt>
+    <trkpt lat="48.963740" lon="20.855710"><ele>648</ele></trkpt>
+    <trkpt lat="48.964111" lon="20.855922"><ele>658</ele></trkpt>
+    <trkpt lat="48.963740" lon="20.855710"><ele>648</ele></trkpt>
+    <trkpt lat="48.963213" lon="20.855167"><ele>638</ele></trkpt>
+    <trkpt lat="48.962412" lon="20.854206"><ele>621</ele></trkpt>
+    <trkpt lat="48.961332" lon="20.853247"><ele>589</ele></trkpt>
+    <trkpt lat="48.961086" lon="20.853095"><ele>582</ele></trkpt>
+    <trkpt lat="48.960449" lon="20.852871"><ele>566</ele></trkpt>
+    <trkpt lat="48.960341" lon="20.852787"><ele>562</ele></trkpt>
+    <trkpt lat="48.960240" lon="20.852570"><ele>560</ele></trkpt>
+    <trkpt lat="48.960103" lon="20.851853"><ele>551</ele></trkpt>
+    <trkpt lat="48.960097" lon="20.851503"><ele>547</ele></trkpt>
+    <trkpt lat="48.960142" lon="20.850911"><ele>539</ele></trkpt>
+    <trkpt lat="48.960398" lon="20.849883"><ele>527</ele></trkpt>
+    <trkpt lat="48.961225" lon="20.848035"><ele>504</ele></trkpt>
+    <trkpt lat="48.962334" lon="20.845687"><ele>485</ele></trkpt>
+    <trkpt lat="48.962691" lon="20.845328"><ele>483</ele></trkpt>
+    <trkpt lat="48.962760" lon="20.845195"><ele>482</ele></trkpt>
+    <trkpt lat="48.962815" lon="20.844965"><ele>481</ele></trkpt>
+    <trkpt lat="48.962830" lon="20.844709"><ele>480</ele></trkpt>
+  </trkseg></trk>
+</gpx>

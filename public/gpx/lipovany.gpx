@@ -2,26 +2,8 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Lipovany</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Lipovany</name><trkseg>
-    <trkpt lat="48.271637" lon="19.683530"><ele>179</ele></trkpt>
-    <trkpt lat="48.270059" lon="19.685958"><ele>182</ele></trkpt>
-    <trkpt lat="48.269160" lon="19.687162"><ele>181</ele></trkpt>
-    <trkpt lat="48.268857" lon="19.687403"><ele>181</ele></trkpt>
-    <trkpt lat="48.268416" lon="19.687575"><ele>181</ele></trkpt>
-    <trkpt lat="48.266857" lon="19.688002"><ele>182</ele></trkpt>
-    <trkpt lat="48.264995" lon="19.688251"><ele>182</ele></trkpt>
-    <trkpt lat="48.262945" lon="19.688868"><ele>184</ele></trkpt>
-    <trkpt lat="48.261052" lon="19.689328"><ele>184</ele></trkpt>
-    <trkpt lat="48.260788" lon="19.689335"><ele>184</ele></trkpt>
-    <trkpt lat="48.259275" lon="19.688984"><ele>187</ele></trkpt>
-    <trkpt lat="48.258916" lon="19.688998"><ele>188</ele></trkpt>
-    <trkpt lat="48.258385" lon="19.689261"><ele>187</ele></trkpt>
-    <trkpt lat="48.250519" lon="19.693878"><ele>190</ele></trkpt>
-    <trkpt lat="48.250392" lon="19.694000"><ele>190</ele></trkpt>
-    <trkpt lat="48.250250" lon="19.694236"><ele>189</ele></trkpt>
-    <trkpt lat="48.249741" lon="19.695497"><ele>189</ele></trkpt>
-    <trkpt lat="48.249645" lon="19.695649"><ele>192</ele></trkpt>
-    <trkpt lat="48.248488" lon="19.696654"><ele>194</ele></trkpt>
-    <trkpt lat="48.246597" lon="19.698760"><ele>195</ele></trkpt>
+    <trkpt lat="48.246694" lon="19.698623"><ele>194</ele></trkpt>
+    <trkpt lat="48.246501" lon="19.698922"><ele>194</ele></trkpt>
     <trkpt lat="48.246194" lon="19.699534"><ele>193</ele></trkpt>
     <trkpt lat="48.245187" lon="19.701237"><ele>196</ele></trkpt>
     <trkpt lat="48.244596" lon="19.702554"><ele>199</ele></trkpt>
@@ -33,7 +15,7 @@
     <trkpt lat="48.238706" lon="19.709764"><ele>203</ele></trkpt>
     <trkpt lat="48.238129" lon="19.710066"><ele>199</ele></trkpt>
     <trkpt lat="48.237408" lon="19.710902"><ele>202</ele></trkpt>
-    <trkpt lat="48.237232" lon="19.711046"><ele>202</ele></trkpt>
+    <trkpt lat="48.237155" lon="19.711084"><ele>202</ele></trkpt>
     <trkpt lat="48.236990" lon="19.711136"><ele>202</ele></trkpt>
     <trkpt lat="48.236567" lon="19.711162"><ele>202</ele></trkpt>
     <trkpt lat="48.235241" lon="19.711167"><ele>204</ele></trkpt>
@@ -181,7 +163,7 @@
     <trkpt lat="48.235241" lon="19.711167"><ele>204</ele></trkpt>
     <trkpt lat="48.236567" lon="19.711162"><ele>202</ele></trkpt>
     <trkpt lat="48.236990" lon="19.711136"><ele>202</ele></trkpt>
-    <trkpt lat="48.237232" lon="19.711046"><ele>202</ele></trkpt>
+    <trkpt lat="48.237155" lon="19.711084"><ele>202</ele></trkpt>
     <trkpt lat="48.237408" lon="19.710902"><ele>202</ele></trkpt>
     <trkpt lat="48.238129" lon="19.710066"><ele>199</ele></trkpt>
     <trkpt lat="48.238706" lon="19.709764"><ele>203</ele></trkpt>
@@ -193,25 +175,7 @@
     <trkpt lat="48.244596" lon="19.702554"><ele>199</ele></trkpt>
     <trkpt lat="48.245187" lon="19.701237"><ele>196</ele></trkpt>
     <trkpt lat="48.246194" lon="19.699534"><ele>193</ele></trkpt>
-    <trkpt lat="48.246597" lon="19.698760"><ele>195</ele></trkpt>
-    <trkpt lat="48.248488" lon="19.696654"><ele>194</ele></trkpt>
-    <trkpt lat="48.249645" lon="19.695649"><ele>192</ele></trkpt>
-    <trkpt lat="48.249741" lon="19.695497"><ele>189</ele></trkpt>
-    <trkpt lat="48.250250" lon="19.694236"><ele>189</ele></trkpt>
-    <trkpt lat="48.250392" lon="19.694000"><ele>190</ele></trkpt>
-    <trkpt lat="48.250519" lon="19.693878"><ele>190</ele></trkpt>
-    <trkpt lat="48.258385" lon="19.689261"><ele>187</ele></trkpt>
-    <trkpt lat="48.258916" lon="19.688998"><ele>188</ele></trkpt>
-    <trkpt lat="48.259275" lon="19.688984"><ele>187</ele></trkpt>
-    <trkpt lat="48.260788" lon="19.689335"><ele>184</ele></trkpt>
-    <trkpt lat="48.261052" lon="19.689328"><ele>184</ele></trkpt>
-    <trkpt lat="48.262945" lon="19.688868"><ele>184</ele></trkpt>
-    <trkpt lat="48.264995" lon="19.688251"><ele>182</ele></trkpt>
-    <trkpt lat="48.266857" lon="19.688002"><ele>182</ele></trkpt>
-    <trkpt lat="48.268416" lon="19.687575"><ele>181</ele></trkpt>
-    <trkpt lat="48.268857" lon="19.687403"><ele>181</ele></trkpt>
-    <trkpt lat="48.269160" lon="19.687162"><ele>181</ele></trkpt>
-    <trkpt lat="48.270059" lon="19.685958"><ele>182</ele></trkpt>
-    <trkpt lat="48.271637" lon="19.683530"><ele>179</ele></trkpt>
+    <trkpt lat="48.246501" lon="19.698922"><ele>194</ele></trkpt>
+    <trkpt lat="48.246694" lon="19.698623"><ele>194</ele></trkpt>
   </trkseg></trk>
 </gpx>

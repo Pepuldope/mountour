@@ -2,32 +2,6 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Šopisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Šopisko</name><trkseg>
-    <trkpt lat="48.659533" lon="19.655453"><ele>932</ele></trkpt>
-    <trkpt lat="48.659627" lon="19.655665"><ele>932</ele></trkpt>
-    <trkpt lat="48.659692" lon="19.655920"><ele>931</ele></trkpt>
-    <trkpt lat="48.659560" lon="19.656197"><ele>930</ele></trkpt>
-    <trkpt lat="48.658707" lon="19.657668"><ele>925</ele></trkpt>
-    <trkpt lat="48.657290" lon="19.659616"><ele>907</ele></trkpt>
-    <trkpt lat="48.657068" lon="19.659855"><ele>907</ele></trkpt>
-    <trkpt lat="48.656298" lon="19.660506"><ele>894</ele></trkpt>
-    <trkpt lat="48.656109" lon="19.660706"><ele>896</ele></trkpt>
-    <trkpt lat="48.655840" lon="19.661088"><ele>894</ele></trkpt>
-    <trkpt lat="48.655704" lon="19.661382"><ele>887</ele></trkpt>
-    <trkpt lat="48.655521" lon="19.661920"><ele>880</ele></trkpt>
-    <trkpt lat="48.655477" lon="19.662164"><ele>879</ele></trkpt>
-    <trkpt lat="48.655445" lon="19.662740"><ele>876</ele></trkpt>
-    <trkpt lat="48.655463" lon="19.663447"><ele>871</ele></trkpt>
-    <trkpt lat="48.655766" lon="19.665141"><ele>860</ele></trkpt>
-    <trkpt lat="48.655789" lon="19.665591"><ele>857</ele></trkpt>
-    <trkpt lat="48.655774" lon="19.666075"><ele>853</ele></trkpt>
-    <trkpt lat="48.655703" lon="19.666513"><ele>848</ele></trkpt>
-    <trkpt lat="48.655595" lon="19.666899"><ele>848</ele></trkpt>
-    <trkpt lat="48.654465" lon="19.669816"><ele>824</ele></trkpt>
-    <trkpt lat="48.654089" lon="19.670596"><ele>821</ele></trkpt>
-    <trkpt lat="48.652425" lon="19.673071"><ele>800</ele></trkpt>
-    <trkpt lat="48.651962" lon="19.673921"><ele>797</ele></trkpt>
-    <trkpt lat="48.651029" lon="19.676028"><ele>791</ele></trkpt>
-    <trkpt lat="48.650660" lon="19.676780"><ele>788</ele></trkpt>
     <trkpt lat="48.649956" lon="19.678032"><ele>782</ele></trkpt>
     <trkpt lat="48.650147" lon="19.678189"><ele>783</ele></trkpt>
     <trkpt lat="48.650506" lon="19.678364"><ele>785</ele></trkpt>
@@ -285,31 +259,5 @@
     <trkpt lat="48.650506" lon="19.678364"><ele>785</ele></trkpt>
     <trkpt lat="48.650147" lon="19.678189"><ele>783</ele></trkpt>
     <trkpt lat="48.649956" lon="19.678032"><ele>782</ele></trkpt>
-    <trkpt lat="48.650660" lon="19.676780"><ele>788</ele></trkpt>
-    <trkpt lat="48.651029" lon="19.676028"><ele>791</ele></trkpt>
-    <trkpt lat="48.651962" lon="19.673921"><ele>797</ele></trkpt>
-    <trkpt lat="48.652425" lon="19.673071"><ele>800</ele></trkpt>
-    <trkpt lat="48.654089" lon="19.670596"><ele>821</ele></trkpt>
-    <trkpt lat="48.654465" lon="19.669816"><ele>824</ele></trkpt>
-    <trkpt lat="48.655595" lon="19.666899"><ele>848</ele></trkpt>
-    <trkpt lat="48.655703" lon="19.666513"><ele>848</ele></trkpt>
-    <trkpt lat="48.655774" lon="19.666075"><ele>853</ele></trkpt>
-    <trkpt lat="48.655789" lon="19.665591"><ele>857</ele></trkpt>
-    <trkpt lat="48.655766" lon="19.665141"><ele>860</ele></trkpt>
-    <trkpt lat="48.655463" lon="19.663447"><ele>871</ele></trkpt>
-    <trkpt lat="48.655445" lon="19.662740"><ele>876</ele></trkpt>
-    <trkpt lat="48.655477" lon="19.662164"><ele>879</ele></trkpt>
-    <trkpt lat="48.655521" lon="19.661920"><ele>880</ele></trkpt>
-    <trkpt lat="48.655704" lon="19.661382"><ele>887</ele></trkpt>
-    <trkpt lat="48.655840" lon="19.661088"><ele>894</ele></trkpt>
-    <trkpt lat="48.656109" lon="19.660706"><ele>896</ele></trkpt>
-    <trkpt lat="48.656298" lon="19.660506"><ele>894</ele></trkpt>
-    <trkpt lat="48.657068" lon="19.659855"><ele>907</ele></trkpt>
-    <trkpt lat="48.657290" lon="19.659616"><ele>907</ele></trkpt>
-    <trkpt lat="48.658707" lon="19.657668"><ele>925</ele></trkpt>
-    <trkpt lat="48.659560" lon="19.656197"><ele>930</ele></trkpt>
-    <trkpt lat="48.659692" lon="19.655920"><ele>931</ele></trkpt>
-    <trkpt lat="48.659627" lon="19.655665"><ele>932</ele></trkpt>
-    <trkpt lat="48.659533" lon="19.655453"><ele>932</ele></trkpt>
   </trkseg></trk>
 </gpx>

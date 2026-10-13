@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Šípka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Šípka</name><trkseg>
+    <trkpt lat="48.159582" lon="18.978156"><ele>150</ele></trkpt>
+    <trkpt lat="48.159864" lon="18.978015"><ele>150</ele></trkpt>
+    <trkpt lat="48.160111" lon="18.977752"><ele>154</ele></trkpt>
+    <trkpt lat="48.160730" lon="18.977227"><ele>160</ele></trkpt>
+    <trkpt lat="48.160987" lon="18.977160"><ele>161</ele></trkpt>
+    <trkpt lat="48.160990" lon="18.977498"><ele>161</ele></trkpt>
+    <trkpt lat="48.161068" lon="18.978471"><ele>168</ele></trkpt>
+    <trkpt lat="48.161322" lon="18.979749"><ele>178</ele></trkpt>
+    <trkpt lat="48.161994" lon="18.980700"><ele>191</ele></trkpt>
+    <trkpt lat="48.162321" lon="18.981302"><ele>203</ele></trkpt>
+    <trkpt lat="48.162619" lon="18.981764"><ele>213</ele></trkpt>
+    <trkpt lat="48.162751" lon="18.981907"><ele>215</ele></trkpt>
+    <trkpt lat="48.163665" lon="18.982498"><ele>222</ele></trkpt>
+    <trkpt lat="48.164890" lon="18.982973"><ele>232</ele></trkpt>
+    <trkpt lat="48.165305" lon="18.983082"><ele>234</ele></trkpt>
+    <trkpt lat="48.165417" lon="18.983409"><ele>242</ele></trkpt>
+    <trkpt lat="48.165807" lon="18.985750"><ele>259</ele></trkpt>
+    <trkpt lat="48.166466" lon="18.988032"><ele>283</ele></trkpt>
+    <trkpt lat="48.167025" lon="18.988537"><ele>286</ele></trkpt>
+    <trkpt lat="48.167549" lon="18.989075"><ele>290</ele></trkpt>
+    <trkpt lat="48.167025" lon="18.988537"><ele>286</ele></trkpt>
+    <trkpt lat="48.166466" lon="18.988032"><ele>283</ele></trkpt>
+    <trkpt lat="48.165807" lon="18.985750"><ele>259</ele></trkpt>
+    <trkpt lat="48.165417" lon="18.983409"><ele>242</ele></trkpt>
+    <trkpt lat="48.165305" lon="18.983082"><ele>234</ele></trkpt>
+    <trkpt lat="48.164890" lon="18.982973"><ele>232</ele></trkpt>
+    <trkpt lat="48.163665" lon="18.982498"><ele>222</ele></trkpt>
+    <trkpt lat="48.162751" lon="18.981907"><ele>215</ele></trkpt>
+    <trkpt lat="48.162619" lon="18.981764"><ele>213</ele></trkpt>
+    <trkpt lat="48.162321" lon="18.981302"><ele>203</ele></trkpt>
+    <trkpt lat="48.161994" lon="18.980700"><ele>191</ele></trkpt>
+    <trkpt lat="48.161322" lon="18.979749"><ele>178</ele></trkpt>
+    <trkpt lat="48.161068" lon="18.978471"><ele>168</ele></trkpt>
+    <trkpt lat="48.160990" lon="18.977498"><ele>161</ele></trkpt>
+    <trkpt lat="48.160987" lon="18.977160"><ele>161</ele></trkpt>
+    <trkpt lat="48.160730" lon="18.977227"><ele>160</ele></trkpt>
+    <trkpt lat="48.160111" lon="18.977752"><ele>154</ele></trkpt>
+    <trkpt lat="48.159864" lon="18.978015"><ele>150</ele></trkpt>
+    <trkpt lat="48.159582" lon="18.978156"><ele>150</ele></trkpt>
+  </trkseg></trk>
+</gpx>

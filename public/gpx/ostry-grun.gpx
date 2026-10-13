@@ -2,16 +2,10 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Ostrý grúň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Ostrý grúň</name><trkseg>
-    <trkpt lat="49.258128" lon="19.622117"><ele>778</ele></trkpt>
-    <trkpt lat="49.258706" lon="19.624258"><ele>784</ele></trkpt>
-    <trkpt lat="49.258964" lon="19.626200"><ele>787</ele></trkpt>
-    <trkpt lat="49.259108" lon="19.627732"><ele>794</ele></trkpt>
-    <trkpt lat="49.259159" lon="19.628023"><ele>792</ele></trkpt>
     <trkpt lat="49.259769" lon="19.629224"><ele>793</ele></trkpt>
-    <trkpt lat="49.259365" lon="19.631634"><ele>799</ele></trkpt>
+    <trkpt lat="49.259260" lon="19.632223"><ele>800</ele></trkpt>
     <trkpt lat="49.259193" lon="19.632509"><ele>801</ele></trkpt>
     <trkpt lat="49.259021" lon="19.632894"><ele>802</ele></trkpt>
-    <trkpt lat="49.258823" lon="19.633232"><ele>803</ele></trkpt>
     <trkpt lat="49.257943" lon="19.634577"><ele>808</ele></trkpt>
     <trkpt lat="49.257526" lon="19.634915"><ele>810</ele></trkpt>
     <trkpt lat="49.257259" lon="19.635203"><ele>811</ele></trkpt>
@@ -28,7 +22,7 @@
     <trkpt lat="49.251343" lon="19.644611"><ele>862</ele></trkpt>
     <trkpt lat="49.250933" lon="19.644692"><ele>865</ele></trkpt>
     <trkpt lat="49.248113" lon="19.644938"><ele>890</ele></trkpt>
-    <trkpt lat="49.247257" lon="19.645130"><ele>898</ele></trkpt>
+    <trkpt lat="49.247128" lon="19.645137"><ele>899</ele></trkpt>
     <trkpt lat="49.244674" lon="19.645078"><ele>924</ele></trkpt>
     <trkpt lat="49.243654" lon="19.645000"><ele>944</ele></trkpt>
     <trkpt lat="49.243528" lon="19.644915"><ele>950</ele></trkpt>
@@ -100,7 +94,7 @@
     <trkpt lat="49.243528" lon="19.644915"><ele>950</ele></trkpt>
     <trkpt lat="49.243654" lon="19.645000"><ele>944</ele></trkpt>
     <trkpt lat="49.244674" lon="19.645078"><ele>924</ele></trkpt>
-    <trkpt lat="49.247257" lon="19.645130"><ele>898</ele></trkpt>
+    <trkpt lat="49.247128" lon="19.645137"><ele>899</ele></trkpt>
     <trkpt lat="49.248113" lon="19.644938"><ele>890</ele></trkpt>
     <trkpt lat="49.250933" lon="19.644692"><ele>865</ele></trkpt>
     <trkpt lat="49.251343" lon="19.644611"><ele>862</ele></trkpt>
@@ -117,15 +111,9 @@
     <trkpt lat="49.257259" lon="19.635203"><ele>811</ele></trkpt>
     <trkpt lat="49.257526" lon="19.634915"><ele>810</ele></trkpt>
     <trkpt lat="49.257943" lon="19.634577"><ele>808</ele></trkpt>
-    <trkpt lat="49.258823" lon="19.633232"><ele>803</ele></trkpt>
     <trkpt lat="49.259021" lon="19.632894"><ele>802</ele></trkpt>
     <trkpt lat="49.259193" lon="19.632509"><ele>801</ele></trkpt>
-    <trkpt lat="49.259365" lon="19.631634"><ele>799</ele></trkpt>
+    <trkpt lat="49.259260" lon="19.632223"><ele>800</ele></trkpt>
     <trkpt lat="49.259769" lon="19.629224"><ele>793</ele></trkpt>
-    <trkpt lat="49.259159" lon="19.628023"><ele>792</ele></trkpt>
-    <trkpt lat="49.259108" lon="19.627732"><ele>794</ele></trkpt>
-    <trkpt lat="49.258964" lon="19.626200"><ele>787</ele></trkpt>
-    <trkpt lat="49.258706" lon="19.624258"><ele>784</ele></trkpt>
-    <trkpt lat="49.258128" lon="19.622117"><ele>778</ele></trkpt>
   </trkseg></trk>
 </gpx>

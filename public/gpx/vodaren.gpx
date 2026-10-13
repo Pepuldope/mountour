@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Vodáreň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vodáreň</name><trkseg>
+    <trkpt lat="48.590628" lon="18.867624"><ele>254</ele></trkpt>
+    <trkpt lat="48.593507" lon="18.866285"><ele>282</ele></trkpt>
+    <trkpt lat="48.593711" lon="18.866250"><ele>285</ele></trkpt>
+    <trkpt lat="48.594726" lon="18.866296"><ele>293</ele></trkpt>
+    <trkpt lat="48.595497" lon="18.866437"><ele>298</ele></trkpt>
+    <trkpt lat="48.595637" lon="18.866599"><ele>300</ele></trkpt>
+    <trkpt lat="48.595653" lon="18.866716"><ele>301</ele></trkpt>
+    <trkpt lat="48.595899" lon="18.867453"><ele>317</ele></trkpt>
+    <trkpt lat="48.596267" lon="18.868017"><ele>329</ele></trkpt>
+    <trkpt lat="48.596480" lon="18.869032"><ele>345</ele></trkpt>
+    <trkpt lat="48.596540" lon="18.870243"><ele>349</ele></trkpt>
+    <trkpt lat="48.596344" lon="18.870662"><ele>352</ele></trkpt>
+    <trkpt lat="48.596216" lon="18.871212"><ele>355</ele></trkpt>
+    <trkpt lat="48.596276" lon="18.871401"><ele>357</ele></trkpt>
+    <trkpt lat="48.596570" lon="18.871775"><ele>362</ele></trkpt>
+    <trkpt lat="48.596659" lon="18.871949"><ele>364</ele></trkpt>
+    <trkpt lat="48.596865" lon="18.872633"><ele>370</ele></trkpt>
+    <trkpt lat="48.597029" lon="18.872662"><ele>370</ele></trkpt>
+    <trkpt lat="48.597303" lon="18.872812"><ele>371</ele></trkpt>
+    <trkpt lat="48.597381" lon="18.872816"><ele>371</ele></trkpt>
+    <trkpt lat="48.597594" lon="18.872700"><ele>373</ele></trkpt>
+    <trkpt lat="48.597755" lon="18.872512"><ele>374</ele></trkpt>
+    <trkpt lat="48.597926" lon="18.872415"><ele>376</ele></trkpt>
+    <trkpt lat="48.598607" lon="18.872349"><ele>382</ele></trkpt>
+    <trkpt lat="48.599269" lon="18.871844"><ele>386</ele></trkpt>
+    <trkpt lat="48.598607" lon="18.872349"><ele>382</ele></trkpt>
+    <trkpt lat="48.597926" lon="18.872415"><ele>376</ele></trkpt>
+    <trkpt lat="48.597755" lon="18.872512"><ele>374</ele></trkpt>
+    <trkpt lat="48.597594" lon="18.872700"><ele>373</ele></trkpt>
+    <trkpt lat="48.597381" lon="18.872816"><ele>371</ele></trkpt>
+    <trkpt lat="48.597303" lon="18.872812"><ele>371</ele></trkpt>
+    <trkpt lat="48.597029" lon="18.872662"><ele>370</ele></trkpt>
+    <trkpt lat="48.596865" lon="18.872633"><ele>370</ele></trkpt>
+    <trkpt lat="48.596659" lon="18.871949"><ele>364</ele></trkpt>
+    <trkpt lat="48.596570" lon="18.871775"><ele>362</ele></trkpt>
+    <trkpt lat="48.596276" lon="18.871401"><ele>357</ele></trkpt>
+    <trkpt lat="48.596216" lon="18.871212"><ele>355</ele></trkpt>
+    <trkpt lat="48.596344" lon="18.870662"><ele>352</ele></trkpt>
+    <trkpt lat="48.596540" lon="18.870243"><ele>349</ele></trkpt>
+    <trkpt lat="48.596480" lon="18.869032"><ele>345</ele></trkpt>
+    <trkpt lat="48.596267" lon="18.868017"><ele>329</ele></trkpt>
+    <trkpt lat="48.595899" lon="18.867453"><ele>317</ele></trkpt>
+    <trkpt lat="48.595653" lon="18.866716"><ele>301</ele></trkpt>
+    <trkpt lat="48.595637" lon="18.866599"><ele>300</ele></trkpt>
+    <trkpt lat="48.595497" lon="18.866437"><ele>298</ele></trkpt>
+    <trkpt lat="48.594726" lon="18.866296"><ele>293</ele></trkpt>
+    <trkpt lat="48.593711" lon="18.866250"><ele>285</ele></trkpt>
+    <trkpt lat="48.593507" lon="18.866285"><ele>282</ele></trkpt>
+    <trkpt lat="48.590628" lon="18.867624"><ele>254</ele></trkpt>
+  </trkseg></trk>
+</gpx>

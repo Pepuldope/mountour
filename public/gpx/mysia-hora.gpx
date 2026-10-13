@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Myšia hora</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Myšia hora</name><trkseg>
+    <trkpt lat="48.445126" lon="18.863276"><ele>819</ele></trkpt>
+    <trkpt lat="48.445095" lon="18.862939"><ele>818</ele></trkpt>
+    <trkpt lat="48.445106" lon="18.862393"><ele>819</ele></trkpt>
+    <trkpt lat="48.445315" lon="18.861409"><ele>820</ele></trkpt>
+    <trkpt lat="48.445215" lon="18.860292"><ele>831</ele></trkpt>
+    <trkpt lat="48.445148" lon="18.860067"><ele>829</ele></trkpt>
+    <trkpt lat="48.444786" lon="18.859386"><ele>821</ele></trkpt>
+    <trkpt lat="48.444664" lon="18.858949"><ele>818</ele></trkpt>
+    <trkpt lat="48.444162" lon="18.857684"><ele>808</ele></trkpt>
+    <trkpt lat="48.444041" lon="18.856988"><ele>811</ele></trkpt>
+    <trkpt lat="48.443801" lon="18.856531"><ele>816</ele></trkpt>
+    <trkpt lat="48.443627" lon="18.856065"><ele>822</ele></trkpt>
+    <trkpt lat="48.443550" lon="18.855726"><ele>828</ele></trkpt>
+    <trkpt lat="48.443510" lon="18.855047"><ele>839</ele></trkpt>
+    <trkpt lat="48.443388" lon="18.854618"><ele>844</ele></trkpt>
+    <trkpt lat="48.443264" lon="18.854342"><ele>844</ele></trkpt>
+    <trkpt lat="48.443026" lon="18.853997"><ele>843</ele></trkpt>
+    <trkpt lat="48.442955" lon="18.853816"><ele>842</ele></trkpt>
+    <trkpt lat="48.442887" lon="18.853443"><ele>843</ele></trkpt>
+    <trkpt lat="48.442669" lon="18.852703"><ele>848</ele></trkpt>
+    <trkpt lat="48.442600" lon="18.851959"><ele>843</ele></trkpt>
+    <trkpt lat="48.442587" lon="18.851429"><ele>838</ele></trkpt>
+    <trkpt lat="48.442378" lon="18.850560"><ele>827</ele></trkpt>
+    <trkpt lat="48.442252" lon="18.850360"><ele>825</ele></trkpt>
+    <trkpt lat="48.442045" lon="18.850306"><ele>822</ele></trkpt>
+    <trkpt lat="48.441193" lon="18.849930"><ele>824</ele></trkpt>
+    <trkpt lat="48.440669" lon="18.849567"><ele>835</ele></trkpt>
+    <trkpt lat="48.440289" lon="18.849436"><ele>839</ele></trkpt>
+    <trkpt lat="48.440232" lon="18.849329"><ele>838</ele></trkpt>
+    <trkpt lat="48.440289" lon="18.849436"><ele>839</ele></trkpt>
+    <trkpt lat="48.440669" lon="18.849567"><ele>835</ele></trkpt>
+    <trkpt lat="48.441193" lon="18.849930"><ele>824</ele></trkpt>
+    <trkpt lat="48.442045" lon="18.850306"><ele>822</ele></trkpt>
+    <trkpt lat="48.442252" lon="18.850360"><ele>825</ele></trkpt>
+    <trkpt lat="48.442378" lon="18.850560"><ele>827</ele></trkpt>
+    <trkpt lat="48.442587" lon="18.851429"><ele>838</ele></trkpt>
+    <trkpt lat="48.442600" lon="18.851959"><ele>843</ele></trkpt>
+    <trkpt lat="48.442669" lon="18.852703"><ele>848</ele></trkpt>
+    <trkpt lat="48.442887" lon="18.853443"><ele>843</ele></trkpt>
+    <trkpt lat="48.442955" lon="18.853816"><ele>842</ele></trkpt>
+    <trkpt lat="48.443026" lon="18.853997"><ele>843</ele></trkpt>
+    <trkpt lat="48.443264" lon="18.854342"><ele>844</ele></trkpt>
+    <trkpt lat="48.443388" lon="18.854618"><ele>844</ele></trkpt>
+    <trkpt lat="48.443510" lon="18.855047"><ele>839</ele></trkpt>
+    <trkpt lat="48.443550" lon="18.855726"><ele>828</ele></trkpt>
+    <trkpt lat="48.443627" lon="18.856065"><ele>822</ele></trkpt>
+    <trkpt lat="48.443801" lon="18.856531"><ele>816</ele></trkpt>
+    <trkpt lat="48.444041" lon="18.856988"><ele>811</ele></trkpt>
+    <trkpt lat="48.444162" lon="18.857684"><ele>808</ele></trkpt>
+    <trkpt lat="48.444664" lon="18.858949"><ele>818</ele></trkpt>
+    <trkpt lat="48.444786" lon="18.859386"><ele>821</ele></trkpt>
+    <trkpt lat="48.445148" lon="18.860067"><ele>829</ele></trkpt>
+    <trkpt lat="48.445215" lon="18.860292"><ele>831</ele></trkpt>
+    <trkpt lat="48.445315" lon="18.861409"><ele>820</ele></trkpt>
+    <trkpt lat="48.445106" lon="18.862393"><ele>819</ele></trkpt>
+    <trkpt lat="48.445095" lon="18.862939"><ele>818</ele></trkpt>
+    <trkpt lat="48.445126" lon="18.863276"><ele>819</ele></trkpt>
+  </trkseg></trk>
+</gpx>

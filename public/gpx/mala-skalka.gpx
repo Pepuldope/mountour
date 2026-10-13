@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Malá Skalka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Malá Skalka</name><trkseg>
+    <trkpt lat="48.331292" lon="18.097697"><ele>232</ele></trkpt>
+    <trkpt lat="48.331679" lon="18.097856"><ele>234</ele></trkpt>
+    <trkpt lat="48.331741" lon="18.097991"><ele>234</ele></trkpt>
+    <trkpt lat="48.332244" lon="18.097936"><ele>238</ele></trkpt>
+    <trkpt lat="48.332942" lon="18.098097"><ele>248</ele></trkpt>
+    <trkpt lat="48.333238" lon="18.098107"><ele>251</ele></trkpt>
+    <trkpt lat="48.333817" lon="18.098106"><ele>257</ele></trkpt>
+    <trkpt lat="48.333842" lon="18.098022"><ele>257</ele></trkpt>
+    <trkpt lat="48.334086" lon="18.098150"><ele>261</ele></trkpt>
+    <trkpt lat="48.334326" lon="18.098204"><ele>265</ele></trkpt>
+    <trkpt lat="48.335921" lon="18.098433"><ele>287</ele></trkpt>
+    <trkpt lat="48.336366" lon="18.098599"><ele>295</ele></trkpt>
+    <trkpt lat="48.336552" lon="18.098561"><ele>299</ele></trkpt>
+    <trkpt lat="48.337327" lon="18.099089"><ele>320</ele></trkpt>
+    <trkpt lat="48.337438" lon="18.099108"><ele>321</ele></trkpt>
+    <trkpt lat="48.337730" lon="18.099030"><ele>328</ele></trkpt>
+    <trkpt lat="48.338017" lon="18.099142"><ele>339</ele></trkpt>
+    <trkpt lat="48.339484" lon="18.097925"><ele>357</ele></trkpt>
+    <trkpt lat="48.340006" lon="18.097259"><ele>363</ele></trkpt>
+    <trkpt lat="48.340548" lon="18.096852"><ele>375</ele></trkpt>
+    <trkpt lat="48.341083" lon="18.096575"><ele>388</ele></trkpt>
+    <trkpt lat="48.340548" lon="18.096852"><ele>375</ele></trkpt>
+    <trkpt lat="48.340006" lon="18.097259"><ele>363</ele></trkpt>
+    <trkpt lat="48.339484" lon="18.097925"><ele>357</ele></trkpt>
+    <trkpt lat="48.338017" lon="18.099142"><ele>339</ele></trkpt>
+    <trkpt lat="48.337730" lon="18.099030"><ele>328</ele></trkpt>
+    <trkpt lat="48.337438" lon="18.099108"><ele>321</ele></trkpt>
+    <trkpt lat="48.337327" lon="18.099089"><ele>320</ele></trkpt>
+    <trkpt lat="48.336552" lon="18.098561"><ele>299</ele></trkpt>
+    <trkpt lat="48.336366" lon="18.098599"><ele>295</ele></trkpt>
+    <trkpt lat="48.335921" lon="18.098433"><ele>287</ele></trkpt>
+    <trkpt lat="48.334326" lon="18.098204"><ele>265</ele></trkpt>
+    <trkpt lat="48.334086" lon="18.098150"><ele>261</ele></trkpt>
+    <trkpt lat="48.333842" lon="18.098022"><ele>257</ele></trkpt>
+    <trkpt lat="48.333817" lon="18.098106"><ele>257</ele></trkpt>
+    <trkpt lat="48.333238" lon="18.098107"><ele>251</ele></trkpt>
+    <trkpt lat="48.332942" lon="18.098097"><ele>248</ele></trkpt>
+    <trkpt lat="48.332244" lon="18.097936"><ele>238</ele></trkpt>
+    <trkpt lat="48.331741" lon="18.097991"><ele>234</ele></trkpt>
+    <trkpt lat="48.331679" lon="18.097856"><ele>234</ele></trkpt>
+    <trkpt lat="48.331292" lon="18.097697"><ele>232</ele></trkpt>
+  </trkseg></trk>
+</gpx>
