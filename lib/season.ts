@@ -48,6 +48,8 @@ interface SceneOptions {
   drop?: number;
   /** Prefix for gradient ids, unique per scene on the page. */
   id: string;
+  /** Leave the sun out when it is drawn separately (the home header's pull-to-refresh sun). */
+  noSun?: boolean;
 }
 
 const r1 = (n: number) => n.toFixed(1);
@@ -78,13 +80,13 @@ export function sceneSvg(season: Season, w: number, h: number, o: SceneOptions):
 
   let out = `<defs><linearGradient id="${o.id}-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${L.sky1}"/><stop offset="1" stop-color="${L.sky2}"/></linearGradient></defs>`;
   out += `<rect width="${w}" height="${h}" fill="url(#${o.id}-sky)"/>`;
-  if (season === "leto") {
+  if (season === "leto" && !o.noSun) {
     for (let i = 0; i < 12; i++) {
       const a = (i * Math.PI) / 6;
       out += `<line x1="${r1(sx + Math.cos(a) * (sunR + 3))}" y1="${r1(sy + Math.sin(a) * (sunR + 3))}" x2="${r1(sx + Math.cos(a) * (sunR + 10))}" y2="${r1(sy + Math.sin(a) * (sunR + 10))}" stroke="#ffb000" stroke-width="2.2" stroke-linecap="round" opacity=".75"/>`;
     }
   }
-  out += `<circle cx="${r1(sx)}" cy="${r1(sy)}" r="${r1(sunR + 6)}" fill="#ffd36b" opacity=".35"/><circle cx="${r1(sx)}" cy="${r1(sy)}" r="${r1(sunR)}" fill="${L.sun}"/>`;
+  if (!o.noSun) out += `<circle cx="${r1(sx)}" cy="${r1(sy)}" r="${r1(sunR + 6)}" fill="#ffd36b" opacity=".35"/><circle cx="${r1(sx)}" cy="${r1(sy)}" r="${r1(sunR)}" fill="${L.sun}"/>`;
 
   const f1: [number, number, number, number] = [-20, w * 0.62, h * (0.38 + D), h * (0.66 + D * 0.6)];
   const f2: [number, number, number, number] = [w * 0.38, w + 30, h * (0.44 + D), h * (0.68 + D * 0.6)];
