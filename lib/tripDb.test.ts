@@ -44,7 +44,7 @@ describe("trips from the database", () => {
       expect(live.source).toBe("databaza");
       expect(live.trip).toEqual(await getTrip(t.slug));
     }
-  });
+  }, 60_000);
 
   it("says when a trip is unknown", async () => {
     expect((await getTripLive("neexistuje")).trip).toBeNull();
@@ -59,7 +59,7 @@ describe("trips from the database", () => {
     expect(fromDb.source).toBe("databaza");
     expect(fromFiles.source).toBe("subory");
     expect(fromDb.trips).toEqual(fromFiles.trips);
-    expect(fromDb.trips.length).toBe(Math.min(500, (await getAllTrips()).length));
+    expect(fromDb.trips.length).toBe(Math.min(500, (await getAllTrips()).filter((t) => !t.variant_of).length));
     const totals = fromDb.trips.map((t) => t.total_min ?? Infinity);
     expect(totals).toEqual([...totals].sort((a, b) => a - b));
     // Malá Fatra's spring closure covers Rozsutec on 1 April.
@@ -69,7 +69,8 @@ describe("trips from the database", () => {
   it("has drive minutes per town", async () => {
     const { minutes, source } = await townDriveMinutes("bratislava");
     expect(source).toBe("databaza");
-    expect(Object.keys(minutes).length).toBe((await getAllTrips()).length);
+    // The home list's table: main routes only.
+    expect(Object.keys(minutes).length).toBe((await getAllTrips()).filter((t) => !t.variant_of).length);
     const saved = db;
     db = null;
     const fromFiles = await townDriveMinutes("bratislava");

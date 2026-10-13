@@ -220,7 +220,8 @@ def build_sql(root=ROOT):
         places.append((len(places) + 1, p["name"] or "", kind, p["location"]["lat"], p["location"]["lon"], p.get("ele_m"), p.get("osm")))
         return len(places)
 
-    for tid, summary in enumerate(index["trips"], start=1):
+    # Main trips first: town_drive arrays hold only them (other routes have no drive times).
+    for tid, summary in enumerate(sorted(index["trips"], key=lambda t: bool(t.get("variant_of"))), start=1):
         detail = json.loads((tdir / f"{summary['slug']}.json").read_text())
         rid = regions.setdefault(summary["region"], (len(regions) + 1, summary["region_name"]))[0]
         aid = None
@@ -261,7 +262,8 @@ def build_sql(root=ROOT):
                 len(fees) + 1, f["kind"], f["text"], f.get("amount_eur"), f["source"], f.get("source_url"), f.get("rule_id")))[0]
             trip_fees.append((tid, fid))
 
-    order = [t[1] for t in trips]  # trip ids are 1..n in this order
+    n_main = sum(1 for t in index["trips"] if not t.get("variant_of"))
+    order = [t[1] for t in trips][:n_main]  # main trip ids are 1..n_main in this order
     towns = [(i, t["id"], t["name"], t["location"]["lat"], t["location"]["lon"]) for i, t in enumerate(town_list, start=1)]
     drive_rows = []
     for town_i, t in enumerate(town_list, start=1):

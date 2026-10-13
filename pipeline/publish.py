@@ -55,7 +55,7 @@ def write(root, trips, dem, drive, slugs, report, osm_data_at, now=None):
         for f in ddir.glob("*.json"):
             if f.stem not in ids:
                 f.unlink()
-        slugs_order = [t["slug"] for t in trips]
+        slugs_order = [t["slug"] for t in trips if not t.get("variant_of")]  # main routes, as run.py routed them
         for town, mrow, krow in zip(towns, minutes, km):
             _dump(ddir / f"{town['id']}.json", dict(
                 version=1, generated_at=now, town=town["id"],
@@ -145,5 +145,5 @@ def _report(trips, rep, now, osm_at, drive):
     if drive is not None:
         towns, minutes, _km, _ = drive
         missing = sum(1 for row in minutes for v in row if v is None)
-        L += ["", f"Drive table: {len(towns)} towns x {len(trips)} trips, {missing} pairs without a route."]
+        L += ["", f"Drive table: {len(towns)} towns x {len(minutes[0]) if minutes else 0} main trips, {missing} pairs without a route."]
     return "\n".join(L) + "\n"

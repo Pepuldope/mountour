@@ -221,9 +221,20 @@ class TripBuilder:
             t.pop("_extra", None)
         self._rank(trips)
         primary_rank = {t["slug"]: t["rank"] for t in trips}
+        by_slug = {t["slug"]: t for t in trips}
+        # "Cez Pajštún": the route passes another place people go to (a goal of a known trip).
+        # Plain huts and viewpoints along the way are often cottages or nameless spots, so not those.
+        goals = {t["destination"]["osm"]: t["destination"]["name"] for t in trips
+                 if t["destination"]["osm"] and t["rank"] >= 40}
         for v in variants:
             v.pop("_score", None)
+            main = by_slug[v["variant_of"]]
             v["rank"] = primary_rank[v["variant_of"]]
+            on_main = {p["osm"] for p in main["pois"]}
+            via = next((goals[p["osm"]] for p in v["pois"] if p["osm"] in goals and p["osm"] not in on_main
+                        and goals[p["osm"]] != v["destination"]["name"] and len(goals[p["osm"]]) <= 26), None)
+            if via:
+                v["route_label"] = f"Cez {via}"
         self.report["variants"] = len(variants)
         return trips + variants
 
@@ -350,14 +361,16 @@ class TripBuilder:
         when another route has parking."""
         with_parking = [r for r in routes if r["parking"]] or routes
         shortest = min(r["duration_min"] for r in with_parking)
-        ok = [r for r in with_parking if r["duration_min"] <= max(2 * shortest, shortest + 90)]
+        # A big car park at an aquapark must not send people on a walk two hours longer (Veľký Choč).
+        ok = [r for r in with_parking if r["duration_min"] <= min(1.5 * shortest, shortest + 60)]
         return max(ok, key=lambda r: (r["_known"] - (r["duration_min"] - shortest) / 10, -r["duration_min"]))
 
     def _finish_variants(self, main, others):
         """Slugs and labels for up to max_routes_per_destination - 1 other routes."""
         main.pop("_known", None)
         main.pop("_edges", None)
-        keep = sorted(others, key=lambda r: (-r["_known"], r["duration_min"]))
+        # A hand-picked route always stays; then the best-known starts.
+        keep = sorted(others, key=lambda r: (not r["curated"], -r["_known"], r["duration_min"]))
         keep = keep[: self.t.get("max_routes_per_destination", 3) - 1]
         out = []
         for r in keep:
@@ -376,12 +389,6 @@ class TripBuilder:
 
     def _label(self, r, main):
         """One or two words on why someone would pick this route over the main one."""
-        main_poi = {p["osm"] for p in main["pois"]}
-        for kind in ("hrad", "chata", "vyhliadka"):
-            p = next((p for p in r["pois"] if p["kind"] == kind and p["osm"] not in main_poi and p["name"]
-                      and p["name"] != r["destination"]["name"] and len(p["name"]) <= 26), None)
-            if p:
-                return f"Cez {p['name']}"
         if r["transit"] and not main["transit"]:
             return "Autobusom"
         if r["duration_min"] <= main["duration_min"] - 30:
