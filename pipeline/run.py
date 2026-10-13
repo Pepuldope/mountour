@@ -14,6 +14,7 @@ from pathlib import Path
 import yaml
 
 from . import drive as drive_mod
+from . import maplines
 from . import osm as osm_mod
 from . import publish
 from .dem import Dem
@@ -106,6 +107,7 @@ def main(argv=None):
         drive = (town_list, minutes, km, "OSRM car profile on OpenStreetMap data")
 
     publish.write(root, trips, dem, drive, slugs, tb.report, a.osm_timestamp)
+    log("map lines: %d trips in %d cells" % maplines.write(root))
     log("done")
     return 0
 

@@ -14,6 +14,7 @@ binding on Cloudflare, the disk elsewhere). Small bundled data: `lib/trips.ts`.
 | `public/data/trips/list.json` | `TripList`: every trip without description and OSM ids; the home page fetches it | pipeline |
 | `public/data/trips/<slug>.json` | `TripDetail`: summary + path, marking colours, other parking/stops, POIs | pipeline |
 | `public/data/drive/<town>.json` | `TownDriveFile`: car minutes and km from one of ~140 towns to every trip's parking | pipeline (OSRM) |
+| `public/data/map/meta.json`, `overview.json`, `c/<ix>_<iy>.json` | Trip lines for the home map: a simplified overview for zoomed-out views and detailed lines per grid cell, so the map loads only the part in view (`pipeline/maplines.py`) | pipeline |
 | `data/towns.json` | `Towns`: the towns of the drive table (bundled, small) | pipeline |
 | `public/gpx/<slug>.gpx` | full-resolution GPX of the whole walk | pipeline |
 | `data/closure-rules.json` | `ClosureRules`: seasonal and one-off closures, each with an official source and check date | by hand |

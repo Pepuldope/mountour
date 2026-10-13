@@ -85,7 +85,7 @@ const MARKER_ICON: Partial<Record<MarkerKind, string>> = {
  */
 const BASE_POI_SOURCE_LAYERS = new Set(["poi", "mountain_peak", "aerodrome_label"]);
 
-function hideBasePois(map: MlMap) {
+export function hideBasePois(map: MlMap) {
   for (const layer of map.getStyle()?.layers ?? []) {
     const sourceLayer = (layer as { "source-layer"?: string })["source-layer"];
     if (layer.type === "symbol" && sourceLayer && BASE_POI_SOURCE_LAYERS.has(sourceLayer)) {
@@ -103,7 +103,7 @@ const MARKER_CLASS: Record<MarkerKind, string> = {
   poi: "mt-pin-poi",
 };
 
-const SLOVAKIA: [[number, number], [number, number]] = [
+export const SLOVAKIA: [[number, number], [number, number]] = [
   [16.8, 47.7],
   [22.6, 49.6],
 ];
@@ -143,7 +143,7 @@ function fit(map: MlMap, b: BBox) {
   );
 }
 
-const FALLBACK_STYLE: StyleSpecification = {
+export const FALLBACK_STYLE: StyleSpecification = {
   version: 8,
   sources: {},
   layers: [{ id: "background", type: "background", paint: { "background-color": "#e4ebe3" } }],

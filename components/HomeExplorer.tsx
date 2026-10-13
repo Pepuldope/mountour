@@ -2,20 +2,19 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import type { BBox, LatLng, TrailDetail } from "@/lib/types";
+import type { Difficulty, LatLng, TrailDetail } from "@/lib/types";
 import { defaultApproachMin, driveDestination, nearestStop, primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { activeClosures } from "@/lib/closures";
 import { approachMin, hikeMinutes } from "@/lib/dayPlan";
 import { dayFit, dayInSentence, isoDate } from "@/lib/days";
 import { estimateDriveMin } from "@/lib/drive";
-import { GOAL_PLURAL, tripsCount } from "@/lib/format";
+import { DIFFICULTY_LABEL, GOAL_LABEL, GOAL_PLURAL, formatDurationShort } from "@/lib/format";
+import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
 import { seasonOf } from "@/lib/season";
 import type { DestinationKind, TripList } from "@/lib/tripSchema";
-import { summaryFromList } from "@/lib/trips";
-import { fetchTrack, gpxUrlFor } from "@/lib/gpx";
+import { getTowns, summaryFromList } from "@/lib/trips";
 import { haversineM } from "@/lib/geo";
-import { trackColor } from "@/lib/mapLayers";
 import { useTripSettings } from "@/lib/tripSettings";
 import { useTownDrives } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
@@ -26,11 +25,10 @@ import { UiIcon } from "@/components/UiIcon";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { SiteFooter } from "@/components/SiteFooter";
 import { StartChip } from "@/components/StartChip";
-import { NETWORK_ON } from "@/lib/trailNetwork";
 import { TripCard } from "@/components/TripCard";
 import type { TripCardItem } from "@/components/TripCard";
-import { TrailMap } from "@/components/TrailMapClient";
-import type { MapMarker, MapTrack } from "@/components/TrailMap";
+import { AREA_ZOOM, BrowseMap } from "@/components/BrowseMap";
+import type { BrowseArea, BrowseTrip, MapFocus, MapView } from "@/components/BrowseMap";
 
 interface Props {
   /** The best known trips, rendered with the page; every trip loads after it. */
@@ -42,11 +40,26 @@ const PAGE = 30;
 
 const DESKTOP_QUERY = "(min-width: 1024px)";
 
-/** Goal filters on the list, most common first. */
+/** Goal filters, most common first. */
 const GOAL_FILTERS: DestinationKind[] = ["vrchol", "vodopad", "pleso", "hrad", "jaskyna", "vyhliadka", "chata"];
+const DIFFICULTIES: Difficulty[] = ["lahka", "stredna", "tazka"];
 
 /** Starts further than this from the nearest precomputed town get "~" on their drive times. */
 const TOWN_EXACT_KM = 10;
+
+/** The list shows the trips on the map plus this share of its size around it. */
+const LIST_MARGIN = 0.3;
+
+/** Trips outside the named mountain ranges: they join the closest area. */
+const OTHER_REGION = "Ďalšie";
+
+/** Phones: room kept free at the bottom of the map for the trip preview. */
+const SHEET_INSET = 230;
+
+type Box = [number, number, number, number];
+type Preview =
+  | { kind: "trip"; slug: string; also: string[]; x: number; y: number; peek: boolean }
+  | { kind: "trail"; nearby: { slug: string; km: number }[]; x: number; y: number };
 
 function subscribeDesktop(cb: () => void) {
   const mq = window.matchMedia(DESKTOP_QUERY);
@@ -61,16 +74,6 @@ function useIsDesktop(): boolean {
     () => window.matchMedia(DESKTOP_QUERY).matches,
     () => false
   );
-}
-
-/** Union of every trail's bbox, so the overview map shows them all. */
-function unionBounds(trails: TrailDetail[]): BBox | null {
-  const boxes = trails.map((t) => t.trail.bbox).filter((b): b is BBox => b !== null);
-  if (boxes.length === 0) return null;
-  return {
-    sw: { lat: Math.min(...boxes.map((b) => b.sw.lat)), lon: Math.min(...boxes.map((b) => b.sw.lon)) },
-    ne: { lat: Math.max(...boxes.map((b) => b.ne.lat)), lon: Math.max(...boxes.map((b) => b.ne.lon)) },
-  };
 }
 
 /** Every trip from public/data/trips/list.json, best known first; `initial` until it has loaded. */
@@ -95,48 +98,97 @@ function useAllTrails(initial: TrailDetail[]): TrailDetail[] {
   return all ?? initial;
 }
 
+/** Lower case without accents, for search: "velka fatra" finds "Veľká Fatra". */
+const plain = (s: string) =>
+  s
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase();
+
+const goalOf = (d: TrailDetail): LatLng | null => d.trail.goal_location ?? primaryTrailhead(d)?.location ?? null;
+
+function inBox(p: LatLng | null, [w, s, e, n]: Box): boolean {
+  return p !== null && p.lon >= w && p.lon <= e && p.lat >= s && p.lat <= n;
+}
+
+function grow([w, s, e, n]: Box, k: number): Box {
+  const dx = (e - w) * k;
+  const dy = (n - s) * k;
+  return [w - dx, s - dy, e + dx, n + dy];
+}
+
+function boxOf(points: LatLng[]): Box {
+  return [
+    Math.min(...points.map((p) => p.lon)),
+    Math.min(...points.map((p) => p.lat)),
+    Math.max(...points.map((p) => p.lon)),
+    Math.max(...points.map((p) => p.lat)),
+  ];
+}
+
+/** One dot per mountain range for the zoomed-out map; trips outside the ranges join the closest. */
+function areasOf(trails: TrailDetail[]): BrowseArea[] {
+  const groups = new Map<string, LatLng[]>();
+  const loose: LatLng[] = [];
+  for (const d of trails) {
+    const at = goalOf(d);
+    const region = d.trail.region_name;
+    if (!at || !region) continue;
+    if (region.startsWith(OTHER_REGION)) loose.push(at);
+    else groups.set(region, [...(groups.get(region) ?? []), at]);
+  }
+  const median = (xs: number[]) => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)];
+  const areas = [...groups].map(([name, pts]) => ({
+    name,
+    short: name.split(/,| a /)[0].trim(),
+    location: { lat: median(pts.map((p) => p.lat)), lon: median(pts.map((p) => p.lon)) },
+    pts,
+  }));
+  for (const p of loose) {
+    let best = areas[0];
+    let bestD = Infinity;
+    for (const a of areas) {
+      const d = (a.location.lat - p.lat) ** 2 + (a.location.lon - p.lon) ** 2;
+      if (d < bestD) [best, bestD] = [a, d];
+    }
+    best?.pts.push(p);
+  }
+  // Biggest first: when labels would overlap, the bigger area keeps its name.
+  return areas.sort((a, b) => b.pts.length - a.pts.length).map(({ pts, ...a }) => ({ ...a, bbox: boxOf(pts) }));
+}
+
 /**
- * "Kam dnes" home: answer first. Every trip is listed on arrival, sorted by
- * travel time once the start is known. Picking a day adds "Vyrazte najneskôr"
- * and moves trips that don't fit that day's daylight behind a button.
+ * "Kam dnes" home, map first: every trip on one map (coloured lines over the
+ * grey trail network), with search, a filter menu, and a list that follows the
+ * map, nearest first. Picking a day adds "Vyrazte najneskôr" and moves trips
+ * that don't fit that day's daylight behind a button.
  */
 export function HomeExplorer({ trails: initial }: Props) {
   const trails = useAllTrails(initial);
   const { date, today, withKids, travel, update } = useTripSettings();
   const [goalFilter, setGoalFilter] = useState<DestinationKind | null>(null);
+  const [diffFilter, setDiffFilter] = useState<Difficulty[]>([]);
+  const [query, setQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const transit = travel === "transit";
   const { start } = useUserLocation();
-  const [activeSlug, setActiveSlug] = useState<string | null>(null);
-  const [showMapOnPhone, setShowMapOnPhone] = useState(false);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [pointed, setPointed] = useState<string | null>(null);
+  const [preview, setPreview] = useState<Preview | null>(null);
+  const [view, setView] = useState<"map" | "list">("map");
+  const [mapView, setMapView] = useState<MapView | null>(null);
+  const [focus, setFocus] = useState<MapFocus | null>(null);
   const [showHidden, setShowHidden] = useState(false);
-  const [trackPoints, setTrackPoints] = useState<Record<string, [number, number][]>>({});
   const itemRefs = useRef(new Map<string, HTMLElement>());
   const columnRef = useRef<HTMLDivElement>(null);
+  const toolsRef = useRef<HTMLDivElement>(null);
   const isDesktop = useIsDesktop();
-  const mapShown = isDesktop || showMapOnPhone;
-
-  // With the trail network on, only the trip in focus is drawn, so only its GPX is fetched.
-  const wanted = useMemo(
-    () => (NETWORK_ON ? trails.filter(({ trail }) => trail.slug === activeSlug) : trails).map(({ trail }) => trail),
-    [trails, activeSlug]
-  );
-  useEffect(() => {
-    if (!mapShown) return;
-    let cancelled = false;
-    for (const trail of wanted) {
-      const url = gpxUrlFor(trail.gpx_path);
-      if (!url || trackPoints[trail.slug]) continue;
-      fetchTrack(url).then((track) => {
-        if (cancelled || track.length === 0) return;
-        setTrackPoints((prev) => ({ ...prev, [trail.slug]: track.map((p) => [p.lat, p.lon]) }));
-      });
-    }
-    return () => {
-      cancelled = true;
-    };
-    // trackPoints is read to skip loaded tracks, not to refetch when it changes.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [wanted, mapShown]);
+  const focusKey = useRef(0);
+  const moveMap = useCallback((f: Omit<Extract<MapFocus, { kind: "box" }>, "key"> | Omit<Extract<MapFocus, { kind: "point" }>, "key">) => {
+    focusKey.current += 1;
+    setFocus({ ...f, key: focusKey.current } as MapFocus);
+  }, []);
 
   // Drive time to every trail from the weekly precomputed table, via the town nearest the start.
   const destinations = useMemo(() => trails.map((t) => driveDestination(t)), [trails]);
@@ -155,6 +207,7 @@ export function HomeExplorer({ trails: initial }: Props) {
       const table = drives?.minutes[detail.trail.slug] ?? null;
       if (withKids && !detail.trail.family_friendly) return [];
       if (goalFilter && (detail.trail.goal ?? "ine") !== goalFilter) return [];
+      if (diffFilter.length > 0 && !diffFilter.includes(detail.trail.difficulty)) return [];
       // Table missing (offline, or a trip newer than the table): a straight-line estimate beats a blank, marked with "~".
       const estimate = table === null && driveStatus !== "loading" && start !== null && dest !== null;
       const viaTown = table !== null ? table + accessMin : null;
@@ -194,91 +247,138 @@ export function HomeExplorer({ trails: initial }: Props) {
       shown: all.filter((i) => !i.closed && !i.noStop && (!i.fit || i.fit.status === "fits")),
       hidden: all.filter((i) => i.closed || i.noStop || (i.fit && i.fit.status !== "fits")),
     };
-  }, [trails, destinations, drives, driveStatus, withKids, goalFilter, date, today, start, transit]);
+  }, [trails, destinations, drives, driveStatus, withKids, goalFilter, diffFilter, date, today, start, transit]);
 
-  // Cards come in pages; a new filter starts again from the first page.
-  const filterKey = [goalFilter, withKids, date, travel].join("|");
+  const listedAll = useMemo(() => (showHidden ? [...shown, ...hidden] : shown), [showHidden, shown, hidden]);
+  const bySlug = useMemo(() => new Map(listedAll.map((i) => [i.detail.trail.slug, i])), [listedAll]);
+
+  // The list: what the search finds anywhere, else the trips on the map and a little around it.
+  const words = useMemo(() => plain(query).split(/\s+/).filter(Boolean), [query]);
+  const matches = useCallback(
+    (d: TrailDetail) => {
+      const key = plain(`${d.trail.name} ${d.trail.region_name ?? ""}`);
+      return words.every((w) => key.includes(w));
+    },
+    [words]
+  );
+  const scoped = useMemo(() => {
+    if (words.length > 0) return listedAll.filter((i) => matches(i.detail));
+    if (!mapView || mapView.zoom < AREA_ZOOM - 1) return listedAll;
+    const box = grow(mapView.bounds, LIST_MARGIN);
+    return listedAll.filter((i) => inBox(goalOf(i.detail), box));
+  }, [listedAll, words, matches, mapView]);
+
+  // Cards come in pages; a new filter or another part of the map starts again from the first page.
+  const filterKey = [goalFilter, diffFilter.join(), withKids, date, travel, query].join("|");
   const [paging, setPaging] = useState({ key: filterKey, n: PAGE });
   const limit = paging.key === filterKey ? paging.n : PAGE;
-  const listed = useMemo(() => (showHidden ? [...shown, ...hidden] : shown), [showHidden, shown, hidden]);
-  const visible = useMemo(() => listed.slice(0, limit), [listed, limit]);
+  const visible = useMemo(() => {
+    const page = scoped.slice(0, limit);
+    // A trip picked on the map is always in the list, first if it would not be shown.
+    const picked = selected ? bySlug.get(selected) : undefined;
+    return picked && !page.includes(picked) ? [picked, ...page] : page;
+  }, [scoped, limit, selected, bySlug]);
 
   const season = seasonOf(date ? new Date(`${date}T12:00`) : new Date());
-
-  const shownSlugs = useMemo(() => new Set(shown.map((m) => m.detail.trail.slug)), [shown]);
   const dayWord = date && today ? dayInSentence(date, new Date()) : null;
 
-  const tracks = useMemo<MapTrack[]>(
+  // The map: every trip that passes the filters.
+  const mapTrips = useMemo<BrowseTrip[]>(
     () =>
-      // The whole trail network is drawn underneath, coloured by popularity;
-      // of our trips only the one in focus is drawn, in its painted KST colour.
-      // (Until NETWORK_ON, every trip is drawn, dimmed when it doesn't fit.)
-      trails
-        .filter(({ trail }) => !NETWORK_ON || trail.slug === activeSlug)
-        .map(({ trail }) => ({
-          slug: trail.slug,
-          label: trail.name,
-          points: trackPoints[trail.slug] ?? [],
-          color: trackColor(trail.marking),
-          state: trail.slug === activeSlug ? "selected" : shownSlugs.has(trail.slug) ? "normal" : "dimmed",
-        })),
-    [trails, trackPoints, activeSlug, shownSlugs]
-  );
-
-  // Pins for the cards on the list only: a pin for each of thousands of trips would bury the map.
-  const markers = useMemo<MapMarker[]>(
-    () =>
-      visible.flatMap(({ detail }) => {
+      listedAll.flatMap(({ detail }) => {
+        const at = goalOf(detail);
         const th = primaryTrailhead(detail);
-        if (!th) return [];
-        return [
-          {
-            id: `th-${th.id}`,
-            kind: "trailhead" as const,
-            location: th.location,
-            title: detail.trail.name,
-            lines: [th.name],
-            dimmed: !shownSlugs.has(detail.trail.slug),
-            active: detail.trail.slug === activeSlug,
-            trailSlug: detail.trail.slug,
-            // Same goal colour as the card's tile; the active pin stays sun-yellow.
-            colour: detail.trail.slug === activeSlug ? undefined : GOAL_COLOUR[detail.trail.goal ?? "ine"],
-          },
-        ];
+        if (!at) return [];
+        return [{ slug: detail.trail.slug, goal: detail.trail.goal ?? "ine", rank: detail.trail.rank ?? 0, location: at, start: th?.location ?? at }];
       }),
-    [visible, shownSlugs, activeSlug]
+    [listedAll]
   );
-
-  // With a start, frame the trips on the list (nearest first); without one, all of Slovakia.
-  const bounds = useMemo(
-    () => unionBounds(start && visible.length > 0 ? visible.map((i) => i.detail) : trails),
-    [start, visible, trails]
-  );
+  const areas = useMemo(() => areasOf(trails), [trails]);
 
   const registerItem = useCallback((slug: string, el: HTMLElement | null) => {
     if (el) itemRefs.current.set(slug, el);
     else itemRefs.current.delete(slug);
   }, []);
 
-  const handleMapSelect = useCallback((slug: string) => {
-    setActiveSlug(slug);
-    itemRefs.current.get(slug)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  const tripBox = useCallback((d: TrailDetail): Box | null => {
+    const b = d.trail.bbox;
+    return b ? [b.sw.lon, b.sw.lat, b.ne.lon, b.ne.lat] : null;
   }, []);
 
-  const map = (
-    <TrailMap
-      tracks={tracks}
-      markers={markers}
-      bounds={bounds}
-      onSelectTrail={handleMapSelect}
-      network={NETWORK_ON ? "full" : undefined}
-      ariaLabel="Mapa všetkých výletov"
-    />
+  /** Pick a trip: on a phone its preview opens; on a computer the line and its card light up. */
+  const pickTrip = useCallback(
+    (slug: string | null, also: string[] = [], at = { x: 0, y: 0 }) => {
+      setSelected(slug);
+      if (!slug) {
+        setPreview(null);
+        return;
+      }
+      if (isDesktop) {
+        setPreview(null);
+        requestAnimationFrame(() => itemRefs.current.get(slug)?.scrollIntoView({ block: "nearest", behavior: "smooth" }));
+      } else {
+        setPreview({ kind: "trip", slug, also, ...at, peek: false });
+      }
+    },
+    [isDesktop]
   );
 
-  const heading = !dayWord
-    ? `${tripsCount(shown.length)}${start ? ", najbližšie prvé" : ""}`
-    : `${tripsCount(shown.length)} stihnete ${dayWord}`;
+  const goToTrip = useCallback(
+    (slug: string) => {
+      const item = bySlug.get(slug);
+      const box = item ? tripBox(item.detail) : null;
+      if (!isDesktop) setView("map");
+      if (box) moveMap({ kind: "box", bbox: box, maxZoom: 13 });
+      pickTrip(slug);
+    },
+    [bySlug, tripBox, isDesktop, moveMap, pickTrip]
+  );
+
+  // ---- search: trips, mountain ranges, towns
+  const towns = useMemo(() => getTowns(), []);
+  const results = useMemo(() => {
+    if (words.length === 0) return null;
+    const has = (s: string) => words.every((w) => plain(s).includes(w));
+    const first = (s: string) => plain(s).startsWith(words[0]) || plain(s).includes(` ${words[0]}`);
+    const ranges = areas.filter((a) => has(a.name)).slice(0, 3);
+    const trips = listedAll
+      .filter((i) => matches(i.detail))
+      .sort((a, b) => Number(first(b.detail.trail.name)) - Number(first(a.detail.trail.name)) || (b.detail.trail.rank ?? 0) - (a.detail.trail.rank ?? 0))
+      .slice(0, 6);
+    const places = towns.filter((t) => has(t.name)).slice(0, 3);
+    return { ranges, trips, places };
+  }, [words, areas, listedAll, matches, towns]);
+
+  const closeMenus = useCallback(() => {
+    setSearchOpen(false);
+    setFiltersOpen(false);
+  }, []);
+  useEffect(() => {
+    const onDown = (e: PointerEvent) => {
+      if (!toolsRef.current?.contains(e.target as Node)) closeMenus();
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [closeMenus]);
+
+  const showOnMap = (focusTo: Parameters<typeof moveMap>[0]) => {
+    setQuery("");
+    closeMenus();
+    setPreview(null);
+    if (!isDesktop) setView("map");
+    moveMap(focusTo);
+  };
+
+  const filterCount = (goalFilter ? 1 : 0) + diffFilter.length;
+
+  const heading = words.length > 0
+    ? `Výsledky pre „${query.trim()}“`
+    : dayWord
+      ? `Stihnete ${dayWord}${start ? ", najbližšie prvé" : ""}`
+      : start
+        ? "Najbližšie výlety"
+        : "Tisíce výletov po celom Slovensku";
+  const scopeNote = words.length === 0 && mapView && mapView.zoom >= AREA_ZOOM - 1 ? "Na mape a kúsok okolo." : null;
 
   const cardList = (items: TripCardItem[]) =>
     items.map((item) => (
@@ -287,11 +387,342 @@ export function HomeExplorer({ trails: initial }: Props) {
         item={item}
         dayWord={dayWord}
         transit={transit}
-        active={isDesktop && activeSlug === item.detail.trail.slug}
-        onActive={setActiveSlug}
+        active={isDesktop && selected === item.detail.trail.slug}
+        onActive={setPointed}
         registerItem={registerItem}
       />
     ));
+
+  const previewTrip = preview?.kind === "trip" ? bySlug.get(preview.slug) : undefined;
+  const sheet = preview && !isDesktop && (preview.kind === "trail" || previewTrip) && (
+    <div role="dialog" aria-label="Náhľad výletu" className="absolute inset-x-0 bottom-0 z-10 flex max-h-[70%] flex-col gap-3 overflow-y-auto rounded-t-[20px] border border-[var(--border)] bg-[var(--card-bg)] p-4 pb-[calc(16px+env(safe-area-inset-bottom))] shadow-[var(--shadow-float)]">
+      <div className="flex items-center justify-between gap-3">
+        <span className="mx-auto -mt-1 h-1 w-10 rounded-full bg-[var(--border)]" aria-hidden />
+      </div>
+      {previewTrip ? (
+        <>
+          <MiniCard item={previewTrip} />
+          <Link
+            href={`/trasa/${previewTrip.detail.trail.slug}`}
+            className="rounded-full bg-[var(--accent)] px-4 py-3 text-center text-[15px] font-bold text-[var(--accent-contrast)]"
+          >
+            Vybrať tento výlet
+          </Link>
+          {preview.kind === "trip" && preview.also.length > 0 && (
+            <OtherTrips title="Týmto miestom vedú aj" items={preview.also.flatMap((s) => (bySlug.get(s) ? [{ item: bySlug.get(s)!, note: null }] : []))} onPick={goToTrip} />
+          )}
+        </>
+      ) : (
+        preview.kind === "trail" && (
+          <>
+            <div className="flex items-center gap-3">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--segment-bg)] text-[var(--muted)]" aria-hidden>
+                <UiIcon name="boot" size={22} />
+              </span>
+              <div>
+                <h3 className="text-lg leading-tight font-bold">Značený chodník</h3>
+                <p className="text-sm text-[var(--muted)]">Tento kúsok zatiaľ nie je v žiadnom našom výlete.</p>
+              </div>
+            </div>
+            <OtherTrips
+              title={preview.nearby.length ? "Výlety v okolí" : "V okolí zatiaľ nemáme výlet."}
+              items={preview.nearby.flatMap((n) => (bySlug.get(n.slug) ? [{ item: bySlug.get(n.slug)!, note: `${n.km.toFixed(1).replace(".", ",")} km odtiaľto` }] : []))}
+              onPick={goToTrip}
+            />
+          </>
+        )
+      )}
+      <button type="button" onClick={() => pickTrip(null)} aria-label="Zavrieť" className="absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-[var(--segment-bg)]">
+        <UiIcon name="close" size={14} />
+      </button>
+    </div>
+  );
+
+  // Computer: a small card next to the pointer (hover), or the "no trip here" card next to a clicked grey trail,
+  // kept inside the map near its right and bottom edges.
+  const peekTrip = isDesktop && preview?.kind === "trip" && preview.peek ? previewTrip : undefined;
+  const popover = isDesktop && preview && (peekTrip || preview.kind === "trail") && (
+    <div
+      className={`absolute z-10 w-[300px] rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-3 shadow-[var(--shadow-float)] ${peekTrip ? "pointer-events-none" : ""}`}
+      style={{ left: `min(${preview.x + 18}px, calc(100% - 308px))`, top: `max(8px, min(${preview.y - 60}px, calc(100% - ${peekTrip ? 110 : 300}px)))` }}
+    >
+      {peekTrip ? (
+        <MiniCard item={peekTrip} />
+      ) : (
+        preview.kind === "trail" && (
+          <div className="flex flex-col gap-2">
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <h3 className="font-bold">Značený chodník</h3>
+                <p className="text-sm text-[var(--muted)]">Tento kúsok zatiaľ nie je v žiadnom našom výlete.</p>
+              </div>
+              <button type="button" onClick={() => setPreview(null)} aria-label="Zavrieť" className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--segment-bg)]">
+                <UiIcon name="close" size={12} />
+              </button>
+            </div>
+            <OtherTrips
+              title={preview.nearby.length ? "Výlety v okolí" : "V okolí zatiaľ nemáme výlet."}
+              items={preview.nearby.flatMap((n) => (bySlug.get(n.slug) ? [{ item: bySlug.get(n.slug)!, note: `${n.km.toFixed(1).replace(".", ",")} km odtiaľto` }] : []))}
+              onPick={goToTrip}
+            />
+          </div>
+        )
+      )}
+    </div>
+  );
+
+  const map = (
+    <div className="relative h-full w-full">
+      <BrowseMap
+        trips={mapTrips}
+        areas={areas}
+        selected={selected}
+        highlighted={pointed}
+        focus={focus}
+        initialView={mapView}
+        onView={setMapView}
+        onPick={(p) => (p ? pickTrip(p.slug, p.also, p) : pickTrip(null))}
+        onHover={(h) => {
+          setPointed(h?.slug ?? null);
+          if (selected) return;
+          setPreview((prev) => (h ? { kind: "trip", slug: h.slug, also: [], x: h.x, y: h.y, peek: true } : prev?.kind === "trip" && prev.peek ? null : prev));
+        }}
+        onTrailTap={(t) => {
+          setSelected(null);
+          setPreview({ kind: "trail", ...t });
+        }}
+        bottomInset={isDesktop ? 0 : SHEET_INSET}
+        ariaLabel="Mapa všetkých výletov"
+      />
+      <div className="pointer-events-none absolute top-3 left-3 z-[5] flex flex-col gap-1 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-2.5 py-1.5 text-[11px] text-[var(--muted)] shadow-[var(--shadow-float)]" aria-hidden>
+        <span className="flex items-center gap-1.5">
+          málo chodené <i className="block h-1.5 w-12 rounded-full bg-[linear-gradient(90deg,#f7d54a,#f3a12f,#e8682a,#d9481f,#c8261b)]" /> obľúbené
+        </span>
+        <span className="flex items-center gap-1.5">
+          <i className="block h-[3px] w-5 rounded-full bg-[#8a8f7a] opacity-60" /> chodník bez výletu
+        </span>
+      </div>
+      {sheet}
+      {popover}
+    </div>
+  );
+
+  const tools = (
+    <div ref={toolsRef} className="relative flex flex-col gap-2">
+      <div className="flex gap-2">
+        <label className="relative flex-1">
+          <span className="sr-only">Hľadať výlet, pohorie alebo obec</span>
+          <span className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[var(--muted)]">
+            <UiIcon name="search" size={18} />
+          </span>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setSearchOpen(true);
+              setFiltersOpen(false);
+            }}
+            onFocus={() => setSearchOpen(true)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") setSearchOpen(false);
+              if (e.key === "Enter" && results) {
+                const r = results.ranges[0];
+                const t = results.trips[0];
+                if (t) {
+                  setQuery("");
+                  closeMenus();
+                  goToTrip(t.detail.trail.slug);
+                } else if (r) showOnMap({ kind: "box", bbox: r.bbox, maxZoom: 11 });
+                (e.target as HTMLInputElement).blur();
+              }
+            }}
+            placeholder="Hľadať výlet, pohorie alebo obec"
+            autoComplete="off"
+            className="h-11 w-full rounded-full border border-[var(--border)] bg-[var(--card-bg)] pr-3 pl-10 text-[15px] shadow-[var(--shadow-float)] lg:shadow-none"
+          />
+        </label>
+        <button
+          type="button"
+          aria-expanded={filtersOpen}
+          onClick={() => {
+            setFiltersOpen((v) => !v);
+            setSearchOpen(false);
+          }}
+          className={`inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full border px-4 text-sm font-semibold shadow-[var(--shadow-float)] lg:shadow-none ${
+            filterCount ? "border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--accent)]" : "border-[var(--border)] bg-[var(--card-bg)]"
+          }`}
+        >
+          <UiIcon name="filter" size={16} />
+          {filterCount ? `Filtre · ${filterCount}` : "Filtre"}
+        </button>
+      </div>
+
+      {!isDesktop && (
+        <div role="group" aria-label="Zobrazenie" className="inline-flex self-start rounded-full border border-[var(--border)] bg-[var(--card-bg)] p-[3px] shadow-[var(--shadow-float)]">
+          {(["map", "list"] as const).map((v) => (
+            <button
+              key={v}
+              type="button"
+              aria-pressed={view === v}
+              onClick={() => {
+                setView(v);
+                setPreview(null);
+                // When the bar is stuck on top, start the new view at its beginning, not mid-page.
+                requestAnimationFrame(() => {
+                  const bar = toolsRef.current?.parentElement;
+                  const next = bar?.nextElementSibling;
+                  const gap = next ? next.getBoundingClientRect().top - bar!.offsetHeight : 0;
+                  if (gap < 0) window.scrollBy({ top: gap });
+                });
+              }}
+              className={`inline-flex h-10 items-center gap-1.5 rounded-full px-5 text-[15px] font-bold ${view === v ? "bg-[var(--foreground)] text-[var(--background)]" : "text-[var(--muted)]"}`}
+            >
+              <UiIcon name={v === "map" ? "map" : "list"} size={18} />
+              {v === "map" ? "Mapa" : "Zoznam"}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {searchOpen && results && (
+        <div role="listbox" aria-label="Výsledky hľadania" className="absolute top-12 right-0 left-0 z-30 max-h-[60vh] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-2 shadow-[var(--shadow-float)]">
+          {results.ranges.length > 0 && <MenuTitle>Pohoria</MenuTitle>}
+          {results.ranges.map((a) => (
+            <MenuRow key={a.name} onClick={() => showOnMap({ kind: "box", bbox: a.bbox, maxZoom: 11 })} icon={<UiIcon name="up" size={16} />} title={a.name} note="Ukázať výlety v pohorí na mape" />
+          ))}
+          {results.trips.length > 0 && <MenuTitle>Výlety</MenuTitle>}
+          {results.trips.map(({ detail }) => (
+            <MenuRow
+              key={detail.trail.slug}
+              onClick={() => {
+                setQuery("");
+                closeMenus();
+                goToTrip(detail.trail.slug);
+              }}
+              icon={<GoalTile goal={detail.trail.goal ?? "ine"} size={28} />}
+              title={detail.trail.name}
+              note={`${GOAL_LABEL[detail.trail.goal ?? "ine"]} · ${detail.trail.region_name ?? ""} · ${formatDurationShort(detail.trail.duration_min)}`}
+            />
+          ))}
+          {results.places.length > 0 && <MenuTitle>Obce a mestá</MenuTitle>}
+          {results.places.map((t) => (
+            <MenuRow key={t.id} onClick={() => showOnMap({ kind: "point", location: t.location, zoom: 10.5 })} icon={<UiIcon name="pin" size={16} />} title={t.name} note="Ukázať výlety okolo na mape" />
+          ))}
+          {results.ranges.length + results.trips.length + results.places.length === 0 && (
+            <p className="p-2 text-sm text-[var(--muted)]">Nič sa nenašlo. Skúste názov vrchu, chaty, pohoria alebo obce.</p>
+          )}
+        </div>
+      )}
+
+      {filtersOpen && (
+        <div className="absolute top-12 right-0 left-0 z-30 max-h-[70vh] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-2 shadow-[var(--shadow-float)]">
+          <MenuTitle>Cieľ</MenuTitle>
+          <div className="grid grid-cols-2">
+            {[null, ...GOAL_FILTERS].map((g) => (
+              <label key={g ?? "all"} className="flex cursor-pointer items-center gap-2.5 rounded-lg p-2 text-[15px] hover:bg-[var(--segment-bg)]">
+                <input type="radio" name="goal" checked={goalFilter === g} onChange={() => setGoalFilter(g)} className="h-[18px] w-[18px] accent-[var(--accent)]" />
+                {g && <span className="h-3 w-3 rounded-[3px]" style={{ background: GOAL_COLOUR[g] }} />}
+                {g ? GOAL_PLURAL[g] : "Všetky ciele"}
+              </label>
+            ))}
+          </div>
+          <MenuTitle>Náročnosť</MenuTitle>
+          <div className="grid grid-cols-2">
+            {DIFFICULTIES.map((d) => (
+              <label key={d} className="flex cursor-pointer items-center gap-2.5 rounded-lg p-2 text-[15px] hover:bg-[var(--segment-bg)]">
+                <input
+                  type="checkbox"
+                  checked={diffFilter.includes(d)}
+                  onChange={(e) => setDiffFilter((prev) => (e.target.checked ? [...prev, d] : prev.filter((x) => x !== d)))}
+                  className="h-[18px] w-[18px] accent-[var(--accent)]"
+                />
+                {DIFFICULTY_LABEL[d]}
+              </label>
+            ))}
+          </div>
+          <div className="sticky -bottom-2 mt-1 -mb-2 flex justify-between gap-2 border-t border-[var(--border)] bg-[var(--card-bg)] p-2">
+            <button
+              type="button"
+              onClick={() => {
+                setGoalFilter(null);
+                setDiffFilter([]);
+              }}
+              className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
+            >
+              Zrušiť filtre
+            </button>
+            <button type="button" onClick={() => setFiltersOpen(false)} className="rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)]">
+              Hotovo
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
+  const list = (
+    <section className="flex flex-col gap-3" aria-live="polite">
+      <div className="flex flex-col">
+        <h2 className="text-base font-bold">{heading}</h2>
+        {scopeNote && <p className="text-[13px] text-[var(--muted)]">{scopeNote}</p>}
+      </div>
+
+      {visible.length === 0 && (
+        <div className="flex flex-col gap-2 rounded-[var(--radius-card)] border border-dashed border-[var(--border)] p-4 text-sm">
+          <p>
+            {shown.length === 0
+              ? dayWord
+                ? `${dayWord === "dnes" ? "Dnes" : "Vtedy"} s týmito filtrami nič nestihnete.`
+                : "S týmito filtrami nič nenachádzame."
+              : "Tu nič nie je. Posuňte mapu alebo hľadajte inde."}
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {filterCount > 0 && (
+              <button type="button" onClick={() => { setGoalFilter(null); setDiffFilter([]); }} className="font-semibold text-[var(--accent)] underline">
+                Zrušiť filtre
+              </button>
+            )}
+            {withKids && (
+              <button type="button" onClick={() => update({ withKids: false })} className="font-semibold text-[var(--accent)] underline">
+                Zrušiť s deťmi
+              </button>
+            )}
+            {dayWord === "dnes" && (
+              <button
+                type="button"
+                onClick={() => {
+                  const t = new Date();
+                  update({ date: isoDate(new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1)) });
+                }}
+                className="font-semibold text-[var(--accent)] underline"
+              >
+                Pozrieť zajtra
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {cardList(visible)}
+
+      {scoped.length > limit && (
+        <button
+          type="button"
+          onClick={() => setPaging({ key: filterKey, n: limit + PAGE })}
+          className="w-fit self-center rounded-full border border-[var(--border)] bg-[var(--card-bg)] px-4 py-2 text-sm font-semibold text-[var(--accent)]"
+        >
+          Ukázať ďalšie
+        </button>
+      )}
+
+      {hidden.length > 0 && !showHidden && limit >= scoped.length && (
+        <button type="button" onClick={() => setShowHidden(true)} className="w-fit text-sm font-semibold text-[var(--accent)] underline">
+          {dayWord ? `Ukázať aj tie, čo ${dayWord} nestihnete` : "Ukázať aj výlety bez zastávky"}
+        </button>
+      )}
+    </section>
+  );
 
   return (
     <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
@@ -320,109 +751,104 @@ export function HomeExplorer({ trails: initial }: Props) {
           <KidsSwitch />
         </div>
 
-        <section className="flex flex-col gap-3" aria-live="polite">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="text-base font-bold">{heading}</h2>
-            {!isDesktop && (
-              <button
-                type="button"
-                onClick={() => setShowMapOnPhone((v) => !v)}
-                aria-expanded={showMapOnPhone}
-                className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--accent)]"
-              >
-                <UiIcon name="map" size={16} />
-                {showMapOnPhone ? "Skryť mapu" : "Mapa"}
-              </button>
-            )}
-          </div>
+        {/* Search, filters and Mapa / Zoznam stay on top while the map fills the screen. */}
+        <div className="sticky top-0 z-20 -mx-4 bg-[var(--background)] px-4 py-2 lg:static lg:mx-0 lg:bg-transparent lg:p-0">{tools}</div>
 
-          <div role="group" aria-label="Druh cieľa" className="-mx-4 flex gap-1.5 overflow-x-auto px-4 pb-0.5 [scrollbar-width:none]">
-            {GOAL_FILTERS.map((g) => {
-              const on = goalFilter === g;
-              return (
-                <button
-                  key={g}
-                  type="button"
-                  aria-pressed={on}
-                  onClick={() => setGoalFilter(on ? null : g)}
-                  className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-[13px] font-semibold ${
-                    on ? "border-transparent text-white" : "border-[var(--border)] bg-[var(--card-bg)]"
-                  }`}
-                  style={on ? { background: GOAL_COLOUR[g] } : undefined}
-                >
-                  {!on && <span className="h-[9px] w-[9px] rounded-full" style={{ background: GOAL_COLOUR[g] }} />}
-                  {GOAL_PLURAL[g]}
-                </button>
-              );
-            })}
-          </div>
+        {!isDesktop && view === "map" && (
+          <div className="-mx-4 -mt-3 h-[calc(100dvh-120px)] min-h-[420px] overflow-hidden border-y border-[var(--border)]">{map}</div>
+        )}
 
-          {!isDesktop && showMapOnPhone && (
-            <div className="h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)]">
-              {map}
-            </div>
-          )}
-
-          {shown.length === 0 && (
-            <div className="flex flex-col gap-2 rounded-[var(--radius-card)] border border-dashed border-[var(--border)] p-4 text-sm">
-              <p>{dayWord ? `${dayWord === "dnes" ? "Dnes" : "Vtedy"} s týmito filtrami nič nestihnete.` : "S týmito filtrami nič nenachádzame."}</p>
-              <div className="flex flex-wrap gap-3">
-                {goalFilter && (
-                  <button type="button" onClick={() => setGoalFilter(null)} className="font-semibold text-[var(--accent)] underline">
-                    Ukázať všetky ciele
-                  </button>
-                )}
-                {withKids && (
-                  <button type="button" onClick={() => update({ withKids: false })} className="font-semibold text-[var(--accent)] underline">
-                    Zrušiť s deťmi
-                  </button>
-                )}
-                {dayWord === "dnes" && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const t = new Date();
-                      update({ date: isoDate(new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1)) });
-                    }}
-                    className="font-semibold text-[var(--accent)] underline"
-                  >
-                    Pozrieť zajtra
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
-
-          {cardList(visible)}
-
-          {listed.length > limit && (
-            <button
-              type="button"
-              onClick={() => setPaging({ key: filterKey, n: limit + PAGE })}
-              className="w-fit rounded-full border border-[var(--border)] bg-[var(--card-bg)] px-4 py-2 text-sm font-semibold text-[var(--accent)]"
-            >
-              Ukázať ďalšie ({listed.length - limit})
-            </button>
-          )}
-
-          {hidden.length > 0 && !showHidden && limit >= shown.length && (
-            <button
-              type="button"
-              onClick={() => {
-                setShowHidden(true);
-                setPaging({ key: filterKey, n: shown.length + PAGE });
-              }}
-              className="w-fit text-sm font-semibold text-[var(--accent)] underline"
-            >
-              {dayWord ? `Ukázať aj tie, čo ${dayWord} nestihnete` : "Ukázať aj výlety bez zastávky"} ({hidden.length})
-            </button>
-          )}
-        </section>
+        {(isDesktop || view === "list") && list}
 
         <SiteFooter />
       </div>
 
       {isDesktop && <div className="sticky top-0 h-dvh flex-1 border-l border-[var(--border)]">{map}</div>}
     </main>
+  );
+}
+
+function GoalTile({ goal, size }: { goal: DestinationKind; size: number }) {
+  return (
+    <span
+      aria-hidden
+      className="grid shrink-0 place-items-center rounded-lg text-white"
+      style={{ background: GOAL_COLOUR[goal], width: size, height: size }}
+      // Constant markup from lib/kindIcons.ts, no user data.
+      dangerouslySetInnerHTML={{ __html: kindSvg(goal, Math.round(size * 0.62)) }}
+    />
+  );
+}
+
+function MenuTitle({ children }: { children: React.ReactNode }) {
+  return <h4 className="mx-2 mt-2 mb-1 text-[11px] font-bold tracking-wide text-[var(--muted)] uppercase">{children}</h4>;
+}
+
+function MenuRow({ icon, title, note, onClick }: { icon: React.ReactNode; title: string; note: string; onClick: () => void }) {
+  return (
+    <button type="button" role="option" aria-selected={false} onClick={onClick} className="flex w-full items-center gap-2.5 rounded-lg p-2 text-left hover:bg-[var(--segment-bg)]">
+      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-[var(--segment-bg)] text-[var(--muted)]">{icon}</span>
+      <span className="min-w-0">
+        <span className="block truncate font-semibold">{title}</span>
+        <span className="block truncate text-xs text-[var(--muted)]">{note}</span>
+      </span>
+    </button>
+  );
+}
+
+/** The trip in a preview: name, what and where, how long. */
+function MiniCard({ item }: { item: TripCardItem }) {
+  const { trail } = item.detail;
+  const goal = trail.goal ?? "ine";
+  const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
+  return (
+    <div className="flex items-start gap-3 pr-8">
+      <GoalTile goal={goal} size={44} />
+      <div className="min-w-0">
+        <h3 className="text-lg leading-tight font-bold">{trail.name}</h3>
+        <p className="text-[13px] text-[var(--muted)]">
+          {GOAL_LABEL[goal]}
+          {trail.region_name ? ` · ${trail.region_name}` : ""}
+        </p>
+        <p className="font-data mt-1 flex flex-wrap gap-x-3 text-sm font-semibold">
+          {item.carMin !== null && (
+            <span className="inline-flex items-center gap-1">
+              <UiIcon name="car" size={14} />
+              {item.driveApprox ? "~" : ""}
+              {formatDurationShort(item.carMin)}
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1">
+            <UiIcon name="boot" size={14} />
+            {formatDurationShort(item.hikeMin)}
+          </span>
+          <span>{km} km</span>
+          <span>{DIFFICULTY_LABEL[trail.difficulty]}</span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function OtherTrips({ title, items, onPick }: { title: string; items: { item: TripCardItem; note: string | null }[]; onPick: (slug: string) => void }) {
+  return (
+    <div className="border-t border-[var(--border)] pt-2">
+      <p className="text-xs font-semibold text-[var(--muted)]">{title}</p>
+      {items.map(({ item, note }) => {
+        const { trail } = item.detail;
+        return (
+          <button key={trail.slug} type="button" onClick={() => onPick(trail.slug)} className="flex w-full items-center gap-2.5 rounded-lg px-1 py-1.5 text-left hover:bg-[var(--segment-bg)]">
+            <GoalTile goal={trail.goal ?? "ine"} size={28} />
+            <span className="min-w-0">
+              <span className="block truncate text-[15px] font-semibold">{trail.name}</span>
+              <span className="block text-xs text-[var(--muted)]">
+                {note ? `${note} · ` : ""}
+                {formatDurationShort(item.hikeMin)} · {DIFFICULTY_LABEL[trail.difficulty]}
+              </span>
+            </span>
+          </button>
+        );
+      })}
+    </div>
   );
 }
