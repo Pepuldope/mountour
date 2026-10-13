@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { finishDrive, simplifyLine } from "./routing";
+import { dropDeadEnd, finishDrive, simplifyLine } from "./routing";
 
 const road = { durationMin: 30, distanceM: 30000, points: [[48.0, 19.0], [49.0, 19.0]] as [number, number][] };
 
@@ -23,6 +23,36 @@ describe("finishDrive", () => {
     const far = { durationMin: 60, distanceM: 9000, points: [[49.0, 19.0], [49.008, 19.0]] as [number, number][] };
     expect(await finishDrive(road, [49.008, 19.0], async () => far)).toBe(road);
     expect(await finishDrive(road, [49.008, 19.0], () => Promise.reject(new Error("down")))).toBe(road);
+  });
+});
+
+describe("dropDeadEnd", () => {
+  // North up a dead-end road to 49.01; the parking is east of it, halfway up.
+  const north: [number, number][] = Array.from({ length: 11 }, (_, i) => [49 + i * 0.001, 19]);
+  const drive = { durationMin: 10, distanceM: 1112, points: north };
+
+  it("stops the car where the walk leaves the road it came in by", () => {
+    const tail = {
+      durationMin: 8,
+      distanceM: 780,
+      points: [[49.01, 19.0], [49.008, 19.0], [49.006, 19.0], [49.005, 19.0], [49.005, 19.0015], [49.005, 19.003]] as [number, number][],
+    };
+    const r = dropDeadEnd(drive, tail);
+    const end = r.drive.points[r.drive.points.length - 1];
+    expect(end[0]).toBeCloseTo(49.005, 4);
+    expect(end[1]).toBeCloseTo(19.0, 4);
+    expect(r.drive.distanceM).toBeCloseTo(556, -1);
+    expect(r.drive.durationMin).toBe(5);
+    expect(r.tail.points[0]).toEqual(end);
+    expect(r.tail.points[r.tail.points.length - 1]).toEqual([49.005, 19.003]);
+    expect(r.tail.distanceM).toBeLessThan(300);
+  });
+
+  it("leaves a walk that heads straight off the road alone", () => {
+    const tail = { durationMin: 3, distanceM: 220, points: [[49.01, 19.0], [49.01, 19.003]] as [number, number][] };
+    const r = dropDeadEnd(drive, tail);
+    expect(r.drive).toBe(drive);
+    expect(r.tail).toBe(tail);
   });
 });
 

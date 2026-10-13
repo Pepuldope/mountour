@@ -4,7 +4,7 @@
 // server). Without a key, the public OSRM demo (car) and FOSSGIS (foot)
 // servers, which are fine for local development but have no SLA.
 import type { DriveRoute } from "@/lib/drive";
-import { haversineM } from "@/lib/geo";
+import { haversineM, nearestOnPath } from "@/lib/geo";
 
 export type Pt = [number, number];
 type OrsProfile = "driving-car" | "foot-hiking" | "foot-walking";
@@ -96,15 +96,62 @@ export async function finishDrive(route: DriveRoute, to: Pt, tail: (from: Pt, to
     const last = await tail(end, to);
     // A detour much longer than the gap is a wrong turn, not the way in.
     if (last.distanceM > Math.max(3 * gap, gap + 1500)) return route;
+    const trimmed = dropDeadEnd(route, last);
+    const walk = trimmed.tail;
     return {
-      durationMin: route.durationMin + Math.max(1, Math.round((last.distanceM / 1000 / LAST_STRETCH_KMH) * 60)),
-      distanceM: route.distanceM + last.distanceM,
-      points: [...route.points, ...last.points],
+      durationMin: trimmed.drive.durationMin + Math.max(1, Math.round((walk.distanceM / 1000 / LAST_STRETCH_KMH) * 60)),
+      distanceM: trimmed.drive.distanceM + walk.distanceM,
+      points: [...trimmed.drive.points, ...walk.points],
     };
   } catch (err) {
     console.warn("drive: last stretch to the parking failed", err);
     return route;
   }
+}
+
+/** A tail point this close to the drive is still on the road the car came in by. */
+const SAME_WAY_M = 20;
+
+const lineM = (pts: Pt[]) => pts.reduce((sum, p, i) => (i ? sum + dist(pts[i - 1], p) : 0), 0);
+
+/**
+ * The car router ends at the road point nearest the parking, which can be
+ * down a dead end the walk then has to come back out of. Where the walk
+ * starts by retracing the drive, stop the car where the walk leaves the road
+ * and drop both copies of that stretch.
+ */
+export function dropDeadEnd(drive: DriveRoute, tail: DriveRoute): { drive: DriveRoute; tail: DriveRoute } {
+  const road = drive.points.map(([lat, lon]) => ({ lat, lon }));
+  let cut: { i: number; point: { lat: number; lon: number } } | null = null;
+  let k = 0;
+  for (let t = 1; t < tail.points.length; t++) {
+    const [lat, lon] = tail.points[t];
+    const hit = nearestOnPath(road.slice(0, (cut?.i ?? road.length - 1) + 2), { lat, lon });
+    if (!hit || hit.distanceM > SAME_WAY_M) break;
+    cut = hit;
+    k = t;
+  }
+  if (!cut || k === 0) return { drive, tail };
+  const at: Pt = [cut.point.lat, cut.point.lon];
+  const kept: Pt[] = [...drive.points.slice(0, cut.i + 1), at];
+  const keptM = lineM(kept);
+  const fullM = lineM(drive.points);
+  const share = fullM > 0 ? keptM / fullM : 1;
+  const rest: Pt[] = [at, ...tail.points.slice(k + 1)];
+  const restM = lineM(rest);
+  const tailM = lineM(tail.points);
+  return {
+    drive: {
+      durationMin: Math.round(drive.durationMin * share),
+      distanceM: Math.round(drive.distanceM * share),
+      points: kept,
+    },
+    tail: {
+      durationMin: tail.durationMin,
+      distanceM: tailM > 0 ? Math.round(tail.distanceM * (restM / tailM)) : tail.distanceM,
+      points: rest,
+    },
+  };
 }
 
 /**
