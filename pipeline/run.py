@@ -95,9 +95,11 @@ def main(argv=None):
 
     prev = root / "public" / "data" / "trips" / "index.json"
     if prev.exists() and not a.force:
-        n_prev = len(json.loads(prev.read_text())["trips"])
-        if n_prev >= 20 and len(trips) < 0.7 * n_prev:
-            log(f"trip count fell from {n_prev} to {len(trips)}: refusing to publish (use --force)")
+        # Places, not routes: index.json lists the main route of each place.
+        n_prev = sum(not t.get("variant_of") for t in json.loads(prev.read_text())["trips"])
+        n_new = sum(not t.get("variant_of") for t in trips)
+        if n_prev >= 20 and n_new < 0.7 * n_prev:
+            log(f"place count fell from {n_prev} to {n_new}: refusing to publish (use --force)")
             return 1
 
     drive = None

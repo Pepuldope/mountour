@@ -1,7 +1,8 @@
 // Trip data schema, version 1. The weekly pipeline (pipeline/) writes these
 // files; the site only reads them. Full description: docs/TRIP-DATA.md.
 //
-//   public/data/trips/index.json   TripIndex       every trip (server: sitemap, API, database load)
+//   public/data/trips/index.json   TripIndex       main route of every place (server: home, sitemap, API)
+//   data/trip-variants.json        TripIndex-like  the other routes of each place (database load only)
 //   public/data/trips/list.json    TripList        every trip, trimmed for the home list
 //   public/data/trips/<slug>.json  TripDetail      one trip with its path, parking, stops, POIs
 //   public/data/drive/<town>.json  TownDriveFile   car times from one town to every trip
@@ -201,6 +202,24 @@ export interface TripDetail extends TripSummary {
   transit_alternatives: TransitStop[];
   /** Huts, springs, viewpoints, castles within ~150 m of the path. */
   pois: Poi[];
+  /** Every route to this place, main first, when there is more than one (absent otherwise). */
+  routes?: RouteBrief[];
+}
+
+/** One route to a place, as the trip page lists it next to the others. */
+export interface RouteBrief {
+  slug: string;
+  route_label: string | null;
+  /** Absent on the main route. */
+  variant_of?: string;
+  start_name: string;
+  parking: boolean;
+  transit: boolean;
+  duration_min: number;
+  distance_m: number;
+  ascent_m: number;
+  /** The way up as [lon, lat] (the whole loop for "okruh"). */
+  up: [number, number][];
 }
 
 export interface TripIndex {

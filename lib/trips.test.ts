@@ -1,13 +1,15 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { closureRulesFor, getClosureRules, getTowns, summaryFromList } from "@/lib/trips";
 import { getAllTrips, getTownDrives, getTrip } from "@/lib/tripFiles";
 import list from "@/public/data/trips/list.json";
-import type { TripList } from "@/lib/tripSchema";
+import type { TripList, TripSummary } from "@/lib/tripSchema";
 import { isClosureActive } from "@/lib/closures";
 
 // Checks the static trip files the pipeline writes (docs/TRIP-DATA.md).
 const trips = await getAllTrips();
+// The other routes of each place: the database load reads them, the site never lists them.
+const variants = (JSON.parse(readFileSync("data/trip-variants.json", "utf8")) as { trips: TripSummary[] }).trips;
 
 describe("trip data", () => {
   it("has unique slugs, a detail file and a GPX file for every trip", async () => {
@@ -21,7 +23,16 @@ describe("trip data", () => {
   });
 
   it("keeps the 10 hand-picked trips", () => {
-    expect(trips.filter((t) => t.curated).length).toBe(10);
+    expect([...trips, ...variants].filter((t) => t.curated).length).toBe(10);
+  });
+
+  it("lists main routes only in the index, and every route of a place in each of its files", async () => {
+    expect(trips.some((t) => t.variant_of)).toBe(false);
+    const kamzik = await getTrip("kamzik");
+    expect(kamzik?.routes?.[0].slug).toBe("kamzik");
+    const other = await getTrip(kamzik!.routes![1].slug);
+    expect(other?.variant_of).toBe("kamzik");
+    expect(other?.routes).toEqual(kamzik?.routes);
   });
 
   it("only points at closure rules that exist and carry a source", () => {

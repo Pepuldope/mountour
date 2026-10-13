@@ -1,21 +1,13 @@
 import Link from "next/link";
 import { formatDuration } from "@/lib/format";
-import type { TripSummary } from "@/lib/tripSchema";
+import type { RouteBrief } from "@/lib/tripSchema";
 
 interface Props {
   /** The trip on screen. */
   slug: string;
   destination: string;
-  /** The main route first, then the others (see groupRoutes). */
-  routes: TripSummary[];
-}
-
-/** The main route of a place and the other routes to it, from the trip index. */
-export function groupRoutes(all: TripSummary[], slug: string): TripSummary[] {
-  const me = all.find((t) => t.slug === slug);
-  const main = me?.variant_of ?? slug;
-  const group = all.filter((t) => t.slug === main || t.variant_of === main);
-  return group.sort((a, b) => Number(!!a.variant_of) - Number(!!b.variant_of) || a.duration_min - b.duration_min);
+  /** The main route first, then the others (the trip file's "routes"). */
+  routes: RouteBrief[];
 }
 
 /**
@@ -45,7 +37,7 @@ export function RouteChoice({ slug, destination, routes }: Props) {
                 <span className="flex min-w-0 flex-col">
                   <span className="text-[15px] font-bold">{r.route_label ?? (r.variant_of ? "Iná cesta" : "Hlavná cesta")}</span>
                   <span className="text-[13px] text-[var(--muted)]">
-                    štart {r.start.name}
+                    štart {r.start_name}
                     {r.transit && !r.parking ? " · len autobusom" : r.transit ? " · aj autobusom" : ""}
                   </span>
                 </span>

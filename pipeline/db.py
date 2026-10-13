@@ -210,6 +210,11 @@ def inserts(table, columns, rows):
 def build_sql(root=ROOT):
     tdir = root / "public" / "data" / "trips"
     index = json.loads((tdir / "index.json").read_text())
+    # index.json holds the main routes only; the other routes of each place are listed apart.
+    variants = root / "data" / "trip-variants.json"
+    if variants.exists():
+        index["trips"] = sorted(index["trips"] + json.loads(variants.read_text())["trips"],
+                                key=lambda t: (t["region"], -t["rank"], t["slug"]))  # run.py's order
     town_list = json.loads((root / "data" / "towns.json").read_text())["towns"]
     closures = json.loads((root / "data" / "closure-rules.json").read_text())["rules"]
 

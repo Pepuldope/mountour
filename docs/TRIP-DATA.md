@@ -10,7 +10,8 @@ binding on Cloudflare, the disk elsewhere). Small bundled data: `lib/trips.ts`.
 
 | File | What | Written by |
 |---|---|---|
-| `public/data/trips/index.json` | `TripIndex`: every trip as a `TripSummary` (sitemap, API, database load) | pipeline |
+| `public/data/trips/index.json` | `TripIndex`: the main route of every place as a `TripSummary` (home, sitemap, API, database load) | pipeline |
+| `data/trip-variants.json` | The other routes of each place, same shape (database load only; the site never reads it, so pages stay light) | pipeline |
 | `public/data/trips/list.json` | `TripList`: every trip without description and OSM ids; the home page fetches it | pipeline |
 | `public/data/trips/<slug>.json` | `TripDetail`: summary + path, marking colours, other parking/stops, POIs | pipeline |
 | `public/data/drive/<town>.json` | `TownDriveFile`: car minutes and km from one of ~140 towns to every trip's parking | pipeline (OSRM) |
@@ -41,7 +42,7 @@ Key fields of `TripSummary` (see `lib/tripSchema.ts` for all):
 - `fees`: entry fees from OSM tags or `fee-rules.json`. Empty means "none known", not "free".
 - `closure_rule_ids`: rules from `closure-rules.json` that cover this trip. **Empty means "Stav chodníka neoverený", never "otvorené".** Use `isClosureActive()` in `lib/closures.ts` with the trip date to decide whether a rule is in force.
 - `rank` 0..100 (how well known the destination is), `curated` (one of the 10 hand-picked trips), `gpx_url`, `bbox`.
-- Several routes per place (since 2026-10-13): `variant_of` is the main trip's slug on the other routes (absent on main routes); `route_label` (absent when a place has one route) says why to pick a route ("Hlavná cesta", "Kratšia", "Dlhšia", "Na celý deň", "Autobusom", "Menej do kopca", "Cez <miesto>", "Iná cesta"); main trips carry `route_count`. The main route is the best-known start (big car park, stop, food, several trails meeting, a village; see `known_score` in pipeline/trips.py), unless it is much longer. Other routes are full trips with their own file, GPX and drive times, but they are left out of `list.json` and the map lines.
+- Several routes per place (since 2026-10-13): `variant_of` is the main trip's slug on the other routes (absent on main routes); `route_label` (absent when a place has one route) says why to pick a route ("Hlavná cesta", "Kratšia", "Dlhšia", "Na celý deň", "Autobusom", "Menej do kopca", "Cez <miesto>", "Iná cesta"); main trips carry `route_count`. The main route is the best-known start (big car park, stop, food, several trails meeting, a village; see `known_score` in pipeline/trips.py), unless it is much longer. Other routes are full trips with their own file, GPX and drive times, but they are left out of `index.json`, `list.json` and the map lines. Each trip of such a place carries `routes` in its file: every route, main first, with its label, start, times and the way up (`up`, [lon, lat]), so the trip page reads only its own file.
 
 `TripDetail` adds `path` (`[lon, lat, ele]`, ~10 m), `turnaround_index`, `marking_runs`
 (index ranges of `path` with a KST colour, for drawing the route in trail colours),
