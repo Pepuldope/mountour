@@ -11,7 +11,11 @@ def m(a, b):
 q = f"""[out:json][timeout:60];
 (nwr(around:1500,{START[0]},{START[1]})[amenity=parking];);out center tags;
 way(around:400,{START[0]},{START[1]})[highway];out tags geom;"""
-res = get("https://overpass-api.de/api/interpreter", urllib.parse.urlencode({"data": q}).encode())
+res = {"elements": []}
+for host in ["https://overpass.private.coffee/api/interpreter", "https://overpass.kumi.systems/api/interpreter", "https://overpass-api.de/api/interpreter", "https://maps.mail.ru/osm/tools/overpass/api/interpreter"]:
+    try:
+        res = get(host, urllib.parse.urlencode({"data": q}).encode()); print("overpass ok", host); break
+    except Exception as ex: print("overpass fail", host, ex)
 parks = []
 print("== parkings within 1500 m")
 for e in res["elements"]:
