@@ -30,8 +30,8 @@ interface Props {
   others?: OtherRoute[];
 }
 
-/** Other routes in ink, faint: clearly not the walk you picked, still easy to see. */
-const OTHER_ROUTE_COLOUR = "#14233b";
+/** Other routes in a muted slate: clearly not the walk you picked (that one keeps its trail colour), still easy to see. */
+const OTHER_ROUTE_COLOUR = "#6b7a93";
 
 /** Closer than this, the car is at the trail: no walking link. */
 const AT_TRAIL_M = 60;
@@ -87,7 +87,7 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
   // There-and-back tracks run out and back, so that stretch is cut at both ends.
   const otherTracks = useMemo<MapTrack[]>(
-    () => others.map((o) => ({ slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "dimmed" })),
+    () => others.map((o) => ({ slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal" })),
     [others]
   );
   const tracks = useMemo<MapTrack[]>(() => {
