@@ -35,6 +35,8 @@ interface TripRow {
   path_json: string | null;
   turnaround_index: number | null;
   marking_runs_json: string | null;
+  variant_of: string | null;
+  route_label: string | null;
   d_name: string;
   d_kind: TripSummary["destination"]["kind"];
   d_lat: number;
@@ -153,6 +155,8 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
     bbox: JSON.parse(t.bbox_json),
     curated: t.curated === 1,
     gpx_url: t.gpx_url,
+    variant_of: t.variant_of ?? null,
+    route_label: t.route_label ?? null,
     path: t.path_json ? JSON.parse(t.path_json) : [],
     turnaround_index: t.turnaround_index ?? 0,
     marking_runs: t.marking_runs_json ? JSON.parse(t.marking_runs_json) : [],

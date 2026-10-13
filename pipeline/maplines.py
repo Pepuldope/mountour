@@ -71,7 +71,8 @@ def write(root, now=None):
     out = root / "public" / "data" / "map"
     (out / "c").mkdir(parents=True, exist_ok=True)
     index = json.loads((tdir / "index.json").read_text())
-    trips = [json.loads((tdir / f"{t['slug']}.json").read_text()) for t in index["trips"]]
+    # One line per place: other routes to it show only on its trip page.
+    trips = [json.loads((tdir / f"{t['slug']}.json").read_text()) for t in index["trips"] if not t.get("variant_of")]
     cut = cuts([t["rank"] for t in trips])
 
     overview, cells = [], {}

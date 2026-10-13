@@ -59,6 +59,7 @@ class OsmData:
     destinations: list = field(default_factory=list)  # (kind, Feature)
     pois: list = field(default_factory=list)  # (kind, Feature)
     towns: list = field(default_factory=list)
+    places: list = field(default_factory=list)  # villages and towns near trails (how well known a start is)
     probes: dict = field(default_factory=dict)  # name -> [(lat, lon)]
     border: object = None  # shapely geometry of the country, or None
     data_at: str | None = None
@@ -133,6 +134,16 @@ def stop_mode(t):
     return None
 
 
+PLACES = ("city", "town", "village", "suburb", "hamlet")
+
+
+def _area_m2(lats, lons):
+    """Area of a closed way (shoelace on a local flat projection)."""
+    k = np.cos(np.radians(lats.mean()))
+    x, y = lons * 111320.0 * k, lats * 110540.0
+    return float(abs(np.dot(x[:-1], y[1:]) - np.dot(x[1:], y[:-1])) / 2)
+
+
 def parking_ok(t):
     return (
         t.get("amenity") == "parking"
@@ -172,11 +183,15 @@ def load(path, boxes, probe_names=(), border_relation=14296):
                     way_routes.setdefault(m.ref, []).append(idx)
 
     # pass 2: nodes and ways
-    def add_feature(o, lat, lon, osm_ref):
+    def add_feature(o, lat, lon, osm_ref, extra=None):
         t = dict(o.tags)
+        if extra:
+            t.update(extra)
         name = clean_name(t)
         if t.get("name") in probe_names or name in probe_names:
             data.probes.setdefault(name, []).append((lat, lon))
+        if t.get("place") in PLACES and name and osm_ref.startswith("node") and (lat, lon) in feature_box:
+            data.places.append(Feature(osm_ref, name, lat, lon, {"place": t["place"]}))
         if t.get("place") in ("city", "town") and name and osm_ref.startswith("node"):
             data.towns.append(Feature(osm_ref, name, lat, lon, t))
             return
@@ -241,7 +256,10 @@ def load(path, boxes, probe_names=(), border_relation=14296):
                     tags=frozenset(f"{k}={t.get(k)}" for k in WATCH_TAGS if k in t),
                 ))
         if feature:
-            add_feature(o, float(lats.mean()), float(lons.mean()), f"way/{o.id}")
+            extra = None
+            if t.get("amenity") == "parking" and len(lats) >= 4 and o.nodes[0].ref == o.nodes[-1].ref:
+                extra = {"_area_m2": _area_m2(lats, lons)}
+            add_feature(o, float(lats.mean()), float(lons.mean()), f"way/{o.id}", extra)
 
     if border_relation:
         data.border = _border(path, border_relation)

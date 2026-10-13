@@ -43,7 +43,9 @@ def write(root, trips, dem, drive, slugs, report, osm_data_at, now=None):
 
     index = dict(version=1, generated_at=now, osm_data_at=osm_data_at, attribution=ATTRIBUTION, trips=summaries)
     _dump(tdir / "index.json", index)
-    _dump(tdir / "list.json", dict(version=1, generated_at=now, trips=[_list_item(t) for t in summaries]))
+    # The home list and map show one trip per place; its other routes are on the trip page.
+    _dump(tdir / "list.json", dict(version=1, generated_at=now,
+                                   trips=[_list_item(t) for t in summaries if not t.get("variant_of")]))
 
     if drive is not None:
         towns, minutes, km, source = drive
@@ -120,6 +122,17 @@ def _report(trips, rep, now, osm_at, drive):
             else:
                 cells.append("")
         L.append(f"| {r['slug']} | " + " | ".join(cells) + " |")
+    groups = {}
+    for t in trips:
+        groups.setdefault(t.get("variant_of") or t["slug"], []).append(t)
+    multi = [g for g in groups.values() if len(g) > 1]
+    L += ["", "## Places with more than one route", "",
+          f"{len(multi)} of {len(groups)} places have other routes; {rep.get('variants', 0)} other routes in all.", "",
+          "| Place | Main route (start, time) | Other routes |", "|---|---|---|"]
+    for g in sorted(multi, key=lambda g: -g[0]["rank"])[:60]:
+        m, rest = g[0], g[1:]
+        fmt = lambda t: f"{t['start']['name']} {t['duration_min'] // 60}:{t['duration_min'] % 60:02d}"
+        L.append(f"| {m['slug']} | {fmt(m)} | " + "; ".join(f"{t['route_label']}: {fmt(t)}" for t in rest) + " |")
     L += ["", "## Rejected candidates", ""] + [f"- {k}: {v}" for k, v in sorted(rep["rejected"].items())]
     if rep.get("unresolved"):
         L += ["", "## Rule place names not found in OSM (check spelling in the rule files)", ""]
