@@ -245,12 +245,15 @@ class TripBuilder:
         main["_others"] = [r for r in routes if r is not main]
         return main
 
-    def routes_to(self, target, dest, region, ths, th_nodes, known=()):
+    def routes_to(self, target, dest, region, ths, th_nodes, known=(), limits=None):
         """Good routes to `target` from different trailheads, cheapest first.
 
         Routes that share more than route_overlap_max of their length count as one
         (two guideposts in one village, or the same trail joined a little lower).
-        `known` holds edge sets of routes already built (a hand-picked trip)."""
+        `known` holds edge sets of routes already built (a hand-picked trip); `limits` can
+        lower min_round_trip_m and min_ascent_m for one place (a short stroll from a car park
+        that everyone takes, like Kamzík)."""
+        lim = {**self.t, **(limits or {})}
         dist, succ = self.g.costs_to(target, ROUTE_LIMIT)
         costs = dist[th_nodes]
         if not np.isfinite(costs).any():
@@ -261,7 +264,7 @@ class TripBuilder:
             if not np.isfinite(costs[i]) or looked >= self.t.get("route_trailheads_max", 25):
                 break
             st = ths[int(th_nodes[i])]
-            if haversine(st.lat, st.lon, dest["lat"], dest["lon"]) < self.t["min_round_trip_m"] / 4:
+            if haversine(st.lat, st.lon, dest["lat"], dest["lon"]) < lim["min_round_trip_m"] / 4:
                 continue
             looked += 1
             path = self.g.walk_to_target(succ, st.node, target)
@@ -272,7 +275,7 @@ class TripBuilder:
             if any(self._overlap(edges, e) for e in seen):
                 continue
             trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
-            bad = self._quality(trip, dest["kind"]) if trip else "could not build"
+            bad = self._quality(trip, dest["kind"], lim) if trip else "could not build"
             if bad:
                 why = bad
                 continue
@@ -284,14 +287,14 @@ class TripBuilder:
                 break
         return out, why
 
-    def _quality(self, trip, kind):
-        if trip["duration_min"] > self.t["max_duration_min"]:
+    def _quality(self, trip, kind, lim):
+        if trip["duration_min"] > lim["max_duration_min"]:
             return "too long"
-        if trip["distance_m"] < self.t["min_round_trip_m"]:
+        if trip["distance_m"] < lim["min_round_trip_m"]:
             return "too short"
-        if trip["marked_share"] < self.t["min_marked_share"]:
+        if trip["marked_share"] < lim["min_marked_share"]:
             return "mostly unmarked"
-        if trip["ascent_m"] < self.t["min_ascent_m"] and kind not in ("pleso", "vodopad", "jaskyna"):
+        if trip["ascent_m"] < lim["min_ascent_m"] and kind not in ("pleso", "vodopad", "jaskyna"):
             return "too flat (city walk)"
         return None
 
@@ -441,7 +444,8 @@ class TripBuilder:
         trip["_known"] = self.known_score(st)
         others = []
         if ths is not None and len(th_nodes):
-            others, _ = self.routes_to(d_node, dest, region, ths, th_nodes, known=[self._edge_set(out_path)])
+            others, _ = self.routes_to(d_node, dest, region, ths, th_nodes, known=[self._edge_set(out_path)],
+                                       limits=p.get("route_limits"))
         main = trip
         if p.get("main") == "auto" and others:
             main = self._pick_main([trip] + others)
