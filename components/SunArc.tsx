@@ -126,13 +126,21 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
     });
 
     // The arc always clears the hill; summer days still arc higher than winter ones.
-    const peak = sunAltitude(new Date((sunrise + sunset) / 2), sun.lat, sun.lon);
+    const altAt = (at: number) => sunAltitude(new Date(at), sun.lat, sun.lon);
+    // Sunrise and sunset are when the sun's top edge meets the horizon (a little below 0°), so that
+    // height is the ground line: the arc leaves and lands exactly on the sunrise and sunset dots.
+    const h0 = (altAt(sunrise) + altAt(sunset)) / 2;
+    const peak = altAt((sunrise + sunset) / 2);
     const arcH = Math.min(HOR - 10, Math.max(80, rise + 48) + 18 * Math.min(1, peak / 66));
-    const y = (alt: number) => HOR - (Math.max(alt, -3) / peak) * arcH;
-    let arc = "";
-    for (let t = sunrise; t <= sunset; t += 5 * MIN) {
-      arc += `${arc ? "L" : "M"}${x(t).toFixed(1)},${y(sunAltitude(new Date(t), sun.lat, sun.lon)).toFixed(1)}`;
-    }
+    const y = (alt: number) => HOR - ((Math.max(alt, -3) - h0) / (peak - h0)) * arcH;
+    const arcPts: [number, number][] = [[x(sunrise), HOR]];
+    for (let t = sunrise + 5 * MIN; t < sunset - 2 * MIN; t += 5 * MIN) arcPts.push([x(t), y(altAt(t))]);
+    arcPts.push([x(sunset), HOR]);
+    const arc = arcPts.map(([px, py], i) => `${i ? "L" : "M"}${px.toFixed(1)},${py.toFixed(1)}`).join("");
+    // Dashes sized so the line starts and ends with a dash on the dots, not a gap.
+    let arcLen = 0;
+    for (let i = 1; i < arcPts.length; i++) arcLen += Math.hypot(arcPts[i][0] - arcPts[i - 1][0], arcPts[i][1] - arcPts[i - 1][1]);
+    const dash = arcLen / (2 * Math.max(1, Math.round(arcLen / 8)) + 1);
 
     let ridge = `M0,${HOR}`;
     for (let px = 0; px <= W; px += 6) {
@@ -167,7 +175,7 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
 
     const sky = weather ? weatherSkySvg(weather, lo, hi, x, HOR, (at) => sunAltitude(new Date(at), sun.lat, sun.lon) < -3) : null;
 
-    return { lo, hi, x, y, walk, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, ridge, hill, hours, season, deco, snow, capY };
+    return { lo, hi, x, y, walk, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, dash, ridge, hill, hours, season, deco, snow, capY };
   }, [first, home, hs, he, sunrise, sunset, dusk, plan.dawn, profile, sun.lat, sun.lon, weather]);
   const land = LAND[scene.season];
   const sunR = 8.5 * land.sunScale;
@@ -269,13 +277,51 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
   const onMove = (e: ReactPointerEvent) => {
     if (e.pointerType === "mouse" || dragging.current) setScrub(timeAt(e.clientX));
   };
+  const timeAtRef = useRef(timeAt);
+  timeAtRef.current = timeAt;
+
+  // Phones: a sideways finger moves through the day, an upward one scrolls the page. Pointer events
+  // alone lose the drag when the browser reads a slightly slanted swipe as scrolling, so touches
+  // decide the direction themselves and keep the page still once the drag is sideways.
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    let x0 = 0;
+    let y0 = 0;
+    let sideways: boolean | null = null;
+    const start = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return (sideways = false);
+      x0 = e.touches[0].clientX;
+      y0 = e.touches[0].clientY;
+      sideways = null;
+    };
+    const move = (e: TouchEvent) => {
+      if (e.touches.length !== 1 || sideways === false) return;
+      const { clientX, clientY } = e.touches[0];
+      if (sideways === null) {
+        const dx = Math.abs(clientX - x0);
+        const dy = Math.abs(clientY - y0);
+        if (dx < 5 && dy < 5) return;
+        sideways = dx >= dy * 0.7;
+        if (!sideways) return;
+      }
+      if (e.cancelable) e.preventDefault();
+      setScrub(timeAtRef.current(clientX));
+    };
+    el.addEventListener("touchstart", start, { passive: true });
+    el.addEventListener("touchmove", move, { passive: false });
+    return () => {
+      el.removeEventListener("touchstart", start);
+      el.removeEventListener("touchmove", move);
+    };
+  }, []);
 
   const label = (x: number) => Math.max(34, Math.min(W - 34, x));
   const ground = "Figtree, system-ui, sans-serif";
 
   return (
     <div
-      className="select-none"
+      className="touch-pan-y select-none [-webkit-touch-callout:none]"
       onPointerMove={onMove}
       onPointerLeave={(e) => e.pointerType === "mouse" && setScrub(null)}
     >
@@ -374,7 +420,7 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
         })}
 
         <path d={scene.arc} fill="none" stroke="#fff" strokeWidth={4} strokeLinecap="round" opacity={0.75} />
-        <path d={scene.arc} fill="none" stroke="#e08a00" strokeWidth={1.7} strokeDasharray="4 4" strokeLinecap="round" />
+        <path d={scene.arc} fill="none" stroke="#e08a00" strokeWidth={1.7} strokeDasharray={`${scene.dash.toFixed(2)} ${scene.dash.toFixed(2)}`} strokeLinecap="round" />
         <g transform={`translate(${sx} ${sy})`} opacity={alt > -1 ? sunShows : 0}>
           {!behindWalker && <circle r={sunR + 8} fill="#ffd36b" opacity={0.45} />}
           {!behindWalker && <circle r={sunR + 2} fill="#fff" opacity={0.9} />}
