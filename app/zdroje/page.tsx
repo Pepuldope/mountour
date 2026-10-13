@@ -3,7 +3,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Zdroje a mapy",
-  description: "Odkiaľ MounTour berie mapy a údaje: OpenStreetMap, OpenFreeMap, openrouteservice.",
+  description: "Odkiaľ MounTour berie mapy a údaje: OpenStreetMap, OpenFreeMap, openrouteservice, cestovný poriadok ŽSR.",
   path: "/zdroje",
 });
 
@@ -42,7 +42,12 @@ export default function SourcesPage() {
           <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
         </li>
         <li>
-          Spoje verejnej dopravy: odkaz na <a href="https://cp.sk">cp.sk</a>.
+          Vlaky: cestovný poriadok <a href="https://www.zsr.sk">ŽSR</a> vo formáte GTFS z{" "}
+          <a href="https://data.slovensko.sk">data.slovensko.sk</a>, licencia{" "}
+          <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>. Linky autobusov na zastávkach: údaje © OpenStreetMap.
+        </li>
+        <li>
+          Presné spoje autobusov a vlakov: odkaz na <a href="https://cp.sk">cp.sk</a>, Google Mapy a Apple Mapy.
         </li>
       </ul>
     </InfoPage>

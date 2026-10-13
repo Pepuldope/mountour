@@ -49,12 +49,17 @@ const navButton =
 export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: fullProfile, gpxUrl, bbox, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
-  const { destination, approachMin, trailStart, transit, stop, skip } = useTripAccess();
+  const { destination, rideTo, approachMin, trailStart, transit, stop, skip } = useTripAccess();
   // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day;
   // parked up the trail, the stretch below is skipped both ways.
   const baseHikeMin = joinedMinutes(trailHikeMin, skip) + (transit || start ? 2 * approachMin : 0);
   const profile = useMemo(() => (fullProfile && skip ? trimProfile(fullProfile, skip.skip_out, skip.skip_back) : fullProfile), [fullProfile, skip]);
-  const { plan, date, time, driveMin, driveApprox, driveStatus } = useTripPlan(sun, destination, baseHikeMin);
+  const { plan, date, time, driveMin, roadMin, driveApprox, driveStatus, rail } = useTripPlan(
+    sun,
+    rideTo,
+    baseHikeMin,
+    transit && stop?.mode === "vlak" ? stop.location : null
+  );
   const [shared, setShared] = useState<SharedPlan | null>(null);
   const weather = useTripWeather(plan, trailStart, goal, profile?.points[0]?.ele ?? null);
 
@@ -111,7 +116,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
         </div>
       )}
 
-      <TravelSwitch driveMin={driveMin} />
+      <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} />
 
       {plan && (
         <section
@@ -134,14 +139,22 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
             {latestPassed && (
               <p className="pt-1 text-sm font-semibold text-[var(--time)]">Na dnes je to už neskoro. Skúste zajtra ráno.</p>
             )}
-            {driveApprox && (
+            {transit && hasDrive && rail.status !== "ok" && (
+              <p className="pt-1 text-xs text-[var(--muted)]">
+                Cestu autobusom odhadujeme podľa cesty autom (~{formatDuration(driveMin!)}). Presné spoje nájdete nižšie.
+              </p>
+            )}
+            {transit && rail.status === "ok" && (
+              <p className="pt-1 text-xs text-[var(--muted)]">Podľa cestovného poriadku vlakov, spoj si vyberiete nižšie.</p>
+            )}
+            {driveApprox && !transit && (
               <p className="pt-1 text-xs text-[var(--muted)]">Cestu autom teraz odhadujeme podľa vzdialenosti (~{formatDuration(driveMin!)}).</p>
             )}
             {!start && !transit && (
               <p className="pt-1 text-xs text-[var(--muted)]">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>
             )}
           </div>
-          {sun && <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} weather={weather.below} />}
+          {sun && <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} byBus={transit} weather={weather.below} />}
         </section>
       )}
 
@@ -160,7 +173,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
             />
           </label>
         </div>
-        {driveStatus === "loading" && <p className="text-xs text-[var(--muted)]">Počítam cestu autom...</p>}
+        {driveStatus === "loading" && <p className="text-xs text-[var(--muted)]">{transit ? "Počítam cestu na zastávku..." : "Počítam cestu autom..."}</p>}
       </section>
 
       {plan && (
@@ -176,7 +189,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
           </p>
           {plan.startsInDark && <p className="text-sm text-[var(--warn)]">Túra začína pred východom slnka, vezmite si čelovku.</p>}
           <WeatherNotes plan={plan} weather={weather} goal={goal} />
-          {transit && <TransitLegs plan={plan} />}
+          {transit && <TransitLegs plan={plan} rail={rail} />}
           <ol className="font-data grid grid-cols-4 gap-x-2 text-[1.3rem] leading-tight font-bold sm:text-[1.6rem]">
             {hasDrive ? (
               <Step label="odchod" time={plan.segments[0].start} />
@@ -191,7 +204,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
       )}
 
       <section aria-label="Uložiť a zdieľať" className="flex flex-col gap-3">
-        <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} destination={destination} baseHikeMin={baseHikeMin} profile={profile} {...trip} />
+        <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} destination={rideTo} baseHikeMin={baseHikeMin} profile={profile} {...trip} />
         {destination && (
           <div className="flex gap-2">
             <a href={googleMapsUrl(destination)} data-umami-event="nav_open" data-umami-event-app="google" target="_blank" rel="noopener noreferrer" className={navButton}>

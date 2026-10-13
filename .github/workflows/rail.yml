@@ -1,0 +1,58 @@
+name: Weekly train timetable
+
+# Rebuilds public/data/rail/timetable.json (every passenger train in Slovakia
+# for the coming weeks) from the national rail GTFS on data.slovensko.sk, which
+# redeploys the site. Code: pipeline/rail.py. Run it by hand from the Actions
+# tab ("Run workflow").
+on:
+  schedule:
+    - cron: "37 2 * * 1"
+  workflow_dispatch:
+  push:
+    branches: ["claude/project-thread-1upsgq"]
+    paths: ["pipeline/rail.py", ".github/workflows/rail.yml"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rail-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - run: python -m pytest -q pipeline/tests/test_rail.py
+
+      - name: Build the train timetable
+        run: |
+          curl -fsSL --retry 3 -o rail-gtfs.zip "https://data.slovensko.sk/download?id=c4918871-2860-4e6f-bf67-55e5c902785d"
+          python -m pipeline.rail --gtfs rail-gtfs.zip
+          ls -la public/data/rail && gzip -c public/data/rail/timetable.json | wc -c
+
+      - name: Commit the new data
+        run: |
+          git config user.name "mountour-data-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            rm -rf "$RUNNER_TEMP/rail" && cp -r public/data/rail "$RUNNER_TEMP/rail"
+            git fetch origin "${GITHUB_REF_NAME}"
+            git checkout -f --detach "origin/${GITHUB_REF_NAME}"
+            rm -rf public/data/rail && cp -r "$RUNNER_TEMP/rail" public/data/rail
+            git add -A public/data/rail
+            if git diff --cached --quiet; then
+              echo "No changes."
+              exit 0
+            fi
+            git commit -m "Train timetable from data.slovensko.sk"
+            git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1

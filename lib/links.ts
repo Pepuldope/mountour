@@ -77,6 +77,18 @@ export function googleMapsUrl(to: LatLng): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${to.lat},${to.lon}&travelmode=driving`;
 }
 
+/** Google Maps public transport directions; the app then lists the buses, trains and changes. */
+export function googleTransitUrl(to: LatLng, from: LatLng | null): string {
+  const origin = from ? `&origin=${from.lat},${from.lon}` : "";
+  return `https://www.google.com/maps/dir/?api=1${origin}&destination=${to.lat},${to.lon}&travelmode=transit`;
+}
+
+/** Apple Maps public transport directions (dirflg=r); opens the Maps app on iPhone and Mac. */
+export function appleTransitUrl(to: LatLng, from: LatLng | null): string {
+  const saddr = from ? `saddr=${from.lat},${from.lon}&` : "";
+  return `https://maps.apple.com/?${saddr}daddr=${to.lat},${to.lon}&dirflg=r`;
+}
+
 /** Mapy.com URL API (lon,lat order): a car route when the start is known, else the spot with a pin. */
 export function mapyUrl(to: LatLng, from: LatLng | null): string {
   const p = (x: LatLng) => `${x.lon.toFixed(5)},${x.lat.toFixed(5)}`;
