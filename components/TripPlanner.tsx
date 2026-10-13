@@ -37,10 +37,6 @@ interface Props extends ShareInfo {
   bbox: BBox | null;
 }
 
-function hhmm(d: Date): string {
-  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
-}
-
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const navButton =
@@ -176,31 +172,25 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
               className="font-data w-32 rounded-lg border border-[var(--border)] bg-[var(--card-bg)] px-3 py-1.5 text-lg"
             />
           </label>
-          {latest && !latestPassed && time !== hhmm(latest) && (
-            <button
-              type="button"
-              onClick={() => update({ time: hhmm(latest) })}
-              className="text-sm font-semibold text-[var(--accent)] underline"
-            >
-              najneskôr ({formatTime(latest)})
-            </button>
-          )}
         </div>
         {driveStatus === "loading" && <p className="text-xs text-[var(--muted)]">{transit ? "Počítam cestu na zastávku..." : "Počítam cestu autom..."}</p>}
       </section>
 
       {plan && (
-        <section aria-label="Priebeh dňa" className="flex flex-col gap-3">
+        <section
+          aria-label="Priebeh dňa"
+          className="flex flex-col gap-3 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4"
+        >
           <p
             role="status"
-            className={`rounded-xl px-3 py-2.5 text-sm font-semibold ${good ? "bg-[var(--ok-bg)] text-[var(--ok)]" : "bg-[var(--warn-bg)] text-[var(--warn)]"}`}
+            className={`rounded-xl px-3.5 py-3 text-base font-semibold ${good ? "bg-[var(--ok-bg)] text-[var(--ok)]" : "bg-[var(--warn-bg)] text-[var(--warn)]"}`}
           >
             {verdictText(plan)}
           </p>
           {plan.startsInDark && <p className="text-sm text-[var(--warn)]">Túra začína pred východom slnka, vezmite si čelovku.</p>}
           <WeatherNotes plan={plan} weather={weather} goal={goal} />
           {transit && <TransitLegs plan={plan} rail={rail} />}
-          <ol className="font-data grid grid-cols-4 gap-x-3 text-[16px]">
+          <ol className="font-data grid grid-cols-4 gap-x-2 text-[1.3rem] leading-tight font-bold sm:text-[1.6rem]">
             {hasDrive ? (
               <Step label="odchod" time={plan.segments[0].start} />
             ) : (
@@ -234,7 +224,7 @@ function Step({ label, time, approx = false }: { label: string; time: Date; appr
   return (
     // Bottom-aligned: a label that wraps ("späť na zastávke") keeps the times on one line.
     <li className="flex flex-col justify-end">
-      <span className="block font-sans text-[11px] leading-tight font-medium text-[var(--muted)]">{label}</span>
+      <span className="block font-sans text-[13px] leading-tight font-medium text-[var(--muted)]">{label}</span>
       <span>
         {approx ? "~" : ""}
         {formatTime(time)}
