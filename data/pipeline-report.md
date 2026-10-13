@@ -1,8 +1,8 @@
 # Trip pipeline report
 
-Run: 2026-10-12T10:49:40+00:00 · OSM data: 2026-10-11T20:21:06Z
+Run: 2026-10-13T06:53:05+00:00 · OSM data: 2026-10-12T20:21:35Z
 
-**1458 trips**
+**1461 trips**
 
 | Region | Trips | Family | Candidates |
 |---|---|---|---|
@@ -11,7 +11,7 @@ Run: 2026-10-12T10:49:40+00:00 · OSM data: 2026-10-11T20:21:06Z
 | mala-fatra | 49 | 6 | 80 |
 | male-karpaty | 87 | 65 | 175 |
 | velka-fatra | 103 | 37 | 186 |
-| nizke-tatry | 86 | 15 | 139 |
+| nizke-tatry | 89 | 17 | 139 |
 | chocske-vrchy-orava | 40 | 16 | 87 |
 | pieniny | 11 | 6 | 11 |
 | kysuce-javorniky | 101 | 48 | 165 |
@@ -34,26 +34,26 @@ Flag ⚠ when off by more than 15 %.
 
 | Trip | Distance (new / old) | Ascent | Time |
 |---|---|---|---|
-| devinska-kobyla | 6770 / 6836 (-1%) | 367 / 370 (-1%) | 180 / 180 (+0%) |
-| kamzik | 4718 / 5124 (-8%) | 258 / 231 (+12%) | 120 / 120 (+0%) |
-| biely-kriz | 13132 / 13311 (-1%) | 442 / 436 (+1%) | 270 / 270 (+0%) |
+| devinska-kobyla | 6817 / 6836 (-0%) | 366 / 370 (-1%) | 180 / 180 (+0%) |
+| kamzik | 5142 / 5124 (+0%) | 235 / 231 (+2%) | 120 / 120 (+0%) |
+| biely-kriz | 15963 / 13311 (+20%) ⚠ | 518 / 436 (+19%) ⚠ | 330 / 270 (+22%) ⚠ |
 | pajstun | 3393 / 3422 (-1%) | 239 / 243 (-2%) | 105 / 105 (+0%) |
-| vysoka | 12175 / 12164 (+0%) | 658 / 658 (+0%) | 315 / 315 (+0%) |
-| velka-homola | 5423 / 5599 (-3%) | 288 / 300 (-4%) | 135 / 150 (-10%) |
-| zaruby | 8549 / 8845 (-3%) | 561 / 580 (-3%) | 255 / 255 (+0%) |
-| plavecky-hrad | 3332 / 3360 (-1%) | 192 / 188 (+2%) | 90 / 90 (+0%) |
-| cerveny-kamen | 4747 / 4754 (-0%) | 132 / 101 (+31%) ⚠ | 105 / 90 (+17%) ⚠ |
+| vysoka | 12392 / 12164 (+2%) | 659 / 658 (+0%) | 315 / 315 (+0%) |
+| velka-homola | 5599 / 5599 (+0%) | 288 / 300 (-4%) | 135 / 150 (-10%) |
+| zaruby | 8659 / 8845 (-2%) | 593 / 580 (+2%) | 255 / 255 (+0%) |
+| plavecky-hrad | 3338 / 3360 (-1%) | 189 / 188 (+1%) | 90 / 90 (+0%) |
+| cerveny-kamen | 4764 / 4754 (+0%) | 138 / 101 (+37%) ⚠ | 105 / 90 (+17%) ⚠ |
 | cachticky-hrad | 5206 / 5296 (-2%) | 191 / 201 (-5%) | 120 / 120 (+0%) |
 
 ## Rejected candidates
 
 - almost the same walk as another trip: 74
-- mostly unmarked: 424
+- mostly unmarked: 419
 - no trailhead within reach: 18
 - start already has enough trips: 15
 - too flat (city walk): 93
 - too long: 46
-- too short: 254
+- too short: 255
 - trailheads too close: 1
 
 ## Rule place names not found in OSM (check spelling in the rule files)
@@ -709,17 +709,17 @@ Flag ⚠ when off by more than 15 %.
 | pivnica | mala-fatra | Valčianska dolina, rekr. stred. | 5.5 | 369 | 2:45 | lahka |  |
 | ostry-kamen | male-karpaty | Vodná nádrž Buková, hrádza | 5.3 | 265 | 2:15 | lahka |  |
 | mohyla-generala-milana-rastislava-stefanika | male-karpaty | Dolné Košariská | 4.2 | 219 | 1:45 | lahka |  |
-| biely-kriz | male-karpaty | Pekná cesta, Záhrady | 13.1 | 442 | 4:30 | stredna |  |
+| biely-kriz | male-karpaty | Pekná cesta, Záhrady | 16.0 | 518 | 5:30 | stredna |  |
 | cachticky-hrad | male-karpaty | Čachtice | 5.2 | 191 | 2:00 | lahka |  |
-| cerveny-kamen | male-karpaty | Častá | 4.7 | 132 | 1:45 | lahka |  |
-| devinska-kobyla | male-karpaty | Devín, pod hradom | 6.8 | 367 | 3:00 | lahka |  |
+| cerveny-kamen | male-karpaty | Častá | 4.8 | 138 | 1:45 | lahka |  |
+| devinska-kobyla | male-karpaty | Devín, pod hradom | 6.8 | 366 | 3:00 | lahka |  |
 | hlbociansky-vodopad | male-karpaty | Smolenický zámok | 3.5 | 132 | 1:15 | lahka |  |
-| kamzik | male-karpaty | Železná studnička | 4.7 | 258 | 2:00 | lahka |  |
+| kamzik | male-karpaty | Železná studnička | 5.1 | 235 | 2:00 | lahka |  |
 | pajstun | male-karpaty | Borinka | 3.4 | 239 | 1:45 | lahka |  |
-| plavecky-hrad | male-karpaty | Plavecké Podhradie | 3.3 | 192 | 1:30 | lahka |  |
-| velka-homola | male-karpaty | Zochova chata, parkovisko | 5.4 | 288 | 2:15 | lahka |  |
-| vysoka | male-karpaty | Kuchyňa, kostol | 12.2 | 658 | 5:15 | stredna |  |
-| zaruby | male-karpaty | Smolenice, pod zámkom | 8.5 | 561 | 4:15 | stredna |  |
+| plavecky-hrad | male-karpaty | Plavecké Podhradie | 3.3 | 189 | 1:30 | lahka |  |
+| velka-homola | male-karpaty | Zochova chata, parkovisko | 5.6 | 288 | 2:15 | lahka |  |
+| vysoka | male-karpaty | Kuchyňa, kostol | 12.4 | 659 | 5:15 | stredna |  |
+| zaruby | male-karpaty | Smolenice, pod zámkom | 8.7 | 593 | 4:15 | stredna |  |
 | vapenna | male-karpaty | Pod Malou Vápennou | 4.0 | 355 | 2:30 | lahka |  |
 | kuchyna | male-karpaty | Vývrat | 2.6 | 121 | 1:00 | lahka |  |
 | kukla | male-karpaty | Tri kopce | 3.0 | 120 | 1:15 | lahka |  |
@@ -851,6 +851,7 @@ Flag ⚠ when off by more than 15 %.
 | nemecka | nizke-tatry | Svarín | 20.7 | 936 | 7:45 | tazka |  |
 | mitrova | nizke-tatry | Za Chvatimechom | 10.8 | 447 | 4:00 | stredna |  |
 | chata-pod-kralovou-holou | nizke-tatry | Krížová cesta | 4.5 | 419 | 3:00 | stredna |  |
+| polomske-ocko | nizke-tatry | Volchovo, drevokombinát | 4.5 | 310 | 2:15 | lahka |  |
 | kralov-stol | nizke-tatry | Kumštová dolina | 15.5 | 935 | 7:00 | tazka |  |
 | predajnianske-vodopady | nizke-tatry | Lopej, bus | 10.5 | 449 | 4:00 | stredna |  |
 | rovienky | nizke-tatry | Sedlo Čertovica | 3.6 | 347 | 2:30 | lahka |  |
@@ -859,10 +860,12 @@ Flag ⚠ when off by more than 15 %.
 | grun | nizke-tatry | Rejdová | 13.7 | 772 | 6:00 | tazka |  |
 | matusova | nizke-tatry | Nemecká, pamätník SNP | 15.0 | 808 | 6:15 | tazka |  |
 | velke-celno | nizke-tatry | Včelinec | 11.9 | 453 | 4:15 | stredna |  |
+| gindura | nizke-tatry | Nová Maša, Furmanec | 9.7 | 418 | 3:45 | stredna |  |
 | horska-chata-burda | nizke-tatry | Chata Zbojská | 10.5 | 529 | 4:15 | stredna |  |
 | smrekovica | nizke-tatry | Jánska dolina, rázcestie | 7.8 | 652 | 4:30 | stredna |  |
 | hajny-grun | nizke-tatry | Hronec | 5.4 | 337 | 2:30 | lahka |  |
 | horny-kopec | nizke-tatry | Polomka, stanica (vlak) | 5.7 | 283 | 2:15 | lahka |  |
+| strundzanik | nizke-tatry | Nová Maša, Furmanec | 7.5 | 216 | 2:30 | lahka |  |
 | kopok | nizke-tatry | Brusno - Kúpele | 4.7 | 265 | 2:00 | lahka |  |
 | kralicka | nizke-tatry | Trangoška | 7.6 | 643 | 4:30 | stredna |  |
 | latiborska | nizke-tatry | Sedlo Prievalec | 2.5 | 120 | 1:00 | lahka |  |
@@ -1341,7 +1344,7 @@ Flag ⚠ when off by more than 15 %.
 | smrekov | velka-fatra | Kráľova studňa, hotel | 4.2 | 263 | 2:00 | lahka |  |
 | chyzky | velka-fatra | Vyšná Revúca | 13.4 | 652 | 5:15 | stredna |  |
 | jarabina | velka-fatra | Chata Lysec | 14.7 | 998 | 7:15 | tazka |  |
-| kozi-chrbat | velka-fatra | Nad Poliankou 2 | 10.4 | 522 | 4:15 | stredna |  |
+| kozi-chrbat | velka-fatra | Tuf - Moštenické travertíny | 7.8 | 609 | 4:15 | stredna |  |
 | svrcinnik | velka-fatra | Chata Bartoška | 9.6 | 577 | 4:30 | stredna |  |
 | vyhnatova | velka-fatra | Skalka, ferrata | 3.5 | 209 | 1:45 | lahka |  |
 | krizna | velka-fatra | Kráľova studňa, hotel | 7.2 | 310 | 2:45 | lahka |  |
@@ -1524,4 +1527,4 @@ Flag ⚠ when off by more than 15 %.
 | dlhy-vrch | zahorie-podunajsko | Podhájska, Belek | 8.7 | 210 | 2:45 | lahka |  |
 | vystrkov | zahorie-podunajsko | Veľké Lovce | 5.2 | 95 | 1:45 | lahka |  |
 
-Drive table: 141 towns x 1458 trips, 0 pairs without a route.
+Drive table: 141 towns x 1461 trips, 0 pairs without a route.
