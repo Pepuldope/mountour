@@ -182,7 +182,7 @@
 ["Revúcka","a",48.68889,21.21179],
 ["Pereš, vodojem","a",48.68931,21.22537],
 ["Hríbová","a",48.68954,21.19877],
-["Lorinčík","a",48.68987,21.1927],
+["Lorinčík","a",48.68987,21.1927,["31"]],
 ["Jasov, č.d. 424","a",48.69118,20.96039],
 ["Haburská","a",48.6917,21.20748],
 ["Lúčnicová","a",48.69192,21.19898],
@@ -193,8 +193,8 @@
 ["Vyšný Medzev, rázcestie Baňa Lucia","a",48.69494,20.9353],
 ["Medzev, rázcestie Šugov","a",48.69587,20.91917],
 ["Obchodné centrum Optima","a",48.69665,21.23673],
-["Obchodné centrum Optima","e",48.69674,21.23575],
-["OC Cassovia","a",48.69709,21.24983],
+["Obchodné centrum Optima","e",48.69674,21.23575,["5"]],
+["OC Cassovia","a",48.69709,21.24983,["15","16"]],
 ["Košická futbalová aréna","a",48.69711,21.24727],
 ["Luník VIII","a",48.69725,21.2314],
 ["Medzev, železničná stanica","a",48.69767,20.90377],
@@ -202,5 +202,5 @@
 ["Medzev, SOU","a",48.69838,20.89848],
 ["Pri prachárni, obchodné centrá","a",48.69884,21.24982],
 ["Luník IX, sídlisko","a",48.69926,21.22032],
-["Moldavská, obchodné centrá","e",48.69982,21.23846]
+["Moldavská, obchodné centrá","e",48.69982,21.23846,["5"]]
 ]

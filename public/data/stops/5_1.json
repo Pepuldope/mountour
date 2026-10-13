@@ -1,6 +1,6 @@
 [
-["Balassagyarmat, Újkóvár","a",48.06873,19.26008],
-["Balassagyarmat, autóbusz-állomás","a",48.08377,19.29673],
+["Balassagyarmat, Újkóvár","a",48.06873,19.26008,["360","361"]],
+["Balassagyarmat, autóbusz-állomás","a",48.08377,19.29673,["1B","2","5A","6B","6C","8","8A","360","460","3314"]],
 ["Slovenské Ďarmoty, Iliašov, tehelňa","a",48.08981,19.27853],
 ["Vrbovka","a",48.09011,19.40798],
 ["Slovenské Ďarmoty, autobusová stanica","a",48.09103,19.2914],
