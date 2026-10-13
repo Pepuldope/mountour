@@ -41,6 +41,8 @@ export interface MapView {
   bounds: Box;
   center: [number, number];
   zoom: number;
+  /** Below this zoom the map shows areas instead of trips (lower on narrow screens). */
+  areaZoom: number;
 }
 
 interface Props {
@@ -67,6 +69,13 @@ interface Props {
 const MAP_DATA = "/data/map";
 /** Below this zoom the map shows areas; their squares come from here on. */
 export const AREA_ZOOM = 9;
+/**
+ * How much earlier than on a wide screen areas give way to trips: a phone shows
+ * a whole mountain area only around zoom 7.5, so its trips must show from there.
+ */
+export function areaShift(width: number): number {
+  return Math.min(2, Math.max(0, Math.log2(1200 / Math.max(width, 1))));
+}
 /** Squares by popularity: the best known show from SQUARE_MIN, every trip by SQUARE_MAX. */
 const SQUARE_MIN = AREA_ZOOM;
 const SQUARE_MAX = 12;
@@ -111,12 +120,13 @@ function squareImage(fill: string, edge: string, size: number): ImageData {
  * trips best known first, and skip any closer than SPACING px to one already
  * placed. Popular trips take the space early; nothing regroups while zooming.
  */
-function squareLevels(trips: BrowseTrip[]): Map<string, number> {
+function squareLevels(trips: BrowseTrip[], shift: number): Map<string, number> {
   const out = new Map<string, number>();
   const placed: BrowseTrip[] = [];
   const sorted = [...trips].sort((a, b) => b.rank - a.rank);
   for (let z = SQUARE_MIN; z <= SQUARE_MAX; z++) {
-    const world = 512 * 2 ** z;
+    // Spacing is measured where the level shows: zoom z, moved earlier by shift on narrow screens.
+    const world = 512 * 2 ** (z - shift);
     const px = (t: BrowseTrip): [number, number] => [
       ((t.location.lon + 180) / 360) * world,
       (0.5 - Math.log(Math.tan(Math.PI / 4 + (t.location.lat * Math.PI) / 360)) / (2 * Math.PI)) * world,
@@ -152,10 +162,10 @@ function squareLevels(trips: BrowseTrip[]): Map<string, number> {
   return out;
 }
 
-const viewOf = (map: MlMap): MapView => {
+const viewOf = (map: MlMap, shift: number): MapView => {
   const b = map.getBounds();
   const c = map.getCenter();
-  return { bounds: [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()], center: [c.lng, c.lat], zoom: map.getZoom() };
+  return { bounds: [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()], center: [c.lng, c.lat], zoom: map.getZoom(), areaZoom: AREA_ZOOM - shift };
 };
 
 const line = (coords: number[][] | undefined): GeoJSON.FeatureCollection =>
@@ -202,7 +212,7 @@ export function BrowseMap({
   ariaLabel,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [ctx, setCtx] = useState<{ ml: MapLibre; map: MlMap } | null>(null);
+  const [ctx, setCtx] = useState<{ ml: MapLibre; map: MlMap; shift: number } | null>(null);
   // Every line seen so far, by slug: the detailed one once its area has loaded.
   const lines = useRef(new Map<string, { coords: number[][]; detailed: boolean }>());
   const [linesVersion, setLinesVersion] = useState(0);
@@ -226,10 +236,14 @@ export function BrowseMap({
     let map: MlMap | null = null;
     let observer: ResizeObserver | null = null;
     let detachNetwork: (() => void) | null = null;
+    let shift = 0;
+    let areaZoom = AREA_ZOOM;
 
     async function init() {
       const ml = await import("maplibre-gl");
       if (cancelled || !containerRef.current) return;
+      shift = areaShift(containerRef.current.clientWidth);
+      areaZoom = AREA_ZOOM - shift;
       const start = initialRef.current;
       map = new ml.Map({
         container: containerRef.current,
@@ -268,8 +282,8 @@ export function BrowseMap({
           ] as unknown as ExpressionSpecification;
         const layout: LineLayerSpecification["layout"] = { "line-cap": "round", "line-join": "round", "line-sort-key": ["get", "r"] };
         for (const [src, range] of [
-          ["trip-lines", { maxzoom: AREA_ZOOM }],
-          ["trip-lines-d", { minzoom: AREA_ZOOM }],
+          ["trip-lines", { maxzoom: areaZoom }],
+          ["trip-lines-d", { minzoom: areaZoom }],
         ] as [string, { maxzoom?: number; minzoom?: number }][]) {
           m.addSource(src, { type: "geojson", data: EMPTY });
           // The best known trips get a thin white edge, like on the trail network before.
@@ -292,12 +306,12 @@ export function BrowseMap({
         m.addImage("sq-active", squareImage(SUN, NIGHT, 22), { pixelRatio: 2 });
         m.addSource("squares", { type: "geojson", data: EMPTY });
         for (let z = SQUARE_MIN; z <= SQUARE_MAX; z++) {
-          const fade = ["interpolate", ["linear"], ["zoom"], z - 0.01, 0, z + 0.15, 1] as unknown as ExpressionSpecification;
+          const fade = ["interpolate", ["linear"], ["zoom"], z - shift - 0.01, 0, z - shift + 0.15, 1] as unknown as ExpressionSpecification;
           m.addLayer({
             id: `sq-${z}`,
             type: "symbol",
             source: "squares",
-            minzoom: z - 0.01,
+            minzoom: z - shift - 0.01,
             filter: ["==", ["get", "z"], z],
             layout: { "icon-image": ["concat", "sq-", ["get", "g"]], "icon-allow-overlap": true, "icon-ignore-placement": true, "symbol-sort-key": ["-", 0, ["get", "r"]] },
             paint: { "icon-opacity": fade },
@@ -315,12 +329,12 @@ export function BrowseMap({
         loadLines(m);
         m.on("moveend", () => {
           loadLines(m);
-          handlers.current.onView(viewOf(m));
+          handlers.current.onView(viewOf(m, shift));
         });
         m.on("zoom", () => showAreas(m.getZoom()));
         showAreas(m.getZoom());
-        handlers.current.onView(viewOf(m));
-        setCtx({ ml, map: m });
+        handlers.current.onView(viewOf(m, shift));
+        setCtx({ ml, map: m, shift });
       });
 
       observer = new ResizeObserver(() => map?.resize());
@@ -359,7 +373,7 @@ export function BrowseMap({
           remember(overview.features, false);
         }
       }
-      if (m.getZoom() < AREA_ZOOM - 0.5) return;
+      if (m.getZoom() < areaZoom - 0.5) return;
       const b = m.getBounds();
       const w = b.getEast() - b.getWest();
       const h = b.getNorth() - b.getSouth();
@@ -417,7 +431,7 @@ export function BrowseMap({
       let hovering: string | null = null;
       m.on("mousemove", (e) => {
         if (!fine) return;
-        if (m.getZoom() < AREA_ZOOM) {
+        if (m.getZoom() < areaZoom) {
           const any = m.queryRenderedFeatures([[e.point.x - 4, e.point.y - 4], [e.point.x + 4, e.point.y + 4]], { layers: ["trip-lines-line"] }).length > 0;
           m.getCanvas().style.cursor = any ? "zoom-in" : "";
           if (hovering) handlers.current.onHover((hovering = null));
@@ -438,11 +452,11 @@ export function BrowseMap({
       m.on("click", (e) => {
         const r = fine ? 6 : 14;
         // Zoomed out: a tap on any line zooms in there, so nothing is a dead end.
-        if (m.getZoom() < AREA_ZOOM) {
+        if (m.getZoom() < areaZoom) {
           const any = m.queryRenderedFeatures([[e.point.x - r, e.point.y - r], [e.point.x + r, e.point.y + r]], {
             layers: ["trip-lines-line", "network-line"].filter((id) => m.getLayer(id)),
           }).length;
-          if (any) m.easeTo({ center: e.lngLat, zoom: 10.5 });
+          if (any) m.easeTo({ center: e.lngLat, zoom: areaZoom + 1.5 });
           return;
         }
         const found = under(m, e, r);
@@ -460,8 +474,8 @@ export function BrowseMap({
 
     // ---- areas: HTML dots made once, shown or hidden by zoom (never rebuilt, so they don't blink)
     function showAreas(z: number) {
-      for (const el of areaEls.current) el.style.display = z < AREA_ZOOM ? "" : "none";
-      if (z < AREA_ZOOM) requestAnimationFrame(() => declutter(areaEls.current));
+      for (const el of areaEls.current) el.style.display = z < areaZoom ? "" : "none";
+      if (z < areaZoom) requestAnimationFrame(() => declutter(areaEls.current));
     }
 
     init();
@@ -486,11 +500,12 @@ export function BrowseMap({
       el.setAttribute("aria-label", `${a.name}: priblížiť`);
       el.innerHTML = `<span aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M2.5 19.5 9.5 7l3.4 5.6 2.1-3.1 6.5 10z" fill="currentColor"/></svg></span><span></span>`;
       (el.lastChild as HTMLElement).textContent = a.short;
-      el.style.display = map.getZoom() < AREA_ZOOM ? "" : "none";
+      el.style.display = map.getZoom() < AREA_ZOOM - ctx.shift ? "" : "none";
       el.addEventListener("click", (ev) => {
         ev.stopPropagation();
         const cam = map.cameraForBounds([[a.bbox[0], a.bbox[1]], [a.bbox[2], a.bbox[3]]], { padding: 24 });
-        map.easeTo({ center: cam?.center ?? [a.location.lon, a.location.lat], zoom: Math.max(cam?.zoom ?? 0, AREA_ZOOM + 0.2) });
+        // The whole area in view; trips show from the area zoom on, so never stop short of it.
+        map.easeTo({ center: cam?.center ?? [a.location.lon, a.location.lat], zoom: Math.max(cam?.zoom ?? 0, AREA_ZOOM - ctx.shift + 0.05) });
       });
       return new ml.Marker({ element: el, anchor: "top", offset: [0, -15] }).setLngLat([a.location.lon, a.location.lat]).addTo(map);
     });
@@ -513,7 +528,7 @@ export function BrowseMap({
       map.setFilter(`${src}-hit`, only);
       map.setFilter(`${src}-top`, ["all", ["==", ["get", "p"], 4], only] as unknown as ExpressionSpecification);
     }
-    const level = squareLevels(trips);
+    const level = squareLevels(trips, ctx.shift);
     (map.getSource("squares") as GeoJSONSource | undefined)?.setData({
       type: "FeatureCollection",
       features: trips.map((t) => ({

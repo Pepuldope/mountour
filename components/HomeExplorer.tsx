@@ -27,7 +27,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { StartChip } from "@/components/StartChip";
 import { TripCard } from "@/components/TripCard";
 import type { TripCardItem } from "@/components/TripCard";
-import { AREA_ZOOM, BrowseMap } from "@/components/BrowseMap";
+import { BrowseMap } from "@/components/BrowseMap";
 import type { BrowseArea, BrowseTrip, MapFocus, MapView } from "@/components/BrowseMap";
 
 interface Props {
@@ -117,33 +117,37 @@ function grow([w, s, e, n]: Box, k: number): Box {
   return [w - dx, s - dy, e + dx, n + dy];
 }
 
-function boxOf(points: LatLng[]): Box {
-  return [
-    Math.min(...points.map((p) => p.lon)),
-    Math.min(...points.map((p) => p.lat)),
-    Math.max(...points.map((p) => p.lon)),
-    Math.max(...points.map((p) => p.lat)),
-  ];
-}
-
 /** One dot per mountain range for the zoomed-out map; trips outside the ranges join the closest. */
 function areasOf(trails: TrailDetail[]): BrowseArea[] {
-  const groups = new Map<string, LatLng[]>();
+  const groups = new Map<string, { pts: LatLng[]; box: Box }>();
   const loose: LatLng[] = [];
   for (const d of trails) {
     const at = goalOf(d);
     const region = d.trail.region_name;
     if (!at || !region) continue;
-    if (region.startsWith(OTHER_REGION)) loose.push(at);
-    else groups.set(region, [...(groups.get(region) ?? []), at]);
+    if (region.startsWith(OTHER_REGION)) {
+      loose.push(at);
+      continue;
+    }
+    // The zoom box covers whole trails, not just their goals, so a tap shows every trail of the area.
+    const b = d.trail.bbox;
+    const tb: Box = b ? [b.sw.lon, b.sw.lat, b.ne.lon, b.ne.lat] : [at.lon, at.lat, at.lon, at.lat];
+    const g = groups.get(region);
+    if (!g) groups.set(region, { pts: [at], box: tb });
+    else {
+      g.pts.push(at);
+      g.box = [Math.min(g.box[0], tb[0]), Math.min(g.box[1], tb[1]), Math.max(g.box[2], tb[2]), Math.max(g.box[3], tb[3])];
+    }
   }
   const median = (xs: number[]) => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)];
-  const areas = [...groups].map(([name, pts]) => ({
+  const areas = [...groups].map(([name, { pts, box }]) => ({
     name,
     short: name.split(/,| a /)[0].trim(),
     location: { lat: median(pts.map((p) => p.lat)), lon: median(pts.map((p) => p.lon)) },
-    pts,
+    n: pts.length,
+    bbox: box,
   }));
+  // Trips outside the named areas count toward the nearest one (for its size), without stretching its box.
   for (const p of loose) {
     let best = areas[0];
     let bestD = Infinity;
@@ -151,11 +155,14 @@ function areasOf(trails: TrailDetail[]): BrowseArea[] {
       const d = (a.location.lat - p.lat) ** 2 + (a.location.lon - p.lon) ** 2;
       if (d < bestD) [best, bestD] = [a, d];
     }
-    best?.pts.push(p);
+    if (best) best.n++;
   }
   // Biggest first: when labels would overlap, the bigger area keeps its name.
-  return areas.sort((a, b) => b.pts.length - a.pts.length).map(({ pts, ...a }) => ({ ...a, bbox: boxOf(pts) }));
+  return areas.sort((a, b) => b.n - a.n).map(({ name, short, location, bbox }) => ({ name, short, location, bbox }));
 }
+
+/** Where the home map was when the visitor left the page. */
+let lastView: MapView | null = null;
 
 /**
  * "Kam dnes" home, map first: every trip on one map (coloured lines over the
@@ -177,7 +184,8 @@ export function HomeExplorer({ trails: initial }: Props) {
   const [pointed, setPointed] = useState<string | null>(null);
   const [preview, setPreview] = useState<Preview | null>(null);
   const [view, setView] = useState<"map" | "list">("map");
-  const [mapView, setMapView] = useState<MapView | null>(null);
+  // Back on the home page the map opens where it was left (kept for this visit, not stored).
+  const [mapView, setMapView] = useState<MapView | null>(() => lastView);
   const [focus, setFocus] = useState<MapFocus | null>(null);
   const [showHidden, setShowHidden] = useState(false);
   const itemRefs = useRef(new Map<string, HTMLElement>());
@@ -266,7 +274,7 @@ export function HomeExplorer({ trails: initial }: Props) {
   );
   const scoped = useMemo(() => {
     if (words.length > 0) return listedAll.filter((i) => matches(i.detail));
-    if (!mapView || mapView.zoom < AREA_ZOOM - 1) return listedAll;
+    if (!mapView || mapView.zoom < mapView.areaZoom - 1) return listedAll;
     const box = grow(mapView.bounds, LIST_MARGIN);
     return listedAll.filter((i) => inBox(goalOf(i.detail), box));
   }, [listedAll, words, matches, mapView]);
@@ -381,7 +389,7 @@ export function HomeExplorer({ trails: initial }: Props) {
       : start
         ? "Najbližšie výlety"
         : "Tisíce výletov po celom Slovensku";
-  const scopeNote = words.length === 0 && mapView && mapView.zoom >= AREA_ZOOM - 1 ? "Na mape a kúsok okolo." : null;
+  const scopeNote = words.length === 0 && mapView && mapView.zoom >= mapView.areaZoom - 1 ? "Na mape a kúsok okolo." : null;
 
   const cardList = (items: TripCardItem[]) =>
     items.map((item) => (
@@ -483,7 +491,10 @@ export function HomeExplorer({ trails: initial }: Props) {
         highlighted={pointed}
         focus={focus}
         initialView={mapView}
-        onView={setMapView}
+        onView={(v) => {
+          lastView = v;
+          setMapView(v);
+        }}
         onPick={(p) => (p ? pickTrip(p.slug, p.also, p) : pickTrip(null))}
         onHover={(h) => {
           setPointed(h?.slug ?? null);
