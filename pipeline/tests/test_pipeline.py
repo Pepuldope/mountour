@@ -108,6 +108,14 @@ def test_end_to_end(tmp_path):
     assert "description" not in listed[0] and "osm" not in listed[0]["start"]
     report = (tmp_path / "data" / "pipeline-report.md").read_text()
     assert "testovaci-pin" in report
+    # map lines: every trip once in the overview, in detail in the cells it crosses
+    mdir = tmp_path / "public" / "data" / "map"
+    meta = json.loads((mdir / "meta.json").read_text())
+    overview = json.loads((mdir / "overview.json").read_text())["features"]
+    assert sorted(f["properties"]["s"] for f in overview) == sorted(by_slug)
+    assert meta["cells"] and all((mdir / "c" / f"{k}.json").exists() for k in meta["cells"])
+    in_cells = {f["properties"]["s"] for k in meta["cells"] for f in json.loads((mdir / "c" / f"{k}.json").read_text())["features"]}
+    assert in_cells == set(by_slug)
 
     # slugs are stable: a second run reuses them
     slugs_before = json.loads((tmp_path / "pipeline" / "slugs.json").read_text())

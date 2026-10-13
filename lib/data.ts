@@ -54,6 +54,8 @@ function toTrail(t: TripSummary): Trail {
     marking: t.marking[0] ?? null,
     goal: t.destination.kind,
     region_name: t.region_name,
+    goal_location: t.destination.location,
+    rank: t.rank,
     bbox: { sw: { lat: s, lon: w }, ne: { lat: n, lon: e } },
     created_at: "",
   };

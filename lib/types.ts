@@ -44,6 +44,10 @@ export interface Trail {
   goal?: DestinationKind;
   /** "Malá Fatra", "Tatry"... */
   region_name?: string;
+  /** Where the goal is (peak, waterfall...): its dot on the home map. */
+  goal_location?: LatLng;
+  /** Popularity score from the pipeline; higher = better known. */
+  rank?: number;
   /** Main waymark colour; optional until the OSM pipeline fills it. */
   marking?: TrailMarking | null;
   gpx_path: string | null;
