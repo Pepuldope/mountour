@@ -1,5 +1,6 @@
 import { haversineM } from "@/lib/geo";
-import { walkRoute } from "@/lib/routing";
+import { withEdgeCache } from "@/lib/edgeCache";
+import { RateLimited, walkRoute } from "@/lib/routing";
 
 /**
  * GET /api/walk?from=lat,lon&to=lat,lon -> DriveRoute (on foot)
@@ -14,6 +15,8 @@ const AREA = { minLat: 47, maxLat: 50, minLon: 16, maxLon: 23 };
 /** Parking spots sit within ~1 km of the start; anything longer isn't a "walk to the trail". */
 const MAX_M = 5000;
 const DAY_S = 86400;
+/** The router counts per minute: a few seconds' wait usually gets through. */
+const RETRY_S = 8;
 /** A parking lot's middle can sit well inside a big lot, away from any path. */
 const SNAP_M = 1000;
 
@@ -36,14 +39,21 @@ export async function GET(req: Request) {
     return Response.json({ error: "too far for a walk to the trail" }, { status: 400 });
   }
 
-  try {
-    const key = process.env.ORS_API_KEY;
-    const route = await walkRoute(key, from, to, SNAP_M);
-    return Response.json(route, {
-      headers: { "Cache-Control": `public, s-maxage=${DAY_S}, stale-while-revalidate=${DAY_S}` },
-    });
-  } catch (err) {
-    console.error("walk route failed", err);
-    return Response.json({ error: "Cestu pešo sa nepodarilo vypočítať." }, { status: 502 });
-  }
+  // Same places, same answer for everyone: Cloudflare keeps it a day, the router is asked once.
+  return withEdgeCache(req, DAY_S, async () => {
+    try {
+      const key = process.env.ORS_API_KEY;
+      const route = await walkRoute(key, from, to, SNAP_M);
+      return Response.json(route, {
+        headers: { "Cache-Control": `public, s-maxage=${DAY_S}, stale-while-revalidate=${DAY_S}` },
+      });
+    } catch (err) {
+      console.error("walk route failed", err);
+      // The router's per-minute limit: say when to ask again (the page waits and retries once).
+      if (err instanceof RateLimited) {
+        return Response.json({ error: "Cestu pešo sa nepodarilo vypočítať." }, { status: 503, headers: { "Retry-After": String(RETRY_S) } });
+      }
+      return Response.json({ error: "Cestu pešo sa nepodarilo vypočítať." }, { status: 502 });
+    }
+  });
 }
