@@ -17,7 +17,8 @@ ROUTE_LIMIT = 18000  # weighted metres one way, generous; time limits are applie
 PENDING = "__pending__"  # slug of a route until it is known whether it is the main one
 TOWN_STREETS = {"residential", "living_street", "pedestrian"}  # their density marks a built-up area
 TOWN_GOALS = {"hrad", "vrchol", "jaskyna", "vodopad"}  # worth a walk even when in a built-up area (a castle above a town)
-CITY_CORE_M = 2500  # around a city centre (Bratislava, Košice) every goal is a city sight, not a trip
+CITY_CORE_M = 2500  # around the centre of a big city (Bratislava, Košice) every goal is a city sight, not a trip
+CITY_CORE_POP = 200_000
 
 
 @dataclass
@@ -104,7 +105,11 @@ class TripBuilder:
         return (x, y) in self.town_cells or around >= 4
 
     def _city_core(self, lat, lon):
-        return any(f.tags.get("place") == "city" and haversine(lat, lon, f.lat, f.lon) < CITY_CORE_M for f in self.osm.towns)
+        return any(
+            f.tags.get("place") == "city" and (_int(f.tags.get("population")) or 0) >= CITY_CORE_POP
+            and haversine(lat, lon, f.lat, f.lon) < CITY_CORE_M
+            for f in self.osm.towns
+        )
 
     def town_walk_m(self, path):
         """Metres of a walk (graph nodes) that run through built-up areas."""
