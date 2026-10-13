@@ -166,6 +166,7 @@ def _report(trips, rep, now, osm_at, drive):
         L.append(f"| {m['slug']} | {fmt(m)} | " + "; ".join(f"{t['route_label']}: {fmt(t)}" for t in rest) + " |")
     town = rep.get("town", [])
     L += ["", "## Town filter", "",
+          f"{sum(1 for x in town if x[2] == 'city centre')} goals in city centres and "
           f"{sum(1 for x in town if x[2] == 'in town')} sights in towns left out; "
           f"{sum(1 for x in town if x[2] == 'city walk')} routes left out as city walks.", "",
           "| Goal | Kind | Why | Start | Town metres |", "|---|---|---|---|---|"]

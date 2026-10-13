@@ -16,7 +16,8 @@ GENERIC_NAMES = {"vyhliadka", "výhľad", "rozhľadňa", "altánok", "vyhliadkov
 ROUTE_LIMIT = 18000  # weighted metres one way, generous; time limits are applied afterwards
 PENDING = "__pending__"  # slug of a route until it is known whether it is the main one
 TOWN_STREETS = {"residential", "living_street", "pedestrian"}  # their density marks a built-up area
-TOWN_GOALS = {"hrad", "vrchol", "jaskyna"}  # worth a walk even when they stand in a town (a castle above it)
+TOWN_GOALS = {"hrad", "vrchol", "jaskyna", "vodopad"}  # worth a walk even when in a built-up area (a castle above a town)
+CITY_CORE_M = 2500  # around a city centre (Bratislava, Košice) every goal is a city sight, not a trip
 
 
 @dataclass
@@ -96,8 +97,14 @@ class TripBuilder:
         return {c for c, L in street.items() if L >= self.t.get("town_street_m", 700)}
 
     def _in_town(self, lat, lon):
+        """In a built-up area: its own square is, or most squares around it are (a bridge, a square)."""
         size = self.t.get("town_cell_m", 250)
-        return tuple((self.proj.xy([lat], [lon])[0] // size).astype(int)) in self.town_cells
+        x, y = (self.proj.xy([lat], [lon])[0] // size).astype(int)
+        around = sum((x + dx, y + dy) in self.town_cells for dx in (-1, 0, 1) for dy in (-1, 0, 1))
+        return (x, y) in self.town_cells or around >= 4
+
+    def _city_core(self, lat, lon):
+        return any(f.tags.get("place") == "city" and haversine(lat, lon, f.lat, f.lon) < CITY_CORE_M for f in self.osm.towns)
 
     def town_walk_m(self, path):
         """Metres of a walk (graph nodes) that run through built-up areas."""
@@ -280,6 +287,10 @@ class TripBuilder:
         """The main route to a destination, with the other routes to it under `_others`."""
         dest = dict(name=c.feature.name, kind=c.kind, lat=c.feature.lat, lon=c.feature.lon,
                     ele=_num(c.feature.tags.get("ele")), osm=c.feature.osm, tags=c.feature.tags)
+        if self._city_core(dest["lat"], dest["lon"]):
+            # UFO, the castle, Slavín: you take the tram there, not a hiking trip.
+            self.report.setdefault("town", []).append((dest["name"], c.kind, "city centre", "", 0))
+            return self._reject("sight in a city centre")
         if c.kind not in TOWN_GOALS and self._in_town(dest["lat"], dest["lon"]):
             # A tower or viewpoint in a town is a sight you go straight to, not a trip (UFO).
             self.report.setdefault("town", []).append((dest["name"], c.kind, "in town", "", 0))
