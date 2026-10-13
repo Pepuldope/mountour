@@ -44,7 +44,7 @@ export function RouteChoice({ slug, destination, routes }: Props) {
               >
                 <span className="flex min-w-0 flex-col">
                   <span className="text-[15px] font-bold">{r.route_label ?? (r.variant_of ? "Iná cesta" : "Hlavná cesta")}</span>
-                  <span className="truncate text-[13px] text-[var(--muted)]">
+                  <span className="text-[13px] text-[var(--muted)]">
                     štart {r.start.name}
                     {r.transit && !r.parking ? " · len autobusom" : r.transit ? " · aj autobusom" : ""}
                   </span>

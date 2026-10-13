@@ -184,6 +184,8 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
     const pts: [number, number][] = [...(drive.route?.points ?? [])];
     if (carStop) pts.push(pair(carStop));
     if (trail.bbox) pts.push(pair(trail.bbox.sw), pair(trail.bbox.ne));
+    // The other routes to the place too, so you see where else you could start.
+    for (const o of others) pts.push(...o.points);
     if (pts.length === 0) return null;
     const lats = pts.map((p) => p[0]);
     const lons = pts.map((p) => p[1]);
