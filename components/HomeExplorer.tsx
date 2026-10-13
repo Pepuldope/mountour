@@ -21,6 +21,7 @@ import { useTownDrives } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { FilterChips, KidsSwitch } from "@/components/FilterChips";
 import { SeasonScene } from "@/components/SeasonScene";
+import { PullSky, SunPull } from "@/components/SunPull";
 import { UiIcon } from "@/components/UiIcon";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -110,6 +111,7 @@ export function HomeExplorer({ trails: initial }: Props) {
   const [showHidden, setShowHidden] = useState(false);
   const [trackPoints, setTrackPoints] = useState<Record<string, [number, number][]>>({});
   const itemRefs = useRef(new Map<string, HTMLElement>());
+  const columnRef = useRef<HTMLDivElement>(null);
   const isDesktop = useIsDesktop();
   const mapShown = isDesktop || showMapOnPhone;
 
@@ -293,9 +295,11 @@ export function HomeExplorer({ trails: initial }: Props) {
 
   return (
     <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
-      <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 lg:mx-0 lg:w-[440px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
+      <div ref={columnRef} className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 lg:mx-0 lg:w-[440px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
+        <PullSky season={season} />
         <header className="relative -mx-4 -mt-4 flex shrink-0 flex-col sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
-          <SeasonScene season={season} width={440} height={250} seed={11} sunX={0.64} sunY={0.17} drop={0.2} className="absolute inset-0 h-full w-full" />
+          <SeasonScene season={season} width={440} height={250} seed={11} sunX={0.64} sunY={0.17} drop={0.2} noSun className="absolute inset-0 h-full w-full" />
+          <SunPull season={season} width={440} height={250} sunX={0.64} sunY={0.17} moveRef={columnRef} />
           <nav aria-label="Hlavná navigácia" className="relative flex items-center justify-between gap-3 px-4 pt-4">
             <Link href="/" aria-label="MounTour" className="block">
               {/* The hero sky is light in both themes, so the dark-ink logo always. */}
