@@ -46,10 +46,11 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
 export function TripMap({ detail, gpxUrl, others = [] }: Props) {
   const { trail, trailheads, pois } = detail;
   const router = useRouter();
-  const { parkingLots, choice, choose, destination, trailJoin, walkFrom, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
+  const { parkingLots, choice, choose, rideTo: destination, trailJoin, walkFrom, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
   const [points, setPoints] = useState<[number, number][]>([]);
   const { start } = useUserLocation();
   const homeStop = useHomeStop(transit ? start : null);
+  // By bus or train the line runs along the roads to the stop: roughly the bus's way, no timetable yet.
   const drive = useDriveRoute(start, destination);
 
   // Where the walk to the trail begins: the stop, the chosen parking, else the end of the road route.

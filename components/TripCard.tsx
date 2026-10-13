@@ -76,14 +76,14 @@ const PILL_CLASS = {
 
 /** One trip: what it is, how long to get there and walk, and when to leave. */
 export function TripCard({ item, dayWord, transit, active, onActive, registerItem }: Props) {
-  const { detail, hikeMin, carMin, driveApprox, driveLoading, distanceM, nearStop } = item;
+  const { detail, hikeMin, carMin, driveMin, driveApprox, driveLoading, distanceM, nearStop } = item;
   const { trail } = detail;
   const goal = trail.goal ?? "ine";
   const colour = GOAL_COLOUR[goal];
-  const approx = driveApprox ? "~" : "";
+  const approx = driveApprox || transit ? "~" : "";
   const pill = pillFor(item, dayWord);
   const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
-  const total = !transit && carMin !== null && !item.fit ? hikeMin + 2 * carMin : null;
+  const total = driveMin !== null && !item.fit ? hikeMin + 2 * driveMin : null;
   const leg = (on: boolean) => `inline-flex items-center gap-1 ${on ? "text-[var(--foreground)]" : "text-[var(--muted)]"}`;
 
   return (
@@ -119,11 +119,11 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
         <span className="font-data flex flex-wrap items-center gap-x-3 text-[15px]">
           <span className={leg(!transit)}>
             <UiIcon name="car" size={15} />
-            {carMin !== null ? `${approx}${formatDurationShort(carMin)}` : driveLoading ? "…" : distanceM !== null ? formatFromUser(distanceM) : "–"}
+            {carMin !== null ? `${driveApprox ? "~" : ""}${formatDurationShort(carMin)}` : driveLoading ? "…" : distanceM !== null ? formatFromUser(distanceM) : "–"}
           </span>
           <span className={leg(transit)} title={nearStop ? `Zastávka ${stopLabel(nearStop.name)}, ${formatFromUser(nearStop.distance_m)} od štartu` : "Bez zastávky pri štarte"}>
             <UiIcon name="bus" size={15} />
-            {nearStop ? formatFromUser(nearStop.distance_m) : "–"}
+            {transit && driveMin !== null ? `~${formatDurationShort(driveMin)}` : nearStop ? formatFromUser(nearStop.distance_m) : "–"}
           </span>
           <span className="inline-flex items-center gap-1 text-[var(--foreground)]">
             <UiIcon name="boot" size={15} />

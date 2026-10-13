@@ -43,6 +43,18 @@ export interface DayPlan {
   startsInDark: boolean;
   /** Latest departure (or hike start, without a drive) that still ends the hike SAFE_MARGIN_MIN before sunset. */
   latestStart: Date;
+  /** How the "drive" segments travel: by car, or by bus/train. */
+  travelMode: TravelMode;
+  /** The travel times are an estimate (a bus guessed from the road time, a drive from the distance). */
+  approx: boolean;
+}
+
+export type TravelMode = "auto" | "transit";
+
+/** A real train trip, minutes after midnight of the plan's date: leave home, reach the stop; leave the stop, be home. */
+export interface FixedRide {
+  there: { leave: number; arrive: number };
+  back: { leave: number; home: number } | null;
 }
 
 export interface DayPlanInput {
@@ -55,6 +67,10 @@ export interface DayPlanInput {
   hikeMin: number;
   /** Where the sun is computed (trailhead or parking). */
   location: LatLng;
+  travelMode?: TravelMode;
+  approx?: boolean;
+  /** Timetabled ride (trains): replaces `start` and `driveMin` for the times of the day. */
+  fixed?: FixedRide | null;
 }
 
 /** "Vyraz najneskôr" gets you off the trail this long before sunset (PD4; tune after tests). */
@@ -95,22 +111,27 @@ export function planDay(input: DayPlanInput): DayPlan | null {
 
   // Local wall-clock time in the visitor's timezone; sun times are absolute
   // instants, so the two compare correctly whatever the timezone.
-  const dayStart = new Date(y, mo - 1, d, h, mi);
+  const fixed = input.fixed ?? null;
+  const midnight = new Date(y, mo - 1, d);
+  const dayStart = fixed ? addMin(midnight, fixed.there.leave) : new Date(y, mo - 1, d, h, mi);
   const utcDay = new Date(Date.UTC(y, mo - 1, d));
   const sun = getSunTimes(utcDay, input.location.lat, input.location.lon);
   const twilight = getSunTimes(utcDay, input.location.lat, input.location.lon, CIVIL_TWILIGHT_DEG);
   if (!sun || !twilight) return null;
 
-  const drive = input.driveMin ?? 0;
+  const drive = fixed ? fixed.there.arrive - fixed.there.leave : (input.driveMin ?? 0);
   const segments: Segment[] = [];
   const hikeStart = addMin(dayStart, drive);
   const hikeEnd = addMin(hikeStart, input.hikeMin);
 
-  if (input.driveMin !== null) {
+  if (fixed || input.driveMin !== null) {
     segments.push({ kind: "drive-there", start: dayStart, end: hikeStart });
   }
   segments.push({ kind: "hike", start: hikeStart, end: hikeEnd });
-  if (input.driveMin !== null) {
+  if (fixed?.back) {
+    // From the end of the walk: waiting at the station counts as part of the way home.
+    segments.push({ kind: "drive-back", start: hikeEnd, end: addMin(midnight, Math.max(fixed.back.home, fixed.back.leave)) });
+  } else if (input.driveMin !== null || fixed) {
     segments.push({ kind: "drive-back", start: hikeEnd, end: addMin(hikeEnd, drive) });
   }
 
@@ -138,5 +159,7 @@ export function planDay(input: DayPlanInput): DayPlan | null {
     verdict,
     startsInDark: hikeStart < sun.sunrise,
     latestStart: addMin(sun.sunset, -(SAFE_MARGIN_MIN + input.hikeMin + drive)),
+    travelMode: input.travelMode ?? "auto",
+    approx: input.approx ?? false,
   };
 }

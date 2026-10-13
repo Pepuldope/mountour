@@ -7,7 +7,7 @@ import { defaultApproachMin, driveDestination, nearestStop, primaryTrailhead, su
 import { activeClosures } from "@/lib/closures";
 import { approachMin, hikeMinutes } from "@/lib/dayPlan";
 import { dayFit, dayInSentence, isoDate } from "@/lib/days";
-import { estimateDriveMin } from "@/lib/drive";
+import { estimateDriveMin, transitMinutes } from "@/lib/drive";
 import { DIFFICULTY_LABEL, GOAL_LABEL, GOAL_PLURAL, formatDurationShort } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
@@ -216,7 +216,8 @@ export function HomeExplorer({ trails: initial }: Props) {
       const carMin =
         viaTown !== null ? Math.min(viaTown, direct ?? Infinity) : estimate ? estimateDriveMin(start!, dest!) : null;
       const approx = estimate || (viaTown !== null && toTownKm! > TOWN_EXACT_KM);
-      const driveMin = transit ? null : carMin;
+      // By bus or train: an estimate from the road time (no timetables yet), so the day still counts the ride.
+      const driveMin = transit ? (carMin !== null && stop ? transitMinutes(carMin) : null) : carMin;
       // The walk from the parking (by car) or the stop (by train/bus) to the trail and back is part of the day.
       const approach = transit ? (stop ? 2 * approachMin(stop.distance_m) : 0) : driveMin !== null ? 2 * defaultApproachMin(detail) : 0;
       const hikeMin = hikeMinutes(detail.trail.duration_min + approach, withKids);

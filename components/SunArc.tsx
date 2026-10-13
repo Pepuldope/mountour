@@ -26,7 +26,7 @@ const PAD = 8;
 const INK = "#14233b";
 const WALKER = "#1769d1";
 // Even outlines under the markers (the same weight on the head, body and stick).
-const EDGE = { walker: iconEdge(UI_ICON.walker), car: iconEdge(UI_ICON.car), dot: iconEdge(UI_ICON.dot) };
+const EDGE = { walker: iconEdge(UI_ICON.walker), car: iconEdge(UI_ICON.car), bus: iconEdge(UI_ICON.bus), dot: iconEdge(UI_ICON.dot) };
 // The white night car keeps its headlights: amber instead of the icon's white.
 const CAR_AT_NIGHT = UI_ICON.car.replaceAll('fill="#fff"', 'fill="#f4a51c"');
 
@@ -67,6 +67,8 @@ interface Props {
   profile: TripProfile | null;
   sun: LatLng;
   hasDrive: boolean;
+  /** The ride there and back is by bus or train: a bus rides along instead of the car. */
+  byBus?: boolean;
   /** Forecast at the trail start, asked for at the start's height; drawn into the sky when given. */
   weather?: WeatherForecast | null;
 }
@@ -84,7 +86,7 @@ interface WalkPoint {
  * a timeline of the whole trip, and the walk is drawn as the trail's own
  * height profile. Hover (or drag on touch) to move through the day.
  */
-export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) {
+export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = null }: Props) {
   const svgRef = useRef<SVGSVGElement>(null);
   const [scrub, setScrub] = useState<number | null>(null);
   const [intro, setIntro] = useState<number | null>(null);
@@ -233,13 +235,15 @@ export function SunArc({ plan, profile, sun, hasDrive, weather = null }: Props) 
   const behindWalker = onTrail && Math.hypot(sx - walker[0], sy - (walker[1] - 18)) < sunR + 18;
   const temp = now ? Math.round(now.temp - climbed * LAPSE_PER_M) : null;
 
-  const marker = onTrail ? "walker" : inCar ? "car" : "dot";
+  const marker = onTrail ? "walker" : inCar ? (byBus ? "bus" : "car") : "dot";
   const goalWords = profile ? GOAL_WORDS[profile.goalKind] : null;
   const what =
     t < first || t >= home
       ? "Doma"
       : t < hs
-        ? "Cesta autom"
+        ? byBus
+          ? "Cesta autobusom"
+          : "Cesta autom"
         : t > he
           ? "Cesta domov"
           : Math.abs(t - scene.goalT) < 6 * MIN && goalWords

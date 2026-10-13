@@ -18,7 +18,7 @@ interface StopsMeta {
   cells: string[];
 }
 
-type Row = [name: string, mode: "a" | "v" | "e", lat: number, lon: number];
+type Row = [name: string, mode: "a" | "v" | "e", lat: number, lon: number, lines?: string[]];
 
 const BASE = "/data/stops";
 const MODE: Record<Row[1], TransitMode> = { a: "autobus", v: "vlak", e: "elektricka" };
@@ -85,4 +85,24 @@ export async function nearestHomeStop(from: LatLng): Promise<HomeStop | null> {
   const keys = cellsAround(meta.grid, new Set(meta.cells), from);
   const rows = (await Promise.all(keys.map(cell))).flat();
   return pickHomeStop(rows, from);
+}
+
+/** Both sides of one stop share its name; a stop of the same name further than this is another village's. */
+const SAME_STOP_M = 400;
+
+/**
+ * Bus and tram lines that stop at a trail's stop (from OSM route relations,
+ * no times): the lines of every stop with its name close by. Empty when OSM
+ * doesn't list any.
+ */
+export async function linesAt(name: string, at: LatLng): Promise<string[]> {
+  metaP ??= json<StopsMeta>(`${BASE}/meta.json`);
+  const meta = await metaP;
+  if (!meta) return [];
+  const rows = (await Promise.all(cellsAround(meta.grid, new Set(meta.cells), at).map(cell))).flat();
+  const lines = new Set<string>();
+  for (const [n, , lat, lon, ls] of rows) {
+    if (ls && n === name && haversineM(at, { lat, lon }) <= SAME_STOP_M) ls.forEach((l) => lines.add(l));
+  }
+  return [...lines].sort((a, b) => (parseInt(a, 10) || 1e9) - (parseInt(b, 10) || 1e9) || a.localeCompare(b));
 }
