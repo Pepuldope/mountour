@@ -225,3 +225,69 @@ export function weatherNotes(below: WeatherForecast, top: WeatherForecast | null
   if (cold <= 0 && !snow) out.push({ text: "Mráz: chodník môže byť zľadovatený.", strong: false });
   return out;
 }
+
+export interface TripWeatherReport {
+  /** Temperature range down at the start for the whole window, °C. */
+  tempMin: number;
+  tempMax: number;
+  /** Coldest up at the goal during the walk, when it is clearly colder than below. */
+  topMin: number | null;
+  /** The worst weather of the window, in words ("slabý dážď"). */
+  worst: string;
+  /** When the worst weather comes ("13:00–15:00"); null when it is the whole time or it is fine weather. */
+  worstWhen: string | null;
+  /** Any rain, sleet or snow at all: when and the most per hour. */
+  wet: { when: string; mmPerHour: number; snow: boolean } | null;
+}
+
+/**
+ * The whole picture for the trip window [from, to]: temperature range, the
+ * worst weather and when, and any rain at all (even one light hour). MET
+ * Norway gives no chance of rain for Slovakia, only the expected amount, so
+ * rain is reported with its hours and amount instead of a percentage.
+ * `walk` is the part on the trail, where the goal's colder air counts.
+ */
+export function tripWeatherReport(
+  below: WeatherForecast,
+  top: WeatherForecast | null,
+  from: Date,
+  to: Date,
+  walk: { from: Date; to: Date } = { from, to }
+): TripWeatherReport | null {
+  const a = from.getTime();
+  const b = to.getTime();
+  const inside = (f: WeatherForecast, x: number, y: number) =>
+    f.steps.filter((s) => {
+      const t = new Date(s.t).getTime();
+      return t < y && t + s.hours * HOUR > x && s.symbol !== null;
+    });
+  const steps = inside(below, a, b);
+  if (steps.length === 0) return null;
+  const last = steps[steps.length - 1];
+  if (new Date(last.t).getTime() + last.hours * HOUR < b) return null;
+  const span = (h: WeatherStep[]) =>
+    `${hhmm(Math.max(a, new Date(h[0].t).getTime()))}–${hhmm(Math.min(b, new Date(h[h.length - 1].t).getTime() + h[h.length - 1].hours * HOUR))}`;
+
+  const worstCode = steps.map((s) => s.symbol!).sort((x, y) => severity(x) - severity(y))[0];
+  const worstSteps = steps.filter((s) => severity(s.symbol!) === severity(worstCode));
+  const wetSteps = steps.filter((s) => s.rain > 0.05 || /rain|sleet|snow|thunder/.test(s.symbol!));
+  const up = top ? inside(top, walk.from.getTime(), walk.to.getTime()) : [];
+  const tempMin = Math.round(Math.min(...steps.map((s) => s.temp)));
+  const topMin = up.length ? Math.round(Math.min(...up.map((s) => s.temp))) : null;
+
+  return {
+    tempMin,
+    tempMax: Math.round(Math.max(...steps.map((s) => s.temp))),
+    topMin: topMin !== null && topMin < tempMin - 1 ? topMin : null,
+    worst: weatherWords(baseSymbol(worstCode)),
+    // "Najhoršie prevažne jasno" says nothing: fine weather gets no hours.
+    worstWhen: worstSteps.length === steps.length || severity(worstCode) > SEVERITY.indexOf("cloudy") ? null : span(worstSteps),
+    wet: wetSteps.length
+      ? {
+          when: span(wetSteps),
+          mmPerHour: Math.round(Math.max(...wetSteps.map((s) => s.rain / s.hours)) * 10) / 10,
+          snow: wetSteps.every((s) => /snow/.test(s.symbol!)),
+        }
+      : null,
+  };
+}

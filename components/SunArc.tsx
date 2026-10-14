@@ -528,6 +528,22 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
         </g>
       </svg>
 
+      {/* A plain slider for the same thing: easier to hit with a thumb than the picture itself. */}
+      <label className="flex flex-col gap-1 px-4 pt-3 pb-2">
+        <span className="text-[13px] font-semibold text-[var(--muted)]">Posuňte čas</span>
+        <input
+          type="range"
+          min={scene.lo}
+          max={scene.hi}
+          step={5 * MIN}
+          value={t}
+          onChange={(e) => setScrub(Number(e.target.value))}
+          className="time-slider"
+          aria-label="Čas počas dňa"
+          aria-valuetext={formatTime(new Date(t))}
+        />
+      </label>
+
       <div className="flex justify-between gap-3 border-t border-[var(--border)] px-4 pt-2.5 pb-3.5 text-sm" aria-live="polite">
         <div>
           <div className="font-data text-[22px] leading-none">{formatTime(new Date(t))}</div>
