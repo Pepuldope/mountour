@@ -28,28 +28,35 @@ export function RouteChoice({ slug, destination, routes }: Props) {
 
   return (
     <section aria-label={`Cesty na ${destination}`} className="flex flex-col gap-2">
-      {/* Phones: one row, opened on a tap. */}
-      <details className="group overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] lg:hidden">
-        <summary className="flex cursor-pointer list-none items-center gap-3 px-3.5 py-2.5 [&::-webkit-details-marker]:hidden">
-          <Dot i={at} />
-          <span className="flex min-w-0 flex-col">
-            <span className="text-[12px] text-[var(--muted)]">Cesta</span>
-            <span className="truncate text-[15px] font-bold">
-              {routeLabel(current)} · {current.start_name}
+      {/* Phones: the map comparison is the main way to choose; the list folds into one row. */}
+      <div className="overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] lg:hidden">
+        <details className="group">
+          <summary className="flex cursor-pointer list-none items-center gap-3 px-3.5 py-2.5 [&::-webkit-details-marker]:hidden">
+            <Dot i={at} />
+            <span className="flex min-w-0 flex-col">
+              <span className="text-[12px] text-[var(--muted)]">Cesta</span>
+              <span className="truncate text-[15px] font-bold">
+                {routeLabel(current)} · {current.start_name}
+              </span>
             </span>
-          </span>
-          <span className="ml-auto flex shrink-0 items-center gap-1 text-[13px] font-bold text-[var(--accent)]">
-            {plural(routes.length)}
-            <svg aria-hidden width="14" height="14" viewBox="0 0 14 14" className="transition-transform group-open:rotate-180">
-              <path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </span>
-        </summary>
-        <ul className="flex flex-col divide-y divide-[var(--border)] border-t border-[var(--border)]">{rows}</ul>
-        <Link href={compare} className="block border-t border-[var(--border)] px-3.5 py-2.5 text-sm font-bold text-[var(--accent)]">
-          Porovnať cesty na mape ›
-        </Link>
-      </details>
+            <span className="ml-auto flex shrink-0 items-center gap-1 text-[13px] font-semibold text-[var(--muted)]">
+              {plural(routes.length)}
+              <svg aria-hidden width="14" height="14" viewBox="0 0 14 14" className="transition-transform group-open:rotate-180">
+                <path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </span>
+          </summary>
+          <ul className="flex flex-col divide-y divide-[var(--border)] border-t border-[var(--border)]">{rows}</ul>
+        </details>
+        <div className="border-t border-[var(--border)] p-2.5">
+          <Link
+            href={compare}
+            className="flex w-full items-center justify-center rounded-xl bg-[var(--accent)] px-4 py-3 text-[15px] font-bold text-[var(--accent-contrast)]"
+          >
+            Porovnať {plural(routes.length)} na mape ›
+          </Link>
+        </div>
+      </div>
 
       {/* Wider screens: every route as a card. */}
       <div className="hidden flex-col gap-2 lg:flex">
