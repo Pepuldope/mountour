@@ -14,7 +14,7 @@ from pathlib import Path
 import yaml
 
 from . import drive as drive_mod
-from . import maplines
+from . import areas, maplines
 from . import osm as osm_mod
 from . import publish
 from . import walks
@@ -116,6 +116,7 @@ def main(argv=None):
 
     publish.write(root, trips, dem, drive, slugs, tb.report, a.osm_timestamp)
     log("map lines: %d trips in %d cells" % maplines.write(root))
+    log("map areas: %d" % areas.write(root))
     log("done")
     return 0
 

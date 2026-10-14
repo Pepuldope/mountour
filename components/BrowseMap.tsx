@@ -25,6 +25,8 @@ export interface BrowseTrip {
 
 /** A mountain area: one dot while zoomed out. */
 export interface BrowseArea {
+  /** Matches the `id` of its outline in /data/map/areas.json. */
+  id?: string;
   name: string;
   short: string;
   location: LatLng;
@@ -49,6 +51,8 @@ interface Props {
   /** The trips that pass the filters: their lines and squares. */
   trips: BrowseTrip[];
   areas: BrowseArea[];
+  /** The areas' outlines (they split all of Slovakia), drawn while zoomed out. */
+  outlines: GeoJSON.FeatureCollection | null;
   selected: string | null;
   /** A card hovered in the list: its line is outlined. */
   highlighted: string | null;
@@ -82,6 +86,7 @@ const SQUARE_MAX = 12;
 /** Pixels between squares at the zoom where they first show. */
 const SPACING = 54;
 const SUN = "#ffb81c";
+const AREA_LINE = "#1769d1";
 const NIGHT = "#14233b";
 
 const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
@@ -200,6 +205,7 @@ function declutter(els: HTMLElement[]) {
 export function BrowseMap({
   trips,
   areas,
+  outlines,
   selected,
   highlighted,
   focus,
@@ -218,15 +224,19 @@ export function BrowseMap({
   const [linesVersion, setLinesVersion] = useState(0);
   const handlers = useRef({ onView, onPick, onHover, onTrailTap });
   const tripsRef = useRef(trips);
+  const areasRef = useRef(areas);
   const areaEls = useRef<HTMLElement[]>([]);
   const userMarkers = useRef<Marker[]>([]);
   const { fix, start } = useUserLocation();
   const initialRef = useRef(initialView);
   const insetRef = useRef(bottomInset);
+  const zoomToAreaRef = useRef<(a: BrowseArea) => void>(() => {});
+  const hoverAreaRef = useRef<(id: string | null) => void>(() => {});
 
   useEffect(() => {
     handlers.current = { onView, onPick, onHover, onTrailTap };
     tripsRef.current = trips;
+    areasRef.current = areas;
     insetRef.current = bottomInset;
   });
 
@@ -271,6 +281,31 @@ export function BrowseMap({
         hideBasePois(m);
         // Every marked trail, faint grey: the trips are drawn over it in colour.
         detachNetwork = attachTrailNetwork(m, "context", POPULARITY_RAMP, POPULARITY_TOP_OUTLINE);
+
+        // Area outlines: like districts on a map, they fade as the trips take over.
+        m.addSource("areas", { type: "geojson", data: EMPTY, promoteId: "id" });
+        m.addLayer({
+          id: "area-fill",
+          type: "fill",
+          source: "areas",
+          maxzoom: areaZoom + 0.5,
+          paint: {
+            "fill-color": AREA_LINE,
+            "fill-opacity": ["interpolate", ["linear"], ["zoom"], areaZoom - 0.6, ["case", ["boolean", ["feature-state", "hover"], false], 0.2, 0.06], areaZoom + 0.2, 0],
+          },
+        });
+        m.addLayer({
+          id: "area-line",
+          type: "line",
+          source: "areas",
+          maxzoom: areaZoom + 0.5,
+          layout: { "line-join": "round" },
+          paint: {
+            "line-color": AREA_LINE,
+            "line-width": ["interpolate", ["linear"], ["zoom"], 6, 1.3, 9, 2],
+            "line-opacity": ["interpolate", ["linear"], ["zoom"], areaZoom - 0.6, 0.7, areaZoom + 0.4, 0],
+          },
+        });
 
         const ramp = ["match", ["get", "p"], ...POPULARITY_RAMP.flatMap((c, i) => [i, c]), POPULARITY_RAMP[0]] as unknown as ExpressionSpecification;
         const width = (a: number, b: number, c: number, extra = 0) =>
@@ -426,13 +461,24 @@ export function BrowseMap({
       }
       return out.sort((a, b) => a.km - b.km).slice(0, 3);
     }
+    let hoverArea: string | null = null;
+    const setHoverArea = (m: MlMap, id: string | null) => {
+      if (id === hoverArea) return;
+      if (hoverArea) m.setFeatureState({ source: "areas", id: hoverArea }, { hover: false });
+      hoverArea = id;
+      if (id) m.setFeatureState({ source: "areas", id }, { hover: true });
+    };
+    const areaAt = (m: MlMap, e: MapMouseEvent): string | null =>
+      (m.queryRenderedFeatures(e.point, { layers: ["area-fill"] })[0]?.properties?.id as string | undefined) ?? null;
     function bindEvents(m: MlMap) {
       const fine = window.matchMedia("(pointer: fine)").matches;
       let hovering: string | null = null;
       m.on("mousemove", (e) => {
         if (!fine) return;
         if (m.getZoom() < areaZoom) {
-          const any = m.queryRenderedFeatures([[e.point.x - 4, e.point.y - 4], [e.point.x + 4, e.point.y + 4]], { layers: ["trip-lines-line"] }).length > 0;
+          const area = areaAt(m, e);
+          setHoverArea(m, area);
+          const any = area !== null || m.queryRenderedFeatures([[e.point.x - 4, e.point.y - 4], [e.point.x + 4, e.point.y + 4]], { layers: ["trip-lines-line"] }).length > 0;
           m.getCanvas().style.cursor = any ? "zoom-in" : "";
           if (hovering) handlers.current.onHover((hovering = null));
           return;
@@ -446,6 +492,7 @@ export function BrowseMap({
         }
       });
       m.on("mouseout", () => {
+        setHoverArea(m, null);
         hovering = null;
         handlers.current.onHover(null);
       });
@@ -453,6 +500,10 @@ export function BrowseMap({
         const r = fine ? 6 : 14;
         // Zoomed out: a tap on any line zooms in there, so nothing is a dead end.
         if (m.getZoom() < areaZoom) {
+          // Inside an area: show all of it.
+          const id = areaAt(m, e);
+          const area = id ? areasRef.current.find((a) => a.id === id) : undefined;
+          if (area) return zoomToArea(m, area);
           const any = m.queryRenderedFeatures([[e.point.x - r, e.point.y - r], [e.point.x + r, e.point.y + r]], {
             layers: ["trip-lines-line", "network-line"].filter((id) => m.getLayer(id)),
           }).length;
@@ -471,6 +522,14 @@ export function BrowseMap({
         handlers.current.onPick(null);
       });
     }
+
+    function zoomToArea(m: MlMap, a: BrowseArea) {
+      const cam = m.cameraForBounds([[a.bbox[0], a.bbox[1]], [a.bbox[2], a.bbox[3]]], { padding: 24 });
+      // The whole area in view; trips show from the area zoom on, so never stop short of it.
+      m.easeTo({ center: cam?.center ?? [a.location.lon, a.location.lat], zoom: Math.max(cam?.zoom ?? 0, areaZoom + 0.05) });
+    }
+    zoomToAreaRef.current = (a) => map && zoomToArea(map, a);
+    hoverAreaRef.current = (id) => map && setHoverArea(map, id);
 
     // ---- areas: HTML dots made once, shown or hidden by zoom (never rebuilt, so they don't blink)
     function showAreas(z: number) {
@@ -503,10 +562,12 @@ export function BrowseMap({
       el.style.display = map.getZoom() < AREA_ZOOM - ctx.shift ? "" : "none";
       el.addEventListener("click", (ev) => {
         ev.stopPropagation();
-        const cam = map.cameraForBounds([[a.bbox[0], a.bbox[1]], [a.bbox[2], a.bbox[3]]], { padding: 24 });
-        // The whole area in view; trips show from the area zoom on, so never stop short of it.
-        map.easeTo({ center: cam?.center ?? [a.location.lon, a.location.lat], zoom: Math.max(cam?.zoom ?? 0, AREA_ZOOM - ctx.shift + 0.05) });
+        zoomToAreaRef.current(a);
       });
+      if (a.id) {
+        el.addEventListener("mouseenter", () => hoverAreaRef.current(a.id!));
+        el.addEventListener("mouseleave", () => hoverAreaRef.current(null));
+      }
       return new ml.Marker({ element: el, anchor: "top", offset: [0, -15] }).setLngLat([a.location.lon, a.location.lat]).addTo(map);
     });
     areaEls.current = markers.map((m) => m.getElement());
@@ -516,6 +577,12 @@ export function BrowseMap({
       areaEls.current = [];
     };
   }, [ctx, areas]);
+
+  // Area outlines.
+  useEffect(() => {
+    if (!ctx) return;
+    (ctx.map.getSource("areas") as GeoJSONSource | undefined)?.setData(outlines ?? EMPTY);
+  }, [ctx, outlines]);
 
   // Which trips show: their lines and squares.
   useEffect(() => {

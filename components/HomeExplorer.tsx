@@ -161,6 +161,27 @@ function areasOf(trails: TrailDetail[]): BrowseArea[] {
   return areas.sort((a, b) => b.n - a.n).map(({ name, short, location, bbox }) => ({ name, short, location, bbox }));
 }
 
+/** The area outlines (pipeline/areas.py): they split Slovakia and give each area its dot and zoom box. */
+function useAreaOutlines(): GeoJSON.FeatureCollection | null {
+  const [outlines, setOutlines] = useState<GeoJSON.FeatureCollection | null>(null);
+  useEffect(() => {
+    const ctrl = new AbortController();
+    fetch("/data/map/areas.json", { signal: ctrl.signal })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((fc) => fc && setOutlines(fc))
+      .catch(() => {});
+    return () => ctrl.abort();
+  }, []);
+  return outlines;
+}
+
+function areasFrom(outlines: GeoJSON.FeatureCollection): BrowseArea[] {
+  return outlines.features.map((f) => {
+    const p = f.properties as { id: string; name: string; short: string; label: [number, number]; bbox: Box };
+    return { id: p.id, name: p.name, short: p.short, location: { lon: p.label[0], lat: p.label[1] }, bbox: p.bbox };
+  });
+}
+
 /** Where the home map was when the visitor left the page. */
 let lastView: MapView | null = null;
 
@@ -183,7 +204,17 @@ export function HomeExplorer({ trails: initial }: Props) {
   const [selected, setSelected] = useState<string | null>(null);
   const [pointed, setPointed] = useState<string | null>(null);
   const [preview, setPreview] = useState<Preview | null>(null);
-  const [view, setView] = useState<"map" | "list">("map");
+  // Phones: the map is a card in the page; "Celá mapa" opens it full screen.
+  const [fullMap, setFullMap] = useState(false);
+  const mapCardRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!fullMap) return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [fullMap]);
+  const showMapCard = useCallback(() => mapCardRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" }), []);
   // Back on the home page the map opens where it was left (kept for this visit, not stored).
   const [mapView, setMapView] = useState<MapView | null>(() => lastView);
   const [focus, setFocus] = useState<MapFocus | null>(null);
@@ -191,6 +222,7 @@ export function HomeExplorer({ trails: initial }: Props) {
   const itemRefs = useRef(new Map<string, HTMLElement>());
   const columnRef = useRef<HTMLDivElement>(null);
   const toolsRef = useRef<HTMLDivElement>(null);
+  const pickedRef = useRef<HTMLDivElement>(null);
   const isDesktop = useIsDesktop();
   const focusKey = useRef(0);
   const moveMap = useCallback((f: Omit<Extract<MapFocus, { kind: "box" }>, "key"> | Omit<Extract<MapFocus, { kind: "point" }>, "key">) => {
@@ -304,7 +336,9 @@ export function HomeExplorer({ trails: initial }: Props) {
       }),
     [listedAll]
   );
-  const areas = useMemo(() => areasOf(trails), [trails]);
+  const outlines = useAreaOutlines();
+  // Until the outlines arrive (or if they can't), the dots come from the trips themselves.
+  const areas = useMemo(() => (outlines ? areasFrom(outlines) : areasOf(trails)), [outlines, trails]);
 
   const registerItem = useCallback((slug: string, el: HTMLElement | null) => {
     if (el) itemRefs.current.set(slug, el);
@@ -326,7 +360,7 @@ export function HomeExplorer({ trails: initial }: Props) {
       }
       if (isDesktop) {
         setPreview(null);
-        requestAnimationFrame(() => itemRefs.current.get(slug)?.scrollIntoView({ block: "nearest", behavior: "smooth" }));
+        requestAnimationFrame(() => pickedRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" }));
       } else {
         setPreview({ kind: "trip", slug, also, ...at, peek: false });
       }
@@ -338,11 +372,11 @@ export function HomeExplorer({ trails: initial }: Props) {
     (slug: string) => {
       const item = bySlug.get(slug);
       const box = item ? tripBox(item.detail) : null;
-      if (!isDesktop) setView("map");
+      if (!isDesktop) showMapCard();
       if (box) moveMap({ kind: "box", bbox: box, maxZoom: 13 });
       pickTrip(slug);
     },
-    [bySlug, tripBox, isDesktop, moveMap, pickTrip]
+    [bySlug, tripBox, isDesktop, moveMap, pickTrip, showMapCard]
   );
 
   // ---- search: trips, mountain ranges, towns
@@ -376,7 +410,7 @@ export function HomeExplorer({ trails: initial }: Props) {
     setQuery("");
     closeMenus();
     setPreview(null);
-    if (!isDesktop) setView("map");
+    if (!isDesktop) showMapCard();
     moveMap(focusTo);
   };
 
@@ -390,6 +424,8 @@ export function HomeExplorer({ trails: initial }: Props) {
         ? "Najbližšie výlety"
         : "Tisíce výletov po celom Slovensku";
   const scopeNote = words.length === 0 && mapView && mapView.zoom >= mapView.areaZoom - 1 ? "Na mape a kúsok okolo." : null;
+
+  const pickedItem = isDesktop && selected ? bySlug.get(selected) : undefined;
 
   const cardList = (items: TripCardItem[]) =>
     items.map((item) => (
@@ -487,6 +523,7 @@ export function HomeExplorer({ trails: initial }: Props) {
       <BrowseMap
         trips={mapTrips}
         areas={areas}
+        outlines={outlines}
         selected={selected}
         highlighted={pointed}
         focus={focus}
@@ -572,32 +609,6 @@ export function HomeExplorer({ trails: initial }: Props) {
         </button>
       </div>
 
-      {!isDesktop && (
-        <div role="group" aria-label="Zobrazenie" className="inline-flex self-start rounded-full border border-[var(--border)] bg-[var(--card-bg)] p-[3px] shadow-[var(--shadow-float)]">
-          {(["map", "list"] as const).map((v) => (
-            <button
-              key={v}
-              type="button"
-              aria-pressed={view === v}
-              onClick={() => {
-                setView(v);
-                setPreview(null);
-                // When the bar is stuck on top, start the new view at its beginning, not mid-page.
-                requestAnimationFrame(() => {
-                  const bar = toolsRef.current?.parentElement;
-                  const next = bar?.nextElementSibling;
-                  const gap = next ? next.getBoundingClientRect().top - bar!.offsetHeight : 0;
-                  if (gap < 0) window.scrollBy({ top: gap });
-                });
-              }}
-              className={`inline-flex h-10 items-center gap-1.5 rounded-full px-5 text-[15px] font-bold ${view === v ? "bg-[var(--foreground)] text-[var(--background)]" : "text-[var(--muted)]"}`}
-            >
-              <UiIcon name={v === "map" ? "map" : "list"} size={18} />
-              {v === "map" ? "Mapa" : "Zoznam"}
-            </button>
-          ))}
-        </div>
-      )}
 
       {searchOpen && results && (
         <div role="listbox" aria-label="Výsledky hľadania" className="absolute top-12 right-0 left-0 z-30 max-h-[60vh] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-2 shadow-[var(--shadow-float)]">
@@ -727,7 +738,22 @@ export function HomeExplorer({ trails: initial }: Props) {
         </div>
       )}
 
-      {cardList(visible)}
+      {pickedItem && (
+        // Picked on the map: a bigger card that stays on top while the list scrolls under it.
+        <div ref={pickedRef} className="sticky top-0 z-10 -mx-1 bg-[var(--background)] px-1 pt-1 pb-2">
+          <TripCard
+            item={pickedItem}
+            dayWord={dayWord}
+            transit={transit}
+            active
+            onClose={() => pickTrip(null)}
+            onActive={setPointed}
+            registerItem={registerItem}
+          />
+        </div>
+      )}
+
+      {cardList(pickedItem ? visible.filter((i) => i !== pickedItem) : visible)}
 
       {scoped.length > limit && (
         <button
@@ -765,11 +791,14 @@ export function HomeExplorer({ trails: initial }: Props) {
           <div className="relative flex flex-col gap-2 px-4 pt-6 pb-16 text-[#14233b]">
             <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">Kam dnes?</h1>
             <p className="max-w-[30ch] text-[15px] font-medium">Výlety, z ktorých budete späť za svetla.</p>
-            <StartChip folded />
           </div>
         </header>
 
-        <div className="relative z-[1] -mx-1 -mt-14 flex flex-col gap-3 rounded-[18px] bg-[var(--card-bg)] p-3 shadow-[var(--shadow-float)]">
+        <div className="relative z-[1] -mx-1 -mt-14">
+          <StartChip />
+        </div>
+
+        <div className="-mx-1 flex flex-col gap-3 rounded-[18px] bg-[var(--card-bg)] p-3 shadow-[var(--shadow-float)]">
           <FilterChips />
           <KidsSwitch />
         </div>
@@ -777,11 +806,30 @@ export function HomeExplorer({ trails: initial }: Props) {
         {/* Search, filters and Mapa / Zoznam stay on top while the map fills the screen. */}
         <div className="sticky top-0 z-20 -mx-4 bg-[var(--background)] px-4 py-2 lg:static lg:mx-0 lg:bg-transparent lg:p-0">{tools}</div>
 
-        {!isDesktop && view === "map" && (
-          <div className="-mx-4 -mt-3 h-[calc(100dvh-120px)] min-h-[420px] overflow-hidden border-y border-[var(--border)]">{map}</div>
+        {!isDesktop && (
+          // A card with gutters: a thumb beside it still scrolls the page past the map.
+          <div
+            ref={mapCardRef}
+            className={
+              fullMap
+                ? "fixed inset-0 z-50 bg-[var(--background)] pt-[env(safe-area-inset-top)]"
+                : "relative h-[58vh] max-h-[560px] min-h-[340px] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)]"
+            }
+          >
+            {map}
+            <button
+              type="button"
+              onClick={() => setFullMap((v) => !v)}
+              className="absolute top-2.5 right-2.5 z-[6] inline-flex h-10 items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card-bg)] px-3.5 text-sm font-bold shadow-[var(--shadow-float)]"
+              style={fullMap ? { top: "calc(10px + env(safe-area-inset-top))" } : undefined}
+            >
+              {fullMap ? <UiIcon name="close" size={13} /> : <UiIcon name="map" size={16} />}
+              {fullMap ? "Zavrieť mapu" : "Celá mapa"}
+            </button>
+          </div>
         )}
 
-        {(isDesktop || view === "list") && list}
+        {list}
 
         <SiteFooter />
       </div>

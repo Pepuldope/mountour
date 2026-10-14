@@ -41,6 +41,8 @@ interface Props {
   /** Travelling by train/bus: its line is the one in focus. */
   transit: boolean;
   active: boolean;
+  /** Picked on the map (computer): a bigger card with a few more facts, closed with ✕. */
+  onClose?: () => void;
   onActive: (slug: string) => void;
   registerItem: (slug: string, el: HTMLElement | null) => void;
 }
@@ -75,7 +77,7 @@ const PILL_CLASS = {
 };
 
 /** One trip: what it is, how long to get there and walk, and when to leave. */
-export function TripCard({ item, dayWord, transit, active, onActive, registerItem }: Props) {
+export function TripCard({ item, dayWord, transit, active, onClose, onActive, registerItem }: Props) {
   const { detail, hikeMin, carMin, driveMin, driveApprox, driveLoading, distanceM, nearStop } = item;
   const { trail } = detail;
   const goal = trail.goal ?? "ine";
@@ -84,6 +86,9 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
   const pill = pillFor(item, dayWord);
   const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
   const total = driveMin !== null && !item.fit ? hikeMin + 2 * driveMin : null;
+  const big = onClose !== undefined;
+  const th = detail.trailheads.find((t) => t.is_primary) ?? detail.trailheads[0];
+  const parking = detail.parkingLots[0];
   const leg = (on: boolean) => `inline-flex items-center gap-1 ${on ? "text-[var(--foreground)]" : "text-[var(--muted)]"}`;
 
   return (
@@ -93,8 +98,8 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
       onMouseEnter={() => onActive(trail.slug)}
       onFocus={() => onActive(trail.slug)}
       className={`grid grid-cols-[54px_1fr] gap-3 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-3 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
-        active ? "trip-card-active border-[var(--accent)]" : "border-[var(--border)]"
-      } ${pill?.tone === "no" ? "opacity-70" : ""}`}
+        big ? "border-2 border-[var(--accent)] shadow-[0_10px_28px_rgba(20,35,59,0.22)]" : active ? "trip-card-active border-[var(--accent)]" : "border-[var(--border)]"
+      } ${pill?.tone === "no" && !big ? "opacity-70" : ""}`}
     >
       <span
         aria-hidden
@@ -105,8 +110,23 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
       />
       <span className="flex min-w-0 flex-col gap-1">
         <span className="flex items-baseline justify-between gap-2">
-          <span className="text-base leading-tight font-bold">{trail.name}</span>
-          <span className="shrink-0 text-xs font-semibold text-[var(--muted)]">{DIFFICULTY_LABEL[trail.difficulty].toLowerCase()}</span>
+          <span className={`leading-tight font-bold ${big ? "text-xl" : "text-base"}`}>{trail.name}</span>
+          {big ? (
+            <button
+              type="button"
+              aria-label="Zavrieť"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onClose();
+              }}
+              className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--segment-bg)] text-[var(--muted)] hover:text-[var(--foreground)]"
+            >
+              <UiIcon name="close" size={12} />
+            </button>
+          ) : (
+            <span className="shrink-0 text-xs font-semibold text-[var(--muted)]">{DIFFICULTY_LABEL[trail.difficulty].toLowerCase()}</span>
+          )}
         </span>
         <span className="flex flex-wrap items-center gap-x-1.5 text-[12.5px] text-[var(--muted)]">
           <span className="kind-ink font-bold" style={{ "--kind": colour } as React.CSSProperties}>
@@ -136,11 +156,36 @@ export function TripCard({ item, dayWord, transit, active, onActive, registerIte
             </span>
           )}
         </span>
+        {big && (
+          <>
+            <span className="mt-1.5 grid grid-cols-4 gap-1.5 border-y border-[var(--border)] py-2.5">
+              {[
+                ["chôdza", formatDurationShort(hikeMin)],
+                ["dĺžka", `${km} km`],
+                ["stúpanie", `${trail.ascent_m} m`],
+                ["náročnosť", DIFFICULTY_LABEL[trail.difficulty].toLowerCase()],
+              ].map(([label, value]) => (
+                <span key={label} className="flex flex-col">
+                  <span className="text-[11.5px] text-[var(--muted)]">{label}</span>
+                  <span className={label === "náročnosť" ? "text-[15px] font-bold" : "font-data text-[17px] leading-tight font-bold"}>{value}</span>
+                </span>
+              ))}
+            </span>
+            <span className="flex flex-col gap-0.5 text-[13.5px]">
+              {th && <span>Štart: {th.name}</span>}
+              {parking && <span>Parkovanie {parking.walk_m < 150 ? "pri štarte" : `${formatFromUser(parking.walk_m)} od štartu`}</span>}
+              {nearStop && <span>Zastávka {stopLabel(nearStop.name)}, {formatFromUser(nearStop.distance_m)} pešo</span>}
+            </span>
+          </>
+        )}
         {pill && (
           <span className={`mt-0.5 inline-flex items-baseline gap-1.5 self-start rounded-full px-2.5 py-1 text-[12.5px] font-semibold ${PILL_CLASS[pill.tone]}`}>
             {pill.text}
             {pill.time && <span className="font-data text-[17px] leading-none font-bold">{pill.time}</span>}
           </span>
+        )}
+        {big && (
+          <span className="mt-1.5 flex h-11 items-center justify-center rounded-xl bg-[var(--accent)] font-bold text-[var(--accent-contrast)]">Otvoriť výlet</span>
         )}
       </span>
     </Link>
