@@ -2,9 +2,10 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { SAFE_MARGIN_MIN } from "@/lib/dayPlan";
 import type { DayPlan } from "@/lib/dayPlan";
-import { floorTo5, longDay } from "@/lib/days";
-import { formatDuration, formatTime, stopLabel } from "@/lib/format";
+import { dayInSentence, floorTo5, longDay } from "@/lib/days";
+import { formatDuration, formatTime, stopLabel, verdictText } from "@/lib/format";
 import { searchPlaces } from "@/lib/geocode";
 import { readSharedPlan } from "@/lib/links";
 import { findTown } from "@/lib/towns";
@@ -38,25 +39,18 @@ interface Props extends ShareInfo {
   bbox: BBox | null;
   /** The trail itself, for the walking hand-off. */
   walk: WalkRoute;
-  /** Top of the first card: the trail's facts and route choice. */
-  intro?: ReactNode;
   /** Shown between the plan and Uložiť: parking, the map, fees... (Uložiť and navigation come last). */
   children?: ReactNode;
-  /** Under Uložiť and navigation, in the last card. */
-  outro?: ReactNode;
 }
 
-/** One of the page's three cards: at least a phone screen tall, so one step fills the view. */
-const part =
-  "flex min-h-[calc(100svh-2rem)] flex-col gap-4 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4";
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 
 /**
- * The trip page in three cards: the plan (start, travel, day and time), the day itself
- * (sun dial, times, weather, a warning only when the start is too late), then getting there
- * (parking, map...) with Uložiť (main), share and navigation hand-offs.
+ * The trip page's answer: "vyrazte najneskôr", the day and departure, the
+ * timeline, then the page's middle (parking, map...), then Uložiť (main), share and navigation hand-offs.
  */
-export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: fullProfile, gpxUrl, bbox, walk, intro, children, outro, ...trip }: Props) {
+export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: fullProfile, gpxUrl, bbox, walk, children, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
   const { destination, rideTo, approachMin, trailStart, transit, stop, skip, walkFrom, trailJoin } = useTripAccess();
@@ -108,65 +102,103 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
   const hasDrive = driveMin !== null;
   // The walk starts where the ride ends: the parking (or the trail start, with no parking) or the stop.
   const walkStart = walkFrom ?? destination;
+  const good = plan?.verdict === "ok" || plan?.verdict === "close";
+  const startName = start?.label.split(",")[0];
   const latest = plan ? floorTo5(plan.latestStart) : null;
   const latestPassed = latest && date === today && latest < new Date();
 
-  // Only when the chosen start oversteps: one plain warning under the day, nothing otherwise.
-  const late = plan !== null && (plan.verdict === "tight" || plan.verdict === "after-sunset" || plan.verdict === "after-dusk");
-  const startWord = hasDrive ? "Vyrazte" : transit && stop ? `Buďte na zastávke ${stopLabel(stop.name)}` : "Začnite túru";
-
   return (
     <div className="flex flex-col gap-4">
-      {/* Three cards, each a phone screen tall, so the eye takes one step at a time:
-          plan the trip, see the day, then get there. */}
-      <section aria-label="Plán výletu" className={part}>
-        {intro}
+      {shared && (
+        <div className="rounded-[var(--radius-card)] bg-[var(--accent-soft)] p-4 text-sm">
+          <p>
+            Plán od kamaráta: <strong>{longDay(shared.date)}</strong>, odchod{" "}
+            <strong className="font-data text-base">{shared.time}</strong>
+            {shared.town ? `, štart ${shared.town}` : ""}.
+          </p>
+          <p className="text-[var(--muted)]">
+            {adopted ? `Nižšie je prepočítaný zo štartu ${start?.label}. Zmeniť ho môžete hneď nižšie.` : "Nižšie je prepočítaný z vášho miesta."}
+          </p>
+        </div>
+      )}
 
-        {shared && (
-          <div className="rounded-[var(--radius-card)] bg-[var(--accent-soft)] p-4 text-sm">
-            <p>
-              Plán od kamaráta: <strong>{longDay(shared.date)}</strong>, odchod{" "}
-              <strong className="font-data text-base">{shared.time}</strong>
-              {shared.town ? `, štart ${shared.town}` : ""}.
-            </p>
-            <p className="text-[var(--muted)]">
-              {adopted ? `Nižšie je prepočítaný zo štartu ${start?.label}. Zmeniť ho môžete hneď nižšie.` : "Nižšie je prepočítaný z vášho miesta."}
-            </p>
-          </div>
-        )}
+      {/* In the order of the day: where from, how, which day and time, then the day itself. */}
+      <StartChip />
 
-        {/* In the order of the day: where from, how, which day and time. */}
-        <StartChip />
+      <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} />
 
-        <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} />
-
-        <section aria-label="Deň a odchod" className="flex flex-col gap-3">
-          <FilterChips variant="trip" activeDate={date} />
-          <div className="flex flex-wrap items-center gap-3">
-            <label className="flex items-center gap-2 text-sm font-semibold">
-              {hasDrive ? "Odchod" : transit && stop ? "Na zastávke" : "Začiatok túry"}
-              <input
-                type="time"
-                step={300}
-                value={time ?? ""}
-                onChange={(e) => e.target.value && update({ time: e.target.value })}
-                className="font-data w-32 rounded-lg border border-[var(--border)] bg-[var(--card-bg)] px-3 py-1.5 text-lg"
-              />
-            </label>
-          </div>
-          {driveStatus === "loading" && <p className="text-xs text-[var(--muted)]">{transit ? "Počítam cestu na zastávku..." : "Počítam cestu autom..."}</p>}
-        </section>
+      <section aria-label="Deň a odchod" className="flex flex-col gap-3">
+        <FilterChips variant="trip" activeDate={date} />
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-2 text-sm font-semibold">
+            {hasDrive ? "Odchod" : transit && stop ? "Na zastávke" : "Začiatok túry"}
+            <input
+              type="time"
+              step={300}
+              value={time ?? ""}
+              onChange={(e) => e.target.value && update({ time: e.target.value })}
+              className="font-data w-32 rounded-lg border border-[var(--border)] bg-[var(--card-bg)] px-3 py-1.5 text-lg"
+            />
+          </label>
+        </div>
+        {driveStatus === "loading" && <p className="text-xs text-[var(--muted)]">{transit ? "Počítam cestu na zastávku..." : "Počítam cestu autom..."}</p>}
       </section>
 
       {plan && (
-        <section aria-label="Priebeh dňa" className={part}>
-          {sun && (
-            // Edge to edge at the top of the card, as the dial was drawn for.
-            <div className="-mx-4 -mt-4 overflow-hidden rounded-t-[var(--radius-card)]">
-              <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} byBus={transit} weather={weather.below} />
-            </div>
-          )}
+        <section
+          aria-label="Kedy vyraziť"
+          className="overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)]"
+        >
+          <div className="flex flex-col gap-1 bg-[var(--sun-soft)] px-4 pt-3.5 pb-3">
+            <p className="text-sm text-[var(--muted)]">
+              {startName && hasDrive ? `Štart ${startName} · ` : ""}
+              {capitalize(
+                `${date ? `${dayInSentence(date, new Date())} ` : ""}${
+                  hasDrive ? "vyrazte" : transit && stop ? `buďte na zastávke ${stopLabel(stop.name)}` : "začnite túru"
+                } najneskôr`
+              )}
+            </p>
+            <p className="font-data text-[3.2rem] leading-none font-bold text-[var(--time)]">{formatTime(latest!)}</p>
+            <p className="text-sm">
+              a budete späť {SAFE_MARGIN_MIN} min pred západom slnka ({formatTime(plan.sunset)})
+            </p>
+            {latestPassed && (
+              <p className="pt-1 text-sm font-semibold text-[var(--time)]">Na dnes je to už neskoro. Skúste zajtra ráno.</p>
+            )}
+            {transit && hasDrive && rail.status !== "ok" && (
+              <p className="pt-1 text-xs text-[var(--muted)]">
+                Cestu autobusom odhadujeme podľa cesty autom (~{formatDuration(driveMin!)}). Presné spoje nájdete nižšie.
+              </p>
+            )}
+            {transit && rail.status === "ok" && (
+              <p className="pt-1 text-xs text-[var(--muted)]">Podľa cestovného poriadku vlakov, spoj si vyberiete nižšie.</p>
+            )}
+            {driveApprox && !transit && (
+              <p className="pt-1 text-xs text-[var(--muted)]">Cestu autom teraz odhadujeme podľa vzdialenosti (~{formatDuration(driveMin!)}).</p>
+            )}
+            {!start && !transit && (
+              <p className="pt-1 text-xs text-[var(--muted)]">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>
+            )}
+          </div>
+          {sun && <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} byBus={transit} weather={weather.below} />}
+        </section>
+      )}
+
+
+      {plan && (
+        <section
+          aria-label="Priebeh dňa"
+          className="flex flex-col gap-3 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4"
+        >
+          <p
+            role="status"
+            className={`rounded-xl px-3.5 py-3 text-base font-semibold ${good ? "bg-[var(--ok-bg)] text-[var(--ok)]" : "bg-[var(--warn-bg)] text-[var(--warn)]"}`}
+          >
+            {verdictText(plan)}
+          </p>
           {plan.startsInDark && <p className="text-sm text-[var(--warn)]">Túra začína pred východom slnka, vezmite si čelovku.</p>}
+          <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} />
+          {transit && <TransitLegs plan={plan} rail={rail} />}
           <ol className="font-data grid grid-cols-4 gap-x-2 text-[1.3rem] leading-tight font-bold sm:text-[1.6rem]">
             {hasDrive ? (
               <Step label="odchod" time={plan.segments[0].start} />
@@ -177,37 +209,14 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
             <Step label={transit && stop ? "späť na zastávke" : "späť"} time={plan.hikeEnd} />
             {hasDrive && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
-          <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} />
-          {transit && <TransitLegs plan={plan} rail={rail} />}
-          {transit && hasDrive && rail.status !== "ok" && (
-            <p className="text-xs text-[var(--muted)]">
-              Cestu autobusom odhadujeme podľa cesty autom (~{formatDuration(driveMin!)}). Presné spoje nájdete nižšie.
-            </p>
-          )}
-          {transit && rail.status === "ok" && <p className="text-xs text-[var(--muted)]">Podľa cestovného poriadku vlakov, spoj si vyberiete nižšie.</p>}
-          {driveApprox && !transit && (
-            <p className="text-xs text-[var(--muted)]">Cestu autom teraz odhadujeme podľa vzdialenosti (~{formatDuration(driveMin!)}).</p>
-          )}
-          {!start && !transit && <p className="text-xs text-[var(--muted)]">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>}
-          {(late || latestPassed) && (
-            <p role="status" className="rounded-xl bg-[var(--warn-bg)] px-3.5 py-3 text-base font-semibold text-[var(--warn)]">
-              {latestPassed
-                ? "Na dnes je to už neskoro, späť by ste boli po tme. Skúste zajtra ráno."
-                : `Späť by ste boli po západe slnka. ${startWord} najneskôr o ${formatTime(latest!)}.`}
-            </p>
-          )}
         </section>
       )}
 
-      <section aria-label="Na mieste" className={part}>
-        {children}
+      {children}
 
-        <section aria-label="Uložiť a zdieľať" className="flex flex-col gap-3">
-          <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} destination={rideTo} baseHikeMin={baseHikeMin} profile={profile} {...trip} />
-          <NavHandoff drive={destination} start={start} walkFrom={walkStart} walk={walk} join={trailJoin} />
-        </section>
-
-        {outro}
+      <section aria-label="Uložiť a zdieľať" className="flex flex-col gap-3">
+        <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} destination={rideTo} baseHikeMin={baseHikeMin} profile={profile} {...trip} />
+        <NavHandoff drive={destination} start={start} walkFrom={walkStart} walk={walk} join={trailJoin} />
       </section>
     </div>
   );
