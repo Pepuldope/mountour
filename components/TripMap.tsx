@@ -190,14 +190,15 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
     [trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit]
   );
 
-  // The trail plus where the car stops; with a drive, the whole day (start -> parking -> trail).
+  // Opens on the trail and where the car stops. The drive is drawn too, but a long drive would
+  // shrink the trail to a speck (testers), so it isn't fitted: zoom out to see it.
   // Fitted once per start and way of travel: picking another parking keeps the view where it is.
   const baseKey = `${start?.lat},${start?.lon},${transit},${trail.slug}`;
   const [driveFitFor, setDriveFitFor] = useState<string | null>(null);
   if (drive.route && driveFitFor !== baseKey) setDriveFitFor(baseKey);
   const fitKey = `${baseKey},${driveFitFor === baseKey}`;
   const bounds = useMemo<BBox | null>(() => {
-    const pts: [number, number][] = [...(drive.route?.points ?? [])];
+    const pts: [number, number][] = [];
     if (carStop) pts.push(pair(carStop));
     // The trail itself: switching to another route glides over to it (the others stay drawn around it).
     if (trail.bbox) pts.push(pair(trail.bbox.sw), pair(trail.bbox.ne));
