@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Suchý vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Suchý vrch</name><trkseg>
+  <metadata><name>Suchý vrch (Vysoké Tatry)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Suchý vrch (Vysoké Tatry)</name><trkseg>
     <trkpt lat="49.118569" lon="20.123388"><ele>1101</ele></trkpt>
     <trkpt lat="49.118623" lon="20.123460"><ele>1103</ele></trkpt>
     <trkpt lat="49.118701" lon="20.123155"><ele>1103</ele></trkpt>

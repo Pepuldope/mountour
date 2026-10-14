@@ -2,8 +2,9 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Baník</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Baník</name><trkseg>
-    <trkpt lat="48.833092" lon="19.220355"><ele>927</ele></trkpt>
-    <trkpt lat="48.833516" lon="19.220609"><ele>930</ele></trkpt>
+    <trkpt lat="48.833066" lon="19.220482"><ele>931</ele></trkpt>
+    <trkpt lat="48.833305" lon="19.220481"><ele>925</ele></trkpt>
+    <trkpt lat="48.833592" lon="19.220630"><ele>933</ele></trkpt>
     <trkpt lat="48.834150" lon="19.220664"><ele>950</ele></trkpt>
     <trkpt lat="48.834496" lon="19.220779"><ele>955</ele></trkpt>
     <trkpt lat="48.834879" lon="19.220779"><ele>959</ele></trkpt>
@@ -12,7 +13,7 @@
     <trkpt lat="48.837223" lon="19.220959"><ele>987</ele></trkpt>
     <trkpt lat="48.837960" lon="19.221337"><ele>1001</ele></trkpt>
     <trkpt lat="48.838144" lon="19.221383"><ele>1004</ele></trkpt>
-    <trkpt lat="48.839257" lon="19.221422"><ele>1014</ele></trkpt>
+    <trkpt lat="48.839341" lon="19.221406"><ele>1015</ele></trkpt>
     <trkpt lat="48.839478" lon="19.221528"><ele>1016</ele></trkpt>
     <trkpt lat="48.839994" lon="19.221595"><ele>1016</ele></trkpt>
     <trkpt lat="48.840587" lon="19.221445"><ele>1015</ele></trkpt>
@@ -170,7 +171,7 @@
     <trkpt lat="48.840587" lon="19.221445"><ele>1015</ele></trkpt>
     <trkpt lat="48.839994" lon="19.221595"><ele>1016</ele></trkpt>
     <trkpt lat="48.839478" lon="19.221528"><ele>1016</ele></trkpt>
-    <trkpt lat="48.839257" lon="19.221422"><ele>1014</ele></trkpt>
+    <trkpt lat="48.839341" lon="19.221406"><ele>1015</ele></trkpt>
     <trkpt lat="48.838144" lon="19.221383"><ele>1004</ele></trkpt>
     <trkpt lat="48.837960" lon="19.221337"><ele>1001</ele></trkpt>
     <trkpt lat="48.837223" lon="19.220959"><ele>987</ele></trkpt>
@@ -179,7 +180,8 @@
     <trkpt lat="48.834879" lon="19.220779"><ele>959</ele></trkpt>
     <trkpt lat="48.834496" lon="19.220779"><ele>955</ele></trkpt>
     <trkpt lat="48.834150" lon="19.220664"><ele>950</ele></trkpt>
-    <trkpt lat="48.833516" lon="19.220609"><ele>930</ele></trkpt>
-    <trkpt lat="48.833092" lon="19.220355"><ele>927</ele></trkpt>
+    <trkpt lat="48.833592" lon="19.220630"><ele>933</ele></trkpt>
+    <trkpt lat="48.833305" lon="19.220481"><ele>925</ele></trkpt>
+    <trkpt lat="48.833066" lon="19.220482"><ele>931</ele></trkpt>
   </trkseg></trk>
 </gpx>

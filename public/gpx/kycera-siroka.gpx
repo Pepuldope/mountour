@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kýčera</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kýčera</name><trkseg>
+  <metadata><name>Kýčera (Malá Fatra)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kýčera (Malá Fatra)</name><trkseg>
     <trkpt lat="49.022550" lon="18.683809"><ele>595</ele></trkpt>
     <trkpt lat="49.022461" lon="18.683986"><ele>595</ele></trkpt>
     <trkpt lat="49.022404" lon="18.684214"><ele>596</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Tri chotáre</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tri chotáre</name><trkseg>
+  <metadata><name>Tri chotáre (Šiatorská Bukovinka)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Tri chotáre (Šiatorská Bukovinka)</name><trkseg>
     <trkpt lat="48.169505" lon="19.821878"><ele>299</ele></trkpt>
     <trkpt lat="48.169696" lon="19.821993"><ele>298</ele></trkpt>
     <trkpt lat="48.169720" lon="19.821734"><ele>297</ele></trkpt>

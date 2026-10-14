@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Rakytník</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Rakytník</name><trkseg>
+  <metadata><name>Rakytník (Silická Brezová)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Rakytník (Silická Brezová)</name><trkseg>
     <trkpt lat="48.493542" lon="20.484175"><ele>330</ele></trkpt>
     <trkpt lat="48.494123" lon="20.483997"><ele>332</ele></trkpt>
     <trkpt lat="48.494555" lon="20.484271"><ele>334</ele></trkpt>

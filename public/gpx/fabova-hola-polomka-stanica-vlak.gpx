@@ -52,11 +52,10 @@
     <trkpt lat="48.827138" lon="19.860439"><ele>945</ele></trkpt>
     <trkpt lat="48.827120" lon="19.860479"><ele>945</ele></trkpt>
     <trkpt lat="48.827027" lon="19.860548"><ele>946</ele></trkpt>
-    <trkpt lat="48.826675" lon="19.860508"><ele>944</ele></trkpt>
-    <trkpt lat="48.826481" lon="19.860565"><ele>940</ele></trkpt>
-    <trkpt lat="48.826049" lon="19.860856"><ele>934</ele></trkpt>
-    <trkpt lat="48.825460" lon="19.861365"><ele>932</ele></trkpt>
-    <trkpt lat="48.825373" lon="19.861386"><ele>932</ele></trkpt>
+    <trkpt lat="48.826676" lon="19.860486"><ele>944</ele></trkpt>
+    <trkpt lat="48.826478" lon="19.860529"><ele>940</ele></trkpt>
+    <trkpt lat="48.825777" lon="19.861078"><ele>931</ele></trkpt>
+    <trkpt lat="48.825643" lon="19.861227"><ele>931</ele></trkpt>
     <trkpt lat="48.825047" lon="19.861620"><ele>934</ele></trkpt>
     <trkpt lat="48.824927" lon="19.861806"><ele>937</ele></trkpt>
     <trkpt lat="48.824570" lon="19.862156"><ele>943</ele></trkpt>
@@ -404,11 +403,10 @@
     <trkpt lat="48.824570" lon="19.862156"><ele>943</ele></trkpt>
     <trkpt lat="48.824927" lon="19.861806"><ele>937</ele></trkpt>
     <trkpt lat="48.825047" lon="19.861620"><ele>934</ele></trkpt>
-    <trkpt lat="48.825373" lon="19.861386"><ele>932</ele></trkpt>
-    <trkpt lat="48.825460" lon="19.861365"><ele>932</ele></trkpt>
-    <trkpt lat="48.826049" lon="19.860856"><ele>934</ele></trkpt>
-    <trkpt lat="48.826481" lon="19.860565"><ele>940</ele></trkpt>
-    <trkpt lat="48.826675" lon="19.860508"><ele>944</ele></trkpt>
+    <trkpt lat="48.825643" lon="19.861227"><ele>931</ele></trkpt>
+    <trkpt lat="48.825777" lon="19.861078"><ele>931</ele></trkpt>
+    <trkpt lat="48.826478" lon="19.860529"><ele>940</ele></trkpt>
+    <trkpt lat="48.826676" lon="19.860486"><ele>944</ele></trkpt>
     <trkpt lat="48.827027" lon="19.860548"><ele>946</ele></trkpt>
     <trkpt lat="48.827120" lon="19.860479"><ele>945</ele></trkpt>
     <trkpt lat="48.827138" lon="19.860439"><ele>945</ele></trkpt>

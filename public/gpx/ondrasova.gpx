@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Ondrášová</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Ondrášová</name><trkseg>
+  <metadata><name>Ondrášová (Sebedín-Bečov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ondrášová (Sebedín-Bečov)</name><trkseg>
     <trkpt lat="48.634565" lon="19.239441"><ele>367</ele></trkpt>
     <trkpt lat="48.634585" lon="19.239970"><ele>369</ele></trkpt>
     <trkpt lat="48.634755" lon="19.240745"><ele>374</ele></trkpt>

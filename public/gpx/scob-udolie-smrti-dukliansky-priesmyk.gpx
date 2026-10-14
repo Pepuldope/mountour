@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Ščob</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Ščob</name><trkseg>
+  <metadata><name>Ščob (Vyšná Pisaná)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ščob (Vyšná Pisaná)</name><trkseg>
     <trkpt lat="49.417117" lon="21.696498"><ele>497</ele></trkpt>
     <trkpt lat="49.416954" lon="21.696655"><ele>496</ele></trkpt>
     <trkpt lat="49.416816" lon="21.696105"><ele>498</ele></trkpt>

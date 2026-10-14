@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Nad Šmintorínom</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Nad Šmintorínom</name><trkseg>
+  <metadata><name>Vyhliadka nad Šmintorínom</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka nad Šmintorínom</name><trkseg>
     <trkpt lat="48.447909" lon="18.874893"><ele>821</ele></trkpt>
     <trkpt lat="48.447939" lon="18.874802"><ele>821</ele></trkpt>
     <trkpt lat="48.448066" lon="18.874812"><ele>821</ele></trkpt>

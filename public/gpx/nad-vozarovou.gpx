@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Nad Vozárovou</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Nad Vozárovou</name><trkseg>
+  <metadata><name>Vyhliadka nad Vozárovou</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka nad Vozárovou</name><trkseg>
     <trkpt lat="48.419186" lon="18.899407"><ele>495</ele></trkpt>
     <trkpt lat="48.419204" lon="18.898925"><ele>495</ele></trkpt>
     <trkpt lat="48.419301" lon="18.898577"><ele>496</ele></trkpt>

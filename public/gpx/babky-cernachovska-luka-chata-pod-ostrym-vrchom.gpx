@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Babky</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Babky</name><trkseg>
+  <metadata><name>Babky (Neporadza)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Babky (Neporadza)</name><trkseg>
     <trkpt lat="48.845832" lon="18.098955"><ele>494</ele></trkpt>
     <trkpt lat="48.845715" lon="18.099155"><ele>495</ele></trkpt>
     <trkpt lat="48.845620" lon="18.099767"><ele>498</ele></trkpt>

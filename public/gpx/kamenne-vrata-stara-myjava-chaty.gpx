@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kamenné vráta</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kamenné vráta</name><trkseg>
+  <metadata><name>Kamenné vráta (Brestovec)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kamenné vráta (Brestovec)</name><trkseg>
     <trkpt lat="48.812230" lon="17.595587"><ele>455</ele></trkpt>
     <trkpt lat="48.812757" lon="17.595178"><ele>459</ele></trkpt>
     <trkpt lat="48.813218" lon="17.594621"><ele>465</ele></trkpt>

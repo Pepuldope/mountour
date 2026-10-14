@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Barvienok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Barvienok</name><trkseg>
+  <metadata><name>Barvienok (Tarnov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Barvienok (Tarnov)</name><trkseg>
     <trkpt lat="49.318378" lon="21.129338"><ele>344</ele></trkpt>
     <trkpt lat="49.318153" lon="21.129266"><ele>344</ele></trkpt>
     <trkpt lat="49.318009" lon="21.129266"><ele>344</ele></trkpt>

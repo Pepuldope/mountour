@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hájska skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hájska skala</name><trkseg>
+  <metadata><name>Jaskyňa Hájska skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Jaskyňa Hájska skala</name><trkseg>
     <trkpt lat="48.762182" lon="18.811870"><ele>827</ele></trkpt>
     <trkpt lat="48.762682" lon="18.811852"><ele>828</ele></trkpt>
     <trkpt lat="48.762964" lon="18.811705"><ele>826</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kráľova skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kráľova skala</name><trkseg>
+  <metadata><name>Kráľova skala (Telgárt)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kráľova skala (Telgárt)</name><trkseg>
     <trkpt lat="48.845924" lon="20.135015"><ele>1026</ele></trkpt>
     <trkpt lat="48.846199" lon="20.135300"><ele>1033</ele></trkpt>
     <trkpt lat="48.846497" lon="20.135536"><ele>1038</ele></trkpt>

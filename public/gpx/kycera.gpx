@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kýčera</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kýčera</name><trkseg>
+  <metadata><name>Kýčera (Ďurčiná)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kýčera (Ďurčiná)</name><trkseg>
     <trkpt lat="49.022550" lon="18.683809"><ele>595</ele></trkpt>
     <trkpt lat="49.022733" lon="18.683613"><ele>594</ele></trkpt>
     <trkpt lat="49.023609" lon="18.682932"><ele>591</ele></trkpt>

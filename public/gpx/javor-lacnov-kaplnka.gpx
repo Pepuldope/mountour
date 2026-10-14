@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Javor</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Javor</name><trkseg>
+  <metadata><name>Javor (Vysoká)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Javor (Vysoká)</name><trkseg>
     <trkpt lat="49.070294" lon="20.920883"><ele>825</ele></trkpt>
     <trkpt lat="49.070191" lon="20.921286"><ele>823</ele></trkpt>
     <trkpt lat="49.070529" lon="20.920986"><ele>827</ele></trkpt>

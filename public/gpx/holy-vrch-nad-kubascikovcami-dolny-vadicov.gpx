@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Holý vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Holý vrch</name><trkseg>
+  <metadata><name>Holý vrch (Lopušné Pažite)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Holý vrch (Lopušné Pažite)</name><trkseg>
     <trkpt lat="49.267411" lon="18.850117"><ele>446</ele></trkpt>
     <trkpt lat="49.267916" lon="18.849633"><ele>446</ele></trkpt>
     <trkpt lat="49.268079" lon="18.849947"><ele>449</ele></trkpt>

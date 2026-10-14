@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Tisovec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tisovec</name><trkseg>
+  <metadata><name>Hrad Tisovec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Tisovec</name><trkseg>
     <trkpt lat="48.687882" lon="19.919071"><ele>481</ele></trkpt>
     <trkpt lat="48.687782" lon="19.918669"><ele>482</ele></trkpt>
     <trkpt lat="48.687603" lon="19.918451"><ele>487</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Bystrá</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Bystrá</name><trkseg>
+  <metadata><name>Bystrá (Miklušovce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Bystrá (Miklušovce)</name><trkseg>
     <trkpt lat="48.925179" lon="21.047015"><ele>614</ele></trkpt>
     <trkpt lat="48.924975" lon="21.047239"><ele>612</ele></trkpt>
     <trkpt lat="48.922561" lon="21.048065"><ele>616</ele></trkpt>

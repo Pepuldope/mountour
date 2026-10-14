@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hôrka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hôrka</name><trkseg>
+  <metadata><name>Hôrka (Lysica)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hôrka (Lysica)</name><trkseg>
     <trkpt lat="49.221309" lon="18.956894"><ele>714</ele></trkpt>
     <trkpt lat="49.221347" lon="18.957062"><ele>713</ele></trkpt>
     <trkpt lat="49.221301" lon="18.957106"><ele>711</ele></trkpt>

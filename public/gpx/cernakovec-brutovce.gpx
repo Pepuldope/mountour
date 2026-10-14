@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Černákovec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Černákovec</name><trkseg>
+  <metadata><name>Vodopád Černákovec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vodopád Černákovec</name><trkseg>
     <trkpt lat="49.087441" lon="20.768493"><ele>884</ele></trkpt>
     <trkpt lat="49.089247" lon="20.767443"><ele>877</ele></trkpt>
     <trkpt lat="49.089512" lon="20.767252"><ele>877</ele></trkpt>

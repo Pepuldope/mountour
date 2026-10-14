@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Vlčia hora</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vlčia hora</name><trkseg>
+  <metadata><name>Vlčia hora (Nižný Hrušov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vlčia hora (Nižný Hrušov)</name><trkseg>
     <trkpt lat="48.798942" lon="21.815900"><ele>139</ele></trkpt>
     <trkpt lat="48.799459" lon="21.813657"><ele>149</ele></trkpt>
     <trkpt lat="48.799518" lon="21.813274"><ele>151</ele></trkpt>

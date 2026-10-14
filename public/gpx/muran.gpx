@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Muraň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Muraň</name><trkseg>
+  <metadata><name>Vyhliadka Muraň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka Muraň</name><trkseg>
     <trkpt lat="48.879051" lon="20.742493"><ele>604</ele></trkpt>
     <trkpt lat="48.879060" lon="20.743578"><ele>606</ele></trkpt>
     <trkpt lat="48.878995" lon="20.743906"><ele>606</ele></trkpt>

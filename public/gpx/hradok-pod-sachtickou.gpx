@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hrádok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrádok</name><trkseg>
-    <trkpt lat="48.833092" lon="19.220355"><ele>927</ele></trkpt>
-    <trkpt lat="48.832917" lon="19.220180"><ele>920</ele></trkpt>
-    <trkpt lat="48.832848" lon="19.219950"><ele>917</ele></trkpt>
-    <trkpt lat="48.832780" lon="19.219524"><ele>919</ele></trkpt>
-    <trkpt lat="48.832799" lon="19.219378"><ele>921</ele></trkpt>
-    <trkpt lat="48.832882" lon="19.219160"><ele>922</ele></trkpt>
+  <metadata><name>Hrádok (Baláže)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrádok (Baláže)</name><trkseg>
+    <trkpt lat="48.833066" lon="19.220482"><ele>931</ele></trkpt>
+    <trkpt lat="48.833305" lon="19.220481"><ele>925</ele></trkpt>
+    <trkpt lat="48.833071" lon="19.220372"><ele>928</ele></trkpt>
+    <trkpt lat="48.832802" lon="19.220061"><ele>916</ele></trkpt>
+    <trkpt lat="48.832525" lon="19.219844"><ele>913</ele></trkpt>
+    <trkpt lat="48.832536" lon="19.219751"><ele>913</ele></trkpt>
+    <trkpt lat="48.832669" lon="19.219450"><ele>919</ele></trkpt>
     <trkpt lat="48.833000" lon="19.219036"><ele>920</ele></trkpt>
     <trkpt lat="48.833133" lon="19.218658"><ele>916</ele></trkpt>
     <trkpt lat="48.833143" lon="19.218428"><ele>915</ele></trkpt>
@@ -21,9 +22,8 @@
     <trkpt lat="48.831687" lon="19.215389"><ele>913</ele></trkpt>
     <trkpt lat="48.831375" lon="19.214496"><ele>902</ele></trkpt>
     <trkpt lat="48.830713" lon="19.213192"><ele>897</ele></trkpt>
-    <trkpt lat="48.830364" lon="19.212733"><ele>897</ele></trkpt>
     <trkpt lat="48.830216" lon="19.212505"><ele>894</ele></trkpt>
-    <trkpt lat="48.830161" lon="19.212360"><ele>891</ele></trkpt>
+    <trkpt lat="48.830107" lon="19.212159"><ele>889</ele></trkpt>
     <trkpt lat="48.830068" lon="19.211963"><ele>886</ele></trkpt>
     <trkpt lat="48.830137" lon="19.211626"><ele>882</ele></trkpt>
     <trkpt lat="48.830410" lon="19.211021"><ele>878</ele></trkpt>
@@ -235,9 +235,8 @@
     <trkpt lat="48.830410" lon="19.211021"><ele>878</ele></trkpt>
     <trkpt lat="48.830137" lon="19.211626"><ele>882</ele></trkpt>
     <trkpt lat="48.830068" lon="19.211963"><ele>886</ele></trkpt>
-    <trkpt lat="48.830161" lon="19.212360"><ele>891</ele></trkpt>
+    <trkpt lat="48.830107" lon="19.212159"><ele>889</ele></trkpt>
     <trkpt lat="48.830216" lon="19.212505"><ele>894</ele></trkpt>
-    <trkpt lat="48.830364" lon="19.212733"><ele>897</ele></trkpt>
     <trkpt lat="48.830713" lon="19.213192"><ele>897</ele></trkpt>
     <trkpt lat="48.831375" lon="19.214496"><ele>902</ele></trkpt>
     <trkpt lat="48.831687" lon="19.215389"><ele>913</ele></trkpt>
@@ -251,11 +250,12 @@
     <trkpt lat="48.833143" lon="19.218428"><ele>915</ele></trkpt>
     <trkpt lat="48.833133" lon="19.218658"><ele>916</ele></trkpt>
     <trkpt lat="48.833000" lon="19.219036"><ele>920</ele></trkpt>
-    <trkpt lat="48.832882" lon="19.219160"><ele>922</ele></trkpt>
-    <trkpt lat="48.832799" lon="19.219378"><ele>921</ele></trkpt>
-    <trkpt lat="48.832780" lon="19.219524"><ele>919</ele></trkpt>
-    <trkpt lat="48.832848" lon="19.219950"><ele>917</ele></trkpt>
-    <trkpt lat="48.832917" lon="19.220180"><ele>920</ele></trkpt>
-    <trkpt lat="48.833092" lon="19.220355"><ele>927</ele></trkpt>
+    <trkpt lat="48.832669" lon="19.219450"><ele>919</ele></trkpt>
+    <trkpt lat="48.832536" lon="19.219751"><ele>913</ele></trkpt>
+    <trkpt lat="48.832525" lon="19.219844"><ele>913</ele></trkpt>
+    <trkpt lat="48.832802" lon="19.220061"><ele>916</ele></trkpt>
+    <trkpt lat="48.833071" lon="19.220372"><ele>928</ele></trkpt>
+    <trkpt lat="48.833305" lon="19.220481"><ele>925</ele></trkpt>
+    <trkpt lat="48.833066" lon="19.220482"><ele>931</ele></trkpt>
   </trkseg></trk>
 </gpx>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Vysoká</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vysoká</name><trkseg>
+  <metadata><name>Vysoká (Jakubany)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vysoká (Jakubany)</name><trkseg>
     <trkpt lat="49.264040" lon="20.720321"><ele>703</ele></trkpt>
     <trkpt lat="49.264029" lon="20.720185"><ele>703</ele></trkpt>
     <trkpt lat="49.263772" lon="20.719127"><ele>712</ele></trkpt>

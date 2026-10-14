@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Vŕšok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vŕšok</name><trkseg>
+  <metadata><name>Vŕšok (Kyjatice)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vŕšok (Kyjatice)</name><trkseg>
     <trkpt lat="48.533744" lon="19.991275"><ele>496</ele></trkpt>
     <trkpt lat="48.534129" lon="19.991327"><ele>505</ele></trkpt>
     <trkpt lat="48.534343" lon="19.991461"><ele>507</ele></trkpt>

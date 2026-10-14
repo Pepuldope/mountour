@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Holý vŕšok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Holý vŕšok</name><trkseg>
+  <metadata><name>Holý vŕšok (Važec)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Holý vŕšok (Važec)</name><trkseg>
     <trkpt lat="49.059089" lon="19.979485"><ele>785</ele></trkpt>
     <trkpt lat="49.059066" lon="19.979450"><ele>785</ele></trkpt>
     <trkpt lat="49.058925" lon="19.979773"><ele>787</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Pred Bažanicou</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Pred Bažanicou</name><trkseg>
+  <metadata><name>Vyhliadka pred Bažanicou</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka pred Bažanicou</name><trkseg>
     <trkpt lat="48.437237" lon="18.896568"><ele>530</ele></trkpt>
     <trkpt lat="48.437184" lon="18.897029"><ele>529</ele></trkpt>
     <trkpt lat="48.437233" lon="18.897520"><ele>528</ele></trkpt>

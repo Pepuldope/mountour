@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Drieň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Drieň</name><trkseg>
+  <metadata><name>Drieň (Vysoká)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Drieň (Vysoká)</name><trkseg>
     <trkpt lat="48.415159" lon="18.823979"><ele>674</ele></trkpt>
     <trkpt lat="48.415232" lon="18.823542"><ele>670</ele></trkpt>
     <trkpt lat="48.415256" lon="18.823182"><ele>666</ele></trkpt>

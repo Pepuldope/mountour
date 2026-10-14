@@ -2,9 +2,8 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Handliarka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Handliarka</name><trkseg>
-    <trkpt lat="48.850587" lon="19.275771"><ele>714</ele></trkpt>
-    <trkpt lat="48.850354" lon="19.276074"><ele>710</ele></trkpt>
-    <trkpt lat="48.850583" lon="19.275990"><ele>715</ele></trkpt>
+    <trkpt lat="48.850606" lon="19.275868"><ele>714</ele></trkpt>
+    <trkpt lat="48.850708" lon="19.276065"><ele>719</ele></trkpt>
     <trkpt lat="48.850841" lon="19.276162"><ele>723</ele></trkpt>
     <trkpt lat="48.850948" lon="19.276315"><ele>728</ele></trkpt>
     <trkpt lat="48.851183" lon="19.276867"><ele>740</ele></trkpt>
@@ -176,8 +175,7 @@
     <trkpt lat="48.851183" lon="19.276867"><ele>740</ele></trkpt>
     <trkpt lat="48.850948" lon="19.276315"><ele>728</ele></trkpt>
     <trkpt lat="48.850841" lon="19.276162"><ele>723</ele></trkpt>
-    <trkpt lat="48.850583" lon="19.275990"><ele>715</ele></trkpt>
-    <trkpt lat="48.850354" lon="19.276074"><ele>710</ele></trkpt>
-    <trkpt lat="48.850587" lon="19.275771"><ele>714</ele></trkpt>
+    <trkpt lat="48.850708" lon="19.276065"><ele>719</ele></trkpt>
+    <trkpt lat="48.850606" lon="19.275868"><ele>714</ele></trkpt>
   </trkseg></trk>
 </gpx>

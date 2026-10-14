@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Lazisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Lazisko</name><trkseg>
+  <metadata><name>Lazisko (U Gašov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Lazisko (U Gašov)</name><trkseg>
     <trkpt lat="49.390048" lon="18.832405"><ele>388</ele></trkpt>
     <trkpt lat="49.390014" lon="18.834448"><ele>389</ele></trkpt>
     <trkpt lat="49.390041" lon="18.834536"><ele>390</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Bukovec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Bukovec</name><trkseg>
+  <metadata><name>Bukovec (Borinka)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Bukovec (Borinka)</name><trkseg>
     <trkpt lat="48.215160" lon="17.143381"><ele>211</ele></trkpt>
     <trkpt lat="48.215309" lon="17.143076"><ele>213</ele></trkpt>
     <trkpt lat="48.215440" lon="17.142685"><ele>217</ele></trkpt>

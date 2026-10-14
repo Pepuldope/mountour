@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Lesík</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Lesík</name><trkseg>
+  <metadata><name>Lesík (Hrabovčík)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Lesík (Hrabovčík)</name><trkseg>
     <trkpt lat="49.242544" lon="21.582037"><ele>223</ele></trkpt>
     <trkpt lat="49.242597" lon="21.581550"><ele>224</ele></trkpt>
     <trkpt lat="49.242685" lon="21.581087"><ele>225</ele></trkpt>

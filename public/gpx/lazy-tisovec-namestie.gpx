@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Lazy</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Lazy</name><trkseg>
+  <metadata><name>Lazy (Krokava)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Lazy (Krokava)</name><trkseg>
     <trkpt lat="48.680852" lon="19.942529"><ele>410</ele></trkpt>
     <trkpt lat="48.680849" lon="19.942486"><ele>411</ele></trkpt>
     <trkpt lat="48.681324" lon="19.942354"><ele>410</ele></trkpt>

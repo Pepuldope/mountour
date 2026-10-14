@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Ostrá</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Ostrá</name><trkseg>
+  <metadata><name>Ostrá (Klenovec)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ostrá (Klenovec)</name><trkseg>
     <trkpt lat="48.680852" lon="19.942529"><ele>410</ele></trkpt>
     <trkpt lat="48.680849" lon="19.942486"><ele>411</ele></trkpt>
     <trkpt lat="48.680906" lon="19.942472"><ele>411</ele></trkpt>

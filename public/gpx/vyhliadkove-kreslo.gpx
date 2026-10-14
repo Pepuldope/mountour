@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>vyhliadkové kreslo</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>vyhliadkové kreslo</name><trkseg>
+  <metadata><name>Vyhliadkové kreslo</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadkové kreslo</name><trkseg>
     <trkpt lat="48.863082" lon="20.912360"><ele>611</ele></trkpt>
     <trkpt lat="48.863503" lon="20.912449"><ele>626</ele></trkpt>
     <trkpt lat="48.864116" lon="20.912331"><ele>647</ele></trkpt>

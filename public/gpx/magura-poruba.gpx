@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Magura</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Magura</name><trkseg>
+  <metadata><name>Magura (Čavoj)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Magura (Čavoj)</name><trkseg>
     <trkpt lat="48.833782" lon="18.588326"><ele>415</ele></trkpt>
     <trkpt lat="48.834056" lon="18.588305"><ele>417</ele></trkpt>
     <trkpt lat="48.834374" lon="18.588385"><ele>417</ele></trkpt>

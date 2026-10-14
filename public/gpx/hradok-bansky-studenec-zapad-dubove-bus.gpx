@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hrádok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrádok</name><trkseg>
+  <metadata><name>Hrádok (Kozelník)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrádok (Kozelník)</name><trkseg>
     <trkpt lat="48.504825" lon="19.045270"><ele>422</ele></trkpt>
     <trkpt lat="48.504828" lon="19.044926"><ele>424</ele></trkpt>
     <trkpt lat="48.504888" lon="19.044567"><ele>426</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Nad Vlachovou</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Nad Vlachovou</name><trkseg>
+  <metadata><name>Vyhliadka nad Vlachovou</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka nad Vlachovou</name><trkseg>
     <trkpt lat="48.447909" lon="18.874893"><ele>821</ele></trkpt>
     <trkpt lat="48.447432" lon="18.876184"><ele>805</ele></trkpt>
     <trkpt lat="48.447000" lon="18.876669"><ele>800</ele></trkpt>

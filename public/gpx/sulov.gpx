@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Súľov</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Súľov</name><trkseg>
+  <metadata><name>Hrad Súľov</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Súľov</name><trkseg>
     <trkpt lat="49.166351" lon="18.578638"><ele>371</ele></trkpt>
     <trkpt lat="49.166372" lon="18.578737"><ele>374</ele></trkpt>
     <trkpt lat="49.166475" lon="18.578808"><ele>378</ele></trkpt>

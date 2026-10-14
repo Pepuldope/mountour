@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Stratenec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Stratenec</name><trkseg>
+  <metadata><name>Stratenec (Ráztoka)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Stratenec (Ráztoka)</name><trkseg>
     <trkpt lat="49.290995" lon="18.280964"><ele>613</ele></trkpt>
     <trkpt lat="49.290781" lon="18.280496"><ele>612</ele></trkpt>
     <trkpt lat="49.290349" lon="18.280029"><ele>608</ele></trkpt>

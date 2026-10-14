@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Salášky</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Salášky</name><trkseg>
+  <metadata><name>Salášky (Hrachovište)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Salášky (Hrachovište)</name><trkseg>
     <trkpt lat="48.715930" lon="17.730346"><ele>216</ele></trkpt>
     <trkpt lat="48.715888" lon="17.730116"><ele>215</ele></trkpt>
     <trkpt lat="48.715792" lon="17.730094"><ele>214</ele></trkpt>

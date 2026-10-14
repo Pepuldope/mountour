@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Grúnik</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Grúnik</name><trkseg>
+  <metadata><name>Grúnik (Rovne)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Grúnik (Rovne)</name><trkseg>
     <trkpt lat="49.466939" lon="18.914527"><ele>679</ele></trkpt>
     <trkpt lat="49.466978" lon="18.912682"><ele>666</ele></trkpt>
     <trkpt lat="49.467305" lon="18.911781"><ele>671</ele></trkpt>

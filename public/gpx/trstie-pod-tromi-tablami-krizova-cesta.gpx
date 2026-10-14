@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Tŕstie</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tŕstie</name><trkseg>
+  <metadata><name>Tŕstie (Valaškovce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Tŕstie (Valaškovce)</name><trkseg>
     <trkpt lat="48.854498" lon="22.180373"><ele>328</ele></trkpt>
     <trkpt lat="48.857837" lon="22.177633"><ele>364</ele></trkpt>
     <trkpt lat="48.858377" lon="22.177135"><ele>367</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hrádok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrádok</name><trkseg>
+  <metadata><name>Hrádok (Vlkovce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrádok (Vlkovce)</name><trkseg>
     <trkpt lat="49.001483" lon="20.406757"><ele>599</ele></trkpt>
     <trkpt lat="49.001666" lon="20.406600"><ele>600</ele></trkpt>
     <trkpt lat="49.001719" lon="20.406488"><ele>600</ele></trkpt>

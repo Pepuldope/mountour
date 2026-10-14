@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Turecká</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Turecká</name><trkseg>
+  <metadata><name>Turecká (Betliar)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Turecká (Betliar)</name><trkseg>
     <trkpt lat="48.665273" lon="20.483983"><ele>526</ele></trkpt>
     <trkpt lat="48.665195" lon="20.483655"><ele>529</ele></trkpt>
     <trkpt lat="48.665275" lon="20.483290"><ele>532</ele></trkpt>

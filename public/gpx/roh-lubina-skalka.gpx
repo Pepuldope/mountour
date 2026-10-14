@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Roh</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Roh</name><trkseg>
+  <metadata><name>Roh (U Bučkov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Roh (U Bučkov)</name><trkseg>
     <trkpt lat="48.829871" lon="17.726010"><ele>368</ele></trkpt>
     <trkpt lat="48.829369" lon="17.726395"><ele>366</ele></trkpt>
     <trkpt lat="48.827263" lon="17.728250"><ele>355</ele></trkpt>

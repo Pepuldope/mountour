@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Vysoký vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vysoký vrch</name><trkseg>
+  <metadata><name>Vysoký vrch (Kašov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vysoký vrch (Kašov)</name><trkseg>
     <trkpt lat="48.425844" lon="21.743333"><ele>226</ele></trkpt>
     <trkpt lat="48.426060" lon="21.743369"><ele>222</ele></trkpt>
     <trkpt lat="48.426143" lon="21.743331"><ele>221</ele></trkpt>

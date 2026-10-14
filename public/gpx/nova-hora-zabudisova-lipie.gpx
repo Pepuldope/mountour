@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Nová hora</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Nová hora</name><trkseg>
+  <metadata><name>Nová hora (Nová Bošáca)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Nová hora (Nová Bošáca)</name><trkseg>
     <trkpt lat="48.869703" lon="17.833601"><ele>465</ele></trkpt>
     <trkpt lat="48.869964" lon="17.832960"><ele>466</ele></trkpt>
     <trkpt lat="48.870217" lon="17.832154"><ele>462</ele></trkpt>

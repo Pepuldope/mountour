@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Biela skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Biela skala</name><trkseg>
+  <metadata><name>Biela skala (Trenčianske Teplice)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Biela skala (Trenčianske Teplice)</name><trkseg>
     <trkpt lat="48.936769" lon="18.162409"><ele>256</ele></trkpt>
     <trkpt lat="48.936991" lon="18.162804"><ele>256</ele></trkpt>
     <trkpt lat="48.936762" lon="18.163531"><ele>257</ele></trkpt>

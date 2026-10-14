@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Zámčisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Zámčisko</name><trkseg>
+  <metadata><name>Zámčisko (Kvetnica)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Zámčisko (Kvetnica)</name><trkseg>
     <trkpt lat="49.017094" lon="20.285335"><ele>751</ele></trkpt>
     <trkpt lat="49.016713" lon="20.286625"><ele>758</ele></trkpt>
     <trkpt lat="49.016583" lon="20.286755"><ele>756</ele></trkpt>

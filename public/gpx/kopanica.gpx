@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kopanica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kopanica</name><trkseg>
+  <metadata><name>Kopanica (Martinček)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kopanica (Martinček)</name><trkseg>
     <trkpt lat="49.092065" lon="19.310148"><ele>493</ele></trkpt>
     <trkpt lat="49.092073" lon="19.310258"><ele>493</ele></trkpt>
     <trkpt lat="49.092219" lon="19.310454"><ele>493</ele></trkpt>

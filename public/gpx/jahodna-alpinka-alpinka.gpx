@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Jahodná</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Jahodná</name><trkseg>
+  <metadata><name>Chata Jahodná</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Chata Jahodná</name><trkseg>
     <trkpt lat="48.763767" lon="21.177266"><ele>326</ele></trkpt>
     <trkpt lat="48.764060" lon="21.177035"><ele>325</ele></trkpt>
     <trkpt lat="48.764211" lon="21.176977"><ele>326</ele></trkpt>

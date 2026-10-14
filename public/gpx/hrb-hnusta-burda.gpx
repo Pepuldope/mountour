@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hrb</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrb</name><trkseg>
+  <metadata><name>Hrb (Polom)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrb (Polom)</name><trkseg>
     <trkpt lat="48.587559" lon="20.045905"><ele>358</ele></trkpt>
     <trkpt lat="48.587871" lon="20.045821"><ele>357</ele></trkpt>
     <trkpt lat="48.588071" lon="20.045718"><ele>358</ele></trkpt>

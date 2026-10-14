@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Čičva</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Čičva</name><trkseg>
+  <metadata><name>Hrad Čičva</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Čičva</name><trkseg>
     <trkpt lat="48.883572" lon="21.697608"><ele>132</ele></trkpt>
     <trkpt lat="48.883725" lon="21.697760"><ele>136</ele></trkpt>
     <trkpt lat="48.883922" lon="21.697765"><ele>143</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Klin</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Klin</name><trkseg>
+  <metadata><name>Klin (Vyšné Repaše)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Klin (Vyšné Repaše)</name><trkseg>
     <trkpt lat="49.093808" lon="20.679962"><ele>802</ele></trkpt>
     <trkpt lat="49.093728" lon="20.680090"><ele>802</ele></trkpt>
     <trkpt lat="49.093679" lon="20.679696"><ele>800</ele></trkpt>

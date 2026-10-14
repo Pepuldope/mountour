@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Brezina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Brezina</name><trkseg>
+  <metadata><name>Brezina (Černochov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Brezina (Černochov)</name><trkseg>
     <trkpt lat="48.506612" lon="21.655575"><ele>200</ele></trkpt>
     <trkpt lat="48.506613" lon="21.655952"><ele>204</ele></trkpt>
     <trkpt lat="48.506700" lon="21.656175"><ele>206</ele></trkpt>

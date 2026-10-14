@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kečka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kečka</name><trkseg>
+  <metadata><name>Kečka (Konská)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kečka (Konská)</name><trkseg>
     <trkpt lat="49.134738" lon="19.742348"><ele>912</ele></trkpt>
     <trkpt lat="49.134770" lon="19.742396"><ele>914</ele></trkpt>
     <trkpt lat="49.134895" lon="19.742312"><ele>919</ele></trkpt>

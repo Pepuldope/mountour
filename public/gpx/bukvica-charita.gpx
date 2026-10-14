@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Bukvica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Bukvica</name><trkseg>
+  <metadata><name>Chata Bukvica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Chata Bukvica</name><trkseg>
     <trkpt lat="49.073888" lon="20.855098"><ele>564</ele></trkpt>
     <trkpt lat="49.073584" lon="20.855512"><ele>567</ele></trkpt>
     <trkpt lat="49.073387" lon="20.855944"><ele>569</ele></trkpt>

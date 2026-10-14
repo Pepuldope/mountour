@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Žiarske pleso</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Žiarske pleso</name><trkseg>
+  <metadata><name>Žiarske pleso (Konská)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Žiarske pleso (Konská)</name><trkseg>
     <trkpt lat="49.144976" lon="19.700489"><ele>899</ele></trkpt>
     <trkpt lat="49.145712" lon="19.701295"><ele>907</ele></trkpt>
     <trkpt lat="49.146270" lon="19.702057"><ele>915</ele></trkpt>

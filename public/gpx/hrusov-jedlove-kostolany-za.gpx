@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hrušov</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrušov</name><trkseg>
+  <metadata><name>Hrad Hrušov</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Hrušov</name><trkseg>
     <trkpt lat="48.468130" lon="18.488979"><ele>411</ele></trkpt>
     <trkpt lat="48.468104" lon="18.488545"><ele>413</ele></trkpt>
     <trkpt lat="48.468116" lon="18.487883"><ele>412</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Parenica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Parenica</name><trkseg>
+  <metadata><name>Jaskyňa Parenica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Jaskyňa Parenica</name><trkseg>
     <trkpt lat="48.529568" lon="18.852681"><ele>555</ele></trkpt>
     <trkpt lat="48.529509" lon="18.852643"><ele>555</ele></trkpt>
     <trkpt lat="48.529492" lon="18.852705"><ele>554</ele></trkpt>

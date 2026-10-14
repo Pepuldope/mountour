@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Súča</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Súča</name><trkseg>
+  <metadata><name>Hrad Súča</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Súča</name><trkseg>
     <trkpt lat="48.903044" lon="18.030800"><ele>213</ele></trkpt>
     <trkpt lat="48.903097" lon="18.030792"><ele>212</ele></trkpt>
     <trkpt lat="48.903190" lon="18.030641"><ele>212</ele></trkpt>

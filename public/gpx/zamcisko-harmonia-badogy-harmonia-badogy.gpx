@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Zámčisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Zámčisko</name><trkseg>
+  <metadata><name>Zámčisko (Modra)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Zámčisko (Modra)</name><trkseg>
     <trkpt lat="48.357348" lon="17.303320"><ele>299</ele></trkpt>
     <trkpt lat="48.357460" lon="17.302790"><ele>307</ele></trkpt>
     <trkpt lat="48.358194" lon="17.300301"><ele>321</ele></trkpt>

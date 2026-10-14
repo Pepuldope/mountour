@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kečka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kečka</name><trkseg>
+  <metadata><name>Kečka (Donovaly)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kečka (Donovaly)</name><trkseg>
     <trkpt lat="48.859586" lon="19.230767"><ele>1097</ele></trkpt>
     <trkpt lat="48.859353" lon="19.231019"><ele>1101</ele></trkpt>
     <trkpt lat="48.859035" lon="19.231526"><ele>1106</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Ostrý vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Ostrý vrch</name><trkseg>
+  <metadata><name>Ostrý vrch (Čierna Lehota)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ostrý vrch (Čierna Lehota)</name><trkseg>
     <trkpt lat="48.669697" lon="20.225628"><ele>344</ele></trkpt>
     <trkpt lat="48.670317" lon="20.225408"><ele>346</ele></trkpt>
     <trkpt lat="48.670631" lon="20.225029"><ele>344</ele></trkpt>

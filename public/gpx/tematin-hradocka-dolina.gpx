@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Tematín</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tematín</name><trkseg>
+  <metadata><name>Hrad Tematín</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Tematín</name><trkseg>
     <trkpt lat="48.694101" lon="17.936953"><ele>255</ele></trkpt>
     <trkpt lat="48.693790" lon="17.937135"><ele>250</ele></trkpt>
     <trkpt lat="48.693570" lon="17.937077"><ele>252</ele></trkpt>

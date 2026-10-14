@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kečka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kečka</name><trkseg>
+  <metadata><name>Kečka (Kokava nad Rimavicou)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kečka (Kokava nad Rimavicou)</name><trkseg>
     <trkpt lat="48.603302" lon="19.805413"><ele>402</ele></trkpt>
     <trkpt lat="48.603199" lon="19.805405"><ele>401</ele></trkpt>
     <trkpt lat="48.603049" lon="19.805185"><ele>402</ele></trkpt>

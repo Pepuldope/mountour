@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Skalka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Skalka</name><trkseg>
+  <metadata><name>Skalka (Králiky)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Skalka (Králiky)</name><trkseg>
     <trkpt lat="48.757356" lon="18.925619"><ele>696</ele></trkpt>
     <trkpt lat="48.757279" lon="18.925879"><ele>697</ele></trkpt>
     <trkpt lat="48.756725" lon="18.927285"><ele>698</ele></trkpt>

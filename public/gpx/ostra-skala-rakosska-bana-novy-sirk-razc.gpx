@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Ostrá skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Ostrá skala</name><trkseg>
+  <metadata><name>Ostrá skala (Rákoš)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ostrá skala (Rákoš)</name><trkseg>
     <trkpt lat="48.621270" lon="20.099370"><ele>340</ele></trkpt>
     <trkpt lat="48.620744" lon="20.099569"><ele>341</ele></trkpt>
     <trkpt lat="48.620757" lon="20.099929"><ele>347</ele></trkpt>

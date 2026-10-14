@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Bodoň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Bodoň</name><trkseg>
+  <metadata><name>Hrad Bodoň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Bodoň</name><trkseg>
     <trkpt lat="48.931688" lon="21.344567"><ele>461</ele></trkpt>
     <trkpt lat="48.931515" lon="21.344643"><ele>462</ele></trkpt>
     <trkpt lat="48.931272" lon="21.345180"><ele>468</ele></trkpt>

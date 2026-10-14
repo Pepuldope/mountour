@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kalvária</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kalvária</name><trkseg>
+  <metadata><name>Vyhliadka Kalvária (Skalica)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka Kalvária (Skalica)</name><trkseg>
     <trkpt lat="48.837514" lon="17.130895"><ele>165</ele></trkpt>
     <trkpt lat="48.837657" lon="17.131275"><ele>165</ele></trkpt>
     <trkpt lat="48.837713" lon="17.131584"><ele>165</ele></trkpt>

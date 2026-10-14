@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kýčera</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kýčera</name><trkseg>
+  <metadata><name>Kýčera (Dobrá Voda)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kýčera (Dobrá Voda)</name><trkseg>
     <trkpt lat="48.626924" lon="17.486768"><ele>233</ele></trkpt>
     <trkpt lat="48.626880" lon="17.486567"><ele>233</ele></trkpt>
     <trkpt lat="48.626563" lon="17.486594"><ele>234</ele></trkpt>

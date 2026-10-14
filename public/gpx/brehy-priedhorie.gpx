@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Brehy</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Brehy</name><trkseg>
+  <metadata><name>Brehy (Podmalenica)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Brehy (Podmalenica)</name><trkseg>
     <trkpt lat="48.998365" lon="18.480927"><ele>439</ele></trkpt>
     <trkpt lat="48.998539" lon="18.480891"><ele>437</ele></trkpt>
     <trkpt lat="48.999562" lon="18.479409"><ele>442</ele></trkpt>

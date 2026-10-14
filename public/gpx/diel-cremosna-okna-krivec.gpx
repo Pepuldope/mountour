@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Diel</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Diel</name><trkseg>
+  <metadata><name>Diel (Ruská Bystrá)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Diel (Ruská Bystrá)</name><trkseg>
     <trkpt lat="48.906842" lon="22.203776"><ele>555</ele></trkpt>
     <trkpt lat="48.906889" lon="22.203639"><ele>551</ele></trkpt>
     <trkpt lat="48.907041" lon="22.203761"><ele>555</ele></trkpt>

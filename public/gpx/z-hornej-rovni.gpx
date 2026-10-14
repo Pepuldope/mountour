@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Z Hornej Rovni</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Z Hornej Rovni</name><trkseg>
+  <metadata><name>Vyhliadka z Hornej Rovni</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka z Hornej Rovni</name><trkseg>
     <trkpt lat="48.445126" lon="18.863276"><ele>819</ele></trkpt>
     <trkpt lat="48.445154" lon="18.863836"><ele>819</ele></trkpt>
     <trkpt lat="48.445103" lon="18.864735"><ele>817</ele></trkpt>

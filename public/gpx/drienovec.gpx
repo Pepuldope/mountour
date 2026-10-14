@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Drieňovec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Drieňovec</name><trkseg>
+  <metadata><name>Drieňovec (Silická Jablonica)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Drieňovec (Silická Jablonica)</name><trkseg>
     <trkpt lat="48.553526" lon="20.521436"><ele>518</ele></trkpt>
     <trkpt lat="48.553213" lon="20.522285"><ele>517</ele></trkpt>
     <trkpt lat="48.553013" lon="20.522750"><ele>516</ele></trkpt>

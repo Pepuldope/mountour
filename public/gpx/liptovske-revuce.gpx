@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Liptovské Revúce</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Liptovské Revúce</name><trkseg>
+  <metadata><name>Vyhliadka Liptovské Revúce</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka Liptovské Revúce</name><trkseg>
     <trkpt lat="48.932768" lon="19.209756"><ele>654</ele></trkpt>
     <trkpt lat="48.932842" lon="19.209710"><ele>654</ele></trkpt>
     <trkpt lat="48.932797" lon="19.209259"><ele>655</ele></trkpt>

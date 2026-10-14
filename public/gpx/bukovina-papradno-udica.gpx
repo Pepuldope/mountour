@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Bukovina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Bukovina</name><trkseg>
+  <metadata><name>Bukovina (Brvnište)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Bukovina (Brvnište)</name><trkseg>
     <trkpt lat="49.166156" lon="18.402078"><ele>288</ele></trkpt>
     <trkpt lat="49.166173" lon="18.402593"><ele>289</ele></trkpt>
     <trkpt lat="49.166159" lon="18.402894"><ele>290</ele></trkpt>

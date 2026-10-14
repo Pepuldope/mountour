@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Zabaštie</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Zabaštie</name><trkseg>
+  <metadata><name>Hrad Zabaštie</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Zabaštie</name><trkseg>
     <trkpt lat="48.578616" lon="18.869802"><ele>251</ele></trkpt>
     <trkpt lat="48.579374" lon="18.871196"><ele>250</ele></trkpt>
     <trkpt lat="48.579577" lon="18.871448"><ele>254</ele></trkpt>

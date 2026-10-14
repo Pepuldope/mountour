@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hrašovík</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrašovík</name><trkseg>
+  <metadata><name>Hrašovík (Livov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrašovík (Livov)</name><trkseg>
     <trkpt lat="49.199260" lon="20.985592"><ele>575</ele></trkpt>
     <trkpt lat="49.201914" lon="20.987138"><ele>604</ele></trkpt>
     <trkpt lat="49.204259" lon="20.988902"><ele>607</ele></trkpt>

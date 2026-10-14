@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kríže</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kríže</name><trkseg>
+  <metadata><name>Kríže (Osádka)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kríže (Osádka)</name><trkseg>
     <trkpt lat="49.206509" lon="19.363245"><ele>751</ele></trkpt>
     <trkpt lat="49.206008" lon="19.364691"><ele>741</ele></trkpt>
     <trkpt lat="49.205468" lon="19.365887"><ele>733</ele></trkpt>

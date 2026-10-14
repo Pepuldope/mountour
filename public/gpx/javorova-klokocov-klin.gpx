@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Javorová</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Javorová</name><trkseg>
+  <metadata><name>Javorová (Klokočov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Javorová (Klokočov)</name><trkseg>
     <trkpt lat="49.408167" lon="18.627761"><ele>471</ele></trkpt>
     <trkpt lat="49.408548" lon="18.627907"><ele>477</ele></trkpt>
     <trkpt lat="49.409073" lon="18.627779"><ele>481</ele></trkpt>
@@ -122,7 +122,9 @@
     <trkpt lat="49.446951" lon="18.622009"><ele>733</ele></trkpt>
     <trkpt lat="49.448383" lon="18.623092"><ele>730</ele></trkpt>
     <trkpt lat="49.448462" lon="18.623101"><ele>730</ele></trkpt>
+    <trkpt lat="49.448760" lon="18.622979"><ele>726</ele></trkpt>
     <trkpt lat="49.448912" lon="18.622951"><ele>725</ele></trkpt>
+    <trkpt lat="49.448974" lon="18.622982"><ele>726</ele></trkpt>
     <trkpt lat="49.449036" lon="18.623090"><ele>727</ele></trkpt>
     <trkpt lat="49.449107" lon="18.623340"><ele>728</ele></trkpt>
     <trkpt lat="49.449241" lon="18.623535"><ele>729</ele></trkpt>
@@ -281,7 +283,9 @@
     <trkpt lat="49.449241" lon="18.623535"><ele>729</ele></trkpt>
     <trkpt lat="49.449107" lon="18.623340"><ele>728</ele></trkpt>
     <trkpt lat="49.449036" lon="18.623090"><ele>727</ele></trkpt>
+    <trkpt lat="49.448974" lon="18.622982"><ele>726</ele></trkpt>
     <trkpt lat="49.448912" lon="18.622951"><ele>725</ele></trkpt>
+    <trkpt lat="49.448760" lon="18.622979"><ele>726</ele></trkpt>
     <trkpt lat="49.448462" lon="18.623101"><ele>730</ele></trkpt>
     <trkpt lat="49.448383" lon="18.623092"><ele>730</ele></trkpt>
     <trkpt lat="49.446951" lon="18.622009"><ele>733</ele></trkpt>

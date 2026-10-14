@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Repište</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Repište</name><trkseg>
+  <metadata><name>Repište (Rybie)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Repište (Rybie)</name><trkseg>
     <trkpt lat="48.858243" lon="19.150726"><ele>587</ele></trkpt>
     <trkpt lat="48.858402" lon="19.150718"><ele>587</ele></trkpt>
     <trkpt lat="48.858918" lon="19.151137"><ele>596</ele></trkpt>

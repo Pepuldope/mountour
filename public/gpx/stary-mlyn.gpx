@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Starý mlyn</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Starý mlyn</name><trkseg>
+  <metadata><name>Vodopád Starý mlyn</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vodopád Starý mlyn</name><trkseg>
     <trkpt lat="49.103121" lon="20.850655"><ele>514</ele></trkpt>
     <trkpt lat="49.102326" lon="20.852472"><ele>518</ele></trkpt>
     <trkpt lat="49.101661" lon="20.854806"><ele>524</ele></trkpt>

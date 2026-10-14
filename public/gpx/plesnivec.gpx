@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Plesnivec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Plesnivec</name><trkseg>
+  <metadata><name>Chata Plesnivec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Chata Plesnivec</name><trkseg>
     <trkpt lat="49.224900" lon="20.323947"><ele>766</ele></trkpt>
     <trkpt lat="49.224436" lon="20.322626"><ele>765</ele></trkpt>
     <trkpt lat="49.224410" lon="20.322349"><ele>765</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Osly</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Osly</name><trkseg>
+  <metadata><name>Osly (Kremná)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Osly (Kremná)</name><trkseg>
     <trkpt lat="49.414435" lon="20.728818"><ele>401</ele></trkpt>
     <trkpt lat="49.414384" lon="20.729215"><ele>400</ele></trkpt>
     <trkpt lat="49.414254" lon="20.729613"><ele>406</ele></trkpt>
