@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Havrania skala (Nová Baňa)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Havrania skala (Nová Baňa)</name><trkseg>
+  <metadata><name>Havrania skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Havrania skala</name><trkseg>
     <trkpt lat="48.431833" lon="18.647608"><ele>350</ele></trkpt>
     <trkpt lat="48.431717" lon="18.647716"><ele>351</ele></trkpt>
     <trkpt lat="48.431434" lon="18.648107"><ele>351</ele></trkpt>

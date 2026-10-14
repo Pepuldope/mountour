@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Magurka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Magurka</name><trkseg>
+  <metadata><name>Magurka (Ždiar)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Magurka (Ždiar)</name><trkseg>
     <trkpt lat="49.338665" lon="20.293169"><ele>657</ele></trkpt>
     <trkpt lat="49.338279" lon="20.292626"><ele>655</ele></trkpt>
     <trkpt lat="49.337933" lon="20.292236"><ele>653</ele></trkpt>

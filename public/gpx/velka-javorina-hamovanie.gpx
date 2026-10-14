@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Veľká Javorina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Veľká Javorina</name><trkseg>
+  <metadata><name>Veľká Javorina (Kopcové)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Veľká Javorina (Kopcové)</name><trkseg>
     <trkpt lat="48.824732" lon="17.609351"><ele>589</ele></trkpt>
     <trkpt lat="48.825947" lon="17.610892"><ele>606</ele></trkpt>
     <trkpt lat="48.826051" lon="17.610982"><ele>607</ele></trkpt>

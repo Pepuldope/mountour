@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Magura (Hubová)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Magura (Hubová)</name><trkseg>
+  <metadata><name>Magura</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Magura</name><trkseg>
     <trkpt lat="48.999028" lon="19.205773"><ele>1350</ele></trkpt>
     <trkpt lat="48.999561" lon="19.207169"><ele>1372</ele></trkpt>
     <trkpt lat="48.999551" lon="19.207361"><ele>1372</ele></trkpt>

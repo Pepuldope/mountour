@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kľak</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kľak</name><trkseg>
+  <metadata><name>Kľak (Fačkov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kľak (Fačkov)</name><trkseg>
     <trkpt lat="48.962550" lon="18.620105"><ele>835</ele></trkpt>
     <trkpt lat="48.962660" lon="18.620422"><ele>840</ele></trkpt>
     <trkpt lat="48.962829" lon="18.621618"><ele>853</ele></trkpt>

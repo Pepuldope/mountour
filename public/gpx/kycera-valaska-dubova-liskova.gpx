@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kýčera (Valaská Dubová)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kýčera (Valaská Dubová)</name><trkseg>
+  <metadata><name>Kýčera</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kýčera</name><trkseg>
     <trkpt lat="49.087685" lon="19.353939"><ele>488</ele></trkpt>
     <trkpt lat="49.088045" lon="19.353865"><ele>488</ele></trkpt>
     <trkpt lat="49.088291" lon="19.353733"><ele>488</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Ostrá (Huty)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Ostrá (Huty)</name><trkseg>
+  <metadata><name>Ostrá</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ostrá</name><trkseg>
     <trkpt lat="49.161043" lon="19.640930"><ele>790</ele></trkpt>
     <trkpt lat="49.161017" lon="19.640813"><ele>791</ele></trkpt>
     <trkpt lat="49.161132" lon="19.640582"><ele>797</ele></trkpt>

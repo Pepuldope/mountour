@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Veľká Javorina (Kríže)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Veľká Javorina (Kríže)</name><trkseg>
+  <metadata><name>Veľká Javorina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Veľká Javorina</name><trkseg>
     <trkpt lat="49.194116" lon="21.089948"><ele>542</ele></trkpt>
     <trkpt lat="49.194240" lon="21.090412"><ele>536</ele></trkpt>
     <trkpt lat="49.194266" lon="21.090632"><ele>537</ele></trkpt>

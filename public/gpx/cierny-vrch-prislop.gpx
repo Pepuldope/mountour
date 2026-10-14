@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Čierny vrch (Oravský Podzámok)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Čierny vrch (Oravský Podzámok)</name><trkseg>
+  <metadata><name>Čierny vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Čierny vrch</name><trkseg>
     <trkpt lat="49.303397" lon="19.353850"><ele>809</ele></trkpt>
     <trkpt lat="49.303482" lon="19.353651"><ele>810</ele></trkpt>
     <trkpt lat="49.303481" lon="19.353286"><ele>811</ele></trkpt>

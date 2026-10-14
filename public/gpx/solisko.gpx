@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Solisko (Dlhá nad Kysucou)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Solisko (Dlhá nad Kysucou)</name><trkseg>
+  <metadata><name>Solisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Solisko</name><trkseg>
     <trkpt lat="49.403980" lon="18.628041"><ele>471</ele></trkpt>
     <trkpt lat="49.403991" lon="18.627743"><ele>473</ele></trkpt>
     <trkpt lat="49.403923" lon="18.627559"><ele>474</ele></trkpt>
