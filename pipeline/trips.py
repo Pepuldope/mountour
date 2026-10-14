@@ -21,6 +21,7 @@ TOWN_GOALS = {"hrad", "vrchol", "jaskyna", "vodopad"}  # worth a walk even when 
 CITY_CORE_M = 2500  # around the centre of a big city (Bratislava, Košice) every goal is a city sight, not a trip
 CITY_CORE_POP = 200_000
 FAMOUS = 6  # Wikipedia languages with an article: a place known well beyond its valley
+VERY_FAMOUS = 12  # every Tatra peak has a few (Polish, German); this many is a household name
 
 
 @dataclass
@@ -183,7 +184,7 @@ class TripBuilder:
     def candidates(self):
         out = []
         for kind, f in self.osm.destinations:
-            self._note(f.name, f"found in OSM as {kind} ({f.osm})")
+            self._note(f.name, f"found in OSM as {kind} ({f.osm}, Wikipedia in {self.fame(f)} languages)")
             if f.name.strip().lower() in GENERIC_NAMES or names.is_junk(f.name):
                 continue
             if names.is_foreign(f.name, f.tags):
@@ -224,12 +225,12 @@ class TripBuilder:
                         and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < r):
                     a.score = b.score + 0.01
         # A hut by a tarn is the goal people name (Téryho chata, Zbojnícka chata), unless the hut
-        # is named after the tarn (Chata pri Zelenom plese).
+        # is named after the tarn (Chata pri Zelenom plese) or the tarn is better known (Skalnaté pleso).
         for a in cands:
             if a.kind != "chata" or "ples" in a.feature.name.lower():
                 continue
             for b in cands:
-                if (b.kind == "pleso" and b.score >= a.score
+                if (b.kind == "pleso" and b.score >= a.score and self.fame(a.feature) >= self.fame(b.feature)
                         and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < self.t["dedupe_m"]):
                     a.score = b.score + 0.01
         cands.sort(key=lambda c: -c.score)
@@ -301,7 +302,7 @@ class TripBuilder:
                     self._reject("start already has enough trips")
                     continue
                 # A peak with its own Wikipedia article is a goal of its own, even one ridge away (Ostrý Roháč).
-                if self.fame(c.feature) < FAMOUS and any(
+                if self.fame(c.feature) < VERY_FAMOUS and any(
                         abs(x["distance_m"] - trip["distance_m"]) < 0.1 * trip["distance_m"]
                         and haversine(x["destination"]["location"]["lat"], x["destination"]["location"]["lon"],
                                       c.feature.lat, c.feature.lon) < self.t.get("same_walk_m", 1500) for x in same_start):
