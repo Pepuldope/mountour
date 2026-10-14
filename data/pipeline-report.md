@@ -1,6 +1,6 @@
 # Trip pipeline report
 
-Run: 2026-10-14T18:30:21+00:00 · OSM data: 2026-10-13T20:21:31Z
+Run: 2026-10-14T18:54:14+00:00 · OSM data: 2026-10-13T20:21:31Z
 
 **4985 trips**
 
@@ -598,6 +598,54 @@ Merged (left out → kept, metres apart):
 - Jasova skala (jasova-skala-juskova-vola) → Jasova skala (jasova-skala), 991 m
 
 Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skała, Białowodzka Turniczka, Busa-tető, Cegiełka, Chyżów Wierszek, Csunya-fő, Cubryńska Kopka, Cubryńska Strażnica, Cubryński Słup, Cubryński Zwornik, Cubryński Ząb, Czerteż, Czoło, Czuba nad Uboczą, Dymiąca Woda, Długi Gronik, Faltynowe Kąty, Garb Średni/Stredný hrb, Góra Pięciu Kopców, Góra Pstrzyńska, Gąsienicowa Turnia, Głazista Czubka, Hawrań, Homorú-tető, Hucałki, Ipolyvece, madármegfigyelő kilátó, Jarząbczy Kopieniec, Jałowa Kiczera, Jałowcowy Garb, Korom-tetö, Koryciańska Czuba, Kotłowa Czubka, Krzywań, Kubuś, Kudłowa Hora, Lófej-tető, Magasleselkedő, Marszałkowa, Mała Furkaska, Mała Sucha Czuba Kondracka, Małe Jasło, Małojurski Groń, Maślanka, Mięguszowiecka Baszta, Mędralowa Zachodnia, Nad Księży Gąszcz, Nagy-kő, Niżne Rysy, Skrajna Turnia, Niżne Rysy, Zadnia Turnia, Niżni Wodogrzmot, Ortás (mérőtorony), Parzątczak, Peroła, Piszkor-fő, Pośredni Wodogrzmot, Pośrednia Sucha Czuba Kondracka, Przełęcz nad Łapszanką, Pydychów Groń, Rożki, Répás-tető, Schron Górski Chata Pod Skalanką, Schronisko PTTK Orlica, Schronisko PTTK na Wielkiej Raczy, Siwiańskie Turnie, Sołowy Wierch, Syhła, Szélmalom-tető, Tyrałowa Czuba, Utas-fő, Ułutyn, Vösdobor (mérőtorony), Widok na Tatry, Widok pod Bugajem, Wielki Groń, Wierch nad Łazem, Wieża widokowa na Eliaszówce, Wieża widokowa na Przełęczy nad Roztokami Górnymi, Witowski Przysłop, Wodospad Pod Mynaszką, Wodospad Pod Upłazem, Wysokie Bereście Południowe, Wyżni Wodogrzmot, Zarzędowe Smreki, Załazie, amatőrcsillagász észlelőhely (7,0 mn sötét-égbolt), wieża widokowa na Wielkiej Raczy, Łasznawa, Łysa Skałka, Łysina, Żabi Kapucyn
+
+## Well-known places (config `watch`)
+
+| Place | What happened |
+|---|---|
+| Rysy | found in OSM as vrchol (node/1862536196); found in OSM as vrchol (node/4366169405); outside Slovakia or every region; found in OSM as vrchol (node/11036198697); trip rysy; left out: within 400 m of the trip to Rysy |
+| Kriváň | found in OSM as vrchol (node/260278694); found in OSM as vrchol (node/3441186130); found in OSM as vrchol (node/5586684005); found in OSM as vrchol (node/5657435466); no marked trail within 150 m; trip krivan; trip krivan-ludrova; left out: within 400 m of the trip to Brankov |
+| Slavkovský štít | found in OSM as vrchol (node/380721955); left out: too long |
+| Téryho chata | found in OSM as chata (way/33859958); left out: within 400 m of the trip to Malé Spišské pleso |
+| Zbojnícka chata | found in OSM as chata (way/64888292); left out: almost the same walk as another trip |
+| Chata pod Rysmi | found in OSM as chata (way/360934553); trip chata-pod-rysmi |
+| Skalnaté pleso | found in OSM as pleso (way/65398797); trip skalnate-pleso |
+| Popradské pleso | found in OSM as pleso (way/33458143); trip popradske-pleso |
+| Štrbské pleso | found in OSM as pleso (way/4816134); trip strbske-pleso |
+| Kmeťov vodopád | found in OSM as vodopad (node/1450389768); no marked trail within 150 m; found in OSM as vyhliadka (node/7817066021) |
+| Obrovský vodopád | found in OSM as vodopad (node/796255738); found in OSM as vodopad (node/2774813852); trip obrovsky-vodopad-stary-smokovec-pozemna; trip obrovsky-vodopad |
+| Ostrý Roháč | found in OSM as vrchol (node/1674619681); left out: almost the same walk as another trip |
+| Baranec | found in OSM as vrchol (node/495953908); found in OSM as vrchol (node/1428244405); no marked trail within 150 m; found in OSM as vrchol (node/5657428154); found in OSM as vrchol (node/9802460875); found in OSM as vyhliadka (node/10934343738); trip baranec; left out: within 400 m of the trip to Baranec |
+| Chopok | found in OSM as vrchol (node/245954616); found in OSM as vyhliadka (node/5074271534); trip chopok; left out: within 400 m of the trip to Chopok |
+| Ďumbier | found in OSM as vrchol (node/26862807); trip dumbier |
+| Kráľova hoľa | found in OSM as vrchol (node/26863430); trip kralova-hola |
+| Veľký Rozsutec | found in OSM as vrchol (node/519189982); trip velky-rozsutec |
+| Veľký Kriváň | found in OSM as vrchol (node/1329906966); trip velky-krivan |
+| Stoh | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
+| Veľký Choč | found in OSM as vrchol (node/428528977); trip velky-choc |
+| Kľak | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
+| Klak | found in OSM as vrchol (node/1489746476); found in OSM as vrchol (node/1803579837); found in OSM as vrchol (node/2610643574); no marked trail within 150 m; found in OSM as vrchol (node/5657427844); found in OSM as vyhliadka (node/11905424072); trip klak-nad-nolcovom-pristresok; left out: within 400 m of the trip to Kľak; trip klak |
+| Sitno | found in OSM as vrchol (node/26864658); found in OSM as vyhliadka (node/7902483060); found in OSM as hrad (way/367113080); trip sitno; trip sitno-pocuvadlianske-jazero; left out: within 400 m of the trip to Sitno |
+| Kamzík | found in OSM as vrchol (node/249660891); left out: within 400 m of the trip to Kamzík |
+| Devínska Kobyla | found in OSM as vyhliadka (node/259248528); found in OSM as vrchol (node/715814546); left out: within 400 m of the trip to Devínska Kobyla z Devína |
+| Zobor | found in OSM as vrchol (node/409758850); found in OSM as vyhliadka (node/13120659489); found in OSM as vyhliadka (node/13120659497); trip zobor; left out: within 400 m of the trip to Zobor |
+| Vršatec | found in OSM as hrad (way/905860073); trip vrsatec |
+| Strečno | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
+| Spišský hrad | found in OSM as hrad (way/219698596); no marked trail within 150 m |
+| Oravský hrad | found in OSM as hrad (way/881997852); trip oravsky-hrad |
+| Muráň | found in OSM as vrchol (node/380648416); no marked trail within 150 m; found in OSM as vrchol (node/2659360927); found in OSM as vrchol (node/5449347500); found in OSM as vrchol (node/5657427811); found in OSM as vrchol (node/5657428103); found in OSM as vrchol (node/5657428730); found in OSM as vrchol (node/5657432259); found in OSM as vyhliadka (node/14133773487); trip muran |
+| Tomášovský výhľad | found in OSM as vyhliadka (node/457875377); trip tomasovsky-vyhlad |
+| Kláštorisko | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
+| Prielom Hornádu | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
+| Suchá Belá | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
+| Sokolia dolina | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
+| Jánošíkove diery | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
+| Súľovské skaly | found in OSM as vyhliadka (node/7919138658); left out: within 400 m of the trip to Gotická brána |
+| Morské oko | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
+| Vihorlat | found in OSM as vrchol (node/1365679494); no marked trail within 150 m |
+| Šútovský vodopád | found in OSM as vodopad (node/3432338110); trip sutovsky-vodopad |
+| Kojšovská hoľa | found in OSM as vrchol (node/2619394245); trip kojsovska-hola |
+| Sivec | found in OSM as vrchol (node/728788559); trip sivec |
 
 ## Rejected candidates
 
