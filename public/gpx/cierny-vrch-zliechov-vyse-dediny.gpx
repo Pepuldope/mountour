@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Čierny vrch (Čičmany)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Čierny vrch (Čičmany)</name><trkseg>
+  <metadata><name>Čierny vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Čierny vrch</name><trkseg>
     <trkpt lat="48.954706" lon="18.515939"><ele>649</ele></trkpt>
     <trkpt lat="48.953307" lon="18.514343"><ele>652</ele></trkpt>
     <trkpt lat="48.952444" lon="18.513684"><ele>654</ele></trkpt>

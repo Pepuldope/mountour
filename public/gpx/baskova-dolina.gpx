@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Baškova dolina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Baškova dolina</name><trkseg>
+    <trkpt lat="48.664011" lon="18.629009"><ele>591</ele></trkpt>
+    <trkpt lat="48.662684" lon="18.630223"><ele>605</ele></trkpt>
+    <trkpt lat="48.661601" lon="18.631395"><ele>619</ele></trkpt>
+    <trkpt lat="48.661109" lon="18.632209"><ele>620</ele></trkpt>
+    <trkpt lat="48.660641" lon="18.633149"><ele>623</ele></trkpt>
+    <trkpt lat="48.660353" lon="18.634199"><ele>626</ele></trkpt>
+    <trkpt lat="48.659804" lon="18.634844"><ele>633</ele></trkpt>
+    <trkpt lat="48.658861" lon="18.635810"><ele>654</ele></trkpt>
+    <trkpt lat="48.657834" lon="18.637312"><ele>667</ele></trkpt>
+    <trkpt lat="48.657685" lon="18.637560"><ele>666</ele></trkpt>
+    <trkpt lat="48.657551" lon="18.637967"><ele>666</ele></trkpt>
+    <trkpt lat="48.657271" lon="18.637992"><ele>675</ele></trkpt>
+    <trkpt lat="48.657551" lon="18.637967"><ele>666</ele></trkpt>
+    <trkpt lat="48.657685" lon="18.637560"><ele>666</ele></trkpt>
+    <trkpt lat="48.657834" lon="18.637312"><ele>667</ele></trkpt>
+    <trkpt lat="48.658861" lon="18.635810"><ele>654</ele></trkpt>
+    <trkpt lat="48.659804" lon="18.634844"><ele>633</ele></trkpt>
+    <trkpt lat="48.660353" lon="18.634199"><ele>626</ele></trkpt>
+    <trkpt lat="48.660641" lon="18.633149"><ele>623</ele></trkpt>
+    <trkpt lat="48.661109" lon="18.632209"><ele>620</ele></trkpt>
+    <trkpt lat="48.661601" lon="18.631395"><ele>619</ele></trkpt>
+    <trkpt lat="48.662684" lon="18.630223"><ele>605</ele></trkpt>
+    <trkpt lat="48.664011" lon="18.629009"><ele>591</ele></trkpt>
+  </trkseg></trk>
+</gpx>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Skalka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Skalka</name><trkseg>
+  <metadata><name>Skalka (Demänovská Dolina)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Skalka (Demänovská Dolina)</name><trkseg>
     <trkpt lat="48.944101" lon="19.432603"><ele>1041</ele></trkpt>
     <trkpt lat="48.944042" lon="19.433511"><ele>1046</ele></trkpt>
     <trkpt lat="48.943943" lon="19.434031"><ele>1047</ele></trkpt>

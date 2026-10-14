@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Sučianska dolina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Sučianska dolina</name><trkseg>
+    <trkpt lat="49.108717" lon="18.997959"><ele>412</ele></trkpt>
+    <trkpt lat="49.108734" lon="18.998159"><ele>412</ele></trkpt>
+    <trkpt lat="49.109029" lon="18.998134"><ele>418</ele></trkpt>
+    <trkpt lat="49.111030" lon="18.997580"><ele>426</ele></trkpt>
+    <trkpt lat="49.111090" lon="18.996644"><ele>429</ele></trkpt>
+    <trkpt lat="49.111139" lon="18.996353"><ele>430</ele></trkpt>
+    <trkpt lat="49.111221" lon="18.996205"><ele>430</ele></trkpt>
+    <trkpt lat="49.112276" lon="18.995273"><ele>438</ele></trkpt>
+    <trkpt lat="49.112790" lon="18.994687"><ele>439</ele></trkpt>
+    <trkpt lat="49.113084" lon="18.994243"><ele>442</ele></trkpt>
+    <trkpt lat="49.114899" lon="18.991019"><ele>460</ele></trkpt>
+    <trkpt lat="49.116041" lon="18.988886"><ele>462</ele></trkpt>
+    <trkpt lat="49.116567" lon="18.988275"><ele>463</ele></trkpt>
+    <trkpt lat="49.116887" lon="18.988015"><ele>465</ele></trkpt>
+    <trkpt lat="49.119098" lon="18.986400"><ele>483</ele></trkpt>
+    <trkpt lat="49.120368" lon="18.985741"><ele>485</ele></trkpt>
+    <trkpt lat="49.121209" lon="18.985421"><ele>487</ele></trkpt>
+    <trkpt lat="49.123096" lon="18.985153"><ele>498</ele></trkpt>
+    <trkpt lat="49.124159" lon="18.984548"><ele>526</ele></trkpt>
+    <trkpt lat="49.124612" lon="18.984358"><ele>530</ele></trkpt>
+    <trkpt lat="49.126194" lon="18.983767"><ele>536</ele></trkpt>
+    <trkpt lat="49.126843" lon="18.983590"><ele>536</ele></trkpt>
+    <trkpt lat="49.127301" lon="18.983592"><ele>539</ele></trkpt>
+    <trkpt lat="49.127861" lon="18.983739"><ele>532</ele></trkpt>
+    <trkpt lat="49.128332" lon="18.983974"><ele>528</ele></trkpt>
+    <trkpt lat="49.128919" lon="18.984390"><ele>530</ele></trkpt>
+    <trkpt lat="49.129307" lon="18.984590"><ele>535</ele></trkpt>
+    <trkpt lat="49.129226" lon="18.984901"><ele>536</ele></trkpt>
+    <trkpt lat="49.129307" lon="18.984590"><ele>535</ele></trkpt>
+    <trkpt lat="49.128919" lon="18.984390"><ele>530</ele></trkpt>
+    <trkpt lat="49.128332" lon="18.983974"><ele>528</ele></trkpt>
+    <trkpt lat="49.127861" lon="18.983739"><ele>532</ele></trkpt>
+    <trkpt lat="49.127629" lon="18.983667"><ele>534</ele></trkpt>
+    <trkpt lat="49.127301" lon="18.983592"><ele>539</ele></trkpt>
+    <trkpt lat="49.126843" lon="18.983590"><ele>536</ele></trkpt>
+    <trkpt lat="49.126194" lon="18.983767"><ele>536</ele></trkpt>
+    <trkpt lat="49.124612" lon="18.984358"><ele>530</ele></trkpt>
+    <trkpt lat="49.124159" lon="18.984548"><ele>526</ele></trkpt>
+    <trkpt lat="49.123096" lon="18.985153"><ele>498</ele></trkpt>
+    <trkpt lat="49.121209" lon="18.985421"><ele>487</ele></trkpt>
+    <trkpt lat="49.120368" lon="18.985741"><ele>485</ele></trkpt>
+    <trkpt lat="49.119098" lon="18.986400"><ele>483</ele></trkpt>
+    <trkpt lat="49.116887" lon="18.988015"><ele>465</ele></trkpt>
+    <trkpt lat="49.116567" lon="18.988275"><ele>463</ele></trkpt>
+    <trkpt lat="49.116041" lon="18.988886"><ele>462</ele></trkpt>
+    <trkpt lat="49.114899" lon="18.991019"><ele>460</ele></trkpt>
+    <trkpt lat="49.113084" lon="18.994243"><ele>442</ele></trkpt>
+    <trkpt lat="49.112790" lon="18.994687"><ele>439</ele></trkpt>
+    <trkpt lat="49.112276" lon="18.995273"><ele>438</ele></trkpt>
+    <trkpt lat="49.111221" lon="18.996205"><ele>430</ele></trkpt>
+    <trkpt lat="49.111139" lon="18.996353"><ele>430</ele></trkpt>
+    <trkpt lat="49.111090" lon="18.996644"><ele>429</ele></trkpt>
+    <trkpt lat="49.111030" lon="18.997580"><ele>426</ele></trkpt>
+    <trkpt lat="49.109029" lon="18.998134"><ele>418</ele></trkpt>
+    <trkpt lat="49.108734" lon="18.998159"><ele>412</ele></trkpt>
+    <trkpt lat="49.108717" lon="18.997959"><ele>412</ele></trkpt>
+  </trkseg></trk>
+</gpx>

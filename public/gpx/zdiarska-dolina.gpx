@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Ždiarska dolina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ždiarska dolina</name><trkseg>
+    <trkpt lat="48.852382" lon="19.853596"><ele>619</ele></trkpt>
+    <trkpt lat="48.852564" lon="19.853565"><ele>620</ele></trkpt>
+    <trkpt lat="48.852604" lon="19.853850"><ele>621</ele></trkpt>
+    <trkpt lat="48.852851" lon="19.853840"><ele>621</ele></trkpt>
+    <trkpt lat="48.853647" lon="19.853619"><ele>623</ele></trkpt>
+    <trkpt lat="48.854333" lon="19.853322"><ele>626</ele></trkpt>
+    <trkpt lat="48.855707" lon="19.853014"><ele>634</ele></trkpt>
+    <trkpt lat="48.857247" lon="19.853032"><ele>637</ele></trkpt>
+    <trkpt lat="48.859567" lon="19.853560"><ele>647</ele></trkpt>
+    <trkpt lat="48.860269" lon="19.853621"><ele>650</ele></trkpt>
+    <trkpt lat="48.861766" lon="19.853654"><ele>658</ele></trkpt>
+    <trkpt lat="48.862011" lon="19.853712"><ele>660</ele></trkpt>
+    <trkpt lat="48.862455" lon="19.853921"><ele>661</ele></trkpt>
+    <trkpt lat="48.863974" lon="19.853971"><ele>669</ele></trkpt>
+    <trkpt lat="48.865671" lon="19.854311"><ele>679</ele></trkpt>
+    <trkpt lat="48.867399" lon="19.854117"><ele>691</ele></trkpt>
+    <trkpt lat="48.871347" lon="19.853768"><ele>720</ele></trkpt>
+    <trkpt lat="48.871846" lon="19.853863"><ele>724</ele></trkpt>
+    <trkpt lat="48.872909" lon="19.854457"><ele>728</ele></trkpt>
+    <trkpt lat="48.873285" lon="19.854607"><ele>732</ele></trkpt>
+    <trkpt lat="48.874141" lon="19.854670"><ele>737</ele></trkpt>
+    <trkpt lat="48.875414" lon="19.854604"><ele>744</ele></trkpt>
+    <trkpt lat="48.875840" lon="19.854695"><ele>744</ele></trkpt>
+    <trkpt lat="48.876705" lon="19.854999"><ele>752</ele></trkpt>
+    <trkpt lat="48.877266" lon="19.855095"><ele>762</ele></trkpt>
+    <trkpt lat="48.876705" lon="19.854999"><ele>752</ele></trkpt>
+    <trkpt lat="48.875840" lon="19.854695"><ele>744</ele></trkpt>
+    <trkpt lat="48.875414" lon="19.854604"><ele>744</ele></trkpt>
+    <trkpt lat="48.874141" lon="19.854670"><ele>737</ele></trkpt>
+    <trkpt lat="48.873285" lon="19.854607"><ele>732</ele></trkpt>
+    <trkpt lat="48.872909" lon="19.854457"><ele>728</ele></trkpt>
+    <trkpt lat="48.871846" lon="19.853863"><ele>724</ele></trkpt>
+    <trkpt lat="48.871347" lon="19.853768"><ele>720</ele></trkpt>
+    <trkpt lat="48.867399" lon="19.854117"><ele>691</ele></trkpt>
+    <trkpt lat="48.865671" lon="19.854311"><ele>679</ele></trkpt>
+    <trkpt lat="48.863974" lon="19.853971"><ele>669</ele></trkpt>
+    <trkpt lat="48.862455" lon="19.853921"><ele>661</ele></trkpt>
+    <trkpt lat="48.862011" lon="19.853712"><ele>660</ele></trkpt>
+    <trkpt lat="48.861766" lon="19.853654"><ele>658</ele></trkpt>
+    <trkpt lat="48.860269" lon="19.853621"><ele>650</ele></trkpt>
+    <trkpt lat="48.859567" lon="19.853560"><ele>647</ele></trkpt>
+    <trkpt lat="48.857247" lon="19.853032"><ele>637</ele></trkpt>
+    <trkpt lat="48.855707" lon="19.853014"><ele>634</ele></trkpt>
+    <trkpt lat="48.854333" lon="19.853322"><ele>626</ele></trkpt>
+    <trkpt lat="48.853647" lon="19.853619"><ele>623</ele></trkpt>
+    <trkpt lat="48.852851" lon="19.853840"><ele>621</ele></trkpt>
+    <trkpt lat="48.852604" lon="19.853850"><ele>621</ele></trkpt>
+    <trkpt lat="48.852564" lon="19.853565"><ele>620</ele></trkpt>
+    <trkpt lat="48.852382" lon="19.853596"><ele>619</ele></trkpt>
+  </trkseg></trk>
+</gpx>

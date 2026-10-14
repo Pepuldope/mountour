@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Príslop</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Príslop</name><trkseg>
+  <metadata><name>Príslop (Demänovská Dolina)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Príslop (Demänovská Dolina)</name><trkseg>
     <trkpt lat="48.874313" lon="19.600767"><ele>719</ele></trkpt>
     <trkpt lat="48.874495" lon="19.600611"><ele>731</ele></trkpt>
     <trkpt lat="48.874727" lon="19.600207"><ele>749</ele></trkpt>

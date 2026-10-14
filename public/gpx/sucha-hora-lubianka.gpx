@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Suchá hora (Veľké Pole)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Suchá hora (Veľké Pole)</name><trkseg>
+  <metadata><name>Suchá hora</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Suchá hora</name><trkseg>
     <trkpt lat="48.612543" lon="18.502488"><ele>342</ele></trkpt>
     <trkpt lat="48.611055" lon="18.504458"><ele>346</ele></trkpt>
     <trkpt lat="48.610192" lon="18.505854"><ele>346</ele></trkpt>

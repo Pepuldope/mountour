@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Čierna hora (Jurkova Voľa)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Čierna hora (Jurkova Voľa)</name><trkseg>
+  <metadata><name>Čierna hora</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Čierna hora</name><trkseg>
     <trkpt lat="49.304619" lon="21.567278"><ele>230</ele></trkpt>
     <trkpt lat="49.303875" lon="21.566820"><ele>230</ele></trkpt>
     <trkpt lat="49.303837" lon="21.566889"><ele>230</ele></trkpt>

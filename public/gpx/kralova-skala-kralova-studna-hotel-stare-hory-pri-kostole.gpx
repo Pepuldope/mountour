@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kráľova skala (Turecká)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kráľova skala (Turecká)</name><trkseg>
+  <metadata><name>Kráľova skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kráľova skala</name><trkseg>
     <trkpt lat="48.834202" lon="19.112208"><ele>474</ele></trkpt>
     <trkpt lat="48.834349" lon="19.112874"><ele>473</ele></trkpt>
     <trkpt lat="48.834884" lon="19.113846"><ele>473</ele></trkpt>
