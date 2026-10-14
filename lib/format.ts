@@ -26,6 +26,7 @@ export const GOAL_LABEL: Record<DestinationKind, string> = {
   vyhliadka: "Vyhliadka",
   jaskyna: "Jaskyňa",
   chata: "Chata",
+  roklina: "Roklina",
   ine: "Výlet",
 };
 
@@ -37,6 +38,7 @@ export const GOAL_PLURAL: Record<DestinationKind, string> = {
   vyhliadka: "Vyhliadky",
   jaskyna: "Jaskyne",
   chata: "Chaty",
+  roklina: "Rokliny",
   ine: "Iné",
 };
 

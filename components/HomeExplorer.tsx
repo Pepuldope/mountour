@@ -41,7 +41,7 @@ const PAGE = 30;
 const DESKTOP_QUERY = "(min-width: 1024px)";
 
 /** Goal filters, most common first. */
-const GOAL_FILTERS: DestinationKind[] = ["vrchol", "vodopad", "pleso", "hrad", "jaskyna", "vyhliadka", "chata"];
+const GOAL_FILTERS: DestinationKind[] = ["vrchol", "vodopad", "pleso", "hrad", "jaskyna", "roklina", "vyhliadka", "chata"];
 const DIFFICULTIES: Difficulty[] = ["lahka", "stredna", "tazka"];
 
 /** Starts further than this from the nearest precomputed town get "~" on their drive times. */

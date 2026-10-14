@@ -27,6 +27,7 @@ export const GOAL_COLOUR: Record<DestinationKind, string> = {
   vyhliadka: "#cf3f74",
   jaskyna: "#86573a",
   chata: "#3f8628",
+  roklina: "#7a6a12",
   ine: "#5b6455",
 };
 

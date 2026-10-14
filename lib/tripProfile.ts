@@ -102,6 +102,7 @@ export const GOAL_WORDS: Record<DestinationKind, { noun: string; at: string }> =
   pleso: { noun: "pleso", at: "Pri plese" },
   vodopad: { noun: "vodopád", at: "Pri vodopáde" },
   jaskyna: { noun: "jaskyňa", at: "Pri jaskyni" },
+  roklina: { noun: "roklina", at: "V rokline" },
   ine: { noun: "cieľ", at: "V cieli" },
 };
 

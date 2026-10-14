@@ -9,9 +9,9 @@ on:
   workflow_dispatch:
   push:
     branches: ["claude/osm-trip-pipeline-**", "claude/site-fixes-and-features-**", "claude/import-all-trails-**", "claude/trail-quality-**"]
-    paths: ["pipeline/**", "!pipeline/explore_goals.py", ".github/workflows/trips.yml"]
+    paths: ["pipeline/**", ".github/workflows/trips.yml"]
   pull_request:
-    paths: ["pipeline/**", "!pipeline/explore_goals.py", ".github/workflows/trips.yml"]
+    paths: ["pipeline/**", ".github/workflows/trips.yml"]
 
 permissions:
   contents: write

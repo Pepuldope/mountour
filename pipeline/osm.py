@@ -83,7 +83,11 @@ def clean_name(t):
     return name
 
 
-GORGE_WORDS = __import__("re").compile(r"roklin|tiesňav|diery|prielom|kaňon|žľab|soutěsk", __import__("re").I)
+# Gorges people walk through: Jánošíkove diery, Zejmarská roklina, Prielom Hornádu, Kyseľ (tiesňava).
+GORGE_WORDS = __import__("re").compile(r"roklin|tiesňav|diery|prielom|kaňon|soutěsk", __import__("re").I)
+VALLEYS = ("valley", "gully", "gorge", "canyon")
+GORGE_MAX_M = 4500  # a valley this short with an article is a gorge (Suchá Belá, Sokolia dolina); longer is a valley
+ROCKS = ("rock", "stone", "cliff", "arch", "rock_formation", "bare_rock")
 MAIN_KEYS = ("natural", "tourism", "historic", "leisure", "man_made", "waterway", "boundary", "amenity", "landuse",
              "geological", "building", "place")
 
@@ -116,6 +120,17 @@ def destination_kind(t):
         return "pleso"
     if t.get("natural") == "cave_entrance" and (t.get("show_cave") == "yes" or t.get("tourism") == "attraction" or t.get("fee")):
         return "jaskyna"
+    known = t.get("wikipedia") or t.get("wikidata")
+    gorge_word = GORGE_WORDS.search(name) or GORGE_WORDS.search(t.get("wikipedia", ""))
+    cirque = any(w in low for w in ("kotlin", "kotol"))  # "Kotlina pod Prielomom" is a Tatra cirque
+    if t.get("natural") in VALLEYS and not cirque and (gorge_word or t.get("natural") in ("gorge", "canyon") or (
+            known and t.get("_len_m", 0) <= GORGE_MAX_M)):
+        return "roklina"
+    if t.get("tourism") == "attraction" and gorge_word and t.get("natural") not in ("saddle", "peak"):
+        return "roklina"  # Jánošíkove diery is mapped as one point
+    # A sight with its own article: a rock town, a famous rock, Kláštorisko
+    if known and (t.get("tourism") == "attraction" or t.get("natural") in ROCKS) and t.get("natural") not in ("saddle", "peak"):
+        return "ine"
     return None
 
 
@@ -228,7 +243,8 @@ def load(path, boxes, probe_names=(), border_relation=14296):
             kind = destination_kind(t)
             if kind:
                 data.destinations.append((kind, f))
-            elif t.get("wikidata") or GORGE_WORDS.search(name):
+            elif t.get("wikidata") and not any(t.get(k) for k in ("place", "landuse", "building", "boundary",
+                                                                   "highway", "waterway", "route")):
                 data.others.append(f)
             pk = poi_kind(t)
             if pk:
@@ -276,6 +292,10 @@ def load(path, boxes, probe_names=(), border_relation=14296):
             extra = None
             if t.get("amenity") == "parking" and len(lats) >= 4 and o.nodes[0].ref == o.nodes[-1].ref:
                 extra = {"_area_m2": _area_m2(lats, lons)}
+            elif t.get("natural") in VALLEYS and len(lats) >= 2:
+                # a gorge is a line: the trip goes to its upper end (trips.py), not to the middle of the line
+                seg = _line_m(lats, lons)
+                extra = {"_len_m": seg, "_ends": ((float(lats[0]), float(lons[0])), (float(lats[-1]), float(lons[-1])))}
             add_feature(o, float(lats.mean()), float(lons.mean()), f"way/{o.id}", extra)
 
     if border_relation:
@@ -285,6 +305,12 @@ def load(path, boxes, probe_names=(), border_relation=14296):
 
             data.towns = [f for f in data.towns if data.border.contains(Point(f.lon, f.lat))]
     return data
+
+
+def _line_m(lats, lons):
+    """Length of a line in metres (equirectangular, fine for a few km)."""
+    k = np.cos(np.radians(lats.mean()))
+    return float(np.hypot(np.diff(lats), np.diff(lons) * k).sum() * 111_320)
 
 
 def _border(path, relation_id):
