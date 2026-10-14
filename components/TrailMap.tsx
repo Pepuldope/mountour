@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { GeoJSONSource, Map as MlMap, Marker, StyleSpecification } from "maplibre-gl";
 import type { BBox, LatLng } from "@/lib/types";
 import { MAP_STYLE_URL, mapPixelRatio } from "@/lib/mapLayers";
+import { keepInSlovakia } from "@/lib/slovakia";
 import { UI_ICON } from "@/lib/uiIcons";
 import { POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
 import { attachTrailNetwork } from "@/lib/trailNetwork";
@@ -198,6 +199,7 @@ export function TrailMap({
     let map: MlMap | null = null;
     let observer: ResizeObserver | null = null;
     let detachNetwork: (() => void) | null = null;
+    let detachLimit: (() => void) | null = null;
 
     async function init() {
       const ml = await import("maplibre-gl");
@@ -235,6 +237,7 @@ export function TrailMap({
       map.on("load", () => {
         if (!map || cancelled) return;
         hideBasePois(map);
+        detachLimit = keepInSlovakia(map);
         // Under everything of ours: the whole trail network.
         if (networkRef.current) detachNetwork = attachTrailNetwork(map, networkRef.current, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE);
         map.addSource("drive", { type: "geojson", data: EMPTY });
@@ -343,6 +346,7 @@ export function TrailMap({
       }
       observer?.disconnect();
       detachNetwork?.();
+      detachLimit?.();
       map?.remove();
       map = null;
       setCtx(null);

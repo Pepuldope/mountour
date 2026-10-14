@@ -1,5 +1,6 @@
 import type { BBox } from "@/lib/types";
 import { MAP_STYLE_URL, VECTOR_MAX_ZOOM } from "@/lib/mapLayers";
+import { BORDER_URL } from "@/lib/slovakia";
 
 function lon2tileX(lon: number, z: number): number {
   return Math.floor(((lon + 180) / 360) * 2 ** z);
@@ -43,7 +44,7 @@ interface StyleJson {
 export async function offlineMapUrls(bbox: BBox): Promise<string[]> {
   try {
     const style = (await (await fetch(MAP_STYLE_URL)).json()) as StyleJson;
-    const urls = [MAP_STYLE_URL];
+    const urls = [MAP_STYLE_URL, BORDER_URL];
     const zooms = [10, 11, 12, 13, VECTOR_MAX_ZOOM];
 
     for (const src of Object.values(style.sources)) {

@@ -5,6 +5,7 @@ import type { ExpressionSpecification, GeoJSONSource, LineLayerSpecification, Ma
 import type { LatLng } from "@/lib/types";
 import type { DestinationKind } from "@/lib/tripSchema";
 import { MAP_STYLE_URL, mapPixelRatio } from "@/lib/mapLayers";
+import { keepInSlovakia } from "@/lib/slovakia";
 import { GOAL_COLOUR, POPULARITY_QUIET_EDGE, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
 import { lineFeeder } from "@/lib/mapFeed";
 import { fetchLines } from "@/lib/packedLines";
@@ -248,6 +249,7 @@ export function BrowseMap({
     let map: MlMap | null = null;
     let observer: ResizeObserver | null = null;
     let detachNetwork: (() => void) | null = null;
+    let detachLimit: (() => void) | null = null;
     let shift = 0;
     let areaZoom = AREA_ZOOM;
 
@@ -282,6 +284,7 @@ export function BrowseMap({
         if (!map || cancelled) return;
         const m = map;
         hideBasePois(m);
+        detachLimit = keepInSlovakia(m);
         // Every marked trail, faint grey: the trips are drawn over it in colour.
         detachNetwork = attachTrailNetwork(m, "context", POPULARITY_RAMP, POPULARITY_TOP_OUTLINE);
 
@@ -572,6 +575,7 @@ export function BrowseMap({
       near?.disconnect();
       observer?.disconnect();
       detachNetwork?.();
+      detachLimit?.();
       map?.remove();
       map = null;
       setCtx(null);
