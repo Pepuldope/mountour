@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import { SAFE_MARGIN_MIN } from "@/lib/dayPlan";
 import type { DayPlan } from "@/lib/dayPlan";
 import { dayInSentence, floorTo5, longDay } from "@/lib/days";
@@ -38,6 +39,8 @@ interface Props extends ShareInfo {
   bbox: BBox | null;
   /** The trail itself, for the walking hand-off. */
   walk: WalkRoute;
+  /** Shown between the plan and Uložiť: parking, the map, fees... (Uložiť and navigation come last). */
+  children?: ReactNode;
 }
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -45,9 +48,9 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 /**
  * The trip page's answer: "vyrazte najneskôr", the day and departure, the
- * timeline, then Uložiť (main), share and navigation hand-offs.
+ * timeline, then the page's middle (parking, map...), then Uložiť (main), share and navigation hand-offs.
  */
-export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: fullProfile, gpxUrl, bbox, walk, ...trip }: Props) {
+export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: fullProfile, gpxUrl, bbox, walk, children, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
   const { destination, rideTo, approachMin, trailStart, transit, stop, skip, walkFrom, trailJoin } = useTripAccess();
@@ -207,6 +210,8 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
           </ol>
         </section>
       )}
+
+      {children}
 
       <section aria-label="Uložiť a zdieľať" className="flex flex-col gap-3">
         <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} destination={rideTo} baseHikeMin={baseHikeMin} profile={profile} {...trip} />

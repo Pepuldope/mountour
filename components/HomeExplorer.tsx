@@ -55,6 +55,7 @@ const OTHER_REGION = "Ďalšie";
 
 /** Phones: room kept free at the bottom of the map for the trip preview. */
 const SHEET_INSET = 230;
+const MAP_HINT_KEY = "mountour-map-hint";
 
 type Box = [number, number, number, number];
 type Preview =
@@ -194,7 +195,8 @@ let lastView: MapView | null = null;
 export function HomeExplorer({ trails: initial }: Props) {
   const trails = useAllTrails(initial);
   const { date, today, withKids, travel, update } = useTripSettings();
-  const [goalFilter, setGoalFilter] = useState<DestinationKind | null>(null);
+  // Several kinds at once (testers): empty = every kind.
+  const [goalFilter, setGoalFilter] = useState<DestinationKind[]>([]);
   const [diffFilter, setDiffFilter] = useState<Difficulty[]>([]);
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
@@ -203,6 +205,25 @@ export function HomeExplorer({ trails: initial }: Props) {
   const { start } = useUserLocation();
   const [selected, setSelected] = useState<string | null>(null);
   const [pointed, setPointed] = useState<string | null>(null);
+  // Testers didn't see at first that the map can be tapped: a hint until the first touch, once per browser.
+  const [mapHint, setMapHint] = useState(false);
+  useEffect(() => {
+    try {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (!localStorage.getItem(MAP_HINT_KEY)) setMapHint(true);
+    } catch {
+      // Storage blocked: no hint rather than a hint every time.
+    }
+  }, []);
+  const dropMapHint = () => {
+    if (!mapHint) return;
+    setMapHint(false);
+    try {
+      localStorage.setItem(MAP_HINT_KEY, "1");
+    } catch {
+      // Storage blocked: it just shows again next visit.
+    }
+  };
   const [preview, setPreview] = useState<Preview | null>(null);
   // Phones: the map is a card in the page; "Celá mapa" opens it full screen.
   const [fullMap, setFullMap] = useState(false);
@@ -246,7 +267,7 @@ export function HomeExplorer({ trails: initial }: Props) {
       const stop = nearestStop(detail);
       const table = drives?.minutes[detail.trail.slug] ?? null;
       if (withKids && !detail.trail.family_friendly) return [];
-      if (goalFilter && (detail.trail.goal ?? "ine") !== goalFilter) return [];
+      if (goalFilter.length > 0 && !goalFilter.includes(detail.trail.goal ?? "ine")) return [];
       if (diffFilter.length > 0 && !diffFilter.includes(detail.trail.difficulty)) return [];
       // Table missing (offline, or a trip newer than the table): a straight-line estimate beats a blank, marked with "~".
       const estimate = table === null && driveStatus !== "loading" && start !== null && dest !== null;
@@ -312,7 +333,7 @@ export function HomeExplorer({ trails: initial }: Props) {
   }, [listedAll, words, matches, mapView]);
 
   // Cards come in pages; a new filter or another part of the map starts again from the first page.
-  const filterKey = [goalFilter, diffFilter.join(), withKids, date, travel, query].join("|");
+  const filterKey = [goalFilter.join(), diffFilter.join(), withKids, date, travel, query].join("|");
   const [paging, setPaging] = useState({ key: filterKey, n: PAGE });
   const limit = paging.key === filterKey ? paging.n : PAGE;
   const visible = useMemo(() => {
@@ -414,7 +435,7 @@ export function HomeExplorer({ trails: initial }: Props) {
     moveMap(focusTo);
   };
 
-  const filterCount = (goalFilter ? 1 : 0) + diffFilter.length;
+  const filterCount = goalFilter.length + diffFilter.length;
 
   const heading = words.length > 0
     ? `Výsledky pre „${query.trim()}“`
@@ -519,7 +540,7 @@ export function HomeExplorer({ trails: initial }: Props) {
   );
 
   const map = (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full" onPointerDownCapture={dropMapHint} onWheelCapture={dropMapHint}>
       <BrowseMap
         trips={mapTrips}
         areas={areas}
@@ -553,6 +574,11 @@ export function HomeExplorer({ trails: initial }: Props) {
           <i className="block h-[3px] w-5 rounded-full bg-[#8a8f7a] opacity-60" /> chodník bez výletu
         </span>
       </div>
+      {mapHint && (
+        <div className="pointer-events-none absolute bottom-4 left-1/2 z-[5] -translate-x-1/2 rounded-full bg-[#14233b]/90 px-4 py-2 text-[13px] font-semibold whitespace-nowrap text-white shadow-[var(--shadow-float)]" role="note">
+          {isDesktop ? "Kliknite na oblasť alebo trasu na mape" : "Ťuknite na oblasť alebo trasu na mape"}
+        </div>
+      )}
       {sheet}
       {popover}
     </div>
@@ -646,7 +672,12 @@ export function HomeExplorer({ trails: initial }: Props) {
           <div className="grid grid-cols-2">
             {[null, ...GOAL_FILTERS].map((g) => (
               <label key={g ?? "all"} className="flex cursor-pointer items-center gap-2.5 rounded-lg p-2 text-[15px] hover:bg-[var(--segment-bg)]">
-                <input type="radio" name="goal" checked={goalFilter === g} onChange={() => setGoalFilter(g)} className="h-[18px] w-[18px] accent-[var(--accent)]" />
+                <input
+                  type="checkbox"
+                  checked={g === null ? goalFilter.length === 0 : goalFilter.includes(g)}
+                  onChange={(e) => setGoalFilter((prev) => (g === null ? [] : e.target.checked ? [...prev, g] : prev.filter((x) => x !== g)))}
+                  className="h-[18px] w-[18px] accent-[var(--accent)]"
+                />
                 {g && <span className="h-3 w-3 rounded-[3px]" style={{ background: GOAL_COLOUR[g] }} />}
                 {g ? GOAL_PLURAL[g] : "Všetky ciele"}
               </label>
@@ -670,7 +701,7 @@ export function HomeExplorer({ trails: initial }: Props) {
             <button
               type="button"
               onClick={() => {
-                setGoalFilter(null);
+                setGoalFilter([]);
                 setDiffFilter([]);
               }}
               className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
@@ -720,7 +751,7 @@ export function HomeExplorer({ trails: initial }: Props) {
           </p>
           <div className="flex flex-wrap gap-3">
             {filterCount > 0 && (
-              <button type="button" onClick={() => { setGoalFilter(null); setDiffFilter([]); }} className="font-semibold text-[var(--accent)] underline">
+              <button type="button" onClick={() => { setGoalFilter([]); setDiffFilter([]); }} className="font-semibold text-[var(--accent)] underline">
                 Zrušiť filtre
               </button>
             )}

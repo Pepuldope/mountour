@@ -222,20 +222,21 @@ export default async function TripSheetPage({ params }: Props) {
             gpxUrl={gpxUrl}
             bbox={trail.bbox}
             walk={{ points: trip.path.map(([lon, lat]) => [+lat.toFixed(5), +lon.toFixed(5)]), loop: trip.route === "okruh" }}
-          />
+          >
+            {/* Testers: Uložiť and navigation belong at the end; parking first, then the map. */}
+            <ParkingBlock />
+            <StopsBlock />
 
-          <ParkingBlock />
-          <StopsBlock />
+            <div className="h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] lg:hidden">
+              <TripMap detail={detail} gpxUrl={gpxUrl} others={others} />
+            </div>
 
-          {fees.length > 0 && <FeeBlock fees={fees} />}
+            {closures.length === 0 && <ClosureBanner closures={closures} />}
 
-          <PoiList pois={detail.pois} />
+            {fees.length > 0 && <FeeBlock fees={fees} />}
 
-          <div className="h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] lg:hidden">
-            <TripMap detail={detail} gpxUrl={gpxUrl} others={others} />
-          </div>
-
-          {closures.length === 0 && <ClosureBanner closures={closures} />}
+            <PoiList pois={detail.pois} />
+          </TripPlanner>
 
           {gpxUrl && (
             <section className="flex flex-col gap-1 text-sm">
