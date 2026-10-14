@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { cpSkUrl, mapyUrl, readSharedPlan, sharePath, shareText, startTown } from "./links";
+import { cpSkUrl, googleWalkUrl, mapyUrl, mapyWalkUrl, readSharedPlan, sharePath, shareText, startTown, walkStops } from "./links";
 import { dayChips, dayFit, dayInSentence, longDay } from "./days";
 
 const BRATISLAVA = { lat: 48.1486, lon: 17.1077 };
@@ -116,5 +116,53 @@ describe("days", () => {
   it("drops trips longer than the day's daylight", () => {
     const fit = dayFit({ date: "2026-12-21", now: new Date(2026, 11, 1), driveMin: 120, hikeMin: 480, location: BRATISLAVA })!;
     expect(fit.status).toBe("too-long");
+  });
+});
+
+describe("walking hand-off", () => {
+  // A straight 4-point trail north from the car, goal at the top.
+  const up: [number, number][] = [
+    [49.0, 19.0],
+    [49.01, 19.0],
+    [49.02, 19.0],
+    [49.03, 19.0],
+    [49.04, 19.0],
+  ];
+  const car = { lat: 48.999, lon: 19.0 };
+
+  it("gives Google 3 points ending at the goal of a there-and-back walk", () => {
+    const url = googleWalkUrl(car, { points: up, loop: false }, null);
+    expect(url).toContain("travelmode=walking");
+    expect(url).toContain("origin=48.99900,19.00000");
+    expect(url).toContain("destination=49.04000,19.00000");
+    expect(url.split("waypoints=")[1].split("&")[0].split("%7C")).toHaveLength(3);
+  });
+
+  it("sends Mapy.com up, round the goal and back to the car", () => {
+    const { via, end } = walkStops({ points: up, loop: false }, null, 15, true);
+    expect(end).toBe("start");
+    expect(via.length).toBeLessThanOrEqual(15);
+    expect(via[Math.floor(via.length / 2)]).toEqual({ lat: 49.04, lon: 19.0 });
+    const url = mapyWalkUrl(car, { points: up, loop: false }, null);
+    expect(url).toContain("routeType=foot_hiking");
+    expect(url).toContain("start=19.00000,48.99900&end=19.00000,48.99900");
+  });
+
+  it("starts where a parking up the trail joins it", () => {
+    const { via } = walkStops({ points: up, loop: false }, { lat: 49.02, lon: 19.0 }, 3, false);
+    expect(via.every((p) => p.lat >= 49.02)).toBe(true);
+  });
+
+  it("goes round a loop and back to the start", () => {
+    const loop: [number, number][] = [
+      [49.0, 19.0],
+      [49.0, 19.01],
+      [49.01, 19.01],
+      [49.01, 19.0],
+      [49.0, 19.0],
+    ];
+    const { via, end } = walkStops({ points: loop, loop: true }, null, 3, false);
+    expect(end).toBe("start");
+    expect(via).toHaveLength(3);
   });
 });

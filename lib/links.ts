@@ -4,6 +4,7 @@
  * Pure, so the wording and parameters are unit tested.
  */
 import { DIFFICULTY_LABEL, formatDuration } from "@/lib/format";
+import { haversineM } from "@/lib/geo";
 import type { LatLng } from "@/lib/types";
 import type { StartPoint } from "@/lib/userLocation";
 
@@ -75,6 +76,78 @@ export function shareText(i: ShareTextInput): string {
 
 export function googleMapsUrl(to: LatLng): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${to.lat},${to.lon}&travelmode=driving`;
+}
+
+/** The walk itself, as the trip page hands it to a maps app: [lat, lon] points of the trail. */
+export interface WalkRoute {
+  /** Way up only for "tam-a-spat" (back the same way); the whole loop for "okruh". */
+  points: [number, number][];
+  loop: boolean;
+}
+
+/** `n` points spread evenly by distance along `pts`, ends excluded. */
+function spread(pts: LatLng[], n: number): LatLng[] {
+  if (pts.length < 2 || n <= 0) return [];
+  const along = [0];
+  for (let i = 1; i < pts.length; i++) along.push(along[i - 1] + haversineM(pts[i - 1], pts[i]));
+  const total = along[along.length - 1];
+  const out: LatLng[] = [];
+  let i = 0;
+  for (let k = 1; k <= n; k++) {
+    const want = (total * k) / (n + 1);
+    while (i < pts.length - 1 && along[i + 1] < want) i++;
+    out.push(pts[Math.min(i + 1, pts.length - 1)]);
+  }
+  return out;
+}
+
+/** The walk from where it joins the trail: parked up the trail, a there-and-back starts there and a loop is walked round from there. */
+function walkedPart(walk: WalkRoute, join: LatLng | null): LatLng[] {
+  const pts = walk.points.map(([lat, lon]) => ({ lat, lon }));
+  if (!join || pts.length < 2) return pts;
+  let at = 0;
+  pts.forEach((p, i) => {
+    if (haversineM(p, join) < haversineM(pts[at], join)) at = i;
+  });
+  return walk.loop ? [...pts.slice(at), ...pts.slice(1, at + 1)] : pts.slice(at);
+}
+
+/**
+ * Points a maps app must pass so its walking route keeps to our trail: from the car
+ * (or the stop) over the trail to the goal and, for loops, round to the start again.
+ * There-and-back trails end at the goal (back the same way) unless `roundTrip`, which
+ * repeats the way up in reverse so the app also routes the way back.
+ */
+export function walkStops(walk: WalkRoute, join: LatLng | null, max: number, roundTrip: boolean): { via: LatLng[]; end: LatLng | "start" } {
+  const pts = walkedPart(walk, join);
+  if (pts.length < 2) return { via: [], end: pts[0] ?? "start" };
+  if (walk.loop) return { via: spread(pts, max), end: "start" };
+  const goal = pts[pts.length - 1];
+  if (!roundTrip) return { via: spread(pts, max), end: goal };
+  const up = spread(pts, Math.floor((max - 1) / 2));
+  return { via: [...up, goal, ...[...up].reverse()], end: "start" };
+}
+
+const g = (x: LatLng) => `${x.lat.toFixed(5)},${x.lon.toFixed(5)}`;
+const m = (x: LatLng) => `${x.lon.toFixed(5)},${x.lat.toFixed(5)}`;
+
+/**
+ * Google Maps walking directions over the trail. Google opens a link on a phone with at
+ * most 3 stops, so it gets 3 points to the goal and the app picks its own paths between them.
+ */
+export function googleWalkUrl(from: LatLng, walk: WalkRoute, join: LatLng | null): string {
+  const { via, end } = walkStops(walk, join, 3, false);
+  const dest = end === "start" ? from : end;
+  const q = `&waypoints=${via.map(g).join("%7C")}`;
+  return `https://www.google.com/maps/dir/?api=1&origin=${g(from)}&destination=${g(dest)}${via.length ? q : ""}&travelmode=walking`;
+}
+
+/** Mapy.com hiking route (keeps to marked trails), up to 15 stops: the whole walk, back at the car. */
+export function mapyWalkUrl(from: LatLng, walk: WalkRoute, join: LatLng | null): string {
+  const { via, end } = walkStops(walk, join, 15, true);
+  const dest = end === "start" ? from : end;
+  const q = via.length ? `&waypoints=${via.map(m).join(";")}` : "";
+  return `https://mapy.com/fnc/v1/route?mapset=outdoor&start=${m(from)}&end=${m(dest)}${q}&routeType=foot_hiking&navigate=true`;
 }
 
 /** Google Maps public transport directions; the app then lists the buses, trains and changes. */
