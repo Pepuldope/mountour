@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Podkova (Nováčany)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Podkova (Nováčany)</name><trkseg>
+  <metadata><name>Podkova</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Podkova</name><trkseg>
     <trkpt lat="48.689832" lon="21.071721"><ele>333</ele></trkpt>
     <trkpt lat="48.690276" lon="21.071667"><ele>335</ele></trkpt>
     <trkpt lat="48.691633" lon="21.071686"><ele>342</ele></trkpt>

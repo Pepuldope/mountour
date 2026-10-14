@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kopa (Dolná Tižina)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kopa (Dolná Tižina)</name><trkseg>
+  <metadata><name>Kopa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kopa</name><trkseg>
     <trkpt lat="49.195221" lon="18.908416"><ele>604</ele></trkpt>
     <trkpt lat="49.195200" lon="18.908463"><ele>604</ele></trkpt>
     <trkpt lat="49.195328" lon="18.908717"><ele>611</ele></trkpt>
