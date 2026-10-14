@@ -19,7 +19,7 @@ import type { ShareInfo } from "@/components/ShareButton";
 import { StartChip } from "@/components/StartChip";
 import { SunArc } from "@/components/SunArc";
 import { useTripAccess } from "@/components/TripAccess";
-import { WeatherNotes, useTripWeather } from "@/components/WeatherBlock";
+import { WeatherReport, useTripWeather } from "@/components/WeatherBlock";
 import { TransitLegs } from "@/components/TransitBlock";
 import { TravelSwitch } from "@/components/TravelSwitch";
 import { GOAL_WORDS, trimProfile } from "@/lib/tripProfile";
@@ -188,7 +188,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
             {verdictText(plan)}
           </p>
           {plan.startsInDark && <p className="text-sm text-[var(--warn)]">Túra začína pred východom slnka, vezmite si čelovku.</p>}
-          <WeatherNotes plan={plan} weather={weather} goal={goal} />
+          <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} />
           {transit && <TransitLegs plan={plan} rail={rail} />}
           <ol className="font-data grid grid-cols-4 gap-x-2 text-[1.3rem] leading-tight font-bold sm:text-[1.6rem]">
             {hasDrive ? (

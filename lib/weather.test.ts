@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { baseSymbol, skyKind, summarize, weatherAt, weatherNotes, weatherWords } from "@/lib/weather";
+import { baseSymbol, skyKind, summarize, tripWeatherReport, weatherAt, weatherNotes, weatherWords } from "@/lib/weather";
 import type { WeatherForecast } from "@/lib/weather";
 
 const hourly = (h: number, temp: number, rain: number, symbol: string) => ({
@@ -84,3 +84,34 @@ describe("weather notes", () => {
     expect(weatherNotes(f, null, from, to)[0]).toMatchObject({ strong: true });
   });
 });
+
+describe("trip weather report", () => {
+  const at = (h: number) => new Date(`2026-10-17T${String(h).padStart(2, "0")}:00:00Z`);
+
+  it("gives the whole temperature range and the one rainy hour", () => {
+    const r = tripWeatherReport(forecast, null, at(7), at(11))!;
+    expect(r.tempMin).toBe(4);
+    expect(r.tempMax).toBe(9);
+    expect(r.wet).toEqual({ when: `${hm(at(9))}–${hm(at(10))}`, mmPerHour: 0.4, snow: false });
+  });
+
+  it("reports nothing wet on a dry window and no hours for fine weather", () => {
+    const r = tripWeatherReport(forecast, null, at(7), at(9))!;
+    expect(r.wet).toBeNull();
+    expect(r.worstWhen).toBeNull();
+  });
+
+  it("names the colder goal only when it is clearly colder", () => {
+    const cold: WeatherForecast = { ...forecast, steps: forecast.steps.map((s) => ({ ...s, temp: s.temp - 8 })) };
+    expect(tripWeatherReport(forecast, cold, at(7), at(11))!.topMin).toBe(-4);
+    expect(tripWeatherReport(forecast, forecast, at(7), at(11))!.topMin).toBeNull();
+  });
+
+  it("has no report when the forecast does not reach the end of the window", () => {
+    expect(tripWeatherReport(forecast, null, at(7), new Date("2026-10-17T19:00:00Z"))).toBeNull();
+  });
+});
+
+function hm(d: Date) {
+  return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}

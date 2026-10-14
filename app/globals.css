@@ -306,3 +306,46 @@ h2,
   }
 }
 
+
+/* The sun dial's time slider: a thick track and a big round thumb, easy to catch with a thumb on a phone. */
+.time-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.time-slider::-webkit-slider-runnable-track {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--segment-bg);
+  border: 1px solid var(--border);
+}
+.time-slider::-moz-range-track {
+  height: 12px;
+  border-radius: 999px;
+  background: var(--segment-bg);
+  border: 1px solid var(--border);
+}
+.time-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 36px;
+  height: 36px;
+  margin-top: -13px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 4px solid #fff;
+  box-shadow: 0 2px 8px rgba(20, 35, 59, 0.35);
+}
+.time-slider::-moz-range-thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 4px solid #fff;
+  box-shadow: 0 2px 8px rgba(20, 35, 59, 0.35);
+}
+.time-slider:focus-visible { outline: none; }
+.time-slider:focus-visible::-webkit-slider-thumb { outline: 3px solid var(--accent); outline-offset: 2px; }
