@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Holý vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Holý vrch</name><trkseg>
+  <metadata><name>Holý vrch (Oreské)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Holý vrch (Oreské)</name><trkseg>
     <trkpt lat="48.727127" lon="17.213204"><ele>282</ele></trkpt>
     <trkpt lat="48.727111" lon="17.214272"><ele>286</ele></trkpt>
     <trkpt lat="48.727677" lon="17.214212"><ele>288</ele></trkpt>

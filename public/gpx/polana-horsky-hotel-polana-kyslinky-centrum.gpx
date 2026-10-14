@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Poľana</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Poľana</name><trkseg>
+  <metadata><name>Poľana (Hriňová)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Poľana (Hriňová)</name><trkseg>
     <trkpt lat="48.654294" lon="19.433567"><ele>777</ele></trkpt>
     <trkpt lat="48.654240" lon="19.434079"><ele>778</ele></trkpt>
     <trkpt lat="48.654090" lon="19.434944"><ele>783</ele></trkpt>

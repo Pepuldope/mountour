@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kamenná</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kamenná</name><trkseg>
+  <metadata><name>Kamenná (Vyhne)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kamenná (Vyhne)</name><trkseg>
     <trkpt lat="48.508961" lon="18.803733"><ele>414</ele></trkpt>
     <trkpt lat="48.509100" lon="18.803557"><ele>413</ele></trkpt>
     <trkpt lat="48.509130" lon="18.803456"><ele>413</ele></trkpt>

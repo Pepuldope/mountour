@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Tri kopce</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tri kopce</name><trkseg>
+  <metadata><name>Tri kopce (Vrbovce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Tri kopce (Vrbovce)</name><trkseg>
     <trkpt lat="48.823531" lon="17.301410"><ele>296</ele></trkpt>
     <trkpt lat="48.823501" lon="17.301546"><ele>301</ele></trkpt>
     <trkpt lat="48.822746" lon="17.302886"><ele>318</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Jánošíčka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Jánošíčka</name><trkseg>
+  <metadata><name>Chata Jánošíčka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Chata Jánošíčka</name><trkseg>
     <trkpt lat="48.991337" lon="19.281781"><ele>570</ele></trkpt>
     <trkpt lat="48.991423" lon="19.281701"><ele>570</ele></trkpt>
     <trkpt lat="48.991917" lon="19.280469"><ele>579</ele></trkpt>

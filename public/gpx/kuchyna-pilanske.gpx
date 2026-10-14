@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kuchyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kuchyňa</name><trkseg>
+  <metadata><name>Hrad Kuchyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Kuchyňa</name><trkseg>
     <trkpt lat="48.389616" lon="17.260143"><ele>542</ele></trkpt>
     <trkpt lat="48.390005" lon="17.258278"><ele>552</ele></trkpt>
     <trkpt lat="48.390058" lon="17.257860"><ele>548</ele></trkpt>

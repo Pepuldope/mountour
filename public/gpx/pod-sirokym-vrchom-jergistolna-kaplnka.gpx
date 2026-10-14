@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Pod Širokým vrchom</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Pod Širokým vrchom</name><trkseg>
+  <metadata><name>Vyhliadka pod Širokým vrchom</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka pod Širokým vrchom</name><trkseg>
     <trkpt lat="48.474863" lon="18.906452"><ele>628</ele></trkpt>
     <trkpt lat="48.475023" lon="18.906421"><ele>629</ele></trkpt>
     <trkpt lat="48.475164" lon="18.906273"><ele>628</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Šomoška</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Šomoška</name><trkseg>
+  <metadata><name>Hrad Šomoška</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Šomoška</name><trkseg>
     <trkpt lat="48.196835" lon="19.878437"><ele>307</ele></trkpt>
     <trkpt lat="48.197214" lon="19.878060"><ele>305</ele></trkpt>
     <trkpt lat="48.198000" lon="19.877518"><ele>293</ele></trkpt>

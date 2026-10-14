@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Tri chotáre</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tri chotáre</name><trkseg>
+  <metadata><name>Tri chotáre (Zlatá Baňa)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Tri chotáre (Zlatá Baňa)</name><trkseg>
     <trkpt lat="49.023814" lon="21.439722"><ele>304</ele></trkpt>
     <trkpt lat="49.023112" lon="21.439953"><ele>307</ele></trkpt>
     <trkpt lat="49.022611" lon="21.440045"><ele>311</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Lednica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Lednica</name><trkseg>
+  <metadata><name>Hrad Lednica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Lednica</name><trkseg>
     <trkpt lat="49.149382" lon="18.216886"><ele>424</ele></trkpt>
     <trkpt lat="49.149330" lon="18.216317"><ele>424</ele></trkpt>
     <trkpt lat="49.149171" lon="18.216254"><ele>424</ele></trkpt>

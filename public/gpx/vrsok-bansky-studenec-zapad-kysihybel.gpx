@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Vŕšok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vŕšok</name><trkseg>
+  <metadata><name>Vŕšok (Banský Studenec)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vŕšok (Banský Studenec)</name><trkseg>
     <trkpt lat="48.451670" lon="18.929234"><ele>565</ele></trkpt>
     <trkpt lat="48.451623" lon="18.930401"><ele>559</ele></trkpt>
     <trkpt lat="48.451519" lon="18.930850"><ele>559</ele></trkpt>

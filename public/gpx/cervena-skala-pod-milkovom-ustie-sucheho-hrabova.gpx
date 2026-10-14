@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Červená skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Červená skala</name><trkseg>
+  <metadata><name>Vodopád Červená skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vodopád Červená skala</name><trkseg>
     <trkpt lat="49.045583" lon="19.266683"><ele>888</ele></trkpt>
     <trkpt lat="49.044860" lon="19.263448"><ele>916</ele></trkpt>
     <trkpt lat="49.044633" lon="19.262161"><ele>938</ele></trkpt>

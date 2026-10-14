@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Starý háj</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Starý háj</name><trkseg>
+  <metadata><name>Vyhliadka Starý háj</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka Starý háj</name><trkseg>
     <trkpt lat="48.901652" lon="18.227006"><ele>326</ele></trkpt>
     <trkpt lat="48.901657" lon="18.227231"><ele>326</ele></trkpt>
     <trkpt lat="48.901721" lon="18.227546"><ele>328</ele></trkpt>

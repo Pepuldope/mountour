@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Vršatec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vršatec</name><trkseg>
+  <metadata><name>Hrad Vršatec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Vršatec</name><trkseg>
     <trkpt lat="49.071973" lon="18.169464"><ele>619</ele></trkpt>
     <trkpt lat="49.071426" lon="18.168710"><ele>629</ele></trkpt>
     <trkpt lat="49.071286" lon="18.168077"><ele>630</ele></trkpt>

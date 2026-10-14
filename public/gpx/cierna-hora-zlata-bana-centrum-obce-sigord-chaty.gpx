@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Čierna hora</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Čierna hora</name><trkseg>
+  <metadata><name>Čierna hora (Zlatá Baňa)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Čierna hora (Zlatá Baňa)</name><trkseg>
     <trkpt lat="48.955520" lon="21.392074"><ele>506</ele></trkpt>
     <trkpt lat="48.955808" lon="21.392170"><ele>511</ele></trkpt>
     <trkpt lat="48.955935" lon="21.392352"><ele>515</ele></trkpt>

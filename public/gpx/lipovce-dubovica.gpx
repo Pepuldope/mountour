@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Lipovce</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Lipovce</name><trkseg>
+  <metadata><name>Hrad Lipovce</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Lipovce</name><trkseg>
     <trkpt lat="49.134675" lon="20.953399"><ele>418</ele></trkpt>
     <trkpt lat="49.133652" lon="20.953295"><ele>419</ele></trkpt>
     <trkpt lat="49.133329" lon="20.953319"><ele>419</ele></trkpt>

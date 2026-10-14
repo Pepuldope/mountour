@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Patria</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Patria</name><trkseg>
+  <metadata><name>Patria (Kolačkov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Patria (Kolačkov)</name><trkseg>
     <trkpt lat="49.275915" lon="20.683926"><ele>557</ele></trkpt>
     <trkpt lat="49.275974" lon="20.683864"><ele>557</ele></trkpt>
     <trkpt lat="49.275985" lon="20.683781"><ele>557</ele></trkpt>

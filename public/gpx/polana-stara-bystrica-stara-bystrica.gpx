@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Poľana</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Poľana</name><trkseg>
+  <metadata><name>Poľana (Lodno)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Poľana (Lodno)</name><trkseg>
     <trkpt lat="49.341907" lon="18.916690"><ele>463</ele></trkpt>
     <trkpt lat="49.341788" lon="18.916836"><ele>463</ele></trkpt>
     <trkpt lat="49.341701" lon="18.917011"><ele>463</ele></trkpt>

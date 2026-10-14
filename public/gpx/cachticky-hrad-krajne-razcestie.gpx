@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Čachtický hrad</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Čachtický hrad</name><trkseg>
+  <metadata><name>Čachtický hrad z Čachtíc</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Čachtický hrad z Čachtíc</name><trkseg>
     <trkpt lat="48.695239" lon="17.691555"><ele>233</ele></trkpt>
     <trkpt lat="48.694964" lon="17.691381"><ele>231</ele></trkpt>
     <trkpt lat="48.694620" lon="17.691472"><ele>233</ele></trkpt>

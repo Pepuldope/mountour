@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Holý vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Holý vrch</name><trkseg>
+  <metadata><name>Holý vrch (Uhliská)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Holý vrch (Uhliská)</name><trkseg>
     <trkpt lat="48.403695" lon="18.751801"><ele>614</ele></trkpt>
     <trkpt lat="48.403853" lon="18.752013"><ele>616</ele></trkpt>
     <trkpt lat="48.404141" lon="18.752570"><ele>620</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Sitno</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Sitno</name><trkseg>
+  <metadata><name>Hrad Sitno</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Sitno</name><trkseg>
     <trkpt lat="48.404725" lon="18.856120"><ele>689</ele></trkpt>
     <trkpt lat="48.404680" lon="18.856275"><ele>690</ele></trkpt>
     <trkpt lat="48.404759" lon="18.856540"><ele>690</ele></trkpt>

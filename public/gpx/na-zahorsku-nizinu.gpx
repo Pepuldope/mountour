@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Na Záhorskú nížinu</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Na Záhorskú nížinu</name><trkseg>
+  <metadata><name>Vyhliadka na Záhorskú nížinu</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka na Záhorskú nížinu</name><trkseg>
     <trkpt lat="48.280363" lon="17.056179"><ele>207</ele></trkpt>
     <trkpt lat="48.280431" lon="17.055944"><ele>207</ele></trkpt>
     <trkpt lat="48.280510" lon="17.056034"><ele>206</ele></trkpt>

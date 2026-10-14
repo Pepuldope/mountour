@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Ostrá</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Ostrá</name><trkseg>
+  <metadata><name>Ostrá (Milpoš)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ostrá (Milpoš)</name><trkseg>
     <trkpt lat="49.221252" lon="20.943007"><ele>668</ele></trkpt>
     <trkpt lat="49.220967" lon="20.943611"><ele>673</ele></trkpt>
     <trkpt lat="49.220610" lon="20.943909"><ele>678</ele></trkpt>

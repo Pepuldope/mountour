@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>na Ružomberok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>na Ružomberok</name><trkseg>
+  <metadata><name>Vyhliadka na Ružomberok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka na Ružomberok</name><trkseg>
     <trkpt lat="49.049974" lon="19.272505"><ele>816</ele></trkpt>
     <trkpt lat="49.050021" lon="19.272447"><ele>816</ele></trkpt>
     <trkpt lat="49.050205" lon="19.273415"><ele>827</ele></trkpt>

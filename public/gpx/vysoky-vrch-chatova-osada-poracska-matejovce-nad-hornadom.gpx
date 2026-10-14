@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Vysoký vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vysoký vrch</name><trkseg>
+  <metadata><name>Vysoký vrch (Poráč)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vysoký vrch (Poráč)</name><trkseg>
     <trkpt lat="48.917048" lon="20.669953"><ele>417</ele></trkpt>
     <trkpt lat="48.916847" lon="20.670244"><ele>418</ele></trkpt>
     <trkpt lat="48.916674" lon="20.670366"><ele>419</ele></trkpt>

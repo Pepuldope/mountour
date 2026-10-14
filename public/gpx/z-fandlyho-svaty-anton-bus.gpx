@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Z Fándlyho</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Z Fándlyho</name><trkseg>
+  <metadata><name>Vyhliadka z Fándlyho</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka z Fándlyho</name><trkseg>
     <trkpt lat="48.421923" lon="18.941161"><ele>427</ele></trkpt>
     <trkpt lat="48.421420" lon="18.941073"><ele>426</ele></trkpt>
     <trkpt lat="48.421427" lon="18.940957"><ele>425</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Klokoč</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Klokoč</name><trkseg>
+  <metadata><name>Klokoč (Píla)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Klokoč (Píla)</name><trkseg>
     <trkpt lat="48.376295" lon="17.303989"><ele>437</ele></trkpt>
     <trkpt lat="48.376408" lon="17.303792"><ele>434</ele></trkpt>
     <trkpt lat="48.376719" lon="17.303580"><ele>429</ele></trkpt>

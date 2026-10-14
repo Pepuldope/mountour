@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Okrúhlica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Okrúhlica</name><trkseg>
+  <metadata><name>Okrúhlica (Zázrivá)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Okrúhlica (Zázrivá)</name><trkseg>
     <trkpt lat="49.277281" lon="19.155495"><ele>601</ele></trkpt>
     <trkpt lat="49.278200" lon="19.153970"><ele>609</ele></trkpt>
     <trkpt lat="49.278228" lon="19.153727"><ele>610</ele></trkpt>

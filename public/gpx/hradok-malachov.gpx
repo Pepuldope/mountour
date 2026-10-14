@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hrádok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrádok</name><trkseg>
+  <metadata><name>Hrádok (Horné Pršany)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrádok (Horné Pršany)</name><trkseg>
     <trkpt lat="48.709809" lon="19.090157"><ele>463</ele></trkpt>
     <trkpt lat="48.709793" lon="19.088881"><ele>467</ele></trkpt>
     <trkpt lat="48.709707" lon="19.088180"><ele>468</ele></trkpt>

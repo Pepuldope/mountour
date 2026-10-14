@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Brekov</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Brekov</name><trkseg>
+  <metadata><name>Hrad Brekov</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Brekov</name><trkseg>
     <trkpt lat="48.902496" lon="21.839716"><ele>141</ele></trkpt>
     <trkpt lat="48.902719" lon="21.839439"><ele>141</ele></trkpt>
     <trkpt lat="48.906071" lon="21.835981"><ele>144</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Múr</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Múr</name><trkseg>
+  <metadata><name>Múr (Kojšov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Múr (Kojšov)</name><trkseg>
     <trkpt lat="48.752306" lon="21.005917"><ele>674</ele></trkpt>
     <trkpt lat="48.752342" lon="21.006143"><ele>676</ele></trkpt>
     <trkpt lat="48.752333" lon="21.006556"><ele>678</ele></trkpt>

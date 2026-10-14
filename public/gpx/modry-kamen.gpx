@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Modrý Kameň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Modrý Kameň</name><trkseg>
+  <metadata><name>Hrad Modrý Kameň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Modrý Kameň</name><trkseg>
     <trkpt lat="48.205502" lon="19.350726"><ele>198</ele></trkpt>
     <trkpt lat="48.205442" lon="19.350502"><ele>197</ele></trkpt>
     <trkpt lat="48.205584" lon="19.350426"><ele>197</ele></trkpt>

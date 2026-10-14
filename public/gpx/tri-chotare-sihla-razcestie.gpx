@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Tri chotáre</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tri chotáre</name><trkseg>
+  <metadata><name>Tri chotáre (Drábsko)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Tri chotáre (Drábsko)</name><trkseg>
     <trkpt lat="48.662163" lon="19.760905"><ele>688</ele></trkpt>
     <trkpt lat="48.662740" lon="19.760527"><ele>697</ele></trkpt>
     <trkpt lat="48.663057" lon="19.760208"><ele>702</ele></trkpt>

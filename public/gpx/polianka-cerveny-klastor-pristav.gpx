@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Polianka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Polianka</name><trkseg>
+  <metadata><name>Polianka (Lesnica)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Polianka (Lesnica)</name><trkseg>
     <trkpt lat="49.399327" lon="20.416129"><ele>462</ele></trkpt>
     <trkpt lat="49.400335" lon="20.416998"><ele>469</ele></trkpt>
     <trkpt lat="49.400791" lon="20.416648"><ele>462</ele></trkpt>

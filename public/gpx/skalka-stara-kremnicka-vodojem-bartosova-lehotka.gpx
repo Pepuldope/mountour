@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Skalka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Skalka</name><trkseg>
+  <metadata><name>Skalka (Stará Kremnička)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Skalka (Stará Kremnička)</name><trkseg>
     <trkpt lat="48.653908" lon="18.910492"><ele>385</ele></trkpt>
     <trkpt lat="48.653858" lon="18.910699"><ele>385</ele></trkpt>
     <trkpt lat="48.653830" lon="18.910687"><ele>385</ele></trkpt>

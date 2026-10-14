@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Zniev</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Zniev</name><trkseg>
+  <metadata><name>Hrad Zniev</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Zniev</name><trkseg>
     <trkpt lat="48.973447" lon="18.802612"><ele>498</ele></trkpt>
     <trkpt lat="48.974030" lon="18.800286"><ele>502</ele></trkpt>
     <trkpt lat="48.974119" lon="18.799591"><ele>502</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hradisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hradisko</name><trkseg>
+  <metadata><name>Hradisko (Vyšné Repaše)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hradisko (Vyšné Repaše)</name><trkseg>
     <trkpt lat="49.013143" lon="20.726156"><ele>470</ele></trkpt>
     <trkpt lat="49.013186" lon="20.726277"><ele>469</ele></trkpt>
     <trkpt lat="49.013905" lon="20.726344"><ele>471</ele></trkpt>

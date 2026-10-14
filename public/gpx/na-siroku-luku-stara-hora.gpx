@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Na Širokú lúku</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Na Širokú lúku</name><trkseg>
+  <metadata><name>Vyhliadka na Širokú lúku</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka na Širokú lúku</name><trkseg>
     <trkpt lat="48.283787" lon="18.912258"><ele>311</ele></trkpt>
     <trkpt lat="48.283587" lon="18.912867"><ele>307</ele></trkpt>
     <trkpt lat="48.283356" lon="18.913190"><ele>306</ele></trkpt>

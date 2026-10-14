@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Košeca</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Košeca</name><trkseg>
+  <metadata><name>Hrad Košeca</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Košeca</name><trkseg>
     <trkpt lat="48.960300" lon="18.273037"><ele>435</ele></trkpt>
     <trkpt lat="48.960474" lon="18.273368"><ele>433</ele></trkpt>
     <trkpt lat="48.960630" lon="18.273765"><ele>429</ele></trkpt>

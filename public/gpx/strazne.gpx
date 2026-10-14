@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Strážne</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Strážne</name><trkseg>
+  <metadata><name>Strážne (Šípkov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Strážne (Šípkov)</name><trkseg>
     <trkpt lat="48.842007" lon="18.241617"><ele>271</ele></trkpt>
     <trkpt lat="48.843241" lon="18.241396"><ele>278</ele></trkpt>
     <trkpt lat="48.843713" lon="18.241421"><ele>279</ele></trkpt>

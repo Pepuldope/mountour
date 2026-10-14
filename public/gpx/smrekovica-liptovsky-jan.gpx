@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Smrekovica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Smrekovica</name><trkseg>
+  <metadata><name>Smrekovica (Liptovský Hrádok)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Smrekovica (Liptovský Hrádok)</name><trkseg>
     <trkpt lat="49.047579" lon="19.678854"><ele>636</ele></trkpt>
     <trkpt lat="49.047429" lon="19.679394"><ele>634</ele></trkpt>
     <trkpt lat="49.047441" lon="19.679585"><ele>634</ele></trkpt>

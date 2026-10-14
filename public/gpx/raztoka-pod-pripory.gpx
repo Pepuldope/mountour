@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Ráztoka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Ráztoka</name><trkseg>
+  <metadata><name>Ráztoka (Rudinská)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ráztoka (Rudinská)</name><trkseg>
     <trkpt lat="49.347088" lon="18.638987"><ele>524</ele></trkpt>
     <trkpt lat="49.346981" lon="18.639049"><ele>522</ele></trkpt>
     <trkpt lat="49.347556" lon="18.639555"><ele>525</ele></trkpt>

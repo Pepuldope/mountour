@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Baba</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Baba</name><trkseg>
+  <metadata><name>Baba (Pernek)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Baba (Pernek)</name><trkseg>
     <trkpt lat="48.382320" lon="17.261799"><ele>486</ele></trkpt>
     <trkpt lat="48.382375" lon="17.261389"><ele>484</ele></trkpt>
     <trkpt lat="48.382283" lon="17.260846"><ele>482</ele></trkpt>

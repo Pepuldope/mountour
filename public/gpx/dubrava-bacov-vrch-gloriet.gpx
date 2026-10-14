@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Dúbrava</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Dúbrava</name><trkseg>
+  <metadata><name>Dúbrava (Žakarovce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Dúbrava (Žakarovce)</name><trkseg>
     <trkpt lat="48.845965" lon="20.936133"><ele>539</ele></trkpt>
     <trkpt lat="48.846066" lon="20.936549"><ele>548</ele></trkpt>
     <trkpt lat="48.846441" lon="20.936744"><ele>543</ele></trkpt>

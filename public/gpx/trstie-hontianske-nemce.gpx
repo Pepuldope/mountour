@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Tŕstie</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tŕstie</name><trkseg>
+  <metadata><name>Tŕstie (Medovarce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Tŕstie (Medovarce)</name><trkseg>
     <trkpt lat="48.234530" lon="19.001498"><ele>181</ele></trkpt>
     <trkpt lat="48.234576" lon="19.001506"><ele>181</ele></trkpt>
     <trkpt lat="48.234607" lon="19.001663"><ele>181</ele></trkpt>

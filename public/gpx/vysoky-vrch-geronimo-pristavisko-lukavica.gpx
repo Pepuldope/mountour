@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Vysoký vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vysoký vrch</name><trkseg>
+  <metadata><name>Vysoký vrch (Dolná Mičiná)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vysoký vrch (Dolná Mičiná)</name><trkseg>
     <trkpt lat="48.641916" lon="19.207048"><ele>342</ele></trkpt>
     <trkpt lat="48.641983" lon="19.207048"><ele>343</ele></trkpt>
     <trkpt lat="48.642054" lon="19.206563"><ele>348</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Dlhá lúka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Dlhá lúka</name><trkseg>
+  <metadata><name>Dlhá lúka (Horná Breznica)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Dlhá lúka (Horná Breznica)</name><trkseg>
     <trkpt lat="49.108684" lon="18.250282"><ele>335</ele></trkpt>
     <trkpt lat="49.108903" lon="18.250977"><ele>337</ele></trkpt>
     <trkpt lat="49.109116" lon="18.251839"><ele>340</ele></trkpt>

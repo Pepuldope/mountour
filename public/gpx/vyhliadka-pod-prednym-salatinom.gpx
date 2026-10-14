@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>vyhliadka pod Predným Salatínom</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>vyhliadka pod Predným Salatínom</name><trkseg>
+  <metadata><name>Vyhliadka pod Predným Salatínom</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka pod Predným Salatínom</name><trkseg>
     <trkpt lat="49.238660" lon="19.713286"><ele>1036</ele></trkpt>
     <trkpt lat="49.238611" lon="19.713142"><ele>1044</ele></trkpt>
     <trkpt lat="49.238548" lon="19.713107"><ele>1047</ele></trkpt>

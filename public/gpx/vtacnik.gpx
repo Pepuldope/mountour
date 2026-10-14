@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Vtáčnik</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vtáčnik</name><trkseg>
+  <metadata><name>Vtáčnik (Ružomberok)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vtáčnik (Ružomberok)</name><trkseg>
     <trkpt lat="49.053083" lon="19.263645"><ele>928</ele></trkpt>
     <trkpt lat="49.053177" lon="19.263594"><ele>929</ele></trkpt>
     <trkpt lat="49.053168" lon="19.263489"><ele>929</ele></trkpt>

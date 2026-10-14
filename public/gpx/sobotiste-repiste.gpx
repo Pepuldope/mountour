@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Sobotište</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Sobotište</name><trkseg>
+  <metadata><name>Sobotište (Bzenica)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Sobotište (Bzenica)</name><trkseg>
     <trkpt lat="48.515788" lon="18.845477"><ele>516</ele></trkpt>
     <trkpt lat="48.515532" lon="18.845156"><ele>520</ele></trkpt>
     <trkpt lat="48.515391" lon="18.844782"><ele>522</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Lazy</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Lazy</name><trkseg>
+  <metadata><name>Lazy (Lipovce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Lazy (Lipovce)</name><trkseg>
     <trkpt lat="49.046398" lon="21.019736"><ele>478</ele></trkpt>
     <trkpt lat="49.046256" lon="21.019399"><ele>475</ele></trkpt>
     <trkpt lat="49.046317" lon="21.018898"><ele>472</ele></trkpt>

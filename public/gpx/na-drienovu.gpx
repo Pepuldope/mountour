@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Na Drieňovú</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Na Drieňovú</name><trkseg>
+  <metadata><name>Vyhliadka na Drieňovú</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka na Drieňovú</name><trkseg>
     <trkpt lat="48.458781" lon="18.893455"><ele>600</ele></trkpt>
     <trkpt lat="48.458763" lon="18.893435"><ele>600</ele></trkpt>
     <trkpt lat="48.458739" lon="18.893749"><ele>599</ele></trkpt>

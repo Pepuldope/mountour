@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hradište</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hradište</name><trkseg>
+  <metadata><name>Hradište (Vydrná)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hradište (Vydrná)</name><trkseg>
     <trkpt lat="49.176377" lon="18.254042"><ele>322</ele></trkpt>
     <trkpt lat="49.176552" lon="18.254293"><ele>322</ele></trkpt>
     <trkpt lat="49.176535" lon="18.254429"><ele>320</ele></trkpt>

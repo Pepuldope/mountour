@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kozelník</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kozelník</name><trkseg>
+  <metadata><name>Kozelník (Dolný Harmanec)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kozelník (Dolný Harmanec)</name><trkseg>
     <trkpt lat="48.773748" lon="19.017335"><ele>985</ele></trkpt>
     <trkpt lat="48.774101" lon="19.016620"><ele>1006</ele></trkpt>
     <trkpt lat="48.774117" lon="19.016356"><ele>1012</ele></trkpt>

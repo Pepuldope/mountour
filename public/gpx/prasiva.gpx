@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Prašivá</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Prašivá</name><trkseg>
+  <metadata><name>Prašivá (Demänovská Dolina)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Prašivá (Demänovská Dolina)</name><trkseg>
     <trkpt lat="48.924067" lon="19.602686"><ele>1209</ele></trkpt>
     <trkpt lat="48.924087" lon="19.602554"><ele>1210</ele></trkpt>
     <trkpt lat="48.924178" lon="19.602466"><ele>1210</ele></trkpt>

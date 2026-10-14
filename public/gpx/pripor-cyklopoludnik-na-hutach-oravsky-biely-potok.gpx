@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Prípor</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Prípor</name><trkseg>
+  <metadata><name>Prípor (Malé Borové)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Prípor (Malé Borové)</name><trkseg>
     <trkpt lat="49.286555" lon="19.554874"><ele>654</ele></trkpt>
     <trkpt lat="49.286434" lon="19.553963"><ele>653</ele></trkpt>
     <trkpt lat="49.286359" lon="19.553618"><ele>653</ele></trkpt>

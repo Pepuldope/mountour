@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Veľká skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Veľká skala</name><trkseg>
+  <metadata><name>Veľká skala (Vyšný Slavkov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Veľká skala (Vyšný Slavkov)</name><trkseg>
     <trkpt lat="49.067085" lon="20.856129"><ele>577</ele></trkpt>
     <trkpt lat="49.067079" lon="20.856068"><ele>577</ele></trkpt>
     <trkpt lat="49.066231" lon="20.856023"><ele>579</ele></trkpt>

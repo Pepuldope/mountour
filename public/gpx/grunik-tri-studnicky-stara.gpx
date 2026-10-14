@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Grúnik</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Grúnik</name><trkseg>
+  <metadata><name>Grúnik (Važec)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Grúnik (Važec)</name><trkseg>
     <trkpt lat="49.139943" lon="19.966307"><ele>1138</ele></trkpt>
     <trkpt lat="49.140067" lon="19.966651"><ele>1143</ele></trkpt>
     <trkpt lat="49.140314" lon="19.967057"><ele>1154</ele></trkpt>

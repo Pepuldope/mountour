@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Banka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Banka</name><trkseg>
+  <metadata><name>Banka (Zacharovce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Banka (Zacharovce)</name><trkseg>
     <trkpt lat="48.384590" lon="20.028459"><ele>215</ele></trkpt>
     <trkpt lat="48.384652" lon="20.028254"><ele>215</ele></trkpt>
     <trkpt lat="48.384665" lon="20.028044"><ele>215</ele></trkpt>

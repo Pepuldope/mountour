@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Vysoká</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vysoká</name><trkseg>
+  <metadata><name>Vysoká (Riečky)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vysoká (Riečky)</name><trkseg>
     <trkpt lat="49.470768" lon="18.622197"><ele>603</ele></trkpt>
     <trkpt lat="49.470711" lon="18.622211"><ele>603</ele></trkpt>
     <trkpt lat="49.470647" lon="18.621973"><ele>604</ele></trkpt>
@@ -73,7 +73,9 @@
     <trkpt lat="49.449241" lon="18.623535"><ele>729</ele></trkpt>
     <trkpt lat="49.449107" lon="18.623340"><ele>728</ele></trkpt>
     <trkpt lat="49.449036" lon="18.623090"><ele>727</ele></trkpt>
+    <trkpt lat="49.448974" lon="18.622982"><ele>726</ele></trkpt>
     <trkpt lat="49.448912" lon="18.622951"><ele>725</ele></trkpt>
+    <trkpt lat="49.448760" lon="18.622979"><ele>726</ele></trkpt>
     <trkpt lat="49.448462" lon="18.623101"><ele>730</ele></trkpt>
     <trkpt lat="49.448383" lon="18.623092"><ele>730</ele></trkpt>
     <trkpt lat="49.446951" lon="18.622009"><ele>733</ele></trkpt>
@@ -141,7 +143,9 @@
     <trkpt lat="49.446951" lon="18.622009"><ele>733</ele></trkpt>
     <trkpt lat="49.448383" lon="18.623092"><ele>730</ele></trkpt>
     <trkpt lat="49.448462" lon="18.623101"><ele>730</ele></trkpt>
+    <trkpt lat="49.448760" lon="18.622979"><ele>726</ele></trkpt>
     <trkpt lat="49.448912" lon="18.622951"><ele>725</ele></trkpt>
+    <trkpt lat="49.448974" lon="18.622982"><ele>726</ele></trkpt>
     <trkpt lat="49.449036" lon="18.623090"><ele>727</ele></trkpt>
     <trkpt lat="49.449107" lon="18.623340"><ele>728</ele></trkpt>
     <trkpt lat="49.449241" lon="18.623535"><ele>729</ele></trkpt>

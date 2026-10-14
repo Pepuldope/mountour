@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Smolník</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Smolník</name><trkseg>
+  <metadata><name>Smolník (Svit)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Smolník (Svit)</name><trkseg>
     <trkpt lat="49.041074" lon="20.159633"><ele>769</ele></trkpt>
     <trkpt lat="49.041290" lon="20.159621"><ele>768</ele></trkpt>
     <trkpt lat="49.041758" lon="20.159886"><ele>766</ele></trkpt>

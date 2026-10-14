@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Havrania skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Havrania skala</name><trkseg>
+  <metadata><name>Havrania skala (Smolenice)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Havrania skala (Smolenice)</name><trkseg>
     <trkpt lat="48.547331" lon="17.431942"><ele>244</ele></trkpt>
     <trkpt lat="48.547157" lon="17.431846"><ele>244</ele></trkpt>
     <trkpt lat="48.547333" lon="17.431037"><ele>251</ele></trkpt>

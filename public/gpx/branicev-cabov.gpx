@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Braničev</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Braničev</name><trkseg>
+  <metadata><name>Hrad Braničev</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Braničev</name><trkseg>
     <trkpt lat="48.804259" lon="21.641503"><ele>223</ele></trkpt>
     <trkpt lat="48.804702" lon="21.640631"><ele>226</ele></trkpt>
     <trkpt lat="48.804939" lon="21.639981"><ele>227</ele></trkpt>

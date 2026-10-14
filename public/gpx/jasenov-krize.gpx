@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Jaseňov</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Jaseňov</name><trkseg>
+  <metadata><name>Jaseňov (Livovská Huta)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Jaseňov (Livovská Huta)</name><trkseg>
     <trkpt lat="49.279426" lon="20.924193"><ele>513</ele></trkpt>
     <trkpt lat="49.278406" lon="20.924833"><ele>514</ele></trkpt>
     <trkpt lat="49.277510" lon="20.926412"><ele>519</ele></trkpt>

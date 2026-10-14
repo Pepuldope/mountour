@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kamenná hora</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kamenná hora</name><trkseg>
+  <metadata><name>Kamenná hora (Zlaté)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kamenná hora (Zlaté)</name><trkseg>
     <trkpt lat="49.335120" lon="21.244981"><ele>537</ele></trkpt>
     <trkpt lat="49.335468" lon="21.244849"><ele>543</ele></trkpt>
     <trkpt lat="49.335635" lon="21.244894"><ele>547</ele></trkpt>

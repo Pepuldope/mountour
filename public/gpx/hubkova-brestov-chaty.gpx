@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hubková</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hubková</name><trkseg>
+  <metadata><name>Chata Hubková</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Chata Hubková</name><trkseg>
     <trkpt lat="48.984541" lon="21.895439"><ele>227</ele></trkpt>
     <trkpt lat="48.984485" lon="21.895557"><ele>227</ele></trkpt>
     <trkpt lat="48.984129" lon="21.895738"><ele>230</ele></trkpt>

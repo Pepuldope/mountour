@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Beckov</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Beckov</name><trkseg>
+  <metadata><name>Beckov (Štiavnické Bane)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Beckov (Štiavnické Bane)</name><trkseg>
     <trkpt lat="48.417955" lon="18.859949"><ele>700</ele></trkpt>
     <trkpt lat="48.418196" lon="18.860135"><ele>702</ele></trkpt>
     <trkpt lat="48.418725" lon="18.860114"><ele>711</ele></trkpt>

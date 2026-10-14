@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Pálenica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Pálenica</name><trkseg>
+  <metadata><name>Pálenica (Hnilčík)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Pálenica (Hnilčík)</name><trkseg>
     <trkpt lat="48.842102" lon="20.433906"><ele>733</ele></trkpt>
     <trkpt lat="48.842245" lon="20.434361"><ele>731</ele></trkpt>
     <trkpt lat="48.842303" lon="20.434720"><ele>731</ele></trkpt>

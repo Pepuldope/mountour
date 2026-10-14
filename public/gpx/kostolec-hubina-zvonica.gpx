@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kostolec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kostolec</name><trkseg>
+  <metadata><name>Vyhliadka Kostolec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka Kostolec</name><trkseg>
     <trkpt lat="48.617432" lon="17.887699"><ele>225</ele></trkpt>
     <trkpt lat="48.617293" lon="17.887394"><ele>223</ele></trkpt>
     <trkpt lat="48.617444" lon="17.887158"><ele>221</ele></trkpt>

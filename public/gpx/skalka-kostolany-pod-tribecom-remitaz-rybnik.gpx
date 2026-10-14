@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Skalka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Skalka</name><trkseg>
+  <metadata><name>Vyhliadka Skalka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka Skalka</name><trkseg>
     <trkpt lat="48.401315" lon="18.204206"><ele>244</ele></trkpt>
     <trkpt lat="48.399923" lon="18.205774"><ele>245</ele></trkpt>
     <trkpt lat="48.399676" lon="18.205962"><ele>243</ele></trkpt>

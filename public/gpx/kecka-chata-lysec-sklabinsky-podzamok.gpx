@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kečka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kečka</name><trkseg>
+  <metadata><name>Kečka (Sklabinský Podzámok)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kečka (Sklabinský Podzámok)</name><trkseg>
     <trkpt lat="49.053121" lon="19.023520"><ele>505</ele></trkpt>
     <trkpt lat="49.052903" lon="19.023716"><ele>504</ele></trkpt>
     <trkpt lat="49.052673" lon="19.023992"><ele>505</ele></trkpt>

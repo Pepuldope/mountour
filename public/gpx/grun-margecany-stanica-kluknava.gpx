@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Grúň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Grúň</name><trkseg>
+  <metadata><name>Grúň (Margecany)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Grúň (Margecany)</name><trkseg>
     <trkpt lat="48.925395" lon="20.941631"><ele>359</ele></trkpt>
     <trkpt lat="48.925649" lon="20.941822"><ele>360</ele></trkpt>
     <trkpt lat="48.925589" lon="20.942063"><ele>365</ele></trkpt>

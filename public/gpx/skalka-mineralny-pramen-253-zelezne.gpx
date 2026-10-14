@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Skalka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Skalka</name><trkseg>
+  <metadata><name>Skalka (Liptovská Lúžna)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Skalka (Liptovská Lúžna)</name><trkseg>
     <trkpt lat="48.948485" lon="19.396672"><ele>1067</ele></trkpt>
     <trkpt lat="48.948561" lon="19.396396"><ele>1065</ele></trkpt>
     <trkpt lat="48.948503" lon="19.395492"><ele>1067</ele></trkpt>

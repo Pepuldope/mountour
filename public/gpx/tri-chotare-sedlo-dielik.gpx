@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Tri chotáre</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tri chotáre</name><trkseg>
+  <metadata><name>Tri chotáre (Tisovec)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Tri chotáre (Tisovec)</name><trkseg>
     <trkpt lat="48.700631" lon="19.984443"><ele>587</ele></trkpt>
     <trkpt lat="48.700622" lon="19.984576"><ele>590</ele></trkpt>
     <trkpt lat="48.700662" lon="19.984763"><ele>596</ele></trkpt>

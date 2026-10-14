@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kýčerka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kýčerka</name><trkseg>
+  <metadata><name>Kýčerka (Ochodnica)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kýčerka (Ochodnica)</name><trkseg>
     <trkpt lat="49.305280" lon="18.784457"><ele>359</ele></trkpt>
     <trkpt lat="49.305230" lon="18.784457"><ele>359</ele></trkpt>
     <trkpt lat="49.305481" lon="18.783741"><ele>358</ele></trkpt>

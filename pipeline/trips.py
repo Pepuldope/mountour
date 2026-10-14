@@ -7,6 +7,7 @@ from dataclasses import dataclass, field
 import numpy as np
 from scipy.spatial import cKDTree
 
+from . import names
 from .geo import LocalProjection, ascent_descent, din33466_minutes, haversine, rdp_indices, resample, round_up_15, slugify
 
 COLOUR_ORDER = ["red", "blue", "green", "yellow", "black"]
@@ -177,7 +178,10 @@ class TripBuilder:
     def candidates(self):
         out = []
         for kind, f in self.osm.destinations:
-            if f.name.strip().lower() in GENERIC_NAMES:
+            if f.name.strip().lower() in GENERIC_NAMES or names.is_junk(f.name):
+                continue
+            if names.is_foreign(f.name, f.tags):
+                self.report.setdefault("foreign", []).append(f.name)
                 continue
             region = self.region_of(f.lat, f.lon)
             if region is None or not self.in_country(f.lat, f.lon):
@@ -265,6 +269,9 @@ class TripBuilder:
 
         for t in trips:
             t.pop("_extra", None)
+        trips, self.report["names"] = names.tidy(trips, names.Places(getattr(self.osm, "places", [])))
+        mains = {t["slug"] for t in trips}
+        variants = [v for v in variants if v["variant_of"] in mains]
         self._rank(trips)
         primary_rank = {t["slug"]: t["rank"] for t in trips}
         by_slug = {t["slug"]: t for t in trips}
@@ -276,6 +283,8 @@ class TripBuilder:
             v.pop("_score", None)
             main = by_slug[v["variant_of"]]
             v["rank"] = primary_rank[v["variant_of"]]
+            if not v["curated"]:
+                v["name"] = main["name"]
             on_main = {p["osm"] for p in main["pois"]}
             via = next((goals[p["osm"]] for p in v["pois"] if p["osm"] in goals and p["osm"] not in on_main
                         and goals[p["osm"]] != v["destination"]["name"] and len(goals[p["osm"]]) <= 26), None)

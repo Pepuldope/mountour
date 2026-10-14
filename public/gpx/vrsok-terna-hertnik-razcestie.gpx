@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Vŕšok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vŕšok</name><trkseg>
+  <metadata><name>Vŕšok (Geraltov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vŕšok (Geraltov)</name><trkseg>
     <trkpt lat="49.207866" lon="21.227784"><ele>493</ele></trkpt>
     <trkpt lat="49.207892" lon="21.227303"><ele>494</ele></trkpt>
     <trkpt lat="49.207784" lon="21.227329"><ele>493</ele></trkpt>

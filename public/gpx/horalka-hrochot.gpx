@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Horalka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Horalka</name><trkseg>
+  <metadata><name>Chata Horalka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Chata Horalka</name><trkseg>
     <trkpt lat="48.657586" lon="19.309528"><ele>610</ele></trkpt>
     <trkpt lat="48.657729" lon="19.310046"><ele>609</ele></trkpt>
     <trkpt lat="48.657801" lon="19.310536"><ele>609</ele></trkpt>

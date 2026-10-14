@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Tanečnica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tanečnica</name><trkseg>
+  <metadata><name>Tanečnica (Podrozsutec)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Tanečnica (Podrozsutec)</name><trkseg>
     <trkpt lat="49.176304" lon="19.133447"><ele>450</ele></trkpt>
     <trkpt lat="49.176624" lon="19.133358"><ele>457</ele></trkpt>
     <trkpt lat="49.176766" lon="19.133209"><ele>457</ele></trkpt>

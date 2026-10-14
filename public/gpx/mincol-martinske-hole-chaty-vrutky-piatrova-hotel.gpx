@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Minčol</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Minčol</name><trkseg>
+  <metadata><name>Minčol (Stráňavy)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Minčol (Stráňavy)</name><trkseg>
     <trkpt lat="49.119644" lon="18.887894"><ele>519</ele></trkpt>
     <trkpt lat="49.120215" lon="18.884508"><ele>551</ele></trkpt>
     <trkpt lat="49.121063" lon="18.881322"><ele>560</ele></trkpt>

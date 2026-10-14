@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Na Podunajskú nížinu</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Na Podunajskú nížinu</name><trkseg>
+  <metadata><name>Vyhliadka na Podunajskú nížinu</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka na Podunajskú nížinu</name><trkseg>
     <trkpt lat="48.409565" lon="18.755110"><ele>685</ele></trkpt>
     <trkpt lat="48.409401" lon="18.755241"><ele>684</ele></trkpt>
     <trkpt lat="48.409440" lon="18.755368"><ele>685</ele></trkpt>

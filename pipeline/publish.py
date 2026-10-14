@@ -7,6 +7,7 @@ from xml.sax.saxutils import escape
 
 import numpy as np
 
+from . import names
 from .geo import LocalProjection, rdp_indices
 
 DETAIL_ONLY = ("path", "turnaround_index", "marking_runs", "parking_alternatives", "transit_alternatives", "pois", "routes")
@@ -180,6 +181,21 @@ def _report(trips, rep, now, osm_at, drive):
           f"{sum(1 for x in town if x[2] == 'city walk')} routes left out as city walks.", "",
           "| Goal | Kind | Why | Start | Town metres |", "|---|---|---|---|---|"]
     L += [f"| {n} | {k} | {w} | {st} | {m} |" for n, k, w, st, m in town]
+    nm = rep.get("names") or {}
+    found = names.problems(trips)
+    L += ["", "## Name check", "",
+          f"{len(nm.get('renamed', []))} names now say what the place is, "
+          f"{len(nm.get('merged', []))} places mapped twice merged, "
+          f"{len(nm.get('told_apart', []))} shared names told apart by the nearest village, "
+          f"{len(rep.get('foreign', []))} foreign names left out. Still wrong: {len(found)}.", ""]
+    L += [f"- {sev}: {text}" for sev, text in found]
+    L += ["", "| Was | Now | Slug |", "|---|---|---|"]
+    L += [f"| {a} | {b} | {s} |" for a, b, s in nm.get("renamed", []) + nm.get("told_apart", [])]
+    if nm.get("merged"):
+        L += ["", "Merged (left out → kept, metres apart):", ""]
+        L += [f"- {a} ({s}) → {b} ({k}), {m} m" for a, s, b, k, m in nm["merged"]]
+    if rep.get("foreign"):
+        L += ["", "Foreign names left out: " + ", ".join(sorted(set(rep["foreign"])))]
     L += ["", "## Rejected candidates", ""] + [f"- {k}: {v}" for k, v in sorted(rep["rejected"].items())]
     if rep.get("unresolved"):
         L += ["", "## Rule place names not found in OSM (check spelling in the rule files)", ""]

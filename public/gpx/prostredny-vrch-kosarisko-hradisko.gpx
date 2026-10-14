@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Prostredný vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Prostredný vrch</name><trkseg>
+  <metadata><name>Prostredný vrch (Limbach)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Prostredný vrch (Limbach)</name><trkseg>
     <trkpt lat="48.267042" lon="17.191732"><ele>342</ele></trkpt>
     <trkpt lat="48.268718" lon="17.190469"><ele>374</ele></trkpt>
     <trkpt lat="48.268999" lon="17.190327"><ele>374</ele></trkpt>

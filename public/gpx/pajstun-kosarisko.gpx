@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hrad Pajštún</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrad Pajštún</name><trkseg>
+  <metadata><name>Hrad Pajštún z Borinky</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Pajštún z Borinky</name><trkseg>
     <trkpt lat="48.288671" lon="17.125378"><ele>410</ele></trkpt>
     <trkpt lat="48.288556" lon="17.125299"><ele>409</ele></trkpt>
     <trkpt lat="48.288586" lon="17.125205"><ele>411</ele></trkpt>

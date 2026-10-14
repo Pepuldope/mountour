@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Kykula</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kykula</name><trkseg>
+  <metadata><name>Kykula (Stodolčiská)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Kykula (Stodolčiská)</name><trkseg>
     <trkpt lat="49.478271" lon="18.741659"><ele>483</ele></trkpt>
     <trkpt lat="49.478192" lon="18.741304"><ele>483</ele></trkpt>
     <trkpt lat="49.478139" lon="18.741195"><ele>483</ele></trkpt>

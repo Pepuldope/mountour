@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Gýmeš</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Gýmeš</name><trkseg>
+  <metadata><name>Hrad Gýmeš</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Gýmeš</name><trkseg>
     <trkpt lat="48.395812" lon="18.260305"><ele>198</ele></trkpt>
     <trkpt lat="48.395697" lon="18.260177"><ele>199</ele></trkpt>
     <trkpt lat="48.395816" lon="18.260030"><ele>199</ele></trkpt>

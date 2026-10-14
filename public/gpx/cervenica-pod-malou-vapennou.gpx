@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Červenica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Červenica</name><trkseg>
+  <metadata><name>Červenica (Plavecké Podhradie)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Červenica (Plavecké Podhradie)</name><trkseg>
     <trkpt lat="48.457115" lon="17.249121"><ele>380</ele></trkpt>
     <trkpt lat="48.457078" lon="17.250317"><ele>400</ele></trkpt>
     <trkpt lat="48.457251" lon="17.250941"><ele>416</ele></trkpt>

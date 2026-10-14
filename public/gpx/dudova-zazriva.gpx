@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Dudová</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Dudová</name><trkseg>
+  <metadata><name>Dudová (Zázrivá)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Dudová (Zázrivá)</name><trkseg>
     <trkpt lat="49.277258" lon="19.155541"><ele>600</ele></trkpt>
     <trkpt lat="49.277196" lon="19.155473"><ele>601</ele></trkpt>
     <trkpt lat="49.277150" lon="19.155567"><ele>601</ele></trkpt>

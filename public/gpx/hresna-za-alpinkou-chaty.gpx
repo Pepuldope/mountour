@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hrešná</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrešná</name><trkseg>
+  <metadata><name>Chata Hrešná</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Chata Hrešná</name><trkseg>
     <trkpt lat="48.762818" lon="21.178193"><ele>321</ele></trkpt>
     <trkpt lat="48.762960" lon="21.178546"><ele>336</ele></trkpt>
     <trkpt lat="48.762848" lon="21.178892"><ele>342</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Holý vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Holý vrch</name><trkseg>
+  <metadata><name>Holý vrch (Nevidzany)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Holý vrch (Nevidzany)</name><trkseg>
     <trkpt lat="48.819641" lon="18.583751"><ele>395</ele></trkpt>
     <trkpt lat="48.819502" lon="18.583134"><ele>401</ele></trkpt>
     <trkpt lat="48.819277" lon="18.582580"><ele>406</ele></trkpt>

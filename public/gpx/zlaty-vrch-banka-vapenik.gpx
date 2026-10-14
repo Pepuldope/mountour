@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Zlatý vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Zlatý vrch</name><trkseg>
+  <metadata><name>Zlatý vrch (Moravany nad Váhom)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Zlatý vrch (Moravany nad Váhom)</name><trkseg>
     <trkpt lat="48.585138" lon="17.851054"><ele>163</ele></trkpt>
     <trkpt lat="48.585286" lon="17.851736"><ele>164</ele></trkpt>
     <trkpt lat="48.585423" lon="17.852181"><ele>166</ele></trkpt>

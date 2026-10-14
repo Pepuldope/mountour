@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Solisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Solisko</name><trkseg>
+  <metadata><name>Solisko (Muránska Zdychava)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Solisko (Muránska Zdychava)</name><trkseg>
     <trkpt lat="48.664177" lon="20.201615"><ele>299</ele></trkpt>
     <trkpt lat="48.664367" lon="20.201823"><ele>300</ele></trkpt>
     <trkpt lat="48.664509" lon="20.202122"><ele>301</ele></trkpt>

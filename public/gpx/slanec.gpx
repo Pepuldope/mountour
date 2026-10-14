@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Slanec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Slanec</name><trkseg>
+  <metadata><name>Hrad Slanec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Slanec</name><trkseg>
     <trkpt lat="48.636237" lon="21.478265"><ele>343</ele></trkpt>
     <trkpt lat="48.635788" lon="21.476943"><ele>356</ele></trkpt>
     <trkpt lat="48.635698" lon="21.476334"><ele>359</ele></trkpt>

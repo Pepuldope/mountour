@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Uhlisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Uhlisko</name><trkseg>
+  <metadata><name>Uhlisko (Sopkovce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Uhlisko (Sopkovce)</name><trkseg>
     <trkpt lat="48.946163" lon="21.923549"><ele>327</ele></trkpt>
     <trkpt lat="48.946185" lon="21.923757"><ele>328</ele></trkpt>
     <trkpt lat="48.946228" lon="21.923853"><ele>329</ele></trkpt>

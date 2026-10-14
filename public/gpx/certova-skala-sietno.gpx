@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Čertova skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Čertova skala</name><trkseg>
+  <metadata><name>Čertova skala (Hronská Breznica)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Čertova skala (Hronská Breznica)</name><trkseg>
     <trkpt lat="48.569703" lon="19.048083"><ele>289</ele></trkpt>
     <trkpt lat="48.569370" lon="19.047707"><ele>302</ele></trkpt>
     <trkpt lat="48.569056" lon="19.047186"><ele>299</ele></trkpt>

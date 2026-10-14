@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Javorina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Javorina</name><trkseg>
+  <metadata><name>Javorina (Svätý Jur)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Javorina (Svätý Jur)</name><trkseg>
     <trkpt lat="48.247493" lon="17.138740"><ele>475</ele></trkpt>
     <trkpt lat="48.247431" lon="17.139506"><ele>477</ele></trkpt>
     <trkpt lat="48.247379" lon="17.139765"><ele>476</ele></trkpt>

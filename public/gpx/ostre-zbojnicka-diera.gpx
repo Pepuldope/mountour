@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Ostré</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Ostré</name><trkseg>
+  <metadata><name>Ostré (Švošov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ostré (Švošov)</name><trkseg>
     <trkpt lat="49.122773" lon="19.194552"><ele>453</ele></trkpt>
     <trkpt lat="49.122749" lon="19.195632"><ele>456</ele></trkpt>
     <trkpt lat="49.122797" lon="19.195739"><ele>458</ele></trkpt>

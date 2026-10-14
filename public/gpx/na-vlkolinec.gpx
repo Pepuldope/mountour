@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>na Vlkolínec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>na Vlkolínec</name><trkseg>
+  <metadata><name>Vyhliadka na Vlkolínec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka na Vlkolínec</name><trkseg>
     <trkpt lat="49.026203" lon="19.292122"><ele>525</ele></trkpt>
     <trkpt lat="49.026198" lon="19.291717"><ele>526</ele></trkpt>
     <trkpt lat="49.026266" lon="19.291604"><ele>526</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Na kalvárii</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Na kalvárii</name><trkseg>
+  <metadata><name>Vyhliadka na kalvárii</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka na kalvárii</name><trkseg>
     <trkpt lat="48.434266" lon="18.864625"><ele>668</ele></trkpt>
     <trkpt lat="48.434393" lon="18.865393"><ele>666</ele></trkpt>
     <trkpt lat="48.434731" lon="18.866379"><ele>664</ele></trkpt>

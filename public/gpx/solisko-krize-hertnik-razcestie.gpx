@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Solisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Solisko</name><trkseg>
+  <metadata><name>Solisko (Kríže)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Solisko (Kríže)</name><trkseg>
     <trkpt lat="49.207866" lon="21.227784"><ele>493</ele></trkpt>
     <trkpt lat="49.207892" lon="21.227303"><ele>494</ele></trkpt>
     <trkpt lat="49.207985" lon="21.227211"><ele>494</ele></trkpt>

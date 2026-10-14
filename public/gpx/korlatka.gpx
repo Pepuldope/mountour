@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Korlátka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Korlátka</name><trkseg>
+  <metadata><name>Hrad Korlátka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Korlátka</name><trkseg>
     <trkpt lat="48.557187" lon="17.348792"><ele>247</ele></trkpt>
     <trkpt lat="48.557472" lon="17.349247"><ele>247</ele></trkpt>
     <trkpt lat="48.557872" lon="17.349694"><ele>249</ele></trkpt>

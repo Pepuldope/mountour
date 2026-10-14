@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Sokol</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Sokol</name><trkseg>
+  <metadata><name>Sokol (Košecké Podhradie)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Sokol (Košecké Podhradie)</name><trkseg>
     <trkpt lat="48.972571" lon="18.306076"><ele>341</ele></trkpt>
     <trkpt lat="48.972468" lon="18.305882"><ele>343</ele></trkpt>
     <trkpt lat="48.972082" lon="18.304834"><ele>355</ele></trkpt>

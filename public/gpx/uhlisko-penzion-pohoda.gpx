@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Uhlisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Uhlisko</name><trkseg>
+  <metadata><name>Uhlisko (Breza)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Uhlisko (Breza)</name><trkseg>
     <trkpt lat="49.375518" lon="19.344062"><ele>658</ele></trkpt>
     <trkpt lat="49.375116" lon="19.344540"><ele>665</ele></trkpt>
     <trkpt lat="49.374935" lon="19.344673"><ele>669</ele></trkpt>

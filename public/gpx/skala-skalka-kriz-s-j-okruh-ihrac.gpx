@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Skala</name><trkseg>
+  <metadata><name>Vyhliadka Skala (Nevoľné)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka Skala (Nevoľné)</name><trkseg>
     <trkpt lat="48.655868" lon="18.951784"><ele>491</ele></trkpt>
     <trkpt lat="48.655814" lon="18.951818"><ele>491</ele></trkpt>
     <trkpt lat="48.655952" lon="18.952443"><ele>494</ele></trkpt>

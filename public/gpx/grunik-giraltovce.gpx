@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Grúnik</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Grúnik</name><trkseg>
+  <metadata><name>Grúnik (Matovce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Grúnik (Matovce)</name><trkseg>
     <trkpt lat="49.116153" lon="21.520626"><ele>188</ele></trkpt>
     <trkpt lat="49.115759" lon="21.522699"><ele>212</ele></trkpt>
     <trkpt lat="49.115796" lon="21.523149"><ele>214</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Biela skala</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Biela skala</name><trkseg>
+  <metadata><name>Biela skala (Slovinky)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Biela skala (Slovinky)</name><trkseg>
     <trkpt lat="48.910692" lon="20.873469"><ele>377</ele></trkpt>
     <trkpt lat="48.910795" lon="20.872771"><ele>382</ele></trkpt>
     <trkpt lat="48.910042" lon="20.872625"><ele>377</ele></trkpt>

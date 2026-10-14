@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hrb</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrb</name><trkseg>
+  <metadata><name>Hrb (Petrovce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrb (Petrovce)</name><trkseg>
     <trkpt lat="48.969133" lon="21.481688"><ele>560</ele></trkpt>
     <trkpt lat="48.969018" lon="21.481498"><ele>566</ele></trkpt>
     <trkpt lat="48.968898" lon="21.481203"><ele>576</ele></trkpt>

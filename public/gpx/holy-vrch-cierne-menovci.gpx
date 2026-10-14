@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Holý vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Holý vrch</name><trkseg>
+  <metadata><name>Holý vrch (Markov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Holý vrch (Markov)</name><trkseg>
     <trkpt lat="49.496061" lon="18.820380"><ele>453</ele></trkpt>
     <trkpt lat="49.496139" lon="18.820433"><ele>453</ele></trkpt>
     <trkpt lat="49.496203" lon="18.820397"><ele>454</ele></trkpt>

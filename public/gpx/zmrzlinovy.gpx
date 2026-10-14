@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Zmrzlinový</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Zmrzlinový</name><trkseg>
+  <metadata><name>Vodopád Zmrzlinový</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vodopád Zmrzlinový</name><trkseg>
     <trkpt lat="49.072300" lon="19.281153"><ele>626</ele></trkpt>
     <trkpt lat="49.072303" lon="19.280889"><ele>628</ele></trkpt>
     <trkpt lat="49.072372" lon="19.280700"><ele>628</ele></trkpt>

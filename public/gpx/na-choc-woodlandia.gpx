@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>na Choč</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>na Choč</name><trkseg>
+  <metadata><name>Vyhliadka na Choč</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka na Choč</name><trkseg>
     <trkpt lat="49.139787" lon="19.464413"><ele>612</ele></trkpt>
     <trkpt lat="49.139806" lon="19.464451"><ele>612</ele></trkpt>
     <trkpt lat="49.140022" lon="19.463829"><ele>612</ele></trkpt>

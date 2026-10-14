@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Havran</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Havran</name><trkseg>
+  <metadata><name>Havran (Švošov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Havran (Švošov)</name><trkseg>
     <trkpt lat="49.122773" lon="19.194552"><ele>453</ele></trkpt>
     <trkpt lat="49.122819" lon="19.194467"><ele>453</ele></trkpt>
     <trkpt lat="49.122824" lon="19.194315"><ele>454</ele></trkpt>

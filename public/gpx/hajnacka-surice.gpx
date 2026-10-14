@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Hajnáčka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hajnáčka</name><trkseg>
+  <metadata><name>Hrad Hajnáčka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Hajnáčka</name><trkseg>
     <trkpt lat="48.230298" lon="19.914659"><ele>223</ele></trkpt>
     <trkpt lat="48.230345" lon="19.914702"><ele>223</ele></trkpt>
     <trkpt lat="48.230287" lon="19.914995"><ele>224</ele></trkpt>
