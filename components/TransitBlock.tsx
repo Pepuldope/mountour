@@ -1,9 +1,13 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import type { DayPlan } from "@/lib/dayPlan";
 import { approachMin } from "@/lib/dayPlan";
 import { formatDuration, formatFromUser, formatTime, stopLabel, TRANSIT_LABEL } from "@/lib/format";
-import { cpSkBackUrl, cpSkUrl, startTown } from "@/lib/links";
+import { appleTransitUrl, cpSkBackUrl, cpSkUrl, googleTransitUrl, startTown } from "@/lib/links";
+import type { RailJourney } from "@/lib/rail";
+import { linesAt } from "@/lib/stops";
+import type { RailTrip } from "@/lib/useRailTrip";
 import { useTripDay } from "@/lib/tripSettings";
 import { useHomeStop } from "@/lib/useHomeStop";
 import { useUserLocation } from "@/lib/userLocation";
@@ -91,17 +95,89 @@ export function StopsBlock() {
   );
 }
 
+const pill = (on: boolean) =>
+  `flex w-full items-center gap-3 rounded-xl border px-3 py-2 text-left text-sm ${
+    on ? "border-[var(--accent)] bg-[var(--accent-soft)]" : "border-[var(--border)] hover:border-[var(--accent)]"
+  }`;
+const navButton =
+  "flex-1 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-3 py-2.5 text-center text-sm font-semibold hover:border-[var(--accent)]";
+const fromMidnight = (m: number) => `${pad(Math.floor(m / 60) % 24)}:${pad(m % 60)}`;
+
+/** Bus and tram lines that stop at the trail's stop (OSM, no times). */
+function useStopLines(stop: TransitStop | null): string[] {
+  const key = stop && stop.mode !== "vlak" ? `${stop.name}|${stop.location.lat}|${stop.location.lon}` : null;
+  const [found, setFound] = useState<{ key: string; lines: string[] } | null>(null);
+  useEffect(() => {
+    if (!key || !stop) return;
+    let cancelled = false;
+    linesAt(stop.name, stop.location).then((lines) => !cancelled && setFound({ key, lines }));
+    return () => {
+      cancelled = true;
+    };
+  }, [key, stop]);
+  return found && found.key === key ? found.lines : [];
+}
+
+/** A list of connections to pick from: departure, the trains, arrival. */
+function Connections({ list, choice, choose, label }: { list: RailJourney[]; choice: number; choose: (i: number) => void; label: string }) {
+  return (
+    <ul className="flex flex-col gap-1.5" role="radiogroup" aria-label={label}>
+      {list.map((j, i) => {
+        const changes = j.legs.length - 1;
+        return (
+          <li key={`${j.dep}-${j.legs[0].train}`}>
+            <button type="button" role="radio" aria-checked={i === choice} onClick={() => choose(i)} className={pill(i === choice)}>
+              <span className="font-data text-xl leading-none font-semibold">{fromMidnight(j.dep)}</span>
+              <span className="min-w-0 flex-1 truncate text-[var(--muted)]">
+                {j.legs[0].train.split(" ").slice(0, 2).join(" ")}, {changes === 0 ? "priamy" : changes === 1 ? "1 prestup" : `${changes} prestupy`}
+              </span>
+              <span className="font-data text-base leading-none font-semibold">→ {fromMidnight(j.arr)}</span>
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+/** The chosen connection, train by train, with the changes in between. */
+function Legs({ journey, before, after }: { journey: RailJourney; before?: string; after?: string }) {
+  return (
+    <ol className="flex flex-col gap-1.5 border-l-2 border-dashed border-[var(--border)] pl-3 text-sm">
+      {before && <li className="text-[var(--muted)]">{before}</li>}
+      {journey.legs.map((l, i) => (
+        <li key={i} className="flex flex-col">
+          {i > 0 && (
+            <span className="font-semibold text-[var(--warn)]">
+              Prestup v {l.from}, {l.dep - journey.legs[i - 1].arr} min
+            </span>
+          )}
+          <span>
+            <span className="font-data text-base leading-none font-semibold text-[var(--time)]">{fromMidnight(l.dep)}</span> {l.train} z {l.from}
+          </span>
+          <span>
+            <span className="font-data text-base leading-none font-semibold text-[var(--time)]">{fromMidnight(l.arr)}</span> {l.to}
+          </span>
+        </li>
+      ))}
+      {after && <li className="text-[var(--muted)]">{after}</li>}
+    </ol>
+  );
+}
+
 /**
- * The trip by train or bus: where to get on near the start, where to get
- * off, and the way home searched from the time you are back at the stop.
- * Real timetables are on cp.sk; we hand over both stops, the day and the
- * right time each way.
+ * The trip by train or bus. By train (the stop is a station and trains make
+ * the trip that day): real connections there and back from the national
+ * timetable. By bus: there is no free bus timetable, so the plan uses an
+ * estimate from the road time, the stop's lines (from OSM) say which buses
+ * go there, and cp.sk / Google Maps / Apple Maps show the exact connection.
  */
-export function TransitLegs({ plan }: { plan: DayPlan }) {
+export function TransitLegs({ plan, rail }: { plan: DayPlan; rail: RailTrip }) {
   const { stop } = useTripAccess();
   const { start, fix } = useUserLocation();
   const { date } = useTripDay();
   const homeStop = useHomeStop(start);
+  const lines = useStopLines(stop);
   const town = startTown(start, fix?.town);
   // cp.sk finds connections between stops; the start's own stop beats the town name, unless it is a
   // city-bus stop named without its town ("Hodžovo nám."), which cp.sk can't place: then the town.
@@ -118,46 +194,116 @@ export function TransitLegs({ plan }: { plan: DayPlan }) {
   const there = hhmm(plan.hikeStart);
   const back = hhmm(plan.hikeEnd);
   const walkM = stop.join?.walk_m ?? stop.distance_m;
+  const walk = `${formatFromUser(walkM)} pešo k ${stop.join ? "trase" : "začiatku trasy"}`;
+  const train = rail.status === "ok" ? rail.there[rail.thereChoice] : null;
+  const trainBack = rail.status === "ok" ? (rail.back[rail.backChoice] ?? null) : null;
+  const rideMin = plan.segments[0].kind === "drive-there" ? Math.round((plan.hikeStart.getTime() - plan.segments[0].start.getTime()) / 60000) : null;
+  const to = stop.join?.location ?? stop.location;
+
   return (
-    <section aria-label="Cesta vlakom a autobusom" className="flex flex-col gap-2.5 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-3 py-2.5 text-sm">
-      <div className="flex flex-col gap-0.5">
-        <p>
-          <span className="font-semibold">Tam:</span>{" "}
-          {homeStop ? (
-            <>
-              zo zastávky <strong>{stopLabel(homeStop.name)}</strong> ({TRANSIT_LABEL[homeStop.mode].toLowerCase()},{" "}
-              <span className="font-data leading-none">{formatFromUser(homeStop.distance_m)}</span> od štartu)
-            </>
-          ) : home ? (
-            <>
-              z <strong>{stopLabel(home)}</strong>
-            </>
-          ) : (
-            "zo štartu"
-          )}{" "}
-          na zastávku <strong>{stopLabel(stop.name)}</strong>, buďte tam do <span className="font-data text-base leading-none">{formatTime(plan.hikeStart)}</span>.
-          Odtiaľ <span className="font-data leading-none">{formatFromUser(walkM)}</span> pešo k {stop.join ? "trase" : "začiatku trasy"}.
-        </p>
-        <a href={cpSkUrl(stop.name, home, date, there, true)} data-umami-event="transit_open" data-umami-event-leg="there" target="_blank" rel="noopener noreferrer" className={link}>
-          Spoje tam na cp.sk ↗
-        </a>
+    <section aria-label="Cesta vlakom a autobusom" className="flex flex-col gap-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-3 py-3 text-sm">
+      {train ? (
+        <>
+          <div className="flex flex-col gap-2">
+            <p className="flex items-center gap-2 text-base font-bold">
+              <StopIcon mode="vlak" /> Tam vlakom
+            </p>
+            <Connections list={rail.there} choice={rail.thereChoice} choose={rail.chooseThere} label="Vlak tam" />
+            <Legs
+              journey={train}
+              before={rail.homeStation ? `Zo štartu na stanicu ${rail.homeStation.name} (~${formatDuration(rail.accessMin)})` : undefined}
+              after={walk}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <p className="flex items-center gap-2 text-base font-bold">
+              <StopIcon mode="vlak" /> Späť vlakom
+            </p>
+            {trainBack ? (
+              <>
+                <p className="text-[var(--muted)]">
+                  Na stanici budete okolo <span className="font-data text-base leading-none">{formatTime(plan.hikeEnd)}</span>. Vybrali sme prvý vlak, ktorý stihnete.
+                </p>
+                <Connections list={rail.back} choice={rail.backChoice} choose={rail.chooseBack} label="Vlak späť" />
+                <Legs journey={trainBack} />
+              </>
+            ) : (
+              <p className="font-semibold text-[var(--warn)]">Po túre už v tento deň nejde vlak späť. Skúste skorší odchod alebo autobus.</p>
+            )}
+          </div>
+          <p className="text-xs text-[var(--muted)]">Časy vlakov podľa cestovného poriadku ŽSR. Výluky a meškania overte na cp.sk.</p>
+        </>
+      ) : (
+        <div className="flex flex-col gap-1.5">
+          <p className="flex items-center gap-2 text-base font-bold">
+            <StopIcon mode={stop.mode} /> Tam {stop.mode === "vlak" ? "vlakom" : "autobusom"}
+            {rideMin !== null && <span className="font-data text-xl leading-none">~{formatDuration(rideMin)}</span>}
+          </p>
+          <p>
+            {homeStop ? (
+              <>
+                Zo zastávky <strong>{stopLabel(homeStop.name)}</strong> ({TRANSIT_LABEL[homeStop.mode].toLowerCase()},{" "}
+                <span className="font-data leading-none">{formatFromUser(homeStop.distance_m)}</span> od štartu)
+              </>
+            ) : home ? (
+              <>
+                Z <strong>{stopLabel(home)}</strong>
+              </>
+            ) : (
+              "Zo štartu"
+            )}{" "}
+            na zastávku <strong>{stopLabel(stop.name)}</strong>, buďte tam okolo <span className="font-data text-base leading-none">{formatTime(plan.hikeStart)}</span>.
+            Odtiaľ {walk}.
+          </p>
+          {lines.length > 0 && (
+            <p className="flex flex-wrap items-center gap-1">
+              <span className="text-[var(--muted)]">Zastavujú tu linky</span>
+              {lines.map((l) => (
+                <span key={l} className="font-data rounded border border-[var(--border)] px-1.5 text-[13px] leading-5 font-semibold">
+                  {l}
+                </span>
+              ))}
+            </p>
+          )}
+          <p className="text-xs text-[var(--muted)]">
+            {rail.status === "loading"
+              ? "Hľadám vlaky..."
+              : rail.status === "no-day"
+                ? "Cestovný poriadok vlakov na tento deň ešte nemáme. Čas je odhad podľa cesty autom."
+                : "Čas je odhad podľa cesty autom s rezervou na zastávky a čakanie. Presný spoj a prestupy ukážu tlačidlá nižšie."}
+          </p>
+          <p className="pt-1">
+            <span className="font-semibold">Späť:</span> na zastávke budete okolo <span className="font-data text-base leading-none">{formatTime(plan.hikeEnd)}</span>
+            {rideMin !== null && (
+              <>
+                , doma približne o <span className="font-data text-base leading-none">{formatTime(plan.segments[plan.segments.length - 1].end)}</span>
+              </>
+            )}
+            .
+          </p>
+        </div>
+      )}
+
+      <div className="flex flex-col gap-2 border-t border-[var(--border)] pt-3">
+        <p className="font-semibold">Presné spoje a prestupy</p>
+        <div className="flex flex-wrap gap-x-4 gap-y-1">
+          <a href={cpSkUrl(stop.name, home, date, train ? fromMidnight(train.dep) : there, !train)} data-umami-event="transit_open" data-umami-event-leg="there" target="_blank" rel="noopener noreferrer" className={link}>
+            Spoje tam na cp.sk ↗
+          </a>
+          <a href={cpSkBackUrl(stop.name, home, date, back)} data-umami-event="transit_open" data-umami-event-leg="back" target="_blank" rel="noopener noreferrer" className={link}>
+            Spoje späť na cp.sk ↗
+          </a>
+        </div>
+        <div className="flex gap-2">
+          <a href={googleTransitUrl(to, start)} data-umami-event="transit_open" data-umami-event-leg="google" target="_blank" rel="noopener noreferrer" className={navButton}>
+            Google Mapy ↗
+          </a>
+          <a href={appleTransitUrl(to, start)} data-umami-event="transit_open" data-umami-event-leg="apple" target="_blank" rel="noopener noreferrer" className={navButton}>
+            Apple Mapy ↗
+          </a>
+        </div>
       </div>
-      <div className="flex flex-col gap-0.5">
-        <p>
-          <span className="font-semibold">Späť:</span> zo zastávky <strong>{stopLabel(stop.name)}</strong>
-          {home ? (
-            <>
-              {" "}
-              do <strong>{stopLabel(home)}</strong>
-            </>
-          ) : null}
-          , na zastávke budete okolo <span className="font-data text-base leading-none">{formatTime(plan.hikeEnd)}</span>, hľadáme spoje odvtedy.
-        </p>
-        <a href={cpSkBackUrl(stop.name, home, date, back)} data-umami-event="transit_open" data-umami-event-leg="back" target="_blank" rel="noopener noreferrer" className={link}>
-          Spoje späť na cp.sk ↗
-        </a>
-      </div>
-      {!start && <p className="text-xs text-[var(--muted)]">Vyberte, odkiaľ cestujete, a nájdeme vám najbližšiu zastávku.</p>}
+      {!start && <p className="text-xs text-[var(--muted)]">Vyberte, odkiaľ cestujete, a nájdeme vám najbližšiu zastávku aj vlaky.</p>}
     </section>
   );
 }

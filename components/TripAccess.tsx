@@ -20,6 +20,8 @@ export interface TripAccess {
   choice: number;
   choose: (index: number) => void;
   parking: ParkingLot | null;
+  /** Where the ride from the start ends: the parking by car, the stop by train or bus. */
+  rideTo: LatLng | null;
   /** Where the walk starts: the trail's first point. */
   trailStart: LatLng | null;
   /** Where the drive ends: the chosen parking, else the trail start (routing snaps it to the nearest road). */
@@ -33,7 +35,7 @@ export interface TripAccess {
   chooseStop: (index: number) => void;
   /** The picked stop (by default the nearest). */
   stop: TransitStop | null;
-  /** By car: the drive goes on. By train/bus: no drive, the walk starts at the stop. */
+  /** By car: the drive goes on. By train/bus: an estimated ride to the stop, the walk starts there. */
   transit: boolean;
   /** Where the walk to the trail starts: the chosen parking, or the stop. */
   walkFrom: LatLng | null;
@@ -54,6 +56,7 @@ const Ctx = createContext<TripAccess>({
   parking: null,
   trailStart: null,
   destination: null,
+  rideTo: null,
   parkingApproachMin: 0,
   stops: [],
   stopChoice: 0,
@@ -141,6 +144,7 @@ export function TripAccessProvider({
       parking,
       trailStart,
       destination: transit ? null : (parking?.location ?? trailStart),
+      rideTo: transit ? (stop?.location ?? null) : (parking?.location ?? trailStart),
       parkingApproachMin: parkingApproach,
       stops,
       stopChoice,
