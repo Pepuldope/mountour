@@ -8,7 +8,7 @@ from pathlib import Path
 import numpy as np
 import yaml
 
-from pipeline import run
+from pipeline import packed, run
 from pipeline.geo import ascent_descent, din33466_minutes, rdp_indices, round_up_15, slugify
 from pipeline.osm import kst_colour
 from pipeline.rules import RuleMatcher
@@ -156,10 +156,10 @@ def test_end_to_end(tmp_path):
     # map lines: every trip once in the overview, in detail in the cells it crosses
     mdir = tmp_path / "public" / "data" / "map"
     meta = json.loads((mdir / "meta.json").read_text())
-    overview = json.loads((mdir / "overview.json").read_text())["features"]
+    overview = packed.read_features(mdir / "overview.json")
     assert sorted(f["properties"]["s"] for f in overview) == sorted(mains)
     assert meta["cells"] and all((mdir / "c" / f"{k}.json").exists() for k in meta["cells"])
-    in_cells = {f["properties"]["s"] for k in meta["cells"] for f in json.loads((mdir / "c" / f"{k}.json").read_text())["features"]}
+    in_cells = {f["properties"]["s"] for k in meta["cells"] for f in packed.read_features(mdir / "c" / f"{k}.json")}
     assert in_cells == set(mains)
 
     # slugs are stable: a second run reuses them

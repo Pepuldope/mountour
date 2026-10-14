@@ -3,7 +3,7 @@
     python -m pipeline.network --pbf slovakia-latest.osm.pbf [--pageviews] [--root .]
 
 Writes, under public/data/trails/:
-    overview.json   all trails, simplified (~40 m), for the country view
+    overview.json   all trails, simplified (~40 m), for the country view (packed, pipeline/packed.py)
     c/<ix>_<iy>.json the same trails in detail (~8 m), one file per grid cell
     meta.json       grid, counts, popularity cut-offs and the best-known goals
 
@@ -34,6 +34,7 @@ import osmium
 from scipy.spatial import cKDTree
 
 from . import osm as osm_mod
+from . import packed
 from .geo import rdp_indices
 
 UA = "MounTour trail map (https://github.com/Pepuldope/mountour; nemcok.peter123@gmail.com)"
@@ -340,12 +341,6 @@ def merged_features(lines_by_level):
     return feats
 
 
-def dump_collection(path, feats):
-    """One feature per line, so a weekly re-run diffs (and compresses in git) line by line."""
-    body = ",\n".join(json.dumps(f, separators=(",", ":"), ensure_ascii=False) for f in feats)
-    path.write_text('{"type":"FeatureCollection","features":[\n' + body + "\n]}\n")
-
-
 def write(root, ways, runs, stats, osm_ts=None):
     out = Path(root) / "public" / "data" / "trails"
     cells_dir = out / "c"
@@ -361,9 +356,9 @@ def write(root, ways, runs, stats, osm_ts=None):
         detail = simplify(lats, lons, DETAIL_TOL_M, 5)
         mid = detail[len(detail) // 2]
         cells.setdefault(cell_of(mid[1], mid[0]), {}).setdefault(run["level"], []).append(detail)
-    dump_collection(out / "overview.json", merged_features(overview))
+    packed.dump(out / "overview.json", merged_features(overview), 4)
     for key, by_level in cells.items():
-        dump_collection(cells_dir / f"{key}.json", merged_features(by_level))
+        packed.dump(cells_dir / f"{key}.json", merged_features(by_level), 5)
     meta = dict(
         version=VERSION,
         generated_at=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
