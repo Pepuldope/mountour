@@ -6,6 +6,7 @@
 
 import argparse
 import json
+import re
 import sys
 import time
 import urllib.request
@@ -33,19 +34,31 @@ def log(msg):
 def sitelinks(qids):
     """Wikipedia article counts per Wikidata id (used for ranking only; failures are ignored)."""
     out = {}
-    qids = sorted(set(qids))
+    failed = 0
+    # Only well-formed ids: one "Q1;Q2" or typo in OSM makes Wikidata refuse the whole batch.
+    qids = sorted({q.strip() for v in qids for q in str(v).split(";") if re.fullmatch(r"Q\d+", q.strip())})
     for i in range(0, len(qids), 50):
         url = ("https://www.wikidata.org/w/api.php?action=wbgetentities&props=sitelinks&format=json&ids="
                + "|".join(qids[i : i + 50]))
-        try:
-            req = urllib.request.Request(url, headers={"User-Agent": UA})
-            with urllib.request.urlopen(req, timeout=60) as r:
-                ents = json.loads(r.read())["entities"]
-            for q, e in ents.items():
-                out[q] = len([k for k in e.get("sitelinks", {}) if k.endswith("wiki") and k != "commonswiki"])
-        except Exception as e:  # ranking still works without it
-            log(f"wikidata: {e}")
-            break
+        # A failed batch is retried, then skipped: one hiccup must not zero the fame of every later
+        # place (Rysy, Skalnaté pleso lost their trips that way on 2026-10-14).
+        for wait in (0, 3, 10, 30):
+            time.sleep(wait)
+            try:
+                req = urllib.request.Request(url, headers={"User-Agent": UA})
+                with urllib.request.urlopen(req, timeout=60) as r:
+                    body = json.loads(r.read())
+                if "entities" not in body:
+                    raise ValueError(str(body.get("error", body))[:200])
+                ents = body["entities"]
+                for q, e in ents.items():
+                    out[q] = len([k for k in e.get("sitelinks", {}) if k.endswith("wiki") and k != "commonswiki"])
+                break
+            except Exception as e:  # ranking still works without it
+                log(f"wikidata (batch {i // 50 + 1}, retry in a moment): {e}")
+        else:
+            failed += 1
+    log(f"wikidata: {len(out)} of {len(qids)} ids, {failed} batches failed")
     return out
 
 
