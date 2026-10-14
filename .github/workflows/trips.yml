@@ -8,7 +8,7 @@ on:
     - cron: "17 3 * * 1"
   workflow_dispatch:
   push:
-    branches: ["claude/osm-trip-pipeline-**", "claude/site-fixes-and-features-**", "claude/import-all-trails-**"]
+    branches: ["claude/osm-trip-pipeline-**", "claude/site-fixes-and-features-**", "claude/import-all-trails-**", "claude/trail-quality-**"]
     paths: ["pipeline/**", ".github/workflows/trips.yml"]
   pull_request:
     paths: ["pipeline/**", ".github/workflows/trips.yml"]
@@ -117,6 +117,10 @@ jobs:
               print(f"::error::{p} is {n / 2**20:.2f} MB, over the Worker's budget")
           sys.exit(1 if big else 0)
           PY
+
+      # Two places under one name (two "Kriváň" in different mountains) must never reach the site.
+      - name: Check trip names
+        run: python -m pipeline.names --check public/data/trips/list.json
 
       - name: Commit the new data
         run: |

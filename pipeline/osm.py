@@ -109,7 +109,9 @@ def destination_kind(t):
 def poi_kind(t):
     if t.get("tourism") == "viewpoint" or t.get("tower:type") == "observation":
         return "vyhliadka"
-    if t.get("historic") in ("castle", "ruins"):
+    # Ruins of anything (a bunker, a chapel) are not a castle.
+    if t.get("historic") == "castle" or (t.get("historic") == "ruins" and (
+            t.get("ruins") == "castle" or "hrad" in t.get("name", "").lower())):
         return "hrad"
     if t.get("tourism") in ("alpine_hut", "chalet"):
         return "chata"
