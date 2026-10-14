@@ -23,6 +23,7 @@ function parkingLot(p: Parking, slug: string, i: number, join: TrailJoin | null)
     walk_m: p.walk_m,
     fee: p.fee,
     join,
+    walk: p.walk ?? null,
   };
 }
 
@@ -35,6 +36,7 @@ function transitStop(s: TripStop, slug: string, i: number, join: TrailJoin | nul
     location: s.location,
     distance_m: s.walk_m,
     join,
+    walk: s.walk ?? null,
   };
 }
 

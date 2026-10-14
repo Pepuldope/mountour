@@ -17,6 +17,7 @@ from . import drive as drive_mod
 from . import maplines
 from . import osm as osm_mod
 from . import publish
+from . import walks
 from .dem import Dem
 from .graph import Graph
 from .rules import RuleMatcher
@@ -53,6 +54,7 @@ def main(argv=None):
     ap.add_argument("--pbf", required=True)
     ap.add_argument("--dem", default=None, help="folder with Copernicus DEM tiles")
     ap.add_argument("--osrm", default=None, help="OSRM server URL for the drive table")
+    ap.add_argument("--osrm-foot", default=None, help="OSRM server URL (foot profile) for the walks to the trail")
     ap.add_argument("--wikidata", action="store_true")
     ap.add_argument("--root", default=".")
     ap.add_argument("--osm-timestamp", default=None)
@@ -108,6 +110,9 @@ def main(argv=None):
         # The home list is the only user of the town table, and it lists main routes only.
         minutes, km = drive_mod.table(a.osrm, town_list, [t for t in trips if not t.get("variant_of")], log)
         drive = (town_list, minutes, km, "OSRM car profile on OpenStreetMap data")
+
+    if a.osrm_foot:
+        walks.add(a.osrm_foot, trips, log)
 
     publish.write(root, trips, dem, drive, slugs, tb.report, a.osm_timestamp)
     log("map lines: %d trips in %d cells" % maplines.write(root))

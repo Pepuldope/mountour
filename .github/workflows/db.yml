@@ -12,7 +12,9 @@ on:
     branches: [main]
   push:
     branches: [main]
-    paths: ["data/**", "public/data/trips/**", "public/data/drive/**", "pipeline/db.py", ".github/workflows/db.yml"]
+    # Data only: a change to the loader itself loads with the next data change (or by hand),
+    # so merging loader code never spends a day's D1 writes on its own.
+    paths: ["data/**", "public/data/trips/**", "public/data/drive/**"]
   workflow_dispatch:
 
 permissions:
@@ -54,8 +56,8 @@ jobs:
       - if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
         run: npm ci
 
-      # D1's free plan writes 100k rows a day and a full load of ~2,500 trips writes about 50k: skip
-      # loads the database already holds.
+      # D1's free plan writes 100k rows a day and a full load of ~5,000 trips writes about 55k: skip
+      # loads the database already holds, and otherwise write only what changed (below).
       - name: Compare with the loaded data
         id: loaded
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != ''
@@ -69,6 +71,15 @@ jobs:
             echo "same=true" >> "$GITHUB_OUTPUT"
             echo "::notice::The database already holds this data ($want)."
           fi
+
+      # The trips' hashes and the shared rows the database holds now; pipeline/db.py then writes
+      # only changed trips and rows. Unreadable or an older schema: a full load.
+      - name: Write only what changed
+        if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && steps.loaded.outputs.same != 'true'
+        run: |
+          npx wrangler d1 execute "$DB" --remote --json --command "$(python -m pipeline.db --have-sql)" \
+            > build/have.json 2>/dev/null || rm -f build/have.json
+          python -m pipeline.db --have build/have.json --out build/db.sql
 
       - name: Load into D1
         if: env.CLOUDFLARE_API_TOKEN != '' && env.CLOUDFLARE_ACCOUNT_ID != '' && steps.loaded.outputs.same != 'true'

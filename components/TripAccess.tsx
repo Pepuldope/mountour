@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { approachMin } from "@/lib/dayPlan";
 import { useTripSettings } from "@/lib/tripSettings";
 import type { TrailJoin } from "@/lib/trailJoin";
+import type { WalkLine } from "@/lib/tripSchema";
 import type { LatLng, ParkingLot, TransitStop } from "@/lib/types";
 
 /**
@@ -38,6 +39,8 @@ export interface TripAccess {
   transit: boolean;
   /** Where the walk to the trail starts: the chosen parking, or the stop. */
   walkFrom: LatLng | null;
+  /** That walk on paths, worked out weekly (null: none stored, ask the router). */
+  walkLine: WalkLine | null;
   /** Walk to the trail for the chosen way of travel, one way, minutes. */
   approachMin: number;
   /** Where that walk reaches the trail: its start, or its nearest point when parked up the trail. */
@@ -61,6 +64,7 @@ const Ctx = createContext<TripAccess>({
   stop: null,
   transit: false,
   walkFrom: null,
+  walkLine: null,
   approachMin: 0,
   trailJoin: null,
   skip: null,
@@ -148,6 +152,7 @@ export function TripAccessProvider({
       stop,
       transit,
       walkFrom: transit ? (stop?.location ?? null) : (parking?.location ?? null),
+      walkLine: transit ? (stop?.walk ?? null) : (parking?.walk ?? null),
       approachMin: transit ? stopApproach : parkingApproach,
       trailJoin: join?.location ?? trailStart,
       skip: join && join.skip_m > 0 ? join : null,

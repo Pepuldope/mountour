@@ -40,7 +40,7 @@ def write(root, trips, dem, drive, slugs, report, osm_data_at, now=None):
         gpx = t.pop("_gpx")
         (gdir / f"{t['slug']}.gpx").write_text(_gpx(t["name"], gpx, dem))
         _dump(tdir / f"{t['slug']}.json", t)
-        summaries.append({k: v for k, v in t.items() if k not in DETAIL_ONLY})
+        summaries.append(_without_walks({k: v for k, v in t.items() if k not in DETAIL_ONLY}))
 
     # The site reads index.json at run time, so it holds the main routes only; the other routes
     # are in their own trip files, listed by each trip of the place ("routes"). The database
@@ -70,6 +70,15 @@ def write(root, trips, dem, drive, slugs, report, osm_data_at, now=None):
 
     (root / "pipeline" / "slugs.json").write_text(json.dumps(dict(sorted(slugs.items())), ensure_ascii=False, indent=1) + "\n")
     (root / "data" / "pipeline-report.md").write_text(_report(trips, report, now, osm_data_at, drive))
+
+
+def _without_walks(summary):
+    """The walk lines to the trail (pipeline/walks.py) stay in the trip's own file: index.json is
+    read at run time and must stay small (lib/assetBudget.test.ts)."""
+    for k in ("parking", "transit"):
+        if summary.get(k) and "walk" in summary[k]:
+            summary[k] = {kk: v for kk, v in summary[k].items() if kk != "walk"}
+    return summary
 
 
 def _attach_routes(trips):

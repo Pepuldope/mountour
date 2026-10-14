@@ -83,16 +83,16 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
   if (!t) return null;
   const [parking, stops, pois, closures, fees] = await Promise.all([
     db
-      .prepare("SELECT name, lat, lon, walk_m, fee_paid, is_primary, osm_ref FROM parking WHERE trip_id = ?1 ORDER BY is_primary DESC, id")
+      .prepare("SELECT name, lat, lon, walk_m, fee_paid, is_primary, osm_ref, walk_json FROM parking WHERE trip_id = ?1 ORDER BY is_primary DESC, id")
       .bind(t.id)
-      .all<{ name: string | null; lat: number; lon: number; walk_m: number; fee_paid: number | null; is_primary: number; osm_ref: string | null }>(),
+      .all<{ name: string | null; lat: number; lon: number; walk_m: number; fee_paid: number | null; is_primary: number; osm_ref: string | null; walk_json: string | null }>(),
     db
       .prepare(
-        `SELECT s.name, s.mode, s.lat, s.lon, s.osm_ref, ts.walk_m, ts.is_primary FROM trip_transit_stop ts
+        `SELECT s.name, s.mode, s.lat, s.lon, s.osm_ref, ts.walk_m, ts.is_primary, ts.walk_json FROM trip_transit_stop ts
          JOIN transit_stop s ON s.id = ts.stop_id WHERE ts.trip_id = ?1 ORDER BY ts.position`
       )
       .bind(t.id)
-      .all<{ name: string; mode: TransitStop["mode"]; lat: number; lon: number; osm_ref: string | null; walk_m: number; is_primary: number }>(),
+      .all<{ name: string; mode: TransitStop["mode"]; lat: number; lon: number; osm_ref: string | null; walk_m: number; is_primary: number; walk_json: string | null }>(),
     db
       .prepare("SELECT kind, name, lat, lon, osm_ref FROM poi WHERE trip_id = ?1 ORDER BY position")
       .bind(t.id)
@@ -113,6 +113,7 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
     walk_m: p.walk_m,
     fee: p.fee_paid === null ? null : p.fee_paid === 1,
     osm: p.osm_ref,
+    ...(p.walk_json ? { walk: JSON.parse(p.walk_json) } : {}),
   });
   const toStop = (s: (typeof stops.results)[number]): TransitStop => ({
     name: s.name,
@@ -120,6 +121,7 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
     location: { lat: s.lat, lon: s.lon },
     walk_m: s.walk_m,
     osm: s.osm_ref,
+    ...(s.walk_json ? { walk: JSON.parse(s.walk_json) } : {}),
   });
   const primaryParking = parking.results.find((p) => p.is_primary === 1);
   const primaryStop = stops.results.find((s) => s.is_primary === 1);
@@ -198,19 +200,19 @@ export async function townDriveMinutes(townSlug: string): Promise<{ minutes: Rec
   return { minutes: await getTownDrives(townSlug), source: "subory" };
 }
 
-/** Car minutes by slug from the town's row of town_drive (an array in trip id order), or null without one. */
+/** Car minutes by slug from the town's row of town_drive (an array over the main trips in id order), or null without one. */
 async function dbTownMinutes(db: D1Like, townSlug: string): Promise<Record<string, number | null> | null> {
   const [row, trips] = await Promise.all([
     db
       .prepare("SELECT td.minutes_json FROM town_drive td JOIN town ON town.id = td.town_id WHERE town.slug = ?1")
       .bind(townSlug)
       .first<{ minutes_json: string }>(),
-    db.prepare("SELECT id, slug FROM trip ORDER BY id").all<{ id: number; slug: string }>(),
+    db.prepare("SELECT slug FROM trip WHERE variant_of IS NULL ORDER BY id").all<{ slug: string }>(),
   ]);
   if (!row) return null;
   const minutes = JSON.parse(row.minutes_json) as (number | null)[];
-  // Main trips come first; other routes to a place have no drive times (the home list never shows them).
-  return Object.fromEntries(trips.results.filter((t) => t.id <= minutes.length).map((t) => [t.slug, minutes[t.id - 1] ?? null]));
+  // One entry per main trip in id order; other routes to a place have no drive times (the home list never shows them).
+  return Object.fromEntries(trips.results.map((t, i) => [t.slug, minutes[i] ?? null]));
 }
 
 export interface TripListItem {
@@ -251,10 +253,11 @@ function activeRuleIds(rules: { id: string; kind: "rocna" | "jednorazova"; start
   );
 }
 
+/** Nearest first (or best known without a town); ties by rank, then name, so both sources agree. */
 function sortList(items: TripListItem[]): TripListItem[] {
-  return items.sort((a, b) =>
-    a.total_min !== null && b.total_min !== null ? a.total_min - b.total_min : a.total_min !== null ? -1 : b.total_min !== null ? 1 : b.rank - a.rank
-  );
+  const byTime = (a: TripListItem, b: TripListItem) =>
+    a.total_min !== null && b.total_min !== null ? a.total_min - b.total_min : a.total_min !== null ? -1 : b.total_min !== null ? 1 : 0;
+  return items.sort((a, b) => byTime(a, b) || b.rank - a.rank || (a.slug < b.slug ? -1 : a.slug > b.slug ? 1 : 0));
 }
 
 /** Trips for GET /api/vylety: nearest first from a town, or best known first. One per place (its main route). */
