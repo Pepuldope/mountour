@@ -78,11 +78,12 @@ def normalize(name, kind, place_names=frozenset()):
         n = n.split(", ")[0]
     word = KIND_WORD.get(kind)
     first = n.split()[0].lower()
+    says_kind = any(h in n.lower() for h in KIND_HINTS.get(kind, ()))
     if word and first in PREPOSITIONS:
         n = f"{word} {n[0].lower()}{n[1:]}"  # "na Choč" -> "Vyhliadka na Choč"
-    elif kind in KIND_HINTS and not any(h in n.lower() for h in KIND_HINTS[kind]):
+    elif kind in KIND_HINTS and not says_kind:
         n = f"{word} {n}"  # "Likava" -> "Hrad Likava"
-    elif word and fold(n) in place_names:
+    elif word and fold(n) in place_names and not says_kind:  # "Tichá dolina" the valley and the locality
         n = f"{word} {n}"  # a viewpoint called "Liptovské Revúce" is not the village
     return n[0].upper() + n[1:]
 

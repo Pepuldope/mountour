@@ -122,6 +122,8 @@ def destination_kind(t):
         return "pleso"
     if t.get("natural") == "cave_entrance" and (t.get("show_cave") == "yes" or t.get("tourism") == "attraction" or t.get("fee")):
         return "jaskyna"
+    if "ferrat" in low:
+        return None  # a via ferrata is a climb, not a walk ("Via Ferrata Skalka (... Jánošíkove diery)")
     known = t.get("wikipedia") or t.get("wikidata")
     gorge_word = GORGE_WORDS.search(name) or GORGE_WORDS.search(t.get("wikipedia", ""))
     cirque = any(w in low for w in ("kotlin", "kotol"))  # "Kotlina pod Prielomom" is a Tatra cirque

@@ -146,6 +146,9 @@ def apply_overrides(trips, overrides):
         for k in ("name", "description"):
             if edits.get(t["slug"], {}).get(k):
                 t[k] = edits[t["slug"]][k]
+        # the other routes to a renamed place carry its new name
+        if t.get("variant_of") and not t.get("curated") and edits.get(t["variant_of"], {}).get("name"):
+            t["name"] = edits[t["variant_of"]]["name"]
         out.append(t)
     return out
 
