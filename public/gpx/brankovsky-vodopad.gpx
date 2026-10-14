@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Brankovský vodopád</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Brankovský vodopád</name><trkseg>
+    <trkpt lat="48.993547" lon="19.289216"><ele>570</ele></trkpt>
+    <trkpt lat="48.993215" lon="19.289250"><ele>574</ele></trkpt>
+    <trkpt lat="48.992629" lon="19.289116"><ele>581</ele></trkpt>
+    <trkpt lat="48.992350" lon="19.289539"><ele>588</ele></trkpt>
+    <trkpt lat="48.991671" lon="19.291244"><ele>592</ele></trkpt>
+    <trkpt lat="48.991313" lon="19.292336"><ele>603</ele></trkpt>
+    <trkpt lat="48.991251" lon="19.293284"><ele>619</ele></trkpt>
+    <trkpt lat="48.991192" lon="19.293688"><ele>624</ele></trkpt>
+    <trkpt lat="48.990891" lon="19.294873"><ele>630</ele></trkpt>
+    <trkpt lat="48.990824" lon="19.295368"><ele>631</ele></trkpt>
+    <trkpt lat="48.990812" lon="19.295687"><ele>638</ele></trkpt>
+    <trkpt lat="48.990659" lon="19.296679"><ele>651</ele></trkpt>
+    <trkpt lat="48.990570" lon="19.297064"><ele>656</ele></trkpt>
+    <trkpt lat="48.990376" lon="19.297664"><ele>663</ele></trkpt>
+    <trkpt lat="48.990157" lon="19.298169"><ele>672</ele></trkpt>
+    <trkpt lat="48.989726" lon="19.299433"><ele>683</ele></trkpt>
+    <trkpt lat="48.989500" lon="19.299851"><ele>695</ele></trkpt>
+    <trkpt lat="48.989222" lon="19.300255"><ele>698</ele></trkpt>
+    <trkpt lat="48.988989" lon="19.300285"><ele>696</ele></trkpt>
+    <trkpt lat="48.989222" lon="19.300255"><ele>698</ele></trkpt>
+    <trkpt lat="48.989500" lon="19.299851"><ele>695</ele></trkpt>
+    <trkpt lat="48.989726" lon="19.299433"><ele>683</ele></trkpt>
+    <trkpt lat="48.990157" lon="19.298169"><ele>672</ele></trkpt>
+    <trkpt lat="48.990376" lon="19.297664"><ele>663</ele></trkpt>
+    <trkpt lat="48.990570" lon="19.297064"><ele>656</ele></trkpt>
+    <trkpt lat="48.990659" lon="19.296679"><ele>651</ele></trkpt>
+    <trkpt lat="48.990812" lon="19.295687"><ele>638</ele></trkpt>
+    <trkpt lat="48.990824" lon="19.295368"><ele>631</ele></trkpt>
+    <trkpt lat="48.990891" lon="19.294873"><ele>630</ele></trkpt>
+    <trkpt lat="48.991192" lon="19.293688"><ele>624</ele></trkpt>
+    <trkpt lat="48.991251" lon="19.293284"><ele>619</ele></trkpt>
+    <trkpt lat="48.991313" lon="19.292336"><ele>603</ele></trkpt>
+    <trkpt lat="48.991671" lon="19.291244"><ele>592</ele></trkpt>
+    <trkpt lat="48.992350" lon="19.289539"><ele>588</ele></trkpt>
+    <trkpt lat="48.992629" lon="19.289116"><ele>581</ele></trkpt>
+    <trkpt lat="48.993215" lon="19.289250"><ele>574</ele></trkpt>
+    <trkpt lat="48.993547" lon="19.289216"><ele>570</ele></trkpt>
+  </trkseg></trk>
+</gpx>

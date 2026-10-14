@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Spišský hrad</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Spišský hrad</name><trkseg>
+    <trkpt lat="48.997309" lon="20.755572"><ele>433</ele></trkpt>
+    <trkpt lat="48.997543" lon="20.759869"><ele>452</ele></trkpt>
+    <trkpt lat="48.997601" lon="20.760530"><ele>458</ele></trkpt>
+    <trkpt lat="48.997594" lon="20.760775"><ele>460</ele></trkpt>
+    <trkpt lat="48.997511" lon="20.761052"><ele>463</ele></trkpt>
+    <trkpt lat="48.997517" lon="20.761966"><ele>475</ele></trkpt>
+    <trkpt lat="48.997540" lon="20.763263"><ele>495</ele></trkpt>
+    <trkpt lat="48.997601" lon="20.763703"><ele>503</ele></trkpt>
+    <trkpt lat="48.997544" lon="20.764189"><ele>511</ele></trkpt>
+    <trkpt lat="48.997618" lon="20.764516"><ele>517</ele></trkpt>
+    <trkpt lat="48.997630" lon="20.764734"><ele>521</ele></trkpt>
+    <trkpt lat="48.997620" lon="20.764885"><ele>524</ele></trkpt>
+    <trkpt lat="48.997306" lon="20.765406"><ele>528</ele></trkpt>
+    <trkpt lat="48.997260" lon="20.765586"><ele>529</ele></trkpt>
+    <trkpt lat="48.997286" lon="20.765723"><ele>531</ele></trkpt>
+    <trkpt lat="48.997441" lon="20.766077"><ele>538</ele></trkpt>
+    <trkpt lat="48.997454" lon="20.766373"><ele>539</ele></trkpt>
+    <trkpt lat="48.997594" lon="20.766974"><ele>543</ele></trkpt>
+    <trkpt lat="48.997893" lon="20.767510"><ele>550</ele></trkpt>
+    <trkpt lat="48.998132" lon="20.768030"><ele>551</ele></trkpt>
+    <trkpt lat="48.998314" lon="20.768576"><ele>553</ele></trkpt>
+    <trkpt lat="48.998132" lon="20.768030"><ele>551</ele></trkpt>
+    <trkpt lat="48.997893" lon="20.767510"><ele>550</ele></trkpt>
+    <trkpt lat="48.997594" lon="20.766974"><ele>543</ele></trkpt>
+    <trkpt lat="48.997454" lon="20.766373"><ele>539</ele></trkpt>
+    <trkpt lat="48.997441" lon="20.766077"><ele>538</ele></trkpt>
+    <trkpt lat="48.997286" lon="20.765723"><ele>531</ele></trkpt>
+    <trkpt lat="48.997260" lon="20.765586"><ele>529</ele></trkpt>
+    <trkpt lat="48.997306" lon="20.765406"><ele>528</ele></trkpt>
+    <trkpt lat="48.997620" lon="20.764885"><ele>524</ele></trkpt>
+    <trkpt lat="48.997630" lon="20.764734"><ele>521</ele></trkpt>
+    <trkpt lat="48.997618" lon="20.764516"><ele>517</ele></trkpt>
+    <trkpt lat="48.997544" lon="20.764189"><ele>511</ele></trkpt>
+    <trkpt lat="48.997601" lon="20.763703"><ele>503</ele></trkpt>
+    <trkpt lat="48.997540" lon="20.763263"><ele>495</ele></trkpt>
+    <trkpt lat="48.997517" lon="20.761966"><ele>475</ele></trkpt>
+    <trkpt lat="48.997511" lon="20.761052"><ele>463</ele></trkpt>
+    <trkpt lat="48.997594" lon="20.760775"><ele>460</ele></trkpt>
+    <trkpt lat="48.997601" lon="20.760530"><ele>458</ele></trkpt>
+    <trkpt lat="48.997543" lon="20.759869"><ele>452</ele></trkpt>
+    <trkpt lat="48.997309" lon="20.755572"><ele>433</ele></trkpt>
+  </trkseg></trk>
+</gpx>

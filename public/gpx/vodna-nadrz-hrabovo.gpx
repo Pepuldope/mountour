@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Pleso Vodná nádrž Hrabovo</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Pleso Vodná nádrž Hrabovo</name><trkseg>
+    <trkpt lat="49.074448" lon="19.285342"><ele>607</ele></trkpt>
+    <trkpt lat="49.074011" lon="19.284711"><ele>610</ele></trkpt>
+    <trkpt lat="49.073881" lon="19.284458"><ele>609</ele></trkpt>
+    <trkpt lat="49.073987" lon="19.284325"><ele>608</ele></trkpt>
+    <trkpt lat="49.074034" lon="19.284191"><ele>606</ele></trkpt>
+    <trkpt lat="49.074064" lon="19.284008"><ele>605</ele></trkpt>
+    <trkpt lat="49.074060" lon="19.283712"><ele>603</ele></trkpt>
+    <trkpt lat="49.073601" lon="19.281043"><ele>596</ele></trkpt>
+    <trkpt lat="49.073290" lon="19.280149"><ele>598</ele></trkpt>
+    <trkpt lat="49.073128" lon="19.279490"><ele>600</ele></trkpt>
+    <trkpt lat="49.072903" lon="19.278880"><ele>598</ele></trkpt>
+    <trkpt lat="49.072673" lon="19.277876"><ele>587</ele></trkpt>
+    <trkpt lat="49.072538" lon="19.277673"><ele>584</ele></trkpt>
+    <trkpt lat="49.072202" lon="19.276847"><ele>573</ele></trkpt>
+    <trkpt lat="49.071303" lon="19.275425"><ele>572</ele></trkpt>
+    <trkpt lat="49.071016" lon="19.275062"><ele>572</ele></trkpt>
+    <trkpt lat="49.070262" lon="19.273883"><ele>566</ele></trkpt>
+    <trkpt lat="49.069960" lon="19.273464"><ele>560</ele></trkpt>
+    <trkpt lat="49.070016" lon="19.273107"><ele>546</ele></trkpt>
+    <trkpt lat="49.070650" lon="19.273236"><ele>543</ele></trkpt>
+    <trkpt lat="49.070894" lon="19.273358"><ele>540</ele></trkpt>
+    <trkpt lat="49.070983" lon="19.273306"><ele>538</ele></trkpt>
+    <trkpt lat="49.071156" lon="19.273335"><ele>536</ele></trkpt>
+    <trkpt lat="49.071432" lon="19.273592"><ele>534</ele></trkpt>
+    <trkpt lat="49.071642" lon="19.273711"><ele>531</ele></trkpt>
+    <trkpt lat="49.071432" lon="19.273592"><ele>534</ele></trkpt>
+    <trkpt lat="49.071156" lon="19.273335"><ele>536</ele></trkpt>
+    <trkpt lat="49.070983" lon="19.273306"><ele>538</ele></trkpt>
+    <trkpt lat="49.070894" lon="19.273358"><ele>540</ele></trkpt>
+    <trkpt lat="49.070650" lon="19.273236"><ele>543</ele></trkpt>
+    <trkpt lat="49.070016" lon="19.273107"><ele>546</ele></trkpt>
+    <trkpt lat="49.069960" lon="19.273464"><ele>560</ele></trkpt>
+    <trkpt lat="49.070262" lon="19.273883"><ele>566</ele></trkpt>
+    <trkpt lat="49.071016" lon="19.275062"><ele>572</ele></trkpt>
+    <trkpt lat="49.071303" lon="19.275425"><ele>572</ele></trkpt>
+    <trkpt lat="49.072202" lon="19.276847"><ele>573</ele></trkpt>
+    <trkpt lat="49.072538" lon="19.277673"><ele>584</ele></trkpt>
+    <trkpt lat="49.072673" lon="19.277876"><ele>587</ele></trkpt>
+    <trkpt lat="49.072903" lon="19.278880"><ele>598</ele></trkpt>
+    <trkpt lat="49.073128" lon="19.279490"><ele>600</ele></trkpt>
+    <trkpt lat="49.073290" lon="19.280149"><ele>598</ele></trkpt>
+    <trkpt lat="49.073601" lon="19.281043"><ele>596</ele></trkpt>
+    <trkpt lat="49.074060" lon="19.283712"><ele>603</ele></trkpt>
+    <trkpt lat="49.074064" lon="19.284008"><ele>605</ele></trkpt>
+    <trkpt lat="49.074034" lon="19.284191"><ele>606</ele></trkpt>
+    <trkpt lat="49.073987" lon="19.284325"><ele>608</ele></trkpt>
+    <trkpt lat="49.073881" lon="19.284458"><ele>609</ele></trkpt>
+    <trkpt lat="49.074011" lon="19.284711"><ele>610</ele></trkpt>
+    <trkpt lat="49.074448" lon="19.285342"><ele>607</ele></trkpt>
+  </trkseg></trk>
+</gpx>

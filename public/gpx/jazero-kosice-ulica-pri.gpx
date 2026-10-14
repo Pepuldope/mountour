@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Pleso Jazero (Nad jazerom)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Pleso Jazero (Nad jazerom)</name><trkseg>
+    <trkpt lat="48.676340" lon="21.306908"><ele>192</ele></trkpt>
+    <trkpt lat="48.677999" lon="21.304593"><ele>191</ele></trkpt>
+    <trkpt lat="48.678658" lon="21.303577"><ele>193</ele></trkpt>
+    <trkpt lat="48.679883" lon="21.302501"><ele>196</ele></trkpt>
+    <trkpt lat="48.680738" lon="21.301898"><ele>196</ele></trkpt>
+    <trkpt lat="48.681410" lon="21.301200"><ele>194</ele></trkpt>
+    <trkpt lat="48.682098" lon="21.300247"><ele>196</ele></trkpt>
+    <trkpt lat="48.682258" lon="21.299982"><ele>195</ele></trkpt>
+    <trkpt lat="48.682441" lon="21.299433"><ele>197</ele></trkpt>
+    <trkpt lat="48.682755" lon="21.298277"><ele>197</ele></trkpt>
+    <trkpt lat="48.683634" lon="21.295778"><ele>196</ele></trkpt>
+    <trkpt lat="48.683804" lon="21.295463"><ele>196</ele></trkpt>
+    <trkpt lat="48.684642" lon="21.294300"><ele>198</ele></trkpt>
+    <trkpt lat="48.685221" lon="21.293372"><ele>203</ele></trkpt>
+    <trkpt lat="48.685482" lon="21.293312"><ele>200</ele></trkpt>
+    <trkpt lat="48.685660" lon="21.293470"><ele>195</ele></trkpt>
+    <trkpt lat="48.687213" lon="21.292607"><ele>193</ele></trkpt>
+    <trkpt lat="48.687359" lon="21.292411"><ele>194</ele></trkpt>
+    <trkpt lat="48.687642" lon="21.292221"><ele>195</ele></trkpt>
+    <trkpt lat="48.688075" lon="21.292227"><ele>193</ele></trkpt>
+    <trkpt lat="48.689156" lon="21.291869"><ele>195</ele></trkpt>
+    <trkpt lat="48.690251" lon="21.291822"><ele>195</ele></trkpt>
+    <trkpt lat="48.690691" lon="21.291711"><ele>194</ele></trkpt>
+    <trkpt lat="48.691365" lon="21.291404"><ele>194</ele></trkpt>
+    <trkpt lat="48.691659" lon="21.291151"><ele>194</ele></trkpt>
+    <trkpt lat="48.694379" lon="21.288122"><ele>196</ele></trkpt>
+    <trkpt lat="48.691659" lon="21.291151"><ele>194</ele></trkpt>
+    <trkpt lat="48.691365" lon="21.291404"><ele>194</ele></trkpt>
+    <trkpt lat="48.690691" lon="21.291711"><ele>194</ele></trkpt>
+    <trkpt lat="48.690251" lon="21.291822"><ele>195</ele></trkpt>
+    <trkpt lat="48.689156" lon="21.291869"><ele>195</ele></trkpt>
+    <trkpt lat="48.688075" lon="21.292227"><ele>193</ele></trkpt>
+    <trkpt lat="48.687642" lon="21.292221"><ele>195</ele></trkpt>
+    <trkpt lat="48.687359" lon="21.292411"><ele>194</ele></trkpt>
+    <trkpt lat="48.687213" lon="21.292607"><ele>193</ele></trkpt>
+    <trkpt lat="48.685660" lon="21.293470"><ele>195</ele></trkpt>
+    <trkpt lat="48.685482" lon="21.293312"><ele>200</ele></trkpt>
+    <trkpt lat="48.685221" lon="21.293372"><ele>203</ele></trkpt>
+    <trkpt lat="48.684642" lon="21.294300"><ele>198</ele></trkpt>
+    <trkpt lat="48.683804" lon="21.295463"><ele>196</ele></trkpt>
+    <trkpt lat="48.683634" lon="21.295778"><ele>196</ele></trkpt>
+    <trkpt lat="48.682755" lon="21.298277"><ele>197</ele></trkpt>
+    <trkpt lat="48.682441" lon="21.299433"><ele>197</ele></trkpt>
+    <trkpt lat="48.682258" lon="21.299982"><ele>195</ele></trkpt>
+    <trkpt lat="48.682098" lon="21.300247"><ele>196</ele></trkpt>
+    <trkpt lat="48.681410" lon="21.301200"><ele>194</ele></trkpt>
+    <trkpt lat="48.680738" lon="21.301898"><ele>196</ele></trkpt>
+    <trkpt lat="48.679883" lon="21.302501"><ele>196</ele></trkpt>
+    <trkpt lat="48.678658" lon="21.303577"><ele>193</ele></trkpt>
+    <trkpt lat="48.677999" lon="21.304593"><ele>191</ele></trkpt>
+    <trkpt lat="48.676340" lon="21.306908"><ele>192</ele></trkpt>
+  </trkseg></trk>
+</gpx>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Pleso Ryba</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Pleso Ryba</name><trkseg>
+    <trkpt lat="48.756803" lon="21.252954"><ele>216</ele></trkpt>
+    <trkpt lat="48.756602" lon="21.252404"><ele>215</ele></trkpt>
+    <trkpt lat="48.756634" lon="21.252391"><ele>215</ele></trkpt>
+    <trkpt lat="48.756236" lon="21.251330"><ele>215</ele></trkpt>
+    <trkpt lat="48.755619" lon="21.251803"><ele>216</ele></trkpt>
+    <trkpt lat="48.754942" lon="21.252009"><ele>215</ele></trkpt>
+    <trkpt lat="48.754628" lon="21.252208"><ele>215</ele></trkpt>
+    <trkpt lat="48.753887" lon="21.252408"><ele>214</ele></trkpt>
+    <trkpt lat="48.753567" lon="21.252451"><ele>214</ele></trkpt>
+    <trkpt lat="48.750393" lon="21.252551"><ele>220</ele></trkpt>
+    <trkpt lat="48.749894" lon="21.252692"><ele>218</ele></trkpt>
+    <trkpt lat="48.749188" lon="21.253026"><ele>222</ele></trkpt>
+    <trkpt lat="48.748508" lon="21.253164"><ele>215</ele></trkpt>
+    <trkpt lat="48.748230" lon="21.253157"><ele>215</ele></trkpt>
+    <trkpt lat="48.747589" lon="21.252991"><ele>218</ele></trkpt>
+    <trkpt lat="48.747259" lon="21.253007"><ele>214</ele></trkpt>
+    <trkpt lat="48.746468" lon="21.253485"><ele>214</ele></trkpt>
+    <trkpt lat="48.745734" lon="21.253779"><ele>219</ele></trkpt>
+    <trkpt lat="48.745244" lon="21.254190"><ele>213</ele></trkpt>
+    <trkpt lat="48.745275" lon="21.254369"><ele>213</ele></trkpt>
+    <trkpt lat="48.745244" lon="21.254190"><ele>213</ele></trkpt>
+    <trkpt lat="48.745611" lon="21.253859"><ele>218</ele></trkpt>
+    <trkpt lat="48.745874" lon="21.253705"><ele>220</ele></trkpt>
+    <trkpt lat="48.746468" lon="21.253485"><ele>214</ele></trkpt>
+    <trkpt lat="48.747259" lon="21.253007"><ele>214</ele></trkpt>
+    <trkpt lat="48.747589" lon="21.252991"><ele>218</ele></trkpt>
+    <trkpt lat="48.748230" lon="21.253157"><ele>215</ele></trkpt>
+    <trkpt lat="48.748508" lon="21.253164"><ele>215</ele></trkpt>
+    <trkpt lat="48.749188" lon="21.253026"><ele>222</ele></trkpt>
+    <trkpt lat="48.749894" lon="21.252692"><ele>218</ele></trkpt>
+    <trkpt lat="48.750393" lon="21.252551"><ele>220</ele></trkpt>
+    <trkpt lat="48.753567" lon="21.252451"><ele>214</ele></trkpt>
+    <trkpt lat="48.753887" lon="21.252408"><ele>214</ele></trkpt>
+    <trkpt lat="48.754628" lon="21.252208"><ele>215</ele></trkpt>
+    <trkpt lat="48.754942" lon="21.252009"><ele>215</ele></trkpt>
+    <trkpt lat="48.755619" lon="21.251803"><ele>216</ele></trkpt>
+    <trkpt lat="48.756236" lon="21.251330"><ele>215</ele></trkpt>
+    <trkpt lat="48.756634" lon="21.252391"><ele>215</ele></trkpt>
+    <trkpt lat="48.756602" lon="21.252404"><ele>215</ele></trkpt>
+    <trkpt lat="48.756803" lon="21.252954"><ele>216</ele></trkpt>
+  </trkseg></trk>
+</gpx>

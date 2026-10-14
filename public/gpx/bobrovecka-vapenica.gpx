@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Vodopád Bobrovecká Vápenica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vodopád Bobrovecká Vápenica</name><trkseg>
+    <trkpt lat="49.156192" lon="19.632441"><ele>752</ele></trkpt>
+    <trkpt lat="49.156003" lon="19.632212"><ele>751</ele></trkpt>
+    <trkpt lat="49.156024" lon="19.632179"><ele>751</ele></trkpt>
+    <trkpt lat="49.156295" lon="19.632096"><ele>753</ele></trkpt>
+    <trkpt lat="49.156691" lon="19.631754"><ele>773</ele></trkpt>
+    <trkpt lat="49.156799" lon="19.631707"><ele>775</ele></trkpt>
+    <trkpt lat="49.157501" lon="19.631696"><ele>776</ele></trkpt>
+    <trkpt lat="49.157769" lon="19.631654"><ele>769</ele></trkpt>
+    <trkpt lat="49.160929" lon="19.630790"><ele>794</ele></trkpt>
+    <trkpt lat="49.161286" lon="19.630655"><ele>798</ele></trkpt>
+    <trkpt lat="49.161620" lon="19.630327"><ele>803</ele></trkpt>
+    <trkpt lat="49.161960" lon="19.630137"><ele>808</ele></trkpt>
+    <trkpt lat="49.162743" lon="19.629971"><ele>821</ele></trkpt>
+    <trkpt lat="49.162961" lon="19.629978"><ele>828</ele></trkpt>
+    <trkpt lat="49.163190" lon="19.630091"><ele>831</ele></trkpt>
+    <trkpt lat="49.163982" lon="19.630612"><ele>853</ele></trkpt>
+    <trkpt lat="49.164411" lon="19.630789"><ele>855</ele></trkpt>
+    <trkpt lat="49.164578" lon="19.630975"><ele>853</ele></trkpt>
+    <trkpt lat="49.164664" lon="19.630990"><ele>853</ele></trkpt>
+    <trkpt lat="49.164578" lon="19.630975"><ele>853</ele></trkpt>
+    <trkpt lat="49.164411" lon="19.630789"><ele>855</ele></trkpt>
+    <trkpt lat="49.163982" lon="19.630612"><ele>853</ele></trkpt>
+    <trkpt lat="49.163190" lon="19.630091"><ele>831</ele></trkpt>
+    <trkpt lat="49.162961" lon="19.629978"><ele>828</ele></trkpt>
+    <trkpt lat="49.162743" lon="19.629971"><ele>821</ele></trkpt>
+    <trkpt lat="49.161960" lon="19.630137"><ele>808</ele></trkpt>
+    <trkpt lat="49.161620" lon="19.630327"><ele>803</ele></trkpt>
+    <trkpt lat="49.161286" lon="19.630655"><ele>798</ele></trkpt>
+    <trkpt lat="49.160929" lon="19.630790"><ele>794</ele></trkpt>
+    <trkpt lat="49.157769" lon="19.631654"><ele>769</ele></trkpt>
+    <trkpt lat="49.157501" lon="19.631696"><ele>776</ele></trkpt>
+    <trkpt lat="49.156799" lon="19.631707"><ele>775</ele></trkpt>
+    <trkpt lat="49.156691" lon="19.631754"><ele>773</ele></trkpt>
+    <trkpt lat="49.156295" lon="19.632096"><ele>753</ele></trkpt>
+    <trkpt lat="49.156024" lon="19.632179"><ele>751</ele></trkpt>
+    <trkpt lat="49.156003" lon="19.632212"><ele>751</ele></trkpt>
+    <trkpt lat="49.156192" lon="19.632441"><ele>752</ele></trkpt>
+  </trkseg></trk>
+</gpx>
