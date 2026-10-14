@@ -25,6 +25,8 @@ export interface BrowseTrip {
 
 /** A mountain area: one dot while zoomed out. */
 export interface BrowseArea {
+  /** Matches the `id` of its outline in /data/map/areas.json. */
+  id?: string;
   name: string;
   short: string;
   location: LatLng;
@@ -41,12 +43,16 @@ export interface MapView {
   bounds: Box;
   center: [number, number];
   zoom: number;
+  /** Below this zoom the map shows areas instead of trips (lower on narrow screens). */
+  areaZoom: number;
 }
 
 interface Props {
   /** The trips that pass the filters: their lines and squares. */
   trips: BrowseTrip[];
   areas: BrowseArea[];
+  /** The areas' outlines (they split all of Slovakia), drawn while zoomed out. */
+  outlines: GeoJSON.FeatureCollection | null;
   selected: string | null;
   /** A card hovered in the list: its line is outlined. */
   highlighted: string | null;
@@ -67,12 +73,20 @@ interface Props {
 const MAP_DATA = "/data/map";
 /** Below this zoom the map shows areas; their squares come from here on. */
 export const AREA_ZOOM = 9;
+/**
+ * How much earlier than on a wide screen areas give way to trips: a phone shows
+ * a whole mountain area only around zoom 7.5, so its trips must show from there.
+ */
+export function areaShift(width: number): number {
+  return Math.min(2, Math.max(0, Math.log2(1200 / Math.max(width, 1))));
+}
 /** Squares by popularity: the best known show from SQUARE_MIN, every trip by SQUARE_MAX. */
 const SQUARE_MIN = AREA_ZOOM;
 const SQUARE_MAX = 12;
 /** Pixels between squares at the zoom where they first show. */
 const SPACING = 54;
 const SUN = "#ffb81c";
+const AREA_LINE = "#1769d1";
 const NIGHT = "#14233b";
 
 const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
@@ -111,12 +125,13 @@ function squareImage(fill: string, edge: string, size: number): ImageData {
  * trips best known first, and skip any closer than SPACING px to one already
  * placed. Popular trips take the space early; nothing regroups while zooming.
  */
-function squareLevels(trips: BrowseTrip[]): Map<string, number> {
+function squareLevels(trips: BrowseTrip[], shift: number): Map<string, number> {
   const out = new Map<string, number>();
   const placed: BrowseTrip[] = [];
   const sorted = [...trips].sort((a, b) => b.rank - a.rank);
   for (let z = SQUARE_MIN; z <= SQUARE_MAX; z++) {
-    const world = 512 * 2 ** z;
+    // Spacing is measured where the level shows: zoom z, moved earlier by shift on narrow screens.
+    const world = 512 * 2 ** (z - shift);
     const px = (t: BrowseTrip): [number, number] => [
       ((t.location.lon + 180) / 360) * world,
       (0.5 - Math.log(Math.tan(Math.PI / 4 + (t.location.lat * Math.PI) / 360)) / (2 * Math.PI)) * world,
@@ -152,10 +167,10 @@ function squareLevels(trips: BrowseTrip[]): Map<string, number> {
   return out;
 }
 
-const viewOf = (map: MlMap): MapView => {
+const viewOf = (map: MlMap, shift: number): MapView => {
   const b = map.getBounds();
   const c = map.getCenter();
-  return { bounds: [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()], center: [c.lng, c.lat], zoom: map.getZoom() };
+  return { bounds: [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()], center: [c.lng, c.lat], zoom: map.getZoom(), areaZoom: AREA_ZOOM - shift };
 };
 
 const line = (coords: number[][] | undefined): GeoJSON.FeatureCollection =>
@@ -190,6 +205,7 @@ function declutter(els: HTMLElement[]) {
 export function BrowseMap({
   trips,
   areas,
+  outlines,
   selected,
   highlighted,
   focus,
@@ -202,21 +218,25 @@ export function BrowseMap({
   ariaLabel,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [ctx, setCtx] = useState<{ ml: MapLibre; map: MlMap } | null>(null);
+  const [ctx, setCtx] = useState<{ ml: MapLibre; map: MlMap; shift: number } | null>(null);
   // Every line seen so far, by slug: the detailed one once its area has loaded.
   const lines = useRef(new Map<string, { coords: number[][]; detailed: boolean }>());
   const [linesVersion, setLinesVersion] = useState(0);
   const handlers = useRef({ onView, onPick, onHover, onTrailTap });
   const tripsRef = useRef(trips);
+  const areasRef = useRef(areas);
   const areaEls = useRef<HTMLElement[]>([]);
   const userMarkers = useRef<Marker[]>([]);
   const { fix, start } = useUserLocation();
   const initialRef = useRef(initialView);
   const insetRef = useRef(bottomInset);
+  const zoomToAreaRef = useRef<(a: BrowseArea) => void>(() => {});
+  const hoverAreaRef = useRef<(id: string | null) => void>(() => {});
 
   useEffect(() => {
     handlers.current = { onView, onPick, onHover, onTrailTap };
     tripsRef.current = trips;
+    areasRef.current = areas;
     insetRef.current = bottomInset;
   });
 
@@ -226,10 +246,14 @@ export function BrowseMap({
     let map: MlMap | null = null;
     let observer: ResizeObserver | null = null;
     let detachNetwork: (() => void) | null = null;
+    let shift = 0;
+    let areaZoom = AREA_ZOOM;
 
     async function init() {
       const ml = await import("maplibre-gl");
       if (cancelled || !containerRef.current) return;
+      shift = areaShift(containerRef.current.clientWidth);
+      areaZoom = AREA_ZOOM - shift;
       const start = initialRef.current;
       map = new ml.Map({
         container: containerRef.current,
@@ -258,6 +282,31 @@ export function BrowseMap({
         // Every marked trail, faint grey: the trips are drawn over it in colour.
         detachNetwork = attachTrailNetwork(m, "context", POPULARITY_RAMP, POPULARITY_TOP_OUTLINE);
 
+        // Area outlines: like districts on a map, they fade as the trips take over.
+        m.addSource("areas", { type: "geojson", data: EMPTY, promoteId: "id" });
+        m.addLayer({
+          id: "area-fill",
+          type: "fill",
+          source: "areas",
+          maxzoom: areaZoom + 0.5,
+          paint: {
+            "fill-color": AREA_LINE,
+            "fill-opacity": ["interpolate", ["linear"], ["zoom"], areaZoom - 0.6, ["case", ["boolean", ["feature-state", "hover"], false], 0.2, 0.06], areaZoom + 0.2, 0],
+          },
+        });
+        m.addLayer({
+          id: "area-line",
+          type: "line",
+          source: "areas",
+          maxzoom: areaZoom + 0.5,
+          layout: { "line-join": "round" },
+          paint: {
+            "line-color": AREA_LINE,
+            "line-width": ["interpolate", ["linear"], ["zoom"], 6, 1.3, 9, 2],
+            "line-opacity": ["interpolate", ["linear"], ["zoom"], areaZoom - 0.6, 0.7, areaZoom + 0.4, 0],
+          },
+        });
+
         const ramp = ["match", ["get", "p"], ...POPULARITY_RAMP.flatMap((c, i) => [i, c]), POPULARITY_RAMP[0]] as unknown as ExpressionSpecification;
         const width = (a: number, b: number, c: number, extra = 0) =>
           [
@@ -268,8 +317,8 @@ export function BrowseMap({
           ] as unknown as ExpressionSpecification;
         const layout: LineLayerSpecification["layout"] = { "line-cap": "round", "line-join": "round", "line-sort-key": ["get", "r"] };
         for (const [src, range] of [
-          ["trip-lines", { maxzoom: AREA_ZOOM }],
-          ["trip-lines-d", { minzoom: AREA_ZOOM }],
+          ["trip-lines", { maxzoom: areaZoom }],
+          ["trip-lines-d", { minzoom: areaZoom }],
         ] as [string, { maxzoom?: number; minzoom?: number }][]) {
           m.addSource(src, { type: "geojson", data: EMPTY });
           // The best known trips get a thin white edge, like on the trail network before.
@@ -292,12 +341,12 @@ export function BrowseMap({
         m.addImage("sq-active", squareImage(SUN, NIGHT, 22), { pixelRatio: 2 });
         m.addSource("squares", { type: "geojson", data: EMPTY });
         for (let z = SQUARE_MIN; z <= SQUARE_MAX; z++) {
-          const fade = ["interpolate", ["linear"], ["zoom"], z - 0.01, 0, z + 0.15, 1] as unknown as ExpressionSpecification;
+          const fade = ["interpolate", ["linear"], ["zoom"], z - shift - 0.01, 0, z - shift + 0.15, 1] as unknown as ExpressionSpecification;
           m.addLayer({
             id: `sq-${z}`,
             type: "symbol",
             source: "squares",
-            minzoom: z - 0.01,
+            minzoom: z - shift - 0.01,
             filter: ["==", ["get", "z"], z],
             layout: { "icon-image": ["concat", "sq-", ["get", "g"]], "icon-allow-overlap": true, "icon-ignore-placement": true, "symbol-sort-key": ["-", 0, ["get", "r"]] },
             paint: { "icon-opacity": fade },
@@ -315,12 +364,12 @@ export function BrowseMap({
         loadLines(m);
         m.on("moveend", () => {
           loadLines(m);
-          handlers.current.onView(viewOf(m));
+          handlers.current.onView(viewOf(m, shift));
         });
         m.on("zoom", () => showAreas(m.getZoom()));
         showAreas(m.getZoom());
-        handlers.current.onView(viewOf(m));
-        setCtx({ ml, map: m });
+        handlers.current.onView(viewOf(m, shift));
+        setCtx({ ml, map: m, shift });
       });
 
       observer = new ResizeObserver(() => map?.resize());
@@ -359,7 +408,7 @@ export function BrowseMap({
           remember(overview.features, false);
         }
       }
-      if (m.getZoom() < AREA_ZOOM - 0.5) return;
+      if (m.getZoom() < areaZoom - 0.5) return;
       const b = m.getBounds();
       const w = b.getEast() - b.getWest();
       const h = b.getNorth() - b.getSouth();
@@ -412,13 +461,24 @@ export function BrowseMap({
       }
       return out.sort((a, b) => a.km - b.km).slice(0, 3);
     }
+    let hoverArea: string | null = null;
+    const setHoverArea = (m: MlMap, id: string | null) => {
+      if (id === hoverArea) return;
+      if (hoverArea) m.setFeatureState({ source: "areas", id: hoverArea }, { hover: false });
+      hoverArea = id;
+      if (id) m.setFeatureState({ source: "areas", id }, { hover: true });
+    };
+    const areaAt = (m: MlMap, e: MapMouseEvent): string | null =>
+      (m.queryRenderedFeatures(e.point, { layers: ["area-fill"] })[0]?.properties?.id as string | undefined) ?? null;
     function bindEvents(m: MlMap) {
       const fine = window.matchMedia("(pointer: fine)").matches;
       let hovering: string | null = null;
       m.on("mousemove", (e) => {
         if (!fine) return;
-        if (m.getZoom() < AREA_ZOOM) {
-          const any = m.queryRenderedFeatures([[e.point.x - 4, e.point.y - 4], [e.point.x + 4, e.point.y + 4]], { layers: ["trip-lines-line"] }).length > 0;
+        if (m.getZoom() < areaZoom) {
+          const area = areaAt(m, e);
+          setHoverArea(m, area);
+          const any = area !== null || m.queryRenderedFeatures([[e.point.x - 4, e.point.y - 4], [e.point.x + 4, e.point.y + 4]], { layers: ["trip-lines-line"] }).length > 0;
           m.getCanvas().style.cursor = any ? "zoom-in" : "";
           if (hovering) handlers.current.onHover((hovering = null));
           return;
@@ -432,17 +492,22 @@ export function BrowseMap({
         }
       });
       m.on("mouseout", () => {
+        setHoverArea(m, null);
         hovering = null;
         handlers.current.onHover(null);
       });
       m.on("click", (e) => {
         const r = fine ? 6 : 14;
         // Zoomed out: a tap on any line zooms in there, so nothing is a dead end.
-        if (m.getZoom() < AREA_ZOOM) {
+        if (m.getZoom() < areaZoom) {
+          // Inside an area: show all of it.
+          const id = areaAt(m, e);
+          const area = id ? areasRef.current.find((a) => a.id === id) : undefined;
+          if (area) return zoomToArea(m, area);
           const any = m.queryRenderedFeatures([[e.point.x - r, e.point.y - r], [e.point.x + r, e.point.y + r]], {
             layers: ["trip-lines-line", "network-line"].filter((id) => m.getLayer(id)),
           }).length;
-          if (any) m.easeTo({ center: e.lngLat, zoom: 10.5 });
+          if (any) m.easeTo({ center: e.lngLat, zoom: areaZoom + 1.5 });
           return;
         }
         const found = under(m, e, r);
@@ -458,10 +523,18 @@ export function BrowseMap({
       });
     }
 
+    function zoomToArea(m: MlMap, a: BrowseArea) {
+      const cam = m.cameraForBounds([[a.bbox[0], a.bbox[1]], [a.bbox[2], a.bbox[3]]], { padding: 24 });
+      // The whole area in view; trips show from the area zoom on, so never stop short of it.
+      m.easeTo({ center: cam?.center ?? [a.location.lon, a.location.lat], zoom: Math.max(cam?.zoom ?? 0, areaZoom + 0.05) });
+    }
+    zoomToAreaRef.current = (a) => map && zoomToArea(map, a);
+    hoverAreaRef.current = (id) => map && setHoverArea(map, id);
+
     // ---- areas: HTML dots made once, shown or hidden by zoom (never rebuilt, so they don't blink)
     function showAreas(z: number) {
-      for (const el of areaEls.current) el.style.display = z < AREA_ZOOM ? "" : "none";
-      if (z < AREA_ZOOM) requestAnimationFrame(() => declutter(areaEls.current));
+      for (const el of areaEls.current) el.style.display = z < areaZoom ? "" : "none";
+      if (z < areaZoom) requestAnimationFrame(() => declutter(areaEls.current));
     }
 
     init();
@@ -486,12 +559,15 @@ export function BrowseMap({
       el.setAttribute("aria-label", `${a.name}: priblížiť`);
       el.innerHTML = `<span aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M2.5 19.5 9.5 7l3.4 5.6 2.1-3.1 6.5 10z" fill="currentColor"/></svg></span><span></span>`;
       (el.lastChild as HTMLElement).textContent = a.short;
-      el.style.display = map.getZoom() < AREA_ZOOM ? "" : "none";
+      el.style.display = map.getZoom() < AREA_ZOOM - ctx.shift ? "" : "none";
       el.addEventListener("click", (ev) => {
         ev.stopPropagation();
-        const cam = map.cameraForBounds([[a.bbox[0], a.bbox[1]], [a.bbox[2], a.bbox[3]]], { padding: 24 });
-        map.easeTo({ center: cam?.center ?? [a.location.lon, a.location.lat], zoom: Math.max(cam?.zoom ?? 0, AREA_ZOOM + 0.2) });
+        zoomToAreaRef.current(a);
       });
+      if (a.id) {
+        el.addEventListener("mouseenter", () => hoverAreaRef.current(a.id!));
+        el.addEventListener("mouseleave", () => hoverAreaRef.current(null));
+      }
       return new ml.Marker({ element: el, anchor: "top", offset: [0, -15] }).setLngLat([a.location.lon, a.location.lat]).addTo(map);
     });
     areaEls.current = markers.map((m) => m.getElement());
@@ -501,6 +577,12 @@ export function BrowseMap({
       areaEls.current = [];
     };
   }, [ctx, areas]);
+
+  // Area outlines.
+  useEffect(() => {
+    if (!ctx) return;
+    (ctx.map.getSource("areas") as GeoJSONSource | undefined)?.setData(outlines ?? EMPTY);
+  }, [ctx, outlines]);
 
   // Which trips show: their lines and squares.
   useEffect(() => {
@@ -513,7 +595,7 @@ export function BrowseMap({
       map.setFilter(`${src}-hit`, only);
       map.setFilter(`${src}-top`, ["all", ["==", ["get", "p"], 4], only] as unknown as ExpressionSpecification);
     }
-    const level = squareLevels(trips);
+    const level = squareLevels(trips, ctx.shift);
     (map.getSource("squares") as GeoJSONSource | undefined)?.setData({
       type: "FeatureCollection",
       features: trips.map((t) => ({
