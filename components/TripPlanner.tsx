@@ -122,10 +122,27 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
         </div>
       )}
 
-      {/* In the order of the day: where from, how, then when. */}
+      {/* In the order of the day: where from, how, which day and time, then the day itself. */}
       <StartChip />
 
       <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} />
+
+      <section aria-label="Deň a odchod" className="flex flex-col gap-3">
+        <FilterChips variant="trip" activeDate={date} />
+        <div className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-2 text-sm font-semibold">
+            {hasDrive ? "Odchod" : transit && stop ? "Na zastávke" : "Začiatok túry"}
+            <input
+              type="time"
+              step={300}
+              value={time ?? ""}
+              onChange={(e) => e.target.value && update({ time: e.target.value })}
+              className="font-data w-32 rounded-lg border border-[var(--border)] bg-[var(--card-bg)] px-3 py-1.5 text-lg"
+            />
+          </label>
+        </div>
+        {driveStatus === "loading" && <p className="text-xs text-[var(--muted)]">{transit ? "Počítam cestu na zastávku..." : "Počítam cestu autom..."}</p>}
+      </section>
 
       {plan && (
         <section
@@ -167,22 +184,6 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
         </section>
       )}
 
-      <section aria-label="Deň a odchod" className="flex flex-col gap-3">
-        <FilterChips variant="trip" activeDate={date} />
-        <div className="flex flex-wrap items-center gap-3">
-          <label className="flex items-center gap-2 text-sm font-semibold">
-            {hasDrive ? "Odchod" : transit && stop ? "Na zastávke" : "Začiatok túry"}
-            <input
-              type="time"
-              step={300}
-              value={time ?? ""}
-              onChange={(e) => e.target.value && update({ time: e.target.value })}
-              className="font-data w-32 rounded-lg border border-[var(--border)] bg-[var(--card-bg)] px-3 py-1.5 text-lg"
-            />
-          </label>
-        </div>
-        {driveStatus === "loading" && <p className="text-xs text-[var(--muted)]">{transit ? "Počítam cestu na zastávku..." : "Počítam cestu autom..."}</p>}
-      </section>
 
       {plan && (
         <section

@@ -5,6 +5,34 @@ import { joinedMinutes, trailJoin } from "./trailJoin";
 const path: [number, number, number | null][] = Array.from({ length: 11 }, (_, i) => [19.0, 49.0 + i * 0.001, 500 + i * 50]);
 
 describe("trailJoin", () => {
+  it("joins where the stored walk meets the trail, not at the start it heads for", () => {
+    // Parked 400 m east of point 6; the walk comes west, meets the trail at point 6, then follows it down.
+    const walk = {
+      line: [
+        [19.0055, 49.006],
+        [19.0025, 49.006],
+        [19.0, 49.006],
+        [19.0, 49.003],
+        [19.0, 49.0],
+      ] as [number, number][],
+      m: 1070,
+    };
+    // Straight to the start is barely longer than to the trail, so the straight-line rule keeps the start.
+    const j = trailJoin(path, { lat: 49.006, lon: 19.0055 }, 450, false, walk)!;
+    expect(j.location).toEqual({ lat: 49.006, lon: 19.0 });
+    expect(j.walk_cut).toBe(2);
+    expect(j.walk_m).toBeGreaterThan(380);
+    expect(j.walk_m).toBeLessThan(420);
+    expect(j.skip_ascent_m).toBe(300);
+  });
+
+  it("keeps the straight-line join when the walk only meets the trail lower down", () => {
+    const walk = { line: [[19.0003, 49.005], [19.0, 49.001]] as [number, number][], m: 450 };
+    const j = trailJoin(path, { lat: 49.005, lon: 19.0003 }, 560, false, walk)!;
+    expect(j.location).toEqual({ lat: 49.005, lon: 19.0 });
+    expect(j.walk_cut).toBeUndefined();
+  });
+
   it("keeps the start when the parking is next to it", () => {
     expect(trailJoin(path, { lat: 49.0, lon: 19.0005 }, 40, false)).toBeNull();
   });
