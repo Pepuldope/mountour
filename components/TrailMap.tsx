@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { GeoJSONSource, Map as MlMap, Marker, StyleSpecification } from "maplibre-gl";
 import type { BBox, LatLng } from "@/lib/types";
-import { MAP_STYLE_URL } from "@/lib/mapLayers";
+import { MAP_STYLE_URL, mapPixelRatio } from "@/lib/mapLayers";
 import { UI_ICON } from "@/lib/uiIcons";
 import { POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
 import { attachTrailNetwork } from "@/lib/trailNetwork";
@@ -213,6 +213,7 @@ export function TrailMap({
         cooperativeGestures: false,
         dragRotate: false,
         pitchWithRotate: false,
+        pixelRatio: mapPixelRatio(),
       });
       map.touchZoomRotate.disableRotation();
       map.on("moveend", () => {

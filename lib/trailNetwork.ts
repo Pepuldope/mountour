@@ -2,6 +2,7 @@
 // public/data/trails). The country view draws a light overview file; zoomed in,
 // the detailed file of each grid cell on screen is fetched once and added.
 import type { GeoJSONSource, Map as MlMap } from "maplibre-gl";
+import { lineFeeder } from "@/lib/mapFeed";
 import { fetchLines } from "@/lib/packedLines";
 
 export type NetworkMode = "full" | "context";
@@ -19,6 +20,8 @@ export interface TrailNetworkMeta {
 }
 
 const BASE = "/data/trails";
+/** Deepest zoom line sources are cut into tiles at; closer views enlarge those. */
+export const LINE_TILE_MAX = 14;
 /** From this zoom on, the detailed cells replace the overview. */
 export const DETAIL_ZOOM = 11;
 
@@ -66,8 +69,10 @@ export function attachTrailNetwork(
   topOutline: string
 ): () => void {
   let stopped = false;
-  map.addSource("network", { type: "geojson", data: EMPTY });
-  map.addSource("network-detail", { type: "geojson", data: EMPTY });
+  // Lines are cut into tiles only down to the zoom they are shown at (the detail
+  // to 14, enlarged beyond): less work for the phone at each zoom step.
+  map.addSource("network", { type: "geojson", data: EMPTY, maxzoom: DETAIL_ZOOM });
+  map.addSource("network-detail", { type: "geojson", data: EMPTY, maxzoom: LINE_TILE_MAX });
 
   const top = ramp.length - 1;
   const full = mode === "full";
@@ -131,29 +136,26 @@ export function attachTrailNetwork(
   }
 
   let meta: TrailNetworkMeta | null = null;
-  const loaded = new Map<string, GeoJSON.Feature[]>();
+  const loaded = new Set<string>();
   const pending = new Set<string>();
-
-  function showDetail() {
-    const features = [...loaded.values()].flat();
-    (map.getSource("network-detail") as GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features });
-  }
+  // Each cell's lines are added to what the map already has, a few at a time.
+  const addCell = lineFeeder(() => map.getSource("network-detail") as GeoJSONSource | undefined);
 
   async function loadVisibleCells() {
     if (stopped || !meta || map.getZoom() < DETAIL_ZOOM - 0.5) return;
     const b = map.getBounds();
     const want = cellsInView(meta.grid, new Set(meta.cells), [b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]);
     const todo = want.filter((k) => !loaded.has(k) && !pending.has(k));
-    if (todo.length === 0) return;
-    todo.forEach((k) => pending.add(k));
-    const got = await Promise.all(
-      todo.map((k) => fetchLines(`${BASE}/c/${k}.json?v=${meta!.generated_at}`))
+    await Promise.all(
+      todo.map(async (k) => {
+        pending.add(k);
+        const got = await fetchLines(`${BASE}/c/${k}.json?v=${meta!.generated_at}`);
+        pending.delete(k);
+        if (!got || stopped) return;
+        loaded.add(k);
+        addCell(got.features);
+      })
     );
-    todo.forEach((k, i) => {
-      pending.delete(k);
-      if (got[i]) loaded.set(k, got[i]!.features);
-    });
-    if (!stopped) showDetail();
   }
 
   const onMove = () => void loadVisibleCells();
@@ -163,7 +165,7 @@ export function attachTrailNetwork(
     meta = await getJson<TrailNetworkMeta>(`${BASE}/meta.json`);
     if (!meta || stopped) return;
     const overview = await fetchLines(`${BASE}/overview.json?v=${meta.generated_at}`);
-    if (overview && !stopped) (map.getSource("network") as GeoJSONSource | undefined)?.setData(overview);
+    if (overview && !stopped) lineFeeder(() => map.getSource("network") as GeoJSONSource | undefined)(overview.features);
     loadVisibleCells();
   })();
 

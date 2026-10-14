@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { startTransition, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { Difficulty, LatLng, TrailDetail } from "@/lib/types";
 import { defaultApproachMin, driveDestination, nearestStop, primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { activeClosures } from "@/lib/closures";
@@ -551,7 +551,8 @@ export function HomeExplorer({ trails: initial }: Props) {
         initialView={mapView}
         onView={(v) => {
           lastView = v;
-          setMapView(v);
+          // The list follows the map without holding up the next frame of a pinch.
+          startTransition(() => setMapView(v));
         }}
         onPick={(p) => (p ? pickTrip(p.slug, p.also, p) : pickTrip(null))}
         onHover={(h) => {

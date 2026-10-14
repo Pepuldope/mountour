@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import type { ExpressionSpecification, GeoJSONSource, LineLayerSpecification, Map as MlMap, MapMouseEvent, Marker } from "maplibre-gl";
 import type { LatLng } from "@/lib/types";
 import type { DestinationKind } from "@/lib/tripSchema";
-import { MAP_STYLE_URL } from "@/lib/mapLayers";
+import { MAP_STYLE_URL, mapPixelRatio } from "@/lib/mapLayers";
 import { GOAL_COLOUR, POPULARITY_QUIET_EDGE, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
+import { lineFeeder } from "@/lib/mapFeed";
 import { fetchLines } from "@/lib/packedLines";
-import { attachTrailNetwork, cellsInView } from "@/lib/trailNetwork";
+import { attachTrailNetwork, cellsInView, LINE_TILE_MAX } from "@/lib/trailNetwork";
 import { useUserLocation } from "@/lib/userLocation";
 import { FALLBACK_STYLE, SLOVAKIA, hideBasePois } from "@/components/TrailMap";
 
@@ -265,6 +266,7 @@ export function BrowseMap({
         pitchWithRotate: false,
         fadeDuration: 0,
         minZoom: 5,
+        pixelRatio: mapPixelRatio(),
       });
       map.touchZoomRotate.disableRotation();
       map.addControl(new ml.NavigationControl({ showCompass: false }), "bottom-right");
@@ -318,11 +320,11 @@ export function BrowseMap({
             15, ["+", c + extra, ["*", 0.8, ["get", "p"]], ["case", ["==", ["get", "p"], 0], 0.4, 0]],
           ] as unknown as ExpressionSpecification;
         const layout: LineLayerSpecification["layout"] = { "line-cap": "round", "line-join": "round", "line-sort-key": ["get", "r"] };
-        for (const [src, range] of [
-          ["trip-lines", { maxzoom: areaZoom }],
-          ["trip-lines-d", { minzoom: areaZoom }],
-        ] as [string, { maxzoom?: number; minzoom?: number }][]) {
-          m.addSource(src, { type: "geojson", data: EMPTY });
+        for (const [src, range, tileMax] of [
+          ["trip-lines", { maxzoom: areaZoom }, Math.ceil(areaZoom)],
+          ["trip-lines-d", { minzoom: areaZoom }, LINE_TILE_MAX],
+        ] as [string, { maxzoom?: number; minzoom?: number }, number][]) {
+          m.addSource(src, { type: "geojson", data: EMPTY, maxzoom: tileMax });
           // The best known trips get a thin white edge, like on the trail network before.
           m.addLayer({ id: `${src}-top`, type: "line", source: src, ...range, filter: ["==", ["get", "p"], 4], layout, paint: { "line-color": POPULARITY_TOP_OUTLINE, "line-width": width(0.6, 1.4, 2.5, 1), "line-opacity": 0.9 } });
           m.addLayer({ id: `${src}-quiet`, type: "line", source: src, ...range, filter: ["==", ["get", "p"], 0], layout, paint: { "line-color": POPULARITY_QUIET_EDGE, "line-width": width(0.6, 1.4, 2.5, 1.2), "line-opacity": 0.45 } });
@@ -331,12 +333,12 @@ export function BrowseMap({
           m.addLayer({ id: `${src}-hit`, type: "line", source: src, ...range, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0 } });
         }
 
-        m.addSource("hover", { type: "geojson", data: EMPTY });
+        m.addSource("hover", { type: "geojson", data: EMPTY, maxzoom: LINE_TILE_MAX });
         m.addLayer({ id: "hover-line", type: "line", source: "hover", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": NIGHT, "line-width": 5, "line-opacity": 0.55 } });
-        m.addSource("sel", { type: "geojson", data: EMPTY });
+        m.addSource("sel", { type: "geojson", data: EMPTY, maxzoom: LINE_TILE_MAX });
         m.addLayer({ id: "sel-casing", type: "line", source: "sel", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#ffffff", "line-width": 9 } });
         m.addLayer({ id: "sel-line", type: "line", source: "sel", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": NIGHT, "line-width": 4.5 } });
-        m.addSource("sel-start", { type: "geojson", data: EMPTY });
+        m.addSource("sel-start", { type: "geojson", data: EMPTY, maxzoom: LINE_TILE_MAX });
         m.addLayer({ id: "sel-start", type: "circle", source: "sel-start", paint: { "circle-color": "#ffffff", "circle-radius": 6, "circle-stroke-color": NIGHT, "circle-stroke-width": 3 } });
 
         // Squares: one layer per level, each fading in as its zoom is reached.
@@ -383,7 +385,8 @@ export function BrowseMap({
     let meta: Meta | null = null;
     const loaded = new Set<string>();
     const pending = new Set<string>();
-    const detailFeatures: GeoJSON.Feature[] = [];
+    const onMap = new Set<unknown>();
+    const addLines = lineFeeder(() => map?.getSource("trip-lines-d") as GeoJSONSource | undefined);
     const getJson = async <T,>(url: string): Promise<T | null> => {
       try {
         const r = await fetch(url);
@@ -407,7 +410,7 @@ export function BrowseMap({
         if (!meta || cancelled) return;
         const overview = await fetchLines(`${MAP_DATA}/overview.json?v=${meta.generated_at}`);
         if (overview && !cancelled) {
-          (m.getSource("trip-lines") as GeoJSONSource | undefined)?.setData(overview);
+          lineFeeder(() => m.getSource("trip-lines") as GeoJSONSource | undefined)(overview.features);
           remember(overview.features, false);
         }
       }
@@ -417,24 +420,20 @@ export function BrowseMap({
       const h = b.getNorth() - b.getSouth();
       const want = cellsInView(meta.grid, new Set(meta.cells), [b.getWest() - w * 0.3, b.getSouth() - h * 0.3, b.getEast() + w * 0.3, b.getNorth() + h * 0.3]);
       const todo = want.filter((k) => !loaded.has(k) && !pending.has(k));
-      if (todo.length === 0) return;
-      todo.forEach((k) => pending.add(k));
-      const got = await Promise.all(todo.map((k) => fetchLines(`${MAP_DATA}/c/${k}.json?v=${meta!.generated_at}`)));
-      if (cancelled) return;
-      const seen = new Set(detailFeatures.map((f) => f.properties?.s));
-      todo.forEach((k, i) => {
-        pending.delete(k);
-        if (!got[i]) return;
-        loaded.add(k);
-        // A trip crossing two areas is in both files: keep it once.
-        for (const f of got[i]!.features) {
-          if (seen.has(f.properties?.s)) continue;
-          seen.add(f.properties?.s);
-          detailFeatures.push(f);
-        }
-        remember(got[i]!.features, true);
-      });
-      (m.getSource("trip-lines-d") as GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features: detailFeatures });
+      await Promise.all(
+        todo.map(async (k) => {
+          pending.add(k);
+          const got = await fetchLines(`${MAP_DATA}/c/${k}.json?v=${meta!.generated_at}`);
+          pending.delete(k);
+          if (!got || cancelled) return;
+          loaded.add(k);
+          // A trip crossing two areas is in both files: keep it once.
+          const add = got.features.filter((f) => !onMap.has(f.properties?.s));
+          add.forEach((f) => onMap.add(f.properties?.s));
+          addLines(add);
+          remember(got.features, true);
+        })
+      );
     }
 
     // ---- pointer
@@ -535,9 +534,17 @@ export function BrowseMap({
     hoverAreaRef.current = (id) => map && setHoverArea(map, id);
 
     // ---- areas: HTML dots made once, shown or hidden by zoom (never rebuilt, so they don't blink)
+    let declutterSoon: ReturnType<typeof setTimeout> | undefined;
     function showAreas(z: number) {
       for (const el of areaEls.current) el.style.display = z < areaZoom ? "" : "none";
-      if (z < areaZoom) requestAnimationFrame(() => declutter(areaEls.current));
+      // Measuring the names makes the browser lay out the page, too slow for
+      // every frame of a pinch: a few times a second is enough, and the last
+      // check always comes after the zoom stops.
+      if (z >= areaZoom || declutterSoon) return;
+      declutterSoon = setTimeout(() => {
+        declutterSoon = undefined;
+        declutter(areaEls.current);
+      }, 150);
     }
 
     // The map (MapLibre, the trail lines, the tiles) is the heaviest part of the
@@ -561,6 +568,7 @@ export function BrowseMap({
     }
     return () => {
       cancelled = true;
+      clearTimeout(declutterSoon);
       near?.disconnect();
       observer?.disconnect();
       detachNetwork?.();

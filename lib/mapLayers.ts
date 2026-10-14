@@ -10,6 +10,15 @@ export const MAP_STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
 /** OpenFreeMap tiles stop at z14; MapLibre overzooms past that. */
 export const VECTOR_MAX_ZOOM = 14;
 
+/**
+ * Pixels per screen point the maps draw at. Phones have up to 3, which means
+ * 9 pixels to draw for each point; at 2 it is 4 and the map still looks
+ * sharp. Drawing less per frame keeps zooming smooth (2026-10-14).
+ */
+export function mapPixelRatio(): number {
+  return Math.min(window.devicePixelRatio || 1, 2);
+}
+
 /** KST colours as map line colours (brand tokens --trail-*). */
 export const MARKING_COLOR: Record<TrailMarking, string> = {
   red: "#c4122f",
