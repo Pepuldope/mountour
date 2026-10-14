@@ -690,5 +690,6 @@ export function BrowseMap({
     if (fix) userMarkers.current.push(new ml.Marker({ element: pin("mt-pin-me", "", "Vaša poloha") }).setLngLat([fix.lon, fix.lat]).addTo(map));
   }, [ctx, fix, start]);
 
-  return <div ref={containerRef} className="h-full w-full" role="region" aria-label={ariaLabel} />;
+  // `isolate`: area dots stack among themselves only, never above the legend and buttons laid over the map.
+  return <div ref={containerRef} className="isolate h-full w-full" role="region" aria-label={ariaLabel} />;
 }
