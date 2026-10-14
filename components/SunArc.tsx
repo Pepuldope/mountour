@@ -423,6 +423,8 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
           );
         })}
 
+        {/* The moment shown: a slim line from the sky down to the hour ruler. */}
+        <line x1={sx} x2={sx} y1={4} y2={RULER} stroke={INK} strokeWidth={1} opacity={0.45} />
         <path d={scene.arc} fill="none" stroke="#fff" strokeWidth={4} strokeLinecap="round" opacity={0.75} />
         <path d={scene.arc} fill="none" stroke="#e08a00" strokeWidth={1.7} strokeDasharray={`${scene.dash.toFixed(2)} ${scene.dash.toFixed(2)}`} strokeLinecap="round" />
         <g transform={`translate(${sx} ${sy})`} opacity={alt > -1 ? sunShows : 0}>
@@ -528,9 +530,8 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
         </g>
       </svg>
 
-      {/* A plain slider for the same thing: easier to hit with a thumb than the picture itself. */}
-      <label className="flex flex-col gap-1 px-4 pt-3 pb-2">
-        <span className="text-[13px] font-semibold text-[var(--muted)]">Posuňte čas</span>
+      {/* Phones: a plain slider right under the picture, easier to hit with a thumb. Computers point with the mouse. */}
+      <div className="-mt-1 px-4 pb-1 sm:hidden">
         <input
           type="range"
           min={scene.lo}
@@ -542,7 +543,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
           aria-label="Čas počas dňa"
           aria-valuetext={formatTime(new Date(t))}
         />
-      </label>
+      </div>
 
       <div className="flex justify-between gap-3 border-t border-[var(--border)] px-4 pt-2.5 pb-3.5 text-sm" aria-live="polite">
         <div>
