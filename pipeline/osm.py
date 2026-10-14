@@ -88,6 +88,8 @@ GORGE_WORDS = __import__("re").compile(r"roklin|tiesňav|diery|prielom|kaňon|so
 VALLEYS = ("valley", "gully", "gorge", "canyon")
 GORGE_MAX_M = 4500  # a valley this short with an article is a gorge (Suchá Belá, Sokolia dolina); longer is a valley
 ROCKS = ("rock", "stone", "cliff", "arch", "rock_formation", "bare_rock")
+NOT_SIGHTS = ("historic", "building", "amenity", "man_made", "religion", "memorial", "railway", "leisure", "shop",
+              "office", "craft", "place", "landuse", "waterway")
 MAIN_KEYS = ("natural", "tourism", "historic", "leisure", "man_made", "waterway", "boundary", "amenity", "landuse",
              "geological", "building", "place")
 
@@ -128,8 +130,10 @@ def destination_kind(t):
         return "roklina"
     if t.get("tourism") == "attraction" and gorge_word and t.get("natural") not in ("saddle", "peak"):
         return "roklina"  # Jánošíkove diery is mapped as one point
-    # A sight with its own article: a rock town, a famous rock, Kláštorisko
-    if known and (t.get("tourism") == "attraction" or t.get("natural") in ROCKS) and t.get("natural") not in ("saddle", "peak"):
+    # A sight in nature with its own article: a rock town, a famous rock, Kláštorisko. Not churches,
+    # memorials, manors or museums that happen to be tagged as attractions.
+    if known and t.get("natural") not in ("saddle", "peak") and (t.get("natural") in ROCKS or (
+            t.get("tourism") == "attraction" and not any(t.get(k) for k in NOT_SIGHTS))):
         return "ine"
     return None
 

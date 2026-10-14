@@ -23,6 +23,7 @@ CITY_CORE_M = 2500  # around the centre of a big city (Bratislava, Košice) ever
 CITY_CORE_POP = 200_000
 FAMOUS = 6  # Wikipedia languages with an article: a place known well beyond its valley
 DISTINCT_GOALS = {"vodopad", "pleso", "jaskyna", "hrad", "roklina"}  # two of these near each other are two goals
+GORGE_VALLEY_FAME = 3  # a plain "dolina" counts as a gorge when this many Wikipedias have it
 VERY_FAMOUS = 12  # every Tatra peak has a few (Polish, German); this many is a household name
 
 
@@ -196,8 +197,11 @@ class TripBuilder:
             if region is None or not self.in_country(f.lat, f.lon):
                 self._note(f.name, "outside Slovakia or every region")
                 continue
-            if kind == "roklina" and region["id"] == "tatry" and not osm_mod.GORGE_WORDS.search(f.name):
-                continue  # a Tatra "dolina" is a long glacial valley, not a gorge
+            if kind == "roklina" and not osm_mod.GORGE_WORDS.search(f.name) and "dolin" in f.name.lower() and (
+                    region["id"] == "tatry" or self.fame(f) < GORGE_VALLEY_FAME):
+                # a Tatra "dolina" is a long glacial valley; elsewhere only the known gorge-like ones (Sokolia dolina)
+                self._note(f.name, "left out: a valley, not a known gorge")
+                continue
             if f.tags.get("_ends"):
                 self._gorge_top(f)
             # A castle, waterfall or lake is a sight you see from the trail; a peak you stand on.
@@ -240,6 +244,14 @@ class TripBuilder:
                 break
             for b in cands:
                 if (b is not a and b.score >= a.score and fa > 2 * self.fame(b.feature)
+                        and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < r):
+                    a.score = b.score + 0.01
+        # Parts of one gorge (Dolné Diery, Horné Diery): the one with the article is the goal (Jánošíkove diery).
+        for a in cands:
+            if a.kind != "roklina":
+                continue
+            for b in cands:
+                if (b is not a and b.kind == "roklina" and b.score >= a.score and self.fame(a.feature) > self.fame(b.feature)
                         and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < r):
                     a.score = b.score + 0.01
         # A hut by a tarn is the goal people name (Téryho chata, Zbojnícka chata), unless the hut
@@ -308,7 +320,9 @@ class TripBuilder:
 
         for region in self.cfg["regions"]:
             rid = region["id"]
-            cands = by_region.get(rid, [])
+            # Plain sights (a famous rock, Kláštorisko) come last: never instead of a peak, waterfall or
+            # viewpoint at the same spot (Veža nad Skokom must not take Vodopád Skok's place).
+            cands = sorted(by_region.get(rid, []), key=lambda c: c.kind == "ine")
             chosen = []
             fam_needed = self.t["min_family_per_region"]
             # No cap means every destination that makes a good trip (the full import).
