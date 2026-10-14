@@ -21,6 +21,7 @@ TOWN_GOALS = {"hrad", "vrchol", "jaskyna", "vodopad"}  # worth a walk even when 
 CITY_CORE_M = 2500  # around the centre of a big city (Bratislava, Košice) every goal is a city sight, not a trip
 CITY_CORE_POP = 200_000
 FAMOUS = 6  # Wikipedia languages with an article: a place known well beyond its valley
+DISTINCT_GOALS = {"vodopad", "pleso", "jaskyna", "hrad"}  # never the same goal as a nearby one of another kind
 VERY_FAMOUS = 12  # every Tatra peak has a few (Polish, German); this many is a household name
 
 
@@ -261,7 +262,7 @@ class TripBuilder:
         th_nodes = np.array(sorted(ths), dtype=np.int64)
         trips = []
         variants = []  # other routes to a trip's destination; not on the home list
-        taken = []  # (region id, lat, lon, name)
+        taken = []  # (region id, lat, lon, name, kind)
 
         for p in self.cfg.get("pinned", []):
             trip = self.build_pinned(p, ths, th_nodes)
@@ -269,7 +270,8 @@ class TripBuilder:
                 others = trip.pop("_others")
                 trips.append(trip)
                 variants += self._finish_variants(trip, others)
-                taken.append((trip["region"], trip["destination"]["location"]["lat"], trip["destination"]["location"]["lon"], trip["name"]))
+                taken.append((trip["region"], trip["destination"]["location"]["lat"], trip["destination"]["location"]["lon"], trip["name"],
+                              trip["destination"]["kind"]))
 
         by_region = {}
         for c in self.candidates():
@@ -287,8 +289,11 @@ class TripBuilder:
                 n_family = len([x for x in chosen if x["family_friendly"]])
                 if n_regular >= cap and n_family >= fam_needed:
                     break
-                near = next((n for r, la, lo, n in taken
-                             if r == rid and haversine(c.feature.lat, c.feature.lon, la, lo) < self.t["dedupe_m"]), None)
+                # One place, two goals: a hut at a tarn, a viewpoint on a peak. A waterfall below a
+                # tarn is a place of its own (Vajanského vodopád).
+                near = next((n for r, la, lo, n, k in taken
+                             if r == rid and haversine(c.feature.lat, c.feature.lon, la, lo) < self.t["dedupe_m"]
+                             and (k == c.kind or "chata" in (k, c.kind) or not {k, c.kind} & DISTINCT_GOALS)), None)
                 if near:
                     self._note(c.feature.name, f"left out: within {self.t['dedupe_m']} m of the trip to {near}")
                     continue
@@ -298,7 +303,7 @@ class TripBuilder:
                     continue
                 others = trip.pop("_others")
                 same_start = [x for x in chosen if x["start"]["osm"] == trip["start"]["osm"]]
-                if len(same_start) >= self.t["max_trips_per_start"]:
+                if len(same_start) >= self.t["max_trips_per_start"] and self.fame(c.feature) < FAMOUS:
                     self._reject("start already has enough trips")
                     continue
                 # A peak with its own Wikipedia article is a goal of its own, even one ridge away (Ostrý Roháč).
@@ -314,7 +319,7 @@ class TripBuilder:
                     trip["_extra"] = True
                 chosen.append(trip)
                 variants += self._finish_variants(trip, others)
-                taken.append((rid, c.feature.lat, c.feature.lon, c.feature.name))
+                taken.append((rid, c.feature.lat, c.feature.lon, c.feature.name, c.kind))
                 self._note(c.feature.name, f"trip {trip['slug']}")
             self.report["regions"][rid] = dict(candidates=len(cands), trips=len(chosen))
             self.log(f"{rid}: {len(chosen)} trips from {len(cands)} candidates")
