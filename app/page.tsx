@@ -4,8 +4,9 @@ import { JsonLd } from "@/components/JsonLd";
 import { pageMetadata } from "@/lib/seo";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, absoluteUrl } from "@/lib/site";
 
-// Rebuild the page at most every 5 minutes, so a new weekly build shows up.
-export const revalidate = 300;
+// Built once per deploy and served as a stored file (open-next.config.ts): new trip
+// data deploys with every push to main, so the page never re-renders per visit.
+export const dynamic = "force-static";
 
 export const metadata = pageMetadata({
   title: `${SITE_TITLE} | ${SITE_NAME}`,

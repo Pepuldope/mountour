@@ -20,3 +20,5 @@ jobs:
       - run: npm test
       # Runs `next build` and bundles the Cloudflare Worker (OpenNext).
       - run: npm run cf:build
+      # Every page is built ahead or kept after its first visit, never drawn per visit (error 1102).
+      - run: node scripts/check-page-cache.mjs

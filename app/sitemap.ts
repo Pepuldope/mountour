@@ -2,8 +2,9 @@ import type { MetadataRoute } from "next";
 import { getAllTrails } from "@/lib/tripFiles";
 import { absoluteUrl } from "@/lib/site";
 
-// Rebuilt with the trail list, so new trips appear without touching this file.
-export const revalidate = 3600;
+// Built once per deploy (every push to main, including the weekly trip refresh), so new
+// trips appear without touching this file and the Worker never re-reads the index for it.
+export const dynamic = "force-static";
 
 const INFO_PAGES = ["/zdroje", "/sukromie", "/upozornenie"];
 
