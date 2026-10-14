@@ -21,7 +21,7 @@ TOWN_GOALS = {"hrad", "vrchol", "jaskyna", "vodopad"}  # worth a walk even when 
 CITY_CORE_M = 2500  # around the centre of a big city (Bratislava, Košice) every goal is a city sight, not a trip
 CITY_CORE_POP = 200_000
 FAMOUS = 6  # Wikipedia languages with an article: a place known well beyond its valley
-DISTINCT_GOALS = {"vodopad", "pleso", "jaskyna", "hrad"}  # never the same goal as a nearby one of another kind
+DISTINCT_GOALS = {"vodopad", "pleso", "jaskyna", "hrad"}  # two of these near each other are two goals
 VERY_FAMOUS = 12  # every Tatra peak has a few (Polish, German); this many is a household name
 
 
@@ -293,7 +293,7 @@ class TripBuilder:
                 # tarn is a place of its own (Vajanského vodopád).
                 near = next((n for r, la, lo, n, k in taken
                              if r == rid and haversine(c.feature.lat, c.feature.lon, la, lo) < self.t["dedupe_m"]
-                             and (k == c.kind or "chata" in (k, c.kind) or not {k, c.kind} & DISTINCT_GOALS)), None)
+                             and (k == c.kind or not {k, c.kind} <= DISTINCT_GOALS)), None)
                 if near:
                     self._note(c.feature.name, f"left out: within {self.t['dedupe_m']} m of the trip to {near}")
                     continue
