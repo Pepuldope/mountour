@@ -6,7 +6,7 @@ import type { DayPlan } from "@/lib/dayPlan";
 import { dayInSentence, floorTo5, longDay } from "@/lib/days";
 import { formatDuration, formatTime, stopLabel, verdictText } from "@/lib/format";
 import { searchPlaces } from "@/lib/geocode";
-import { googleMapsUrl, googleWalkUrl, mapyUrl, mapyWalkUrl, readSharedPlan } from "@/lib/links";
+import { readSharedPlan } from "@/lib/links";
 import { findTown } from "@/lib/towns";
 import type { SharedPlan, WalkRoute } from "@/lib/links";
 import { useTripSettings } from "@/lib/tripSettings";
@@ -14,6 +14,7 @@ import { useTripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
 import type { BBox, LatLng } from "@/lib/types";
 import { FilterChips } from "@/components/FilterChips";
+import { NavHandoff } from "@/components/NavHandoff";
 import { SaveTripButton } from "@/components/SaveTripButton";
 import type { ShareInfo } from "@/components/ShareButton";
 import { StartChip } from "@/components/StartChip";
@@ -41,8 +42,6 @@ interface Props extends ShareInfo {
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-const navButton =
-  "flex-1 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-3 py-2.5 text-center text-sm font-semibold hover:border-[var(--accent)]";
 
 /**
  * The trip page's answer: "vyrazte najneskôr", the day and departure, the
@@ -211,37 +210,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
 
       <section aria-label="Uložiť a zdieľať" className="flex flex-col gap-3">
         <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} destination={rideTo} baseHikeMin={baseHikeMin} profile={profile} {...trip} />
-        {destination && (
-          <div className="flex flex-col gap-1.5">
-            <p className="text-sm font-semibold">1. Autom na parkovisko</p>
-            <div className="flex gap-2">
-              <a href={googleMapsUrl(destination)} data-umami-event="nav_open" data-umami-event-app="google" target="_blank" rel="noopener noreferrer" className={navButton}>
-                Navigovať (Google)
-              </a>
-              <a href={mapyUrl(destination, start)} data-umami-event="nav_open" data-umami-event-app="mapy" target="_blank" rel="noopener noreferrer" className={navButton}>
-                Mapy.com
-              </a>
-            </div>
-          </div>
-        )}
-        {walkStart && walk.points.length > 1 && (
-          <div className="flex flex-col gap-1.5">
-            <p className="text-sm font-semibold">
-              {destination ? "2. " : ""}Pešo po trase {transit && stop ? `zo zastávky ${stopLabel(stop.name)}` : "od auta"}
-            </p>
-            <div className="flex gap-2">
-              <a href={mapyWalkUrl(walkStart, walk, trailJoin)} data-umami-event="nav_open" data-umami-event-app="mapy-walk" target="_blank" rel="noopener noreferrer" className={navButton}>
-                Mapy.com
-              </a>
-              <a href={googleWalkUrl(walkStart, walk, trailJoin)} data-umami-event="nav_open" data-umami-event-app="google-walk" target="_blank" rel="noopener noreferrer" className={navButton}>
-                Google
-              </a>
-            </div>
-            <p className="text-xs text-[var(--muted)]">
-              Mapy.com idú po značených chodníkoch celou trasou{walk.loop ? "" : " aj späť"}. Google vie len pár bodov a cestu medzi nimi si volí sám.
-            </p>
-          </div>
-        )}
+        <NavHandoff drive={destination} start={start} walkFrom={walkStart} walk={walk} join={trailJoin} />
       </section>
     </div>
   );
