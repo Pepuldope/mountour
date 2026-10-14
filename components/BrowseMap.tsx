@@ -6,6 +6,7 @@ import type { LatLng } from "@/lib/types";
 import type { DestinationKind } from "@/lib/tripSchema";
 import { MAP_STYLE_URL } from "@/lib/mapLayers";
 import { GOAL_COLOUR, POPULARITY_QUIET_EDGE, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
+import { fetchLines } from "@/lib/packedLines";
 import { attachTrailNetwork, cellsInView } from "@/lib/trailNetwork";
 import { useUserLocation } from "@/lib/userLocation";
 import { FALLBACK_STYLE, SLOVAKIA, hideBasePois } from "@/components/TrailMap";
@@ -404,7 +405,7 @@ export function BrowseMap({
       if (!meta) {
         meta = await getJson<Meta>(`${MAP_DATA}/meta.json`);
         if (!meta || cancelled) return;
-        const overview = await getJson<GeoJSON.FeatureCollection>(`${MAP_DATA}/overview.json?v=${meta.generated_at}`);
+        const overview = await fetchLines(`${MAP_DATA}/overview.json?v=${meta.generated_at}`);
         if (overview && !cancelled) {
           (m.getSource("trip-lines") as GeoJSONSource | undefined)?.setData(overview);
           remember(overview.features, false);
@@ -418,7 +419,7 @@ export function BrowseMap({
       const todo = want.filter((k) => !loaded.has(k) && !pending.has(k));
       if (todo.length === 0) return;
       todo.forEach((k) => pending.add(k));
-      const got = await Promise.all(todo.map((k) => getJson<GeoJSON.FeatureCollection>(`${MAP_DATA}/c/${k}.json?v=${meta!.generated_at}`)));
+      const got = await Promise.all(todo.map((k) => fetchLines(`${MAP_DATA}/c/${k}.json?v=${meta!.generated_at}`)));
       if (cancelled) return;
       const seen = new Set(detailFeatures.map((f) => f.properties?.s));
       todo.forEach((k, i) => {
@@ -539,9 +540,28 @@ export function BrowseMap({
       if (z < areaZoom) requestAnimationFrame(() => declutter(areaEls.current));
     }
 
-    init();
+    // The map (MapLibre, the trail lines, the tiles) is the heaviest part of the
+    // home. On phones it sits below the first screen, so start it only when it
+    // comes near the screen (300 px): ready by the time it is scrolled to,
+    // and nothing downloaded for visitors who never get there.
+    let near: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver === "undefined" || !containerRef.current) {
+      init();
+    } else {
+      near = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((e) => e.isIntersecting)) return;
+          near?.disconnect();
+          near = null;
+          init();
+        },
+        { rootMargin: "300px 0px" }
+      );
+      near.observe(containerRef.current);
+    }
     return () => {
       cancelled = true;
+      near?.disconnect();
       observer?.disconnect();
       detachNetwork?.();
       map?.remove();

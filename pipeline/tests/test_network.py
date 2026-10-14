@@ -4,7 +4,7 @@ import json
 
 import numpy as np
 
-from pipeline import network
+from pipeline import network, packed
 from pipeline.tests.test_pipeline import osm_xml
 
 
@@ -46,7 +46,7 @@ def test_end_to_end(tmp_path):
     runs, stats = network.build(ways, goals, {"Q1": 5000})
     meta = network.write(tmp_path, ways, runs, stats)
     out = tmp_path / "public" / "data" / "trails"
-    overview = json.loads((out / "overview.json").read_text())
+    overview = {"features": packed.read_features(out / "overview.json")}
     assert overview["features"] and all(0 <= f["properties"]["p"] <= 4 for f in overview["features"])
     # the trail at the famous peak is busier than the gorge 100 km away
     level_at = {round(f["geometry"]["coordinates"][0][1]): f["properties"]["p"] for f in overview["features"]}

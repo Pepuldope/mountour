@@ -2,6 +2,7 @@
 // public/data/trails). The country view draws a light overview file; zoomed in,
 // the detailed file of each grid cell on screen is fetched once and added.
 import type { GeoJSONSource, Map as MlMap } from "maplibre-gl";
+import { fetchLines } from "@/lib/packedLines";
 
 export type NetworkMode = "full" | "context";
 
@@ -146,7 +147,7 @@ export function attachTrailNetwork(
     if (todo.length === 0) return;
     todo.forEach((k) => pending.add(k));
     const got = await Promise.all(
-      todo.map((k) => getJson<GeoJSON.FeatureCollection>(`${BASE}/c/${k}.json?v=${meta!.generated_at}`))
+      todo.map((k) => fetchLines(`${BASE}/c/${k}.json?v=${meta!.generated_at}`))
     );
     todo.forEach((k, i) => {
       pending.delete(k);
@@ -161,7 +162,7 @@ export function attachTrailNetwork(
   (async () => {
     meta = await getJson<TrailNetworkMeta>(`${BASE}/meta.json`);
     if (!meta || stopped) return;
-    const overview = await getJson<GeoJSON.FeatureCollection>(`${BASE}/overview.json?v=${meta.generated_at}`);
+    const overview = await fetchLines(`${BASE}/overview.json?v=${meta.generated_at}`);
     if (overview && !stopped) (map.getSource("network") as GeoJSONSource | undefined)?.setData(overview);
     loadVisibleCells();
   })();

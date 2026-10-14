@@ -4,7 +4,7 @@
 
 Reads public/data/trips/*.json and writes, under public/data/map/:
     meta.json        grid, cells and the cut-offs for the five popularity steps
-    overview.json    every trip, simplified (~50 m), for the zoomed-out views
+    overview.json    every trip, simplified (~50 m), for the zoomed-out views (packed, pipeline/packed.py)
     c/<ix>_<iy>.json the trips whose line crosses that grid cell, in detail (~8 m)
 
 The lines are the trips' own paths (the way out; a loop in full), so the coloured
@@ -19,6 +19,7 @@ from pathlib import Path
 
 import numpy as np
 
+from . import packed
 from .geo import LocalProjection, rdp_indices
 
 VERSION = 1
@@ -90,8 +91,8 @@ def write(root, now=None):
         if f.stem not in cells:
             f.unlink()
     for key, features in cells.items():
-        _dump(out / "c" / f"{key}.json", dict(type="FeatureCollection", features=features))
-    _dump(out / "overview.json", dict(type="FeatureCollection", features=overview))
+        packed.dump(out / "c" / f"{key}.json", features, 5)
+    packed.dump(out / "overview.json", overview, 4)
     _dump(out / "meta.json", dict(version=VERSION, generated_at=now, grid=GRID, cells=sorted(cells), cuts=cut,
                                   trips=len(overview)))
     return len(overview), len(cells)
