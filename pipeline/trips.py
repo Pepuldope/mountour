@@ -13,13 +13,14 @@ from .geo import LocalProjection, ascent_descent, din33466_minutes, haversine, r
 COLOUR_ORDER = ["red", "blue", "green", "yellow", "black"]
 COLOUR_SK = {"red": "červenej", "blue": "modrej", "green": "zelenej", "yellow": "žltej", "black": "čiernej"}
 KIND_BONUS = {"hrad": 30, "pleso": 30, "vodopad": 25, "jaskyna": 25, "chata": 20, "vyhliadka": 18, "vrchol": 12, "ine": 5}
-GENERIC_NAMES = {"vyhliadka", "výhľad", "rozhľadňa", "altánok", "vyhliadkové miesto", "chata", "hrad", "pleso"}
+GENERIC_NAMES = {"jazero", "vyhliadka", "výhľad", "rozhľadňa", "altánok", "vyhliadkové miesto", "chata", "hrad", "pleso"}
 ROUTE_LIMIT = 18000  # weighted metres one way, generous; time limits are applied afterwards
 PENDING = "__pending__"  # slug of a route until it is known whether it is the main one
 TOWN_STREETS = {"residential", "living_street", "pedestrian"}  # their density marks a built-up area
 TOWN_GOALS = {"hrad", "vrchol", "jaskyna", "vodopad"}  # worth a walk even when in a built-up area (a castle above a town)
 CITY_CORE_M = 2500  # around the centre of a big city (Bratislava, Košice) every goal is a city sight, not a trip
 CITY_CORE_POP = 200_000
+FAMOUS = 6  # Wikipedia languages with an article: a place known well beyond its valley
 
 
 @dataclass
@@ -216,10 +217,10 @@ class TripBuilder:
         for i in order:
             a = cands[i]
             fa = self.fame(a.feature)
-            if not fa:
+            if fa < FAMOUS:
                 break
             for b in cands:
-                if (b is not a and b.score >= a.score and self.fame(b.feature) < fa
+                if (b is not a and b.score >= a.score and fa > 2 * self.fame(b.feature)
                         and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < r):
                     a.score = b.score + 0.01
         cands.sort(key=lambda c: -c.score)
@@ -291,7 +292,7 @@ class TripBuilder:
                     self._reject("start already has enough trips")
                     continue
                 # A peak with its own Wikipedia article is a goal of its own, even one ridge away (Ostrý Roháč).
-                if not self.fame(c.feature) and any(
+                if self.fame(c.feature) < FAMOUS and any(
                         abs(x["distance_m"] - trip["distance_m"]) < 0.1 * trip["distance_m"]
                         and haversine(x["destination"]["location"]["lat"], x["destination"]["location"]["lon"],
                                       c.feature.lat, c.feature.lon) < self.t.get("same_walk_m", 1500) for x in same_start):
@@ -779,7 +780,7 @@ class TripBuilder:
             "vyhliadka": f"Výlet k vyhliadke {n}.",
             "hrad": f"Výlet k hradu: {n}.",
             "chata": f"Výlet k horskej chate: {n}.",
-            "pleso": f"Výlet k plesu: {n}.",
+            "pleso": f"Výlet k plesu: {n}." if "pleso" in n.lower() else f"Výlet k vode: {n}.",
             "vodopad": f"Výlet k vodopádu: {n}.",
             "jaskyna": f"Výlet k jaskyni: {n}.",
         }.get(dest["kind"], f"Výlet: {n}.")
