@@ -39,6 +39,8 @@ def test_foreign_names():
     assert names.is_foreign("Jałowcowy Garb", {})
     assert not names.is_foreign("Jałowcowy Garb", {"name:sk": "Borievkový hrb"})
     assert not names.is_foreign("Ťatliakova chata", {})
+    assert not names.is_foreign("Erdödyho kopec", {})
+    assert names.is_foreign("Korom-tetö", {})
 
 
 def test_shared_names_get_the_village():

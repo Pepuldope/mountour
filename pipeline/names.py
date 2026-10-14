@@ -39,9 +39,10 @@ KIND_HINTS = {
 DISTINCT = {"hrad", "chata", "jaskyna", "pleso", "vodopad"}
 PREPOSITIONS = {"na", "nad", "pod", "pred", "za", "z", "zo", "pri", "k", "ku", "v", "vo", "od", "do", "medzi",
                 "ponad", "popod", "spod", "sponad"}
-# Polish, Hungarian and German letters Slovak does not use: a name from across the border.
-FOREIGN_LETTERS = set("łśćńźżęąőűöü")
-FOREIGN_WORDS = {"widok", "schronisko", "przełęcz", "szczyt", "kilátó", "aussicht"}
+# Polish and Hungarian letters Slovak does not use: a name from across the border. Not ö or ü:
+# Slovak names keep them in German and Hungarian family names (Erdödyho kopec, Rösslerov vrch).
+FOREIGN_LETTERS = set("łśćńźżęąőű")
+FOREIGN_WORDS = {"widok", "schronisko", "przełęcz", "szczyt", "wieża", "kilátó", "tetö", "aussicht"}
 SAME_PLACE_M = 1500  # the same name this close is the same place mapped twice
 VILLAGE_M = 12000
 WELL_KNOWN = 40  # a score this high means a Wikipedia article: people know the hill by its plain name
@@ -64,7 +65,7 @@ def is_foreign(name, tags):
     if tags.get("name:sk") or not name:
         return False
     low = name.lower()
-    return bool(set(low) & FOREIGN_LETTERS) or low.split()[0] in FOREIGN_WORDS
+    return bool(set(low) & FOREIGN_LETTERS) or bool(set(re.split(r"[\s\-()]+", low)) & FOREIGN_WORDS)
 
 
 def normalize(name, kind, place_names=frozenset()):
@@ -190,7 +191,7 @@ def problems(trips):
             out.append(("error", f"{t['slug']}: no real name: {n!r}"))
         elif not n[0].isupper() and not n[0].isdigit():
             out.append(("warn", f"{t['slug']}: name starts in lower case: {n!r}"))
-        elif set(n.lower()) & FOREIGN_LETTERS or n.lower().split()[0] in FOREIGN_WORDS:
+        elif is_foreign(n, {}):
             out.append(("warn", f"{t['slug']}: name looks foreign: {n!r}"))
         elif len(n) > 45:
             out.append(("warn", f"{t['slug']}: long name: {n!r}"))
