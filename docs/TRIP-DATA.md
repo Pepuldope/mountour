@@ -33,6 +33,7 @@ Key fields of `TripSummary` (see `lib/tripSchema.ts` for all):
 
 - `slug`: one per destination and stable across runs, even when a better start is found (`pipeline/slugs.json`); safe for URLs, saved trips and share links.
 - `name`, `description`: generated in Slovak; curated trips and `pipeline/overrides.yaml` can override.
+  `name` is unique among main trips and says what the place is (pipeline/names.py): "Hrad Likava", "Vyhliadka na Choč"; when several places share a name, the best known keeps it and the others get the nearest village, "Kriváň (Ludrová)". `destination.name` stays the plain OpenStreetMap name.
 - `region` (one of the regions in `pipeline/config.yaml`: the national parks first, then the rest of Slovakia), `region_name`, `protected_area`.
 - `destination` (`kind`, `ele_m`, `location`), `start`, `parking` (drive destination, `fee`), `transit` (nearest stop).
 - `distance_m`, `ascent_m`, `duration_min` are for the **whole walk**. Time is DIN 33466 without breaks, rounded up to 15 min.
