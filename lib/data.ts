@@ -3,7 +3,7 @@ import { distanceAlongM } from "@/lib/geo";
 import { trailJoin } from "@/lib/trailJoin";
 import type { TrailJoin } from "@/lib/trailJoin";
 import { closureRulesFor } from "@/lib/trips";
-import type { Parking, TransitStop as TripStop, TripDetail, TripSummary } from "@/lib/tripSchema";
+import type { Parking, TransitStop as TripStop, TripDetail, TripSummary, WalkLine } from "@/lib/tripSchema";
 import type { Closure, ParkingLot, TrailDetail, Trail, LatLng, TransitStop } from "@/lib/types";
 
 // The pages still speak the older TrailDetail shape; this adapts the static
@@ -23,8 +23,16 @@ function parkingLot(p: Parking, slug: string, i: number, join: TrailJoin | null)
     walk_m: p.walk_m,
     fee: p.fee,
     join,
-    walk: p.walk ?? null,
+    walk: cutWalk(p.walk, join),
   };
+}
+
+/** The stored walk up to where it joins the trail (it may go on along the trail to the start). */
+function cutWalk(walk: WalkLine | undefined, join: TrailJoin | null): WalkLine | null {
+  if (!walk) return null;
+  if (join?.walk_cut === undefined) return walk;
+  const line = [...walk.line.slice(0, join.walk_cut + 1), [join.location.lon, join.location.lat] as [number, number]];
+  return { ...walk, line, m: join.walk_m, min: Math.max(1, Math.round((walk.min * join.walk_m) / Math.max(1, walk.m))) };
 }
 
 function transitStop(s: TripStop, slug: string, i: number, join: TrailJoin | null): TransitStop {
@@ -36,7 +44,7 @@ function transitStop(s: TripStop, slug: string, i: number, join: TrailJoin | nul
     location: s.location,
     distance_m: s.walk_m,
     join,
-    walk: s.walk ?? null,
+    walk: cutWalk(s.walk, join),
   };
 }
 
@@ -69,7 +77,8 @@ export function trailDetailFrom(t: TripSummary | TripDetail): TrailDetail {
   const parking = [t.parking, ...(d?.parking_alternatives ?? [])].filter((p): p is Parking => p != null);
   const stops = [t.transit, ...(d?.transit_alternatives ?? [])].filter((s): s is TripStop => s != null);
   // Parked or got off up the trail: join it at its nearest point (needs the path).
-  const joinOf = (at: LatLng, walkM: number) => (d ? trailJoin(d.path, at, walkM, d.route === "okruh") : null);
+  // The stored walk counts too: where it first meets the trail is the natural way in.
+  const joinOf = (at: LatLng, walkM: number, walk?: WalkLine) => (d ? trailJoin(d.path, at, walkM, d.route === "okruh", walk) : null);
   const closures: Closure[] = closureRulesFor(t).map((r) => ({
     id: r.id,
     trail_id: t.slug,
@@ -83,8 +92,8 @@ export function trailDetailFrom(t: TripSummary | TripDetail): TrailDetail {
   return {
     trail: toTrail(t),
     trailheads: [{ id: `${t.slug}:start`, trail_id: t.slug, name: t.start.name, location: t.start.location, is_primary: true }],
-    parkingLots: parking.map((p, i) => parkingLot(p, t.slug, i, joinOf(p.location, p.walk_m))),
-    transitStops: stops.map((s, i) => transitStop(s, t.slug, i, joinOf(s.location, s.walk_m))),
+    parkingLots: parking.map((p, i) => parkingLot(p, t.slug, i, joinOf(p.location, p.walk_m, p.walk))),
+    transitStops: stops.map((s, i) => transitStop(s, t.slug, i, joinOf(s.location, s.walk_m, s.walk))),
     closures,
     fees: t.fees,
     pois: (d?.pois ?? [])
