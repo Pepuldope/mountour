@@ -36,6 +36,13 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// Drawn on the first visit, then served from the page cache until the next deploy
+// (lib/pageCache.ts): drawing a trip page on every visit ran the free Worker out of CPU.
+export const dynamicParams = true;
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  return [];
+}
+
 /** One database read per request, shared by the metadata and the page. */
 const loadTrip = cache(async (slug: string) => {
   const { trip } = await getTripLive(slug);

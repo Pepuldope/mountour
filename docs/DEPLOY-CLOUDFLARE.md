@@ -43,7 +43,13 @@ Local runtime secrets go in `.dev.vars` (git-ignored), e.g. `ORS_API_KEY=...`.
 
 ## Limits worth knowing
 
-- Free plan: 100k requests/day, 10 ms CPU per request. Static pages and assets are served from the
-  edge cache and don't count against CPU. Keep server-rendered pages light; trail pages are meant to
-  become static.
+- Free plan: 100k requests/day, 10 ms CPU per request. Files in `public/` are served without the
+  Worker. Drawing a Next.js page costs the Worker several times 10 ms, so no page is drawn per visit
+  (error 1102 on 2026-10-13 and 2026-10-14): the home and info pages are built ahead and shipped as
+  files, and each trip page is drawn on its first visit and kept in the free KV store `PAGE_CACHE`
+  until the next deploy (`lib/pageCache.ts`, `open-next.config.ts`). The first deploy with that
+  binding creates the KV store by itself. CI runs `scripts/check-page-cache.mjs` after the build and
+  fails on a page that would be drawn per visit or uses `revalidate`.
+- KV's free plan writes 1,000 entries a day. A deploy starts the cache fresh; past the limit, trip
+  pages are drawn per visit again until the next day.
 - `@opennextjs/cloudflare` requires Next.js ≥ 16.3.8, so `next` is pinned there.

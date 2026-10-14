@@ -2,7 +2,9 @@
 // 2026-10-13 every trip page parsed the 5.7 MB trip index, which ran a free
 // Worker out of CPU. The server reads these files on requests (lib/tripFiles.ts);
 // each must stay small enough to parse well inside the limit, and the trip page
-// must read only its own file.
+// must read only its own file. Drawing the pages themselves is guarded by
+// scripts/check-page-cache.mjs (CI, after the build): that is what caused 1102
+// again on 2026-10-14.
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";

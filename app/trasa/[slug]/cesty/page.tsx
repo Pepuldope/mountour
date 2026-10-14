@@ -11,6 +11,13 @@ interface Props {
 }
 
 // The routes of a place come with each trip's own file (the database row doesn't carry them).
+// Drawn on the first visit, then served from the page cache until the next deploy
+// (lib/pageCache.ts): drawing a trip page on every visit ran the free Worker out of CPU.
+export const dynamicParams = true;
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  return [];
+}
+
 const loadTrip = cache((slug: string) => getTrip(slug));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
