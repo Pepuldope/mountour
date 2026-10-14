@@ -6,8 +6,8 @@ where you park, the trail itself, and getting back before dark — and hands off
 to the tools that already do the rest: Google/Apple Maps for turn-by-turn
 driving, and a GPX file for the hike itself.
 
-Live at https://mountour.vercel.app (deployed from `main`). Deploying to Cloudflare
-Workers instead is set up in `docs/DEPLOY-CLOUDFLARE.md`.
+Live at https://mountour.nemcok-peter123.workers.dev (Cloudflare Workers, deployed
+from `main`; setup in `docs/DEPLOY-CLOUDFLARE.md`). The old Vercel address is paused.
 What is built and what was decided along the way is in `docs/ROADMAP.md`.
 
 ## Locked scope
