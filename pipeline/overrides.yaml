@@ -10,6 +10,7 @@ trips:
   # The best-known name for the gorge walk from Podžiar; OSM names its parts (Peter, 2026-10-14).
   dolne-diery:
     name: Jánošíkove diery
+    description: "Výlet do Jánošíkových dier, cez Dolné diery s lávkami a rebríkmi. Štart: Biely potok, späť rovnakou cestou. Po modrej a zelenej značke."
 drop:
   # Červený most is the car park side of Železná studnička, where people start, not a goal (Peter, 2026-10-13).
   - cerveny-most
