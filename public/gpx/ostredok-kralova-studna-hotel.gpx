@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Ostredok (Turecká)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Ostredok (Turecká)</name><trkseg>
+  <metadata><name>Ostredok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Ostredok</name><trkseg>
     <trkpt lat="48.876417" lon="19.040508"><ele>1271</ele></trkpt>
     <trkpt lat="48.876579" lon="19.040511"><ele>1273</ele></trkpt>
     <trkpt lat="48.876736" lon="19.040628"><ele>1275</ele></trkpt>

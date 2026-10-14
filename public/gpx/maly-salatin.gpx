@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Malý Salatín (Ludrová)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Malý Salatín (Ludrová)</name><trkseg>
+  <metadata><name>Malý Salatín</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Malý Salatín</name><trkseg>
     <trkpt lat="49.056355" lon="19.407809"><ele>556</ele></trkpt>
     <trkpt lat="49.056186" lon="19.407700"><ele>557</ele></trkpt>
     <trkpt lat="49.056917" lon="19.405583"><ele>565</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Minčol (Ďalšie miesta na Slovensku)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Minčol (Ďalšie miesta na Slovensku)</name><trkseg>
+  <metadata><name>Minčol</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Minčol</name><trkseg>
     <trkpt lat="49.295823" lon="19.258892"><ele>925</ele></trkpt>
     <trkpt lat="49.295772" lon="19.258748"><ele>927</ele></trkpt>
     <trkpt lat="49.295586" lon="19.258457"><ele>930</ele></trkpt>

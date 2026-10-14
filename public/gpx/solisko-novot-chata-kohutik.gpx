@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Solisko (Novoť)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Solisko (Novoť)</name><trkseg>
+  <metadata><name>Solisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Solisko</name><trkseg>
     <trkpt lat="49.386558" lon="19.185742"><ele>790</ele></trkpt>
     <trkpt lat="49.386314" lon="19.185181"><ele>789</ele></trkpt>
     <trkpt lat="49.386188" lon="19.184784"><ele>790</ele></trkpt>

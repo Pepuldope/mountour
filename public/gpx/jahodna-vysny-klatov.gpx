@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Jahodná (Vyšný Klátov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Jahodná (Vyšný Klátov)</name><trkseg>
+  <metadata><name>Jahodná</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Jahodná</name><trkseg>
     <trkpt lat="48.747496" lon="21.121801"><ele>532</ele></trkpt>
     <trkpt lat="48.747908" lon="21.121771"><ele>534</ele></trkpt>
     <trkpt lat="48.748187" lon="21.121844"><ele>535</ele></trkpt>

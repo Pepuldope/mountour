@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Minčol</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Minčol</name><trkseg>
+  <metadata><name>Minčol (Liptovské Revúce)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Minčol (Liptovské Revúce)</name><trkseg>
     <trkpt lat="48.990078" lon="19.200998"><ele>1337</ele></trkpt>
     <trkpt lat="48.990014" lon="19.200856"><ele>1338</ele></trkpt>
     <trkpt lat="48.989793" lon="19.200612"><ele>1346</ele></trkpt>
