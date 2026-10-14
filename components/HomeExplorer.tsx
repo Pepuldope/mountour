@@ -225,7 +225,7 @@ export function HomeExplorer({ trails: initial }: Props) {
     }
   };
   const [preview, setPreview] = useState<Preview | null>(null);
-  // Phones: the map is a card in the page; "Na celú obrazovku" opens it full screen.
+  // Phones: the map is a card in the page; the round button opens it full screen.
   const [fullMap, setFullMap] = useState(false);
   const mapCardRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -569,8 +569,7 @@ export function HomeExplorer({ trails: initial }: Props) {
       />
       <div
         className="pointer-events-none absolute left-3 z-[5] flex flex-col gap-1 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-2.5 py-1.5 text-[11px] text-[var(--muted)] shadow-[var(--shadow-float)]"
-        // Phones: below the full-screen button, which needs the top row.
-        style={{ top: isDesktop ? 12 : fullMap ? "calc(60px + env(safe-area-inset-top))" : 60 }}
+        style={{ top: fullMap ? "calc(12px + env(safe-area-inset-top))" : 12 }}
         aria-hidden
       >
         <span className="flex items-center gap-1.5">
@@ -857,11 +856,12 @@ export function HomeExplorer({ trails: initial }: Props) {
             <button
               type="button"
               onClick={() => setFullMap((v) => !v)}
-              className="absolute top-2.5 right-2.5 z-[6] inline-flex h-10 items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card-bg)] px-3.5 text-sm font-bold shadow-[var(--shadow-float)]"
+              className="absolute top-2.5 right-2.5 z-[6] grid h-10 w-10 place-items-center rounded-full border border-[var(--border)] bg-[var(--card-bg)] shadow-[var(--shadow-float)]"
               style={fullMap ? { top: "calc(10px + env(safe-area-inset-top))" } : undefined}
+              aria-label={fullMap ? "Zavrieť mapu" : "Mapa na celú obrazovku"}
+              title={fullMap ? "Zavrieť mapu" : "Mapa na celú obrazovku"}
             >
-              {fullMap ? <UiIcon name="close" size={13} /> : <UiIcon name="expand" size={15} />}
-              {fullMap ? "Zavrieť mapu" : "Na celú obrazovku"}
+              {fullMap ? <UiIcon name="close" size={14} /> : <UiIcon name="expand" size={18} />}
             </button>
           </div>
         )}
