@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Dolné Diery</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Dolné Diery</name><trkseg>
+  <metadata><name>Jánošíkove diery</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Jánošíkove diery</name><trkseg>
     <trkpt lat="49.235841" lon="19.052291"><ele>651</ele></trkpt>
     <trkpt lat="49.235913" lon="19.052412"><ele>654</ele></trkpt>
     <trkpt lat="49.235907" lon="19.052512"><ele>655</ele></trkpt>

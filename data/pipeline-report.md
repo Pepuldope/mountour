@@ -1,8 +1,8 @@
 # Trip pipeline report
 
-Run: 2026-10-14T21:43:01+00:00 · OSM data: 2026-10-13T20:21:31Z
+Run: 2026-10-14T21:53:36+00:00 · OSM data: 2026-10-13T20:21:31Z
 
-**5261 trips**
+**5258 trips**
 
 | Region | Trips | Family | Candidates |
 |---|---|---|---|
@@ -18,7 +18,7 @@ Run: 2026-10-14T21:43:01+00:00 · OSM data: 2026-10-13T20:21:31Z
 | strazovske-vrchy | 204 | 48 | 91 |
 | biele-karpaty | 218 | 95 | 105 |
 | inovec-tribec-vtacnik | 444 | 103 | 221 |
-| stiavnicke-kremnicke-vrchy | 389 | 171 | 208 |
+| stiavnicke-kremnicke-vrchy | 386 | 171 | 207 |
 | polana-muran | 265 | 48 | 115 |
 | slovensky-kras | 296 | 54 | 151 |
 | levocske-cergov | 487 | 113 | 217 |
@@ -47,7 +47,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Places with more than one route
 
-1829 of 2130 places have other routes; 3133 other routes in all.
+1828 of 2129 places have other routes; 3131 other routes in all.
 
 | Place | Main route (start, time) | Other routes |
 |---|---|---|
@@ -156,16 +156,14 @@ Flag ⚠ when off by more than 15 %.
 
 ## Name check
 
-163 names now say what the place is, 13 places mapped twice merged, 290 shared names told apart by the nearest village, 127 foreign names left out. Still wrong: 1.
+157 names now say what the place is, 13 places mapped twice merged, 290 shared names told apart by the nearest village, 127 foreign names left out. Still wrong: 1.
 
 - warn: siklava-skala-markusovce-razcestie: long name: 'Vodopád Šikľavá skala (Matejovce nad Hornádom)'
 
 | Was | Now | Slug |
 |---|---|---|
-| Štrbské pleso | Pleso Štrbské pleso | strbske-pleso |
 | Mihulčie | Roklina Mihulčie | mihulcie |
 | Plesnivec | Chata Plesnivec | plesnivec |
-| Tichá dolina | Roklina Tichá dolina | ticha-dolina-razcestie-pod-cistym |
 | Červené piesky | Vodopád Červené piesky | cervene-piesky |
 | Poprad | Vodopád Poprad | poprad |
 | Turková | Vodopád Turková | turkova |
@@ -175,7 +173,6 @@ Flag ⚠ when off by more than 15 %.
 | Bystrina | Vodopád Bystrina | bystrina |
 | Sokolný | Vodopád Sokolný | sokolny |
 | vyhliadka pod Predným Salatínom | Vyhliadka pod Predným Salatínom | vyhliadka-pod-prednym-salatinom |
-| Dobšinská ľadová jaskyňa | Jaskyňa Dobšinská ľadová jaskyňa | dobsinska-ladova-jaskyna |
 | Kyseľ | Roklina Kyseľ | kysel |
 | Suchá Belá | Roklina Suchá Belá | sucha-bela |
 | Veľký Kyseľ | Roklina Veľký Kyseľ | velky-kysel |
@@ -203,7 +200,6 @@ Flag ⚠ when off by more than 15 %.
 | Konský dol | Roklina Konský dol | konsky-dol |
 | Selenec | Roklina Selenec | selenec |
 | Mača | Roklina Mača | maca |
-| Veľká dolina | Roklina Veľká dolina | velka-dolina |
 | Blatná | Roklina Blatná | blatna-mocidlo-hotel-smrekovica |
 | Nemcovô | Vodopád Nemcovô | nemcovo |
 | na Jaziercoch | Vodopád na Jaziercoch | na-jaziercoch |
@@ -249,7 +245,6 @@ Flag ⚠ when off by more than 15 %.
 | Banská Bystrica | Hrad Banská Bystrica | banska-bystrica |
 | Sitno | Hrad Sitno | sitno-pocuvadlianske-jazero |
 | Zabaštie | Hrad Zabaštie | zabastie |
-| Via Ferrata Skalka (Výzva, Komín, Trubačova veža, Jánošíkove diery) | Roklina Via Ferrata Skalka (Výzva | via-ferrata-skalka-vyzva-komin-trubacova-veza |
 | Parenica | Jaskyňa Parenica | parenica |
 | dolný vodopád | Dolný vodopád | dolny-vodopad |
 | Geotop, lávový prúd s doskovitou odlučnosťou | Vodopád Geotop | geotop-lavovy-prud-s-doskovitou-odlucnostou |
@@ -314,7 +309,6 @@ Flag ⚠ when off by more than 15 %.
 | Kalvária | Vyhliadka Kalvária | kalvaria-skalica-potocna |
 | Čabraď | Hrad Čabraď | cabrad |
 | Šomoška | Hrad Šomoška | somoska |
-| Modrý Kameň | Hrad Modrý Kameň | modry-kamen |
 | Hajnáčka | Hrad Hajnáčka | hajnacka |
 | Lipovany | Vyhliadka Lipovany | lipovany |
 | Veľký Kamenec | Hrad Veľký Kamenec | velky-kamenec |
@@ -4722,9 +4716,6 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | kralicka-tiesnava-skalka-kriz-s-j-okruh | stiavnicke-kremnicke-vrchy | Skalka, križ. S - J okruh | 8.6 | 565 | 4:15 | stredna |  |
 | rozhladna-laztek | stiavnicke-kremnicke-vrchy | Malachov | 6.4 | 324 | 2:45 | lahka |  |
 | rozhladna-laztek-horne-prsany | stiavnicke-kremnicke-vrchy | Horné Pršany | 2.0 | 142 | 1:15 | lahka |  |
-| via-ferrata-skalka-vyzva-komin-trubacova-veza | stiavnicke-kremnicke-vrchy | Predné pláne, zruby | 8.3 | 277 | 3:00 | lahka |  |
-| via-ferrata-skalka-vyzva-komin-trubacova-veza-chata-nad-tajovom | stiavnicke-kremnicke-vrchy | Chata nad Tajovom | 7.2 | 477 | 3:30 | stredna |  |
-| via-ferrata-skalka-vyzva-komin-trubacova-veza-horny-turcek | stiavnicke-kremnicke-vrchy | Horný Turček | 13.5 | 541 | 5:00 | stredna |  |
 | travny-zdiar | stiavnicke-kremnicke-vrchy | Suchý vrch | 2.1 | 136 | 1:00 | lahka |  |
 | travny-zdiar-kraliky-u-ruskov | stiavnicke-kremnicke-vrchy | Králiky, U Ruskov | 9.5 | 363 | 3:30 | stredna |  |
 | travny-zdiar-mutne | stiavnicke-kremnicke-vrchy | Mútne | 9.5 | 373 | 3:30 | stredna |  |
@@ -6233,4 +6224,4 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | vystrkov-podhajska | zahorie-podunajsko | Podhájska | 9.3 | 171 | 3:00 | lahka |  |
 | vystrkov-podhajska-belek | zahorie-podunajsko | Podhájska, Belek | 10.3 | 196 | 3:15 | stredna |  |
 
-Drive table: 141 towns x 2130 main trips, 0 pairs without a route.
+Drive table: 141 towns x 2129 main trips, 0 pairs without a route.
