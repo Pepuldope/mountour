@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { isoDate } from "@/lib/days";
+import { getSunTimes } from "@/lib/sun";
 
 /** The trip inputs, shared by the home list and every trip page so nothing resets on navigation. */
 export interface TripSettings {
@@ -49,6 +50,17 @@ export function defaultDeparture(now = new Date()): { date: string; time: string
 export function defaultTimeFor(date: string, now = new Date()): string {
   const soon = defaultDeparture(now);
   return soon.date === date ? soon.time : MORNING;
+}
+
+/** Middle of Slovakia: close enough for "has the sun set yet?". */
+const SK_MIDDLE = { lat: 48.7, lon: 19.5 };
+
+/** The day a visit starts on: today, or tomorrow once the sun has set. */
+export function defaultDay(now = new Date()): string {
+  // Sunset of the local calendar day (getSunTimes reads the UTC day of what it's given).
+  const sun = getSunTimes(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate())), SK_MIDDLE.lat, SK_MIDDLE.lon);
+  if (!sun || now.getTime() <= sun.sunset.getTime()) return isoDate(now);
+  return isoDate(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
 }
 
 const DEFAULTS: TripSettings = { date: null, time: null, withKids: false, travel: "car" };
@@ -105,7 +117,9 @@ export function TripSettingsProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setToday(now);
     const travel = readTravel();
-    setSettings({ ...DEFAULTS, ...stored, ...(stale ? { date: null, time: null } : {}), ...(travel ? { travel } : {}) });
+    // A new visit plans for today (tomorrow after sunset); a day the visitor un-picked stays un-picked.
+    const fresh = stored?.date === undefined || stale;
+    setSettings({ ...DEFAULTS, ...stored, ...(fresh ? { date: defaultDay(), time: null } : {}), ...(travel ? { travel } : {}) });
   }, []);
 
   const update = useCallback((patch: Partial<TripSettings>) => {
