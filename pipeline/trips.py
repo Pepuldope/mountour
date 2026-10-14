@@ -23,7 +23,8 @@ CITY_CORE_M = 2500  # around the centre of a big city (Bratislava, Košice) ever
 CITY_CORE_POP = 200_000
 FAMOUS = 6  # Wikipedia languages with an article: a place known well beyond its valley
 DISTINCT_GOALS = {"vodopad", "pleso", "jaskyna", "hrad", "roklina"}  # two of these near each other are two goals
-GORGE_VALLEY_FAME = 3  # a plain "dolina" counts as a gorge when this many Wikipedias have it
+GORGE_VALLEY_FAME = 3
+GORGE_TOP_MAX_ELE = 1300  # m; a valley reaching higher is a mountain valley  # a plain "dolina" counts as a gorge when this many Wikipedias have it
 VERY_FAMOUS = 12  # every Tatra peak has a few (Polish, German); this many is a household name
 
 
@@ -197,13 +198,17 @@ class TripBuilder:
             if region is None or not self.in_country(f.lat, f.lon):
                 self._note(f.name, "outside Slovakia or every region")
                 continue
-            if kind == "roklina" and not osm_mod.GORGE_WORDS.search(f.name) and "dolin" in f.name.lower() and (
-                    region["id"] == "tatry" or self.fame(f) < GORGE_VALLEY_FAME):
-                # a Tatra "dolina" is a long glacial valley; elsewhere only the known gorge-like ones (Sokolia dolina)
+            top = self._gorge_top(f) if f.tags.get("_ends") else None
+            if kind == "roklina" and not osm_mod.GORGE_WORDS.search(f.name) and (
+                    (top or 0) > GORGE_TOP_MAX_ELE
+                    or self.fame(f) < (GORGE_VALLEY_FAME if "dolin" in f.name.lower() else 2)):
+                # a high-mountain valley is a glacial one (Velická dolina, Meďodoly), not a gorge; lower down
+                # only the known gorge-like ones (Suchá Belá, Sokolia dolina, Prosiecka dolina)
                 self._note(f.name, "left out: a valley, not a known gorge")
                 continue
-            if f.tags.get("_ends"):
-                self._gorge_top(f)
+            if kind == "ine" and self.fame(f) < 2:
+                self._note(f.name, "left out: a sight not known enough")
+                continue
             # A castle, waterfall or lake is a sight you see from the trail; a peak you stand on.
             snap_m = self.t["destination_snap_m"] if kind in ("vrchol", "vyhliadka") else self.t.get("sight_snap_m", 350)
             node = self.g.snap(f.lat, f.lon, snap_m, marked_only=True)
@@ -217,16 +222,20 @@ class TripBuilder:
         return out
 
     def _gorge_top(self, f):
-        """A gorge is walked up: its goal is the upper end, where the ladders and falls are behind you."""
+        """A gorge is walked up: its goal is the upper end, where the ladders and falls are behind you.
+        Returns the height of its upper end (None without elevation data)."""
         ends = list(f.tags["_ends"])
+        top = None
         if self.dem:
             ele = self.dem.sample(np.array([e[0] for e in ends]), np.array([e[1] for e in ends]))
             if np.isfinite(ele).all():
                 ends = [ends[i] for i in np.argsort(-ele)]
+                top = float(ele.max())
         for lat, lon in ends:
             if self.g.snap(lat, lon, self.t.get("sight_snap_m", 350), marked_only=True) is not None:
                 f.lat, f.lon = lat, lon
-                return
+                break
+        return top
 
     def fame(self, f):
         """How widely known a place is: Wikipedia languages that have an article on it."""
@@ -246,12 +255,16 @@ class TripBuilder:
                 if (b is not a and b.score >= a.score and fa > 2 * self.fame(b.feature)
                         and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < r):
                     a.score = b.score + 0.01
-        # Parts of one gorge (Dolné Diery, Horné Diery): the one with the article is the goal (Jánošíkove diery).
+        # Parts of one gorge (Dolné Diery, Horné Diery): the one with the article, or else the one mapped as
+        # the attraction, is the goal (Jánošíkove diery).
+        def _known(c):
+            return self.fame(c.feature), c.feature.tags.get("tourism") == "attraction"
+
         for a in cands:
             if a.kind != "roklina":
                 continue
             for b in cands:
-                if (b is not a and b.kind == "roklina" and b.score >= a.score and self.fame(a.feature) > self.fame(b.feature)
+                if (b is not a and b.kind == "roklina" and b.score >= a.score and _known(a) > _known(b)
                         and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < r):
                     a.score = b.score + 0.01
         # A hut by a tarn is the goal people name (Téryho chata, Zbojnícka chata), unless the hut
@@ -336,7 +349,7 @@ class TripBuilder:
                 # tarn is a place of its own (Vajanského vodopád).
                 near = next((n for r, la, lo, n, k in taken
                              if r == rid and haversine(c.feature.lat, c.feature.lon, la, lo) < self.t["dedupe_m"]
-                             and (k == c.kind or not {k, c.kind} <= DISTINCT_GOALS)), None)
+                             and _same_goal(k, c.kind)), None)
                 if near:
                     self._note(c.feature.name, f"left out: within {self.t['dedupe_m']} m of the trip to {near}")
                     continue
@@ -351,7 +364,8 @@ class TripBuilder:
                     continue
                 # A peak with its own Wikipedia article is a goal of its own, even one ridge away (Ostrý Roháč).
                 if self.fame(c.feature) < VERY_FAMOUS and any(
-                        abs(x["distance_m"] - trip["distance_m"]) < 0.1 * trip["distance_m"]
+                        _same_goal(x["destination"]["kind"], c.kind)
+                        and abs(x["distance_m"] - trip["distance_m"]) < 0.1 * trip["distance_m"]
                         and haversine(x["destination"]["location"]["lat"], x["destination"]["location"]["lon"],
                                       c.feature.lat, c.feature.lon) < self.t.get("same_walk_m", 1500) for x in same_start):
                     self._reject("almost the same walk as another trip")
@@ -861,6 +875,14 @@ class TripBuilder:
 
 
 # ---------------------------------------------------------------- utils --
+def _same_goal(a, b):
+    """Could two goal kinds this close be one place? A waterfall in a gorge, or a peak above one, is a
+    goal of its own (Kmeťov vodopád, Závojový vodopád in Suchá Belá)."""
+    if a == b:
+        return True
+    return not ({a, b} <= DISTINCT_GOALS or "roklina" in (a, b))
+
+
 def _num(v):
     if v is None:
         return None
