@@ -196,6 +196,12 @@ def _report(trips, rep, now, osm_at, drive):
         L += [f"- {a} ({s}) → {b} ({k}), {m} m" for a, s, b, k, m in nm["merged"]]
     if rep.get("foreign"):
         L += ["", "Foreign names left out: " + ", ".join(sorted(set(rep["foreign"])))]
+    watch = rep.get("watch") or {}
+    if rep.get("watch_names"):
+        L += ["", "## Well-known places (config `watch`)", "", "| Place | What happened |", "|---|---|"]
+        for n in rep.get("watch_names", []):
+            notes = watch.get(n) or ["not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name)"]
+            L.append(f"| {n} | " + "; ".join(dict.fromkeys(notes)) + " |")
     L += ["", "## Rejected candidates", ""] + [f"- {k}: {v}" for k, v in sorted(rep["rejected"].items())]
     if rep.get("unresolved"):
         L += ["", "## Rule place names not found in OSM (check spelling in the rule files)", ""]

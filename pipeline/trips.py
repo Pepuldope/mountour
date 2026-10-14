@@ -59,7 +59,11 @@ class TripBuilder:
         self.proj = LocalProjection()
         # Hand-picked trips keep their own slugs; no generated trip may take one.
         self.used_slugs = {p["slug"] for p in cfg.get("pinned", [])}
-        self.report = dict(rejected={}, regression=[], regions={})
+        self.report = dict(rejected={}, regression=[], regions={}, watch={})
+        # Well-known places (config `watch`): the report says what became of each one.
+        self.watch = {names.fold(n): n for n in cfg.get("watch", [])}
+        self.report["watch_names"] = list(cfg.get("watch", []))
+        self._current = None  # name of the destination being built, for _reject
 
         def tree(feats):
             if not feats:
@@ -178,6 +182,7 @@ class TripBuilder:
     def candidates(self):
         out = []
         for kind, f in self.osm.destinations:
+            self._note(f.name, f"found in OSM as {kind} ({f.osm})")
             if f.name.strip().lower() in GENERIC_NAMES or names.is_junk(f.name):
                 continue
             if names.is_foreign(f.name, f.tags):
@@ -185,14 +190,21 @@ class TripBuilder:
                 continue
             region = self.region_of(f.lat, f.lon)
             if region is None or not self.in_country(f.lat, f.lon):
+                self._note(f.name, "outside Slovakia or every region")
                 continue
             node = self.g.snap(f.lat, f.lon, self.t["destination_snap_m"], marked_only=True)
             if node is None:
+                self._note(f.name, f"no marked trail within {self.t['destination_snap_m']} m")
                 continue
             out.append(Candidate(kind, f, region, node, self.score(kind, f)))
         out.sort(key=lambda c: -c.score)
         self.log(f"destination candidates near marked trails: {len(out)}")
         return out
+
+    def _note(self, name, text):
+        key = names.fold(name)
+        if key in self.watch:
+            self.report["watch"].setdefault(self.watch[key], []).append(text)
 
     def score(self, kind, f):
         t = f.tags
@@ -215,7 +227,7 @@ class TripBuilder:
         th_nodes = np.array(sorted(ths), dtype=np.int64)
         trips = []
         variants = []  # other routes to a trip's destination; not on the home list
-        taken = []  # (region id, lat, lon)
+        taken = []  # (region id, lat, lon, name)
 
         for p in self.cfg.get("pinned", []):
             trip = self.build_pinned(p, ths, th_nodes)
@@ -223,7 +235,7 @@ class TripBuilder:
                 others = trip.pop("_others")
                 trips.append(trip)
                 variants += self._finish_variants(trip, others)
-                taken.append((trip["region"], trip["destination"]["location"]["lat"], trip["destination"]["location"]["lon"]))
+                taken.append((trip["region"], trip["destination"]["location"]["lat"], trip["destination"]["location"]["lon"], trip["name"]))
 
         by_region = {}
         for c in self.candidates():
@@ -241,8 +253,12 @@ class TripBuilder:
                 n_family = len([x for x in chosen if x["family_friendly"]])
                 if n_regular >= cap and n_family >= fam_needed:
                     break
-                if any(r == rid and haversine(c.feature.lat, c.feature.lon, la, lo) < self.t["dedupe_m"] for r, la, lo in taken):
+                near = next((n for r, la, lo, n in taken
+                             if r == rid and haversine(c.feature.lat, c.feature.lon, la, lo) < self.t["dedupe_m"]), None)
+                if near:
+                    self._note(c.feature.name, f"left out: within {self.t['dedupe_m']} m of the trip to {near}")
                     continue
+                self._current = c.feature.name
                 trip = self.build_generated(c, ths, th_nodes)
                 if not trip:
                     continue
@@ -262,7 +278,8 @@ class TripBuilder:
                     trip["_extra"] = True
                 chosen.append(trip)
                 variants += self._finish_variants(trip, others)
-                taken.append((rid, c.feature.lat, c.feature.lon))
+                taken.append((rid, c.feature.lat, c.feature.lon, c.feature.name))
+                self._note(c.feature.name, f"trip {trip['slug']}")
             self.report["regions"][rid] = dict(candidates=len(cands), trips=len(chosen))
             self.log(f"{rid}: {len(chosen)} trips from {len(cands)} candidates")
             trips += chosen
@@ -270,6 +287,8 @@ class TripBuilder:
         for t in trips:
             t.pop("_extra", None)
         trips, self.report["names"] = names.tidy(trips, names.Places(getattr(self.osm, "places", [])))
+        for a, s, b, k, m in self.report["names"]["merged"]:
+            self._note(a, f"merged into {k} ({m} m away, same name)")
         mains = {t["slug"] for t in trips}
         variants = [v for v in variants if v["variant_of"] in mains]
         self._rank(trips)
@@ -295,6 +314,8 @@ class TripBuilder:
 
     def _reject(self, why):
         self.report["rejected"][why] = self.report["rejected"].get(why, 0) + 1
+        if self._current:
+            self._note(self._current, f"left out: {why}")
         return None
 
     def build_generated(self, c, ths, th_nodes):
