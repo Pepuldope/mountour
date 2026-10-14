@@ -8,6 +8,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 from . import names
+from . import osm as osm_mod
 from .geo import LocalProjection, ascent_descent, din33466_minutes, haversine, rdp_indices, resample, round_up_15, slugify
 
 COLOUR_ORDER = ["red", "blue", "green", "yellow", "black"]
@@ -236,6 +237,18 @@ class TripBuilder:
                     a.score = b.score + 0.01
         cands.sort(key=lambda c: -c.score)
 
+    def unused_famous(self, limit=250):
+        """Well-known named places by a marked trail that no goal kind covers: what to add next."""
+        out = []
+        for f in getattr(self.osm, "others", []):
+            if not self.region_of(f.lat, f.lon) or not self.in_country(f.lat, f.lon):
+                continue
+            if self.g.snap(f.lat, f.lon, 300, marked_only=True) is None:
+                continue
+            out.append((self.fame(f), f.name, osm_mod.main_tag(f.tags), self.region_of(f.lat, f.lon)["id"], f.osm))
+        out.sort(key=lambda x: (-x[0], x[1]))
+        return out[:limit]
+
     def _note(self, name, text):
         key = names.fold(name)
         if key in self.watch:
@@ -332,6 +345,7 @@ class TripBuilder:
             self._note(a, f"merged into {k} ({m} m away, same name)")
         mains = {t["slug"] for t in trips}
         variants = [v for v in variants if v["variant_of"] in mains]
+        self.report["unused"] = self.unused_famous()
         self._rank(trips)
         primary_rank = {t["slug"]: t["rank"] for t in trips}
         by_slug = {t["slug"]: t for t in trips}

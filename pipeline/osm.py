@@ -60,6 +60,7 @@ class OsmData:
     pois: list = field(default_factory=list)  # (kind, Feature)
     towns: list = field(default_factory=list)
     places: list = field(default_factory=list)  # villages and towns near trails (how well known a start is)
+    others: list = field(default_factory=list)  # well-known named features that are no goal kind (report only)
     probes: dict = field(default_factory=dict)  # name -> [(lat, lon)]
     border: object = None  # shapely geometry of the country, or None
     data_at: str | None = None
@@ -80,6 +81,15 @@ def clean_name(t):
     if name and " / " in name:
         name = name.split(" / ")[0].strip()
     return name
+
+
+GORGE_WORDS = __import__("re").compile(r"roklin|tiesňav|diery|prielom|kaňon|žľab|soutěsk", __import__("re").I)
+MAIN_KEYS = ("natural", "tourism", "historic", "leisure", "man_made", "waterway", "boundary", "amenity", "landuse",
+             "geological", "building", "place")
+
+
+def main_tag(t):
+    return next((f"{k}={t[k]}" for k in MAIN_KEYS if t.get(k)), "?")
 
 
 def destination_kind(t):
@@ -218,6 +228,8 @@ def load(path, boxes, probe_names=(), border_relation=14296):
             kind = destination_kind(t)
             if kind:
                 data.destinations.append((kind, f))
+            elif t.get("wikidata") or GORGE_WORDS.search(name):
+                data.others.append(f)
             pk = poi_kind(t)
             if pk:
                 data.pois.append((pk, f))

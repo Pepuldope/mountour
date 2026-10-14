@@ -202,6 +202,10 @@ def _report(trips, rep, now, osm_at, drive):
         for n in rep.get("watch_names", []):
             notes = watch.get(n) or ["not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name)"]
             L.append(f"| {n} | " + "; ".join(dict.fromkeys(notes)) + " |")
+    if rep.get("unused"):
+        L += ["", "## Well-known places by a marked trail that are no trip (no goal kind for them)", "",
+              "| Wikipedia languages | Name | OSM tag | Region | OSM |", "|---|---|---|---|---|"]
+        L += [f"| {fm} | {n} | {tag} | {r} | {o} |" for fm, n, tag, r, o in rep["unused"]]
     L += ["", "## Rejected candidates", ""] + [f"- {k}: {v}" for k, v in sorted(rep["rejected"].items())]
     if rep.get("unresolved"):
         L += ["", "## Rule place names not found in OSM (check spelling in the rule files)", ""]

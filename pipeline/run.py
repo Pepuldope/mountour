@@ -82,7 +82,9 @@ def main(argv=None):
         log("no DEM tiles found, ascent falls back to OSM elevations")
         dem = None
 
-    links = sitelinks([f.tags["wikidata"] for _, f in osm.destinations if f.tags.get("wikidata")]) if a.wikidata else {}
+    qids = [f.tags["wikidata"] for _, f in osm.destinations if f.tags.get("wikidata")]
+    qids += [f.tags["wikidata"] for f in osm.others if f.tags.get("wikidata")]
+    links = sitelinks(qids) if a.wikidata else {}
     cm, fm = RuleMatcher(closures, osm.probes), RuleMatcher(fees, osm.probes)
     car_ok = drive_mod.CarCheck(a.osrm, cfg["trips"]["parking_road_max_m"]) if a.osrm else None
     tb = TripBuilder(cfg, osm, graph, dem, cm, fm, slugs, links, log, car_ok)
