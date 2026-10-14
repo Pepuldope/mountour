@@ -202,7 +202,8 @@ export default async function TripSheetPage({ params }: Props) {
 
           <RouteChoice slug={trail.slug} destination={trip.destination.name} routes={routes} />
 
-          <ClosureBanner closures={closures} />
+          {/* A real closure stays up top; "no data" is a quiet note under the map. */}
+          {closures.length > 0 && <ClosureBanner closures={closures} />}
 
           <TripPlanner
             slug={trail.slug}
@@ -233,6 +234,8 @@ export default async function TripSheetPage({ params }: Props) {
           <div className="h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] lg:hidden">
             <TripMap detail={detail} gpxUrl={gpxUrl} others={others} />
           </div>
+
+          {closures.length === 0 && <ClosureBanner closures={closures} />}
 
           {gpxUrl && (
             <section className="flex flex-col gap-1 text-sm">

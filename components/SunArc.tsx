@@ -22,6 +22,8 @@ const HOR = 146; // horizon line
 const H = HOR + 50;
 const RULER = HOR + 26;
 const PAD = 8;
+/** Knob size of the phone slider, px (.time-slider in globals.css). */
+const SLIDER_KNOB = 36;
 // The picture is a sky, so it keeps its own day colours in dark mode too.
 const INK = "#14233b";
 const WALKER = "#1769d1";
@@ -91,6 +93,16 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
   const [scrub, setScrub] = useState<number | null>(null);
   const [intro, setIntro] = useState<number | null>(null);
   const dragging = useRef(false);
+  // Phone slider width, so its knob can sit exactly under the dial's time line.
+  const sliderRef = useRef<HTMLInputElement>(null);
+  const [sliderW, setSliderW] = useState(0);
+  useEffect(() => {
+    const el = sliderRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => setSliderW(el.clientWidth));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const first = plan.segments[0].start.getTime();
   const home = plan.segments[plan.segments.length - 1].end.getTime();
@@ -215,6 +227,14 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
   }
   const sunShows = kind ? SUN_SHOWS[kind] ?? 1 : 1;
   const sx = scene.x(t);
+  // The slider spans the dial's full width, but its knob centre can only travel
+  // from half a knob in on each side. Give it the times found at those two
+  // points of the picture so the knob and the time line always line up.
+  const knob = SLIDER_KNOB / 2;
+  const span = (scene.hi - scene.lo) / (1 - (2 * PAD) / W);
+  const edgeT = sliderW > 2 * knob ? (knob / sliderW) * span - (PAD / W) * span : 0;
+  const slideLo = scene.lo + Math.max(0, edgeT);
+  const slideHi = scene.hi - Math.max(0, edgeT);
   const sy = scene.y(alt);
 
   const onTrail = t >= hs && t <= he;
@@ -531,13 +551,14 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
       </svg>
 
       {/* Phones: a plain slider right under the picture, easier to hit with a thumb. Computers point with the mouse. */}
-      <div className="-mt-1 px-4 pb-1 sm:hidden">
+      <div className="-mt-1 pb-1 sm:hidden">
         <input
+          ref={sliderRef}
           type="range"
-          min={scene.lo}
-          max={scene.hi}
+          min={slideLo}
+          max={slideHi}
           step={5 * MIN}
-          value={t}
+          value={Math.max(slideLo, Math.min(slideHi, t))}
           onChange={(e) => setScrub(Number(e.target.value))}
           className="time-slider"
           aria-label="Čas počas dňa"

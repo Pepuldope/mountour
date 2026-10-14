@@ -115,10 +115,13 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
             {shared.town ? `, štart ${shared.town}` : ""}.
           </p>
           <p className="text-[var(--muted)]">
-            {adopted ? `Nižšie je prepočítaný zo štartu ${start?.label}. Zmeniť ho môžete pod plánom.` : "Nižšie je prepočítaný z vášho miesta."}
+            {adopted ? `Nižšie je prepočítaný zo štartu ${start?.label}. Zmeniť ho môžete hneď nižšie.` : "Nižšie je prepočítaný z vášho miesta."}
           </p>
         </div>
       )}
+
+      {/* In the order of the day: where from, how, then when. */}
+      <StartChip />
 
       <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} />
 
@@ -163,7 +166,6 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
       )}
 
       <section aria-label="Deň a odchod" className="flex flex-col gap-3">
-        <StartChip />
         <FilterChips variant="trip" activeDate={date} />
         <div className="flex flex-wrap items-center gap-3">
           <label className="flex items-center gap-2 text-sm font-semibold">

@@ -5,7 +5,7 @@ import type { ExpressionSpecification, GeoJSONSource, LineLayerSpecification, Ma
 import type { LatLng } from "@/lib/types";
 import type { DestinationKind } from "@/lib/tripSchema";
 import { MAP_STYLE_URL } from "@/lib/mapLayers";
-import { GOAL_COLOUR, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
+import { GOAL_COLOUR, POPULARITY_QUIET_EDGE, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
 import { attachTrailNetwork, cellsInView } from "@/lib/trailNetwork";
 import { useUserLocation } from "@/lib/userLocation";
 import { FALLBACK_STYLE, SLOVAKIA, hideBasePois } from "@/components/TrailMap";
@@ -311,9 +311,10 @@ export function BrowseMap({
         const width = (a: number, b: number, c: number, extra = 0) =>
           [
             "interpolate", ["linear"], ["zoom"],
-            7, ["+", a + extra, ["*", 0.35, ["get", "p"]]],
-            12, ["+", b + extra, ["*", 0.6, ["get", "p"]]],
-            15, ["+", c + extra, ["*", 0.8, ["get", "p"]]],
+            // The quietest level gets a little extra so it stays visible, still thinner than orange.
+            7, ["+", a + extra, ["*", 0.35, ["get", "p"]], ["case", ["==", ["get", "p"], 0], 0.25, 0]],
+            12, ["+", b + extra, ["*", 0.6, ["get", "p"]], ["case", ["==", ["get", "p"], 0], 0.35, 0]],
+            15, ["+", c + extra, ["*", 0.8, ["get", "p"]], ["case", ["==", ["get", "p"], 0], 0.4, 0]],
           ] as unknown as ExpressionSpecification;
         const layout: LineLayerSpecification["layout"] = { "line-cap": "round", "line-join": "round", "line-sort-key": ["get", "r"] };
         for (const [src, range] of [
@@ -323,6 +324,7 @@ export function BrowseMap({
           m.addSource(src, { type: "geojson", data: EMPTY });
           // The best known trips get a thin white edge, like on the trail network before.
           m.addLayer({ id: `${src}-top`, type: "line", source: src, ...range, filter: ["==", ["get", "p"], 4], layout, paint: { "line-color": POPULARITY_TOP_OUTLINE, "line-width": width(0.6, 1.4, 2.5, 1), "line-opacity": 0.9 } });
+          m.addLayer({ id: `${src}-quiet`, type: "line", source: src, ...range, filter: ["==", ["get", "p"], 0], layout, paint: { "line-color": POPULARITY_QUIET_EDGE, "line-width": width(0.6, 1.4, 2.5, 1.2), "line-opacity": 0.45 } });
           m.addLayer({ id: `${src}-line`, type: "line", source: src, ...range, layout, paint: { "line-color": ramp, "line-width": width(0.6, 1.4, 2.5), "line-opacity": 0.95 } });
           // Wide and invisible, so a thin line is easy to hit.
           m.addLayer({ id: `${src}-hit`, type: "line", source: src, ...range, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0 } });
@@ -594,6 +596,7 @@ export function BrowseMap({
       map.setFilter(`${src}-line`, only);
       map.setFilter(`${src}-hit`, only);
       map.setFilter(`${src}-top`, ["all", ["==", ["get", "p"], 4], only] as unknown as ExpressionSpecification);
+      map.setFilter(`${src}-quiet`, ["all", ["==", ["get", "p"], 0], only] as unknown as ExpressionSpecification);
     }
     const level = squareLevels(trips, ctx.shift);
     (map.getSource("squares") as GeoJSONSource | undefined)?.setData({
