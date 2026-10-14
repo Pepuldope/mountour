@@ -8,7 +8,7 @@ on:
     - cron: "17 3 * * 1"
   workflow_dispatch:
   push:
-    branches: ["claude/osm-trip-pipeline-**", "claude/site-fixes-and-features-**", "claude/import-all-trails-**", "claude/project-thread-yog954"]
+    branches: ["claude/osm-trip-pipeline-**", "claude/site-fixes-and-features-**", "claude/import-all-trails-**"]
     paths: ["pipeline/**", ".github/workflows/trips.yml"]
   pull_request:
     paths: ["pipeline/**", ".github/workflows/trips.yml"]
