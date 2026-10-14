@@ -1,6 +1,9 @@
 import Link from "next/link";
-import { formatDuration } from "@/lib/format";
 import type { RouteBrief } from "@/lib/tripSchema";
+import { RouteRows } from "@/components/RouteRows";
+import { Dot, routeLabel } from "@/components/routeBits";
+
+const plural = (n: number) => (n >= 5 ? `${n} ciest` : `${n} cesty`);
 
 interface Props {
   /** The trip on screen. */
@@ -11,47 +14,55 @@ interface Props {
 }
 
 /**
- * Most places have more than one marked route. The page shows the main one (the
- * start most people use); here you switch to another, each with why you might want it.
+ * Most places have more than one marked route. The page shows the main one (the start most
+ * people use); here you switch to another. Phones get one folded "Cesta" row so the page stays
+ * easy to scroll; wider screens list the routes as cards. Both link to the map comparison.
  */
 export function RouteChoice({ slug, destination, routes }: Props) {
   if (routes.length < 2) return null;
+  const at = Math.max(0, routes.findIndex((r) => r.slug === slug));
+  const current = routes[at];
+  const compare = `/trasa/${slug}/cesty`;
+
+  const rows = <RouteRows routes={routes} at={at} />;
+
   return (
-    <section aria-labelledby="cesty" className="flex flex-col gap-2">
-      <h2 id="cesty" className="text-base font-bold">
-        Cesty na {destination}
-      </h2>
-      <ul className="flex flex-col gap-1.5">
-        {routes.map((r) => {
-          const current = r.slug === slug;
-          return (
-            <li key={r.slug}>
-              <Link
-                href={`/trasa/${r.slug}`}
-                aria-current={current ? "page" : undefined}
-                scroll={false}
-                className={`flex items-center justify-between gap-3 rounded-[var(--radius-card)] border bg-[var(--card-bg)] px-3.5 py-2.5 ${
-                  current ? "border-[var(--accent)] shadow-[0_0_0_1px_var(--accent)]" : "border-[var(--border)]"
-                }`}
-              >
-                <span className="flex min-w-0 flex-col">
-                  <span className="text-[15px] font-bold">{r.route_label ?? (r.variant_of ? "Iná cesta" : "Hlavná cesta")}</span>
-                  <span className="text-[13px] text-[var(--muted)]">
-                    štart {r.start_name}
-                    {r.transit && !r.parking ? " · len autobusom" : r.transit ? " · aj autobusom" : ""}
-                  </span>
-                </span>
-                <span className="font-data shrink-0 text-right text-[16px] leading-tight">
-                  {formatDuration(r.duration_min)}
-                  <span className="block font-sans text-[12px] text-[var(--muted)]">
-                    {(r.distance_m / 1000).toFixed(1).replace(".", ",")} km · +{r.ascent_m} m
-                  </span>
-                </span>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+    <section aria-label={`Cesty na ${destination}`} className="flex flex-col gap-2">
+      {/* Phones: one row, opened on a tap. */}
+      <details className="group overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] lg:hidden">
+        <summary className="flex cursor-pointer list-none items-center gap-3 px-3.5 py-2.5 [&::-webkit-details-marker]:hidden">
+          <Dot i={at} />
+          <span className="flex min-w-0 flex-col">
+            <span className="text-[12px] text-[var(--muted)]">Cesta</span>
+            <span className="truncate text-[15px] font-bold">
+              {routeLabel(current)} · {current.start_name}
+            </span>
+          </span>
+          <span className="ml-auto flex shrink-0 items-center gap-1 text-[13px] font-bold text-[var(--accent)]">
+            {plural(routes.length)}
+            <svg aria-hidden width="14" height="14" viewBox="0 0 14 14" className="transition-transform group-open:rotate-180">
+              <path d="M3 5l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </span>
+        </summary>
+        <ul className="flex flex-col divide-y divide-[var(--border)] border-t border-[var(--border)]">{rows}</ul>
+        <Link href={compare} className="block border-t border-[var(--border)] px-3.5 py-2.5 text-sm font-bold text-[var(--accent)]">
+          Porovnať cesty na mape ›
+        </Link>
+      </details>
+
+      {/* Wider screens: every route as a card. */}
+      <div className="hidden flex-col gap-2 lg:flex">
+        <div className="flex items-baseline justify-between gap-3">
+          <h2 className="text-base font-bold">Cesty na {destination}</h2>
+          <Link href={compare} className="text-sm font-bold text-[var(--accent)]">
+            Porovnať na mape ›
+          </Link>
+        </div>
+        <ul className="flex flex-col divide-y divide-[var(--border)] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)]">
+          {rows}
+        </ul>
+      </div>
     </section>
   );
 }

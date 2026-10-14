@@ -37,3 +37,7 @@ export const POI_COLOUR: Record<PoiKind, string> = {
   hrad: "#b9620c",
   ihrisko: "#8a6d00",
 };
+
+/** The routes to one place, side by side on the comparison map: A (main), B, C. */
+export const ROUTE_COLOURS = ["#1769d1", "#b35a00", "#6b4fbf"];
+export const ROUTE_LETTERS = ["A", "B", "C", "D"];

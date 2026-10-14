@@ -50,6 +50,8 @@ interface Props {
   /** The map re-fits to this box whenever it changes. */
   bounds: BBox | null;
   onSelectTrail?: (slug: string) => void;
+  /** The pointer moved onto a track (its slug) or off every track (null). */
+  onHoverTrail?: (slug: string | null) => void;
   /** Drive from the trip's start to the parking, drawn dashed under the trail. */
   driveLeg?: [number, number][];
   /** On foot from where the car stops to the trail start, drawn dotted. */
@@ -133,15 +135,22 @@ function pinElement(className: string, glyph: string, title: string): HTMLElemen
   return el;
 }
 
-function fit(map: MlMap, b: BBox) {
+function fit(map: MlMap, b: BBox, duration = 0) {
   map.fitBounds(
     [
       [b.sw.lon, b.sw.lat],
       [b.ne.lon, b.ne.lat],
     ],
-    { padding: FIT_PADDING, maxZoom: 15, duration: 0 }
+    { padding: FIT_PADDING, maxZoom: 15, duration }
   );
 }
+
+/**
+ * Where the last trip map stood. Opening another route is a new page, so its map is a new
+ * one; it starts where the last left off and glides to its trail instead of jumping there.
+ */
+let lastCamera: { center: [number, number]; zoom: number; at: number } | null = null;
+const GLIDE_WITHIN_MS = 15_000;
 
 export const FALLBACK_STYLE: StyleSpecification = {
   version: 8,
@@ -160,6 +169,7 @@ export function TrailMap({
   markers,
   bounds,
   onSelectTrail,
+  onHoverTrail,
   driveLeg,
   walkLeg,
   network,
@@ -169,6 +179,8 @@ export function TrailMap({
   const containerRef = useRef<HTMLDivElement>(null);
   const [ctx, setCtx] = useState<{ ml: MapLibre; map: MlMap } | null>(null);
   const onSelectRef = useRef(onSelectTrail);
+  const onHoverRef = useRef(onHoverTrail);
+  const fittedRef = useRef(false);
   const networkRef = useRef(network);
   const boundsRef = useRef<BBox | null>(bounds);
   const markerRefs = useRef<Marker[]>([]);
@@ -177,7 +189,8 @@ export function TrailMap({
 
   useEffect(() => {
     onSelectRef.current = onSelectTrail;
-  }, [onSelectTrail]);
+    onHoverRef.current = onHoverTrail;
+  }, [onSelectTrail, onHoverTrail]);
 
   // Create the map once; tear it down on unmount.
   useEffect(() => {
@@ -190,16 +203,23 @@ export function TrailMap({
       const ml = await import("maplibre-gl");
       if (cancelled || !containerRef.current) return;
 
+      const from = lastCamera && Date.now() - lastCamera.at < GLIDE_WITHIN_MS ? lastCamera : null;
+      if (from) fittedRef.current = true; // the first fit glides from there
       map = new ml.Map({
         container: containerRef.current,
         style: MAP_STYLE_URL,
-        bounds: SLOVAKIA,
+        ...(from ? { center: from.center, zoom: from.zoom } : { bounds: SLOVAKIA }),
         attributionControl: { compact: true },
         cooperativeGestures: false,
         dragRotate: false,
         pitchWithRotate: false,
       });
       map.touchZoomRotate.disableRotation();
+      map.on("moveend", () => {
+        if (!map) return;
+        const c = map.getCenter();
+        lastCamera = { center: [c.lng, c.lat], zoom: map.getZoom(), at: Date.now() };
+      });
       map.addControl(new ml.NavigationControl({ showCompass: false }), "top-right");
 
       // Base map unreachable (offline, blocked): fall back to a plain background
@@ -282,13 +302,30 @@ export function TrailMap({
           const slug = e.features?.[0]?.properties?.slug as string | undefined;
           if (slug) onSelectRef.current?.(slug);
         });
+        map.on("mousemove", "track-hit", (e) => {
+          const slug = e.features?.[0]?.properties?.slug as string | undefined;
+          if (!map || !onHoverRef.current) return;
+          map.getCanvas().style.cursor = "pointer";
+          onHoverRef.current(slug ?? null);
+        });
+        map.on("mouseleave", "track-hit", () => {
+          if (!map || !onHoverRef.current) return;
+          map.getCanvas().style.cursor = "";
+          onHoverRef.current(null);
+        });
         setCtx({ ml, map });
       });
 
       // The map sits in flex/sticky containers whose size can change: keep the
       // requested area in view rather than whatever zoom fit the old size.
+      let firstResize = true;
       observer = new ResizeObserver(() => {
         if (!map) return;
+        // The first call is the initial size: the bounds effect places the view (maybe gliding).
+        if (firstResize) {
+          firstResize = false;
+          return;
+        }
         map.resize();
         if (boundsRef.current) fit(map, boundsRef.current);
       });
@@ -299,6 +336,10 @@ export function TrailMap({
 
     return () => {
       cancelled = true;
+      if (map) {
+        const c = map.getCenter();
+        lastCamera = { center: [c.lng, c.lat], zoom: map.getZoom(), at: Date.now() };
+      }
       observer?.disconnect();
       detachNetwork?.();
       map?.remove();
@@ -311,7 +352,10 @@ export function TrailMap({
   const boundsKey = bounds ? `${bounds.sw.lat},${bounds.sw.lon},${bounds.ne.lat},${bounds.ne.lon}` : "";
   useEffect(() => {
     boundsRef.current = bounds;
-    if (ctx && bounds) fit(ctx.map, bounds);
+    if (!ctx || !bounds) return;
+    // The first view appears at once; later changes (another route) glide there.
+    fit(ctx.map, bounds, fittedRef.current ? 700 : 0);
+    fittedRef.current = true;
     // `bounds` is tracked via boundsKey so a new-but-equal object doesn't refit.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctx, boundsKey]);

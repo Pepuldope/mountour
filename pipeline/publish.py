@@ -173,6 +173,13 @@ def _report(trips, rep, now, osm_at, drive):
         m, rest = g[0], g[1:]
         fmt = lambda t: f"{t['start']['name']} {t['duration_min'] // 60}:{t['duration_min'] % 60:02d}"
         L.append(f"| {m['slug']} | {fmt(m)} | " + "; ".join(f"{t['route_label']}: {fmt(t)}" for t in rest) + " |")
+    town = rep.get("town", [])
+    L += ["", "## Town filter", "",
+          f"{sum(1 for x in town if x[2] == 'city centre')} goals in city centres and "
+          f"{sum(1 for x in town if x[2] == 'in town')} sights in towns left out; "
+          f"{sum(1 for x in town if x[2] == 'city walk')} routes left out as city walks.", "",
+          "| Goal | Kind | Why | Start | Town metres |", "|---|---|---|---|---|"]
+    L += [f"| {n} | {k} | {w} | {st} | {m} |" for n, k, w, st, m in town]
     L += ["", "## Rejected candidates", ""] + [f"- {k}: {v}" for k, v in sorted(rep["rejected"].items())]
     if rep.get("unresolved"):
         L += ["", "## Rule place names not found in OSM (check spelling in the rule files)", ""]

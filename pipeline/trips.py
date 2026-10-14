@@ -15,6 +15,10 @@ KIND_BONUS = {"hrad": 30, "pleso": 30, "vodopad": 25, "jaskyna": 25, "chata": 20
 GENERIC_NAMES = {"vyhliadka", "výhľad", "rozhľadňa", "altánok", "vyhliadkové miesto", "chata", "hrad", "pleso"}
 ROUTE_LIMIT = 18000  # weighted metres one way, generous; time limits are applied afterwards
 PENDING = "__pending__"  # slug of a route until it is known whether it is the main one
+TOWN_STREETS = {"residential", "living_street", "pedestrian"}  # their density marks a built-up area
+TOWN_GOALS = {"hrad", "vrchol", "jaskyna", "vodopad"}  # worth a walk even when in a built-up area (a castle above a town)
+CITY_CORE_M = 2500  # around the centre of a big city (Bratislava, Košice) every goal is a city sight, not a trip
+CITY_CORE_POP = 200_000
 
 
 @dataclass
@@ -67,6 +71,7 @@ class TripBuilder:
         self.poi_kinds = [k for k, _ in osm.pois]
         self.poi_tree = tree(self.poi_feats)
         self.place_tree = tree(getattr(osm, "places", []))
+        self.town_cells = self._town_cells()
         # marked routes through each graph node: a start where several trails meet is a known one
         self.node_routes = {}
         for w in graph.ways:
@@ -75,6 +80,47 @@ class TripBuilder:
                     self.node_routes.setdefault(int(i), set()).update(w.routes)
 
     # ----------------------------------------------------------- helpers --
+    def _town_cells(self):
+        """Grid cells dense with town streets: a built-up area, where a walk is a city walk."""
+        size = self.t.get("town_cell_m", 250)
+        street = {}
+        for w in self.g.ways:
+            if w.highway not in TOWN_STREETS or len(w.lats) < 2:
+                continue
+            xy = self.proj.xy(w.lats, w.lons)
+            seg = np.hypot(*np.diff(xy, axis=0).T)
+            for c, L in zip(map(tuple, ((xy[:-1] + xy[1:]) / 2 // size).astype(int)), seg):
+                street[c] = street.get(c, 0.0) + float(L)
+        vals = np.array(list(street.values())) if street else np.zeros(1)
+        self.log(f"town streets: {len(street)} cells, metres per cell p50/p90/p99/max "
+                 f"{np.percentile(vals, [50, 90, 99]).round().tolist()} / {vals.max():.0f}; "
+                 f">=800: {(vals >= 800).sum()}, >=1500: {(vals >= 1500).sum()}")
+        return {c for c, L in street.items() if L >= self.t.get("town_street_m", 700)}
+
+    def _in_town(self, lat, lon):
+        """In a built-up area: its own square is, or most squares around it are (a bridge, a square)."""
+        size = self.t.get("town_cell_m", 250)
+        x, y = (self.proj.xy([lat], [lon])[0] // size).astype(int)
+        around = sum((x + dx, y + dy) in self.town_cells for dx in (-1, 0, 1) for dy in (-1, 0, 1))
+        return (x, y) in self.town_cells or around >= 4
+
+    def _city_core(self, lat, lon):
+        return any(
+            f.tags.get("place") == "city" and _population(f.tags) >= CITY_CORE_POP
+            and haversine(lat, lon, f.lat, f.lon) < CITY_CORE_M
+            for f in self.osm.towns
+        )
+
+    def town_walk_m(self, path):
+        """Metres of a walk (graph nodes) that run through built-up areas."""
+        if len(path) < 2 or not self.town_cells:
+            return 0.0
+        size = self.t.get("town_cell_m", 250)
+        xy = self.proj.xy(self.g.lat[path], self.g.lon[path])
+        seg = np.hypot(*np.diff(xy, axis=0).T)
+        cells = map(tuple, ((xy[:-1] + xy[1:]) / 2 // size).astype(int))
+        return float(sum(L for c, L in zip(cells, seg) if c in self.town_cells))
+
     def in_country(self, lat, lon):
         if self.osm.border is None:
             return True
@@ -246,6 +292,14 @@ class TripBuilder:
         """The main route to a destination, with the other routes to it under `_others`."""
         dest = dict(name=c.feature.name, kind=c.kind, lat=c.feature.lat, lon=c.feature.lon,
                     ele=_num(c.feature.tags.get("ele")), osm=c.feature.osm, tags=c.feature.tags)
+        if self._city_core(dest["lat"], dest["lon"]):
+            # UFO, the castle, Slavín: you take the tram there, not a hiking trip.
+            self.report.setdefault("town", []).append((dest["name"], c.kind, "city centre", "", 0))
+            return self._reject("sight in a city centre")
+        if c.kind not in TOWN_GOALS and self._in_town(dest["lat"], dest["lon"]):
+            # A tower or viewpoint in a town is a sight you go straight to, not a trip (UFO).
+            self.report.setdefault("town", []).append((dest["name"], c.kind, "in town", "", 0))
+            return self._reject("sight in a town")
         routes, why = self.routes_to(c.node, dest, c.region, ths, th_nodes)
         if not routes:
             return self._reject(why)
@@ -287,6 +341,13 @@ class TripBuilder:
                 continue
             trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
             bad = self._quality(trip, dest["kind"], lim) if trip else "could not build"
+            if not bad:
+                town = self.town_walk_m(path)
+                one_way = trip["distance_m"] / (1 if trip["route"] == "okruh" else 2)
+                if town > lim.get("town_walk_max_m", 1500) or (town > 800 and town > 0.5 * one_way):
+                    # Nobody walks an hour through streets to reach a hill; from the edge of town, fine.
+                    bad = "city walk"
+                    self.report.setdefault("town", []).append((dest["name"], dest["kind"], "city walk", st.name, round(town)))
             if bad:
                 why = bad
                 continue
@@ -691,6 +752,13 @@ def _num(v):
         return float(str(v).replace(",", ".").split()[0].rstrip("m"))
     except (ValueError, IndexError):
         return None
+
+
+def _population(tags):
+    try:
+        return int(str(tags.get("population", "0")).replace(" ", "").replace(",", "").split(".")[0] or 0)
+    except ValueError:
+        return 0
 
 
 def _int(v):
