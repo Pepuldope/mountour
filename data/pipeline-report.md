@@ -1,15 +1,15 @@
 # Trip pipeline report
 
-Run: 2026-10-14T18:17:35+00:00 · OSM data: 2026-10-13T20:21:31Z
+Run: 2026-10-14T18:30:21+00:00 · OSM data: 2026-10-13T20:21:31Z
 
-**4982 trips**
+**4985 trips**
 
 | Region | Trips | Family | Candidates |
 |---|---|---|---|
 | tatry | 323 | 55 | 281 |
 | slovensky-raj | 86 | 30 | 56 |
 | mala-fatra | 152 | 14 | 80 |
-| male-karpaty | 369 | 156 | 174 |
+| male-karpaty | 372 | 159 | 175 |
 | velka-fatra | 327 | 81 | 186 |
 | nizke-tatry | 251 | 33 | 139 |
 | chocske-vrchy-orava | 144 | 30 | 87 |
@@ -47,7 +47,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Places with more than one route
 
-1736 of 2002 places have other routes; 2982 other routes in all.
+1737 of 2003 places have other routes; 2984 other routes in all.
 
 | Place | Main route (start, time) | Other routes |
 |---|---|---|
@@ -155,7 +155,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Name check
 
-129 names now say what the place is, 12 places mapped twice merged, 291 shared names told apart by the nearest village, 96 foreign names left out. Still wrong: 1.
+129 names now say what the place is, 12 places mapped twice merged, 291 shared names told apart by the nearest village, 93 foreign names left out. Still wrong: 1.
 
 - warn: siklava-skala-markusovce-razcestie: long name: 'Vodopád Šikľavá skala (Matejovce nad Hornádom)'
 
@@ -597,7 +597,7 @@ Merged (left out → kept, metres apart):
 - Rúbaný vrch (rubany-vrch-pod-klakom) → Rúbaný vrch (rubany-vrch), 1076 m
 - Jasova skala (jasova-skala-juskova-vola) → Jasova skala (jasova-skala), 991 m
 
-Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skała, Białowodzka Turniczka, Busa-tető, Cegiełka, Chyżów Wierszek, Csunya-fő, Cubryńska Kopka, Cubryńska Strażnica, Cubryński Słup, Cubryński Zwornik, Cubryński Ząb, Czerteż, Czoło, Czuba nad Uboczą, Dymiąca Woda, Długi Gronik, Erdödyho kopec, Faltynowe Kąty, Garb Średni/Stredný hrb, Góra Pięciu Kopców, Góra Pstrzyńska, Gąsienicowa Turnia, Głazista Czubka, Hawrań, Homorú-tető, Hucałki, Ipolyvece, madármegfigyelő kilátó, Jarząbczy Kopieniec, Jałowa Kiczera, Jałowcowy Garb, Korom-tetö, Koryciańska Czuba, Kotłowa Czubka, Krzywań, Kubuś, Kudłowa Hora, Lófej-tető, Löfflerov vrch, Magasleselkedő, Marszałkowa, Mała Furkaska, Mała Sucha Czuba Kondracka, Małe Jasło, Małojurski Groń, Maślanka, Mięguszowiecka Baszta, Mędralowa Zachodnia, Nad Księży Gąszcz, Nagy-kő, Niżne Rysy, Skrajna Turnia, Niżne Rysy, Zadnia Turnia, Niżni Wodogrzmot, Ortás (mérőtorony), Parzątczak, Peroła, Piszkor-fő, Pośredni Wodogrzmot, Pośrednia Sucha Czuba Kondracka, Przełęcz nad Łapszanką, Pydychów Groń, Rożki, Répás-tető, Rösslerov vrch, Schron Górski Chata Pod Skalanką, Schronisko PTTK Orlica, Schronisko PTTK na Wielkiej Raczy, Siwiańskie Turnie, Sołowy Wierch, Syhła, Szélmalom-tető, Tyrałowa Czuba, Utas-fő, Ułutyn, Vösdobor (mérőtorony), Widok na Tatry, Widok pod Bugajem, Wielki Groń, Wierch nad Łazem, Wieża widokowa na Eliaszówce, Wieża widokowa na Przełęczy nad Roztokami Górnymi, Witowski Przysłop, Wodospad Pod Mynaszką, Wodospad Pod Upłazem, Wysokie Bereście Południowe, Wyżni Wodogrzmot, Zarzędowe Smreki, Załazie, amatőrcsillagász észlelőhely (7,0 mn sötét-égbolt), wieża widokowa na Wielkiej Raczy, Łasznawa, Łysa Skałka, Łysina, Żabi Kapucyn
+Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skała, Białowodzka Turniczka, Busa-tető, Cegiełka, Chyżów Wierszek, Csunya-fő, Cubryńska Kopka, Cubryńska Strażnica, Cubryński Słup, Cubryński Zwornik, Cubryński Ząb, Czerteż, Czoło, Czuba nad Uboczą, Dymiąca Woda, Długi Gronik, Faltynowe Kąty, Garb Średni/Stredný hrb, Góra Pięciu Kopców, Góra Pstrzyńska, Gąsienicowa Turnia, Głazista Czubka, Hawrań, Homorú-tető, Hucałki, Ipolyvece, madármegfigyelő kilátó, Jarząbczy Kopieniec, Jałowa Kiczera, Jałowcowy Garb, Korom-tetö, Koryciańska Czuba, Kotłowa Czubka, Krzywań, Kubuś, Kudłowa Hora, Lófej-tető, Magasleselkedő, Marszałkowa, Mała Furkaska, Mała Sucha Czuba Kondracka, Małe Jasło, Małojurski Groń, Maślanka, Mięguszowiecka Baszta, Mędralowa Zachodnia, Nad Księży Gąszcz, Nagy-kő, Niżne Rysy, Skrajna Turnia, Niżne Rysy, Zadnia Turnia, Niżni Wodogrzmot, Ortás (mérőtorony), Parzątczak, Peroła, Piszkor-fő, Pośredni Wodogrzmot, Pośrednia Sucha Czuba Kondracka, Przełęcz nad Łapszanką, Pydychów Groń, Rożki, Répás-tető, Schron Górski Chata Pod Skalanką, Schronisko PTTK Orlica, Schronisko PTTK na Wielkiej Raczy, Siwiańskie Turnie, Sołowy Wierch, Syhła, Szélmalom-tető, Tyrałowa Czuba, Utas-fő, Ułutyn, Vösdobor (mérőtorony), Widok na Tatry, Widok pod Bugajem, Wielki Groń, Wierch nad Łazem, Wieża widokowa na Eliaszówce, Wieża widokowa na Przełęczy nad Roztokami Górnymi, Witowski Przysłop, Wodospad Pod Mynaszką, Wodospad Pod Upłazem, Wysokie Bereście Południowe, Wyżni Wodogrzmot, Zarzędowe Smreki, Załazie, amatőrcsillagász észlelőhely (7,0 mn sötét-égbolt), wieża widokowa na Wielkiej Raczy, Łasznawa, Łysa Skałka, Łysina, Żabi Kapucyn
 
 ## Rejected candidates
 
@@ -3143,6 +3143,9 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | pri-hajovni-na-vlkovkach | male-karpaty | Na Vlkovkách | 8.6 | 326 | 3:15 | stredna |  |
 | revin | male-karpaty | Kamzík | 2.5 | 105 | 1:00 | lahka |  |
 | revin-cerveny-most | male-karpaty | Červený most | 4.9 | 111 | 1:45 | lahka |  |
+| rosslerov-vrch | male-karpaty | Koliba | 2.8 | 138 | 1:15 | lahka |  |
+| rosslerov-vrch-figaro | male-karpaty | Figaro | 4.1 | 243 | 2:00 | lahka |  |
+| rosslerov-vrch-krasna-horka | male-karpaty | Krásna Hôrka | 4.0 | 168 | 1:30 | lahka |  |
 | smachy | male-karpaty | Snežienka | 5.1 | 163 | 1:45 | lahka |  |
 | spariska | male-karpaty | Rača, amfiteáter | 5.5 | 211 | 2:00 | lahka |  |
 | spariska-marianka-svata-studna | male-karpaty | Marianka, Svätá studňa | 9.1 | 307 | 3:15 | stredna |  |
@@ -5603,4 +5606,4 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | vystrkov-podhajska | zahorie-podunajsko | Podhájska | 9.3 | 171 | 3:00 | lahka |  |
 | vystrkov-podhajska-belek | zahorie-podunajsko | Podhájska, Belek | 10.3 | 196 | 3:15 | stredna |  |
 
-Drive table: 141 towns x 2002 main trips, 0 pairs without a route.
+Drive table: 141 towns x 2003 main trips, 0 pairs without a route.
