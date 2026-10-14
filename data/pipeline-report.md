@@ -1,6 +1,6 @@
 # Trip pipeline report
 
-Run: 2026-10-14T19:21:19+00:00 · OSM data: 2026-10-13T20:21:31Z
+Run: 2026-10-14T19:34:40+00:00 · OSM data: 2026-10-13T20:21:31Z
 
 **5105 trips**
 
@@ -82,7 +82,7 @@ Flag ⚠ when off by more than 15 %.
 | pusty-dolny-hrad | Haputka 1:30 | Iná cesta: Červený medokýš 2:00; Iná cesta: Pod Veľkým vrchom 1:30 |
 | pusty-horny-hrad | Pod Haputkou 2:00 | Iná cesta: Červený medokýš 2:15; Menej do kopca: Pod Veľkým vrchom 1:45 |
 | stary-zamok | Červená studňa (bežkárske trate) 1:15 | Menej do kopca: Banská Štiavnica, križovatka 1:30; Dlhšia: Horná Roveň 2:00 |
-| skalnate-pleso | Pod Štartom 5:00 | Na celý deň: Starý Smokovec (pozemná lanovka) 6:15 |
+| skalnata-chata | Pod Štartom 4:45 | Na celý deň: Starý Smokovec (pozemná lanovka) 6:00 |
 | drienok | Blatnica, pamätník 6:45 | Na celý deň: Čremošné 9:00; Kratšia: Rakša 6:00 |
 | harmanecka-jaskyna | Kordíky 5:15 | Iná cesta: Pod Kordíckym sedlom 5:45 |
 | hrad-divin | Tuhár - Jánovec 2:15 | Menej do kopca: Dobroč 2:45; Na celý deň: Píla centrum 6:45 |
@@ -96,7 +96,7 @@ Flag ⚠ when off by more than 15 %.
 | velka-javorina | Kachľové Grúne 1:15 | Na celý deň: Hamovanie 5:15; Na celý deň: Narcie 6:15 |
 | sitno | Počúvadlianske jazero 2:15 | Na celý deň: Beluj 5:30; Dlhšia: Sedlo Krížna 3:00 |
 | predne-solisko | Štrbské Pleso čerpačka 4:45 | Na celý deň: Bývalá Važecká chata 7:45 |
-| velka-svistovka | Starý Smokovec (pozemná lanovka) 8:15 | Iná cesta: Biela voda 8:30; Kratšia: Pod Štartom 7:15 |
+| velka-svistovka | Starý Smokovec (pozemná lanovka) 8:15 | Iná cesta: Biela voda 8:30; Cez Skalnatá chata: Pod Štartom 7:15 |
 | sninsky-kamen | Pod tromi Tablami 1:45 | Autobusom: Zemplínske Hámre, lom 3:45 |
 | bystrianska-jaskyna | Valaská, 1 3:00 | Na celý deň: Lazná dolina, ovčín 5:00; Dlhšia: Pohansko 4:15 |
 | chabenec | Chata Magurka 6:30 | Autobusom: Mikulášska chata 8:45; Autobusom: Srdiečko 8:30 |
@@ -155,7 +155,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Name check
 
-145 names now say what the place is, 12 places mapped twice merged, 291 shared names told apart by the nearest village, 94 foreign names left out. Still wrong: 1.
+145 names now say what the place is, 12 places mapped twice merged, 290 shared names told apart by the nearest village, 94 foreign names left out. Still wrong: 1.
 
 - warn: siklava-skala-markusovce-razcestie: long name: 'Vodopád Šikľavá skala (Matejovce nad Hornádom)'
 
@@ -337,7 +337,6 @@ Flag ⚠ when off by more than 15 %.
 | Zákľuky | Zákľuky (Osrblie) | zakluky-vydrovo |
 | Havrania skala | Havrania skala (Nová Baňa) | havrania-skala-zvonicka |
 | Havrania skala | Havrania skala (Smolenice) | havrania-skala-smolenicky-zamok |
-| Dlhé pleso | Dlhé pleso (Vysoké Tatry) | dlhe-pleso-stary-smokovec-pozemna |
 | Inovec | Inovec (Ondavské Matiašovce) | inovec-pod-hradom-cicva |
 | Minčol | Minčol (Stráňavy) | mincol-martinske-hole-chaty |
 | Minčol | Minčol (Livovská Huta) | mincol-kyjov |
@@ -622,10 +621,16 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | Rysy | found in OSM as vrchol (node/1862536196); found in OSM as vrchol (node/4366169405); outside Slovakia or every region; found in OSM as vrchol (node/11036198697); trip rysy; left out: within 400 m of the trip to Rysy |
 | Kriváň | found in OSM as vrchol (node/260278694); found in OSM as vrchol (node/3441186130); found in OSM as vrchol (node/5586684005); found in OSM as vrchol (node/5657435466); no marked trail within 150 m; trip krivan; trip krivan-ludrova; left out: within 400 m of the trip to Brankov |
 | Slavkovský štít | found in OSM as vrchol (node/380721955); left out: too long |
-| Téryho chata | found in OSM as chata (way/33859958); left out: within 400 m of the trip to Malé Spišské pleso |
-| Zbojnícka chata | found in OSM as chata (way/64888292); left out: within 400 m of the trip to Dlhé pleso |
+| Téryho chata | found in OSM as chata (way/33859958); trip teryho-chata |
+| Zbojnícka chata | found in OSM as chata (way/64888292); trip zbojnicka-chata |
 | Chata pod Rysmi | found in OSM as chata (way/360934553); trip chata-pod-rysmi |
-| Skalnaté pleso | found in OSM as pleso (way/65398797); trip skalnate-pleso |
+| Bilíkova chata | found in OSM as chata (way/301993072); left out: start already has enough trips |
+| Ťatliakova chata | found in OSM as chata (way/59241947); left out: start already has enough trips |
+| Veľké Roháčske pleso | found in OSM as pleso (way/181561881); left out: start already has enough trips |
+| Roháčsky vodopád | found in OSM as vodopad (node/1907449865); left out: start already has enough trips |
+| Zelené pleso | found in OSM as pleso (way/33455399); trip zelene-pleso |
+| Vajanského vodopád | found in OSM as vodopad (node/1149378581); left out: within 400 m of the trip to Nižné Temnosmrečinské pleso |
+| Skalnaté pleso | found in OSM as pleso (way/65398797); left out: within 400 m of the trip to Skalnatá chata |
 | Popradské pleso | found in OSM as pleso (way/33458143); trip popradske-pleso |
 | Štrbské pleso | found in OSM as pleso (way/4816134); trip strbske-pleso |
 | Kmeťov vodopád | found in OSM as vodopad (node/1450389768); found in OSM as vyhliadka (node/7817066021); no marked trail within 150 m; trip kmetov-vodopad |
@@ -665,12 +670,12 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 
 ## Rejected candidates
 
-- almost the same walk as another trip: 112
+- almost the same walk as another trip: 107
 - mostly unmarked: 33
 - no trailhead within reach: 17
 - sight in a city centre: 8
 - sight in a town: 8
-- start already has enough trips: 55
+- start already has enough trips: 59
 - too flat (city walk): 10
 - too long: 45
 - trailheads too close: 1
@@ -4826,8 +4831,8 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | volovec-woowiec-uzka-dolina-ustie | tatry | Úzka dolina, ústie | 20.4 | 1162 | 9:00 | tazka | tanap-sezonna-uzavera |
 | belianska-jaskyna | tatry | Tatranská kotlina (zastávka SAD) | 2.8 | 132 | 1:15 | lahka | osm fee |
 | vodopad-skok | tatry | Rázcestie pred Heliosom | 8.5 | 404 | 3:15 | stredna |  |
-| skalnate-pleso | tatry | Pod Štartom | 7.9 | 739 | 5:00 | stredna |  |
-| skalnate-pleso-stary-smokovec-pozemna | tatry | Starý Smokovec (pozemná lanovka) | 16.1 | 783 | 6:15 | tazka |  |
+| skalnata-chata | tatry | Pod Štartom | 7.0 | 690 | 4:45 | stredna |  |
+| skalnata-chata-stary-smokovec-pozemna | tatry | Starý Smokovec (pozemná lanovka) | 15.3 | 733 | 6:00 | tazka |  |
 | koprovsky-stit | tatry | Holá Úboč | 16.7 | 1005 | 7:30 | tazka | tanap-sezonna-uzavera, tanap-symbolicky-cintorin |
 | vychodna-vysoka | tatry | Velická poľana | 8.3 | 784 | 5:15 | stredna | tanap-sezonna-uzavera |
 | velicke-pleso | tatry | Tatranská polianka | 9.4 | 670 | 4:45 | stredna |  |
@@ -4887,8 +4892,8 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | jezerske-jazero-jezersko-hlavna-cesta | tatry | Jezersko - hlavná cesta | 7.9 | 262 | 2:45 | lahka |  |
 | kvetnicove-pleso | tatry | Velická poľana | 3.4 | 245 | 1:45 | lahka |  |
 | ladove-pleso | tatry | Starý Smokovec (pozemná lanovka) | 18.1 | 1019 | 7:45 | tazka |  |
-| male-spisske-pleso | tatry | Starý Smokovec (pozemná lanovka) | 17.1 | 999 | 7:30 | tazka |  |
 | nizne-jamnicke-pleso | tatry | Úzka dolina, ústie | 18.2 | 846 | 7:00 | tazka |  |
+| teryho-chata | tatry | Starý Smokovec (pozemná lanovka) | 17.2 | 1011 | 7:45 | tazka |  |
 | zelene-kacacie-pleso | tatry | Lysá Poľana | 21.9 | 694 | 7:30 | tazka |  |
 | zelene-kacacie-pleso-velicka-polana | tatry | Velická poľana | 12.2 | 1211 | 8:00 | tazka | tanap-sezonna-uzavera |
 | zelene-pleso | tatry | Biela voda | 15.1 | 626 | 5:30 | stredna |  |
@@ -4912,10 +4917,10 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | belianska-kopa-tatranska-kotlina | tatry | Tatranská kotlina (zastávka SAD) | 19.8 | 1068 | 8:15 | tazka |  |
 | cervene-pleso | tatry | Biela voda | 17.1 | 890 | 7:00 | tazka |  |
 | dlhe-pleso | tatry | Velická poľana | 5.3 | 378 | 2:45 | lahka |  |
-| dlhe-pleso-stary-smokovec-pozemna | tatry | Starý Smokovec (pozemná lanovka) | 15.4 | 915 | 7:00 | tazka |  |
 | nizne-kozie-pleso | tatry | Rázcestie pred Heliosom | 11.2 | 603 | 4:45 | stredna |  |
-| nizne-studene-pleso | tatry | Starý Smokovec (pozemná lanovka) | 13.7 | 730 | 5:45 | stredna |  |
+| vareskove-pleso | tatry | Starý Smokovec (pozemná lanovka) | 14.4 | 825 | 6:15 | tazka |  |
 | zabie-javorove-pleso | tatry | Tatranská Javorina | 19.8 | 965 | 7:45 | tazka |  |
+| zbojnicka-chata | tatry | Starý Smokovec (pozemná lanovka) | 16.0 | 955 | 7:15 | tazka |  |
 | sarafiovy-vodopad | tatry | Žiarska dolina (ústie) | 10.3 | 465 | 4:00 | stredna |  |
 | skorusina | tatry | Oravice | 9.2 | 525 | 4:00 | stredna |  |
 | skorusina-brestova-nad-skanzenom | tatry | Brestová nad skanzenom | 12.9 | 668 | 5:15 | stredna |  |

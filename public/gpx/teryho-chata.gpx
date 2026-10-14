@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Malé Spišské pleso</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Malé Spišské pleso</name><trkseg>
+  <metadata><name>Téryho chata</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Téryho chata</name><trkseg>
     <trkpt lat="49.141015" lon="20.220360"><ele>1022</ele></trkpt>
     <trkpt lat="49.141157" lon="20.220402"><ele>1023</ele></trkpt>
     <trkpt lat="49.141357" lon="20.220557"><ele>1024</ele></trkpt>
@@ -277,10 +277,10 @@
     <trkpt lat="49.188826" lon="20.198392"><ele>1936</ele></trkpt>
     <trkpt lat="49.188919" lon="20.198588"><ele>1942</ele></trkpt>
     <trkpt lat="49.188940" lon="20.198710"><ele>1945</ele></trkpt>
-    <trkpt lat="49.188907" lon="20.198842"><ele>1947</ele></trkpt>
-    <trkpt lat="49.188730" lon="20.199130"><ele>1946</ele></trkpt>
+    <trkpt lat="49.188924" lon="20.198806"><ele>1947</ele></trkpt>
+    <trkpt lat="49.188733" lon="20.199099"><ele>1946</ele></trkpt>
+    <trkpt lat="49.188738" lon="20.199145"><ele>1947</ele></trkpt>
     <trkpt lat="49.188839" lon="20.199205"><ele>1951</ele></trkpt>
-    <trkpt lat="49.188926" lon="20.199397"><ele>1956</ele></trkpt>
     <trkpt lat="49.188954" lon="20.199413"><ele>1957</ele></trkpt>
     <trkpt lat="49.189049" lon="20.199271"><ele>1960</ele></trkpt>
     <trkpt lat="49.189278" lon="20.199118"><ele>1969</ele></trkpt>
@@ -292,23 +292,33 @@
     <trkpt lat="49.189511" lon="20.199665"><ele>1986</ele></trkpt>
     <trkpt lat="49.189626" lon="20.199836"><ele>1991</ele></trkpt>
     <trkpt lat="49.189645" lon="20.199818"><ele>1992</ele></trkpt>
-    <trkpt lat="49.189615" lon="20.199706"><ele>1991</ele></trkpt>
-    <trkpt lat="49.189632" lon="20.199686"><ele>1992</ele></trkpt>
-    <trkpt lat="49.189702" lon="20.199769"><ele>1995</ele></trkpt>
+    <trkpt lat="49.189619" lon="20.199688"><ele>1991</ele></trkpt>
+    <trkpt lat="49.189654" lon="20.199705"><ele>1993</ele></trkpt>
     <trkpt lat="49.189763" lon="20.199951"><ele>1997</ele></trkpt>
     <trkpt lat="49.189839" lon="20.199910"><ele>1999</ele></trkpt>
     <trkpt lat="49.189878" lon="20.199999"><ele>2000</ele></trkpt>
     <trkpt lat="49.189932" lon="20.200010"><ele>2001</ele></trkpt>
     <trkpt lat="49.189978" lon="20.200000"><ele>2002</ele></trkpt>
-    <trkpt lat="49.190017" lon="20.199916"><ele>2003</ele></trkpt>
+    <trkpt lat="49.190054" lon="20.199829"><ele>2003</ele></trkpt>
+    <trkpt lat="49.190079" lon="20.199669"><ele>2005</ele></trkpt>
+    <trkpt lat="49.190166" lon="20.199534"><ele>2006</ele></trkpt>
+    <trkpt lat="49.190133" lon="20.199429"><ele>2007</ele></trkpt>
+    <trkpt lat="49.190273" lon="20.199151"><ele>2011</ele></trkpt>
+    <trkpt lat="49.190285" lon="20.199050"><ele>2012</ele></trkpt>
+    <trkpt lat="49.190225" lon="20.198998"><ele>2013</ele></trkpt>
+    <trkpt lat="49.190266" lon="20.199011"><ele>2013</ele></trkpt>
+    <trkpt lat="49.190287" lon="20.199086"><ele>2012</ele></trkpt>
+    <trkpt lat="49.190133" lon="20.199429"><ele>2007</ele></trkpt>
+    <trkpt lat="49.190166" lon="20.199534"><ele>2006</ele></trkpt>
+    <trkpt lat="49.190079" lon="20.199669"><ele>2005</ele></trkpt>
+    <trkpt lat="49.190054" lon="20.199829"><ele>2003</ele></trkpt>
     <trkpt lat="49.189978" lon="20.200000"><ele>2002</ele></trkpt>
     <trkpt lat="49.189932" lon="20.200010"><ele>2001</ele></trkpt>
     <trkpt lat="49.189878" lon="20.199999"><ele>2000</ele></trkpt>
     <trkpt lat="49.189839" lon="20.199910"><ele>1999</ele></trkpt>
     <trkpt lat="49.189763" lon="20.199951"><ele>1997</ele></trkpt>
-    <trkpt lat="49.189702" lon="20.199769"><ele>1995</ele></trkpt>
-    <trkpt lat="49.189632" lon="20.199686"><ele>1992</ele></trkpt>
-    <trkpt lat="49.189615" lon="20.199706"><ele>1991</ele></trkpt>
+    <trkpt lat="49.189654" lon="20.199705"><ele>1993</ele></trkpt>
+    <trkpt lat="49.189619" lon="20.199688"><ele>1991</ele></trkpt>
     <trkpt lat="49.189645" lon="20.199818"><ele>1992</ele></trkpt>
     <trkpt lat="49.189626" lon="20.199836"><ele>1991</ele></trkpt>
     <trkpt lat="49.189511" lon="20.199665"><ele>1986</ele></trkpt>
@@ -320,10 +330,10 @@
     <trkpt lat="49.189278" lon="20.199118"><ele>1969</ele></trkpt>
     <trkpt lat="49.189049" lon="20.199271"><ele>1960</ele></trkpt>
     <trkpt lat="49.188954" lon="20.199413"><ele>1957</ele></trkpt>
-    <trkpt lat="49.188926" lon="20.199397"><ele>1956</ele></trkpt>
     <trkpt lat="49.188839" lon="20.199205"><ele>1951</ele></trkpt>
-    <trkpt lat="49.188730" lon="20.199130"><ele>1946</ele></trkpt>
-    <trkpt lat="49.188907" lon="20.198842"><ele>1947</ele></trkpt>
+    <trkpt lat="49.188738" lon="20.199145"><ele>1947</ele></trkpt>
+    <trkpt lat="49.188733" lon="20.199099"><ele>1946</ele></trkpt>
+    <trkpt lat="49.188924" lon="20.198806"><ele>1947</ele></trkpt>
     <trkpt lat="49.188940" lon="20.198710"><ele>1945</ele></trkpt>
     <trkpt lat="49.188919" lon="20.198588"><ele>1942</ele></trkpt>
     <trkpt lat="49.188826" lon="20.198392"><ele>1936</ele></trkpt>

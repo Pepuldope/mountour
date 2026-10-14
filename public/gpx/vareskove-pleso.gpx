@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Dlhé pleso (Vysoké Tatry)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Dlhé pleso (Vysoké Tatry)</name><trkseg>
+  <metadata><name>Vareškové pleso</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vareškové pleso</name><trkseg>
     <trkpt lat="49.141015" lon="20.220360"><ele>1022</ele></trkpt>
     <trkpt lat="49.141157" lon="20.220402"><ele>1023</ele></trkpt>
     <trkpt lat="49.141357" lon="20.220557"><ele>1024</ele></trkpt>
@@ -267,50 +267,6 @@
     <trkpt lat="49.174909" lon="20.177139"><ele>1837</ele></trkpt>
     <trkpt lat="49.174849" lon="20.177180"><ele>1837</ele></trkpt>
     <trkpt lat="49.174810" lon="20.177153"><ele>1838</ele></trkpt>
-    <trkpt lat="49.174735" lon="20.176979"><ele>1841</ele></trkpt>
-    <trkpt lat="49.174747" lon="20.176573"><ele>1848</ele></trkpt>
-    <trkpt lat="49.174708" lon="20.176271"><ele>1855</ele></trkpt>
-    <trkpt lat="49.174588" lon="20.176076"><ele>1860</ele></trkpt>
-    <trkpt lat="49.174467" lon="20.176083"><ele>1857</ele></trkpt>
-    <trkpt lat="49.174412" lon="20.175965"><ele>1862</ele></trkpt>
-    <trkpt lat="49.174408" lon="20.175834"><ele>1866</ele></trkpt>
-    <trkpt lat="49.174478" lon="20.175729"><ele>1870</ele></trkpt>
-    <trkpt lat="49.174294" lon="20.175559"><ele>1872</ele></trkpt>
-    <trkpt lat="49.174268" lon="20.175465"><ele>1873</ele></trkpt>
-    <trkpt lat="49.174252" lon="20.175354"><ele>1875</ele></trkpt>
-    <trkpt lat="49.174278" lon="20.175146"><ele>1880</ele></trkpt>
-    <trkpt lat="49.174242" lon="20.174780"><ele>1885</ele></trkpt>
-    <trkpt lat="49.174339" lon="20.174499"><ele>1894</ele></trkpt>
-    <trkpt lat="49.174404" lon="20.173990"><ele>1903</ele></trkpt>
-    <trkpt lat="49.174393" lon="20.173873"><ele>1903</ele></trkpt>
-    <trkpt lat="49.174607" lon="20.173251"><ele>1910</ele></trkpt>
-    <trkpt lat="49.174612" lon="20.173105"><ele>1908</ele></trkpt>
-    <trkpt lat="49.174927" lon="20.172268"><ele>1915</ele></trkpt>
-    <trkpt lat="49.175220" lon="20.171818"><ele>1924</ele></trkpt>
-    <trkpt lat="49.175351" lon="20.171282"><ele>1927</ele></trkpt>
-    <trkpt lat="49.175404" lon="20.171194"><ele>1931</ele></trkpt>
-    <trkpt lat="49.175398" lon="20.170838"><ele>1930</ele></trkpt>
-    <trkpt lat="49.175404" lon="20.171194"><ele>1931</ele></trkpt>
-    <trkpt lat="49.175351" lon="20.171282"><ele>1927</ele></trkpt>
-    <trkpt lat="49.175220" lon="20.171818"><ele>1924</ele></trkpt>
-    <trkpt lat="49.174927" lon="20.172268"><ele>1915</ele></trkpt>
-    <trkpt lat="49.174612" lon="20.173105"><ele>1908</ele></trkpt>
-    <trkpt lat="49.174607" lon="20.173251"><ele>1910</ele></trkpt>
-    <trkpt lat="49.174393" lon="20.173873"><ele>1903</ele></trkpt>
-    <trkpt lat="49.174404" lon="20.173990"><ele>1903</ele></trkpt>
-    <trkpt lat="49.174339" lon="20.174499"><ele>1894</ele></trkpt>
-    <trkpt lat="49.174242" lon="20.174780"><ele>1885</ele></trkpt>
-    <trkpt lat="49.174278" lon="20.175146"><ele>1880</ele></trkpt>
-    <trkpt lat="49.174252" lon="20.175354"><ele>1875</ele></trkpt>
-    <trkpt lat="49.174268" lon="20.175465"><ele>1873</ele></trkpt>
-    <trkpt lat="49.174294" lon="20.175559"><ele>1872</ele></trkpt>
-    <trkpt lat="49.174478" lon="20.175729"><ele>1870</ele></trkpt>
-    <trkpt lat="49.174408" lon="20.175834"><ele>1866</ele></trkpt>
-    <trkpt lat="49.174412" lon="20.175965"><ele>1862</ele></trkpt>
-    <trkpt lat="49.174467" lon="20.176083"><ele>1857</ele></trkpt>
-    <trkpt lat="49.174588" lon="20.176076"><ele>1860</ele></trkpt>
-    <trkpt lat="49.174708" lon="20.176271"><ele>1855</ele></trkpt>
-    <trkpt lat="49.174747" lon="20.176573"><ele>1848</ele></trkpt>
     <trkpt lat="49.174735" lon="20.176979"><ele>1841</ele></trkpt>
     <trkpt lat="49.174810" lon="20.177153"><ele>1838</ele></trkpt>
     <trkpt lat="49.174849" lon="20.177180"><ele>1837</ele></trkpt>

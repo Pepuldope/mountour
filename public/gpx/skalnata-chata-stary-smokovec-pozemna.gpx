@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Skalnaté pleso</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Skalnaté pleso</name><trkseg>
+  <metadata><name>Skalnatá chata</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Skalnatá chata</name><trkseg>
     <trkpt lat="49.141015" lon="20.220360"><ele>1022</ele></trkpt>
     <trkpt lat="49.141157" lon="20.220402"><ele>1023</ele></trkpt>
     <trkpt lat="49.141357" lon="20.220557"><ele>1024</ele></trkpt>
@@ -192,7 +192,8 @@
     <trkpt lat="49.180411" lon="20.230878"><ele>1658</ele></trkpt>
     <trkpt lat="49.180962" lon="20.231782"><ele>1664</ele></trkpt>
     <trkpt lat="49.181158" lon="20.231988"><ele>1666</ele></trkpt>
-    <trkpt lat="49.181648" lon="20.232275"><ele>1672</ele></trkpt>
+    <trkpt lat="49.181567" lon="20.232235"><ele>1671</ele></trkpt>
+    <trkpt lat="49.182462" lon="20.232506"><ele>1683</ele></trkpt>
     <trkpt lat="49.183016" lon="20.232619"><ele>1690</ele></trkpt>
     <trkpt lat="49.183115" lon="20.232564"><ele>1694</ele></trkpt>
     <trkpt lat="49.183084" lon="20.232425"><ele>1698</ele></trkpt>
@@ -204,39 +205,7 @@
     <trkpt lat="49.184705" lon="20.233351"><ele>1706</ele></trkpt>
     <trkpt lat="49.185225" lon="20.233300"><ele>1713</ele></trkpt>
     <trkpt lat="49.185679" lon="20.233577"><ele>1718</ele></trkpt>
-    <trkpt lat="49.186386" lon="20.233652"><ele>1726</ele></trkpt>
-    <trkpt lat="49.186687" lon="20.233795"><ele>1732</ele></trkpt>
-    <trkpt lat="49.186648" lon="20.233368"><ele>1739</ele></trkpt>
-    <trkpt lat="49.186844" lon="20.233543"><ele>1743</ele></trkpt>
-    <trkpt lat="49.187103" lon="20.233463"><ele>1749</ele></trkpt>
-    <trkpt lat="49.187421" lon="20.232548"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187482" lon="20.232595"><ele>1767</ele></trkpt>
-    <trkpt lat="49.187449" lon="20.232692"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187506" lon="20.232737"><ele>1767</ele></trkpt>
-    <trkpt lat="49.187484" lon="20.232793"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187647" lon="20.232911"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187628" lon="20.232970"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187665" lon="20.233000"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187703" lon="20.232930"><ele>1765</ele></trkpt>
-    <trkpt lat="49.187859" lon="20.233075"><ele>1761</ele></trkpt>
-    <trkpt lat="49.188078" lon="20.232378"><ele>1757</ele></trkpt>
-    <trkpt lat="49.188323" lon="20.231766"><ele>1757</ele></trkpt>
-    <trkpt lat="49.188078" lon="20.232378"><ele>1757</ele></trkpt>
-    <trkpt lat="49.187859" lon="20.233075"><ele>1761</ele></trkpt>
-    <trkpt lat="49.187703" lon="20.232930"><ele>1765</ele></trkpt>
-    <trkpt lat="49.187665" lon="20.233000"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187628" lon="20.232970"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187647" lon="20.232911"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187484" lon="20.232793"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187506" lon="20.232737"><ele>1767</ele></trkpt>
-    <trkpt lat="49.187449" lon="20.232692"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187482" lon="20.232595"><ele>1767</ele></trkpt>
-    <trkpt lat="49.187421" lon="20.232548"><ele>1766</ele></trkpt>
-    <trkpt lat="49.187103" lon="20.233463"><ele>1749</ele></trkpt>
-    <trkpt lat="49.186844" lon="20.233543"><ele>1743</ele></trkpt>
-    <trkpt lat="49.186648" lon="20.233368"><ele>1739</ele></trkpt>
-    <trkpt lat="49.186687" lon="20.233795"><ele>1732</ele></trkpt>
-    <trkpt lat="49.186386" lon="20.233652"><ele>1726</ele></trkpt>
+    <trkpt lat="49.186108" lon="20.233612"><ele>1723</ele></trkpt>
     <trkpt lat="49.185679" lon="20.233577"><ele>1718</ele></trkpt>
     <trkpt lat="49.185225" lon="20.233300"><ele>1713</ele></trkpt>
     <trkpt lat="49.184705" lon="20.233351"><ele>1706</ele></trkpt>
@@ -248,7 +217,8 @@
     <trkpt lat="49.183084" lon="20.232425"><ele>1698</ele></trkpt>
     <trkpt lat="49.183115" lon="20.232564"><ele>1694</ele></trkpt>
     <trkpt lat="49.183016" lon="20.232619"><ele>1690</ele></trkpt>
-    <trkpt lat="49.181648" lon="20.232275"><ele>1672</ele></trkpt>
+    <trkpt lat="49.182462" lon="20.232506"><ele>1683</ele></trkpt>
+    <trkpt lat="49.181567" lon="20.232235"><ele>1671</ele></trkpt>
     <trkpt lat="49.181158" lon="20.231988"><ele>1666</ele></trkpt>
     <trkpt lat="49.180962" lon="20.231782"><ele>1664</ele></trkpt>
     <trkpt lat="49.180411" lon="20.230878"><ele>1658</ele></trkpt>
