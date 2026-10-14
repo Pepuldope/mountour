@@ -6,14 +6,15 @@ import type { DayPlan } from "@/lib/dayPlan";
 import { dayInSentence, floorTo5, longDay } from "@/lib/days";
 import { formatDuration, formatTime, stopLabel, verdictText } from "@/lib/format";
 import { searchPlaces } from "@/lib/geocode";
-import { googleMapsUrl, mapyUrl, readSharedPlan } from "@/lib/links";
+import { readSharedPlan } from "@/lib/links";
 import { findTown } from "@/lib/towns";
-import type { SharedPlan } from "@/lib/links";
+import type { SharedPlan, WalkRoute } from "@/lib/links";
 import { useTripSettings } from "@/lib/tripSettings";
 import { useTripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
 import type { BBox, LatLng } from "@/lib/types";
 import { FilterChips } from "@/components/FilterChips";
+import { NavHandoff } from "@/components/NavHandoff";
 import { SaveTripButton } from "@/components/SaveTripButton";
 import type { ShareInfo } from "@/components/ShareButton";
 import { StartChip } from "@/components/StartChip";
@@ -35,21 +36,21 @@ interface Props extends ShareInfo {
   profile: TripProfile | null;
   gpxUrl: string | null;
   bbox: BBox | null;
+  /** The trail itself, for the walking hand-off. */
+  walk: WalkRoute;
 }
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-const navButton =
-  "flex-1 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-3 py-2.5 text-center text-sm font-semibold hover:border-[var(--accent)]";
 
 /**
  * The trip page's answer: "vyrazte najneskôr", the day and departure, the
  * timeline, then Uložiť (main), share and navigation hand-offs.
  */
-export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: fullProfile, gpxUrl, bbox, ...trip }: Props) {
+export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: fullProfile, gpxUrl, bbox, walk, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
-  const { destination, rideTo, approachMin, trailStart, transit, stop, skip } = useTripAccess();
+  const { destination, rideTo, approachMin, trailStart, transit, stop, skip, walkFrom, trailJoin } = useTripAccess();
   // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day;
   // parked up the trail, the stretch below is skipped both ways.
   const baseHikeMin = joinedMinutes(trailHikeMin, skip) + (transit || start ? 2 * approachMin : 0);
@@ -96,6 +97,8 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
   const adopted = sharedTown !== null && start?.label === (findTown(sharedTown)?.label ?? sharedTown);
 
   const hasDrive = driveMin !== null;
+  // The walk starts where the ride ends: the parking (or the trail start, with no parking) or the stop.
+  const walkStart = walkFrom ?? destination;
   const good = plan?.verdict === "ok" || plan?.verdict === "close";
   const startName = start?.label.split(",")[0];
   const latest = plan ? floorTo5(plan.latestStart) : null;
@@ -207,16 +210,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
 
       <section aria-label="Uložiť a zdieľať" className="flex flex-col gap-3">
         <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} destination={rideTo} baseHikeMin={baseHikeMin} profile={profile} {...trip} />
-        {destination && (
-          <div className="flex gap-2">
-            <a href={googleMapsUrl(destination)} data-umami-event="nav_open" data-umami-event-app="google" target="_blank" rel="noopener noreferrer" className={navButton}>
-              Navigovať (Google)
-            </a>
-            <a href={mapyUrl(destination, start)} data-umami-event="nav_open" data-umami-event-app="mapy" target="_blank" rel="noopener noreferrer" className={navButton}>
-              Mapy.com
-            </a>
-          </div>
-        )}
+        <NavHandoff drive={destination} start={start} walkFrom={walkStart} walk={walk} join={trailJoin} />
       </section>
     </div>
   );

@@ -221,6 +221,7 @@ export default async function TripSheetPage({ params }: Props) {
             profile={profile}
             gpxUrl={gpxUrl}
             bbox={trail.bbox}
+            walk={{ points: trip.path.map(([lon, lat]) => [+lat.toFixed(5), +lon.toFixed(5)]), loop: trip.route === "okruh" }}
           />
 
           <ParkingBlock />
