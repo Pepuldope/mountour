@@ -223,6 +223,15 @@ class TripBuilder:
                 if (b is not a and b.score >= a.score and fa > 2 * self.fame(b.feature)
                         and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < r):
                     a.score = b.score + 0.01
+        # A hut by a tarn is the goal people name (Téryho chata, Zbojnícka chata), unless the hut
+        # is named after the tarn (Chata pri Zelenom plese).
+        for a in cands:
+            if a.kind != "chata" or "ples" in a.feature.name.lower():
+                continue
+            for b in cands:
+                if (b.kind == "pleso" and b.score >= a.score
+                        and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < self.t["dedupe_m"]):
+                    a.score = b.score + 0.01
         cands.sort(key=lambda c: -c.score)
 
     def _note(self, name, text):
