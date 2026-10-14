@@ -85,6 +85,14 @@ export interface Destination extends Place {
   kind: DestinationKind;
 }
 
+/** The walk on paths from a parking or stop to where the site joins the trail (pipeline/walks.py). */
+export interface WalkLine {
+  /** [lon, lat] */
+  line: [number, number][];
+  m: number;
+  min: number;
+}
+
 export interface Parking {
   name: string | null;
   location: GeoPoint;
@@ -93,6 +101,8 @@ export interface Parking {
   /** true = paid (OSM fee=yes), false = free (fee=no), null = unknown. */
   fee: boolean | null;
   osm: OsmRef | null;
+  /** Only in the trip's own file; absent when routing found none or the trail is right there. */
+  walk?: WalkLine;
 }
 
 export interface TransitStop {
@@ -102,6 +112,8 @@ export interface TransitStop {
   /** Straight-line distance to the trip start, metres. */
   walk_m: number;
   osm: OsmRef | null;
+  /** As on Parking. */
+  walk?: WalkLine;
 }
 
 export interface Fee {

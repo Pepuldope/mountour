@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { dropDeadEnd, finishDrive, simplifyLine } from "./routing";
+import { RateLimited, dropDeadEnd, finishDrive, simplifyLine, walkRoute } from "./routing";
 
 const road = { durationMin: 30, distanceM: 30000, points: [[48.0, 19.0], [49.0, 19.0]] as [number, number][] };
 
@@ -66,5 +66,28 @@ describe("simplifyLine", () => {
     expect(s).toContainEqual([49.0049, 19.0]);
     expect(s).toContainEqual([49.0049, 19.003]);
     expect(s.length).toBeLessThan(6);
+  });
+});
+
+describe("walkRoute with the router's limits", () => {
+  const geo = { features: [{ properties: { summary: { duration: 600, distance: 800 } }, geometry: { coordinates: [[19, 48], [19.01, 48.01]] } }] };
+
+  it("asks the router once for the same two places", async () => {
+    const fetchMock = vi.fn(async () => new Response(JSON.stringify(geo)));
+    vi.stubGlobal("fetch", fetchMock);
+    const a = await walkRoute("key", [48.1, 19.1], [48.11, 19.11], 1000);
+    const b = await walkRoute("key", [48.1, 19.1], [48.11, 19.11], 1000);
+    expect(b).toEqual(a);
+    expect(a.durationMin).toBe(10);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    vi.unstubAllGlobals();
+  });
+
+  it("spends no fallback call when the router says too many requests", async () => {
+    const fetchMock = vi.fn(async () => new Response("{}", { status: 429 }));
+    vi.stubGlobal("fetch", fetchMock);
+    await expect(walkRoute("key", [48.2, 19.2], [48.21, 19.21], 1000)).rejects.toBeInstanceOf(RateLimited);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    vi.unstubAllGlobals();
   });
 });

@@ -35,6 +35,19 @@ const NEAR = { roadFactor: 1.4, kmh: 60, extraMin: 5 };
 const FAR = { roadFactor: 1.3, kmh: 85, extraMin: 30 };
 
 /**
+ * Bus or train, door to the stop by the trail, from the road time between the same places.
+ * There is no free timetable data yet, so this is an estimate shown with "~" next to the cp.sk
+ * link: buses and trains run ~1.4x slower than a car on the same trip (stops, detours through
+ * villages, a change), plus ~20 min to walk to the stop at home and wait for the connection.
+ */
+const TRANSIT_FACTOR = 1.4;
+const TRANSIT_EXTRA_MIN = 20;
+
+export function transitMinutes(roadMin: number): number {
+  return Math.round((roadMin * TRANSIT_FACTOR + TRANSIT_EXTRA_MIN) / 5) * 5;
+}
+
+/**
  * Rough drive time from the straight-line distance, for when the routing API
  * is down or offline. Shown with "~" so it never reads as a real route.
  */

@@ -1,11 +1,13 @@
 "use client";
 
 import { useMemo } from "react";
-import { hikeMinutes, planDay } from "@/lib/dayPlan";
+import { SAFE_MARGIN_MIN, hikeMinutes, planDay } from "@/lib/dayPlan";
 import type { DayPlan } from "@/lib/dayPlan";
-import { estimateDriveMin } from "@/lib/drive";
+import { estimateDriveMin, transitMinutes } from "@/lib/drive";
 import type { DriveRoute } from "@/lib/drive";
 import { useDriveRoute } from "@/lib/useDriveRoute";
+import { useRailTrip } from "@/lib/useRailTrip";
+import type { RailTrip } from "@/lib/useRailTrip";
 import type { DriveStatus } from "@/lib/useDriveRoute";
 import { useTripDay, useTripSettings } from "@/lib/tripSettings";
 import { useUserLocation } from "@/lib/userLocation";
@@ -18,28 +20,62 @@ export interface TripPlan {
   time: string | null;
   /** Walking time for this group (kids pace applied). */
   hikeMin: number;
-  /** One-way drive used in the plan; null without a start. */
+  /** One-way travel used in the plan (the drive, or the estimated bus/train ride); null without a start. */
   driveMin: number | null;
+  /** The same trip by car, one way (shown next to "Autom" while planning by bus). */
+  roadMin: number | null;
   /** driveMin is a straight-line estimate because routing failed. */
   driveApprox: boolean;
+  /** Travelling by bus or train: driveMin is the ride, an estimate unless `rail` found real trains. */
+  transit: boolean;
+  /** Real train connections, when the stop is a train station and trains make the trip. */
+  rail: RailTrip;
   driveStatus: DriveStatus;
   route: DriveRoute | null;
 }
 
-/** One trail's day, from the shared inputs (start, day, departure, kids). Cheap to call in several places. */
-export function useTripPlan(sun: LatLng | null, destination: LatLng | null, baseHikeMin: number): TripPlan {
+/**
+ * One trail's day, from the shared inputs (start, day, departure, kids). Cheap to call in several places.
+ * `destination` is where the ride ends: the parking by car, the stop by bus or train.
+ */
+export function useTripPlan(sun: LatLng | null, destination: LatLng | null, baseHikeMin: number, railStation: LatLng | null = null): TripPlan {
   const { start } = useUserLocation();
-  const { withKids } = useTripSettings();
+  const { withKids, travel } = useTripSettings();
+  const transit = travel === "transit";
   const { date, time } = useTripDay();
   const drive = useDriveRoute(start, destination);
   const hikeMin = hikeMinutes(baseHikeMin, withKids);
   const driveApprox = drive.status === "error" && start !== null && destination !== null;
-  const driveMin = drive.route?.durationMin ?? (driveApprox ? estimateDriveMin(start!, destination!) : null);
+  const roadMin = drive.route?.durationMin ?? (driveApprox ? estimateDriveMin(start!, destination!) : null);
+  const rail = useRailTrip(start, transit ? railStation : null, date, time, hikeMin);
+  const there = rail.status === "ok" ? rail.there[rail.thereChoice] : null;
+  const back = rail.status === "ok" ? (rail.back[rail.backChoice] ?? null) : null;
+  const fixed = there
+    ? {
+        there: { leave: there.dep - rail.accessMin, arrive: there.arr },
+        back: back ? { leave: back.dep, home: back.arr + rail.accessMin } : null,
+      }
+    : null;
+  const driveMin = fixed ? fixed.there.arrive - fixed.there.leave : roadMin !== null && transit ? transitMinutes(roadMin) : roadMin;
+  const approx = fixed ? false : transit || driveApprox;
 
   const plan = useMemo(
-    () => (date && time && sun ? planDay({ date, start: time, driveMin, hikeMin, location: sun }) : null),
-    [date, time, driveMin, hikeMin, sun]
+    () => {
+      const p = date && time && sun ? planDay({ date, start: time, driveMin, hikeMin, location: sun, travelMode: transit ? "transit" : "auto", approx, fixed }) : null;
+      // By train, the latest departure is a real train: the last one that still gets you off the trail in time.
+      if (p && fixed && rail.day.length) {
+        const [y, m, d] = date!.split("-").map(Number);
+        const midnight = new Date(y, m - 1, d).getTime();
+        const ok = rail.day.filter((j) => midnight + (j.arr + hikeMin + SAFE_MARGIN_MIN) * 60000 <= p.sunset.getTime());
+        const last = ok[ok.length - 1] ?? rail.day[0];
+        p.latestStart = new Date(midnight + last.leave * 60000);
+      }
+      return p;
+    },
+    // fixed is rebuilt every render; its numbers are what matter.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [date, time, driveMin, hikeMin, sun, transit, approx, rail.day, fixed?.there.leave, fixed?.there.arrive, fixed?.back?.leave, fixed?.back?.home]
   );
 
-  return { plan, date, time, hikeMin, driveMin, driveApprox, driveStatus: drive.status, route: drive.route };
+  return { plan, date, time, hikeMin, driveMin, roadMin, driveApprox, transit, rail, driveStatus: drive.status, route: drive.route };
 }

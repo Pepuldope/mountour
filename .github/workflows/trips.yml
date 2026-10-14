@@ -82,11 +82,41 @@ jobs:
           done
           curl -sf "http://localhost:5000/route/v1/driving/17.107,48.148;19.146,48.736" | head -c 300; echo
 
+      # The walks from parking spots and stops to the trail (pipeline/walks.py): worked out here
+      # once a week, so the trip page doesn't ask a rate-limited router on every visit.
+      - name: Start OSRM for walks to the trail
+        run: |
+          mkdir -p osrm-foot && cp osrm/slovakia.osm.pbf osrm-foot/
+          docker run --rm -v "$PWD/osrm-foot:/data" "$OSRM_IMAGE" osrm-extract -p /opt/foot.lua /data/slovakia.osm.pbf
+          docker run --rm -v "$PWD/osrm-foot:/data" "$OSRM_IMAGE" osrm-partition /data/slovakia.osrm
+          docker run --rm -v "$PWD/osrm-foot:/data" "$OSRM_IMAGE" osrm-customize /data/slovakia.osrm
+          docker run -d --name osrm-foot -p 5001:5000 -v "$PWD/osrm-foot:/data" "$OSRM_IMAGE" \
+            osrm-routed --algorithm mld /data/slovakia.osrm
+          for i in $(seq 1 60); do
+            curl -sf "http://localhost:5001/route/v1/foot/17.107,48.148;17.11,48.15" >/dev/null && break
+            sleep 2
+          done
+          curl -sf "http://localhost:5001/route/v1/foot/17.107,48.148;17.11,48.15" | head -c 300; echo
+
       - name: Build trips
         run: |
           python -m pipeline.run --pbf osrm/slovakia.osm.pbf --dem pipeline/.cache/dem \
-            --osrm http://localhost:5000 --wikidata --osm-timestamp "$OSM_TS"
+            --osrm http://localhost:5000 --osrm-foot http://localhost:5001 --wikidata --osm-timestamp "$OSM_TS"
           cat data/pipeline-report.md >> "$GITHUB_STEP_SUMMARY"
+
+      # Error 1102 guard (lib/assetBudget.test.ts has the same limits): the Worker parses these
+      # files on requests; too big and it runs out of CPU. Keep last week's data rather than ship that.
+      - name: Check the files the site reads stay small
+        run: |
+          python - <<'PY'
+          import pathlib, sys
+          d = pathlib.Path("public/data")
+          big = [(p, p.stat().st_size) for p in [*d.glob("trips/*.json"), *d.glob("drive/*.json")]
+                 if p.stat().st_size > (2.5 * 2**20 if p.name in ("index.json", "list.json") else 200 * 2**10)]
+          for p, n in big:
+              print(f"::error::{p} is {n / 2**20:.2f} MB, over the Worker's budget")
+          sys.exit(1 if big else 0)
+          PY
 
       - name: Commit the new data
         run: |

@@ -15,14 +15,16 @@ function fetchJson<T>(url: string, retries = 1): Promise<T> {
   return fetch(url).then(
     (res) => {
       if (res.ok) return res.json() as Promise<T>;
-      if (res.status >= 500 && retries > 0) return pause().then(() => fetchJson<T>(url, retries - 1));
+      // Busy router (its per-minute limit): wait as long as the server says, up to 15 s.
+      const wait = Math.min(15, Number(res.headers.get("Retry-After")) || 0) * 1000;
+      if (res.status >= 500 && retries > 0) return pause(wait).then(() => fetchJson<T>(url, retries - 1));
       throw new Error(`${url} ${res.status}`);
     },
     (err) => (retries > 0 ? pause().then(() => fetchJson<T>(url, retries - 1)) : Promise.reject(err))
   );
 }
 
-const pause = () => new Promise((resolve) => setTimeout(resolve, 1500));
+const pause = (ms = 0) => new Promise((resolve) => setTimeout(resolve, Math.max(1500, ms)));
 
 function load<T>(url: string): Promise<T> {
   let p = cache.get(url) as Promise<T> | undefined;

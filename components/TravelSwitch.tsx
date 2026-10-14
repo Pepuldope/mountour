@@ -1,5 +1,6 @@
 "use client";
 
+import { transitMinutes } from "@/lib/drive";
 import { formatDurationShort } from "@/lib/format";
 import { useTripSettings } from "@/lib/tripSettings";
 import type { Travel } from "@/lib/tripSettings";
@@ -15,7 +16,7 @@ const OPTIONS: { value: Travel; label: string; icon: UiIconName }[] = [
  * Car or public transport, as two equal options: the plan, times and the way
  * back follow. Remembered across visits, so the home list follows it too.
  */
-export function TravelSwitch({ driveMin = null }: { driveMin?: number | null }) {
+export function TravelSwitch({ roadMin = null, trainMin = null }: { roadMin?: number | null; trainMin?: number | null }) {
   const { travel, update } = useTripSettings();
   return (
     <div role="radiogroup" aria-label="Ako sa dopravíte" className="grid grid-cols-2 gap-[3px] rounded-xl bg-[var(--segment-bg)] p-[3px]">
@@ -36,8 +37,10 @@ export function TravelSwitch({ driveMin = null }: { driveMin?: number | null }) 
               <UiIcon name={o.icon} size={18} />
             </span>
             {o.label}
-            {o.value === "car" && driveMin !== null && (
-              <span className="font-data text-[13px] font-semibold text-[var(--muted)]">{formatDurationShort(driveMin)}</span>
+            {roadMin !== null && (
+              <span className="font-data text-[13px] font-semibold text-[var(--muted)]">
+                {o.value === "car" ? formatDurationShort(roadMin) : trainMin !== null ? formatDurationShort(trainMin) : `~${formatDurationShort(transitMinutes(roadMin))}`}
+              </span>
             )}
           </button>
         );

@@ -1,15 +1,15 @@
 # Trip pipeline report
 
-Run: 2026-10-13T21:11:02+00:00 · OSM data: 2026-10-12T20:21:35Z
+Run: 2026-10-13T16:19:36+00:00 · OSM data: 2026-10-12T20:21:35Z
 
-**5027 trips**
+**5050 trips**
 
 | Region | Trips | Family | Candidates |
 |---|---|---|---|
 | tatry | 323 | 55 | 282 |
 | slovensky-raj | 89 | 32 | 56 |
 | mala-fatra | 155 | 14 | 80 |
-| male-karpaty | 372 | 159 | 175 |
+| male-karpaty | 385 | 172 | 175 |
 | velka-fatra | 333 | 81 | 186 |
 | nizke-tatry | 257 | 33 | 139 |
 | chocske-vrchy-orava | 147 | 30 | 87 |
@@ -18,15 +18,15 @@ Run: 2026-10-13T21:11:02+00:00 · OSM data: 2026-10-12T20:21:35Z
 | strazovske-vrchy | 202 | 45 | 89 |
 | biele-karpaty | 218 | 95 | 105 |
 | inovec-tribec-vtacnik | 439 | 102 | 217 |
-| stiavnicke-kremnicke-vrchy | 363 | 156 | 196 |
+| stiavnicke-kremnicke-vrchy | 363 | 154 | 196 |
 | polana-muran | 264 | 47 | 114 |
 | slovensky-kras | 286 | 53 | 147 |
-| levocske-cergov | 463 | 105 | 206 |
+| levocske-cergov | 468 | 106 | 206 |
 | vychod | 256 | 63 | 142 |
-| zahorie-podunajsko | 38 | 6 | 28 |
+| zahorie-podunajsko | 41 | 8 | 28 |
 | krupina-cerova | 158 | 40 | 84 |
 | kosice-juh | 26 | 5 | 20 |
-| dalsie | 249 | 63 | 133 |
+| dalsie | 251 | 63 | 133 |
 
 ## Regression: the 10 hand-picked trips vs. the 2026-10-07 build
 
@@ -47,7 +47,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Places with more than one route
 
-1750 of 2020 places have other routes; 3009 other routes in all.
+1758 of 2028 places have other routes; 3024 other routes in all.
 
 | Place | Main route (start, time) | Other routes |
 |---|---|---|
@@ -55,8 +55,9 @@ Flag ⚠ when off by more than 15 %.
 | hrad-lietava | Lietavská Svinná 1:30 | Dlhšia: Babkov, Imrišek 2:15; Dlhšia: Lietavská Lúčka 3:30 |
 | lubovniansky-hrad | Stará Ľubovňa 1:30 | Na celý deň: Malý Lipník 7:45; Na celý deň: Údol 7:00 |
 | sarissky-hrad | Šarišské Michaľany 3:00 | Iná cesta: Veľký Šariš, obec 3:00 |
+| bratislavsky-hrad | Sad Janka Kráľa, Viedenská cesta 1:30 | Iná cesta: Mlynská dolina 1:45; Dlhšia: Pod Prístavným mostom 2:30 |
 | banska-bystrica | Odbočka na Urpín, vyhliadku 1:30 | Dlhšia: Šalková 3:30; Iná cesta: Urpín, vyhliadka 1:45 |
-| novy-zamok | tajch Klinger 1:00 | Dlhšia: Červená studňa (bežkárske trate) 1:45; Dlhšia: Pamätný kameň 1:45 |
+| novy-zamok | Banská Štiavnica, križovatka 1:15 | Iná cesta: Červená studňa (bežkárske trate) 1:45; Iná cesta: tajch Klinger 1:00 |
 | popradske-pleso | Odbočka pri Heliose 3:00 | Kratšia: Holá Úboč 2:30; Na celý deň: Velická poľana 8:45 |
 | strbske-pleso | Odbočka pri Heliose 0:45 | Na celý deň: Bývalá Važecká chata 5:30; Dlhšia: Tatranská Štrba 4:15 |
 | dumbier | Trangoška 6:30 | Iná cesta: Pod Krčahovom 7:00; Kratšia: Srdiečko 5:45 |
@@ -110,56 +111,12 @@ Flag ⚠ when off by more than 15 %.
 | sitno-pocuvadlianske-jazero | Počúvadlianske jazero 2:30 | Na celý deň: Beluj 5:45; Iná cesta: Sedlo Krížna 3:00 |
 | batizovske-pleso | Velická poľana 3:00 | Autobusom: Odbočka pri Heliose 8:30; Autobusom: Tatranská polianka 6:45 |
 | baranec | Odbočka na Baranec a Plačlivé 8:15 | Iná cesta: Odbočka nad Orešnicou 8:45; Iná cesta: Rázcestie pod Holým vrchom 8:15 |
-| placlive | Rázcestie Šindľovec 7:45 | Na celý deň: Úzka dolina, ústie 9:00; Autobusom: Žiarska dolina (ústie) 8:45 |
-
-## Town filter
-
-8 goals in city centres and 8 sights in towns left out; 18 routes left out as city walks.
-
-| Goal | Kind | Why | Start | Town metres |
-|---|---|---|---|---|
-| Kamzík | vrchol | city walk | Horský park, hor. | 1760 |
-| Bratislavský hrad | hrad | city centre |  | 0 |
-| Mestská veža | vyhliadka | in town |  | 0 |
-| Revín | vrchol | city walk | Horský park, hor. | 1760 |
-| Revín | vrchol | city walk | Bratislava, hlavná stanica | 1253 |
-| Revín | vrchol | city walk | Slavín | 2031 |
-| Revín | vrchol | city walk | Slavín, pamätník | 2072 |
-| Murmannova výšina | vrchol | city centre |  | 0 |
-| Somársky vrch | vrchol | city centre |  | 0 |
-| Slavín | vrchol | city centre |  | 0 |
-| Bôrik | vrchol | city centre |  | 0 |
-| Napoleonov vŕšok | vrchol | city centre |  | 0 |
-| na Ružomberok | vyhliadka | city walk | Ružomberok, Nám. A. Hlinku | 1031 |
-| na Ružomberok | vyhliadka | city walk | Ružomberok | 895 |
-| na Ružomberok | vyhliadka | city walk | Ružomberok | 1105 |
-| Kopanica | vrchol | city walk | Námestovo, bus | 1580 |
-| Kopanica | vrchol | city walk | Námestovo | 1575 |
-| Nový zámok | hrad | city walk | Michal štôlňa | 891 |
-| Nový zámok | hrad | city walk | Banská Štiavnica, križovatka | 1009 |
-| Zvolenská veža | vyhliadka | in town |  | 0 |
-| Na Drieňovú | vyhliadka | city walk | Štefultov, pôsobisko Dr. Téryho | 1773 |
-| Nad Reslou | vyhliadka | in town |  | 0 |
-| Kalvária | vyhliadka | in town |  | 0 |
-| Veža Konkatedrály sv. Mikuláša | vyhliadka | in town |  | 0 |
-| Kalvária | vyhliadka | in town |  | 0 |
-| UFO | vyhliadka | city centre |  | 0 |
-| UFO | vyhliadka | city centre |  | 0 |
-| Kalvária | vyhliadka | city walk | Nad Zlatníckou dolinou | 1790 |
-| Kalvária | vyhliadka | city walk | Nad Zlatníckou dolinou, rázc. | 1790 |
-| Kalvária | vyhliadka | city walk | Zlatnícka dolina, rekr. stred. | 1790 |
-| Kalvária | vyhliadka | city walk | Zlatnícka dolina, rázcestie | 1790 |
-| Kalvária | vyhliadka | city walk | Zlatnícka dolina | 1790 |
-| Vyhliadková veža kostola | vyhliadka | in town |  | 0 |
-| Panoráma Tatier cez okno | vyhliadka | in town |  | 0 |
 
 ## Rejected candidates
 
-- almost the same walk as another trip: 109
-- mostly unmarked: 33
+- almost the same walk as another trip: 111
+- mostly unmarked: 34
 - no trailhead within reach: 18
-- sight in a city centre: 8
-- sight in a town: 8
 - start already has enough trips: 29
 - too flat (city walk): 9
 - too long: 43
@@ -478,7 +435,7 @@ Flag ⚠ when off by more than 15 %.
 | hrdos-stankovany | chocske-vrchy-orava | Stankovany | 11.7 | 567 | 4:30 | stredna |  |
 | kopanica-pod-kohutovou | chocske-vrchy-orava | Pod Kohútovou | 5.2 | 117 | 1:45 | lahka |  |
 | kopanica-pod-kohutovou-klin-kostol | chocske-vrchy-orava | Klin, kostol | 8.4 | 289 | 3:00 | lahka |  |
-| kopanica-pod-kohutovou-oravska-jasenica-shell | chocske-vrchy-orava | Oravská Jasenica, Shell | 21.0 | 376 | 6:15 | tazka |  |
+| kopanica-pod-kohutovou-namestovo-bus | chocske-vrchy-orava | Námestovo, bus | 15.2 | 329 | 4:45 | stredna |  |
 | marsalkov-grun | chocske-vrchy-orava | Kalvária | 4.7 | 154 | 1:45 | lahka |  |
 | mrzacka | chocske-vrchy-orava | Vasiľovská hoľa, chata | 15.1 | 555 | 5:30 | stredna |  |
 | mrzacka-pramen-bielej-oravy-odb | chocske-vrchy-orava | Prameň Bielej Oravy, odb. | 17.1 | 541 | 5:45 | stredna |  |
@@ -731,6 +688,8 @@ Flag ⚠ when off by more than 15 %.
 | skalne | dalsie | Dukliansky priesmyk | 22.4 | 840 | 8:00 | tazka |  |
 | skalne-pod-zvezlom | dalsie | Pod Zvezlom | 23.4 | 814 | 8:15 | tazka |  |
 | skalne-udolie-smrti | dalsie | Údolie smrti | 20.5 | 649 | 7:00 | tazka |  |
+| vyhliadkova-veza-kostola | dalsie | Gánovce | 10.0 | 109 | 3:00 | lahka |  |
+| vyhliadkova-veza-kostola-zvernik-kvetnica | dalsie | Zverník Kvetnica | 11.8 | 87 | 3:15 | stredna |  |
 | widok-na-tatry | dalsie | Bacówka Krawcowy Wierch 30 min | 4.6 | 244 | 2:00 | lahka |  |
 | widok-pod-bugajem | dalsie | Chata Čučoriedka | 18.9 | 838 | 7:00 | tazka |  |
 | widok-pod-bugajem-stara-bystrica | dalsie | Stará Bystrica | 23.2 | 880 | 8:15 | tazka |  |
@@ -1803,6 +1762,9 @@ Flag ⚠ when off by more than 15 %.
 | kotnik | levocske-cergov | Vyšné Ružbachy | 14.4 | 413 | 4:45 | stredna |  |
 | kotnik-nova-lubovna | levocske-cergov | Nová Ľubovňa | 12.3 | 327 | 4:00 | stredna |  |
 | kotnik-stara-lubovna-stary | levocske-cergov | Stará ľubovňa, starý cintorín | 16.5 | 449 | 5:30 | stredna |  |
+| kalvaria | levocske-cergov | Výšľap | 3.9 | 152 | 1:30 | lahka |  |
+| kalvaria-borkut | levocske-cergov | Borkút | 8.1 | 314 | 3:00 | lahka |  |
+| kalvaria-solivar | levocske-cergov | Solivar | 9.8 | 95 | 2:45 | lahka |  |
 | marianska-hora | levocske-cergov | Levoča, pri Košickej bráne | 3.9 | 229 | 1:45 | lahka |  |
 | marianska-hora-levocska-dolina-atc | levocske-cergov | Levočská dolina, ATC | 5.2 | 241 | 2:00 | lahka |  |
 | marianska-hora-pri-diablovej-diere | levocske-cergov | Pri Diablovej diere | 7.8 | 305 | 3:00 | lahka |  |
@@ -1897,6 +1859,8 @@ Flag ⚠ when off by more than 15 %.
 | rozhladna-na-balazke | levocske-cergov | Kamenica, rázc. | 3.3 | 157 | 1:15 | lahka |  |
 | rozhladna-na-balazke-lipany-stanica | levocske-cergov | Lipany, stanica | 6.3 | 217 | 2:15 | lahka |  |
 | rozhladna-na-balazke-puste-pole | levocske-cergov | Pusté Pole | 11.9 | 216 | 3:45 | stredna |  |
+| veza-konkatedraly-sv-mikulasa | levocske-cergov | Borkút | 9.9 | 280 | 3:15 | stredna |  |
+| veza-konkatedraly-sv-mikulasa-velky-saris-obec | levocske-cergov | Veľký Šariš, obec | 13.4 | 84 | 3:45 | stredna |  |
 | vyhladna-zobrak | levocske-cergov | Hervartov | 5.8 | 420 | 3:00 | stredna |  |
 | vyhladna-zobrak-krize | levocske-cergov | Kríže | 5.4 | 350 | 2:45 | lahka |  |
 | vyhladna-zobrak-kruzlov | levocske-cergov | Kružlov | 23.1 | 610 | 7:30 | tazka |  |
@@ -2388,6 +2352,9 @@ Flag ⚠ when off by more than 15 %.
 | oselna-valca | mala-fatra | Valča | 22.5 | 882 | 8:00 | tazka |  |
 | pivnica | mala-fatra | Valčianska dolina, rekr. stred. | 5.5 | 369 | 2:45 | lahka |  |
 | pivnica-siroka | mala-fatra | Široká | 17.1 | 840 | 6:45 | tazka |  |
+| bratislavsky-hrad | male-karpaty | Sad Janka Kráľa, Viedenská cesta | 4.1 | 97 | 1:30 | lahka | osm fee |
+| bratislavsky-hrad-mlynska-dolina | male-karpaty | Mlynská dolina | 5.3 | 140 | 1:45 | lahka | osm fee |
+| bratislavsky-hrad-pod-pristavnym-mostom | male-karpaty | Pod Prístavným mostom | 8.4 | 85 | 2:30 | lahka | osm fee |
 | devin | male-karpaty | Pod Devínskou Kobylou | 3.7 | 121 | 1:30 | lahka |  |
 | jaskyna-driny | male-karpaty | Smolenice, ObU | 4.9 | 235 | 2:00 | lahka | osm fee |
 | jaskyna-driny-losonec | male-karpaty | Lošonec | 5.3 | 241 | 2:00 | lahka | osm fee |
@@ -2714,6 +2681,7 @@ Flag ⚠ when off by more than 15 %.
 | pri-hajovni-na-vlkovkach | male-karpaty | Na Vlkovkách | 8.6 | 326 | 3:15 | stredna |  |
 | revin | male-karpaty | Kamzík | 2.5 | 105 | 1:00 | lahka |  |
 | revin-cerveny-most | male-karpaty | Červený most | 4.9 | 111 | 1:45 | lahka |  |
+| revin-horsky-park-hor | male-karpaty | Horský park, hor. | 4.6 | 108 | 1:30 | lahka |  |
 | rosslerov-vrch | male-karpaty | Koliba | 2.8 | 138 | 1:15 | lahka |  |
 | rosslerov-vrch-figaro | male-karpaty | Figaro | 4.1 | 243 | 2:00 | lahka |  |
 | rosslerov-vrch-krasna-horka | male-karpaty | Krásna Hôrka | 4.0 | 168 | 1:30 | lahka |  |
@@ -2725,6 +2693,9 @@ Flag ⚠ when off by more than 15 %.
 | vajnorska-hora-mechy-javornik | male-karpaty | Mechy, Javorník | 3.2 | 191 | 1:30 | lahka |  |
 | boricky | male-karpaty | Dechtice, námestie | 3.8 | 115 | 1:30 | lahka |  |
 | boricky-nove-hory | male-karpaty | Nové Hory | 7.1 | 221 | 2:30 | lahka |  |
+| borik | male-karpaty | Mlynská dolina, internáty | 3.6 | 109 | 1:15 | lahka |  |
+| borik-most-lafranconi | male-karpaty | Most Lafranconi, Dvořákovo nábrežie | 3.3 | 103 | 1:15 | lahka |  |
+| borik-most-snp | male-karpaty | Most SNP | 5.3 | 140 | 1:45 | lahka |  |
 | bozajvrsok | male-karpaty | Šaštín, nám. | 21.5 | 163 | 6:00 | tazka |  |
 | bozajvrsok-plavecky-mikulas | male-karpaty | Plavecký Mikuláš | 20.8 | 166 | 5:45 | stredna |  |
 | bozajvrsok-tomky-chaty | male-karpaty | Tomky, chaty | 25.5 | 148 | 7:00 | tazka |  |
@@ -2733,6 +2704,9 @@ Flag ⚠ when off by more than 15 %.
 | krasna-horka | male-karpaty | Kamzík | 3.5 | 138 | 1:15 | lahka |  |
 | krasna-horka-horsky-park-hor | male-karpaty | Horský park, hor. | 5.0 | 95 | 1:45 | lahka |  |
 | krasna-horka-klanec | male-karpaty | Klanec | 6.0 | 190 | 2:15 | lahka |  |
+| murmannova-vysina | male-karpaty | Mlynská dolina | 3.4 | 138 | 1:15 | lahka |  |
+| murmannova-vysina-cerveny-most | male-karpaty | Červený most | 5.9 | 92 | 1:45 | lahka |  |
+| murmannova-vysina-krasna-horka | male-karpaty | Krásna Hôrka | 5.5 | 125 | 1:45 | lahka |  |
 | nad-obilnym-jarkom | male-karpaty | Partizánska lúka | 3.2 | 97 | 1:15 | lahka |  |
 | nad-obilnym-jarkom-lamac-bakosova | male-karpaty | Lamač, Bakošova | 4.0 | 103 | 1:30 | lahka |  |
 | nad-obilnym-jarkom-pri-cervenom-moste | male-karpaty | Pri Červenom moste | 4.3 | 165 | 1:45 | lahka |  |
@@ -2741,6 +2715,9 @@ Flag ⚠ when off by more than 15 %.
 | polborny-vrsok-sastin-nam | male-karpaty | Šaštín, nám. | 25.8 | 185 | 7:00 | tazka |  |
 | pridavky | male-karpaty | Tomky, chaty | 19.4 | 164 | 5:30 | stredna |  |
 | pridavky-mikulasov | male-karpaty | Mikulášov | 12.3 | 91 | 3:30 | stredna |  |
+| somarsky-vrch | male-karpaty | Mlynská dolina | 2.8 | 88 | 1:00 | lahka |  |
+| somarsky-vrch-most-snp | male-karpaty | Most SNP | 4.3 | 124 | 1:30 | lahka |  |
+| somarsky-vrch-pri-cervenom-moste | male-karpaty | Pri Červenom moste | 7.5 | 149 | 2:30 | lahka |  |
 | stary-grunt-i | male-karpaty | Karlova Ves, Kútiky | 2.3 | 102 | 1:00 | lahka |  |
 | stary-grunt-i-mlynska-dolina-internaty | male-karpaty | Mlynská dolina, internáty | 2.9 | 91 | 1:00 | lahka |  |
 | svatodusnica | male-karpaty | Nové Hory | 7.2 | 175 | 2:30 | lahka |  |
@@ -3689,9 +3666,9 @@ Flag ⚠ when off by more than 15 %.
 | banska-bystrica | stiavnicke-kremnicke-vrchy | Odbočka na Urpín, vyhliadku | 4.3 | 153 | 1:30 | lahka |  |
 | banska-bystrica-salkova | stiavnicke-kremnicke-vrchy | Šalková | 12.4 | 125 | 3:30 | stredna |  |
 | banska-bystrica-urpin-vyhliadka | stiavnicke-kremnicke-vrchy | Urpín, vyhliadka | 4.7 | 191 | 1:45 | lahka |  |
-| novy-zamok | stiavnicke-kremnicke-vrchy | tajch Klinger | 2.3 | 95 | 1:00 | lahka |  |
+| novy-zamok | stiavnicke-kremnicke-vrchy | Banská Štiavnica, križovatka | 3.6 | 107 | 1:15 | lahka |  |
 | novy-zamok-cervena-studna | stiavnicke-kremnicke-vrchy | Červená studňa (bežkárske trate) | 3.7 | 211 | 1:45 | lahka |  |
-| novy-zamok-pamatny-kamen | stiavnicke-kremnicke-vrchy | Pamätný kameň | 4.9 | 118 | 1:45 | lahka |  |
+| novy-zamok-tajch-klinger | stiavnicke-kremnicke-vrchy | tajch Klinger | 2.3 | 95 | 1:00 | lahka |  |
 | pusty-dolny-hrad | stiavnicke-kremnicke-vrchy | Haputka | 2.7 | 194 | 1:30 | lahka |  |
 | pusty-dolny-hrad-cerveny-medokys | stiavnicke-kremnicke-vrchy | Červený medokýš | 5.2 | 232 | 2:00 | lahka |  |
 | pusty-dolny-hrad-pod-velkym-vrchom | stiavnicke-kremnicke-vrchy | Pod Veľkým vrchom | 3.8 | 138 | 1:30 | lahka |  |
@@ -3778,6 +3755,9 @@ Flag ⚠ when off by more than 15 %.
 | stalovo-sklene-teplice | stiavnicke-kremnicke-vrchy | Sklené Teplice | 15.9 | 595 | 5:45 | stredna |  |
 | rozhladna-laztek | stiavnicke-kremnicke-vrchy | Malachov | 6.4 | 324 | 2:45 | lahka |  |
 | rozhladna-laztek-horne-prsany | stiavnicke-kremnicke-vrchy | Horné Pršany | 2.0 | 142 | 1:15 | lahka |  |
+| zvolenska-veza | stiavnicke-kremnicke-vrchy | Pod Veľkým vrchom | 6.6 | 189 | 2:15 | lahka |  |
+| zvolenska-veza-bakova-jama | stiavnicke-kremnicke-vrchy | Bakova Jama | 6.3 | 120 | 2:00 | lahka |  |
+| zvolenska-veza-bike-park-pusty-hrad-11 | stiavnicke-kremnicke-vrchy | Bike park Pustý hrad 11 | 10.2 | 177 | 3:15 | stredna |  |
 | travny-zdiar | stiavnicke-kremnicke-vrchy | Suchý vrch | 2.1 | 136 | 1:00 | lahka |  |
 | travny-zdiar-kraliky-u-ruskov | stiavnicke-kremnicke-vrchy | Králiky, U Ruskov | 9.5 | 363 | 3:30 | stredna |  |
 | travny-zdiar-mutne | stiavnicke-kremnicke-vrchy | Mútne | 9.5 | 373 | 3:30 | stredna |  |
@@ -3889,7 +3869,7 @@ Flag ⚠ when off by more than 15 %.
 | marcicka | stiavnicke-kremnicke-vrchy | Dinas | 12.6 | 582 | 4:45 | stredna |  |
 | na-drienovu | stiavnicke-kremnicke-vrchy | Banská Štiavnica, námestie | 4.4 | 130 | 1:30 | lahka |  |
 | na-drienovu-akvadukt | stiavnicke-kremnicke-vrchy | Akvadukt | 3.2 | 108 | 1:15 | lahka |  |
-| na-drienovu-michal-stolna | stiavnicke-kremnicke-vrchy | Michal štôlňa | 5.0 | 132 | 1:45 | lahka |  |
+| na-drienovu-stefultov-posobisko-dr | stiavnicke-kremnicke-vrchy | Štefultov, pôsobisko Dr. Téryho | 8.0 | 205 | 2:45 | lahka |  |
 | na-holy-vrch | stiavnicke-kremnicke-vrchy | Banský Studenec, Pod vŕškom | 7.9 | 223 | 2:45 | lahka |  |
 | na-holy-vrch-babina-ou | stiavnicke-kremnicke-vrchy | Babiná, OÚ | 10.7 | 278 | 3:30 | stredna |  |
 | na-iliju | stiavnicke-kremnicke-vrchy | Vlčia jama | 3.8 | 190 | 1:30 | lahka |  |
@@ -3911,9 +3891,9 @@ Flag ⚠ when off by more than 15 %.
 | na-zakrute | stiavnicke-kremnicke-vrchy | Horná Roveň | 3.3 | 181 | 1:30 | lahka |  |
 | na-zakrute-ilija | stiavnicke-kremnicke-vrchy | Ilija | 7.9 | 272 | 2:45 | lahka |  |
 | na-zakrute-sedlo-krizna | stiavnicke-kremnicke-vrchy | Sedlo Krížna | 7.6 | 167 | 2:30 | lahka |  |
-| nad-smintorinom | stiavnicke-kremnicke-vrchy | tajch Klinger | 2.7 | 96 | 1:00 | lahka |  |
-| nad-smintorinom-banska-stiavnica | stiavnicke-kremnicke-vrchy | Banská Štiavnica, križovatka | 5.4 | 232 | 2:00 | lahka |  |
-| nad-smintorinom-horna-roven | stiavnicke-kremnicke-vrchy | Horná Roveň | 3.7 | 150 | 1:30 | lahka |  |
+| nad-reslou | stiavnicke-kremnicke-vrchy | Banská Štiavnica, námestie | 2.2 | 151 | 1:15 | lahka |  |
+| nad-reslou-horna-roven | stiavnicke-kremnicke-vrchy | Horná Roveň | 3.7 | 153 | 1:30 | lahka |  |
+| nad-reslou-stefultov-posobisko-dr | stiavnicke-kremnicke-vrchy | Štefultov, pôsobisko Dr. Téryho | 6.5 | 264 | 2:30 | lahka |  |
 | nad-tajchom-bakomi | stiavnicke-kremnicke-vrchy | Sedlo pod Kanderkou | 2.7 | 105 | 1:00 | lahka |  |
 | nad-tajchom-bakomi-kopanice-domky | stiavnicke-kremnicke-vrchy | Kopanice - Dômky | 7.1 | 198 | 2:30 | lahka |  |
 | nad-vlachovou | stiavnicke-kremnicke-vrchy | Horná Roveň | 3.9 | 173 | 1:30 | lahka |  |
@@ -4012,9 +3992,6 @@ Flag ⚠ when off by more than 15 %.
 | certova-skala | stiavnicke-kremnicke-vrchy | Hronska Dúbrava | 7.4 | 310 | 2:45 | lahka |  |
 | certova-skala-budicka | stiavnicke-kremnicke-vrchy | Budička | 8.9 | 235 | 3:00 | lahka |  |
 | certova-skala-sietno | stiavnicke-kremnicke-vrchy | Sietno | 5.7 | 231 | 2:15 | lahka |  |
-| galgenberg | stiavnicke-kremnicke-vrchy | Banská Štiavnica, námestie | 2.1 | 101 | 1:00 | lahka |  |
-| galgenberg-horna-roven | stiavnicke-kremnicke-vrchy | Horná Roveň | 2.8 | 149 | 1:15 | lahka |  |
-| galgenberg-stefultov-posobisko-dr | stiavnicke-kremnicke-vrchy | Štefultov, pôsobisko Dr. Téryho | 5.4 | 214 | 2:00 | lahka |  |
 | gulhov | stiavnicke-kremnicke-vrchy | Dolný Hodrušský jarok | 5.3 | 166 | 2:00 | lahka |  |
 | gulhov-birnbaumstolna | stiavnicke-kremnicke-vrchy | Birnbaumštôlňa | 9.6 | 543 | 4:15 | stredna |  |
 | gulhov-hodrusske-jazero | stiavnicke-kremnicke-vrchy | Hodrušské jazero | 5.9 | 434 | 3:15 | stredna |  |
@@ -4854,7 +4831,7 @@ Flag ⚠ when off by more than 15 %.
 | na-gombas | velka-fatra | Zbojnícka diera | 6.4 | 126 | 2:00 | lahka |  |
 | na-gombas-vodna-nadrz-krpelany | velka-fatra | Vodná nádrž Krpeľany | 19.9 | 778 | 7:15 | tazka |  |
 | na-ruzomberok | velka-fatra | Hrabovo | 2.4 | 105 | 1:00 | lahka |  |
-| na-ruzomberok-likavka-pod-parackou | velka-fatra | Likavka, pod Paračkou | 5.0 | 170 | 1:45 | lahka |  |
+| na-ruzomberok-ruzomberok-nam-a-hlinku | velka-fatra | Ružomberok, Nám. A. Hlinku | 3.8 | 138 | 1:30 | lahka |  |
 | na-ruzomberok-vlkolinske-luky | velka-fatra | Vlkolínske lúky | 6.4 | 206 | 2:15 | lahka |  |
 | na-vlkolinec | velka-fatra | Biely potok, Ústie Trlenskej doliny | 4.4 | 128 | 1:30 | lahka |  |
 | na-vlkolinec-biely-potok | velka-fatra | Biely Potok | 4.5 | 345 | 2:30 | lahka |  |
@@ -5163,6 +5140,8 @@ Flag ⚠ when off by more than 15 %.
 | torhanova-hurocka-chlmec | vychod | Chlmec | 21.8 | 791 | 7:45 | tazka |  |
 | torhanova-hurocka-kostolik-pod-senderovom | vychod | Kostolík pod Senderovom | 5.7 | 193 | 2:00 | lahka |  |
 | wierch-muchow | vychod | Poľana | 13.1 | 844 | 6:15 | tazka |  |
+| ufo | zahorie-podunajsko | Mlynská dolina | 7.3 | 210 | 2:30 | lahka |  |
+| ufo-horsky-park-hor | zahorie-podunajsko | Horský park, hor. | 6.6 | 121 | 2:00 | lahka |  |
 | kalinkovska-rozhladna | zahorie-podunajsko | Rovinka | 15.0 | 82 | 4:00 | stredna |  |
 | kalinkovska-rozhladna-ruzinov-vlcie-hrdlo | zahorie-podunajsko | Ružinov, Vlčie hrdlo | 24.7 | 127 | 6:45 | tazka |  |
 | pozorovatelna-vtactva | zahorie-podunajsko | Podhájska, termálne kúpalisko | 27.8 | 90 | 7:15 | tazka |  |
@@ -5176,6 +5155,7 @@ Flag ⚠ when off by more than 15 %.
 | kamenna-buda-radosovce | zahorie-podunajsko | Radošovce | 17.3 | 465 | 5:45 | stredna |  |
 | kalvaria-skalica-potocna | zahorie-podunajsko | Vrádište | 12.0 | 82 | 3:15 | stredna |  |
 | kalvaria-skalica-potocna-most-cez-moravu | zahorie-podunajsko | Most cez Moravu | 18.2 | 93 | 5:00 | stredna |  |
+| kalvaria-skalica-potocna-nad-zlatnickou-dolinou | zahorie-podunajsko | Nad Zlatníckou dolinou | 14.8 | 157 | 4:15 | stredna |  |
 | vyhliadkova-plosina-cintorin | zahorie-podunajsko | Cintorín | 3.2 | 143 | 1:15 | lahka |  |
 | skalicky-vrch | zahorie-podunajsko | Šmatlavé uhlisko | 7.8 | 224 | 2:45 | lahka |  |
 | skalicky-vrch-chvojnica-sifflovci | zahorie-podunajsko | Chvojnica, Šifflovci | 13.0 | 649 | 5:15 | stredna |  |
@@ -5202,4 +5182,4 @@ Flag ⚠ when off by more than 15 %.
 | vystrkov-podhajska | zahorie-podunajsko | Podhájska | 9.3 | 171 | 3:00 | lahka |  |
 | vystrkov-podhajska-belek | zahorie-podunajsko | Podhájska, Belek | 10.3 | 196 | 3:15 | stredna |  |
 
-Drive table: 141 towns x 2020 main trips, 0 pairs without a route.
+Drive table: 141 towns x 2028 main trips, 0 pairs without a route.

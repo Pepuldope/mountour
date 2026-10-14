@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { approachMin } from "@/lib/dayPlan";
 import { useTripSettings } from "@/lib/tripSettings";
 import type { TrailJoin } from "@/lib/trailJoin";
+import type { WalkLine } from "@/lib/tripSchema";
 import type { LatLng, ParkingLot, TransitStop } from "@/lib/types";
 
 /**
@@ -19,6 +20,8 @@ export interface TripAccess {
   choice: number;
   choose: (index: number) => void;
   parking: ParkingLot | null;
+  /** Where the ride from the start ends: the parking by car, the stop by train or bus. */
+  rideTo: LatLng | null;
   /** Where the walk starts: the trail's first point. */
   trailStart: LatLng | null;
   /** Where the drive ends: the chosen parking, else the trail start (routing snaps it to the nearest road). */
@@ -32,10 +35,12 @@ export interface TripAccess {
   chooseStop: (index: number) => void;
   /** The picked stop (by default the nearest). */
   stop: TransitStop | null;
-  /** By car: the drive goes on. By train/bus: no drive, the walk starts at the stop. */
+  /** By car: the drive goes on. By train/bus: an estimated ride to the stop, the walk starts there. */
   transit: boolean;
   /** Where the walk to the trail starts: the chosen parking, or the stop. */
   walkFrom: LatLng | null;
+  /** That walk on paths, worked out weekly (null: none stored, ask the router). */
+  walkLine: WalkLine | null;
   /** Walk to the trail for the chosen way of travel, one way, minutes. */
   approachMin: number;
   /** Where that walk reaches the trail: its start, or its nearest point when parked up the trail. */
@@ -51,6 +56,7 @@ const Ctx = createContext<TripAccess>({
   parking: null,
   trailStart: null,
   destination: null,
+  rideTo: null,
   parkingApproachMin: 0,
   stops: [],
   stopChoice: 0,
@@ -58,6 +64,7 @@ const Ctx = createContext<TripAccess>({
   stop: null,
   transit: false,
   walkFrom: null,
+  walkLine: null,
   approachMin: 0,
   trailJoin: null,
   skip: null,
@@ -137,6 +144,7 @@ export function TripAccessProvider({
       parking,
       trailStart,
       destination: transit ? null : (parking?.location ?? trailStart),
+      rideTo: transit ? (stop?.location ?? null) : (parking?.location ?? trailStart),
       parkingApproachMin: parkingApproach,
       stops,
       stopChoice,
@@ -144,6 +152,7 @@ export function TripAccessProvider({
       stop,
       transit,
       walkFrom: transit ? (stop?.location ?? null) : (parking?.location ?? null),
+      walkLine: transit ? (stop?.walk ?? null) : (parking?.walk ?? null),
       approachMin: transit ? stopApproach : parkingApproach,
       trailJoin: join?.location ?? trailStart,
       skip: join && join.skip_m > 0 ? join : null,

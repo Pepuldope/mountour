@@ -38,6 +38,8 @@ const OTHER_ROUTE_HOVER = "#1769d1";
 
 /** Closer than this, the car is at the trail: no walking link. */
 const AT_TRAIL_M = 60;
+/** A stored walk ending this close to the join point is the one to draw (pipeline/walks.py). */
+const STORED_END_M = 40;
 
 const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
 
@@ -49,10 +51,11 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
 export function TripMap({ detail, gpxUrl, others = [] }: Props) {
   const { trail, trailheads, pois } = detail;
   const router = useRouter();
-  const { parkingLots, choice, choose, destination, trailJoin, walkFrom, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
+  const { parkingLots, choice, choose, rideTo: destination, trailJoin, walkFrom, walkLine, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
   const [points, setPoints] = useState<[number, number][]>([]);
   const { start } = useUserLocation();
   const homeStop = useHomeStop(transit ? start : null);
+  // By bus or train the line runs along the roads to the stop: roughly the bus's way, no timetable yet.
   const drive = useDriveRoute(start, destination);
 
   // Where the walk to the trail begins: the stop, the chosen parking, else the end of the road route.
@@ -60,13 +63,17 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
   const driveEnd = drive.route?.points[drive.route.points.length - 1];
   const carStop: LatLng | null = walkFrom ?? (!transit && driveEnd ? { lat: driveEnd[0], lon: driveEnd[1] } : null);
   const needsWalk = carStop !== null && trailJoin !== null && haversineM(carStop, trailJoin) > AT_TRAIL_M;
-  const walk = useWalkRoute(needsWalk ? carStop : null, needsWalk ? trailJoin : null);
+  // The weekly build stores this walk on paths; use it when it ends where the page joins the trail.
+  const storedEnd = walkLine?.line[walkLine.line.length - 1];
+  const stored =
+    needsWalk && storedEnd && haversineM({ lat: storedEnd[1], lon: storedEnd[0] }, trailJoin!) <= STORED_END_M ? walkLine : null;
+  const walk = useWalkRoute(needsWalk && !stored ? carStop : null, needsWalk && !stored ? trailJoin : null);
   const walkLeg = useMemo<[number, number][] | undefined>(() => {
     if (!needsWalk) return undefined;
     // No footpath route (offline, router down): a straight dotted line still shows where to go.
-    const pts = walk.route?.points ?? [pair(carStop!), pair(trailJoin!)];
+    const pts = stored?.line.map(([lon, lat]) => [lat, lon] as [number, number]) ?? walk.route?.points ?? [pair(carStop!), pair(trailJoin!)];
     return [pair(carStop!), ...pts, pair(trailJoin!)];
-  }, [needsWalk, walk.route, carStop?.lat, carStop?.lon, trailJoin]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [needsWalk, stored, walk.route, carStop?.lat, carStop?.lon, trailJoin]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // The road route ends on the nearest road; finish the line at the parking itself.
   const driveLeg = useMemo<[number, number][] | undefined>(() => {

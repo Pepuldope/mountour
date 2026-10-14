@@ -7,7 +7,7 @@ import { defaultApproachMin, driveDestination, nearestStop, primaryTrailhead, su
 import { activeClosures } from "@/lib/closures";
 import { approachMin, hikeMinutes } from "@/lib/dayPlan";
 import { dayFit, dayInSentence, isoDate } from "@/lib/days";
-import { estimateDriveMin } from "@/lib/drive";
+import { estimateDriveMin, transitMinutes } from "@/lib/drive";
 import { DIFFICULTY_LABEL, GOAL_LABEL, GOAL_PLURAL, formatDurationShort } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
@@ -195,7 +195,7 @@ export function HomeExplorer({ trails: initial }: Props) {
   // Drive times are shown by train/bus too (muted), so the two can be compared.
   const { drives, status: driveStatus } = useTownDrives(start);
 
-  const { shown, hidden } = useMemo(() => {
+  const { shown, hidden, noneFit } = useMemo(() => {
     const now = new Date();
     // Getting from the start to its table town: added on top, and "~" when that is a long way.
     const town: LatLng | null = drives ? { lat: drives.town.lat, lon: drives.town.lon } : null;
@@ -216,7 +216,8 @@ export function HomeExplorer({ trails: initial }: Props) {
       const carMin =
         viaTown !== null ? Math.min(viaTown, direct ?? Infinity) : estimate ? estimateDriveMin(start!, dest!) : null;
       const approx = estimate || (viaTown !== null && toTownKm! > TOWN_EXACT_KM);
-      const driveMin = transit ? null : carMin;
+      // By bus or train: an estimate from the road time (no timetables yet), so the day still counts the ride.
+      const driveMin = transit ? (carMin !== null && stop ? transitMinutes(carMin) : null) : carMin;
       // The walk from the parking (by car) or the stop (by train/bus) to the trail and back is part of the day.
       const approach = transit ? (stop ? 2 * approachMin(stop.distance_m) : 0) : driveMin !== null ? 2 * defaultApproachMin(detail) : 0;
       const hikeMin = hikeMinutes(detail.trail.duration_min + approach, withKids);
@@ -243,10 +244,12 @@ export function HomeExplorer({ trails: initial }: Props) {
       const key = (i: TripCardItem) => i.carMin ?? (i.distanceM ?? Infinity) / 1000;
       all.sort((a, b) => key(a) - key(b));
     }
-    return {
-      shown: all.filter((i) => !i.closed && !i.noStop && (!i.fit || i.fit.status === "fits")),
-      hidden: all.filter((i) => i.closed || i.noStop || (i.fit && i.fit.status !== "fits")),
-    };
+    const open = all.filter((i) => !i.closed && !i.noStop);
+    const fitting = open.filter((i) => !i.fit || i.fit.status === "fits");
+    // Nothing fits the day (late evening): list every trip, each card says why, rather than an empty page.
+    const noneFit = fitting.length === 0 && open.length > 0;
+    const listed = new Set(noneFit ? open : fitting);
+    return { shown: [...listed], hidden: all.filter((i) => !listed.has(i)), noneFit };
   }, [trails, destinations, drives, driveStatus, withKids, goalFilter, diffFilter, date, today, start, transit]);
 
   const listedAll = useMemo(() => (showHidden ? [...shown, ...hidden] : shown), [showHidden, shown, hidden]);
@@ -373,7 +376,7 @@ export function HomeExplorer({ trails: initial }: Props) {
 
   const heading = words.length > 0
     ? `Výsledky pre „${query.trim()}“`
-    : dayWord
+    : dayWord && !noneFit
       ? `Stihnete ${dayWord}${start ? ", najbližšie prvé" : ""}`
       : start
         ? "Najbližšie výlety"
@@ -661,12 +664,28 @@ export function HomeExplorer({ trails: initial }: Props) {
     </div>
   );
 
+  const showTomorrow = () => {
+    const t = new Date();
+    update({ date: isoDate(new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1)) });
+  };
+
   const list = (
     <section className="flex flex-col gap-3" aria-live="polite">
       <div className="flex flex-col">
         <h2 className="text-base font-bold">{heading}</h2>
         {scopeNote && <p className="text-[13px] text-[var(--muted)]">{scopeNote}</p>}
       </div>
+
+      {noneFit && dayWord && (
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[var(--radius-card)] bg-[var(--warn-bg)] p-3 text-sm text-[var(--warn)]">
+          <p className="font-semibold">{dayWord === "dnes" ? "Dnes" : "Vtedy"} už za svetla nič nestihnete. Ukazujeme všetky výlety.</p>
+          {dayWord === "dnes" && (
+            <button type="button" onClick={showTomorrow} className="font-semibold underline">
+              Pozrieť zajtra
+            </button>
+          )}
+        </div>
+      )}
 
       {visible.length === 0 && (
         <div className="flex flex-col gap-2 rounded-[var(--radius-card)] border border-dashed border-[var(--border)] p-4 text-sm">
@@ -689,14 +708,7 @@ export function HomeExplorer({ trails: initial }: Props) {
               </button>
             )}
             {dayWord === "dnes" && (
-              <button
-                type="button"
-                onClick={() => {
-                  const t = new Date();
-                  update({ date: isoDate(new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1)) });
-                }}
-                className="font-semibold text-[var(--accent)] underline"
-              >
+              <button type="button" onClick={showTomorrow} className="font-semibold text-[var(--accent)] underline">
                 Pozrieť zajtra
               </button>
             )}

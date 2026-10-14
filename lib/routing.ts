@@ -11,10 +11,31 @@ type OrsProfile = "driving-car" | "foot-hiking" | "foot-walking";
 
 const DAY_S = 86400;
 
+/**
+ * The free OpenRouteService key allows 40 routes a minute and 2,000 a day, and a trip page asks
+ * for up to five (drive, its last stretch, the walk to the trail, each with a fallback). Someone
+ * clicking through trips hit the minute limit, and drives, walks and their times came and went.
+ * Same places, same answer: keep recent answers in the Worker's memory, and don't spend a
+ * second call on a fallback when the router said "too many requests".
+ */
+export class RateLimited extends Error {}
+
+const MEMO_MAX = 500;
+const memo = new Map<string, DriveRoute>();
+
+function remember(key: string, route: DriveRoute): DriveRoute {
+  if (memo.size >= MEMO_MAX) memo.delete(memo.keys().next().value!);
+  memo.set(key, route);
+  return route;
+}
+
 /** GeoJSON [lon, lat] -> our [lat, lon]. */
 const flip = (coords: Pt[]): Pt[] => coords.map(([lon, lat]) => [lat, lon]);
 
 export async function viaOrs(key: string, profile: OrsProfile, from: Pt, to: Pt, radiuses: [number, number]): Promise<DriveRoute> {
+  const memoKey = `${profile}|${from}|${to}|${radiuses}`;
+  const known = memo.get(memoKey);
+  if (known) return known;
   // POST so we can lift the 350 m snapping limit for points off the network.
   const res = await fetch(`https://api.openrouteservice.org/v2/directions/${profile}/geojson`, {
     method: "POST",
@@ -27,14 +48,15 @@ export async function viaOrs(key: string, profile: OrsProfile, from: Pt, to: Pt,
       radiuses,
     }),
   });
+  if (res.status === 429) throw new RateLimited(`ORS ${profile} 429`);
   if (!res.ok) throw new Error(`ORS ${profile} ${res.status}`);
   const f = (await res.json()).features?.[0];
   if (!f) throw new Error(`ORS ${profile}: no route`);
-  return {
+  return remember(memoKey, {
     durationMin: Math.round(f.properties.summary.duration / 60),
     distanceM: Math.round(f.properties.summary.distance),
     points: flip(f.geometry.coordinates),
-  };
+  });
 }
 
 export async function viaOsrm(base: string, from: Pt, to: Pt): Promise<DriveRoute> {
@@ -68,6 +90,7 @@ export async function walkRoute(key: string | undefined, from: Pt, to: Pt, snapM
   try {
     return await viaOrs(key, "foot-hiking", from, to, [snapM, snapM]);
   } catch (err) {
+    if (err instanceof RateLimited) throw err;
     console.warn("walk: foot-hiking failed, trying foot-walking", err);
     return viaOrs(key, "foot-walking", from, to, [snapM, snapM]);
   }
