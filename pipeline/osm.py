@@ -99,7 +99,9 @@ def destination_kind(t):
         return "chata"
     if t.get("waterway") == "waterfall":
         return "vodopad"
-    if t.get("natural") == "water" and "pleso" in low:
+    if t.get("natural") == "water" and ("pleso" in low or (
+            # a lake people travel to (Morské oko, Vinné), not every fishing pond: it has an article
+            (t.get("wikipedia") or t.get("wikidata")) and t.get("water") in (None, "lake", "oxbow"))):
         return "pleso"
     if t.get("natural") == "cave_entrance" and (t.get("show_cave") == "yes" or t.get("tourism") == "attraction" or t.get("fee")):
         return "jaskyna"

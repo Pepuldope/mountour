@@ -192,14 +192,37 @@ class TripBuilder:
             if region is None or not self.in_country(f.lat, f.lon):
                 self._note(f.name, "outside Slovakia or every region")
                 continue
-            node = self.g.snap(f.lat, f.lon, self.t["destination_snap_m"], marked_only=True)
+            # A castle, waterfall or lake is a sight you see from the trail; a peak you stand on.
+            snap_m = self.t["destination_snap_m"] if kind in ("vrchol", "vyhliadka") else self.t.get("sight_snap_m", 350)
+            node = self.g.snap(f.lat, f.lon, snap_m, marked_only=True)
             if node is None:
-                self._note(f.name, f"no marked trail within {self.t['destination_snap_m']} m")
+                self._note(f.name, f"no marked trail within {snap_m} m")
                 continue
             out.append(Candidate(kind, f, region, node, self.score(kind, f)))
         out.sort(key=lambda c: -c.score)
+        self._famous_first(out)
         self.log(f"destination candidates near marked trails: {len(out)}")
         return out
+
+    def fame(self, f):
+        """How widely known a place is: Wikipedia languages that have an article on it."""
+        return self.sitelinks.get(f.tags.get("wikidata"), 0) + (1 if f.tags.get("wikipedia") else 0)
+
+    def _famous_first(self, cands):
+        """Among places close together (a hut at a tarn, peaks on one ridge), the one people know
+        is built first, so it is the one that stays: Téryho chata, not Malé Spišské pleso."""
+        r = self.t.get("same_walk_m", 1500)
+        order = sorted(range(len(cands)), key=lambda i: (-self.fame(cands[i].feature), -cands[i].score))
+        for i in order:
+            a = cands[i]
+            fa = self.fame(a.feature)
+            if not fa:
+                break
+            for b in cands:
+                if (b is not a and b.score >= a.score and self.fame(b.feature) < fa
+                        and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < r):
+                    a.score = b.score + 0.01
+        cands.sort(key=lambda c: -c.score)
 
     def _note(self, name, text):
         key = names.fold(name)
@@ -267,9 +290,11 @@ class TripBuilder:
                 if len(same_start) >= self.t["max_trips_per_start"]:
                     self._reject("start already has enough trips")
                     continue
-                if any(abs(x["distance_m"] - trip["distance_m"]) < 0.1 * trip["distance_m"]
-                       and haversine(x["destination"]["location"]["lat"], x["destination"]["location"]["lon"],
-                                     c.feature.lat, c.feature.lon) < 1500 for x in same_start):
+                # A peak with its own Wikipedia article is a goal of its own, even one ridge away (Ostrý Roháč).
+                if not self.fame(c.feature) and any(
+                        abs(x["distance_m"] - trip["distance_m"]) < 0.1 * trip["distance_m"]
+                        and haversine(x["destination"]["location"]["lat"], x["destination"]["location"]["lon"],
+                                      c.feature.lat, c.feature.lon) < self.t.get("same_walk_m", 1500) for x in same_start):
                     self._reject("almost the same walk as another trip")
                     continue
                 if n_regular >= cap:
