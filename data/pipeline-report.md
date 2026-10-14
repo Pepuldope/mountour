@@ -1,12 +1,12 @@
 # Trip pipeline report
 
-Run: 2026-10-14T19:34:40+00:00 · OSM data: 2026-10-13T20:21:31Z
+Run: 2026-10-14T19:47:12+00:00 · OSM data: 2026-10-13T20:21:31Z
 
-**5105 trips**
+**5101 trips**
 
 | Region | Trips | Family | Candidates |
 |---|---|---|---|
-| tatry | 338 | 54 | 331 |
+| tatry | 334 | 55 | 331 |
 | slovensky-raj | 89 | 30 | 59 |
 | mala-fatra | 154 | 15 | 82 |
 | male-karpaty | 386 | 165 | 181 |
@@ -47,7 +47,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Places with more than one route
 
-1778 of 2055 places have other routes; 3052 other routes in all.
+1776 of 2054 places have other routes; 3049 other routes in all.
 
 | Place | Main route (start, time) | Other routes |
 |---|---|---|
@@ -82,7 +82,7 @@ Flag ⚠ when off by more than 15 %.
 | pusty-dolny-hrad | Haputka 1:30 | Iná cesta: Červený medokýš 2:00; Iná cesta: Pod Veľkým vrchom 1:30 |
 | pusty-horny-hrad | Pod Haputkou 2:00 | Iná cesta: Červený medokýš 2:15; Menej do kopca: Pod Veľkým vrchom 1:45 |
 | stary-zamok | Červená studňa (bežkárske trate) 1:15 | Menej do kopca: Banská Štiavnica, križovatka 1:30; Dlhšia: Horná Roveň 2:00 |
-| skalnata-chata | Pod Štartom 4:45 | Na celý deň: Starý Smokovec (pozemná lanovka) 6:00 |
+| skalnate-pleso | Pod Štartom 5:00 | Na celý deň: Starý Smokovec (pozemná lanovka) 6:15 |
 | drienok | Blatnica, pamätník 6:45 | Na celý deň: Čremošné 9:00; Kratšia: Rakša 6:00 |
 | harmanecka-jaskyna | Kordíky 5:15 | Iná cesta: Pod Kordíckym sedlom 5:45 |
 | hrad-divin | Tuhár - Jánovec 2:15 | Menej do kopca: Dobroč 2:45; Na celý deň: Píla centrum 6:45 |
@@ -96,7 +96,7 @@ Flag ⚠ when off by more than 15 %.
 | velka-javorina | Kachľové Grúne 1:15 | Na celý deň: Hamovanie 5:15; Na celý deň: Narcie 6:15 |
 | sitno | Počúvadlianske jazero 2:15 | Na celý deň: Beluj 5:30; Dlhšia: Sedlo Krížna 3:00 |
 | predne-solisko | Štrbské Pleso čerpačka 4:45 | Na celý deň: Bývalá Važecká chata 7:45 |
-| velka-svistovka | Starý Smokovec (pozemná lanovka) 8:15 | Iná cesta: Biela voda 8:30; Cez Skalnatá chata: Pod Štartom 7:15 |
+| velka-svistovka | Starý Smokovec (pozemná lanovka) 8:15 | Iná cesta: Biela voda 8:30; Kratšia: Pod Štartom 7:15 |
 | sninsky-kamen | Pod tromi Tablami 1:45 | Autobusom: Zemplínske Hámre, lom 3:45 |
 | bystrianska-jaskyna | Valaská, 1 3:00 | Na celý deň: Lazná dolina, ovčín 5:00; Dlhšia: Pohansko 4:15 |
 | chabenec | Chata Magurka 6:30 | Autobusom: Mikulášska chata 8:45; Autobusom: Srdiečko 8:30 |
@@ -618,64 +618,64 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 
 | Place | What happened |
 |---|---|
-| Rysy | found in OSM as vrchol (node/1862536196); found in OSM as vrchol (node/4366169405); outside Slovakia or every region; found in OSM as vrchol (node/11036198697); trip rysy; left out: within 400 m of the trip to Rysy |
-| Kriváň | found in OSM as vrchol (node/260278694); found in OSM as vrchol (node/3441186130); found in OSM as vrchol (node/5586684005); found in OSM as vrchol (node/5657435466); no marked trail within 150 m; trip krivan; trip krivan-ludrova; left out: within 400 m of the trip to Brankov |
-| Slavkovský štít | found in OSM as vrchol (node/380721955); left out: too long |
-| Téryho chata | found in OSM as chata (way/33859958); trip teryho-chata |
-| Zbojnícka chata | found in OSM as chata (way/64888292); trip zbojnicka-chata |
-| Chata pod Rysmi | found in OSM as chata (way/360934553); trip chata-pod-rysmi |
-| Bilíkova chata | found in OSM as chata (way/301993072); left out: start already has enough trips |
-| Ťatliakova chata | found in OSM as chata (way/59241947); left out: start already has enough trips |
-| Veľké Roháčske pleso | found in OSM as pleso (way/181561881); left out: start already has enough trips |
-| Roháčsky vodopád | found in OSM as vodopad (node/1907449865); left out: start already has enough trips |
-| Zelené pleso | found in OSM as pleso (way/33455399); trip zelene-pleso |
-| Vajanského vodopád | found in OSM as vodopad (node/1149378581); left out: within 400 m of the trip to Nižné Temnosmrečinské pleso |
-| Skalnaté pleso | found in OSM as pleso (way/65398797); left out: within 400 m of the trip to Skalnatá chata |
-| Popradské pleso | found in OSM as pleso (way/33458143); trip popradske-pleso |
-| Štrbské pleso | found in OSM as pleso (way/4816134); trip strbske-pleso |
-| Kmeťov vodopád | found in OSM as vodopad (node/1450389768); found in OSM as vyhliadka (node/7817066021); no marked trail within 150 m; trip kmetov-vodopad |
-| Obrovský vodopád | found in OSM as vodopad (node/796255738); found in OSM as vodopad (node/2774813852); trip obrovsky-vodopad-stary-smokovec-pozemna; trip obrovsky-vodopad |
-| Ostrý Roháč | found in OSM as vrchol (node/1674619681); trip ostry-rohac |
-| Baranec | found in OSM as vrchol (node/495953908); found in OSM as vrchol (node/1428244405); no marked trail within 150 m; found in OSM as vrchol (node/5657428154); found in OSM as vrchol (node/9802460875); found in OSM as vyhliadka (node/10934343738); trip baranec; left out: within 400 m of the trip to Baranec |
-| Chopok | found in OSM as vrchol (node/245954616); found in OSM as vyhliadka (node/5074271534); trip chopok; left out: within 400 m of the trip to Chopok |
-| Ďumbier | found in OSM as vrchol (node/26862807); trip dumbier |
-| Kráľova hoľa | found in OSM as vrchol (node/26863430); trip kralova-hola |
-| Veľký Rozsutec | found in OSM as vrchol (node/519189982); trip velky-rozsutec |
-| Veľký Kriváň | found in OSM as vrchol (node/1329906966); trip velky-krivan |
+| Rysy | found in OSM as vrchol (node/1862536196, Wikipedia in 55 languages); found in OSM as vrchol (node/4366169405, Wikipedia in 55 languages); outside Slovakia or every region; found in OSM as vrchol (node/11036198697, Wikipedia in 0 languages); trip rysy; left out: within 400 m of the trip to Rysy |
+| Kriváň | found in OSM as vrchol (node/260278694, Wikipedia in 34 languages); found in OSM as vrchol (node/3441186130, Wikipedia in 0 languages); found in OSM as vrchol (node/5586684005, Wikipedia in 2 languages); found in OSM as vrchol (node/5657435466, Wikipedia in 0 languages); no marked trail within 150 m; trip krivan; trip krivan-ludrova; left out: within 400 m of the trip to Brankov |
+| Slavkovský štít | found in OSM as vrchol (node/380721955, Wikipedia in 14 languages); left out: too long |
+| Téryho chata | found in OSM as chata (way/33859958, Wikipedia in 8 languages); trip teryho-chata |
+| Zbojnícka chata | found in OSM as chata (way/64888292, Wikipedia in 6 languages); trip zbojnicka-chata |
+| Chata pod Rysmi | found in OSM as chata (way/360934553, Wikipedia in 8 languages); trip chata-pod-rysmi |
+| Bilíkova chata | found in OSM as chata (way/301993072, Wikipedia in 6 languages); left out: start already has enough trips |
+| Ťatliakova chata | found in OSM as chata (way/59241947, Wikipedia in 4 languages); trip tatliakova-chata |
+| Veľké Roháčske pleso | found in OSM as pleso (way/181561881, Wikipedia in 2 languages); trip velke-rohacske-pleso |
+| Roháčsky vodopád | found in OSM as vodopad (node/1907449865, Wikipedia in 6 languages); trip rohacsky-vodopad |
+| Zelené pleso | found in OSM as pleso (way/33455399, Wikipedia in 5 languages); trip zelene-pleso |
+| Vajanského vodopád | found in OSM as vodopad (node/1149378581, Wikipedia in 5 languages); left out: within 400 m of the trip to Nižné Temnosmrečinské pleso |
+| Skalnaté pleso | found in OSM as pleso (way/65398797, Wikipedia in 9 languages); trip skalnate-pleso |
+| Popradské pleso | found in OSM as pleso (way/33458143, Wikipedia in 15 languages); trip popradske-pleso |
+| Štrbské pleso | found in OSM as pleso (way/4816134, Wikipedia in 30 languages); trip strbske-pleso |
+| Kmeťov vodopád | found in OSM as vodopad (node/1450389768, Wikipedia in 7 languages); found in OSM as vyhliadka (node/7817066021, Wikipedia in 0 languages); no marked trail within 150 m; trip kmetov-vodopad |
+| Obrovský vodopád | found in OSM as vodopad (node/796255738, Wikipedia in 7 languages); found in OSM as vodopad (node/2774813852, Wikipedia in 0 languages); trip obrovsky-vodopad-stary-smokovec-pozemna; trip obrovsky-vodopad |
+| Ostrý Roháč | found in OSM as vrchol (node/1674619681, Wikipedia in 7 languages); left out: almost the same walk as another trip |
+| Baranec | found in OSM as vrchol (node/495953908, Wikipedia in 7 languages); found in OSM as vrchol (node/1428244405, Wikipedia in 3 languages); no marked trail within 150 m; found in OSM as vrchol (node/5657428154, Wikipedia in 0 languages); found in OSM as vrchol (node/9802460875, Wikipedia in 0 languages); found in OSM as vyhliadka (node/10934343738, Wikipedia in 0 languages); trip baranec; left out: within 400 m of the trip to Baranec |
+| Chopok | found in OSM as vrchol (node/245954616, Wikipedia in 24 languages); found in OSM as vyhliadka (node/5074271534, Wikipedia in 0 languages); trip chopok; left out: within 400 m of the trip to Chopok |
+| Ďumbier | found in OSM as vrchol (node/26862807, Wikipedia in 20 languages); trip dumbier |
+| Kráľova hoľa | found in OSM as vrchol (node/26863430, Wikipedia in 20 languages); trip kralova-hola |
+| Veľký Rozsutec | found in OSM as vrchol (node/519189982, Wikipedia in 13 languages); trip velky-rozsutec |
+| Veľký Kriváň | found in OSM as vrchol (node/1329906966, Wikipedia in 13 languages); trip velky-krivan |
 | Stoh | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
-| Veľký Choč | found in OSM as vrchol (node/428528977); trip velky-choc |
+| Veľký Choč | found in OSM as vrchol (node/428528977, Wikipedia in 7 languages); trip velky-choc |
 | Kľak | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
-| Klak | found in OSM as vrchol (node/1489746476); found in OSM as vrchol (node/1803579837); found in OSM as vrchol (node/2610643574); no marked trail within 150 m; found in OSM as vrchol (node/5657427844); found in OSM as vyhliadka (node/11905424072); trip klak-nad-nolcovom-pristresok; left out: within 400 m of the trip to Kľak; trip klak |
-| Sitno | found in OSM as vrchol (node/26864658); found in OSM as vyhliadka (node/7902483060); found in OSM as hrad (way/367113080); trip sitno; trip sitno-pocuvadlianske-jazero; left out: within 400 m of the trip to Sitno |
-| Kamzík | found in OSM as vrchol (node/249660891); left out: within 400 m of the trip to Kamzík |
-| Devínska Kobyla | found in OSM as vyhliadka (node/259248528); found in OSM as vrchol (node/715814546); left out: within 400 m of the trip to Devínska Kobyla z Devína |
-| Zobor | found in OSM as vrchol (node/409758850); found in OSM as vyhliadka (node/13120659489); found in OSM as vyhliadka (node/13120659497); trip zobor; left out: within 400 m of the trip to Zobor |
-| Vršatec | found in OSM as hrad (way/905860073); trip vrsatec |
+| Klak | found in OSM as vrchol (node/1489746476, Wikipedia in 5 languages); found in OSM as vrchol (node/1803579837, Wikipedia in 6 languages); found in OSM as vrchol (node/2610643574, Wikipedia in 5 languages); no marked trail within 150 m; found in OSM as vrchol (node/5657427844, Wikipedia in 0 languages); found in OSM as vyhliadka (node/11905424072, Wikipedia in 0 languages); trip klak-nad-nolcovom-pristresok; left out: within 400 m of the trip to Kľak; trip klak |
+| Sitno | found in OSM as vrchol (node/26864658, Wikipedia in 13 languages); found in OSM as vyhliadka (node/7902483060, Wikipedia in 0 languages); found in OSM as hrad (way/367113080, Wikipedia in 7 languages); trip sitno; trip sitno-pocuvadlianske-jazero; left out: within 400 m of the trip to Sitno |
+| Kamzík | found in OSM as vrchol (node/249660891, Wikipedia in 9 languages); left out: within 400 m of the trip to Kamzík |
+| Devínska Kobyla | found in OSM as vyhliadka (node/259248528, Wikipedia in 0 languages); found in OSM as vrchol (node/715814546, Wikipedia in 14 languages); left out: within 400 m of the trip to Devínska Kobyla z Devína |
+| Zobor | found in OSM as vrchol (node/409758850, Wikipedia in 13 languages); found in OSM as vyhliadka (node/13120659489, Wikipedia in 0 languages); found in OSM as vyhliadka (node/13120659497, Wikipedia in 0 languages); trip zobor; left out: within 400 m of the trip to Zobor |
+| Vršatec | found in OSM as hrad (way/905860073, Wikipedia in 6 languages); trip vrsatec |
 | Strečno | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
-| Spišský hrad | found in OSM as hrad (way/219698596); trip spissky-hrad |
-| Oravský hrad | found in OSM as hrad (way/881997852); trip oravsky-hrad |
-| Muráň | found in OSM as vrchol (node/380648416); no marked trail within 150 m; found in OSM as vrchol (node/2659360927); found in OSM as vrchol (node/5449347500); found in OSM as vrchol (node/5657427811); found in OSM as vrchol (node/5657428103); found in OSM as vrchol (node/5657428730); found in OSM as vrchol (node/5657432259); found in OSM as vyhliadka (node/14133773487); trip muran |
-| Tomášovský výhľad | found in OSM as vyhliadka (node/457875377); trip tomasovsky-vyhlad |
+| Spišský hrad | found in OSM as hrad (way/219698596, Wikipedia in 47 languages); trip spissky-hrad |
+| Oravský hrad | found in OSM as hrad (way/881997852, Wikipedia in 26 languages); trip oravsky-hrad |
+| Muráň | found in OSM as vrchol (node/380648416, Wikipedia in 8 languages); no marked trail within 150 m; found in OSM as vrchol (node/2659360927, Wikipedia in 0 languages); found in OSM as vrchol (node/5449347500, Wikipedia in 0 languages); found in OSM as vrchol (node/5657427811, Wikipedia in 0 languages); found in OSM as vrchol (node/5657428103, Wikipedia in 2 languages); found in OSM as vrchol (node/5657428730, Wikipedia in 0 languages); found in OSM as vrchol (node/5657432259, Wikipedia in 0 languages); found in OSM as vyhliadka (node/14133773487, Wikipedia in 0 languages); trip muran |
+| Tomášovský výhľad | found in OSM as vyhliadka (node/457875377, Wikipedia in 1 languages); trip tomasovsky-vyhlad |
 | Kláštorisko | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
 | Prielom Hornádu | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
 | Suchá Belá | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
 | Sokolia dolina | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
 | Jánošíkove diery | not among the OSM goals (no peak, hut, castle, viewpoint, tarn, waterfall or cave of this name) |
-| Súľovské skaly | found in OSM as vyhliadka (node/7919138658); left out: within 400 m of the trip to Gotická brána |
-| Morské oko | found in OSM as pleso (way/110347927); found in OSM as pleso (way/131589768); no marked trail within 350 m; trip morske-oko |
-| Vihorlat | found in OSM as vrchol (node/1365679494); no marked trail within 150 m |
-| Šútovský vodopád | found in OSM as vodopad (node/3432338110); trip sutovsky-vodopad |
-| Kojšovská hoľa | found in OSM as vrchol (node/2619394245); trip kojsovska-hola |
-| Sivec | found in OSM as vrchol (node/728788559); trip sivec |
+| Súľovské skaly | found in OSM as vyhliadka (node/7919138658, Wikipedia in 0 languages); left out: within 400 m of the trip to Gotická brána |
+| Morské oko | found in OSM as pleso (way/110347927, Wikipedia in 18 languages); found in OSM as pleso (way/131589768, Wikipedia in 2 languages); no marked trail within 350 m; trip morske-oko |
+| Vihorlat | found in OSM as vrchol (node/1365679494, Wikipedia in 11 languages); no marked trail within 150 m |
+| Šútovský vodopád | found in OSM as vodopad (node/3432338110, Wikipedia in 7 languages); trip sutovsky-vodopad |
+| Kojšovská hoľa | found in OSM as vrchol (node/2619394245, Wikipedia in 7 languages); trip kojsovska-hola |
+| Sivec | found in OSM as vrchol (node/728788559, Wikipedia in 2 languages); trip sivec |
 
 ## Rejected candidates
 
-- almost the same walk as another trip: 107
+- almost the same walk as another trip: 117
 - mostly unmarked: 33
 - no trailhead within reach: 17
 - sight in a city centre: 8
 - sight in a town: 8
-- start already has enough trips: 59
+- start already has enough trips: 48
 - too flat (city walk): 10
 - too long: 45
 - trailheads too close: 1
@@ -4831,8 +4831,8 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | volovec-woowiec-uzka-dolina-ustie | tatry | Úzka dolina, ústie | 20.4 | 1162 | 9:00 | tazka | tanap-sezonna-uzavera |
 | belianska-jaskyna | tatry | Tatranská kotlina (zastávka SAD) | 2.8 | 132 | 1:15 | lahka | osm fee |
 | vodopad-skok | tatry | Rázcestie pred Heliosom | 8.5 | 404 | 3:15 | stredna |  |
-| skalnata-chata | tatry | Pod Štartom | 7.0 | 690 | 4:45 | stredna |  |
-| skalnata-chata-stary-smokovec-pozemna | tatry | Starý Smokovec (pozemná lanovka) | 15.3 | 733 | 6:00 | tazka |  |
+| skalnate-pleso | tatry | Pod Štartom | 7.9 | 739 | 5:00 | stredna |  |
+| skalnate-pleso-stary-smokovec-pozemna | tatry | Starý Smokovec (pozemná lanovka) | 16.1 | 783 | 6:15 | tazka |  |
 | koprovsky-stit | tatry | Holá Úboč | 16.7 | 1005 | 7:30 | tazka | tanap-sezonna-uzavera, tanap-symbolicky-cintorin |
 | vychodna-vysoka | tatry | Velická poľana | 8.3 | 784 | 5:15 | stredna | tanap-sezonna-uzavera |
 | velicke-pleso | tatry | Tatranská polianka | 9.4 | 670 | 4:45 | stredna |  |
@@ -4853,16 +4853,9 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | baranec | tatry | Odbočka na Baranec a Plačlivé | 11.4 | 1243 | 8:15 | tazka | tanap-sezonna-uzavera |
 | baranec-odbocka-nad-oresnicou | tatry | Odbočka nad Orešnicou | 13.9 | 1315 | 8:45 | tazka | tanap-sezonna-uzavera |
 | baranec-razcestie-pod-holym | tatry | Rázcestie pod Holým vrchom | 10.3 | 1267 | 8:15 | tazka | tanap-sezonna-uzavera |
-| hruba-kopa | tatry | Rázcestie Šindľovec | 13.4 | 1121 | 7:45 | tazka |  |
-| pachola | tatry | Rázcestie Šindľovec | 12.8 | 1090 | 7:30 | tazka | tanap-sezonna-uzavera |
 | placlive | tatry | Rázcestie Šindľovec | 15.7 | 1082 | 7:45 | tazka | tanap-sezonna-uzavera |
 | placlive-uzka-dolina-ustie | tatry | Úzka dolina, ústie | 19.4 | 1217 | 9:00 | tazka | tanap-sezonna-uzavera |
 | placlive-ziarska-dolina-ustie | tatry | Žiarska dolina (ústie) | 16.2 | 1217 | 8:45 | tazka | tanap-sezonna-uzavera |
-| tri-kopy | tatry | Rázcestie Šindľovec | 12.3 | 1053 | 7:15 | tazka |  |
-| tri-kopy-ziarska-dolina-ustie | tatry | Žiarska dolina (ústie) | 16.8 | 1226 | 8:45 | tazka | tanap-sezonna-uzavera |
-| ostry-rohac | tatry | Rázcestie Šindľovec | 15.8 | 1173 | 8:15 | tazka | tanap-sezonna-uzavera |
-| ostry-rohac-razcestie-zverovka | tatry | Rázcestie Zverovka | 17.4 | 1234 | 9:00 | tazka | tanap-sezonna-uzavera |
-| ostry-rohac-uzka-dolina-ustie | tatry | Úzka dolina, ústie | 19.5 | 1153 | 8:45 | tazka |  |
 | salatin | tatry | Pod Spálenou | 10.8 | 1133 | 7:30 | tazka | tanap-sezonna-uzavera |
 | salatin-razcestie-na-tokarinach | tatry | Rázcestie na Tokarinách | 16.4 | 1297 | 9:00 | tazka | tanap-sezonna-uzavera |
 | spalena | tatry | Rázcestie Šindľovec | 14.5 | 1228 | 8:30 | tazka | tanap-sezonna-uzavera |
@@ -4870,7 +4863,6 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | brestova-razcestie-prte | tatry | Rázcestie Prte | 16.0 | 1134 | 8:15 | tazka | tanap-sezonna-uzavera |
 | litvorove-pleso | tatry | Velická poľana | 9.9 | 941 | 6:30 | tazka | tanap-sezonna-uzavera |
 | litvorove-pleso-lysa-polana | tatry | Lysá Poľana | 24.3 | 969 | 8:45 | tazka |  |
-| male-hincovo-pleso-hola-uboc | tatry | Holá Úboč | 13.1 | 657 | 5:15 | stredna | tanap-symbolicky-cintorin |
 | pfinnova-kopa | tatry | Starý Smokovec (pozemná lanovka) | 19.0 | 1158 | 8:45 | tazka |  |
 | sivy-vrch | tatry | Rázcestie na Tokarinách | 15.4 | 1131 | 8:00 | tazka | tanap-sezonna-uzavera |
 | sivy-vrch-razcestie-prte | tatry | Rázcestie Prte | 15.6 | 1023 | 7:30 | tazka | tanap-sezonna-uzavera |
@@ -4912,12 +4904,14 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | magura-witowska | tatry | Rázcestie Oravice | 9.2 | 583 | 4:30 | stredna |  |
 | magura-witowska-sucha-hora | tatry | Suchá Hora | 16.9 | 429 | 5:30 | stredna |  |
 | mladky | tatry | Odbočka nad Orešnicou | 9.5 | 1026 | 6:45 | tazka | tanap-sezonna-uzavera |
+| rohacsky-vodopad | tatry | Rázcestie Šindľovec | 5.8 | 261 | 2:15 | lahka |  |
 | belianska-kopa | tatry | Biela voda | 15.2 | 835 | 6:30 | tazka |  |
 | belianska-kopa-tatranska-javorina | tatry | Tatranská Javorina | 17.8 | 791 | 6:45 | tazka | tanap-sezonna-uzavera |
 | belianska-kopa-tatranska-kotlina | tatry | Tatranská kotlina (zastávka SAD) | 19.8 | 1068 | 8:15 | tazka |  |
 | cervene-pleso | tatry | Biela voda | 17.1 | 890 | 7:00 | tazka |  |
 | dlhe-pleso | tatry | Velická poľana | 5.3 | 378 | 2:45 | lahka |  |
 | nizne-kozie-pleso | tatry | Rázcestie pred Heliosom | 11.2 | 603 | 4:45 | stredna |  |
+| tatliakova-chata | tatry | Rázcestie Šindľovec | 7.1 | 304 | 2:45 | lahka |  |
 | vareskove-pleso | tatry | Starý Smokovec (pozemná lanovka) | 14.4 | 825 | 6:15 | tazka |  |
 | zabie-javorove-pleso | tatry | Tatranská Javorina | 19.8 | 965 | 7:45 | tazka |  |
 | zbojnicka-chata | tatry | Starý Smokovec (pozemná lanovka) | 16.0 | 955 | 7:15 | tazka |  |
@@ -5015,6 +5009,8 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | nizne-bystre-pleso | tatry | Hrdovo | 14.5 | 967 | 7:00 | tazka | tanap-sezonna-uzavera |
 | pleso-pod-zverovkou | tatry | Pomník SNP | 2.6 | 44 | 1:00 | lahka |  |
 | pleso-pod-zverovkou-horaren-brestova | tatry | Horáreň Brestová | 5.8 | 144 | 2:00 | lahka |  |
+| stvrte-rohacske-pleso | tatry | Rázcestie Šindľovec | 9.7 | 649 | 4:45 | stredna |  |
+| velke-rohacske-pleso | tatry | Rázcestie Šindľovec | 10.9 | 497 | 4:15 | stredna | tanap-sezonna-uzavera |
 | vysne-rackovo-pleso | tatry | Úzka dolina, ústie | 17.0 | 845 | 6:45 | tazka |  |
 | ziarske-pleso-ziarska-dolina-ustie | tatry | Žiarska dolina (ústie) | 8.1 | 337 | 3:00 | lahka |  |
 | lomne | tatry | Veľké Borové | 10.9 | 593 | 4:45 | stredna |  |
@@ -5795,4 +5791,4 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | vystrkov-podhajska | zahorie-podunajsko | Podhájska | 9.3 | 171 | 3:00 | lahka |  |
 | vystrkov-podhajska-belek | zahorie-podunajsko | Podhájska, Belek | 10.3 | 196 | 3:15 | stredna |  |
 
-Drive table: 141 towns x 2055 main trips, 0 pairs without a route.
+Drive table: 141 towns x 2054 main trips, 0 pairs without a route.
