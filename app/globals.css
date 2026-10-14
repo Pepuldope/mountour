@@ -44,6 +44,10 @@
   --radius-chip: 999px;
   --radius-marker: 3px;       /* trail chips stay square like the painted marks */
   --shadow-float: 0 6px 20px rgba(20, 35, 59, 0.1);
+  /* The trip page's three cards: a shade-darker page behind, a firmer edge and a soft shadow. */
+  --page-sunk: #e6edf4;
+  --card-edge: #c7d5e4;
+  --shadow-card: 0 2px 10px rgba(20, 35, 59, 0.12);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -81,6 +85,9 @@
     --trail-yellow: #f2c200;
     --trail-white: #e8eef6;
     --shadow-float: 0 6px 20px rgba(0, 0, 0, 0.35);
+    --page-sunk: #0a111b;
+    --card-edge: #34465f;
+    --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.4);
   }
 }
 

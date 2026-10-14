@@ -161,7 +161,7 @@ export default async function TripSheetPage({ params }: Props) {
 
   return (
     <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} transitStops={transitStops} trailStart={trailStart}>
-      <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
+      <main className="flex flex-1 flex-col bg-[var(--page-sunk)] lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
         <JsonLd data={trailJsonLd(detail)} />
         <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
         <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 lg:mx-0 lg:w-[460px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">

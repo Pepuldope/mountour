@@ -46,9 +46,9 @@ interface Props extends ShareInfo {
   outro?: ReactNode;
 }
 
-/** One of the page's three cards: at least a phone screen tall, so one step fills the view. */
+/** One of the page's three cards, set off from the darker page so each step reads on its own. */
 const part =
-  "flex flex-col gap-4 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4";
+  "flex flex-col gap-4 rounded-[var(--radius-card)] border border-[var(--card-edge)] bg-[var(--card-bg)] p-4 shadow-[var(--shadow-card)]";
 
 
 /**
@@ -116,8 +116,8 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
   const startWord = hasDrive ? "Vyrazte" : transit && stop ? `Buďte na zastávke ${stopLabel(stop.name)}` : "Začnite túru";
 
   return (
-    <div className="flex flex-col gap-4">
-      {/* Three cards, each a phone screen tall, so the eye takes one step at a time:
+    <div className="flex flex-col gap-5">
+      {/* Three cards, so the eye takes one step at a time:
           plan the trip, see the day, then get there. */}
       <section aria-label="Plán výletu" className={part}>
         {intro}
@@ -161,8 +161,8 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
       {plan && (
         <section aria-label="Priebeh dňa" className={part}>
           {sun && (
-            // Edge to edge at the top of the card, as the dial was drawn for.
-            <div className="-mx-4 -mt-4 overflow-hidden rounded-t-[var(--radius-card)]">
+            // Framed inside the card: its sky would otherwise blend into the page.
+            <div className="overflow-hidden rounded-xl">
               <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} byBus={transit} weather={weather.below} />
             </div>
           )}
