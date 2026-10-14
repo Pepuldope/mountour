@@ -196,22 +196,6 @@ export default async function TripSheetPage({ params }: Props) {
             </div>
           </header>
 
-          <div className="flex flex-col gap-2">
-            <TripFacts
-              distanceM={trail.distance_m}
-              ascentM={trail.ascent_m}
-              durationMin={trail.duration_min}
-              difficulty={trail.difficulty}
-              familyFriendly={trail.family_friendly}
-            />
-            {trail.description && <p className="text-sm text-[var(--muted)]">{trail.description}</p>}
-          </div>
-
-          <RouteChoice slug={trail.slug} destination={trip.destination.name} routes={routes} />
-
-          {/* A real closure stays up top; "no data" is a quiet note under the map. */}
-          {closures.length > 0 && <ClosureBanner closures={closures} />}
-
           <TripPlanner
             slug={trail.slug}
             name={trail.name}
@@ -228,6 +212,33 @@ export default async function TripSheetPage({ params }: Props) {
             profile={profile}
             gpxUrl={gpxUrl}
             bbox={trail.bbox}
+            intro={
+              <>
+                <div className="flex flex-col gap-2">
+                  <TripFacts
+                    distanceM={trail.distance_m}
+                    ascentM={trail.ascent_m}
+                    durationMin={trail.duration_min}
+                    difficulty={trail.difficulty}
+                    familyFriendly={trail.family_friendly}
+                  />
+                  {trail.description && <p className="text-sm text-[var(--muted)]">{trail.description}</p>}
+                </div>
+                <RouteChoice slug={trail.slug} destination={trip.destination.name} routes={routes} />
+                {/* A real closure stays up top; "no data" is a quiet note under the map. */}
+                {closures.length > 0 && <ClosureBanner closures={closures} />}
+              </>
+            }
+            outro={
+              gpxUrl && (
+                <section className="flex flex-col gap-1 text-sm">
+                  <h2 className="text-base font-bold">Na túru</h2>
+                  <a href={gpxUrl} download className="w-fit font-semibold text-[var(--accent)] underline">
+                    Stiahnuť GPX trasu
+                  </a>
+                </section>
+              )
+            }
             walk={{ points: trip.path.map(([lon, lat]) => [+lat.toFixed(5), +lon.toFixed(5)]), loop: trip.route === "okruh" }}
           >
             {/* Testers: Uložiť and navigation belong at the end; parking first, then the map. */}
@@ -244,15 +255,6 @@ export default async function TripSheetPage({ params }: Props) {
 
             <PoiList pois={detail.pois} />
           </TripPlanner>
-
-          {gpxUrl && (
-            <section className="flex flex-col gap-1 text-sm">
-              <h2 className="text-base font-bold">Na túru</h2>
-              <a href={gpxUrl} download className="w-fit font-semibold text-[var(--accent)] underline">
-                Stiahnuť GPX trasu
-              </a>
-            </section>
-          )}
 
           <SiteFooter />
         </div>
