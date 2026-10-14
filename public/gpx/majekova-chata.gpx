@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Majekova chata</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Majekova chata</name><trkseg>
+    <trkpt lat="49.046080" lon="19.271687"><ele>862</ele></trkpt>
+    <trkpt lat="49.046344" lon="19.271435"><ele>860</ele></trkpt>
+    <trkpt lat="49.047106" lon="19.271008"><ele>847</ele></trkpt>
+    <trkpt lat="49.047346" lon="19.270803"><ele>844</ele></trkpt>
+    <trkpt lat="49.047876" lon="19.269784"><ele>842</ele></trkpt>
+    <trkpt lat="49.048200" lon="19.269789"><ele>841</ele></trkpt>
+    <trkpt lat="49.048349" lon="19.269656"><ele>844</ele></trkpt>
+    <trkpt lat="49.048637" lon="19.269268"><ele>844</ele></trkpt>
+    <trkpt lat="49.049145" lon="19.268931"><ele>849</ele></trkpt>
+    <trkpt lat="49.049206" lon="19.268830"><ele>851</ele></trkpt>
+    <trkpt lat="49.049510" lon="19.267859"><ele>866</ele></trkpt>
+    <trkpt lat="49.049665" lon="19.267545"><ele>870</ele></trkpt>
+    <trkpt lat="49.050226" lon="19.266528"><ele>883</ele></trkpt>
+    <trkpt lat="49.050916" lon="19.265496"><ele>897</ele></trkpt>
+    <trkpt lat="49.051139" lon="19.265097"><ele>901</ele></trkpt>
+    <trkpt lat="49.051253" lon="19.264990"><ele>903</ele></trkpt>
+    <trkpt lat="49.051744" lon="19.264780"><ele>910</ele></trkpt>
+    <trkpt lat="49.052709" lon="19.263914"><ele>922</ele></trkpt>
+    <trkpt lat="49.053177" lon="19.263594"><ele>929</ele></trkpt>
+    <trkpt lat="49.053168" lon="19.263489"><ele>929</ele></trkpt>
+    <trkpt lat="49.053177" lon="19.263594"><ele>929</ele></trkpt>
+    <trkpt lat="49.052709" lon="19.263914"><ele>922</ele></trkpt>
+    <trkpt lat="49.051744" lon="19.264780"><ele>910</ele></trkpt>
+    <trkpt lat="49.051253" lon="19.264990"><ele>903</ele></trkpt>
+    <trkpt lat="49.051139" lon="19.265097"><ele>901</ele></trkpt>
+    <trkpt lat="49.050916" lon="19.265496"><ele>897</ele></trkpt>
+    <trkpt lat="49.050226" lon="19.266528"><ele>883</ele></trkpt>
+    <trkpt lat="49.049665" lon="19.267545"><ele>870</ele></trkpt>
+    <trkpt lat="49.049510" lon="19.267859"><ele>866</ele></trkpt>
+    <trkpt lat="49.049206" lon="19.268830"><ele>851</ele></trkpt>
+    <trkpt lat="49.049145" lon="19.268931"><ele>849</ele></trkpt>
+    <trkpt lat="49.048637" lon="19.269268"><ele>844</ele></trkpt>
+    <trkpt lat="49.048349" lon="19.269656"><ele>844</ele></trkpt>
+    <trkpt lat="49.048200" lon="19.269789"><ele>841</ele></trkpt>
+    <trkpt lat="49.047876" lon="19.269784"><ele>842</ele></trkpt>
+    <trkpt lat="49.047346" lon="19.270803"><ele>844</ele></trkpt>
+    <trkpt lat="49.047106" lon="19.271008"><ele>847</ele></trkpt>
+    <trkpt lat="49.046344" lon="19.271435"><ele>860</ele></trkpt>
+    <trkpt lat="49.046080" lon="19.271687"><ele>862</ele></trkpt>
+  </trkseg></trk>
+</gpx>

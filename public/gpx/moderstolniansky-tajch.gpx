@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Moderštôlniansky tajch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Moderštôlniansky tajch</name><trkseg>
+    <trkpt lat="48.434843" lon="18.801192"><ele>630</ele></trkpt>
+    <trkpt lat="48.434900" lon="18.802765"><ele>627</ele></trkpt>
+    <trkpt lat="48.435080" lon="18.803527"><ele>626</ele></trkpt>
+    <trkpt lat="48.434995" lon="18.803719"><ele>628</ele></trkpt>
+    <trkpt lat="48.434887" lon="18.804279"><ele>635</ele></trkpt>
+    <trkpt lat="48.434607" lon="18.804958"><ele>656</ele></trkpt>
+    <trkpt lat="48.434552" lon="18.805592"><ele>664</ele></trkpt>
+    <trkpt lat="48.434016" lon="18.807220"><ele>674</ele></trkpt>
+    <trkpt lat="48.433747" lon="18.808267"><ele>680</ele></trkpt>
+    <trkpt lat="48.433635" lon="18.808873"><ele>678</ele></trkpt>
+    <trkpt lat="48.433574" lon="18.809642"><ele>672</ele></trkpt>
+    <trkpt lat="48.433586" lon="18.810316"><ele>670</ele></trkpt>
+    <trkpt lat="48.433515" lon="18.810651"><ele>668</ele></trkpt>
+    <trkpt lat="48.433360" lon="18.811006"><ele>663</ele></trkpt>
+    <trkpt lat="48.433125" lon="18.811250"><ele>662</ele></trkpt>
+    <trkpt lat="48.432972" lon="18.811387"><ele>661</ele></trkpt>
+    <trkpt lat="48.432278" lon="18.811800"><ele>659</ele></trkpt>
+    <trkpt lat="48.432125" lon="18.811952"><ele>657</ele></trkpt>
+    <trkpt lat="48.431815" lon="18.812988"><ele>656</ele></trkpt>
+    <trkpt lat="48.431652" lon="18.813376"><ele>656</ele></trkpt>
+    <trkpt lat="48.431337" lon="18.813616"><ele>658</ele></trkpt>
+    <trkpt lat="48.430575" lon="18.813997"><ele>659</ele></trkpt>
+    <trkpt lat="48.431337" lon="18.813616"><ele>658</ele></trkpt>
+    <trkpt lat="48.431652" lon="18.813376"><ele>656</ele></trkpt>
+    <trkpt lat="48.431815" lon="18.812988"><ele>656</ele></trkpt>
+    <trkpt lat="48.432125" lon="18.811952"><ele>657</ele></trkpt>
+    <trkpt lat="48.432278" lon="18.811800"><ele>659</ele></trkpt>
+    <trkpt lat="48.432972" lon="18.811387"><ele>661</ele></trkpt>
+    <trkpt lat="48.433125" lon="18.811250"><ele>662</ele></trkpt>
+    <trkpt lat="48.433360" lon="18.811006"><ele>663</ele></trkpt>
+    <trkpt lat="48.433515" lon="18.810651"><ele>668</ele></trkpt>
+    <trkpt lat="48.433586" lon="18.810316"><ele>670</ele></trkpt>
+    <trkpt lat="48.433574" lon="18.809642"><ele>672</ele></trkpt>
+    <trkpt lat="48.433635" lon="18.808873"><ele>678</ele></trkpt>
+    <trkpt lat="48.433747" lon="18.808267"><ele>680</ele></trkpt>
+    <trkpt lat="48.434016" lon="18.807220"><ele>674</ele></trkpt>
+    <trkpt lat="48.434552" lon="18.805592"><ele>664</ele></trkpt>
+    <trkpt lat="48.434607" lon="18.804958"><ele>656</ele></trkpt>
+    <trkpt lat="48.434887" lon="18.804279"><ele>635</ele></trkpt>
+    <trkpt lat="48.434995" lon="18.803719"><ele>628</ele></trkpt>
+    <trkpt lat="48.435080" lon="18.803527"><ele>626</ele></trkpt>
+    <trkpt lat="48.434900" lon="18.802765"><ele>627</ele></trkpt>
+    <trkpt lat="48.434843" lon="18.801192"><ele>630</ele></trkpt>
+  </trkseg></trk>
+</gpx>

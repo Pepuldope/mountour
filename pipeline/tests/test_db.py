@@ -90,3 +90,29 @@ def test_ids_stay_the_same_across_builds():
     b = db.stable_ids(["krivan", "novy-vylet", "chleb", "sitno"])
     assert all(a[k] == b[k] for k in a)
     assert max(b.values()) < 2**31
+
+
+def test_a_load_in_parts_ends_where_one_file_would():
+    rows, version = db.build_rows()
+    sql = db.full_sql(rows, version)
+    parts = db.split_sql(sql, 200_000)
+    assert len(parts) > 3 and "".join(parts) == sql
+    assert all(len(p.encode()) <= 200_000 + D1_MAX_STATEMENT for p in parts)
+    assert "INSERT INTO data_version" in parts[-1] and not any("INSERT INTO data_version" in p for p in parts[:-1])
+    con = sqlite3.connect(":memory:")
+    for p in parts:
+        con.executescript(p)
+    whole = sqlite3.connect(":memory:")
+    whole.executescript(sql)
+    assert _dump(con) == _dump(whole)
+
+
+def test_an_incremental_load_hides_the_old_version_first():
+    rows, version = db.build_rows()
+    con = sqlite3.connect(":memory:")
+    con.executescript(db.full_sql(rows, version))
+    new = {t: list(r) for t, r in rows.items()}
+    new["trip"][0] = new["trip"][0][:2] + ("Nový názov",) + new["trip"][0][3:-1] + ("changed",)
+    sql, _ = db.incremental_sql(new, version, _have(con))
+    first = db.split_sql(sql, 10_000)[0]
+    assert first.startswith("DELETE FROM data_version WHERE id = 1;")

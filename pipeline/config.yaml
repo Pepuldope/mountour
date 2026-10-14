@@ -124,6 +124,59 @@ trips:
   exclude_starts: ["Sliezsky dom"]
   poi_max_m: 150
 
+# Well-known places people expect to find. Every weekly report says what became of each one
+# (a trip, merged, or why it was left out), so a missing favourite is noticed and fixed.
+watch:
+  - Rysy
+  - Kriváň
+  - Slavkovský štít
+  - Téryho chata
+  - Zbojnícka chata
+  - Chata pod Rysmi
+  - Bilíkova chata
+  - Ťatliakova chata
+  - Veľké Roháčske pleso
+  - Roháčsky vodopád
+  - Zelené pleso
+  - Vajanského vodopád
+  - Skalnaté pleso
+  - Popradské pleso
+  - Štrbské pleso
+  - Kmeťov vodopád
+  - Obrovský vodopád
+  - Ostrý Roháč
+  - Baranec
+  - Chopok
+  - Ďumbier
+  - Kráľova hoľa
+  - Veľký Rozsutec
+  - Veľký Kriváň
+  - Stoh
+  - Veľký Choč
+  - Kľak
+  - Klak
+  - Sitno
+  - Kamzík
+  - Devínska Kobyla
+  - Zobor
+  - Vršatec
+  - Strečno
+  - Spišský hrad
+  - Oravský hrad
+  - Muráň
+  - Tomášovský výhľad
+  - Kláštorisko
+  - Prielom Hornádu
+  - Suchá Belá
+  - Sokolia dolina
+  - Jánošíkove diery
+  - Súľovské skaly
+  - Morské oko
+  - Vihorlat
+  - Šútovský vodopád
+  - Kojšovská hoľa
+  - Sivec
+
 # Hand-picked trips, always built. They are also the regression test set: the
 # pipeline report compares them with `expect` and flags anything off by > 15 %.
 pinned:

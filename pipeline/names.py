@@ -33,7 +33,7 @@ KIND_HINTS = {
               "penzi", "hostin", "bacówk", "chyž", "dom"),
     "jaskyna": ("jaskyň", "jaskyn", "diera", "ľadnic", "priepas", "ponor", "vchod"),
     "vodopad": ("vodop", "kaskád", "ľadopád"),
-    "pleso": ("pleso", "jazer", "tajch", "mlák"),
+    "pleso": ("pleso", "jazer", "tajch", "mlák", "oko"),
 }
 # Kinds that are a different thing from a hill even under the same name (Sitno the hill, Sitno the castle).
 DISTINCT = {"hrad", "chata", "jaskyna", "pleso", "vodopad"}

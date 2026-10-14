@@ -103,6 +103,8 @@ that changed. A full load (the first one, or after a schema change) writes about
   Hand-picked trips are routed like all others, preferring marked trails, so their
   `expect` values in the report can drift from the 2026-10-07 build.
 - Rename a trip, rewrite its description or drop it: `pipeline/overrides.yaml`.
+- A well-known place is missing: add it to `watch` in `pipeline/config.yaml`; the next report says what became of it (no marked trail near it, too long, merged into a nearby goal, ...).
+- The database load runs in parts of at most 2 MB / 20 statements (`pipeline.db --parts`): one big file ran out of D1's CPU time. The version row goes last, so the site reads the static files until every part is in.
 - Closure or fee: edit the JSON rule files (needs a source URL and a check date). Dates
   and texts apply at the next site build; a new rule area needs the next pipeline run
   (Actions → "Weekly trip data" → Run workflow).

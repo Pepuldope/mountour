@@ -13,13 +13,16 @@ from .geo import LocalProjection, ascent_descent, din33466_minutes, haversine, r
 COLOUR_ORDER = ["red", "blue", "green", "yellow", "black"]
 COLOUR_SK = {"red": "červenej", "blue": "modrej", "green": "zelenej", "yellow": "žltej", "black": "čiernej"}
 KIND_BONUS = {"hrad": 30, "pleso": 30, "vodopad": 25, "jaskyna": 25, "chata": 20, "vyhliadka": 18, "vrchol": 12, "ine": 5}
-GENERIC_NAMES = {"vyhliadka", "výhľad", "rozhľadňa", "altánok", "vyhliadkové miesto", "chata", "hrad", "pleso"}
+GENERIC_NAMES = {"jazero", "vyhliadka", "výhľad", "rozhľadňa", "altánok", "vyhliadkové miesto", "chata", "hrad", "pleso"}
 ROUTE_LIMIT = 18000  # weighted metres one way, generous; time limits are applied afterwards
 PENDING = "__pending__"  # slug of a route until it is known whether it is the main one
 TOWN_STREETS = {"residential", "living_street", "pedestrian"}  # their density marks a built-up area
 TOWN_GOALS = {"hrad", "vrchol", "jaskyna", "vodopad"}  # worth a walk even when in a built-up area (a castle above a town)
 CITY_CORE_M = 2500  # around the centre of a big city (Bratislava, Košice) every goal is a city sight, not a trip
 CITY_CORE_POP = 200_000
+FAMOUS = 6  # Wikipedia languages with an article: a place known well beyond its valley
+DISTINCT_GOALS = {"vodopad", "pleso", "jaskyna", "hrad"}  # two of these near each other are two goals
+VERY_FAMOUS = 12  # every Tatra peak has a few (Polish, German); this many is a household name
 
 
 @dataclass
@@ -59,7 +62,11 @@ class TripBuilder:
         self.proj = LocalProjection()
         # Hand-picked trips keep their own slugs; no generated trip may take one.
         self.used_slugs = {p["slug"] for p in cfg.get("pinned", [])}
-        self.report = dict(rejected={}, regression=[], regions={})
+        self.report = dict(rejected={}, regression=[], regions={}, watch={})
+        # Well-known places (config `watch`): the report says what became of each one.
+        self.watch = {names.fold(n): n for n in cfg.get("watch", [])}
+        self.report["watch_names"] = list(cfg.get("watch", []))
+        self._current = None  # name of the destination being built, for _reject
 
         def tree(feats):
             if not feats:
@@ -178,6 +185,7 @@ class TripBuilder:
     def candidates(self):
         out = []
         for kind, f in self.osm.destinations:
+            self._note(f.name, f"found in OSM as {kind} ({f.osm}, Wikipedia in {self.fame(f)} languages)")
             if f.name.strip().lower() in GENERIC_NAMES or names.is_junk(f.name):
                 continue
             if names.is_foreign(f.name, f.tags):
@@ -185,14 +193,53 @@ class TripBuilder:
                 continue
             region = self.region_of(f.lat, f.lon)
             if region is None or not self.in_country(f.lat, f.lon):
+                self._note(f.name, "outside Slovakia or every region")
                 continue
-            node = self.g.snap(f.lat, f.lon, self.t["destination_snap_m"], marked_only=True)
+            # A castle, waterfall or lake is a sight you see from the trail; a peak you stand on.
+            snap_m = self.t["destination_snap_m"] if kind in ("vrchol", "vyhliadka") else self.t.get("sight_snap_m", 350)
+            node = self.g.snap(f.lat, f.lon, snap_m, marked_only=True)
             if node is None:
+                self._note(f.name, f"no marked trail within {snap_m} m")
                 continue
             out.append(Candidate(kind, f, region, node, self.score(kind, f)))
         out.sort(key=lambda c: -c.score)
+        self._famous_first(out)
         self.log(f"destination candidates near marked trails: {len(out)}")
         return out
+
+    def fame(self, f):
+        """How widely known a place is: Wikipedia languages that have an article on it."""
+        return self.sitelinks.get(f.tags.get("wikidata"), 0) + (1 if f.tags.get("wikipedia") else 0)
+
+    def _famous_first(self, cands):
+        """Among places close together (a hut at a tarn, peaks on one ridge), the one people know
+        is built first, so it is the one that stays: Téryho chata, not Malé Spišské pleso."""
+        r = self.t.get("same_walk_m", 1500)
+        order = sorted(range(len(cands)), key=lambda i: (-self.fame(cands[i].feature), -cands[i].score))
+        for i in order:
+            a = cands[i]
+            fa = self.fame(a.feature)
+            if fa < FAMOUS:
+                break
+            for b in cands:
+                if (b is not a and b.score >= a.score and fa > 2 * self.fame(b.feature)
+                        and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < r):
+                    a.score = b.score + 0.01
+        # A hut by a tarn is the goal people name (Téryho chata, Zbojnícka chata), unless the hut
+        # is named after the tarn (Chata pri Zelenom plese) or the tarn is better known (Skalnaté pleso).
+        for a in cands:
+            if a.kind != "chata" or "ples" in a.feature.name.lower():
+                continue
+            for b in cands:
+                if (b.kind == "pleso" and b.score >= a.score and self.fame(a.feature) >= self.fame(b.feature)
+                        and haversine(a.feature.lat, a.feature.lon, b.feature.lat, b.feature.lon) < self.t["dedupe_m"]):
+                    a.score = b.score + 0.01
+        cands.sort(key=lambda c: -c.score)
+
+    def _note(self, name, text):
+        key = names.fold(name)
+        if key in self.watch:
+            self.report["watch"].setdefault(self.watch[key], []).append(text)
 
     def score(self, kind, f):
         t = f.tags
@@ -215,7 +262,7 @@ class TripBuilder:
         th_nodes = np.array(sorted(ths), dtype=np.int64)
         trips = []
         variants = []  # other routes to a trip's destination; not on the home list
-        taken = []  # (region id, lat, lon)
+        taken = []  # (region id, lat, lon, name, kind)
 
         for p in self.cfg.get("pinned", []):
             trip = self.build_pinned(p, ths, th_nodes)
@@ -223,7 +270,8 @@ class TripBuilder:
                 others = trip.pop("_others")
                 trips.append(trip)
                 variants += self._finish_variants(trip, others)
-                taken.append((trip["region"], trip["destination"]["location"]["lat"], trip["destination"]["location"]["lon"]))
+                taken.append((trip["region"], trip["destination"]["location"]["lat"], trip["destination"]["location"]["lon"], trip["name"],
+                              trip["destination"]["kind"]))
 
         by_region = {}
         for c in self.candidates():
@@ -241,19 +289,28 @@ class TripBuilder:
                 n_family = len([x for x in chosen if x["family_friendly"]])
                 if n_regular >= cap and n_family >= fam_needed:
                     break
-                if any(r == rid and haversine(c.feature.lat, c.feature.lon, la, lo) < self.t["dedupe_m"] for r, la, lo in taken):
+                # One place, two goals: a hut at a tarn, a viewpoint on a peak. A waterfall below a
+                # tarn is a place of its own (Vajanského vodopád).
+                near = next((n for r, la, lo, n, k in taken
+                             if r == rid and haversine(c.feature.lat, c.feature.lon, la, lo) < self.t["dedupe_m"]
+                             and (k == c.kind or not {k, c.kind} <= DISTINCT_GOALS)), None)
+                if near:
+                    self._note(c.feature.name, f"left out: within {self.t['dedupe_m']} m of the trip to {near}")
                     continue
+                self._current = c.feature.name
                 trip = self.build_generated(c, ths, th_nodes)
                 if not trip:
                     continue
                 others = trip.pop("_others")
                 same_start = [x for x in chosen if x["start"]["osm"] == trip["start"]["osm"]]
-                if len(same_start) >= self.t["max_trips_per_start"]:
+                if len(same_start) >= self.t["max_trips_per_start"] and self.fame(c.feature) < FAMOUS:
                     self._reject("start already has enough trips")
                     continue
-                if any(abs(x["distance_m"] - trip["distance_m"]) < 0.1 * trip["distance_m"]
-                       and haversine(x["destination"]["location"]["lat"], x["destination"]["location"]["lon"],
-                                     c.feature.lat, c.feature.lon) < 1500 for x in same_start):
+                # A peak with its own Wikipedia article is a goal of its own, even one ridge away (Ostrý Roháč).
+                if self.fame(c.feature) < VERY_FAMOUS and any(
+                        abs(x["distance_m"] - trip["distance_m"]) < 0.1 * trip["distance_m"]
+                        and haversine(x["destination"]["location"]["lat"], x["destination"]["location"]["lon"],
+                                      c.feature.lat, c.feature.lon) < self.t.get("same_walk_m", 1500) for x in same_start):
                     self._reject("almost the same walk as another trip")
                     continue
                 if n_regular >= cap:
@@ -262,7 +319,8 @@ class TripBuilder:
                     trip["_extra"] = True
                 chosen.append(trip)
                 variants += self._finish_variants(trip, others)
-                taken.append((rid, c.feature.lat, c.feature.lon))
+                taken.append((rid, c.feature.lat, c.feature.lon, c.feature.name, c.kind))
+                self._note(c.feature.name, f"trip {trip['slug']}")
             self.report["regions"][rid] = dict(candidates=len(cands), trips=len(chosen))
             self.log(f"{rid}: {len(chosen)} trips from {len(cands)} candidates")
             trips += chosen
@@ -270,6 +328,8 @@ class TripBuilder:
         for t in trips:
             t.pop("_extra", None)
         trips, self.report["names"] = names.tidy(trips, names.Places(getattr(self.osm, "places", [])))
+        for a, s, b, k, m in self.report["names"]["merged"]:
+            self._note(a, f"merged into {k} ({m} m away, same name)")
         mains = {t["slug"] for t in trips}
         variants = [v for v in variants if v["variant_of"] in mains]
         self._rank(trips)
@@ -295,6 +355,8 @@ class TripBuilder:
 
     def _reject(self, why):
         self.report["rejected"][why] = self.report["rejected"].get(why, 0) + 1
+        if self._current:
+            self._note(self._current, f"left out: {why}")
         return None
 
     def build_generated(self, c, ths, th_nodes):
@@ -733,7 +795,7 @@ class TripBuilder:
             "vyhliadka": f"Výlet k vyhliadke {n}.",
             "hrad": f"Výlet k hradu: {n}.",
             "chata": f"Výlet k horskej chate: {n}.",
-            "pleso": f"Výlet k plesu: {n}.",
+            "pleso": f"Výlet k plesu: {n}." if "pleso" in n.lower() else f"Výlet k vode: {n}.",
             "vodopad": f"Výlet k vodopádu: {n}.",
             "jaskyna": f"Výlet k jaskyni: {n}.",
         }.get(dest["kind"], f"Výlet: {n}.")

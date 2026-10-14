@@ -186,6 +186,8 @@ CREATE TABLE data_version (
 # D1 caps one SQL statement at 100 KB; at 80 KB the local D1 (wrangler --local)
 # already runs out of memory, so INSERTs are cut at 40 KB.
 MAX_STATEMENT_BYTES = 40_000
+PART_BYTES = 2_000_000  # one `wrangler d1 execute --file` (more runs out of D1 CPU time)
+PART_STATEMENTS = 20  # a DELETE of 500 trips' rows costs D1 far more CPU than its few bytes say
 
 
 def q(v):
@@ -447,7 +449,8 @@ def incremental_sql(rows, version, have):
     changed = {i for i, h in want.items() if have["trip"].get(i) != h}
     gone = set(have["trip"]) - set(want)
     redo = (changed & set(have["trip"])) | gone
-    sql, written = [], 0
+    # First, so the site reads the static files while a load split into parts is half done.
+    sql, written = ["DELETE FROM data_version WHERE id = 1;"], 0
 
     def delete(table, col, ids):
         for part in chunks(ids):
@@ -482,9 +485,31 @@ def incremental_sql(rows, version, have):
         old = set(have[t]) - {r[0] for r in rows[t]}
         delete(t, KEY[t], old)
         written += len(old)
-    sql.append("DELETE FROM data_version WHERE id = 1;")
     sql += version_sql(version, fingerprint(data_body(rows)))
     return "\n".join(sql) + "\n", written + 1
+
+
+def split_sql(sql, max_bytes=PART_BYTES, max_statements=PART_STATEMENTS):
+    """Cut a load into parts D1 runs one by one: one big file runs out of D1's CPU time
+    ("D1 DB exceeded its CPU time limit and was reset", 2026-10-14). Cuts fall between statements;
+    the version row is the last statement, so the site only reads the new data once every part is in."""
+    parts, cur, size = [], [], 0
+    stmt = []
+    for line in sql.splitlines(keepends=True):
+        stmt.append(line)
+        if not line.rstrip().endswith(";"):
+            continue
+        text = "".join(stmt)
+        stmt = []
+        if cur and (size + len(text.encode()) > max_bytes or len(cur) >= max_statements):
+            parts.append("".join(cur))
+            cur, size = [], 0
+        cur.append(text)
+        size += len(text.encode())
+    cur += stmt
+    if cur:
+        parts.append("".join(cur))
+    return parts
 
 
 def build_sql(root=ROOT):
@@ -501,6 +526,7 @@ def fingerprint(sql):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--out", type=Path, help="write here instead of stdout")
+    ap.add_argument("--parts", type=Path, help="also write the load in parts here (part-001.sql, ...), run in order")
     ap.add_argument("--fingerprint", action="store_true", help="print only the data fingerprint")
     ap.add_argument("--have-sql", action="store_true", help="print the queries whose JSON results --have reads")
     ap.add_argument("--have", type=Path, help="wrangler's JSON results of --have-sql: write only what changed")
@@ -525,6 +551,14 @@ def main(argv=None):
     if sql is None:
         sql = full_sql(rows, version)
         print(f"full load, about {sum(len(r) for r in rows.values()) + 1} rows written", file=sys.stderr)
+    if args.parts:
+        args.parts.mkdir(parents=True, exist_ok=True)
+        for old in args.parts.glob("part-*.sql"):
+            old.unlink()
+        parts = split_sql(sql)
+        for i, part in enumerate(parts, 1):
+            (args.parts / f"part-{i:03d}.sql").write_text(part)
+        print(f"{len(parts)} parts", file=sys.stderr)
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(sql)
