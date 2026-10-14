@@ -101,3 +101,9 @@ def test_gorges_and_known_sights_are_goals():
     assert names.normalize("Suchá Belá", "roklina") == "Roklina Suchá Belá"
     assert names.normalize("Sokolia dolina", "roklina") == "Sokolia dolina"
     assert names.normalize("Jánošíkove Diery", "roklina") == "Jánošíkove Diery"
+
+
+def test_gorges_do_not_hide_other_goals():
+    from pipeline.trips import _same_goal
+    assert _same_goal("vrchol", "vyhliadka") and _same_goal("roklina", "roklina")
+    assert not _same_goal("roklina", "vodopad") and not _same_goal("vrchol", "roklina")
