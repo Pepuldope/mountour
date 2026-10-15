@@ -465,7 +465,6 @@ export function HomeExplorer({ trails: initial }: Props) {
       : start
         ? "Najbližšie výlety"
         : "Tisíce výletov po celom Slovensku";
-  const scopeNote = words.length === 0 && mapView && mapView.zoom >= mapView.areaZoom - 1 ? "Na mape a kúsok okolo." : null;
 
   const pickedItem = isDesktop && selected ? bySlug.get(selected) : undefined;
 
@@ -752,7 +751,6 @@ export function HomeExplorer({ trails: initial }: Props) {
     <section className="flex flex-col gap-3" aria-live="polite">
       <div className="flex flex-col">
         <h2 className="text-base font-bold">{heading}</h2>
-        {scopeNote && <p className="text-[13px] text-[var(--muted)]">{scopeNote}</p>}
       </div>
 
       {noneFit && dayWord && (
