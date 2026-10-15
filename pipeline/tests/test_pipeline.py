@@ -56,10 +56,16 @@ def osm_xml(two_routes=False):
         node(25, 49.2121, 19.0619, highway="bus_stop", name="Sedlo, rázcestie")
         node(26, 49.2119, 19.0623, amenity="restaurant", name="Koliba pod sedlom")
         node(27, 49.2001, 19.0501, natural="peak", name="Druhý vrch", ele="900", wikipedia="sk:Druhý vrch")
+        # from Sedlo a second marked way, round the south side of the hill
+        for k, (la, lo) in enumerate([(49.2095, 19.0640), (49.2068, 19.0648), (49.2042, 19.0630),
+                                      (49.2022, 19.0590), (49.2008, 19.0545)]):
+            node(800 + k, la, lo)
 
         ways.append(('<way id="3000" version="1">' + "".join(f'<nd ref="{600 + k}"/>' for k in range(10))
                      + '<nd ref="27"/><tag k="highway" v="path"/></way>'))
         ways.append(('<way id="3001" version="1">' + "".join(f'<nd ref="{700 + k}"/>' for k in range(10))
+                     + '<nd ref="27"/><tag k="highway" v="path"/></way>'))
+        ways.append(('<way id="3002" version="1"><nd ref="700"/>' + "".join(f'<nd ref="{800 + k}"/>' for k in range(5))
                      + '<nd ref="27"/><tag k="highway" v="path"/></way>'))
     ways.append(('<way id="1000" version="1">' + "".join(f'<nd ref="{100 + k}"/>' for k in range(10))
                  + '<tag k="highway" v="path"/><tag k="sac_scale" v="mountain_hiking"/></way>'))
@@ -79,6 +85,8 @@ def osm_xml(two_routes=False):
         '<tag k="type" v="route"/><tag k="route" v="hiking"/><tag k="osmc:symbol" v="blue:white:blue_bar"/></relation>',
         '<relation id="5003" version="1"><member type="way" ref="3001" role=""/>'
         '<tag k="type" v="route"/><tag k="route" v="hiking"/><tag k="osmc:symbol" v="yellow:white:yellow_bar"/></relation>',
+        '<relation id="5004" version="1"><member type="way" ref="3002" role=""/>'
+        '<tag k="type" v="route"/><tag k="route" v="hiking"/><tag k="osmc:symbol" v="green:white:green_bar"/></relation>',
     ] if two_routes else [])
     key = lambda x: int(re.search(r'id="(\d+)"', x).group(1))
     nodes.sort(key=key)
@@ -133,18 +141,22 @@ def test_end_to_end(tmp_path):
     variants = json.loads((tmp_path / "data" / "trip-variants.json").read_text())["trips"]
     assert variants and not any(t.get("variant_of") for t in index["trips"])  # the site's index: main routes only
     peak = [t for t in index["trips"] + variants if t["destination"]["name"] == "Druhý vrch"]
-    assert len(peak) == 2
+    assert len(peak) == 3
     main = next(t for t in peak if not t.get("variant_of"))
-    other = next(t for t in peak if t.get("variant_of"))
-    assert main["start"]["name"] == "Sedlo" and main["route_label"] == "Hlavná cesta" and main["route_count"] == 2
-    assert other["start"]["name"] == "Dolina" and other["variant_of"] == main["slug"] and other["route_label"]
+    other = next(t for t in peak if t.get("variant_of") and t["start"]["name"] == "Dolina")
+    # another way up from the main start: round the south side, a slug of its own, a word of its own
+    alt = next(t for t in peak if t.get("variant_of") and t["start"]["name"] == "Sedlo")
+    assert main["start"]["name"] == "Sedlo" and main["route_label"] == "Hlavná cesta" and main["route_count"] == 3
+    assert other["variant_of"] == main["slug"] and other["route_label"]
     assert other["rank"] == main["rank"] and other["slug"] != main["slug"]
+    assert alt["slug"].endswith("-ina-cesta") and alt["variant_of"] == main["slug"] and alt["marking"] == ["green"]
+    assert len({t["route_label"] for t in peak}) == 3
     assert (tmp_path / "public" / "gpx" / f"{other['slug']}.gpx").exists()
-    # each route's file lists both, main first, with its way up, so the trip page reads only that file
-    for t in (main, other):
+    # each route's file lists all of them, main first, with its way up, so the trip page reads only that file
+    for t in (main, other, alt):
         routes = json.loads((tmp_path / "public" / "data" / "trips" / f"{t['slug']}.json").read_text())["routes"]
-        assert [r["slug"] for r in routes] == [main["slug"], other["slug"]]
-        assert routes[0]["start_name"] == "Sedlo" and len(routes[1]["up"]) >= 2
+        assert routes[0]["slug"] == main["slug"] and {r["slug"] for r in routes} == {main["slug"], other["slug"], alt["slug"]}
+        assert routes[0]["start_name"] == "Sedlo" and all(len(r["up"]) >= 2 for r in routes)
     mains = [t["slug"] for t in index["trips"] if not t.get("variant_of")]
 
     # the home list: every place once, without the text it never shows
@@ -166,6 +178,27 @@ def test_end_to_end(tmp_path):
     slugs_before = json.loads((tmp_path / "pipeline" / "slugs.json").read_text())
     assert run.main(["--pbf", str(pbf), "--root", str(tmp_path)]) == 0
     assert json.loads((tmp_path / "pipeline" / "slugs.json").read_text()) == slugs_before
+
+
+def test_route_labels_are_unique_per_place():
+    from pipeline.trips import TripBuilder
+
+    goal = dict(lat=48.20, lon=17.00)
+
+    def r(slug, start, dur, at=(48.19, 17.00), up=300, transit=None):
+        return dict(slug=slug, start=dict(name=start, osm=start, location=dict(lat=at[0], lon=at[1])),
+                    destination=dict(location=goal), duration_min=dur, ascent_m=up, transit=transit)
+
+    main = r("m", "Devín", 90)
+    # two shorter routes: the shortest is "Kratšia", the other says which side it comes from
+    routes = [r("a", "Dúbravka", 45, (48.21, 17.00)), r("b", "Mariánka", 50, (48.21, 17.01)),
+              r("c", "Devín", 150), r("d", "Lamač", 95, (48.20, 17.02)), r("e", "Devín", 100)]
+    TripBuilder.assign_labels(main, routes, {})
+    labels = {x["slug"]: x["route_label"] for x in routes}
+    assert labels == {"a": "Kratšia", "b": "Zo severu", "c": "Dlhšia", "d": "Z východu", "e": "Iným chodníkom"}
+    routes = [r("a", "X", 95), r("b", "Y", 96), r("c", "Z", 97)]
+    TripBuilder.assign_labels(main, routes, {"a": "Pajštún", "b": "Pajštún"})
+    assert [x["route_label"] for x in routes] == ["Cez Pajštún", "Z juhu", "Iná cesta"]
 
 
 def test_helpers():

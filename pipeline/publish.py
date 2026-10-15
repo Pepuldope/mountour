@@ -170,7 +170,8 @@ def _report(trips, rep, now, osm_at, drive):
         groups.setdefault(t.get("variant_of") or t["slug"], []).append(t)
     multi = [g for g in groups.values() if len(g) > 1]
     L += ["", "## Places with more than one route", "",
-          f"{len(multi)} of {len(groups)} places have other routes; {rep.get('variants', 0)} other routes in all.", "",
+          f"{len(multi)} of {len(groups)} places have other routes; {rep.get('variants', 0)} other routes in all, "
+          f"{rep.get('alternatives', 0)} of them another way from a start the place already has.", "",
           "| Place | Main route (start, time) | Other routes |", "|---|---|---|"]
     for g in sorted(multi, key=lambda g: -g[0]["rank"])[:60]:
         m, rest = g[0], g[1:]

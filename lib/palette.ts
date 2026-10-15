@@ -42,6 +42,6 @@ export const POI_COLOUR: Record<PoiKind, string> = {
   ihrisko: "#8a6d00",
 };
 
-/** The routes to one place, side by side on the comparison map: A (main), B, C. */
-export const ROUTE_COLOURS = ["#1769d1", "#b35a00", "#6b4fbf"];
-export const ROUTE_LETTERS = ["A", "B", "C", "D"];
+/** The routes to one place, side by side on the comparison map: A (main), then B to E. */
+export const ROUTE_COLOURS = ["#1769d1", "#b35a00", "#6b4fbf", "#0f8a6c", "#c2337a"];
+export const ROUTE_LETTERS = ["A", "B", "C", "D", "E"];

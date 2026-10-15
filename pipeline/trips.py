@@ -397,6 +397,7 @@ class TripBuilder:
         # Plain huts and viewpoints along the way are often cottages or nameless spots, so not those.
         goals = {t["destination"]["osm"]: t["destination"]["name"] for t in trips
                  if t["destination"]["osm"] and t["rank"] >= 40}
+        via, by_place = {}, {}
         for v in variants:
             v.pop("_score", None)
             main = by_slug[v["variant_of"]]
@@ -404,10 +405,15 @@ class TripBuilder:
             if not v["curated"]:
                 v["name"] = main["name"]
             on_main = {p["osm"] for p in main["pois"]}
-            via = next((goals[p["osm"]] for p in v["pois"] if p["osm"] in goals and p["osm"] not in on_main
+            hit = next((goals[p["osm"]] for p in v["pois"] if p["osm"] in goals and p["osm"] not in on_main
                         and goals[p["osm"]] != v["destination"]["name"] and len(goals[p["osm"]]) <= 26), None)
-            if via:
-                v["route_label"] = f"Cez {via}"
+            if hit:
+                via[v["slug"]] = hit
+            by_place.setdefault(v["variant_of"], []).append(v)
+        for slug, routes in by_place.items():
+            self.assign_labels(by_slug[slug], routes, via)
+        start = lambda t: t["start"]["osm"] or t["start"]["name"]
+        self.report["alternatives"] = sum(len(rs) + 1 - len({start(t) for t in rs + [by_slug[s]]}) for s, rs in by_place.items())
         self.report["variants"] = len(variants)
         return trips + variants
 
@@ -436,7 +442,8 @@ class TripBuilder:
         st = main["start"]
         self._set_slug(main, self._slug(f"{dest['osm'] or dest['name']}|{st['osm'] or st['name']}", dest["name"], st["name"]))
         main["_score"] = c.score
-        main["_others"] = [r for r in routes if r is not main]
+        others = [r for r in routes if r is not main]
+        main["_others"] = others + self._alternatives_for(main, others, c.node, dest, c.region, routes)
         return main
 
     def routes_to(self, target, dest, region, ths, th_nodes, known=(), limits=None):
@@ -484,7 +491,7 @@ class TripBuilder:
             trip["_edges"] = edges
             seen.append(edges)
             out.append(trip)
-            if len(out) >= 2 * self.t.get("max_routes_per_destination", 3):
+            if len(out) >= 2 * self.t.get("max_starts_per_destination", 3):
                 break
         return out, why
 
@@ -555,52 +562,157 @@ class TripBuilder:
         ok = [r for r in with_parking if r["duration_min"] <= min(1.5 * shortest, shortest + 60)]
         return max(ok, key=lambda r: (r["_known"] - (r["duration_min"] - shortest) / 10, -r["duration_min"]))
 
+    def _keep_starts(self, others):
+        """The other starts a place keeps: a hand-picked route always, then the best-known."""
+        starts = [r for r in others if "_alt_of" not in r]
+        starts = sorted(starts, key=lambda r: (not r["curated"], -r["_known"], r["duration_min"]))
+        return starts[: self.t.get("max_starts_per_destination", 3) - 1]
+
+    def _alternatives_for(self, main, others, target, dest, region, routes, limits=None):
+        """Other ways up from the main start and from each other start the place keeps."""
+        if not self.t.get("alt_routes_per_start", 1):
+            return []
+        lim = {**self.t, **(limits or {})}
+        seen = [r.get("_edges") or self._edge_set(r["_path"]) for r in routes]
+        alts = []
+        for base in [main] + self._keep_starts(others):
+            for a in self.alternatives(base, target, dest, region, seen, lim):
+                seen.append(a["_edges"])
+                alts.append(a)
+        return alts
+
+    def alternatives(self, base, target, dest, region, seen, lim):
+        """Other ways from the same start: the shortest way to Devínska Kobyla skirts the hill, a
+        longer one goes over the top. Found by making the walks already found dearer and routing
+        again, like a map app's "other routes". A way counts when a good part of it is new and
+        mostly on marked trails, and it is not much longer."""
+        g, st = self.g, base["_st"]
+        taken = [base["_path"]]
+        union = dict(self._edge_set(base["_path"]))
+        out = []
+        for _ in range(self.t.get("alt_tries", 3)):
+            if len(out) >= self.t.get("alt_routes_per_start", 1):
+                break
+            pos = np.unique(np.concatenate([g.data_pos(p) for p in taken]))
+            old = g.G.data[pos].copy()
+            g.G.data[pos] = old * self.t.get("alt_penalty", 4.0)
+            try:
+                dist, pred = g.costs_from(st.node, ROUTE_LIMIT * 2)
+            finally:
+                g.G.data[pos] = old
+            if not np.isfinite(dist[target]):
+                break
+            path = g.walk_from_source(pred, st.node, target)
+            if path is None:
+                break
+            taken.append(path)
+            edges = self._edge_set(path)
+            idx = g.edges(path)
+            new = [(L, bool(g.ways[w].routes)) for a, b, L, w in zip(path[:-1], path[1:], g.edge_len[idx], g.edge_way[idx])
+                   if (min(a, b), max(a, b)) not in union]
+            union.update(edges)
+            new_m = sum(L for L, _ in new)
+            if new_m < max(self.t.get("alt_new_min_m", 1000), self.t.get("alt_new_share", 0.35) * sum(edges.values())):
+                continue  # the same walk with a small detour
+            if sum(L for L, m in new if m) < self.t.get("alt_new_marked_share", 0.6) * new_m:
+                continue  # a forest road beside the trail
+            if any(self._overlap(edges, e) for e in seen if e is not None):
+                continue  # another start's route, joined from here
+            trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
+            if not trip or self._quality(trip, dest["kind"], lim):
+                continue
+            if trip["duration_min"] > base["duration_min"] + max(60, 0.8 * base["duration_min"]):
+                continue
+            town = self.town_walk_m(path)
+            if town > lim.get("town_walk_max_m", 1500) or (town > 800 and town > 0.25 * trip["distance_m"]):
+                continue
+            trip["_known"] = base.get("_known", 0)
+            trip["_edges"] = edges
+            trip["_alt_of"] = base
+            out.append(trip)
+        return out
+
     def _finish_variants(self, main, others):
-        """Slugs and labels for up to max_routes_per_destination - 1 other routes."""
-        main.pop("_known", None)
-        main.pop("_edges", None)
-        # A hand-picked route always stays; then the best-known starts.
-        keep = sorted(others, key=lambda r: (not r["curated"], -r["_known"], r["duration_min"]))
-        keep = keep[: self.t.get("max_routes_per_destination", 3) - 1]
+        """Slugs for the other routes a place keeps: up to max_starts_per_destination - 1 other
+        starts, plus other ways from the main start and from those starts, at most
+        max_routes_per_destination - 1 in all. Labels come later (assign_labels)."""
+        starts = self._keep_starts(others)
+        kept = {id(main)} | {id(r) for r in starts}
+        alts = [r for r in others if "_alt_of" in r and id(r["_alt_of"]) in kept]
+        # The main start's other way first: most people start there.
+        alts.sort(key=lambda r: r["_alt_of"] is not main)
+        keep = (alts[:1] + starts + alts[1:])[: self.t.get("max_routes_per_destination", 5) - 1]
         out = []
         for r in keep:
-            r.pop("_known", None)
-            r.pop("_edges", None)
             if r["slug"] == PENDING:
                 self._set_slug(r, self._variant_slug(main, r))
             r["variant_of"] = main["slug"]
-            r["route_label"] = self._label(r, main)
+            r["route_label"] = "Iná cesta"
             r["region"], r["region_name"], r["protected_area"] = main["region"], main["region_name"], main["protected_area"]
             out.append(r)
+        for r in [main] + others:
+            for k in ("_known", "_edges", "_st", "_path", "_alt_of"):
+                r.pop(k, None)
         if out:  # one route only: no route fields at all
             main["route_label"] = "Hlavná cesta"
             main["route_count"] = 1 + len(out)
         return out
 
-    def _label(self, r, main):
-        """One or two words on why someone would pick this route over the main one."""
-        if r["transit"] and not main["transit"]:
-            return "Autobusom"
-        if r["duration_min"] <= main["duration_min"] - 30:
-            return "Kratšia"
-        if r["duration_min"] >= 300 and r["duration_min"] >= main["duration_min"] + 60:
-            return "Na celý deň"
-        if r["duration_min"] >= main["duration_min"] + 45:
-            return "Dlhšia"
-        if main["ascent_m"] and r["ascent_m"] <= 0.7 * main["ascent_m"]:
-            return "Menej do kopca"
-        return "Iná cesta"
+    @staticmethod
+    def assign_labels(main, routes, via):
+        """One or two words on why someone would pick each route over the main one, each used once
+        per place: of two shorter routes the shortest is "Kratšia", the other gets the next word
+        that fits it. `via` maps a route's slug to a known place it passes ("Cez Pajštún")."""
+        m = main
+        same_start = lambda r: (r["start"]["osm"] or r["start"]["name"]) == (m["start"]["osm"] or m["start"]["name"])
+        rules = [  # (label, fits, better), better = lower sort key
+            ("Autobusom", lambda r: r["transit"] and not m["transit"], lambda r: r["duration_min"]),
+            ("Kratšia", lambda r: r["duration_min"] <= m["duration_min"] - 30, lambda r: r["duration_min"]),
+            ("Na celý deň", lambda r: r["duration_min"] >= 300 and r["duration_min"] >= m["duration_min"] + 60,
+             lambda r: -r["duration_min"]),
+            ("Dlhšia", lambda r: r["duration_min"] >= m["duration_min"] + 45, lambda r: -r["duration_min"]),
+            ("Menej do kopca", lambda r: m["ascent_m"] and r["ascent_m"] <= 0.7 * m["ascent_m"], lambda r: r["ascent_m"]),
+            ("Iným chodníkom", same_start, lambda r: r["duration_min"]),
+        ]
+        label, used = {}, {"Hlavná cesta"}
+        # A place it passes says the most; then the rules, each word to the route it fits best.
+        for r in sorted(routes, key=lambda r: r["duration_min"]):
+            v = via.get(r["slug"])
+            if v and f"Cez {v}" not in used:
+                label[r["slug"]] = f"Cez {v}"
+                used.add(label[r["slug"]])
+        for word, fits, better in rules:
+            free = [r for r in routes if r["slug"] not in label and fits(r)]
+            if free:
+                label[min(free, key=better)["slug"]] = word
+                used.add(word)
+        for r in sorted(routes, key=lambda r: r["duration_min"]):
+            if r["slug"] in label:
+                continue
+            # Then the side of the hill it comes up from (the start's name is on the row already).
+            sides = [] if same_start(r) else _sides(r)
+            word = next((w for w in sides if w not in used), None)
+            n = 2
+            while word is None or word in used:
+                word, n = ("Iná cesta" if n == 2 else f"Iná cesta {n - 1}"), n + 1
+            label[r["slug"]] = word
+            used.add(word)
+        for r in routes:
+            r["route_label"] = label[r["slug"]]
 
     def _set_slug(self, trip, slug):
         trip["slug"] = slug
         trip["gpx_url"] = f"/gpx/{slug}.gpx"
 
     def _variant_slug(self, main, r):
-        """Stable per destination and start: '<main slug>-<start>'."""
+        """Stable per destination and start: '<main slug>-<start>', another way from that start
+        '<main slug>-<start>-ina-cesta'."""
+        alt = "_alt_of" in r
         key = f"v|{main['destination']['osm'] or main['destination']['name']}|{r['start']['osm'] or r['start']['name']}"
+        key += "|alt" if alt else ""
         s = self.slugs.get(key)
         if not s or s in self.used_slugs:
-            base = f"{main['slug']}-{slugify(r['start']['name'], 24)}"
+            base = f"{main['slug']}-{slugify(r['start']['name'], 24)}" + ("-ina-cesta" if alt else "")
             s, n = base, 2
             taken = set(self.slugs.values()) | self.used_slugs
             while s in taken:
@@ -653,7 +765,9 @@ class TripBuilder:
                 # Not hand-picked itself: the hand-picked route stays curated (the regression set).
                 main["name"] = d["name"]
         main["_score"] = 60
-        main["_others"] = [r for r in [trip] + others if r is not main]
+        rest = [r for r in [trip] + others if r is not main]
+        main["_others"] = rest + self._alternatives_for(main, rest, d_node, dest, region, [trip] + others,
+                                                        p.get("route_limits"))
         return main
 
     # ------------------------------------------------------- trip record --
@@ -799,6 +913,8 @@ class TripBuilder:
             transit_alternatives=stops[1:],
             pois=pois,
             _gpx=(lat, lon, ele if have_dem else None, rt, turn, bool(back_path)),
+            _st=st,
+            _path=out_path,
         )
         return trip
 
@@ -875,6 +991,22 @@ class TripBuilder:
 
 
 # ---------------------------------------------------------------- utils --
+SIDES4 = ["Zo severu", "Z východu", "Z juhu", "Zo západu"]
+SIDES8 = ["Zo severu", "Zo severovýchodu", "Z východu", "Z juhovýchodu", "Z juhu", "Z juhozápadu", "Zo západu",
+          "Zo severozápadu"]
+
+
+def _sides(r):
+    """Where a route's start lies seen from its goal, as a label: the nearest of four sides, then of eight."""
+    s, d = r["start"].get("location"), r.get("destination", {}).get("location")
+    if not s or not d:
+        return []
+    dx = (s["lon"] - d["lon"]) * math.cos(math.radians(d["lat"]))
+    dy = s["lat"] - d["lat"]
+    deg = math.degrees(math.atan2(dx, dy)) % 360
+    return [SIDES4[int((deg + 45) // 90) % 4], SIDES8[int((deg + 22.5) // 45) % 8]]
+
+
 def _same_goal(a, b):
     """Could two goal kinds this close be one place? A waterfall in a gorge, or a peak above one, is a
     goal of its own (Kmeťov vodopád, Závojový vodopád in Suchá Belá)."""

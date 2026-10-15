@@ -109,9 +109,20 @@ trips:
   min_family_per_region: 5
   # variety: at most this many trips from one start
   max_trips_per_start: 8
-  # several marked routes lead to most places: keep the main one plus up to two others
+  # several marked routes lead to most places: keep the main one plus up to two other starts
   # (the main one = the best-known start: big car park, stop, food, trail hub, village)
-  max_routes_per_destination: 3
+  max_starts_per_destination: 3
+  # and another way up from a start where there is one (over the top instead of round the hill),
+  # found by routing again with the ways already found made alt_penalty times dearer
+  alt_routes_per_start: 1
+  alt_penalty: 4.0
+  alt_tries: 3
+  # it counts when at least this much of it is new (metres, and share of its length), mostly marked
+  alt_new_min_m: 1000
+  alt_new_share: 0.35
+  alt_new_marked_share: 0.6
+  # routes per place in all, the main one included
+  max_routes_per_destination: 5
   # two routes are the same route when they share more than this part of the shorter one
   route_overlap_max: 0.5
   # trailheads tried per destination, nearest first
