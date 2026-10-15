@@ -46,6 +46,8 @@ export interface Trail {
   region_name?: string;
   /** Where the goal is (peak, waterfall...): its dot on the home map. */
   goal_location?: LatLng;
+  /** The goal's own name ("Kriváň", "Hrad Likava"): its pin on the trip map. */
+  goal_name?: string;
   /** Popularity score from the pipeline; higher = better known. */
   rank?: number;
   /** Main waymark colour; optional until the OSM pipeline fills it. */

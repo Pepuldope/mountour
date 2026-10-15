@@ -65,6 +65,7 @@ function toTrail(t: TripSummary): Trail {
     goal: t.destination.kind,
     region_name: t.region_name,
     goal_location: t.destination.location,
+    goal_name: t.destination.name,
     rank: t.rank,
     bbox: { sw: { lat: s, lon: w }, ne: { lat: n, lon: e } },
     created_at: "",
