@@ -62,6 +62,21 @@ export async function getTrip(slug: string): Promise<TripDetail | null> {
   return readPublicJson<TripDetail>(`data/trips/${slug}.json`);
 }
 
+/**
+ * Every trip's slug, main routes and other routes alike, from the files on disk.
+ * Build only: the trip pages are drawn ahead from this list (app/trasa/[slug]/page.tsx).
+ */
+export async function getAllTripSlugs(): Promise<string[]> {
+  const { readdir } = await import("node:fs/promises");
+  const { join } = await import("node:path");
+  const files = await readdir(join(process.cwd(), "public", "data", "trips"));
+  return files
+    .filter((f) => f.endsWith(".json") && f !== "index.json" && f !== "list.json")
+    .map((f) => f.slice(0, -".json".length))
+    .filter((slug) => SLUG.test(slug))
+    .sort();
+}
+
 /** Car minutes from one precomputed town to every trip, by slug; empty for an unknown town. */
 export async function getTownDrives(townId: string): Promise<TownDriveFile["minutes"]> {
   if (!SLUG.test(townId)) return {};

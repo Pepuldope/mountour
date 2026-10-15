@@ -5,7 +5,7 @@ import { cache } from "react";
 import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
 import { getTripLive } from "@/lib/tripDb";
-import { getTrip } from "@/lib/tripFiles";
+import { getAllTripSlugs, getTrip } from "@/lib/tripFiles";
 import { buildProfile } from "@/lib/tripProfile";
 import { GOAL_LABEL, POI_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
@@ -36,11 +36,13 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-// Drawn on the first visit, then served from the page cache until the next deploy
-// (lib/pageCache.ts): drawing a trip page on every visit ran the free Worker out of CPU.
+// Every trip page is drawn at build time and ships as a stored file (lib/pageCache.ts), so
+// even its first visit is quick: drawn on the first visit instead, a page took a second or
+// two after each deploy, and drawing it on every visit ran the free Worker out of CPU.
+// A trip newer than the build (or a typed name, redirected below) is drawn once and kept.
 export const dynamicParams = true;
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  return [];
+  return (await getAllTripSlugs()).map((slug) => ({ slug }));
 }
 
 /** One database read per request, shared by the metadata and the page. */

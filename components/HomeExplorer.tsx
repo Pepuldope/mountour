@@ -51,6 +51,8 @@ const TOWN_EXACT_KM = 10;
 
 /** The list shows the trips on the map plus this share of its size around it. */
 const LIST_MARGIN = 0.3;
+/** Zoomed far in, the list still covers at least about 22 x 22 km around the map's centre (half-widths in degrees). */
+const LIST_MIN_HALF: [number, number] = [0.15, 0.1];
 
 /** Trips outside the named mountain ranges: they join the closest area. */
 const OTHER_REGION = "Ďalšie";
@@ -111,6 +113,15 @@ function grow([w, s, e, n]: Box, k: number): Box {
   const dx = (e - w) * k;
   const dy = (n - s) * k;
   return [w - dx, s - dy, e + dx, n + dy];
+}
+
+/** The box, widened around its centre to at least the given half-widths. */
+function atLeast([w, s, e, n]: Box, [hx, hy]: [number, number]): Box {
+  const cx = (w + e) / 2;
+  const cy = (s + n) / 2;
+  const dx = Math.max((e - w) / 2, hx);
+  const dy = Math.max((n - s) / 2, hy);
+  return [cx - dx, cy - dy, cx + dx, cy + dy];
 }
 
 /** One dot per mountain range for the zoomed-out map; trips outside the ranges join the closest. */
@@ -345,7 +356,7 @@ export function HomeExplorer({ trails: initial }: Props) {
   const scoped = useMemo(() => {
     if (words.length > 0) return listedAll.filter((i) => matches(i.detail));
     if (!mapView || mapView.zoom < mapView.areaZoom - 1) return listedAll;
-    const box = grow(mapView.bounds, LIST_MARGIN);
+    const box = atLeast(grow(mapView.bounds, LIST_MARGIN), LIST_MIN_HALF);
     return listedAll.filter((i) => inBox(goalOf(i.detail), box));
   }, [listedAll, words, matches, mapView]);
 
@@ -465,7 +476,6 @@ export function HomeExplorer({ trails: initial }: Props) {
       : start
         ? "Najbližšie výlety"
         : "Tisíce výletov po celom Slovensku";
-  const scopeNote = words.length === 0 && mapView && mapView.zoom >= mapView.areaZoom - 1 ? "Na mape a kúsok okolo." : null;
 
   const pickedItem = isDesktop && selected ? bySlug.get(selected) : undefined;
 
@@ -594,7 +604,7 @@ export function HomeExplorer({ trails: initial }: Props) {
         aria-hidden
       >
         <span className="flex items-center gap-1.5">
-          málo chodené <i className="block h-1.5 w-12 rounded-full bg-[linear-gradient(90deg,#f2c418,#f3a12f,#e8682a,#d9481f,#c8261b)]" /> obľúbené
+          málo chodené <i className="block h-1.5 w-12 rounded-full bg-[linear-gradient(90deg,#ffe600,#f3a12f,#e8682a,#d9481f,#c8261b)]" /> obľúbené
         </span>
         <span className="flex items-center gap-1.5">
           <i className="block h-[3px] w-5 rounded-full bg-[#8a8f7a] opacity-60" /> chodník bez výletu
@@ -752,7 +762,6 @@ export function HomeExplorer({ trails: initial }: Props) {
     <section className="flex flex-col gap-3" aria-live="polite">
       <div className="flex flex-col">
         <h2 className="text-base font-bold">{heading}</h2>
-        {scopeNote && <p className="text-[13px] text-[var(--muted)]">{scopeNote}</p>}
       </div>
 
       {noneFit && dayWord && (
