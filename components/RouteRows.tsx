@@ -4,7 +4,7 @@ import Link from "next/link";
 import { formatDuration } from "@/lib/format";
 import type { RouteBrief } from "@/lib/tripSchema";
 import { setHoveredRoute, useHoveredRoute } from "@/lib/routeHover";
-import { Dot, routeAccess, routeKm, routeLabel } from "@/components/routeBits";
+import { BusOk, Dot, NoParkingChip, routeAccess, routeKm, routeLabel } from "@/components/routeBits";
 
 /** The routes as rows; the one under the pointer (here or on the map) gets an outline and lights up on the map. */
 export function RouteRows({ routes, at }: { routes: RouteBrief[]; at: number }) {
@@ -24,10 +24,12 @@ export function RouteRows({ routes, at }: { routes: RouteBrief[]; at: number }) 
       >
         <Dot i={i} />
         <span className="flex min-w-0 flex-col">
-          <span className="text-[15px] font-bold">{routeLabel(r)}</span>
+          <span className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[15px] font-bold">
+            {routeLabel(r)}
+            {!r.parking && <NoParkingChip />}
+          </span>
           <span className="text-[13px] text-[var(--muted)]">
-            štart {r.start_name} ·{" "}
-            {r.parking ? routeAccess(r) : <span className="font-bold text-[var(--warn)]">⚠ bez parkoviska, len autobusom</span>}
+            štart {r.start_name} · {r.parking ? routeAccess(r) : <BusOk />}
           </span>
         </span>
         <span className="font-data ml-auto shrink-0 text-right text-[16px] leading-tight">

@@ -9,7 +9,7 @@ import type { GeoPoint, RouteBrief } from "@/lib/tripSchema";
 import type { BBox } from "@/lib/types";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
-import { NoParkingWarning, routeAccess, routeKm, routeLabel } from "@/components/routeBits";
+import { BusOk, NoParkingChip, routeAccess, routeKm, routeLabel } from "@/components/routeBits";
 
 interface Props {
   /** The trip the visitor came from. */
@@ -100,13 +100,15 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
                     {letter(i)}
                   </span>
                   <span className="flex min-w-0 flex-col">
-                    <span className="text-[15px] font-bold">{routeLabel(r)}</span>
+                    <span className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[15px] font-bold">
+                      {routeLabel(r)}
+                      {!r.parking && <NoParkingChip />}
+                    </span>
                     <span className="text-[13px] text-[var(--muted)]">
-                      štart {r.start_name} · {routeAccess(r)}
+                      štart {r.start_name} · {r.parking ? routeAccess(r) : <BusOk long />}
                     </span>
                   </span>
                 </span>
-                {!r.parking && <NoParkingWarning />}
                 <span className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-[12.5px] text-[var(--muted)]">
                   <span>Čas</span>
                   <Bar share={r.duration_min / maxMin} colour={colour(i)} />
