@@ -1,24 +1,24 @@
 # Trip pipeline report
 
-Run: 2026-10-15T12:01:09+00:00 · OSM data: 2026-10-14T20:21:12Z
+Run: 2026-10-15T12:30:14+00:00 · OSM data: 2026-10-14T20:21:12Z
 
-**6463 trips**
+**6457 trips**
 
 | Region | Trips | Family | Candidates |
 |---|---|---|---|
 | tatry | 445 | 71 | 349 |
 | slovensky-raj | 154 | 34 | 70 |
 | mala-fatra | 228 | 30 | 94 |
-| male-karpaty | 518 | 212 | 182 |
-| velka-fatra | 485 | 116 | 212 |
+| male-karpaty | 518 | 213 | 182 |
+| velka-fatra | 484 | 117 | 212 |
 | nizke-tatry | 339 | 43 | 149 |
 | chocske-vrchy-orava | 176 | 36 | 90 |
 | pieniny | 37 | 8 | 11 |
-| kysuce-javorniky | 405 | 93 | 165 |
+| kysuce-javorniky | 405 | 95 | 165 |
 | strazovske-vrchy | 240 | 57 | 91 |
 | biele-karpaty | 286 | 126 | 105 |
-| inovec-tribec-vtacnik | 537 | 124 | 221 |
-| stiavnicke-kremnicke-vrchy | 498 | 227 | 207 |
+| inovec-tribec-vtacnik | 536 | 125 | 221 |
+| stiavnicke-kremnicke-vrchy | 495 | 227 | 207 |
 | polana-muran | 303 | 54 | 115 |
 | slovensky-kras | 340 | 72 | 151 |
 | levocske-cergov | 585 | 130 | 217 |
@@ -26,7 +26,7 @@ Run: 2026-10-15T12:01:09+00:00 · OSM data: 2026-10-14T20:21:12Z
 | zahorie-podunajsko | 45 | 10 | 30 |
 | krupina-cerova | 189 | 47 | 94 |
 | kosice-juh | 35 | 8 | 20 |
-| dalsie | 296 | 74 | 130 |
+| dalsie | 295 | 75 | 130 |
 
 ## Regression: the 10 hand-picked trips vs. the 2026-10-07 build
 
@@ -47,7 +47,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Places with more than one route
 
-1901 of 2130 places have other routes; 4337 other routes in all, 1102 of them another way from a start the place already has.
+1901 of 2130 places have other routes; 4331 other routes in all, 1099 of them another way from a start the place already has.
 
 | Place | Main route (start, time) | Other routes |
 |---|---|---|
@@ -59,7 +59,7 @@ Flag ⚠ when off by more than 15 %.
 | lubovniansky-hrad | Stará Ľubovňa 1:30 | Na celý deň: Malý Lipník 7:45; Krátko od auta: Parkovisko 0:15; Dlhšia: Údol 7:00 |
 | sarissky-hrad | Šarišské Michaľany 3:00 | Z juhu: Veľký Šariš, obec 3:00 |
 | spissky-hrad | Spišské Podhradie, parkovisko 1:00 | Krátko od auta: Spišský Hrad 0:15; Dlhšia: Sivá Brada, rekreačné zariadenie 3:15; Iným chodníkom: Žehra 2:15; Okľukou: Žehra 2:30 |
-| devin | Dúbravská hlavica 2:45 | Krátko od auta: Parkovisko 0:15; Autobusom: Weitov Lom 2:15 |
+| devin | Pod Devínskou Kobylou 1:30 | Krátko od auta: Parkovisko 0:15; Iným chodníkom: Pod Devínskou Kobylou 2:00 |
 | banska-bystrica | Odbočka na Urpín, vyhliadku 1:30 | Krátko od auta: Parkovisko 0:15; Iným chodníkom: Odbočka na Urpín, vyhliadku 1:45; Dlhšia: Šalková 3:30; Z juhu: Urpín, vyhliadka 1:45 |
 | novy-zamok | tajch Klinger 1:00 | Dlhšia: Dolný Hodrušský jarok 2:15; Krátko od auta: Parkovisko 0:15 |
 | popradske-pleso | Odbočka pri Heliose 3:00 | Kratšia: Holá Úboč 2:30; Iným chodníkom: Odbočka pri Heliose 3:15; Na celý deň: Velická poľana 8:45 |
@@ -143,7 +143,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Town filter
 
-9 goals in city centres and 8 sights in towns left out; 32 routes left out as city walks; 79 goals in nature start out of town instead of walking village or town streets, 11 keep such a start (none out of town is about as quick).
+9 goals in city centres and 8 sights in towns left out; 32 routes left out as city walks; 71 goals in nature start out of town instead of walking village or town streets, 19 keep such a start (none out of town is about as quick).
 
 | Goal | Kind | Why | Start | Town metres |
 |---|---|---|---|---|
@@ -205,7 +205,6 @@ Flag ⚠ when off by more than 15 %.
 | Považská lesná železnica | instead: Pribylina, centrum 150 min | streets, start out of town used | Rázcestie pod Holým vrchom | 2245 |
 | Považská lesná železnica | instead: Pribylina, centrum 150 min | streets, start out of town used | Smer Baranec | 2245 |
 | Šibeň | instead: Iliašovce 75 min | streets, start out of town used | Smižany | 1251 |
-| Devín | instead: overlaps another route | streets, start out of town used | Pod Devínskou Kobylou | 1023 |
 | Na hrane | instead: Plavecký Mikuláš, vodojem 90 min | streets, start out of town used | Plavecký Mikuláš | 1013 |
 | Vilmošove vodopády | instead: Nad horárňou Krasňany 210 min | streets, start out of town used | Záhorská Bystrica | 2920 |
 | Vilmošove vodopády | instead: Nad horárňou Krasňany 210 min | streets, start out of town used | Záhorská Bystrica, Markíza | 1903 |
@@ -221,7 +220,6 @@ Flag ⚠ when off by more than 15 %.
 | na Ružomberok | instead: Hrabovo 60 min | streets, start out of town used | Ružomberok, stanica | 1467 |
 | na Ružomberok | instead: Hrabovo 60 min | streets, start out of town used | Kuskova vila | 1992 |
 | na Ružomberok | instead: Hrabovo 60 min | streets, start out of town used | Likavka | 2241 |
-| na Gombáš | instead: overlaps another route | streets, start out of town used | Zbojnícka diera | 1370 |
 | Hŕbky | instead: Panský diel 255 min | streets, start out of town used | Náučný chodník "Serpentíny Urpín" | 2064 |
 | Hŕbky | instead: Panský diel 255 min | streets, start out of town used | Banská Bystrica - Mesto | 2064 |
 | Vreteň | instead: Kysucké Nové Mesto, železničná stanica 240 min | streets, start out of town used | Budatínska Lehota | 1654 |
@@ -258,17 +256,6 @@ Flag ⚠ when off by more than 15 %.
 | Ryboňov | instead: Oščadnica, Kozov most 165 min | streets, start out of town used | Krásno nad Kysucou | 1543 |
 | Ryboňov | instead: Oščadnica, Kozov most 165 min | streets, start out of town used | Mestský úrad | 2338 |
 | Ryboňov | instead: Oščadnica, Kozov most 165 min | streets, start out of town used | Krásno nad Kysucou, sútok Kysuce a Bystrice | 2208 |
-| Pod Valmi | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1449 |
-| Pod Valmi | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1455 |
-| Pod Valmi | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1641 |
-| Pod Valmi | instead: overlaps another route | streets, start out of town used | Krížová cesta | 1844 |
-| Pod Valmi | instead: overlaps another route | streets, start out of town used | Závršie | 1499 |
-| Pod Valmi | instead: overlaps another route | streets, start out of town used | Čierne, Dielnice | 3064 |
-| Nad Furmancom | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1449 |
-| Nad Furmancom | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1455 |
-| Nad Furmancom | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1641 |
-| Nad Furmancom | instead: overlaps another route | streets, start out of town used | Krížová cesta | 1844 |
-| Nad Furmancom | instead: overlaps another route | streets, start out of town used | Čierne, Dielnice | 3064 |
 | Hackov vrch | instead: Oščadnica, Lesostav 105 min | streets, start out of town used | Železničná stanica | 2669 |
 | Hôrka | instead: Sedlo Lutiška 345 min | streets, start out of town used | Belianske skaly | 3194 |
 | Hájnica | instead: Krásno nad Kysucou, Šustkov-Jedličník 105 min | streets, start out of town used | Krásno nad Kysucou, mesto | 1055 |
@@ -289,17 +276,6 @@ Flag ⚠ when off by more than 15 %.
 | Zobor | instead: Svoradov prameň 105 min | streets, start out of town used | Nitra, Šindolka | 1643 |
 | Žarnov | instead: Rudica 240 min | streets, start out of town used | Ľubianka | 1784 |
 | Tiesňava pod Kostolnou | instead: Vyhne 240 min | streets, start out of town used | Žarnovica | 2841 |
-| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Nitra, Šindolka | 1027 |
-| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Lupka | 2090 |
-| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Zoborský kláštor | 2684 |
-| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Orientačná tabuľa OLÚ Zobor | 2684 |
-| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Liečebný ústav Zobor | 2684 |
-| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Svoradov prameň | 2684 |
-| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Svoradova jaskyňa | 2684 |
-| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Dražovce | 3055 |
-| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Tri duby | 2684 |
-| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Kostolík Svätého Michala, NKP | 3644 |
-| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Barohať | 3444 |
 | Zlatý vrch | instead: Pod Svinským vrchom 105 min | streets, start out of town used | Banka, Vápeník | 1668 |
 | Zlatý vrch | instead: Pod Svinským vrchom 105 min | streets, start out of town used | Moravany nad Váhom, pobrežie | 1465 |
 | Zlatý vrch | instead: Pod Svinským vrchom 105 min | streets, start out of town used | Banka, Piešťanské rameno | 1668 |
@@ -327,7 +303,6 @@ Flag ⚠ when off by more than 15 %.
 | Starý zámok | instead: Červená studňa (bežkárske trate) 75 min | streets, start out of town used | Hájik | 1485 |
 | Tajch Klinger | instead: Banská Štiavnica, námestie 75 min | streets, start out of town used | Evičkino jazero | 1250 |
 | Tajch Klinger | instead: Banská Štiavnica, námestie 75 min | streets, start out of town used | Chata u Juračkov | 1187 |
-| Rozhľadňa Lažtek | instead: overlaps another route | streets, start out of town used | Malachov | 1204 |
 | Malachovský vodopád | instead: Suchý vrch, odb. na vyhliadku 150 min | streets, start out of town used | Malachov | 1750 |
 | Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Ilija | 1617 |
 | Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Banská Štiavnica - Drieňová | 2023 |
@@ -415,7 +390,6 @@ Flag ⚠ when off by more than 15 %.
 | Fangov vrch | instead: Huklová, lyžiarsky vlek 270 min | streets, start out of town used | Podkriváň | 5230 |
 | Fangov vrch | instead: Huklová, lyžiarsky vlek 270 min | streets, start out of town used | Detva, Piešť 1 | 6235 |
 | Fangov vrch | instead: Huklová, lyžiarsky vlek 270 min | streets, start out of town used | Podkriváň, ObÚ | 5622 |
-| Košútka | instead: overlaps another route | streets, start out of town used | Hriňová | 1719 |
 | Bakova jama | instead: Sliač 120 min | streets, start out of town used | Vojenský cintorín | 1119 |
 | Bakova jama | instead: Sliač 120 min | streets, start out of town used | Zvolen, mesto | 2200 |
 | Kalvária | instead: Železničná stanica Detva 150 min | streets, start out of town used | Stavanisko (Kalamárka) otočka autobusov, Detva | 1681 |
@@ -435,8 +409,6 @@ Flag ⚠ when off by more than 15 %.
 | Svätojánska rozhľadňa | instead: Borová Sihoť 105 min | streets, start out of town used | Závažná Poruba | 1484 |
 | Svätojánska rozhľadňa | instead: Borová Sihoť 105 min | streets, start out of town used | Závažná Poruba, Bradáčovo | 1539 |
 | Svätojánska rozhľadňa | instead: Borová Sihoť 105 min | streets, start out of town used | Závažná Poruba | 1539 |
-| Vychylovský vodopád | instead: overlaps another route | streets, start out of town used | Vychylovka, Chmúrovci | 1965 |
-| Vychylovský vodopád | instead: overlaps another route | streets, start out of town used | Vychylovka, Chmúrovci | 1965 |
 
 ## Name check
 
@@ -1832,9 +1804,8 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | rohula | dalsie | Kapišová | 9.1 | 355 | 3:15 | stredna |  |
 | rohula-svidnik | dalsie | Svidník | 14.3 | 490 | 5:00 | stredna |  |
 | rohula-udolie-smrti | dalsie | Údolie smrti | 8.1 | 340 | 3:00 | lahka |  |
-| vychylovsky-vodopad | dalsie | Sedlo Demänová | 12.5 | 361 | 4:15 | stredna |  |
+| vychylovsky-vodopad | dalsie | Vychylovka, Chmúrovci | 4.6 | 50 | 1:30 | lahka |  |
 | vychylovsky-vodopad-od-auta | dalsie | Parkovisko | 0.5 | 0 | 0:15 | lahka |  |
-| vychylovsky-vodopad-sedlo-demanova-ina-cesta | dalsie | Sedlo Demänová | 15.7 | 785 | 6:15 | tazka |  |
 | vychylovsky-vodopad-vychylovka-pavelkovia | dalsie | Vychylovka, Pavelkovia | 11.8 | 369 | 4:00 | stredna |  |
 | kolesovka | dalsie | Svidník | 9.3 | 313 | 3:15 | stredna |  |
 | kolesovka-tisinec | dalsie | Tisinec | 21.7 | 465 | 6:45 | tazka |  |
@@ -2237,10 +2208,9 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | uhrad | inovec-tribec-vtacnik | Podhradie | 5.2 | 310 | 2:30 | lahka |  |
 | uhrad-horaren-modrova-bus | inovec-tribec-vtacnik | Horáreň Modrová (bus) | 23.8 | 950 | 8:30 | tazka |  |
 | uhrad-nova-lehota | inovec-tribec-vtacnik | Nová Lehota | 9.7 | 436 | 3:45 | stredna |  |
-| hradna-jaskyna | inovec-tribec-vtacnik | Podhorany, viadukt | 17.2 | 799 | 6:30 | tazka |  |
+| hradna-jaskyna | inovec-tribec-vtacnik | Nitra, Šindolka | 3.3 | 32 | 1:00 | lahka |  |
 | hradna-jaskyna-od-auta | inovec-tribec-vtacnik | Parkovisko | 0.3 | 5 | 0:15 | lahka |  |
-| hradna-jaskyna-podhorany-pod-horkou | inovec-tribec-vtacnik | Podhorany, pod Hôrkou | 16.2 | 574 | 5:45 | stredna |  |
-| hradna-jaskyna-podhorany-pod-horkou-ina-cesta | inovec-tribec-vtacnik | Podhorany, pod Hôrkou | 17.8 | 784 | 6:45 | tazka |  |
+| hradna-jaskyna-podhorany-viadukt | inovec-tribec-vtacnik | Podhorany, viadukt | 17.2 | 799 | 6:30 | tazka |  |
 | jankov-vrsok | inovec-tribec-vtacnik | Uhrovec | 5.9 | 286 | 2:30 | lahka |  |
 | jankov-vrsok-ceresnova | inovec-tribec-vtacnik | Čerešňová | 10.6 | 562 | 4:30 | stredna |  |
 | jankov-vrsok-dolne-vestenice | inovec-tribec-vtacnik | Dolné Vestenice | 15.2 | 768 | 6:15 | tazka |  |
@@ -3098,10 +3068,10 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | marguska | kysuce-javorniky | Jelitov | 8.9 | 259 | 3:00 | lahka |  |
 | marguska-nad-kurajkou | kysuce-javorniky | Nad Kurajkou | 14.4 | 557 | 5:15 | stredna |  |
 | marguska-staskov-vrchmosty | kysuce-javorniky | Staškov - Vrchmosty | 6.2 | 181 | 2:15 | lahka |  |
-| nad-furmancom | kysuce-javorniky | Milošová, U Kadlubca | 7.2 | 249 | 2:30 | lahka |  |
-| nad-furmancom-svrcinovec-zavrsie | kysuce-javorniky | Svrčinovec, Závršie | 8.6 | 363 | 3:15 | stredna |  |
-| pod-valmi | kysuce-javorniky | Milošová, U Kadlubca | 5.7 | 227 | 2:15 | lahka |  |
-| pod-valmi-svrcinovec-zavrsie | kysuce-javorniky | Svrčinovec, Závršie | 10.1 | 391 | 3:45 | stredna |  |
+| nad-furmancom | kysuce-javorniky | Svrčinovec | 4.7 | 164 | 1:45 | lahka |  |
+| nad-furmancom-milosova-u-kadlubca | kysuce-javorniky | Milošová, U Kadlubca | 7.2 | 249 | 2:30 | lahka |  |
+| pod-valmi | kysuce-javorniky | Svrčinovec | 6.2 | 187 | 2:15 | lahka |  |
+| pod-valmi-milosova-u-kadlubca | kysuce-javorniky | Milošová, U Kadlubca | 5.7 | 227 | 2:15 | lahka |  |
 | prielacsky-vrch | kysuce-javorniky | Svrčinovec | 16.2 | 601 | 5:45 | stredna |  |
 | prielacsky-vrch-korchanovci | kysuce-javorniky | Korcháňovci | 8.2 | 354 | 3:00 | lahka |  |
 | prielacsky-vrch-milosova-megonky | kysuce-javorniky | Milošová, Megoňky | 6.5 | 234 | 2:30 | lahka |  |
@@ -3985,9 +3955,9 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | pivnica | mala-fatra | Valčianska dolina, rekr. stred. | 5.5 | 369 | 2:45 | lahka |  |
 | pivnica-siroka | mala-fatra | Široká | 17.1 | 840 | 6:45 | tazka |  |
 | pivnica-valcianska-dolina-rekr-ina-cesta | mala-fatra | Valčianska dolina, rekr. stred. | 11.1 | 522 | 4:15 | stredna |  |
-| devin | male-karpaty | Dúbravská hlavica | 7.4 | 273 | 2:45 | lahka |  |
+| devin | male-karpaty | Pod Devínskou Kobylou | 3.7 | 121 | 1:30 | lahka |  |
 | devin-od-auta | male-karpaty | Parkovisko | 0.5 | 7 | 0:15 | lahka |  |
-| devin-weitov-lom | male-karpaty | Weitov Lom | 6.2 | 184 | 2:15 | lahka |  |
+| devin-pod-devinskou-kobylou-ina-cesta | male-karpaty | Pod Devínskou Kobylou | 5.3 | 198 | 2:00 | lahka |  |
 | jaskyna-driny | male-karpaty | Smolenice, ObU | 4.9 | 235 | 2:00 | lahka | osm fee |
 | jaskyna-driny-losonec | male-karpaty | Lošonec | 5.3 | 241 | 2:00 | lahka | osm fee |
 | jaskyna-driny-smolenice-obu-ina-cesta | male-karpaty | Smolenice, ObU | 5.3 | 241 | 2:00 | lahka | osm fee |
@@ -5089,9 +5059,9 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | farkaska | polana-muran | Kokava-Línia | 10.7 | 349 | 3:45 | stredna |  |
 | farkaska-kokava-nad-rimavicou-nam | polana-muran | Kokava nad Rimavicou, nám. | 10.5 | 441 | 4:00 | stredna |  |
 | farkaska-salajka | polana-muran | Salajka | 7.5 | 338 | 3:00 | lahka |  |
-| kosutka | polana-muran | Vrchdobroč | 6.8 | 162 | 2:15 | lahka |  |
+| kosutka | polana-muran | Hriňová | 7.2 | 274 | 2:45 | lahka |  |
 | kosutka-bratkovica | polana-muran | Bratkovica | 21.7 | 569 | 7:00 | tazka |  |
-| kosutka-bystre-vratka | polana-muran | Bystré, Vrátka | 19.3 | 712 | 6:45 | tazka |  |
+| kosutka-vrchdobroc | polana-muran | Vrchdobroč | 6.8 | 162 | 2:15 | lahka |  |
 | malcekova-skala | polana-muran | Pod hotelom, rázc. | 9.3 | 575 | 4:15 | stredna |  |
 | malcekova-skala-hrinova | polana-muran | Hriňová | 16.2 | 651 | 6:00 | tazka |  |
 | malcekova-skala-pod-hotelom-razc-ina-cesta | polana-muran | Pod hotelom, rázc. | 15.5 | 699 | 5:45 | stredna |  |
@@ -5829,11 +5799,8 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | kralicka-tiesnava-horne-prsany-ina-cesta | stiavnicke-kremnicke-vrchy | Horné Pršany | 24.9 | 862 | 8:45 | tazka |  |
 | kralicka-tiesnava-skalka-kriz-s-j-okruh | stiavnicke-kremnicke-vrchy | Skalka, križ. S - J okruh | 8.6 | 565 | 4:15 | stredna |  |
 | kralicka-tiesnava-skalka-kriz-s-j-okruh-ina-cesta | stiavnicke-kremnicke-vrchy | Skalka, križ. S - J okruh | 16.3 | 757 | 6:15 | tazka |  |
-| rozhladna-laztek | stiavnicke-kremnicke-vrchy | Banská Bystrica, Tulská | 16.0 | 752 | 6:15 | tazka |  |
-| rozhladna-laztek-banska-bystrica-tulska-ina-cesta | stiavnicke-kremnicke-vrchy | Banská Bystrica, Tulská | 21.9 | 964 | 8:15 | tazka |  |
+| rozhladna-laztek | stiavnicke-kremnicke-vrchy | Malachov | 6.4 | 324 | 2:45 | lahka |  |
 | rozhladna-laztek-horne-prsany | stiavnicke-kremnicke-vrchy | Horné Pršany | 2.0 | 142 | 1:15 | lahka |  |
-| rozhladna-laztek-kralicky-vodopad | stiavnicke-kremnicke-vrchy | Králický vodopád | 14.7 | 679 | 5:30 | stredna |  |
-| rozhladna-laztek-kralicky-vodopad-ina-cesta | stiavnicke-kremnicke-vrchy | Králický vodopád | 23.6 | 1034 | 8:45 | tazka |  |
 | travny-zdiar | stiavnicke-kremnicke-vrchy | Suchý vrch | 2.1 | 136 | 1:00 | lahka |  |
 | travny-zdiar-kraliky-u-ruskov | stiavnicke-kremnicke-vrchy | Králiky, U Ruskov | 9.5 | 363 | 3:30 | stredna |  |
 | travny-zdiar-mutne | stiavnicke-kremnicke-vrchy | Mútne | 9.5 | 373 | 3:30 | stredna |  |
@@ -7267,9 +7234,8 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | medzijarky-bela | velka-fatra | Belá | 7.8 | 278 | 2:45 | lahka |  |
 | medzijarky-kasova-rekreacne-ina-cesta | velka-fatra | Kašová, rekreačné stredisko | 4.6 | 220 | 1:45 | lahka |  |
 | medzijarky-sklabina | velka-fatra | Sklabiňa | 14.1 | 659 | 5:30 | stredna |  |
-| na-gombas | velka-fatra | Dva stromy 35' | 19.5 | 364 | 6:00 | tazka |  |
+| na-gombas | velka-fatra | Zbojnícka diera | 6.4 | 126 | 2:00 | lahka |  |
 | na-gombas-vodna-nadrz-krpelany | velka-fatra | Vodná nádrž Krpeľany | 19.9 | 778 | 7:15 | tazka |  |
-| na-gombas-zaskov-ocu | velka-fatra | Žaškov, Ocú | 19.2 | 915 | 7:30 | tazka |  |
 | na-ruzomberok | velka-fatra | Hrabovo | 2.4 | 105 | 1:00 | lahka |  |
 | na-ruzomberok-hrabovo-ina-cesta | velka-fatra | Hrabovo | 2.8 | 118 | 1:15 | lahka |  |
 | na-ruzomberok-od-auta | velka-fatra | Parkovisko | 1.1 | 61 | 0:30 | lahka |  |
