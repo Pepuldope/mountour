@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Pleso Štrbské pleso</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Pleso Štrbské pleso</name><trkseg>
+  <metadata><name>Štrbské pleso</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Štrbské pleso</name><trkseg>
     <trkpt lat="49.135220" lon="19.970226"><ele>1176</ele></trkpt>
     <trkpt lat="49.135427" lon="19.970378"><ele>1177</ele></trkpt>
     <trkpt lat="49.135658" lon="19.970677"><ele>1177</ele></trkpt>

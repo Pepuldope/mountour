@@ -86,3 +86,28 @@ def test_ruins_are_not_a_castle():
     assert poi_kind({"historic": "ruins", "name": "Bunker"}) is None
     assert poi_kind({"historic": "ruins", "ruins": "castle", "name": "Zniev"}) == "hrad"
     assert poi_kind({"historic": "castle", "name": "Likava"}) == "hrad"
+
+
+def test_gorges_and_known_sights_are_goals():
+    from pipeline.osm import destination_kind
+    assert destination_kind({"name": "Suchá Belá", "natural": "valley", "wikidata": "Q1", "_len_m": 3500}) == "roklina"
+    assert destination_kind({"name": "Vrátna dolina", "natural": "valley", "wikidata": "Q2", "_len_m": 9000}) is None
+    assert destination_kind({"name": "Prielom Hornádu", "natural": "valley", "wikidata": "Q3", "_len_m": 15000}) == "roklina"
+    assert destination_kind({"name": "Kotlina pod Prielomom", "natural": "valley", "wikidata": "Q4", "_len_m": 600}) is None
+    assert destination_kind({"name": "Jánošíkove Diery", "tourism": "attraction", "wikidata": "Q5"}) == "roklina"
+    assert destination_kind({"name": "Kláštorisko", "tourism": "attraction", "wikidata": "Q6"}) == "ine"
+    assert destination_kind({"name": "Prielom", "natural": "saddle", "wikidata": "Q7"}) is None
+    assert destination_kind({"name": "Jánošíkov stôl", "natural": "rock"}) is None
+    assert names.normalize("Suchá Belá", "roklina") == "Roklina Suchá Belá"
+    assert names.normalize("Sokolia dolina", "roklina") == "Sokolia dolina"
+    assert names.normalize("Jánošíkove Diery", "roklina") == "Jánošíkove Diery"
+
+
+def test_gorges_do_not_hide_other_goals():
+    from pipeline.trips import _same_goal
+    assert _same_goal("vrchol", "vyhliadka") and _same_goal("roklina", "roklina")
+    assert not _same_goal("roklina", "vodopad") and not _same_goal("vrchol", "roklina")
+
+
+def test_valley_named_like_a_locality_keeps_its_name():
+    assert names.normalize("Tichá dolina", "roklina", {"ticha dolina"}) == "Tichá dolina"

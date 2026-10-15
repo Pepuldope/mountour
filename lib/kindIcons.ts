@@ -15,6 +15,8 @@ export const KIND_ICON: Record<DestinationKind | PoiKind, string> = {
   vyhliadka:
     '<path d="M7 20 10.5 7h3L17 20" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linejoin="round"/><path d="M6.5 7h11L12 2.5z" fill="currentColor"/><path d="M8.5 14h7" stroke="currentColor" stroke-width="2"/>',
   chata: `<path d="M2.5 11.5 12 4l9.5 7.5" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linejoin="round" stroke-linecap="round"/><path d="M5 10.5V20h14v-9.5L12 5z" fill="currentColor"/><rect x="10" y="14" width="4" height="6" ${W}/>`,
+  roklina:
+    '<path d="M2.5 20 5 4h4.5L8 12l1.5 8z" fill="currentColor"/><path d="M21.5 20 19 4h-4.5l1.5 8-1.5 8z" fill="currentColor"/><path d="M12 5.5v3M12 11v3M12 16.5v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
   ine: `<circle cx="12" cy="12" r="7" fill="currentColor"/><circle cx="12" cy="12" r="2.6" ${W}/>`,
   obcerstvenie:
     '<path d="M4.5 8h11v5a5.5 5.5 0 0 1-11 0z" fill="currentColor"/><path d="M15.5 9.5h1.5a2.3 2.3 0 0 1 0 4.6h-1.8" stroke="currentColor" stroke-width="2" fill="none"/><path d="M8 3.5c-.8 1 .8 1.7 0 2.8M11.5 3.5c-.8 1 .8 1.7 0 2.8" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>',

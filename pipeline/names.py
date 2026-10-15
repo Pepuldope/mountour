@@ -25,7 +25,7 @@ import unicodedata
 from .geo import haversine
 
 KIND_WORD = {"hrad": "Hrad", "chata": "Chata", "jaskyna": "Jaskyňa", "vodopad": "Vodopád", "pleso": "Pleso",
-             "vyhliadka": "Vyhliadka"}
+             "vyhliadka": "Vyhliadka", "roklina": "Roklina"}
 # A name holding one of these already says what the place is.
 KIND_HINTS = {
     "hrad": ("hrad", "hrád", "zámok", "zámoč", "kaštieľ", "kameň", "zrúcanin", "vár"),
@@ -34,9 +34,10 @@ KIND_HINTS = {
     "jaskyna": ("jaskyň", "jaskyn", "diera", "ľadnic", "priepas", "ponor", "vchod"),
     "vodopad": ("vodop", "kaskád", "ľadopád"),
     "pleso": ("pleso", "jazer", "tajch", "mlák", "oko"),
+    "roklina": ("roklin", "tiesňav", "diery", "prielom", "dolin", "kaňon", "žľab", "jarok", "brázd"),
 }
 # Kinds that are a different thing from a hill even under the same name (Sitno the hill, Sitno the castle).
-DISTINCT = {"hrad", "chata", "jaskyna", "pleso", "vodopad"}
+DISTINCT = {"hrad", "chata", "jaskyna", "pleso", "vodopad", "roklina"}
 PREPOSITIONS = {"na", "nad", "pod", "pred", "za", "z", "zo", "pri", "k", "ku", "v", "vo", "od", "do", "medzi",
                 "ponad", "popod", "spod", "sponad"}
 # Polish and Hungarian letters Slovak does not use: a name from across the border. Not ö or ü:
@@ -77,11 +78,12 @@ def normalize(name, kind, place_names=frozenset()):
         n = n.split(", ")[0]
     word = KIND_WORD.get(kind)
     first = n.split()[0].lower()
+    says_kind = any(h in n.lower() for h in KIND_HINTS.get(kind, ()))
     if word and first in PREPOSITIONS:
         n = f"{word} {n[0].lower()}{n[1:]}"  # "na Choč" -> "Vyhliadka na Choč"
-    elif kind in KIND_HINTS and not any(h in n.lower() for h in KIND_HINTS[kind]):
+    elif kind in KIND_HINTS and not says_kind:
         n = f"{word} {n}"  # "Likava" -> "Hrad Likava"
-    elif word and fold(n) in place_names:
+    elif word and fold(n) in place_names and not says_kind:  # "Tichá dolina" the valley and the locality
         n = f"{word} {n}"  # a viewpoint called "Liptovské Revúce" is not the village
     return n[0].upper() + n[1:]
 
