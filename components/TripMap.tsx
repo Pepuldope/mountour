@@ -8,9 +8,9 @@ import { useDriveRoute, useWalkRoute } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { useHomeStop } from "@/lib/useHomeStop";
 import { fetchTrack } from "@/lib/gpx";
-import { POI_LABEL, TRANSIT_LABEL } from "@/lib/format";
+import { GOAL_LABEL, POI_LABEL, TRANSIT_LABEL } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
-import { POI_COLOUR } from "@/lib/palette";
+import { GOAL_COLOUR, POI_COLOUR } from "@/lib/palette";
 import { trackColor } from "@/lib/mapLayers";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
@@ -40,6 +40,8 @@ const OTHER_ROUTE_HOVER = "#1769d1";
 const AT_TRAIL_M = 60;
 /** A stored walk ending this close to the join point is the one to draw (pipeline/walks.py). */
 const STORED_END_M = 40;
+/** A place on the way this close to the goal is the goal itself: one pin, not two. */
+const SAME_PLACE_M = 60;
 
 const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
 
@@ -127,6 +129,8 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
     ];
   }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks]);
 
+  const goal = trail.goal_location;
+  const goalKind = trail.goal ?? "ine";
   const markers = useMemo<MapMarker[]>(
     () => [
       ...trailheads.map((t) => ({
@@ -177,7 +181,7 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
             },
           ]
         : []),
-      ...pois.map((p) => ({
+      ...pois.filter((p) => !goal || haversineM(p.location, goal) > SAME_PLACE_M).map((p) => ({
         id: `poi-${p.id}`,
         kind: "poi" as const,
         location: p.location,
@@ -186,8 +190,23 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
         colour: POI_COLOUR[p.kind],
         icon: kindSvg(p.kind, 14),
       })),
+      // What you came to see (the tower, cave, castle...): its kind's colour and icon, as on the home map.
+      ...(goal
+        ? [
+            {
+              id: "goal",
+              kind: "goal" as const,
+              location: goal,
+              title: trail.goal_name ?? trail.name,
+              lines: [`Cieľ výletu · ${GOAL_LABEL[goalKind]}`],
+              colour: GOAL_COLOUR[goalKind],
+              icon: kindSvg(goalKind, 16),
+              active: true,
+            },
+          ]
+        : []),
     ],
-    [trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit]
+    [trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name]
   );
 
   // Opens on the trail and where the car stops. The drive is drawn too, but a long drive would

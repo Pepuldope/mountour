@@ -25,7 +25,7 @@ export interface MapTrack {
   state: TrackState;
 }
 
-export type MarkerKind = "trailhead" | "parking" | "transit-autobus" | "transit-elektricka" | "transit-vlak" | "poi";
+export type MarkerKind = "trailhead" | "parking" | "transit-autobus" | "transit-elektricka" | "transit-vlak" | "poi" | "goal";
 
 export interface MapMarker {
   id: string;
@@ -70,6 +70,7 @@ const MARKER_GLYPH: Record<MarkerKind, string> = {
   "transit-elektricka": "",
   "transit-vlak": "",
   poi: "*",
+  goal: "",
 };
 
 const pictogram = (svg: string) => `<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">${svg}</svg>`;
@@ -104,6 +105,7 @@ const MARKER_CLASS: Record<MarkerKind, string> = {
   "transit-elektricka": "mt-pin-transit",
   "transit-vlak": "mt-pin-transit",
   poi: "mt-pin-poi",
+  goal: "mt-pin-goal",
 };
 
 export const SLOVAKIA: [[number, number], [number, number]] = [

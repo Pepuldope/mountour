@@ -209,6 +209,17 @@ h2,
   color: #fff;
 }
 
+/* The trip's goal: a bigger square in its kind's colour, as on the home map. */
+.mt-pin-goal {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+.mt-pin-goal svg {
+  color: #fff;
+}
+
 .mt-pin-start {
   width: 24px;
   height: 24px;
