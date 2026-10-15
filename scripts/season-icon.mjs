@@ -1,4 +1,4 @@
-// Puts the current season's icon and logo in place before `next build`
+// Puts the current season's icon in place before `next build`
 // (npm runs it as "prebuild"). The drawings live in public/icons/season/<season>/
 // (made by scripts/build_icons.py); the site rebuilds at least weekly with the
 // trip data, so the icon follows the season like the headers do.
@@ -14,7 +14,6 @@ const copies = {
   "apple-icon.png": ["app/apple-icon.png"],
   "icon-192.png": ["public/icons/icon-192.png"],
   "icon-512.png": ["public/icons/icon-512.png"],
-  "logo.svg": ["public/brand/mountour-logo.svg"],
 };
 for (const [file, targets] of Object.entries(copies)) for (const to of targets) copyFileSync(`${from}/${file}`, to);
 console.log(`Site icon: ${season}`);

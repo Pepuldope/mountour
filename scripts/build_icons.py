@@ -1,6 +1,6 @@
 """Draw the seasonal site icon ("Ako hlavička": the home header in miniature).
 
-Writes public/icons/season/<season>/ with icon.svg, logo.svg and the PNG sizes.
+Writes public/icons/season/<season>/ with icon.svg and the PNG sizes.
 Colours follow LAND in lib/season.ts. PNGs are rendered with headless Chromium
 (CHROMIUM env var, default /opt/pw-browsers/chromium) and cropped
 with Pillow. Run by hand after a
@@ -11,7 +11,6 @@ season's files before each build.
 """
 import math
 import os
-import re
 import subprocess
 import tempfile
 from pathlib import Path
@@ -92,14 +91,6 @@ def icon_svg(season, rounded=True):
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">{inner}</svg>'
 
 
-def logo_svg(season, template):
-    """The header logo with the new mark in place of the old one; the wordmark stays as is."""
-    t = re.sub(r"<metadata>.*?</metadata>", "", template, flags=re.S)
-    mark = f'<g transform="scale(13.4375)"><g clip-path="url(#c)">{scene(season, "l")}</g></g>'
-    t = re.sub(r'<g transform="scale\(13\.4375\)"><g clip-path="url\(#c\)">.*?</g></g>', lambda _: mark, t, count=1, flags=re.S)
-    return t.replace('<rect width="64" height="64" rx="16"/>', '<rect width="64" height="64" rx="14"/>', 1)
-
-
 def png(svg, size, path):
     with tempfile.TemporaryDirectory() as tmp:
         page = Path(tmp) / "p.html"
@@ -116,13 +107,11 @@ def png(svg, size, path):
 
 
 def main():
-    template = (ROOT / "public" / "brand" / "mountour-logo.svg").read_text()
     for season in LAND:
         d = OUT / season
         d.mkdir(parents=True, exist_ok=True)
         rounded = icon_svg(season)
         (d / "icon.svg").write_text(rounded)
-        (d / "logo.svg").write_text(logo_svg(season, template))
         png(rounded, 192, d / "icon-192.png")
         png(rounded, 512, d / "icon-512.png")
         # iPhones round the corners themselves and show transparent corners as black.
