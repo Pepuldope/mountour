@@ -8,13 +8,15 @@ import { activeClosures } from "@/lib/closures";
 import { approachMin, hikeMinutes } from "@/lib/dayPlan";
 import { dayFit, dayInSentence, isoDate } from "@/lib/days";
 import { estimateDriveMin, transitMinutes } from "@/lib/drive";
-import { DIFFICULTY_LABEL, GOAL_LABEL, GOAL_PLURAL, formatDurationShort } from "@/lib/format";
+import { DIFFICULTY_LABEL, GOAL_LABEL, GOAL_PLURAL, POI_LABEL, formatDurationShort } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
 import { seasonOf } from "@/lib/season";
 import type { DestinationKind, TripList } from "@/lib/tripSchema";
 import { getTowns, summaryFromList } from "@/lib/trips";
 import { haversineM } from "@/lib/geo";
+import { plain, preparePlaces, searchPlaces } from "@/lib/placeSearch";
+import type { PlaceHit, PlaceSearch, SearchIndexFile } from "@/lib/placeSearch";
 import { useTripSettings } from "@/lib/tripSettings";
 import { useTownDrives } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
@@ -98,13 +100,6 @@ function useAllTrails(initial: TrailDetail[]): TrailDetail[] {
   }, []);
   return all ?? initial;
 }
-
-/** Lower case without accents, for search: "velka fatra" finds "Veľká Fatra". */
-const plain = (s: string) =>
-  s
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .toLowerCase();
 
 const goalOf = (d: TrailDetail): LatLng | null => d.trail.goal_location ?? primaryTrailhead(d)?.location ?? null;
 
@@ -200,6 +195,7 @@ export function HomeExplorer({ trails: initial }: Props) {
   const [diffFilter, setDiffFilter] = useState<Difficulty[]>([]);
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+  const [placeIndex, setPlaceIndex] = useState<PlaceSearch | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const transit = travel === "transit";
   const { start } = useUserLocation();
@@ -318,12 +314,33 @@ export function HomeExplorer({ trails: initial }: Props) {
 
   // The list: what the search finds anywhere, else the trips on the map and a little around it.
   const words = useMemo(() => plain(query).split(/\s+/).filter(Boolean), [query]);
-  const matches = useCallback(
+  // Places on and by the trips (starts, car parks, stops, huts): fetched once someone starts searching.
+  const wantsPlaces = searchOpen || words.length > 0;
+  useEffect(() => {
+    if (!wantsPlaces || placeIndex) return;
+    let cancelled = false;
+    fetch("/data/search.json")
+      .then((r) => (r.ok ? (r.json() as Promise<SearchIndexFile>) : null))
+      .then((f) => {
+        if (f && !cancelled) setPlaceIndex(preparePlaces(f));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [wantsPlaces, placeIndex]);
+  const placeResults = useMemo(() => (placeIndex ? searchPlaces(placeIndex, words) : null), [placeIndex, words]);
+  const nameMatches = useCallback(
     (d: TrailDetail) => {
       const key = plain(`${d.trail.name} ${d.trail.region_name ?? ""}`);
       return words.every((w) => key.includes(w));
     },
     [words]
+  );
+  // A trip matches by its name, or by a place it starts, passes or ends at (and the places right by it).
+  const matches = useCallback(
+    (d: TrailDetail) => nameMatches(d) || Boolean(placeResults?.slugs.has(d.trail.slug)),
+    [nameMatches, placeResults]
   );
   const scoped = useMemo(() => {
     if (words.length > 0) return listedAll.filter((i) => matches(i.detail));
@@ -407,13 +424,15 @@ export function HomeExplorer({ trails: initial }: Props) {
     const has = (s: string) => words.every((w) => plain(s).includes(w));
     const first = (s: string) => plain(s).startsWith(words[0]) || plain(s).includes(` ${words[0]}`);
     const ranges = areas.filter((a) => has(a.name)).slice(0, 3);
+    const named = (d: TrailDetail) => Number(nameMatches(d)) * 2 + Number(first(d.trail.name));
     const trips = listedAll
       .filter((i) => matches(i.detail))
-      .sort((a, b) => Number(first(b.detail.trail.name)) - Number(first(a.detail.trail.name)) || (b.detail.trail.rank ?? 0) - (a.detail.trail.rank ?? 0))
+      .sort((a, b) => named(b.detail) - named(a.detail) || (b.detail.trail.rank ?? 0) - (a.detail.trail.rank ?? 0))
       .slice(0, 6);
     const places = towns.filter((t) => has(t.name)).slice(0, 3);
-    return { ranges, trips, places };
-  }, [words, areas, listedAll, matches, towns]);
+    const spots: PlaceHit[] = placeResults ? [...placeResults.hits, ...placeResults.near] : [];
+    return { ranges, trips, places, spots };
+  }, [words, areas, listedAll, matches, nameMatches, towns, placeResults]);
 
   const closeMenus = useCallback(() => {
     setSearchOpen(false);
@@ -661,11 +680,21 @@ export function HomeExplorer({ trails: initial }: Props) {
               note={`${GOAL_LABEL[detail.trail.goal ?? "ine"]} · ${detail.trail.region_name ?? ""} · ${formatDurationShort(detail.trail.duration_min)}`}
             />
           ))}
+          {results.spots.length > 0 && <MenuTitle>Miesta</MenuTitle>}
+          {results.spots.map(({ place, nextTo }) => (
+            <MenuRow
+              key={`${place.name}|${place.location.lat}`}
+              onClick={() => showOnMap({ kind: "point", location: place.location, zoom: 13 })}
+              icon={<UiIcon name="pin" size={16} />}
+              title={place.name}
+              note={`${nextTo ? `Pri: ${nextTo}` : placeKindLabel(place.kind)} · ${tripsWord(place.trips.length)}`}
+            />
+          ))}
           {results.places.length > 0 && <MenuTitle>Obce a mestá</MenuTitle>}
           {results.places.map((t) => (
             <MenuRow key={t.id} onClick={() => showOnMap({ kind: "point", location: t.location, zoom: 10.5 })} icon={<UiIcon name="pin" size={16} />} title={t.name} note="Ukázať výlety okolo na mape" />
           ))}
-          {results.ranges.length + results.trips.length + results.places.length === 0 && (
+          {results.ranges.length + results.trips.length + results.places.length + results.spots.length === 0 && (
             <p className="p-2 text-sm text-[var(--muted)]">Nič sa nenašlo. Skúste názov vrchu, chaty, pohoria alebo obce.</p>
           )}
         </div>
@@ -890,6 +919,17 @@ function GoalTile({ goal, size }: { goal: DestinationKind; size: number }) {
 
 function MenuTitle({ children }: { children: React.ReactNode }) {
   return <h4 className="mx-2 mt-2 mb-1 text-[11px] font-bold tracking-wide text-[var(--muted)] uppercase">{children}</h4>;
+}
+
+const PLACE_KIND: Record<string, string> = { start: "Začiatok túry", parkovisko: "Parkovisko", zastavka: "Zastávka" };
+
+function placeKindLabel(kind: string): string {
+  return PLACE_KIND[kind] ?? (GOAL_LABEL as Record<string, string>)[kind] ?? (POI_LABEL as Record<string, string>)[kind] ?? "Miesto";
+}
+
+/** "1 výlet", "3 výlety", "7 výletov". */
+function tripsWord(n: number): string {
+  return `${n} ${n === 1 ? "výlet" : n >= 2 && n <= 4 ? "výlety" : "výletov"}`;
 }
 
 function MenuRow({ icon, title, note, onClick }: { icon: React.ReactNode; title: string; note: string; onClick: () => void }) {
