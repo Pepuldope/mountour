@@ -177,6 +177,10 @@ def _report(trips, rep, now, osm_at, drive):
         m, rest = g[0], g[1:]
         fmt = lambda t: f"{t['start']['name']} {t['duration_min'] // 60}:{t['duration_min'] % 60:02d}"
         L.append(f"| {m['slug']} | {fmt(m)} | " + "; ".join(f"{t['route_label']}: {fmt(t)}" for t in rest) + " |")
+    tries = rep.get("alt_tries", [])
+    L += ["", "## Other ways from the same start (hand-picked trips)", "",
+          "| Trip | Start | Result | New metres | Minutes |", "|---|---|---|---|---|"]
+    L += [f"| {x['slug']} | {x['start']} | {x['why']} | {x.get('new_m', '')} | {x.get('min', '')} |" for x in tries]
     town = rep.get("town", [])
     L += ["", "## Town filter", "",
           f"{sum(1 for x in town if x[2] == 'city centre')} goals in city centres and "

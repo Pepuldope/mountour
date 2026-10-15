@@ -621,6 +621,13 @@ class TripBuilder:
         taken = [base["_path"]]
         union = dict(self._edge_set(base["_path"]))
         out = []
+        tries = self.report.setdefault("alt_tries", [])
+
+        def why(text, **kw):
+            # The hand-picked trips show in the report why no other way was found (Devínska Kobyla).
+            if base["curated"]:
+                tries.append(dict(slug=base["slug"], start=st.name, why=text, **kw))
+
         for _ in range(self.t.get("alt_tries", 3)):
             if len(out) >= self.t.get("alt_routes_per_start", 1):
                 break
@@ -632,31 +639,44 @@ class TripBuilder:
             finally:
                 g.G.data[pos] = old
             if not np.isfinite(dist[target]):
+                why("no other path")
                 break
             path = g.walk_from_source(pred, st.node, target)
             if path is None:
+                why("no other path")
                 break
             taken.append(path)
             edges = self._edge_set(path)
             idx = g.edges(path)
-            new = [(L, bool(g.ways[w].routes)) for a, b, L, w in zip(path[:-1], path[1:], g.edge_len[idx], g.edge_way[idx])
+            # A marked trail or a plain footpath (a ridge path, a nature trail); not a forest road.
+            new = [(L, bool(g.ways[w].routes) or g.ways[w].highway in ("path", "footway", "steps"))
+                   for a, b, L, w in zip(path[:-1], path[1:], g.edge_len[idx], g.edge_way[idx])
                    if (min(a, b), max(a, b)) not in union]
             union.update(edges)
             new_m = sum(L for L, _ in new)
+            good_m = sum(L for L, ok in new if ok)
             if new_m < max(self.t.get("alt_new_min_m", 1000), self.t.get("alt_new_share", 0.35) * sum(edges.values())):
-                continue  # the same walk with a small detour
-            if sum(L for L, m in new if m) < self.t.get("alt_new_marked_share", 0.6) * new_m:
-                continue  # a forest road beside the trail
+                why("same walk with a small detour", new_m=round(new_m))
+                continue
+            if good_m < self.t.get("alt_new_marked_share", 0.6) * new_m:
+                why("new part mostly forest road", new_m=round(new_m), good_m=round(good_m))
+                continue
             if any(self._overlap(edges, e) for e in seen if e is not None):
-                continue  # another start's route, joined from here
+                why("another start's route", new_m=round(new_m))
+                continue
             trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
-            if not trip or self._quality(trip, dest["kind"], lim):
+            bad = self._quality(trip, dest["kind"], lim) if trip else "could not build"
+            if bad:
+                why(bad, new_m=round(new_m))
                 continue
             if trip["duration_min"] > base["duration_min"] + max(60, 0.8 * base["duration_min"]):
+                why("much longer", new_m=round(new_m), min=trip["duration_min"])
                 continue
             town = self.town_walk_m(path)
             if town > lim.get("town_walk_max_m", 1500) or (town > 800 and town > 0.25 * trip["distance_m"]):
+                why("city walk", new_m=round(new_m))
                 continue
+            why("kept", new_m=round(new_m), min=trip["duration_min"])
             trip["_known"] = base.get("_known", 0)
             trip["_edges"] = edges
             trip["_alt_of"] = base
