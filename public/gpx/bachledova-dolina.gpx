@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Bachledova dolina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Bachledova dolina</name><trkseg>
+    <trkpt lat="49.271704" lon="20.309347"><ele>880</ele></trkpt>
+    <trkpt lat="49.272361" lon="20.308461"><ele>888</ele></trkpt>
+    <trkpt lat="49.273042" lon="20.307289"><ele>894</ele></trkpt>
+    <trkpt lat="49.273458" lon="20.306481"><ele>901</ele></trkpt>
+    <trkpt lat="49.274207" lon="20.305494"><ele>908</ele></trkpt>
+    <trkpt lat="49.274401" lon="20.305374"><ele>912</ele></trkpt>
+    <trkpt lat="49.275067" lon="20.305112"><ele>918</ele></trkpt>
+    <trkpt lat="49.276644" lon="20.304293"><ele>933</ele></trkpt>
+    <trkpt lat="49.277440" lon="20.304031"><ele>942</ele></trkpt>
+    <trkpt lat="49.277766" lon="20.303797"><ele>946</ele></trkpt>
+    <trkpt lat="49.277923" lon="20.303573"><ele>948</ele></trkpt>
+    <trkpt lat="49.278178" lon="20.303626"><ele>953</ele></trkpt>
+    <trkpt lat="49.278312" lon="20.303686"><ele>958</ele></trkpt>
+    <trkpt lat="49.278510" lon="20.303851"><ele>963</ele></trkpt>
+    <trkpt lat="49.278664" lon="20.303885"><ele>968</ele></trkpt>
+    <trkpt lat="49.279019" lon="20.303759"><ele>977</ele></trkpt>
+    <trkpt lat="49.279158" lon="20.303770"><ele>983</ele></trkpt>
+    <trkpt lat="49.279272" lon="20.303837"><ele>986</ele></trkpt>
+    <trkpt lat="49.279650" lon="20.304176"><ele>999</ele></trkpt>
+    <trkpt lat="49.279794" lon="20.304410"><ele>1001</ele></trkpt>
+    <trkpt lat="49.279944" lon="20.304834"><ele>1003</ele></trkpt>
+    <trkpt lat="49.280079" lon="20.305030"><ele>1007</ele></trkpt>
+    <trkpt lat="49.280424" lon="20.305250"><ele>1015</ele></trkpt>
+    <trkpt lat="49.280828" lon="20.305653"><ele>1031</ele></trkpt>
+    <trkpt lat="49.280424" lon="20.305250"><ele>1015</ele></trkpt>
+    <trkpt lat="49.280079" lon="20.305030"><ele>1007</ele></trkpt>
+    <trkpt lat="49.279944" lon="20.304834"><ele>1003</ele></trkpt>
+    <trkpt lat="49.279794" lon="20.304410"><ele>1001</ele></trkpt>
+    <trkpt lat="49.279650" lon="20.304176"><ele>999</ele></trkpt>
+    <trkpt lat="49.279272" lon="20.303837"><ele>986</ele></trkpt>
+    <trkpt lat="49.279158" lon="20.303770"><ele>983</ele></trkpt>
+    <trkpt lat="49.279019" lon="20.303759"><ele>977</ele></trkpt>
+    <trkpt lat="49.278664" lon="20.303885"><ele>968</ele></trkpt>
+    <trkpt lat="49.278510" lon="20.303851"><ele>963</ele></trkpt>
+    <trkpt lat="49.278312" lon="20.303686"><ele>958</ele></trkpt>
+    <trkpt lat="49.278178" lon="20.303626"><ele>953</ele></trkpt>
+    <trkpt lat="49.277923" lon="20.303573"><ele>948</ele></trkpt>
+    <trkpt lat="49.277766" lon="20.303797"><ele>946</ele></trkpt>
+    <trkpt lat="49.277440" lon="20.304031"><ele>942</ele></trkpt>
+    <trkpt lat="49.276644" lon="20.304293"><ele>933</ele></trkpt>
+    <trkpt lat="49.275067" lon="20.305112"><ele>918</ele></trkpt>
+    <trkpt lat="49.274401" lon="20.305374"><ele>912</ele></trkpt>
+    <trkpt lat="49.274207" lon="20.305494"><ele>908</ele></trkpt>
+    <trkpt lat="49.273458" lon="20.306481"><ele>901</ele></trkpt>
+    <trkpt lat="49.273042" lon="20.307289"><ele>894</ele></trkpt>
+    <trkpt lat="49.272361" lon="20.308461"><ele>888</ele></trkpt>
+    <trkpt lat="49.271704" lon="20.309347"><ele>880</ele></trkpt>
+  </trkseg></trk>
+</gpx>

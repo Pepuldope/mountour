@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Jaskyňa Dobšinská ľadová jaskyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Jaskyňa Dobšinská ľadová jaskyňa</name><trkseg>
+  <metadata><name>Dobšinská ľadová jaskyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Dobšinská ľadová jaskyňa</name><trkseg>
     <trkpt lat="48.854806" lon="20.354976"><ele>885</ele></trkpt>
     <trkpt lat="48.854716" lon="20.354733"><ele>884</ele></trkpt>
     <trkpt lat="48.854550" lon="20.354448"><ele>883</ele></trkpt>

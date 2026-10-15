@@ -33,6 +33,7 @@ export type DestinationKind =
   | "pleso" // tarn or lake
   | "vodopad" // waterfall
   | "jaskyna" // show cave
+  | "roklina" // gorge or canyon walked through (Jánošíkove diery, Suchá Belá)
   | "ine";
 
 /** pipeline/config.yaml regions. */

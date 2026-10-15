@@ -102,8 +102,9 @@ that changed. A full load (the first one, or after a schema change) writes about
 - Regions, limits, hand-picked trips: `pipeline/config.yaml`.
   Hand-picked trips are routed like all others, preferring marked trails, so their
   `expect` values in the report can drift from the 2026-10-07 build.
-- Rename a trip, rewrite its description or drop it: `pipeline/overrides.yaml`.
+- Rename a trip, rewrite its description or drop it: `pipeline/overrides.yaml`. A new name also goes to the other routes to that place.
 - A well-known place is missing: add it to `watch` in `pipeline/config.yaml`; the next report says what became of it (no marked trail near it, too long, merged into a nearby goal, ...).
+- Gorges (`roklina`): OSM valleys with a Wikipedia article up to 4.5 km long, or any valley or attraction named roklina / tiesňava / diery / prielom (`pipeline/osm.py`). A gorge is a line, so the trip goes to its upper end. Tatra "dolina" valleys stay out (long glacial valleys). Other sights with an article (Kláštorisko, a rock town) come in as `ine`.
 - The database load runs in parts of at most 2 MB / 20 statements (`pipeline.db --parts`): one big file ran out of D1's CPU time. The version row goes last, so the site reads the static files until every part is in.
 - Closure or fee: edit the JSON rule files (needs a source URL and a check date). Dates
   and texts apply at the next site build; a new rule area needs the next pipeline run

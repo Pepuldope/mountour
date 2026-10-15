@@ -39,7 +39,7 @@ CREATE TABLE protected_area (
 CREATE TABLE place (
   id       INTEGER PRIMARY KEY,
   name     TEXT NOT NULL,
-  kind     TEXT NOT NULL CHECK (kind IN ('start','vrchol','vyhliadka','hrad','chata','pleso','vodopad','jaskyna','ine')),
+  kind     TEXT NOT NULL CHECK (kind IN ('start','vrchol','vyhliadka','hrad','chata','pleso','vodopad','jaskyna','roklina','ine')),
   lat      REAL NOT NULL CHECK (lat BETWEEN 47.7 AND 49.7),
   lon      REAL NOT NULL CHECK (lon BETWEEN 16.8 AND 22.6),
   ele_m    INTEGER,
