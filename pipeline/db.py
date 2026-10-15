@@ -187,6 +187,7 @@ CREATE TABLE data_version (
 # already runs out of memory, so INSERTs are cut at 40 KB.
 MAX_STATEMENT_BYTES = 40_000
 PART_BYTES = 2_000_000  # one `wrangler d1 execute --file` (more runs out of D1 CPU time)
+FULL_LOAD_SHARE = 0.5  # an incremental load writing more than this share of a full one becomes a full one
 PART_STATEMENTS = 20  # a DELETE of 500 trips' rows costs D1 far more CPU than its few bytes say
 
 
@@ -544,8 +545,14 @@ def main(argv=None):
             sql, written = incremental_sql(rows, version, have_from_results(json.loads(args.have.read_text())))
         except (ValueError, KeyError, IndexError, TypeError) as err:
             print(f"database state unreadable ({err!r}): full load", file=sys.stderr)
+        full_rows = sum(len(r) for r in rows.values()) + 1
         if sql is None:
             print("database has another schema or none: full load", file=sys.stderr)
+        elif written > FULL_LOAD_SHARE * full_rows:
+            # Deleting thousands of trips row by row runs out of D1's CPU time ("D1 DB exceeded its
+            # CPU time limit", 2026-10-15, when most trips got new ids): dropping the tables is cheap.
+            print(f"most trips changed ({written} of {full_rows} rows): full load", file=sys.stderr)
+            sql = None
         else:
             print(f"incremental load, about {written} rows written", file=sys.stderr)
     if sql is None:
