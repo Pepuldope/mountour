@@ -102,6 +102,7 @@ that changed. A full load (the first one, or after a schema change) writes about
 - Regions, limits, hand-picked trips: `pipeline/config.yaml`.
   Hand-picked trips are routed like all others, preferring marked trails, so their
   `expect` values in the report can drift from the 2026-10-07 build.
+- Search: `public/data/search.json` (`pipeline/search.py`, rebuilt with the trips) lists every named start, car park, stop, hut and sight by a trip with the trips that touch it. The home search matches it, so "Železná studnička" also finds Červený most next door and its trips.
 - Rename a trip, rewrite its description or drop it: `pipeline/overrides.yaml`. A new name also goes to the other routes to that place.
 - A well-known place is missing: add it to `watch` in `pipeline/config.yaml`; the next report says what became of it (no marked trail near it, too long, merged into a nearby goal, ...).
 - Gorges (`roklina`): OSM valleys with a Wikipedia article up to 4.5 km long, or any valley or attraction named roklina / tiesňava / diery / prielom (`pipeline/osm.py`). A gorge is a line, so the trip goes to its upper end. Tatra "dolina" valleys stay out (long glacial valleys). Other sights with an article (Kláštorisko, a rock town) come in as `ine`.

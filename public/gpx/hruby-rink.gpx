@@ -2,8 +2,8 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Hrubý Rink</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Hrubý Rink</name><trkseg>
-    <trkpt lat="48.841313" lon="17.317838"><ele>326</ele></trkpt>
-    <trkpt lat="48.841307" lon="17.317405"><ele>326</ele></trkpt>
+    <trkpt lat="48.841319" lon="17.317814"><ele>326</ele></trkpt>
+    <trkpt lat="48.841254" lon="17.317339"><ele>325</ele></trkpt>
     <trkpt lat="48.840971" lon="17.316691"><ele>327</ele></trkpt>
     <trkpt lat="48.839923" lon="17.315034"><ele>329</ele></trkpt>
     <trkpt lat="48.840107" lon="17.314754"><ele>330</ele></trkpt>
@@ -107,7 +107,7 @@
     <trkpt lat="48.840107" lon="17.314754"><ele>330</ele></trkpt>
     <trkpt lat="48.839923" lon="17.315034"><ele>329</ele></trkpt>
     <trkpt lat="48.840971" lon="17.316691"><ele>327</ele></trkpt>
-    <trkpt lat="48.841307" lon="17.317405"><ele>326</ele></trkpt>
-    <trkpt lat="48.841313" lon="17.317838"><ele>326</ele></trkpt>
+    <trkpt lat="48.841254" lon="17.317339"><ele>325</ele></trkpt>
+    <trkpt lat="48.841319" lon="17.317814"><ele>326</ele></trkpt>
   </trkseg></trk>
 </gpx>

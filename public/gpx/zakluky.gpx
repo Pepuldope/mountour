@@ -2,24 +2,9 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Zákľuky</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Zákľuky</name><trkseg>
-    <trkpt lat="48.968747" lon="19.575599"><ele>1144</ele></trkpt>
-    <trkpt lat="48.968873" lon="19.574918"><ele>1147</ele></trkpt>
-    <trkpt lat="48.968884" lon="19.574622"><ele>1150</ele></trkpt>
-    <trkpt lat="48.968835" lon="19.574361"><ele>1152</ele></trkpt>
-    <trkpt lat="48.968671" lon="19.574114"><ele>1158</ele></trkpt>
-    <trkpt lat="48.968239" lon="19.573692"><ele>1156</ele></trkpt>
-    <trkpt lat="48.967686" lon="19.573306"><ele>1155</ele></trkpt>
-    <trkpt lat="48.966805" lon="19.572778"><ele>1166</ele></trkpt>
-    <trkpt lat="48.965774" lon="19.571942"><ele>1175</ele></trkpt>
-    <trkpt lat="48.965471" lon="19.571873"><ele>1176</ele></trkpt>
-    <trkpt lat="48.965077" lon="19.571572"><ele>1182</ele></trkpt>
-    <trkpt lat="48.964585" lon="19.571282"><ele>1191</ele></trkpt>
-    <trkpt lat="48.964429" lon="19.571087"><ele>1190</ele></trkpt>
-    <trkpt lat="48.964359" lon="19.570906"><ele>1191</ele></trkpt>
-    <trkpt lat="48.963719" lon="19.569719"><ele>1204</ele></trkpt>
-    <trkpt lat="48.963561" lon="19.569590"><ele>1209</ele></trkpt>
+    <trkpt lat="48.963614" lon="19.569551"><ele>1209</ele></trkpt>
     <trkpt lat="48.963212" lon="19.569193"><ele>1210</ele></trkpt>
-    <trkpt lat="48.962922" lon="19.569105"><ele>1222</ele></trkpt>
+    <trkpt lat="48.963126" lon="19.569156"><ele>1215</ele></trkpt>
     <trkpt lat="48.962791" lon="19.569113"><ele>1226</ele></trkpt>
     <trkpt lat="48.962589" lon="19.569012"><ele>1229</ele></trkpt>
     <trkpt lat="48.962253" lon="19.569047"><ele>1233</ele></trkpt>
@@ -235,23 +220,8 @@
     <trkpt lat="48.962253" lon="19.569047"><ele>1233</ele></trkpt>
     <trkpt lat="48.962589" lon="19.569012"><ele>1229</ele></trkpt>
     <trkpt lat="48.962791" lon="19.569113"><ele>1226</ele></trkpt>
-    <trkpt lat="48.962922" lon="19.569105"><ele>1222</ele></trkpt>
+    <trkpt lat="48.963126" lon="19.569156"><ele>1215</ele></trkpt>
     <trkpt lat="48.963212" lon="19.569193"><ele>1210</ele></trkpt>
-    <trkpt lat="48.963561" lon="19.569590"><ele>1209</ele></trkpt>
-    <trkpt lat="48.963719" lon="19.569719"><ele>1204</ele></trkpt>
-    <trkpt lat="48.964359" lon="19.570906"><ele>1191</ele></trkpt>
-    <trkpt lat="48.964429" lon="19.571087"><ele>1190</ele></trkpt>
-    <trkpt lat="48.964585" lon="19.571282"><ele>1191</ele></trkpt>
-    <trkpt lat="48.965077" lon="19.571572"><ele>1182</ele></trkpt>
-    <trkpt lat="48.965471" lon="19.571873"><ele>1176</ele></trkpt>
-    <trkpt lat="48.965774" lon="19.571942"><ele>1175</ele></trkpt>
-    <trkpt lat="48.966805" lon="19.572778"><ele>1166</ele></trkpt>
-    <trkpt lat="48.967686" lon="19.573306"><ele>1155</ele></trkpt>
-    <trkpt lat="48.968239" lon="19.573692"><ele>1156</ele></trkpt>
-    <trkpt lat="48.968671" lon="19.574114"><ele>1158</ele></trkpt>
-    <trkpt lat="48.968835" lon="19.574361"><ele>1152</ele></trkpt>
-    <trkpt lat="48.968884" lon="19.574622"><ele>1150</ele></trkpt>
-    <trkpt lat="48.968873" lon="19.574918"><ele>1147</ele></trkpt>
-    <trkpt lat="48.968747" lon="19.575599"><ele>1144</ele></trkpt>
+    <trkpt lat="48.963614" lon="19.569551"><ele>1209</ele></trkpt>
   </trkseg></trk>
 </gpx>

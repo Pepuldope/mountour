@@ -2,7 +2,9 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Vŕšok (Banský Studenec)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Vŕšok (Banský Studenec)</name><trkseg>
-    <trkpt lat="48.435377" lon="19.091044"><ele>415</ele></trkpt>
+    <trkpt lat="48.435421" lon="19.091047"><ele>415</ele></trkpt>
+    <trkpt lat="48.435259" lon="19.090733"><ele>414</ele></trkpt>
+    <trkpt lat="48.435239" lon="19.090767"><ele>414</ele></trkpt>
     <trkpt lat="48.435109" lon="19.090564"><ele>412</ele></trkpt>
     <trkpt lat="48.434982" lon="19.090450"><ele>412</ele></trkpt>
     <trkpt lat="48.434998" lon="19.090384"><ele>412</ele></trkpt>
@@ -338,6 +340,8 @@
     <trkpt lat="48.434998" lon="19.090384"><ele>412</ele></trkpt>
     <trkpt lat="48.434982" lon="19.090450"><ele>412</ele></trkpt>
     <trkpt lat="48.435109" lon="19.090564"><ele>412</ele></trkpt>
-    <trkpt lat="48.435377" lon="19.091044"><ele>415</ele></trkpt>
+    <trkpt lat="48.435239" lon="19.090767"><ele>414</ele></trkpt>
+    <trkpt lat="48.435259" lon="19.090733"><ele>414</ele></trkpt>
+    <trkpt lat="48.435421" lon="19.091047"><ele>415</ele></trkpt>
   </trkseg></trk>
 </gpx>
