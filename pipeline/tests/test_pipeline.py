@@ -56,6 +56,14 @@ def osm_xml(two_routes=False):
         node(25, 49.2121, 19.0619, highway="bus_stop", name="Sedlo, rázcestie")
         node(26, 49.2119, 19.0623, amenity="restaurant", name="Koliba pod sedlom")
         node(27, 49.2001, 19.0501, natural="peak", name="Druhý vrch", ele="900", wikipedia="sk:Druhý vrch")
+        # a castle on a hill: a marked trail up from the village, and a car park right by the walls
+        for k in range(12):
+            node(900 + k, 49.280 + 0.0016 * k, 19.280 + 0.0016 * k)
+        node(31, 49.29921, 19.29921, historic="castle", name="Hrad Skúška", ele="650", wikipedia="sk:Hrad Skúška")
+        node(32, 49.28001, 19.28001, tourism="information", information="guidepost", name="Podhradie", ele="300")
+        node(33, 49.2801, 19.2795, amenity="parking", capacity="60")
+        node(34, 49.3010, 19.2990, amenity="parking", name="Parkovisko pod hradom")
+        node(35, 49.3005, 19.2992)
         # from Sedlo a second marked way, round the south side of the hill
         for k, (la, lo) in enumerate([(49.2095, 19.0640), (49.2068, 19.0648), (49.2042, 19.0630),
                                       (49.2022, 19.0590), (49.2008, 19.0545)]):
@@ -65,6 +73,9 @@ def osm_xml(two_routes=False):
                      + '<nd ref="27"/><tag k="highway" v="path"/></way>'))
         ways.append(('<way id="3001" version="1">' + "".join(f'<nd ref="{700 + k}"/>' for k in range(10))
                      + '<nd ref="27"/><tag k="highway" v="path"/></way>'))
+        ways.append(('<way id="3003" version="1">' + "".join(f'<nd ref="{900 + k}"/>' for k in range(12))
+                     + '<nd ref="31"/><tag k="highway" v="path"/></way>'))
+        ways.append('<way id="3004" version="1"><nd ref="34"/><nd ref="35"/><nd ref="31"/><tag k="highway" v="footway"/></way>')
         ways.append(('<way id="3002" version="1"><nd ref="700"/>' + "".join(f'<nd ref="{800 + k}"/>' for k in range(5))
                      + '<nd ref="27"/><tag k="highway" v="path"/></way>'))
     ways.append(('<way id="1000" version="1">' + "".join(f'<nd ref="{100 + k}"/>' for k in range(10))
@@ -85,6 +96,8 @@ def osm_xml(two_routes=False):
         '<tag k="type" v="route"/><tag k="route" v="hiking"/><tag k="osmc:symbol" v="blue:white:blue_bar"/></relation>',
         '<relation id="5003" version="1"><member type="way" ref="3001" role=""/>'
         '<tag k="type" v="route"/><tag k="route" v="hiking"/><tag k="osmc:symbol" v="yellow:white:yellow_bar"/></relation>',
+        '<relation id="5005" version="1"><member type="way" ref="3003" role=""/>'
+        '<tag k="type" v="route"/><tag k="route" v="hiking"/><tag k="osmc:symbol" v="red:white:red_bar"/></relation>',
         '<relation id="5004" version="1"><member type="way" ref="3002" role=""/>'
         '<tag k="type" v="route"/><tag k="route" v="hiking"/><tag k="osmc:symbol" v="green:white:green_bar"/></relation>',
     ] if two_routes else [])
@@ -152,6 +165,13 @@ def test_end_to_end(tmp_path):
     assert alt["slug"].endswith("-ina-cesta") and alt["variant_of"] == main["slug"] and alt["marking"] == ["green"]
     assert len({t["route_label"] for t in peak}) == 3
     assert (tmp_path / "public" / "gpx" / f"{other['slug']}.gpx").exists()
+    # the castle: the hike from the village is the main route, the car park by the walls a short option
+    castle = [t for t in index["trips"] + variants if t["destination"]["name"] == "Hrad Skúška"]
+    c_main = next(t for t in castle if not t.get("variant_of"))
+    short = next(t for t in castle if t.get("route_label") == "Krátko od auta")
+    assert c_main["start"]["name"] == "Podhradie" and c_main["duration_min"] >= 60
+    assert short["slug"] == f"{c_main['slug']}-od-auta" and short["duration_min"] <= 45
+    assert short["parking"]["name"] == "Parkovisko pod hradom"
     # each route's file lists all of them, main first, with its way up, so the trip page reads only that file
     for t in (main, other, alt):
         routes = json.loads((tmp_path / "public" / "data" / "trips" / f"{t['slug']}.json").read_text())["routes"]

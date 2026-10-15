@@ -25,6 +25,8 @@ FAMOUS = 6  # Wikipedia languages with an article: a place known well beyond its
 DISTINCT_GOALS = {"vodopad", "pleso", "jaskyna", "hrad", "roklina"}  # two of these near each other are two goals
 GORGE_VALLEY_FAME = 3
 GORGE_TOP_MAX_ELE = 1300  # m; a valley reaching higher is a mountain valley  # a plain "dolina" counts as a gorge when this many Wikipedias have it
+SHORT_LABEL = "Krátko od auta"  # a car park by the goal: look round the castle, no hike
+SHORT_KINDS = {"hrad", "jaskyna", "vodopad", "vyhliadka", "pleso", "ine"}
 VERY_FAMOUS = 12  # every Tatra peak has a few (Polish, German); this many is a household name
 
 
@@ -564,7 +566,7 @@ class TripBuilder:
 
     def _keep_starts(self, others):
         """The other starts a place keeps: a hand-picked route always, then the best-known."""
-        starts = [r for r in others if "_alt_of" not in r]
+        starts = [r for r in others if "_alt_of" not in r and not r.get("_short")]
         starts = sorted(starts, key=lambda r: (not r["curated"], -r["_known"], r["duration_min"]))
         return starts[: self.t.get("max_starts_per_destination", 3) - 1]
 
@@ -579,7 +581,36 @@ class TripBuilder:
             for a in self.alternatives(base, target, dest, region, seen, lim):
                 seen.append(a["_edges"])
                 alts.append(a)
-        return alts
+        short = self.short_visit(main, routes, target, dest, region)
+        return alts + ([short] if short else [])
+
+    def short_visit(self, main, routes, target, dest, region):
+        """Park by the castle and look round it: a few hundred metres from a car park at the goal.
+        Never the main route and only where the main route is a real walk; an option for people
+        who came for the place, not the hike."""
+        if dest["kind"] not in SHORT_KINDS or main["duration_min"] < self.t.get("short_main_min", 60):
+            return None
+        if any(r["duration_min"] <= self.t.get("short_max_min", 45) for r in routes):
+            return None  # a short route is there already
+        g, max_m = self.g, self.t.get("short_walk_max_m", 800)
+        for d, f in self._near(self.parking_tree, self.osm.parking, dest["lat"], dest["lon"], max_m):
+            if self.car_ok and not self.car_ok(f):
+                continue
+            node = g.snap(f.lat, f.lon, 150)
+            if node is None or node == target:
+                continue
+            dist, pred = g.costs_from(node, 4 * max_m)
+            path = g.walk_from_source(pred, node, target) if np.isfinite(dist[target]) else None
+            if path is None or len(path) < 2 or float(g.edge_len[g.edges(path)].sum()) > max_m:
+                continue
+            st = self.make_start(f.name or "Parkovisko", f.lat, f.lon, None, f.osm, node)
+            trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
+            if not trip or trip["duration_min"] > self.t.get("short_max_min", 45):
+                continue
+            trip["_known"] = 0
+            trip["_short"] = True
+            return trip
+        return None
 
     def alternatives(self, base, target, dest, region, seen, lim):
         """Other ways from the same start: the shortest way to Devínska Kobyla skirts the hill, a
@@ -639,19 +670,21 @@ class TripBuilder:
         starts = self._keep_starts(others)
         kept = {id(main)} | {id(r) for r in starts}
         alts = [r for r in others if "_alt_of" in r and id(r["_alt_of"]) in kept]
-        # The main start's other way first: most people start there.
+        short = [r for r in others if r.get("_short")]
+        # The main start's other way first: most people start there. The car park by the goal
+        # always stays, last.
         alts.sort(key=lambda r: r["_alt_of"] is not main)
-        keep = (alts[:1] + starts + alts[1:])[: self.t.get("max_routes_per_destination", 5) - 1]
+        keep = (alts[:1] + starts + alts[1:])[: self.t.get("max_routes_per_destination", 5) - 1 - len(short)] + short
         out = []
         for r in keep:
             if r["slug"] == PENDING:
                 self._set_slug(r, self._variant_slug(main, r))
             r["variant_of"] = main["slug"]
-            r["route_label"] = "Iná cesta"
+            r["route_label"] = SHORT_LABEL if r.get("_short") else "Iná cesta"
             r["region"], r["region_name"], r["protected_area"] = main["region"], main["region_name"], main["protected_area"]
             out.append(r)
         for r in [main] + others:
-            for k in ("_known", "_edges", "_st", "_path", "_alt_of"):
+            for k in ("_known", "_edges", "_st", "_path", "_alt_of", "_short"):
                 r.pop(k, None)
         if out:  # one route only: no route fields at all
             main["route_label"] = "Hlavná cesta"
@@ -674,7 +707,9 @@ class TripBuilder:
             ("Menej do kopca", lambda r: m["ascent_m"] and r["ascent_m"] <= 0.7 * m["ascent_m"], lambda r: r["ascent_m"]),
             ("Iným chodníkom", same_start, lambda r: r["duration_min"]),
         ]
-        label, used = {}, {"Hlavná cesta"}
+        # The car park by the goal keeps its own word.
+        label = {r["slug"]: SHORT_LABEL for r in routes if r.get("route_label") == SHORT_LABEL}
+        used = {"Hlavná cesta", SHORT_LABEL}
         # A place it passes says the most; then the rules, each word to the route it fits best.
         for r in sorted(routes, key=lambda r: r["duration_min"]):
             v = via.get(r["slug"])
@@ -707,12 +742,13 @@ class TripBuilder:
     def _variant_slug(self, main, r):
         """Stable per destination and start: '<main slug>-<start>', another way from that start
         '<main slug>-<start>-ina-cesta'."""
-        alt = "_alt_of" in r
+        tag = "alt" if "_alt_of" in r else "short" if r.get("_short") else ""
         key = f"v|{main['destination']['osm'] or main['destination']['name']}|{r['start']['osm'] or r['start']['name']}"
-        key += "|alt" if alt else ""
+        key += f"|{tag}" if tag else ""
         s = self.slugs.get(key)
         if not s or s in self.used_slugs:
-            base = f"{main['slug']}-{slugify(r['start']['name'], 24)}" + ("-ina-cesta" if alt else "")
+            base = (f"{main['slug']}-od-auta" if tag == "short"
+                    else f"{main['slug']}-{slugify(r['start']['name'], 24)}" + ("-ina-cesta" if tag else ""))
             s, n = base, 2
             taken = set(self.slugs.values()) | self.used_slugs
             while s in taken:

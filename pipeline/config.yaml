@@ -123,6 +123,11 @@ trips:
   alt_new_marked_share: 0.6
   # routes per place in all, the main one included
   max_routes_per_destination: 5
+  # castles, caves, waterfalls with a car park right by them: also a short visit from there
+  # ("Krátko od auta"), when the main route is at least short_main_min and no route is short
+  short_walk_max_m: 800
+  short_max_min: 45
+  short_main_min: 60
   # two routes are the same route when they share more than this part of the shorter one
   route_overlap_max: 0.5
   # trailheads tried per destination, nearest first
