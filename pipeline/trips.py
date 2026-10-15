@@ -665,7 +665,10 @@ class TripBuilder:
                 why("another start's route", new_m=round(new_m))
                 continue
             trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
-            bad = self._quality(trip, dest["kind"], lim) if trip else "could not build"
+            # Ridge paths and nature trails are often unmarked (Devínska Kobyla over the top), so the
+            # other way may be less marked than a first route, as long as its new part is footpath.
+            alt_lim = {**lim, "min_marked_share": self.t.get("alt_min_marked_share", 0.35)}
+            bad = self._quality(trip, dest["kind"], alt_lim) if trip else "could not build"
             if bad:
                 why(bad, new_m=round(new_m))
                 continue

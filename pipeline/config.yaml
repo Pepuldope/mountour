@@ -121,6 +121,8 @@ trips:
   alt_new_min_m: 1000
   alt_new_share: 0.35
   alt_new_marked_share: 0.6
+  # and the whole of it at least this much on marked trails (a first route needs min_marked_share)
+  alt_min_marked_share: 0.35
   # routes per place in all, the main one included
   max_routes_per_destination: 5
   # castles, caves, waterfalls with a car park right by them: also a short visit from there
