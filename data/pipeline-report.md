@@ -1,6 +1,6 @@
 # Trip pipeline report
 
-Run: 2026-10-15T11:31:44+00:00 · OSM data: 2026-10-14T20:21:12Z
+Run: 2026-10-15T12:01:09+00:00 · OSM data: 2026-10-14T20:21:12Z
 
 **6463 trips**
 
@@ -143,7 +143,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Town filter
 
-9 goals in city centres and 8 sights in towns left out; 32 routes left out as city walks; 81 goals in nature start out of town instead of walking village or town streets, 9 keep such a start (none out of town is about as quick).
+9 goals in city centres and 8 sights in towns left out; 32 routes left out as city walks; 79 goals in nature start out of town instead of walking village or town streets, 11 keep such a start (none out of town is about as quick).
 
 | Goal | Kind | Why | Start | Town metres |
 |---|---|---|---|---|
@@ -196,86 +196,247 @@ Flag ⚠ when off by more than 15 %.
 | Kalvária | vyhliadka | city walk | Zlatnícka dolina | 1789 |
 | Vyhliadková veža kostola | vyhliadka | in town |  | 0 |
 | Panoráma Tatier cez okno | vyhliadka | in town |  | 0 |
-| Tajch | | streets, start out of town used | Pribylina, skanzen | 3398 |
-| Považská lesná železnica | | streets, start out of town used | Úzka dolina, ústie | 2245 |
-| Považská lesná železnica | | streets, start out of town used | Odbočka nad Orešnicou | 2245 |
-| Považská lesná železnica | | streets, start out of town used | Račkova dolina, chata | 2245 |
-| Považská lesná železnica | | streets, start out of town used | Nad Slabejkou | 2245 |
-| Považská lesná železnica | | streets, start out of town used | Pod Holým vrchom, Jedliny | 2245 |
-| Považská lesná železnica | | streets, start out of town used | Rázcestie pod Holým vrchom | 2245 |
-| Považská lesná železnica | | streets, start out of town used | Smer Baranec | 2245 |
-| Šibeň | | streets, start out of town used | Smižany | 1251 |
-| Devín | | streets, start out of town used | Pod Devínskou Kobylou | 1023 |
-| Na hrane | | streets, start out of town used | Plavecký Mikuláš | 1013 |
-| Vilmošove vodopády | | streets, start out of town used | Záhorská Bystrica | 2920 |
-| Vilmošove vodopády | | streets, start out of town used | Záhorská Bystrica, Markíza | 1903 |
-| Obria lavička | | streets, start out of town used | Limbach | 1761 |
-| Obria lavička | | streets, start out of town used | Limbach | 1761 |
-| Krásna hôrka | | streets, start out of town used | Horský park, hor. | 1443 |
-| Krásna hôrka | | streets, start out of town used | Slavín | 1870 |
-| Červený most | | streets, start out of town used | Slavín | 1804 |
-| Červený most | | streets, start out of town used | Slavín, pamätník | 1977 |
-| Motyčianska hoľa | | streets, start out of town used | Nad Poliankou 1 | 1927 |
-| Motyčianska hoľa | | streets, start out of town used | Nad Poliankou 2 | 1927 |
-| na Ružomberok | | streets, start out of town used | Likavka, pod Paračkou | 1467 |
-| na Ružomberok | | streets, start out of town used | Ružomberok, stanica | 1467 |
-| na Ružomberok | | streets, start out of town used | Kuskova vila | 1992 |
-| na Ružomberok | | streets, start out of town used | Likavka | 2241 |
-| na Gombáš | | streets, start out of town used | Zbojnícka diera | 1370 |
-| Hŕbky | | streets, start out of town used | Náučný chodník "Serpentíny Urpín" | 2064 |
-| Hŕbky | | streets, start out of town used | Banská Bystrica - Mesto | 2064 |
-| Vreteň | | streets, start out of town used | Budatínska Lehota | 1654 |
-| Holý vrch | | streets, start out of town used | Dolný Vadičov | 1321 |
-| Buky | | streets, start out of town used | Svrčinovec, U Liščáka | 1384 |
-| Orgoňova Kýčera | | streets, start out of town used | Horná Mariková, Modlatín | 1656 |
-| Orgoňova Kýčera | | streets, start out of town used | Horná Mariková, Modlatín | 1749 |
-| Beskyd | | streets, start out of town used | Makov, centrum | 2819 |
-| Beskyd | | streets, start out of town used | Makov, centrum | 2844 |
-| Beskyd | | streets, start out of town used | Makov | 2819 |
-| Beskyd | | streets, start out of town used | Makov | 2819 |
-| Beskyd | | streets, start out of town used | Makov, ihrisko | 3477 |
-| Beskyd | | streets, start out of town used | Makov, Čierne, Beloňovci | 4780 |
-| Beskyd | | streets, start out of town used | Nad Melocíkom | 5588 |
-| Beskyd | | streets, start out of town used | U Melocíka | 5588 |
-| Beskyd | | streets, start out of town used | U Melocíka | 5588 |
-| Beskyd | | streets, start out of town used | Nad Zadnou Šatinou | 5588 |
-| Zlieň | | streets, start out of town used | Lutiše | 1690 |
-| Zlieň | | streets, start out of town used | Lutiše | 1714 |
-| Vadičovský vodopád | | streets, start out of town used | Lutiše | 1855 |
-| Vadičovský vodopád | | streets, start out of town used | Lutiše | 1879 |
-| Chata Kmínek | | streets, start out of town used | Makov, centrum | 2819 |
-| Chata Kmínek | | streets, start out of town used | Makov, centrum | 2844 |
-| Chata Kmínek | | streets, start out of town used | Makov | 2819 |
-| Chata Kmínek | | streets, start out of town used | Makov | 2819 |
-| Chata Kmínek | | streets, start out of town used | Makov, ihrisko | 3477 |
-| Chata Kmínek | | streets, start out of town used | Makov, Čierne, Beloňovci | 4780 |
-| Chata Kmínek | | streets, start out of town used | Nad Melocíkom | 5588 |
-| Chata Kmínek | | streets, start out of town used | U Melocíka | 5588 |
-| Chata Kmínek | | streets, start out of town used | U Melocíka | 5588 |
-| Chata Kmínek | | streets, start out of town used | Nad Zadnou Šatinou | 5588 |
-| Kýčerka | | streets, start out of town used | Odbočka na Zákysučie | 1207 |
-| Kýčerka | | streets, start out of town used | Krásno nad Kysucou, sútok Kysuce a Bystrice | 1207 |
-| Ryboňov | | streets, start out of town used | Krásno nad Kysucou | 1543 |
-| Ryboňov | | streets, start out of town used | Mestský úrad | 2338 |
-| Ryboňov | | streets, start out of town used | Krásno nad Kysucou, sútok Kysuce a Bystrice | 2208 |
-| Pod Valmi | | streets, start out of town used | Svrčinovec | 1449 |
-| Pod Valmi | | streets, start out of town used | Svrčinovec | 1455 |
-| Pod Valmi | | streets, start out of town used | Svrčinovec | 1641 |
-| Pod Valmi | | streets, start out of town used | Krížová cesta | 1844 |
-| Pod Valmi | | streets, start out of town used | Závršie | 1499 |
-| Pod Valmi | | streets, start out of town used | Čierne, Dielnice | 3064 |
-| Nad Furmancom | | streets, start out of town used | Svrčinovec | 1449 |
-| Nad Furmancom | | streets, start out of town used | Svrčinovec | 1455 |
-| Nad Furmancom | | streets, start out of town used | Svrčinovec | 1641 |
-| Nad Furmancom | | streets, start out of town used | Krížová cesta | 1844 |
-| Nad Furmancom | | streets, start out of town used | Čierne, Dielnice | 3064 |
-| Hackov vrch | | streets, start out of town used | Železničná stanica | 2669 |
-| Hôrka | | streets, start out of town used | Belianske skaly | 3194 |
-| Hájnica | | streets, start out of town used | Krásno nad Kysucou, mesto | 1055 |
-| Hájnica | | streets, start out of town used | Mestský úrad | 1704 |
-| Hájnica | | streets, start out of town used | Krásno nad Kysucou, Kysucká cesta | 1155 |
-| Hájnica | | streets, start out of town used | Krásno nad Kysucou, sútok Kysuce a Bystrice | 1718 |
-| Hájnica | | streets, start out of town used | Odbočka na Zákysučie | 1718 |
+| Tajch | instead: Pod Holým vrchom, Jedliny 165 min | streets, start out of town used | Pribylina, skanzen | 3398 |
+| Považská lesná železnica | instead: Pribylina, centrum 150 min | streets, start out of town used | Úzka dolina, ústie | 2245 |
+| Považská lesná železnica | instead: Pribylina, centrum 150 min | streets, start out of town used | Odbočka nad Orešnicou | 2245 |
+| Považská lesná železnica | instead: Pribylina, centrum 150 min | streets, start out of town used | Račkova dolina, chata | 2245 |
+| Považská lesná železnica | instead: Pribylina, centrum 150 min | streets, start out of town used | Nad Slabejkou | 2245 |
+| Považská lesná železnica | instead: Pribylina, centrum 150 min | streets, start out of town used | Pod Holým vrchom, Jedliny | 2245 |
+| Považská lesná železnica | instead: Pribylina, centrum 150 min | streets, start out of town used | Rázcestie pod Holým vrchom | 2245 |
+| Považská lesná železnica | instead: Pribylina, centrum 150 min | streets, start out of town used | Smer Baranec | 2245 |
+| Šibeň | instead: Iliašovce 75 min | streets, start out of town used | Smižany | 1251 |
+| Devín | instead: overlaps another route | streets, start out of town used | Pod Devínskou Kobylou | 1023 |
+| Na hrane | instead: Plavecký Mikuláš, vodojem 90 min | streets, start out of town used | Plavecký Mikuláš | 1013 |
+| Vilmošove vodopády | instead: Nad horárňou Krasňany 210 min | streets, start out of town used | Záhorská Bystrica | 2920 |
+| Vilmošove vodopády | instead: Nad horárňou Krasňany 210 min | streets, start out of town used | Záhorská Bystrica, Markíza | 1903 |
+| Obria lavička | instead: Sirková 150 min | streets, start out of town used | Limbach | 1761 |
+| Obria lavička | instead: Sirková 150 min | streets, start out of town used | Limbach | 1761 |
+| Krásna hôrka | instead: Kamzík 75 min | streets, start out of town used | Horský park, hor. | 1443 |
+| Krásna hôrka | instead: Kamzík 75 min | streets, start out of town used | Slavín | 1870 |
+| Červený most | instead: Klanec 75 min | streets, start out of town used | Slavín | 1804 |
+| Červený most | instead: Klanec 75 min | streets, start out of town used | Slavín, pamätník | 1977 |
+| Motyčianska hoľa | instead: Pod Magurou 285 min | streets, start out of town used | Nad Poliankou 1 | 1927 |
+| Motyčianska hoľa | instead: Pod Magurou 285 min | streets, start out of town used | Nad Poliankou 2 | 1927 |
+| na Ružomberok | instead: Hrabovo 60 min | streets, start out of town used | Likavka, pod Paračkou | 1467 |
+| na Ružomberok | instead: Hrabovo 60 min | streets, start out of town used | Ružomberok, stanica | 1467 |
+| na Ružomberok | instead: Hrabovo 60 min | streets, start out of town used | Kuskova vila | 1992 |
+| na Ružomberok | instead: Hrabovo 60 min | streets, start out of town used | Likavka | 2241 |
+| na Gombáš | instead: overlaps another route | streets, start out of town used | Zbojnícka diera | 1370 |
+| Hŕbky | instead: Panský diel 255 min | streets, start out of town used | Náučný chodník "Serpentíny Urpín" | 2064 |
+| Hŕbky | instead: Panský diel 255 min | streets, start out of town used | Banská Bystrica - Mesto | 2064 |
+| Vreteň | instead: Kysucké Nové Mesto, železničná stanica 240 min | streets, start out of town used | Budatínska Lehota | 1654 |
+| Holý vrch | instead: Nad Kubaščíkovcami 255 min | streets, start out of town used | Dolný Vadičov | 1321 |
+| Buky | instead: Svrčinovec 135 min | streets, start out of town used | Svrčinovec, U Liščáka | 1384 |
+| Orgoňova Kýčera | instead: Papradno 315 min | streets, start out of town used | Horná Mariková, Modlatín | 1656 |
+| Orgoňova Kýčera | instead: Papradno 315 min | streets, start out of town used | Horná Mariková, Modlatín | 1749 |
+| Beskyd | instead: Vyšný Kelčov 210 min | streets, start out of town used | Makov, centrum | 2819 |
+| Beskyd | instead: Vyšný Kelčov 210 min | streets, start out of town used | Makov, centrum | 2844 |
+| Beskyd | instead: Vyšný Kelčov 210 min | streets, start out of town used | Makov | 2819 |
+| Beskyd | instead: Vyšný Kelčov 210 min | streets, start out of town used | Makov | 2819 |
+| Beskyd | instead: Vyšný Kelčov 210 min | streets, start out of town used | Makov, ihrisko | 3477 |
+| Beskyd | instead: Vyšný Kelčov 210 min | streets, start out of town used | Makov, Čierne, Beloňovci | 4780 |
+| Beskyd | instead: Vyšný Kelčov 210 min | streets, start out of town used | Nad Melocíkom | 5588 |
+| Beskyd | instead: Vyšný Kelčov 210 min | streets, start out of town used | U Melocíka | 5588 |
+| Beskyd | instead: Vyšný Kelčov 210 min | streets, start out of town used | U Melocíka | 5588 |
+| Beskyd | instead: Vyšný Kelčov 210 min | streets, start out of town used | Nad Zadnou Šatinou | 5588 |
+| Zlieň | instead: Horný Vadičov, Kubaščíkovci 165 min | streets, start out of town used | Lutiše | 1690 |
+| Zlieň | instead: Horný Vadičov, Kubaščíkovci 165 min | streets, start out of town used | Lutiše | 1714 |
+| Vadičovský vodopád | instead: Horný Vadičov, Kubaščíkovci 60 min | streets, start out of town used | Lutiše | 1855 |
+| Vadičovský vodopád | instead: Horný Vadičov, Kubaščíkovci 60 min | streets, start out of town used | Lutiše | 1879 |
+| Chata Kmínek | instead: Bumbálka (bus) 135 min | streets, start out of town used | Makov, centrum | 2819 |
+| Chata Kmínek | instead: Bumbálka (bus) 135 min | streets, start out of town used | Makov, centrum | 2844 |
+| Chata Kmínek | instead: Bumbálka (bus) 135 min | streets, start out of town used | Makov | 2819 |
+| Chata Kmínek | instead: Bumbálka (bus) 135 min | streets, start out of town used | Makov | 2819 |
+| Chata Kmínek | instead: Bumbálka (bus) 135 min | streets, start out of town used | Makov, ihrisko | 3477 |
+| Chata Kmínek | instead: Bumbálka (bus) 135 min | streets, start out of town used | Makov, Čierne, Beloňovci | 4780 |
+| Chata Kmínek | instead: Bumbálka (bus) 135 min | streets, start out of town used | Nad Melocíkom | 5588 |
+| Chata Kmínek | instead: Bumbálka (bus) 135 min | streets, start out of town used | U Melocíka | 5588 |
+| Chata Kmínek | instead: Bumbálka (bus) 135 min | streets, start out of town used | U Melocíka | 5588 |
+| Chata Kmínek | instead: Bumbálka (bus) 135 min | streets, start out of town used | Nad Zadnou Šatinou | 5588 |
+| Kýčerka | instead: Čadca, Vojty 135 min | streets, start out of town used | Odbočka na Zákysučie | 1207 |
+| Kýčerka | instead: Čadca, Vojty 135 min | streets, start out of town used | Krásno nad Kysucou, sútok Kysuce a Bystrice | 1207 |
+| Ryboňov | instead: Oščadnica, Kozov most 165 min | streets, start out of town used | Krásno nad Kysucou | 1543 |
+| Ryboňov | instead: Oščadnica, Kozov most 165 min | streets, start out of town used | Mestský úrad | 2338 |
+| Ryboňov | instead: Oščadnica, Kozov most 165 min | streets, start out of town used | Krásno nad Kysucou, sútok Kysuce a Bystrice | 2208 |
+| Pod Valmi | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1449 |
+| Pod Valmi | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1455 |
+| Pod Valmi | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1641 |
+| Pod Valmi | instead: overlaps another route | streets, start out of town used | Krížová cesta | 1844 |
+| Pod Valmi | instead: overlaps another route | streets, start out of town used | Závršie | 1499 |
+| Pod Valmi | instead: overlaps another route | streets, start out of town used | Čierne, Dielnice | 3064 |
+| Nad Furmancom | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1449 |
+| Nad Furmancom | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1455 |
+| Nad Furmancom | instead: overlaps another route | streets, start out of town used | Svrčinovec | 1641 |
+| Nad Furmancom | instead: overlaps another route | streets, start out of town used | Krížová cesta | 1844 |
+| Nad Furmancom | instead: overlaps another route | streets, start out of town used | Čierne, Dielnice | 3064 |
+| Hackov vrch | instead: Oščadnica, Lesostav 105 min | streets, start out of town used | Železničná stanica | 2669 |
+| Hôrka | instead: Sedlo Lutiška 345 min | streets, start out of town used | Belianske skaly | 3194 |
+| Hájnica | instead: Krásno nad Kysucou, Šustkov-Jedličník 105 min | streets, start out of town used | Krásno nad Kysucou, mesto | 1055 |
+| Hájnica | instead: Krásno nad Kysucou, Šustkov-Jedličník 105 min | streets, start out of town used | Mestský úrad | 1704 |
+| Hájnica | instead: Krásno nad Kysucou, Šustkov-Jedličník 105 min | streets, start out of town used | Krásno nad Kysucou, Kysucká cesta | 1155 |
+| Hájnica | instead: Krásno nad Kysucou, Šustkov-Jedličník 105 min | streets, start out of town used | Krásno nad Kysucou, sútok Kysuce a Bystrice | 1718 |
+| Hájnica | instead: Krásno nad Kysucou, Šustkov-Jedličník 105 min | streets, start out of town used | Odbočka na Zákysučie | 1718 |
+| Hájnica | instead: Krásno nad Kysucou, Šustkov-Jedličník 105 min | streets, start out of town used | Železničná stanica | 1543 |
+| Hájnica | instead: Krásno nad Kysucou, Šustkov-Jedličník 105 min | streets, start out of town used | Krásno nad Kysucou, žel. stanica | 1543 |
+| Hájnica | instead: Krásno nad Kysucou, Šustkov-Jedličník 105 min | streets, start out of town used | Krásno nad Kysucou, most pri žel. stanici | 1543 |
+| Dlhá lúka | instead: Lachovec 285 min | streets, start out of town used | Púchov | 2127 |
+| Dlhá lúka | instead: Lachovec 285 min | streets, start out of town used | Púchov - pri Váhu, cyklochodník | 2463 |
+| Dlhá lúka | instead: Lachovec 285 min | streets, start out of town used | Púchov | 2420 |
+| Dlhá lúka | instead: Lachovec 285 min | streets, start out of town used | Púchov, športcentrum | 2463 |
+| Jaskyňa pod Jeleňom | instead: Vyhliadka Biela skala 60 min | streets, start out of town used | RS Slniečko | 1528 |
+| Mlacovec | instead: Haluzice 150 min | streets, start out of town used | Zabudišová - Galovec | 1372 |
+| Málenie | instead: RS Slniečko 90 min | streets, start out of town used | Opatová | 2750 |
+| Zobor | instead: Svoradov prameň 105 min | streets, start out of town used | Nitra, Šindolka | 1643 |
+| Žarnov | instead: Rudica 240 min | streets, start out of town used | Ľubianka | 1784 |
+| Tiesňava pod Kostolnou | instead: Vyhne 240 min | streets, start out of town used | Žarnovica | 2841 |
+| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Nitra, Šindolka | 1027 |
+| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Lupka | 2090 |
+| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Zoborský kláštor | 2684 |
+| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Orientačná tabuľa OLÚ Zobor | 2684 |
+| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Liečebný ústav Zobor | 2684 |
+| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Svoradov prameň | 2684 |
+| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Svoradova jaskyňa | 2684 |
+| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Dražovce | 3055 |
+| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Tri duby | 2684 |
+| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Kostolík Svätého Michala, NKP | 3644 |
+| Hradná jaskyňa | instead: overlaps another route | streets, start out of town used | Barohať | 3444 |
+| Zlatý vrch | instead: Pod Svinským vrchom 105 min | streets, start out of town used | Banka, Vápeník | 1668 |
+| Zlatý vrch | instead: Pod Svinským vrchom 105 min | streets, start out of town used | Moravany nad Váhom, pobrežie | 1465 |
+| Zlatý vrch | instead: Pod Svinským vrchom 105 min | streets, start out of town used | Banka, Piešťanské rameno | 1668 |
+| Zlatý vrch | instead: Pod Svinským vrchom 105 min | streets, start out of town used | Piešťany, na kúpeľný ostrov | 1465 |
+| Zlatý vrch | instead: Pod Svinským vrchom 105 min | streets, start out of town used | Piešťany, most pre peších | 1668 |
+| Zlatý vrch | instead: Pod Svinským vrchom 105 min | streets, start out of town used | Piešťany, Kolonádový most | 2004 |
+| Zlatý vrch | instead: Pod Svinským vrchom 105 min | streets, start out of town used | Piešťany, Kolonádový most | 2004 |
+| Zlatý vrch | instead: Pod Svinským vrchom 105 min | streets, start out of town used | Piešťany, Benátky | 1668 |
+| Sladná skala | instead: Rudica 270 min | streets, start out of town used | Ľubianka | 1784 |
+| Pyramída | instead: Podhájska cesta 105 min | streets, start out of town used | Nitra, Šindolka | 1643 |
+| Zlatý vrch - južný vrchol | instead: Pod Svinským vrchom 75 min | streets, start out of town used | Banka, Vápeník | 1668 |
+| Malá Skalka | instead: Nitra, ARTin 75 min | streets, start out of town used | Nitra, Šindolka | 1643 |
+| Malá Skalka | instead: Nitra, ARTin 75 min | streets, start out of town used | Dražovce | 1545 |
+| Malá Skalka | instead: Nitra, ARTin 75 min | streets, start out of town used | Kostolík Svätého Michala, NKP | 2134 |
+| Malá Skalka | instead: Nitra, ARTin 75 min | streets, start out of town used | Barohať | 1934 |
+| Nový zámok | instead: tajch Klinger 60 min | streets, start out of town used | Červená studňa (bežkárske trate) | 1033 |
+| Nový zámok | instead: tajch Klinger 60 min | streets, start out of town used | Sedlo Červená studňa | 1033 |
+| Nový zámok | instead: tajch Klinger 60 min | streets, start out of town used | Pamätný kameň | 1936 |
+| Nový zámok | instead: tajch Klinger 60 min | streets, start out of town used | Hájik | 1577 |
+| Nový zámok | instead: tajch Klinger 60 min | streets, start out of town used | Sedlo pod Cukmantlom | 1033 |
+| Nový zámok | instead: tajch Klinger 60 min | streets, start out of town used | Teplý potok | 1033 |
+| Nový zámok | instead: tajch Klinger 60 min | streets, start out of town used | Jergištôlňa, kaplnka | 2176 |
+| Nový zámok | instead: tajch Klinger 60 min | streets, start out of town used | Jergištôlňa, osada | 2372 |
+| Nový zámok | instead: tajch Klinger 60 min | streets, start out of town used | Pamätný kameň | 2372 |
+| Starý zámok | instead: Červená studňa (bežkárske trate) 75 min | streets, start out of town used | Hájik | 1485 |
+| Tajch Klinger | instead: Banská Štiavnica, námestie 75 min | streets, start out of town used | Evičkino jazero | 1250 |
+| Tajch Klinger | instead: Banská Štiavnica, námestie 75 min | streets, start out of town used | Chata u Juračkov | 1187 |
+| Rozhľadňa Lažtek | instead: overlaps another route | streets, start out of town used | Malachov | 1204 |
+| Malachovský vodopád | instead: Suchý vrch, odb. na vyhliadku 150 min | streets, start out of town used | Malachov | 1750 |
+| Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Ilija | 1617 |
+| Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Banská Štiavnica - Drieňová | 2023 |
+| Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Konôpkovci | 2023 |
+| Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Kysihýbel | 2023 |
+| Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Akvadukt | 2256 |
+| Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Banská Štiavnica, križovatka | 2076 |
+| Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Banská Štiavnica, námestie | 2936 |
+| Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Námestie Svätej trojice | 3026 |
+| Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Hájik | 2687 |
+| Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Vodárenská | 3137 |
+| Umelá jaskyňa "Peklo" | instead: Banský Studenec, Pod vŕškom 195 min | streets, start out of town used | Starý zámok | 2996 |
+| Predné Rosniarky | instead: Veterné sedlo 90 min | streets, start out of town used | Evičkino jazero | 1495 |
+| Na zákrute | instead: tajch Klinger 120 min | streets, start out of town used | Horná Roveň | 1024 |
+| Na zákrute | instead: tajch Klinger 120 min | streets, start out of town used | Ilija | 1532 |
+| Pred Bažanicou | instead: Vlčia jama 195 min | streets, start out of town used | Štefultov, pôsobisko Dr. Téryho | 2126 |
+| Pred Bažanicou | instead: Vlčia jama 195 min | streets, start out of town used | Banská Štiavnica - Drieňová | 2321 |
+| Pred Bažanicou | instead: Vlčia jama 195 min | streets, start out of town used | Konôpkovci | 2321 |
+| Pred Bažanicou | instead: Vlčia jama 195 min | streets, start out of town used | Kysihýbel | 2321 |
+| Pred Bažanicou | instead: Vlčia jama 195 min | streets, start out of town used | Akvadukt | 2553 |
+| Na Drieňovú | instead: Akvadukt 75 min | streets, start out of town used | Banská Štiavnica, námestie | 1337 |
+| Na Drieňovú | instead: Akvadukt 75 min | streets, start out of town used | Námestie Svätej trojice | 1426 |
+| Na Drieňovú | instead: Akvadukt 75 min | streets, start out of town used | Starý zámok | 1396 |
+| Na Drieňovú | instead: Akvadukt 75 min | streets, start out of town used | tajch Klinger | 1739 |
+| Na Drieňovú | instead: Akvadukt 75 min | streets, start out of town used | Červená studňa (bežkárske trate) | 2040 |
+| Na Drieňovú | instead: Akvadukt 75 min | streets, start out of town used | Sedlo Červená studňa | 2040 |
+| Na Drieňovú | instead: Akvadukt 75 min | streets, start out of town used | Križovatka Henricha D. Wilckensa | 1773 |
+| Na Drieňovú | instead: Akvadukt 75 min | streets, start out of town used | Križovatka Karola Wagnera | 1990 |
+| Na Drieňovú | instead: Akvadukt 75 min | streets, start out of town used | Križovatka Eugena Vlkolínskeho Vadasa | 1773 |
+| Na Drieňovú | instead: Akvadukt 75 min | streets, start out of town used | Sedlo pod Cukmantlom | 2040 |
+| Na kalvárii | instead: tajch Klinger 60 min | streets, start out of town used | Evičkino jazero | 1495 |
+| Z Hornej Rovni | instead: Tanád 75 min | streets, start out of town used | Evičkino jazero | 1250 |
+| Nad Vozárovou | instead: Štefultov, pôsobisko Dr. Téryho 75 min | streets, start out of town used | tajch Klinger | 1097 |
+| Nad Vozárovou | instead: Štefultov, pôsobisko Dr. Téryho 75 min | streets, start out of town used | Horná Roveň | 2159 |
+| Nad Vozárovou | instead: Štefultov, pôsobisko Dr. Téryho 75 min | streets, start out of town used | Tanád | 2166 |
+| Nad Vlachovou | instead: Horná Roveň 90 min | streets, start out of town used | Ilija | 1672 |
+| Nad Vlachovou | instead: Horná Roveň 90 min | streets, start out of town used | Michal štôlňa | 1607 |
+| Nad Vlachovou | instead: Horná Roveň 90 min | streets, start out of town used | Červená studňa (bežkárske trate) | 1635 |
+| Nad Vlachovou | instead: Horná Roveň 90 min | streets, start out of town used | Sedlo Červená studňa | 1635 |
+| Na Iliju | instead: Vlčia jama 90 min | streets, start out of town used | Svätý Anton (bus) | 2006 |
+| Z cesty na Jergištôlňu | instead: Sedlo pod Cukmantlom 135 min | streets, start out of town used | Banská Štiavnica, námestie | 1528 |
+| Z cesty na Jergištôlňu | instead: Sedlo pod Cukmantlom 135 min | streets, start out of town used | Námestie Svätej trojice | 1520 |
+| Z cesty na Jergištôlňu | instead: Sedlo pod Cukmantlom 135 min | streets, start out of town used | Starý zámok | 1599 |
+| Z cesty na Jergištôlňu | instead: Sedlo pod Cukmantlom 135 min | streets, start out of town used | Banská Štiavnica, križovatka | 2109 |
+| Z cesty na Jergištôlňu | instead: Sedlo pod Cukmantlom 135 min | streets, start out of town used | tajch Klinger | 2082 |
+| Z cesty na Jergištôlňu | instead: Sedlo pod Cukmantlom 135 min | streets, start out of town used | Križovatka Henricha D. Wilckensa | 2116 |
+| Z cesty na Jergištôlňu | instead: Sedlo pod Cukmantlom 135 min | streets, start out of town used | Križovatka Karola Wagnera | 2333 |
+| Z cesty na Jergištôlňu | instead: Sedlo pod Cukmantlom 135 min | streets, start out of town used | Križovatka Eugena Vlkolínskeho Vadasa | 2116 |
+| Z cesty na Jergištôlňu | instead: Sedlo pod Cukmantlom 135 min | streets, start out of town used | Horná Roveň | 2343 |
+| Z cesty na Jergištôlňu | instead: Sedlo pod Cukmantlom 135 min | streets, start out of town used | Banská Štiavnica - Drieňová | 2205 |
+| Z cesty na Jergištôlňu | instead: Sedlo pod Cukmantlom 135 min | streets, start out of town used | Tanád | 2350 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Banská Štiavnica, námestie | 1931 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Námestie Svätej trojice | 2020 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Vodárenská | 2131 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Starý zámok | 1990 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Štefultov, pôsobisko Dr. Téryho | 1324 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Michal štôlňa | 2353 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Chata u Juračkov | 1533 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Červená studňa (bežkárske trate) | 2634 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Sedlo Červená studňa | 2634 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Svätý Anton (bus) | 2242 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Pamätný kameň | 3284 |
+| Z Fándlyho | instead: Hájik 120 min | streets, start out of town used | Jergištôlňa, kaplnka | 3524 |
+| Nad Šmintorínom | instead: tajch Klinger 60 min | streets, start out of town used | Banská Štiavnica, križovatka | 1183 |
+| Nad Šmintorínom | instead: tajch Klinger 60 min | streets, start out of town used | Pamätný kameň | 1967 |
+| Nad Šmintorínom | instead: tajch Klinger 60 min | streets, start out of town used | Jergištôlňa, kaplnka | 2207 |
+| Nad Šmintorínom | instead: tajch Klinger 60 min | streets, start out of town used | Jergištôlňa, osada | 2404 |
+| Karol šachta | instead: Horná Roveň 90 min | streets, start out of town used | Ilija | 1818 |
+| Pinkov vrch | instead: Počúvadlianske jazero 90 min | streets, start out of town used | Horná Roveň | 1487 |
+| Hybalka | instead: Sedlo pod Cukmantlom 120 min | streets, start out of town used | Pamätný kameň | 1367 |
+| Hybalka | instead: Sedlo pod Cukmantlom 120 min | streets, start out of town used | Banská Štiavnica, križovatka | 1239 |
+| Hybalka | instead: Sedlo pod Cukmantlom 120 min | streets, start out of town used | tajch Klinger | 1213 |
+| Hybalka | instead: Sedlo pod Cukmantlom 120 min | streets, start out of town used | Križovatka Henricha D. Wilckensa | 1246 |
+| Hybalka | instead: Sedlo pod Cukmantlom 120 min | streets, start out of town used | Križovatka Karola Wagnera | 1463 |
+| Hybalka | instead: Sedlo pod Cukmantlom 120 min | streets, start out of town used | Križovatka Eugena Vlkolínskeho Vadasa | 1246 |
+| Hybalka | instead: Sedlo pod Cukmantlom 120 min | streets, start out of town used | Horná Roveň | 1473 |
+| Hybalka | instead: Sedlo pod Cukmantlom 120 min | streets, start out of town used | Banská Štiavnica - Drieňová | 1336 |
+| Schindelberg | instead: Vodárenská 60 min | streets, start out of town used | Štefultov, pôsobisko Dr. Téryho | 1540 |
+| Nad Kameň | instead: Veterné sedlo 60 min | streets, start out of town used | Evičkino jazero | 1495 |
+| Nad Kameň | instead: Veterné sedlo 60 min | streets, start out of town used | Michal štôlňa | 1463 |
+| Arborétum Kysihýbeľ | instead: Banská Štiavnica, križovatka 90 min | streets, start out of town used | Svätý Anton (bus) | 2050 |
+| Fangov vrch | instead: Huklová, lyžiarsky vlek 270 min | streets, start out of town used | Obecný úrad Korytárky | 3814 |
+| Fangov vrch | instead: Huklová, lyžiarsky vlek 270 min | streets, start out of town used | Kriváň | 4263 |
+| Fangov vrch | instead: Huklová, lyžiarsky vlek 270 min | streets, start out of town used | Podkriváň, stanica | 5230 |
+| Fangov vrch | instead: Huklová, lyžiarsky vlek 270 min | streets, start out of town used | Podkriváň | 5230 |
+| Fangov vrch | instead: Huklová, lyžiarsky vlek 270 min | streets, start out of town used | Detva, Piešť 1 | 6235 |
+| Fangov vrch | instead: Huklová, lyžiarsky vlek 270 min | streets, start out of town used | Podkriváň, ObÚ | 5622 |
+| Košútka | instead: overlaps another route | streets, start out of town used | Hriňová | 1719 |
+| Bakova jama | instead: Sliač 120 min | streets, start out of town used | Vojenský cintorín | 1119 |
+| Bakova jama | instead: Sliač 120 min | streets, start out of town used | Zvolen, mesto | 2200 |
+| Kalvária | instead: Železničná stanica Detva 150 min | streets, start out of town used | Stavanisko (Kalamárka) otočka autobusov, Detva | 1681 |
+| Spišský hrad | instead: Spišské Podhradie, parkovisko 60 min | streets, start out of town used | Spišský salaš | 1558 |
+| Spišský hrad | instead: Spišské Podhradie, parkovisko 60 min | streets, start out of town used | Spišský Jeruzalem, západná strana | 1558 |
+| Spišský hrad | instead: Spišské Podhradie, parkovisko 60 min | streets, start out of town used | Sivá Brada, minerálne pramene | 1558 |
+| Šibeník | instead: Levoča, pri Košickej bráne 120 min | streets, start out of town used | Spišský Hrhov | 1235 |
+| Čertov kameň | instead: Výšľap 225 min | streets, start out of town used | Bzenov | 1302 |
+| Vinianske jazero | instead: Pod Senderovom 75 min | streets, start out of town used | Kamenec | 1103 |
+| Grófňa | instead: Dobrá, rekr. stredisko 150 min | streets, start out of town used | Valkov | 1109 |
+| Grófňa | instead: Dobrá, rekr. stredisko 150 min | streets, start out of town used | Valkov, rekreačné stredisko | 1707 |
+| Bogdanka | instead: Medvedia hora 90 min | streets, start out of town used | Kamenec | 1103 |
+| Torhanova huročka | instead: Kostolík pod Senderovom 120 min | streets, start out of town used | Vinianske jazero | 1104 |
+| Torhanova huročka | instead: Kostolík pod Senderovom 120 min | streets, start out of town used | Vinné, jazero | 1104 |
+| Torhanova huročka | instead: Kostolík pod Senderovom 120 min | streets, start out of town used | Rázcestie nad Vinianským jazerom | 1773 |
+| Babka | instead: Modrý Kameň hrad 120 min | streets, start out of town used | Veľký Krtíš | 1378 |
+| Svätojánska rozhľadňa | instead: Borová Sihoť 105 min | streets, start out of town used | Závažná Poruba | 1484 |
+| Svätojánska rozhľadňa | instead: Borová Sihoť 105 min | streets, start out of town used | Závažná Poruba, Bradáčovo | 1539 |
+| Svätojánska rozhľadňa | instead: Borová Sihoť 105 min | streets, start out of town used | Závažná Poruba | 1539 |
+| Vychylovský vodopád | instead: overlaps another route | streets, start out of town used | Vychylovka, Chmúrovci | 1965 |
+| Vychylovský vodopád | instead: overlaps another route | streets, start out of town used | Vychylovka, Chmúrovci | 1965 |
 
 ## Name check
 
@@ -5064,9 +5225,9 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | jahodna-vysny-klatov | slovensky-kras | Vyšný Klátov | 4.6 | 190 | 1:45 | lahka |  |
 | jahodna-vysny-klatov-ina-cesta | slovensky-kras | Vyšný Klátov | 6.5 | 260 | 2:30 | lahka |  |
 | strazna-veza | slovensky-kras | Betliar, kaštieľ | 13.2 | 474 | 4:45 | stredna |  |
+| strazna-veza-cucma-zavod | slovensky-kras | Čučma, závod | 10.4 | 151 | 3:00 | lahka |  |
 | strazna-veza-jovice | slovensky-kras | Jovice | 7.6 | 82 | 2:15 | lahka |  |
 | strazna-veza-od-auta | slovensky-kras | Parkovisko | 0.3 | 6 | 0:15 | lahka |  |
-| strazna-veza-paca | slovensky-kras | Pača | 14.6 | 338 | 4:45 | stredna |  |
 | lajoska | slovensky-kras | Košická Belá, polesie | 13.0 | 649 | 5:15 | stredna |  |
 | lajoska-jahodna-pod-zjazdovkou | slovensky-kras | Jahodná, Pod zjazdovkou | 9.1 | 379 | 3:30 | stredna |  |
 | lajoska-vysny-klatov-razcestie | slovensky-kras | Vyšný Klátov, rázcestie | 8.7 | 394 | 3:15 | stredna |  |
