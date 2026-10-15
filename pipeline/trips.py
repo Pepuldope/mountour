@@ -18,6 +18,9 @@ GENERIC_NAMES = {"jazero", "vyhliadka", "výhľad", "rozhľadňa", "altánok", "
 ROUTE_LIMIT = 18000  # weighted metres one way, generous; time limits are applied afterwards
 PENDING = "__pending__"  # slug of a route until it is known whether it is the main one
 TOWN_STREETS = {"residential", "living_street", "pedestrian"}  # their density marks a built-up area
+# Walking along these is walking through a village or town, dense or not (sidewalks are footways
+# drawn beside them, so a built-up square counts too).
+STREETS = TOWN_STREETS | {"primary", "secondary", "tertiary", "unclassified", "service", "road"}
 TOWN_GOALS = {"hrad", "vrchol", "jaskyna", "vodopad"}  # worth a walk even when in a built-up area (a castle above a town)
 CITY_CORE_M = 2500  # around the centre of a big city (Bratislava, Košice) every goal is a city sight, not a trip
 CITY_CORE_POP = 200_000
@@ -124,15 +127,26 @@ class TripBuilder:
             for f in self.osm.towns
         )
 
-    def town_walk_m(self, path):
-        """Metres of a walk (graph nodes) that run through built-up areas."""
-        if len(path) < 2 or not self.town_cells:
-            return 0.0
+    def city_walk(self, path, dest, lim):
+        """Metres of a walk through a village or town (a built-up square, or along a street), and
+        whether that is too much: this site is for getting into nature, not touring a town. A goal
+        in town (a castle above it) may take more, but never a long walk through streets."""
+        if len(path) < 2:
+            return 0.0, False
+        g = self.g
+        idx = g.edges(path)
         size = self.t.get("town_cell_m", 250)
-        xy = self.proj.xy(self.g.lat[path], self.g.lon[path])
-        seg = np.hypot(*np.diff(xy, axis=0).T)
+        xy = self.proj.xy(g.lat[path], g.lon[path])
         cells = map(tuple, ((xy[:-1] + xy[1:]) / 2 // size).astype(int))
-        return float(sum(L for c, L in zip(cells, seg) if c in self.town_cells))
+        lens = g.edge_len[idx]
+        town = float(sum(L for c, L, w in zip(cells, lens, g.edge_way[idx])
+                         if c in self.town_cells or g.ways[w].highway in STREETS))
+        one_way = float(lens.sum())
+        if town > lim.get("town_walk_max_m", 1500):
+            return town, True
+        if self._in_town(dest["lat"], dest["lon"]):
+            return town, town > 800 and town > 0.5 * one_way
+        return town, town > lim.get("town_walk_free_m", 600) and town > lim.get("town_walk_share", 0.25) * one_way
 
     def in_country(self, lat, lon):
         if self.osm.border is None:
@@ -480,9 +494,8 @@ class TripBuilder:
             trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
             bad = self._quality(trip, dest["kind"], lim) if trip else "could not build"
             if not bad:
-                town = self.town_walk_m(path)
-                one_way = trip["distance_m"] / (1 if trip["route"] == "okruh" else 2)
-                if town > lim.get("town_walk_max_m", 1500) or (town > 800 and town > 0.5 * one_way):
+                town, too_much = self.city_walk(path, dest, lim)
+                if too_much:
                     # Nobody walks an hour through streets to reach a hill; from the edge of town, fine.
                     bad = "city walk"
                     self.report.setdefault("town", []).append((dest["name"], dest["kind"], "city walk", st.name, round(town)))
@@ -675,8 +688,8 @@ class TripBuilder:
             if trip["duration_min"] > base["duration_min"] + max(60, 0.8 * base["duration_min"]):
                 why("much longer", new_m=round(new_m), min=trip["duration_min"])
                 continue
-            town = self.town_walk_m(path)
-            if town > lim.get("town_walk_max_m", 1500) or (town > 800 and town > 0.25 * trip["distance_m"]):
+            town, too_much = self.city_walk(path, dest, lim)
+            if too_much:
                 why("city walk", new_m=round(new_m))
                 continue
             why("kept", new_m=round(new_m), min=trip["duration_min"])
