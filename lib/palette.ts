@@ -13,12 +13,6 @@ export const POPULARITY_RAMP = ["#ffe600", "#f3a12f", "#e8682a", "#d9481f", "#c8
 /** Outline around the busiest level only, about 0.8 px each side. */
 export const POPULARITY_TOP_OUTLINE = "#ffffff";
 
-/**
- * The quietest (yellow) level gets a white outline and a faint yellow glow, so it
- * stands out on forest and meadow alike (Peter picked look C, 2026-10-15).
- */
-export const POPULARITY_QUIET_OUTLINE = "#ffffff";
-export const POPULARITY_QUIET_GLOW = "#fff27a";
 
 export const POPULARITY_LABEL = ["málo chodená", "", "", "", "najobľúbenejšia"] as const;
 
