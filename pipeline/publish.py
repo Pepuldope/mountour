@@ -185,9 +185,14 @@ def _report(trips, rep, now, osm_at, drive):
     L += ["", "## Town filter", "",
           f"{sum(1 for x in town if x[2] == 'city centre')} goals in city centres and "
           f"{sum(1 for x in town if x[2] == 'in town')} sights in towns left out; "
-          f"{sum(1 for x in town if x[2] == 'city walk')} routes left out as city walks.", "",
+          f"{sum(1 for x in town if x[2] == 'city walk')} routes left out as city walks; "
+          f"{len({x[0] for x in town if x[2].startswith('streets')})} goals in nature start out of town instead of "
+          f"walking village or town streets, {len(rep.get('town_kept', []))} keep such a start (none out of town is "
+          "about as quick).", "",
           "| Goal | Kind | Why | Start | Town metres |", "|---|---|---|---|---|"]
-    L += [f"| {n} | {k} | {w} | {st} | {m} |" for n, k, w, st, m in town]
+    L += [f"| {n} | {k} | {w} | {st} | {m} |" for n, k, w, st, m in town if not w.startswith("streets")]
+    L += [f"| {n} | | streets, start out of town used | {st} | {m} |"
+          for n, k, w, st, m in [x for x in town if x[2].startswith("streets")][:80]]
     nm = rep.get("names") or {}
     found = names.problems(trips)
     L += ["", "## Name check", "",

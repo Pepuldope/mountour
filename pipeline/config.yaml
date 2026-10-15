@@ -125,10 +125,10 @@ trips:
   alt_min_marked_share: 0.35
   # routes per place in all, the main one included
   max_routes_per_destination: 5
-  # through a village or town (built-up squares, or along streets) a walk to a goal in nature may go
-  # town_walk_free_m, or more when it is under town_walk_share of the way there; never town_walk_max_m
-  town_walk_free_m: 600
-  town_walk_share: 0.25
+  # a walk to a goal in nature that runs more than town_walk_free_m and town_walk_share of the way
+  # through village or town streets is kept only when no start out of town is about as quick
+  town_walk_free_m: 1000
+  town_walk_share: 0.35
   # castles, caves, waterfalls with a car park right by them: also a short visit from there
   # ("Krátko od auta"), when the main route is at least short_main_min and no route is short
   short_walk_max_m: 800

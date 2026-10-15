@@ -18,9 +18,6 @@ GENERIC_NAMES = {"jazero", "vyhliadka", "výhľad", "rozhľadňa", "altánok", "
 ROUTE_LIMIT = 18000  # weighted metres one way, generous; time limits are applied afterwards
 PENDING = "__pending__"  # slug of a route until it is known whether it is the main one
 TOWN_STREETS = {"residential", "living_street", "pedestrian"}  # their density marks a built-up area
-# Walking along these is walking through a village or town, dense or not (sidewalks are footways
-# drawn beside them, so a built-up square counts too).
-STREETS = TOWN_STREETS | {"primary", "secondary", "tertiary", "unclassified", "service", "road"}
 TOWN_GOALS = {"hrad", "vrchol", "jaskyna", "vodopad"}  # worth a walk even when in a built-up area (a castle above a town)
 CITY_CORE_M = 2500  # around the centre of a big city (Bratislava, Košice) every goal is a city sight, not a trip
 CITY_CORE_POP = 200_000
@@ -128,25 +125,31 @@ class TripBuilder:
         )
 
     def city_walk(self, path, dest, lim):
-        """Metres of a walk through a village or town (a built-up square, or along a street), and
-        whether that is too much: this site is for getting into nature, not touring a town. A goal
-        in town (a castle above it) may take more, but never a long walk through streets."""
+        """How much of a walk runs through a town, and whether that is too much: this site is
+        for getting into nature, not touring a town. Returns (metres, verdict): "hard" when the
+        walk runs long through a built-up area (never kept), "soft" when village or town
+        streets are a big part of the way to a goal in nature (kept only when no start out of
+        town is about as quick), else None. A goal in town (a castle above it) gets only the
+        hard check."""
         if len(path) < 2:
-            return 0.0, False
+            return 0.0, None
         g = self.g
         idx = g.edges(path)
         size = self.t.get("town_cell_m", 250)
         xy = self.proj.xy(g.lat[path], g.lon[path])
-        cells = map(tuple, ((xy[:-1] + xy[1:]) / 2 // size).astype(int))
+        cells = [tuple(c) for c in ((xy[:-1] + xy[1:]) / 2 // size).astype(int)]
         lens = g.edge_len[idx]
-        town = float(sum(L for c, L, w in zip(cells, lens, g.edge_way[idx])
-                         if c in self.town_cells or g.ways[w].highway in STREETS))
+        dense = float(sum(L for c, L in zip(cells, lens) if c in self.town_cells))
         one_way = float(lens.sum())
-        if town > lim.get("town_walk_max_m", 1500):
-            return town, True
+        if dense > lim.get("town_walk_max_m", 1500) or (dense > 800 and dense > 0.5 * one_way):
+            return dense, "hard"
+        streets = float(sum(L for c, L, w in zip(cells, lens, g.edge_way[idx])
+                            if c in self.town_cells or g.ways[w].highway in TOWN_STREETS))
         if self._in_town(dest["lat"], dest["lon"]):
-            return town, town > 800 and town > 0.5 * one_way
-        return town, town > lim.get("town_walk_free_m", 600) and town > lim.get("town_walk_share", 0.25) * one_way
+            return streets, None
+        if streets > lim.get("town_walk_free_m", 1000) and streets > lim.get("town_walk_share", 0.35) * one_way:
+            return streets, "soft"
+        return streets, None
 
     def in_country(self, lat, lon):
         if self.osm.border is None:
@@ -476,7 +479,7 @@ class TripBuilder:
         if not np.isfinite(costs).any():
             return [], "no trailhead within reach"
         seen = list(known)
-        out, why, looked = [], "trailheads too close", 0
+        out, why, looked, town_walks = [], "trailheads too close", 0, []
         for i in np.argsort(costs):
             if not np.isfinite(costs[i]) or looked >= self.t.get("route_trailheads_max", 25):
                 break
@@ -494,8 +497,12 @@ class TripBuilder:
             trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
             bad = self._quality(trip, dest["kind"], lim) if trip else "could not build"
             if not bad:
-                town, too_much = self.city_walk(path, dest, lim)
-                if too_much:
+                town, verdict = self.city_walk(path, dest, lim)
+                if verdict == "soft":
+                    # Half the way through village streets: only if no start out of town is about as quick.
+                    town_walks.append((trip, edges, st.name, round(town)))
+                    continue
+                if verdict:
                     # Nobody walks an hour through streets to reach a hill; from the edge of town, fine.
                     bad = "city walk"
                     self.report.setdefault("town", []).append((dest["name"], dest["kind"], "city walk", st.name, round(town)))
@@ -508,6 +515,17 @@ class TripBuilder:
             out.append(trip)
             if len(out) >= 2 * self.t.get("max_starts_per_destination", 3):
                 break
+        if town_walks:
+            trip, edges, name, town = min(town_walks, key=lambda t: t[0]["duration_min"])
+            quick = trip["duration_min"] + max(60, 0.5 * trip["duration_min"])
+            if not any(t["duration_min"] <= quick for t in out) and not any(self._overlap(edges, e) for e in seen):
+                trip["_known"] = self.known_score(trip["_st"])
+                trip["_edges"] = edges
+                out.append(trip)
+                self.report.setdefault("town_kept", []).append((dest["name"], name, town))
+            else:
+                for _, _, name, town in town_walks:
+                    self.report.setdefault("town", []).append((dest["name"], dest["kind"], "streets, start out of town used", name, town))
         return out, why
 
     def _quality(self, trip, kind, lim):
@@ -688,8 +706,8 @@ class TripBuilder:
             if trip["duration_min"] > base["duration_min"] + max(60, 0.8 * base["duration_min"]):
                 why("much longer", new_m=round(new_m), min=trip["duration_min"])
                 continue
-            town, too_much = self.city_walk(path, dest, lim)
-            if too_much:
+            town, verdict = self.city_walk(path, dest, lim)
+            if verdict:
                 why("city walk", new_m=round(new_m))
                 continue
             why("kept", new_m=round(new_m), min=trip["duration_min"])
