@@ -848,9 +848,9 @@ export function HomeExplorer({ trails: initial }: Props) {
           <SunPull season={season} width={440} height={250} sunX={0.64} sunY={0.17} moveRef={columnRef} />
           <nav aria-label="Hlavná navigácia" className="relative flex items-center justify-between gap-3 px-4 pt-4">
             <Link href="/" aria-label="MounTour" className="block">
-              {/* The hero sky is light in both themes, so the dark-ink logo always. */}
+              {/* Name only: the seasonal mark blends into the header scene. The hero sky is light in both themes, so dark ink always. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/brand/mountour-logo.svg" alt="MounTour" width={150} height={23} className="h-[23px] w-auto" />
+              <img src="/brand/mountour-wordmark.svg" alt="MounTour" width={120} height={23} className="h-[23px] w-auto" />
             </Link>
             <SavedTripsLink />
           </nav>
