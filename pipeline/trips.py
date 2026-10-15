@@ -409,7 +409,7 @@ class TripBuilder:
             on_main = {p["osm"] for p in main["pois"]}
             hit = next((goals[p["osm"]] for p in v["pois"] if p["osm"] in goals and p["osm"] not in on_main
                         and goals[p["osm"]] != v["destination"]["name"] and len(goals[p["osm"]]) <= 26), None)
-            if hit:
+            if hit and names.fold(hit) not in names.fold(v["start"]["name"]):  # not "Cez Devín" from Devín
                 via[v["slug"]] = hit
             by_place.setdefault(v["variant_of"], []).append(v)
         for slug, routes in by_place.items():
@@ -720,7 +720,10 @@ class TripBuilder:
         per place: of two shorter routes the shortest is "Kratšia", the other gets the next word
         that fits it. `via` maps a route's slug to a known place it passes ("Cez Pajštún")."""
         m = main
-        same_start = lambda r: (r["start"]["osm"] or r["start"]["name"]) == (m["start"]["osm"] or m["start"]["name"])
+        key = lambda r: r["start"]["osm"] or r["start"]["name"]
+        starts = [key(m)] + [key(r) for r in routes]
+        # Another way from a start the place already has (the main one's or another route's).
+        same_start = lambda r: starts.count(key(r)) > 1
         rules = [  # (label, fits, better), better = lower sort key
             ("Autobusom", lambda r: r["transit"] and not m["transit"], lambda r: r["duration_min"]),
             ("Kratšia", lambda r: r["duration_min"] <= m["duration_min"] - 30, lambda r: r["duration_min"]),
@@ -729,6 +732,7 @@ class TripBuilder:
             ("Dlhšia", lambda r: r["duration_min"] >= m["duration_min"] + 45, lambda r: -r["duration_min"]),
             ("Menej do kopca", lambda r: m["ascent_m"] and r["ascent_m"] <= 0.7 * m["ascent_m"], lambda r: r["ascent_m"]),
             ("Iným chodníkom", same_start, lambda r: r["duration_min"]),
+            ("Okľukou", same_start, lambda r: r["duration_min"]),
         ]
         # The car park by the goal keeps its own word.
         label = {r["slug"]: SHORT_LABEL for r in routes if r.get("route_label") == SHORT_LABEL}
