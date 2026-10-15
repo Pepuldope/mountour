@@ -431,7 +431,9 @@ export function HomeExplorer({ trails: initial }: Props) {
       .slice(0, 6);
     const places = towns.filter((t) => has(t.name)).slice(0, 3);
     const spots: PlaceHit[] = placeResults ? [...placeResults.hits, ...placeResults.near] : [];
-    return { ranges, trips, places, spots };
+    // Typed a place, not a trip ("Železná studnička"): the place comes first, its trips below.
+    const placesFirst = spots.length > 0 && !trips.some((i) => nameMatches(i.detail));
+    return { ranges, trips, places, spots, placesFirst };
   }, [words, areas, listedAll, matches, nameMatches, towns, placeResults]);
 
   const closeMenus = useCallback(() => {
@@ -666,6 +668,16 @@ export function HomeExplorer({ trails: initial }: Props) {
           {results.ranges.map((a) => (
             <MenuRow key={a.name} onClick={() => showOnMap({ kind: "box", bbox: a.bbox, maxZoom: 11 })} icon={<UiIcon name="up" size={16} />} title={a.name} note="Ukázať výlety v pohorí na mape" />
           ))}
+          {results.placesFirst && <MenuTitle>Miesta</MenuTitle>}
+          {results.placesFirst && results.spots.map(({ place, nextTo }) => (
+            <MenuRow
+              key={`${place.name}|${place.location.lat}`}
+              onClick={() => showOnMap({ kind: "point", location: place.location, zoom: 13 })}
+              icon={<UiIcon name="pin" size={16} />}
+              title={place.name}
+              note={`${nextTo ? `Pri: ${nextTo}` : placeKindLabel(place.kind)} · ${tripsWord(place.trips.length)}`}
+            />
+          ))}
           {results.trips.length > 0 && <MenuTitle>Výlety</MenuTitle>}
           {results.trips.map(({ detail }) => (
             <MenuRow
@@ -680,8 +692,8 @@ export function HomeExplorer({ trails: initial }: Props) {
               note={`${GOAL_LABEL[detail.trail.goal ?? "ine"]} · ${detail.trail.region_name ?? ""} · ${formatDurationShort(detail.trail.duration_min)}`}
             />
           ))}
-          {results.spots.length > 0 && <MenuTitle>Miesta</MenuTitle>}
-          {results.spots.map(({ place, nextTo }) => (
+          {!results.placesFirst && results.spots.length > 0 && <MenuTitle>Miesta</MenuTitle>}
+          {!results.placesFirst && results.spots.map(({ place, nextTo }) => (
             <MenuRow
               key={`${place.name}|${place.location.lat}`}
               onClick={() => showOnMap({ kind: "point", location: place.location, zoom: 13 })}
