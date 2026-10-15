@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Veža na vlásku</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Veža na vlásku</name><trkseg>
+    <trkpt lat="48.631645" lon="20.850515"><ele>289</ele></trkpt>
+    <trkpt lat="48.631633" lon="20.850446"><ele>290</ele></trkpt>
+    <trkpt lat="48.631953" lon="20.850211"><ele>292</ele></trkpt>
+    <trkpt lat="48.632185" lon="20.850145"><ele>294</ele></trkpt>
+    <trkpt lat="48.632152" lon="20.849458"><ele>301</ele></trkpt>
+    <trkpt lat="48.632121" lon="20.849324"><ele>304</ele></trkpt>
+    <trkpt lat="48.631980" lon="20.849028"><ele>317</ele></trkpt>
+    <trkpt lat="48.632134" lon="20.848816"><ele>323</ele></trkpt>
+    <trkpt lat="48.632267" lon="20.848703"><ele>326</ele></trkpt>
+    <trkpt lat="48.632414" lon="20.848666"><ele>328</ele></trkpt>
+    <trkpt lat="48.632779" lon="20.848827"><ele>332</ele></trkpt>
+    <trkpt lat="48.632414" lon="20.848666"><ele>328</ele></trkpt>
+    <trkpt lat="48.632267" lon="20.848703"><ele>326</ele></trkpt>
+    <trkpt lat="48.632134" lon="20.848816"><ele>323</ele></trkpt>
+    <trkpt lat="48.631980" lon="20.849028"><ele>317</ele></trkpt>
+    <trkpt lat="48.632121" lon="20.849324"><ele>304</ele></trkpt>
+    <trkpt lat="48.632152" lon="20.849458"><ele>301</ele></trkpt>
+    <trkpt lat="48.632185" lon="20.850145"><ele>294</ele></trkpt>
+    <trkpt lat="48.631953" lon="20.850211"><ele>292</ele></trkpt>
+    <trkpt lat="48.631633" lon="20.850446"><ele>290</ele></trkpt>
+    <trkpt lat="48.631645" lon="20.850515"><ele>289</ele></trkpt>
+  </trkseg></trk>
+</gpx>

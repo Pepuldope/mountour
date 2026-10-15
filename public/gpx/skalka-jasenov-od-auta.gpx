@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Vyhliadka Skalka (Chlmec)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka Skalka (Chlmec)</name><trkseg>
+    <trkpt lat="48.887835" lon="21.935432"><ele>232</ele></trkpt>
+    <trkpt lat="48.888901" lon="21.935762"><ele>233</ele></trkpt>
+    <trkpt lat="48.889386" lon="21.935685"><ele>233</ele></trkpt>
+    <trkpt lat="48.889482" lon="21.935703"><ele>232</ele></trkpt>
+    <trkpt lat="48.889674" lon="21.935821"><ele>232</ele></trkpt>
+    <trkpt lat="48.889854" lon="21.936001"><ele>232</ele></trkpt>
+    <trkpt lat="48.890020" lon="21.936254"><ele>232</ele></trkpt>
+    <trkpt lat="48.890076" lon="21.936437"><ele>233</ele></trkpt>
+    <trkpt lat="48.890470" lon="21.936253"><ele>238</ele></trkpt>
+    <trkpt lat="48.890756" lon="21.936000"><ele>243</ele></trkpt>
+    <trkpt lat="48.890909" lon="21.935728"><ele>247</ele></trkpt>
+    <trkpt lat="48.891370" lon="21.935147"><ele>261</ele></trkpt>
+    <trkpt lat="48.891410" lon="21.934735"><ele>270</ele></trkpt>
+    <trkpt lat="48.891376" lon="21.934451"><ele>278</ele></trkpt>
+    <trkpt lat="48.891312" lon="21.934389"><ele>279</ele></trkpt>
+    <trkpt lat="48.891038" lon="21.933577"><ele>298</ele></trkpt>
+    <trkpt lat="48.891312" lon="21.934389"><ele>279</ele></trkpt>
+    <trkpt lat="48.891376" lon="21.934451"><ele>278</ele></trkpt>
+    <trkpt lat="48.891410" lon="21.934735"><ele>270</ele></trkpt>
+    <trkpt lat="48.891370" lon="21.935147"><ele>261</ele></trkpt>
+    <trkpt lat="48.890909" lon="21.935728"><ele>247</ele></trkpt>
+    <trkpt lat="48.890756" lon="21.936000"><ele>243</ele></trkpt>
+    <trkpt lat="48.890623" lon="21.936147"><ele>240</ele></trkpt>
+    <trkpt lat="48.890076" lon="21.936437"><ele>233</ele></trkpt>
+    <trkpt lat="48.890020" lon="21.936254"><ele>232</ele></trkpt>
+    <trkpt lat="48.889854" lon="21.936001"><ele>232</ele></trkpt>
+    <trkpt lat="48.889674" lon="21.935821"><ele>232</ele></trkpt>
+    <trkpt lat="48.889482" lon="21.935703"><ele>232</ele></trkpt>
+    <trkpt lat="48.889386" lon="21.935685"><ele>233</ele></trkpt>
+    <trkpt lat="48.888901" lon="21.935762"><ele>233</ele></trkpt>
+    <trkpt lat="48.887835" lon="21.935432"><ele>232</ele></trkpt>
+  </trkseg></trk>
+</gpx>

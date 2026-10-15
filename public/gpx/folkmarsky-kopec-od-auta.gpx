@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Folkmarský kopec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Folkmarský kopec</name><trkseg>
+    <trkpt lat="48.844823" lon="21.035589"><ele>578</ele></trkpt>
+    <trkpt lat="48.845376" lon="21.035389"><ele>569</ele></trkpt>
+    <trkpt lat="48.845756" lon="21.034987"><ele>562</ele></trkpt>
+    <trkpt lat="48.846046" lon="21.034758"><ele>562</ele></trkpt>
+    <trkpt lat="48.846238" lon="21.034468"><ele>563</ele></trkpt>
+    <trkpt lat="48.846319" lon="21.034323"><ele>564</ele></trkpt>
+    <trkpt lat="48.846365" lon="21.034131"><ele>566</ele></trkpt>
+    <trkpt lat="48.846371" lon="21.033913"><ele>567</ele></trkpt>
+    <trkpt lat="48.846429" lon="21.033691"><ele>570</ele></trkpt>
+    <trkpt lat="48.846705" lon="21.033126"><ele>574</ele></trkpt>
+    <trkpt lat="48.847250" lon="21.031854"><ele>575</ele></trkpt>
+    <trkpt lat="48.847273" lon="21.031694"><ele>576</ele></trkpt>
+    <trkpt lat="48.847241" lon="21.031542"><ele>576</ele></trkpt>
+    <trkpt lat="48.847482" lon="21.031515"><ele>575</ele></trkpt>
+    <trkpt lat="48.847925" lon="21.031026"><ele>572</ele></trkpt>
+    <trkpt lat="48.848248" lon="21.030887"><ele>567</ele></trkpt>
+    <trkpt lat="48.849259" lon="21.031893"><ele>545</ele></trkpt>
+    <trkpt lat="48.849329" lon="21.032097"><ele>543</ele></trkpt>
+    <trkpt lat="48.849259" lon="21.031893"><ele>545</ele></trkpt>
+    <trkpt lat="48.848248" lon="21.030887"><ele>567</ele></trkpt>
+    <trkpt lat="48.847925" lon="21.031026"><ele>572</ele></trkpt>
+    <trkpt lat="48.847482" lon="21.031515"><ele>575</ele></trkpt>
+    <trkpt lat="48.847241" lon="21.031542"><ele>576</ele></trkpt>
+    <trkpt lat="48.847273" lon="21.031694"><ele>576</ele></trkpt>
+    <trkpt lat="48.847250" lon="21.031854"><ele>575</ele></trkpt>
+    <trkpt lat="48.846705" lon="21.033126"><ele>574</ele></trkpt>
+    <trkpt lat="48.846429" lon="21.033691"><ele>570</ele></trkpt>
+    <trkpt lat="48.846371" lon="21.033913"><ele>567</ele></trkpt>
+    <trkpt lat="48.846365" lon="21.034131"><ele>566</ele></trkpt>
+    <trkpt lat="48.846319" lon="21.034323"><ele>564</ele></trkpt>
+    <trkpt lat="48.846238" lon="21.034468"><ele>563</ele></trkpt>
+    <trkpt lat="48.846046" lon="21.034758"><ele>562</ele></trkpt>
+    <trkpt lat="48.845756" lon="21.034987"><ele>562</ele></trkpt>
+    <trkpt lat="48.845376" lon="21.035389"><ele>569</ele></trkpt>
+    <trkpt lat="48.844823" lon="21.035589"><ele>578</ele></trkpt>
+  </trkseg></trk>
+</gpx>

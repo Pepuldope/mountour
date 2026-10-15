@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Hradná jaskyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hradná jaskyňa</name><trkseg>
+    <trkpt lat="48.319746" lon="18.087079"><ele>142</ele></trkpt>
+    <trkpt lat="48.319299" lon="18.087028"><ele>148</ele></trkpt>
+    <trkpt lat="48.319318" lon="18.086584"><ele>147</ele></trkpt>
+    <trkpt lat="48.319294" lon="18.086364"><ele>147</ele></trkpt>
+    <trkpt lat="48.319246" lon="18.086136"><ele>146</ele></trkpt>
+    <trkpt lat="48.319078" lon="18.085648"><ele>148</ele></trkpt>
+    <trkpt lat="48.318990" lon="18.085556"><ele>149</ele></trkpt>
+    <trkpt lat="48.319078" lon="18.085648"><ele>148</ele></trkpt>
+    <trkpt lat="48.319246" lon="18.086136"><ele>146</ele></trkpt>
+    <trkpt lat="48.319294" lon="18.086364"><ele>147</ele></trkpt>
+    <trkpt lat="48.319318" lon="18.086584"><ele>147</ele></trkpt>
+    <trkpt lat="48.319299" lon="18.087028"><ele>148</ele></trkpt>
+    <trkpt lat="48.319746" lon="18.087079"><ele>142</ele></trkpt>
+  </trkseg></trk>
+</gpx>

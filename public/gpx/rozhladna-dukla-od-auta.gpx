@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Rozhľadňa Dukla</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Rozhľadňa Dukla</name><trkseg>
+    <trkpt lat="49.414710" lon="21.707965"><ele>550</ele></trkpt>
+    <trkpt lat="49.414933" lon="21.707784"><ele>547</ele></trkpt>
+    <trkpt lat="49.415194" lon="21.707492"><ele>546</ele></trkpt>
+    <trkpt lat="49.415543" lon="21.706871"><ele>541</ele></trkpt>
+    <trkpt lat="49.415343" lon="21.707520"><ele>547</ele></trkpt>
+    <trkpt lat="49.415020" lon="21.708295"><ele>553</ele></trkpt>
+    <trkpt lat="49.414761" lon="21.708545"><ele>555</ele></trkpt>
+    <trkpt lat="49.415065" lon="21.708221"><ele>552</ele></trkpt>
+    <trkpt lat="49.415343" lon="21.707520"><ele>547</ele></trkpt>
+    <trkpt lat="49.415543" lon="21.706871"><ele>541</ele></trkpt>
+    <trkpt lat="49.415194" lon="21.707492"><ele>546</ele></trkpt>
+    <trkpt lat="49.414933" lon="21.707784"><ele>547</ele></trkpt>
+    <trkpt lat="49.414710" lon="21.707965"><ele>550</ele></trkpt>
+  </trkseg></trk>
+</gpx>

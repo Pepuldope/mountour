@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Spišský hrad</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Spišský hrad</name><trkseg>
+    <trkpt lat="48.998467" lon="20.770374"><ele>564</ele></trkpt>
+    <trkpt lat="48.998618" lon="20.770217"><ele>563</ele></trkpt>
+    <trkpt lat="48.998686" lon="20.770025"><ele>564</ele></trkpt>
+    <trkpt lat="48.998546" lon="20.769740"><ele>563</ele></trkpt>
+    <trkpt lat="48.998472" lon="20.769461"><ele>561</ele></trkpt>
+    <trkpt lat="48.998390" lon="20.768884"><ele>556</ele></trkpt>
+    <trkpt lat="48.998314" lon="20.768576"><ele>553</ele></trkpt>
+    <trkpt lat="48.998390" lon="20.768884"><ele>556</ele></trkpt>
+    <trkpt lat="48.998472" lon="20.769461"><ele>561</ele></trkpt>
+    <trkpt lat="48.998546" lon="20.769740"><ele>563</ele></trkpt>
+    <trkpt lat="48.998686" lon="20.770025"><ele>564</ele></trkpt>
+    <trkpt lat="48.998618" lon="20.770217"><ele>563</ele></trkpt>
+    <trkpt lat="48.998467" lon="20.770374"><ele>564</ele></trkpt>
+  </trkseg></trk>
+</gpx>

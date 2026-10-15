@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Vyhliadka na Drieňovú</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka na Drieňovú</name><trkseg>
+    <trkpt lat="48.461432" lon="18.909290"><ele>619</ele></trkpt>
+    <trkpt lat="48.461567" lon="18.909240"><ele>621</ele></trkpt>
+    <trkpt lat="48.461534" lon="18.909050"><ele>620</ele></trkpt>
+    <trkpt lat="48.461649" lon="18.908876"><ele>622</ele></trkpt>
+    <trkpt lat="48.461709" lon="18.908676"><ele>624</ele></trkpt>
+    <trkpt lat="48.461714" lon="18.911274"><ele>654</ele></trkpt>
+    <trkpt lat="48.461549" lon="18.911520"><ele>659</ele></trkpt>
+    <trkpt lat="48.461531" lon="18.911610"><ele>660</ele></trkpt>
+    <trkpt lat="48.461529" lon="18.912337"><ele>671</ele></trkpt>
+    <trkpt lat="48.461206" lon="18.912537"><ele>667</ele></trkpt>
+    <trkpt lat="48.460834" lon="18.912877"><ele>663</ele></trkpt>
+    <trkpt lat="48.460666" lon="18.913110"><ele>664</ele></trkpt>
+    <trkpt lat="48.460590" lon="18.913257"><ele>665</ele></trkpt>
+    <trkpt lat="48.460485" lon="18.913690"><ele>668</ele></trkpt>
+    <trkpt lat="48.460389" lon="18.913915"><ele>663</ele></trkpt>
+    <trkpt lat="48.460361" lon="18.914256"><ele>661</ele></trkpt>
+    <trkpt lat="48.460316" lon="18.914406"><ele>660</ele></trkpt>
+    <trkpt lat="48.460239" lon="18.914531"><ele>659</ele></trkpt>
+    <trkpt lat="48.460316" lon="18.914406"><ele>660</ele></trkpt>
+    <trkpt lat="48.460361" lon="18.914256"><ele>661</ele></trkpt>
+    <trkpt lat="48.460389" lon="18.913915"><ele>663</ele></trkpt>
+    <trkpt lat="48.460485" lon="18.913690"><ele>668</ele></trkpt>
+    <trkpt lat="48.460590" lon="18.913257"><ele>665</ele></trkpt>
+    <trkpt lat="48.460666" lon="18.913110"><ele>664</ele></trkpt>
+    <trkpt lat="48.460834" lon="18.912877"><ele>663</ele></trkpt>
+    <trkpt lat="48.461206" lon="18.912537"><ele>667</ele></trkpt>
+    <trkpt lat="48.461529" lon="18.912337"><ele>671</ele></trkpt>
+    <trkpt lat="48.461531" lon="18.911610"><ele>660</ele></trkpt>
+    <trkpt lat="48.461549" lon="18.911520"><ele>659</ele></trkpt>
+    <trkpt lat="48.461714" lon="18.911274"><ele>654</ele></trkpt>
+    <trkpt lat="48.461709" lon="18.908676"><ele>624</ele></trkpt>
+    <trkpt lat="48.461649" lon="18.908876"><ele>622</ele></trkpt>
+    <trkpt lat="48.461534" lon="18.909050"><ele>620</ele></trkpt>
+    <trkpt lat="48.461567" lon="18.909240"><ele>621</ele></trkpt>
+    <trkpt lat="48.461432" lon="18.909290"><ele>619</ele></trkpt>
+  </trkseg></trk>
+</gpx>

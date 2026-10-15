@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Hájnica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hájnica</name><trkseg>
+    <trkpt lat="48.820849" lon="17.865996"><ele>274</ele></trkpt>
+    <trkpt lat="48.820951" lon="17.866258"><ele>274</ele></trkpt>
+    <trkpt lat="48.819957" lon="17.865518"><ele>277</ele></trkpt>
+    <trkpt lat="48.819211" lon="17.865409"><ele>283</ele></trkpt>
+    <trkpt lat="48.819134" lon="17.865379"><ele>284</ele></trkpt>
+    <trkpt lat="48.818841" lon="17.865112"><ele>289</ele></trkpt>
+    <trkpt lat="48.818633" lon="17.865227"><ele>295</ele></trkpt>
+    <trkpt lat="48.818364" lon="17.865215"><ele>303</ele></trkpt>
+    <trkpt lat="48.818224" lon="17.865087"><ele>307</ele></trkpt>
+    <trkpt lat="48.818150" lon="17.865070"><ele>309</ele></trkpt>
+    <trkpt lat="48.817868" lon="17.865277"><ele>318</ele></trkpt>
+    <trkpt lat="48.817687" lon="17.865614"><ele>325</ele></trkpt>
+    <trkpt lat="48.817303" lon="17.866697"><ele>338</ele></trkpt>
+    <trkpt lat="48.817687" lon="17.865614"><ele>325</ele></trkpt>
+    <trkpt lat="48.817868" lon="17.865277"><ele>318</ele></trkpt>
+    <trkpt lat="48.818150" lon="17.865070"><ele>309</ele></trkpt>
+    <trkpt lat="48.818224" lon="17.865087"><ele>307</ele></trkpt>
+    <trkpt lat="48.818364" lon="17.865215"><ele>303</ele></trkpt>
+    <trkpt lat="48.818633" lon="17.865227"><ele>295</ele></trkpt>
+    <trkpt lat="48.818841" lon="17.865112"><ele>289</ele></trkpt>
+    <trkpt lat="48.819134" lon="17.865379"><ele>284</ele></trkpt>
+    <trkpt lat="48.819211" lon="17.865409"><ele>283</ele></trkpt>
+    <trkpt lat="48.819957" lon="17.865518"><ele>277</ele></trkpt>
+    <trkpt lat="48.820951" lon="17.866258"><ele>274</ele></trkpt>
+    <trkpt lat="48.820849" lon="17.865996"><ele>274</ele></trkpt>
+  </trkseg></trk>
+</gpx>

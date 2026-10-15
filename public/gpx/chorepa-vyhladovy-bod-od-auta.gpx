@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Chorepa - výhľadový bod</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Chorepa - výhľadový bod</name><trkseg>
+    <trkpt lat="48.594362" lon="19.860390"><ele>549</ele></trkpt>
+    <trkpt lat="48.594245" lon="19.860539"><ele>551</ele></trkpt>
+    <trkpt lat="48.594029" lon="19.860928"><ele>555</ele></trkpt>
+    <trkpt lat="48.593814" lon="19.861409"><ele>556</ele></trkpt>
+    <trkpt lat="48.593211" lon="19.862565"><ele>556</ele></trkpt>
+    <trkpt lat="48.592998" lon="19.863609"><ele>560</ele></trkpt>
+    <trkpt lat="48.592843" lon="19.863845"><ele>560</ele></trkpt>
+    <trkpt lat="48.592998" lon="19.863609"><ele>560</ele></trkpt>
+    <trkpt lat="48.593211" lon="19.862565"><ele>556</ele></trkpt>
+    <trkpt lat="48.593814" lon="19.861409"><ele>556</ele></trkpt>
+    <trkpt lat="48.594029" lon="19.860928"><ele>555</ele></trkpt>
+    <trkpt lat="48.594245" lon="19.860539"><ele>551</ele></trkpt>
+    <trkpt lat="48.594362" lon="19.860390"><ele>549</ele></trkpt>
+  </trkseg></trk>
+</gpx>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Hájsky vodopád</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hájsky vodopád</name><trkseg>
+    <trkpt lat="48.644344" lon="20.847015"><ele>427</ele></trkpt>
+    <trkpt lat="48.643992" lon="20.846944"><ele>426</ele></trkpt>
+    <trkpt lat="48.643733" lon="20.846972"><ele>425</ele></trkpt>
+    <trkpt lat="48.642763" lon="20.847572"><ele>410</ele></trkpt>
+    <trkpt lat="48.642269" lon="20.848088"><ele>404</ele></trkpt>
+    <trkpt lat="48.642763" lon="20.847572"><ele>410</ele></trkpt>
+    <trkpt lat="48.643733" lon="20.846972"><ele>425</ele></trkpt>
+    <trkpt lat="48.643992" lon="20.846944"><ele>426</ele></trkpt>
+    <trkpt lat="48.644344" lon="20.847015"><ele>427</ele></trkpt>
+  </trkseg></trk>
+</gpx>

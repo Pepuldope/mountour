@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Tajch Klinger</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Tajch Klinger</name><trkseg>
+    <trkpt lat="48.451323" lon="18.881123"><ele>714</ele></trkpt>
+    <trkpt lat="48.451131" lon="18.881294"><ele>716</ele></trkpt>
+    <trkpt lat="48.450946" lon="18.881512"><ele>715</ele></trkpt>
+    <trkpt lat="48.450884" lon="18.881640"><ele>715</ele></trkpt>
+    <trkpt lat="48.450660" lon="18.882792"><ele>718</ele></trkpt>
+    <trkpt lat="48.450645" lon="18.883018"><ele>715</ele></trkpt>
+    <trkpt lat="48.450667" lon="18.883181"><ele>713</ele></trkpt>
+    <trkpt lat="48.450645" lon="18.883018"><ele>715</ele></trkpt>
+    <trkpt lat="48.450660" lon="18.882792"><ele>718</ele></trkpt>
+    <trkpt lat="48.450884" lon="18.881640"><ele>715</ele></trkpt>
+    <trkpt lat="48.450946" lon="18.881512"><ele>715</ele></trkpt>
+    <trkpt lat="48.451131" lon="18.881294"><ele>716</ele></trkpt>
+    <trkpt lat="48.451323" lon="18.881123"><ele>714</ele></trkpt>
+  </trkseg></trk>
+</gpx>

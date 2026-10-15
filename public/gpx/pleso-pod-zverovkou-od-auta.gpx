@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Pleso pod Zverovkou</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Pleso pod Zverovkou</name><trkseg>
+    <trkpt lat="49.251255" lon="19.704169"><ele>990</ele></trkpt>
+    <trkpt lat="49.251172" lon="19.704062"><ele>990</ele></trkpt>
+    <trkpt lat="49.251688" lon="19.703198"><ele>997</ele></trkpt>
+    <trkpt lat="49.251852" lon="19.702785"><ele>998</ele></trkpt>
+    <trkpt lat="49.251983" lon="19.701938"><ele>999</ele></trkpt>
+    <trkpt lat="49.252088" lon="19.701535"><ele>992</ele></trkpt>
+    <trkpt lat="49.252299" lon="19.701734"><ele>997</ele></trkpt>
+    <trkpt lat="49.252359" lon="19.701736"><ele>998</ele></trkpt>
+    <trkpt lat="49.252545" lon="19.701545"><ele>1003</ele></trkpt>
+    <trkpt lat="49.252742" lon="19.701185"><ele>1004</ele></trkpt>
+    <trkpt lat="49.252840" lon="19.701117"><ele>1004</ele></trkpt>
+    <trkpt lat="49.253030" lon="19.701122"><ele>1003</ele></trkpt>
+    <trkpt lat="49.252840" lon="19.701117"><ele>1004</ele></trkpt>
+    <trkpt lat="49.252742" lon="19.701185"><ele>1004</ele></trkpt>
+    <trkpt lat="49.252545" lon="19.701545"><ele>1003</ele></trkpt>
+    <trkpt lat="49.252359" lon="19.701736"><ele>998</ele></trkpt>
+    <trkpt lat="49.252299" lon="19.701734"><ele>997</ele></trkpt>
+    <trkpt lat="49.252088" lon="19.701535"><ele>992</ele></trkpt>
+    <trkpt lat="49.251983" lon="19.701938"><ele>999</ele></trkpt>
+    <trkpt lat="49.251852" lon="19.702785"><ele>998</ele></trkpt>
+    <trkpt lat="49.251688" lon="19.703198"><ele>997</ele></trkpt>
+    <trkpt lat="49.251172" lon="19.704062"><ele>990</ele></trkpt>
+    <trkpt lat="49.251255" lon="19.704169"><ele>990</ele></trkpt>
+  </trkseg></trk>
+</gpx>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Castrum Salis - Soľný hrad</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Castrum Salis - Soľný hrad</name><trkseg>
+    <trkpt lat="48.974668" lon="21.268715"><ele>271</ele></trkpt>
+    <trkpt lat="48.974618" lon="21.268690"><ele>271</ele></trkpt>
+    <trkpt lat="48.974756" lon="21.268610"><ele>270</ele></trkpt>
+    <trkpt lat="48.975004" lon="21.268496"><ele>268</ele></trkpt>
+    <trkpt lat="48.975166" lon="21.268473"><ele>267</ele></trkpt>
+    <trkpt lat="48.975595" lon="21.268508"><ele>260</ele></trkpt>
+    <trkpt lat="48.975624" lon="21.268568"><ele>260</ele></trkpt>
+    <trkpt lat="48.975942" lon="21.268575"><ele>255</ele></trkpt>
+    <trkpt lat="48.976515" lon="21.268288"><ele>249</ele></trkpt>
+    <trkpt lat="48.976792" lon="21.268213"><ele>249</ele></trkpt>
+    <trkpt lat="48.976827" lon="21.267355"><ele>249</ele></trkpt>
+    <trkpt lat="48.977435" lon="21.266952"><ele>253</ele></trkpt>
+    <trkpt lat="48.977387" lon="21.266808"><ele>253</ele></trkpt>
+    <trkpt lat="48.977294" lon="21.266065"><ele>250</ele></trkpt>
+    <trkpt lat="48.977461" lon="21.266054"><ele>252</ele></trkpt>
+    <trkpt lat="48.977550" lon="21.267108"><ele>254</ele></trkpt>
+    <trkpt lat="48.977461" lon="21.266054"><ele>252</ele></trkpt>
+    <trkpt lat="48.977294" lon="21.266065"><ele>250</ele></trkpt>
+    <trkpt lat="48.977387" lon="21.266808"><ele>253</ele></trkpt>
+    <trkpt lat="48.977435" lon="21.266952"><ele>253</ele></trkpt>
+    <trkpt lat="48.976827" lon="21.267355"><ele>249</ele></trkpt>
+    <trkpt lat="48.976792" lon="21.268213"><ele>249</ele></trkpt>
+    <trkpt lat="48.976515" lon="21.268288"><ele>249</ele></trkpt>
+    <trkpt lat="48.975942" lon="21.268575"><ele>255</ele></trkpt>
+    <trkpt lat="48.975624" lon="21.268568"><ele>260</ele></trkpt>
+    <trkpt lat="48.975595" lon="21.268508"><ele>260</ele></trkpt>
+    <trkpt lat="48.975166" lon="21.268473"><ele>267</ele></trkpt>
+    <trkpt lat="48.975004" lon="21.268496"><ele>268</ele></trkpt>
+    <trkpt lat="48.974756" lon="21.268610"><ele>270</ele></trkpt>
+    <trkpt lat="48.974618" lon="21.268690"><ele>271</ele></trkpt>
+    <trkpt lat="48.974668" lon="21.268715"><ele>271</ele></trkpt>
+  </trkseg></trk>
+</gpx>

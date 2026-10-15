@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Trenčiansky hrad</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Trenčiansky hrad</name><trkseg>
+    <trkpt lat="48.896032" lon="18.043334"><ele>219</ele></trkpt>
+    <trkpt lat="48.896054" lon="18.043731"><ele>220</ele></trkpt>
+    <trkpt lat="48.895870" lon="18.043874"><ele>222</ele></trkpt>
+    <trkpt lat="48.895756" lon="18.043718"><ele>222</ele></trkpt>
+    <trkpt lat="48.895629" lon="18.043369"><ele>221</ele></trkpt>
+    <trkpt lat="48.895331" lon="18.043575"><ele>222</ele></trkpt>
+    <trkpt lat="48.895629" lon="18.043369"><ele>221</ele></trkpt>
+    <trkpt lat="48.895756" lon="18.043718"><ele>222</ele></trkpt>
+    <trkpt lat="48.895870" lon="18.043874"><ele>222</ele></trkpt>
+    <trkpt lat="48.896054" lon="18.043731"><ele>220</ele></trkpt>
+    <trkpt lat="48.896032" lon="18.043334"><ele>219</ele></trkpt>
+  </trkseg></trk>
+</gpx>

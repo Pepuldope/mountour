@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Čutkovo</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Čutkovo</name><trkseg>
+    <trkpt lat="49.079445" lon="19.254333"><ele>529</ele></trkpt>
+    <trkpt lat="49.079261" lon="19.254116"><ele>531</ele></trkpt>
+    <trkpt lat="49.079121" lon="19.253755"><ele>531</ele></trkpt>
+    <trkpt lat="49.079079" lon="19.253284"><ele>532</ele></trkpt>
+    <trkpt lat="49.079122" lon="19.252326"><ele>538</ele></trkpt>
+    <trkpt lat="49.078977" lon="19.251618"><ele>543</ele></trkpt>
+    <trkpt lat="49.078701" lon="19.250821"><ele>542</ele></trkpt>
+    <trkpt lat="49.078349" lon="19.250249"><ele>537</ele></trkpt>
+    <trkpt lat="49.077884" lon="19.249696"><ele>538</ele></trkpt>
+    <trkpt lat="49.077647" lon="19.249547"><ele>539</ele></trkpt>
+    <trkpt lat="49.077274" lon="19.249464"><ele>540</ele></trkpt>
+    <trkpt lat="49.077101" lon="19.249383"><ele>541</ele></trkpt>
+    <trkpt lat="49.076886" lon="19.249201"><ele>542</ele></trkpt>
+    <trkpt lat="49.076722" lon="19.248994"><ele>543</ele></trkpt>
+    <trkpt lat="49.076445" lon="19.248480"><ele>547</ele></trkpt>
+    <trkpt lat="49.076151" lon="19.247444"><ele>559</ele></trkpt>
+    <trkpt lat="49.076028" lon="19.247129"><ele>563</ele></trkpt>
+    <trkpt lat="49.075713" lon="19.246641"><ele>564</ele></trkpt>
+    <trkpt lat="49.076028" lon="19.247129"><ele>563</ele></trkpt>
+    <trkpt lat="49.076151" lon="19.247444"><ele>559</ele></trkpt>
+    <trkpt lat="49.076445" lon="19.248480"><ele>547</ele></trkpt>
+    <trkpt lat="49.076722" lon="19.248994"><ele>543</ele></trkpt>
+    <trkpt lat="49.076886" lon="19.249201"><ele>542</ele></trkpt>
+    <trkpt lat="49.077101" lon="19.249383"><ele>541</ele></trkpt>
+    <trkpt lat="49.077274" lon="19.249464"><ele>540</ele></trkpt>
+    <trkpt lat="49.077647" lon="19.249547"><ele>539</ele></trkpt>
+    <trkpt lat="49.077884" lon="19.249696"><ele>538</ele></trkpt>
+    <trkpt lat="49.078349" lon="19.250249"><ele>537</ele></trkpt>
+    <trkpt lat="49.078701" lon="19.250821"><ele>542</ele></trkpt>
+    <trkpt lat="49.078977" lon="19.251618"><ele>543</ele></trkpt>
+    <trkpt lat="49.079122" lon="19.252326"><ele>538</ele></trkpt>
+    <trkpt lat="49.079079" lon="19.253284"><ele>532</ele></trkpt>
+    <trkpt lat="49.079121" lon="19.253755"><ele>531</ele></trkpt>
+    <trkpt lat="49.079261" lon="19.254116"><ele>531</ele></trkpt>
+    <trkpt lat="49.079445" lon="19.254333"><ele>529</ele></trkpt>
+  </trkseg></trk>
+</gpx>

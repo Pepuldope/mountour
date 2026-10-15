@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Hrad Branč</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Branč</name><trkseg>
+    <trkpt lat="48.732786" lon="17.462147"><ele>384</ele></trkpt>
+    <trkpt lat="48.732960" lon="17.462146"><ele>383</ele></trkpt>
+    <trkpt lat="48.733046" lon="17.462438"><ele>385</ele></trkpt>
+    <trkpt lat="48.733357" lon="17.462791"><ele>388</ele></trkpt>
+    <trkpt lat="48.733455" lon="17.462999"><ele>388</ele></trkpt>
+    <trkpt lat="48.733621" lon="17.463557"><ele>391</ele></trkpt>
+    <trkpt lat="48.733746" lon="17.463838"><ele>394</ele></trkpt>
+    <trkpt lat="48.734557" lon="17.465077"><ele>404</ele></trkpt>
+    <trkpt lat="48.734635" lon="17.465259"><ele>404</ele></trkpt>
+    <trkpt lat="48.734944" lon="17.466327"><ele>410</ele></trkpt>
+    <trkpt lat="48.734950" lon="17.467410"><ele>415</ele></trkpt>
+    <trkpt lat="48.734944" lon="17.466327"><ele>410</ele></trkpt>
+    <trkpt lat="48.734635" lon="17.465259"><ele>404</ele></trkpt>
+    <trkpt lat="48.734557" lon="17.465077"><ele>404</ele></trkpt>
+    <trkpt lat="48.733746" lon="17.463838"><ele>394</ele></trkpt>
+    <trkpt lat="48.733621" lon="17.463557"><ele>391</ele></trkpt>
+    <trkpt lat="48.733455" lon="17.462999"><ele>388</ele></trkpt>
+    <trkpt lat="48.733357" lon="17.462791"><ele>388</ele></trkpt>
+    <trkpt lat="48.733046" lon="17.462438"><ele>385</ele></trkpt>
+    <trkpt lat="48.732960" lon="17.462146"><ele>383</ele></trkpt>
+    <trkpt lat="48.732786" lon="17.462147"><ele>384</ele></trkpt>
+  </trkseg></trk>
+</gpx>

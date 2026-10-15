@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Rozhľadňa Šachtička</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Rozhľadňa Šachtička</name><trkseg>
+    <trkpt lat="48.805567" lon="19.148968"><ele>958</ele></trkpt>
+    <trkpt lat="48.805331" lon="19.149194"><ele>958</ele></trkpt>
+    <trkpt lat="48.805085" lon="19.149351"><ele>958</ele></trkpt>
+    <trkpt lat="48.805026" lon="19.149134"><ele>958</ele></trkpt>
+    <trkpt lat="48.804896" lon="19.149188"><ele>958</ele></trkpt>
+    <trkpt lat="48.804861" lon="19.149098"><ele>957</ele></trkpt>
+    <trkpt lat="48.804588" lon="19.149013"><ele>956</ele></trkpt>
+    <trkpt lat="48.804550" lon="19.148714"><ele>955</ele></trkpt>
+    <trkpt lat="48.804576" lon="19.148425"><ele>953</ele></trkpt>
+    <trkpt lat="48.804550" lon="19.148714"><ele>955</ele></trkpt>
+    <trkpt lat="48.804588" lon="19.149013"><ele>956</ele></trkpt>
+    <trkpt lat="48.804861" lon="19.149098"><ele>957</ele></trkpt>
+    <trkpt lat="48.804896" lon="19.149188"><ele>958</ele></trkpt>
+    <trkpt lat="48.805026" lon="19.149134"><ele>958</ele></trkpt>
+    <trkpt lat="48.805085" lon="19.149351"><ele>958</ele></trkpt>
+    <trkpt lat="48.805331" lon="19.149194"><ele>958</ele></trkpt>
+    <trkpt lat="48.805567" lon="19.148968"><ele>958</ele></trkpt>
+  </trkseg></trk>
+</gpx>
