@@ -29,7 +29,7 @@ export function NoParkingChip() {
 }
 
 /** Said next to the no-parking chip, so it is plain the place is still easy to reach. */
-export function BusOk({ long = false }: { long?: boolean }) {
+export function BusOk() {
   return (
     <span className="inline-flex items-center gap-1 font-bold text-[var(--ok)]">
       <svg aria-hidden width="14" height="14" viewBox="0 0 16 16" className="shrink-0">
@@ -38,7 +38,7 @@ export function BusOk({ long = false }: { long?: boolean }) {
         <circle cx="5.3" cy="10" r=".9" fill="currentColor" />
         <circle cx="10.7" cy="10" r=".9" fill="currentColor" />
       </svg>
-      {long ? "autobusom sa sem dostanete" : "dá sa autobusom"}
+      dá sa autobusom
     </span>
   );
 }

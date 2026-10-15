@@ -105,7 +105,7 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
                       {!r.parking && <NoParkingChip />}
                     </span>
                     <span className="text-[13px] text-[var(--muted)]">
-                      štart {r.start_name} · {r.parking ? routeAccess(r) : <BusOk long />}
+                      štart {r.start_name} · {r.parking ? routeAccess(r) : <BusOk />}
                     </span>
                   </span>
                 </span>
