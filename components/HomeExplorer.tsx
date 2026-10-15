@@ -593,7 +593,7 @@ export function HomeExplorer({ trails: initial }: Props) {
         aria-hidden
       >
         <span className="flex items-center gap-1.5">
-          málo chodené <i className="block h-1.5 w-12 rounded-full bg-[linear-gradient(90deg,#f2c418,#f3a12f,#e8682a,#d9481f,#c8261b)]" /> obľúbené
+          málo chodené <i className="block h-1.5 w-12 rounded-full bg-[linear-gradient(90deg,#ffe600,#f3a12f,#e8682a,#d9481f,#c8261b)]" /> obľúbené
         </span>
         <span className="flex items-center gap-1.5">
           <i className="block h-[3px] w-5 rounded-full bg-[#8a8f7a] opacity-60" /> chodník bez výletu
