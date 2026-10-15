@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
-  <metadata><name>Roh</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Roh</name><trkseg>
+  <metadata><name>Roh (Ruská Bystrá)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Roh (Ruská Bystrá)</name><trkseg>
     <trkpt lat="48.854746" lon="22.188939"><ele>303</ele></trkpt>
     <trkpt lat="48.854844" lon="22.189502"><ele>305</ele></trkpt>
     <trkpt lat="48.854557" lon="22.189574"><ele>305</ele></trkpt>

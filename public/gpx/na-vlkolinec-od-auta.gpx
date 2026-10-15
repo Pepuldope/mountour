@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Vyhliadka na Vlkolínec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vyhliadka na Vlkolínec</name><trkseg>
+    <trkpt lat="49.037261" lon="19.275802"><ele>678</ele></trkpt>
+    <trkpt lat="49.037725" lon="19.276346"><ele>685</ele></trkpt>
+    <trkpt lat="49.037689" lon="19.276521"><ele>685</ele></trkpt>
+    <trkpt lat="49.037647" lon="19.277163"><ele>685</ele></trkpt>
+    <trkpt lat="49.037594" lon="19.277369"><ele>683</ele></trkpt>
+    <trkpt lat="49.037555" lon="19.277383"><ele>682</ele></trkpt>
+    <trkpt lat="49.037443" lon="19.277283"><ele>680</ele></trkpt>
+    <trkpt lat="49.037306" lon="19.276942"><ele>676</ele></trkpt>
+    <trkpt lat="49.037116" lon="19.276713"><ele>672</ele></trkpt>
+    <trkpt lat="49.036525" lon="19.275804"><ele>663</ele></trkpt>
+    <trkpt lat="49.036232" lon="19.275655"><ele>661</ele></trkpt>
+    <trkpt lat="49.035988" lon="19.275358"><ele>657</ele></trkpt>
+    <trkpt lat="49.036232" lon="19.275655"><ele>661</ele></trkpt>
+    <trkpt lat="49.036525" lon="19.275804"><ele>663</ele></trkpt>
+    <trkpt lat="49.037116" lon="19.276713"><ele>672</ele></trkpt>
+    <trkpt lat="49.037306" lon="19.276942"><ele>676</ele></trkpt>
+    <trkpt lat="49.037443" lon="19.277283"><ele>680</ele></trkpt>
+    <trkpt lat="49.037555" lon="19.277383"><ele>682</ele></trkpt>
+    <trkpt lat="49.037594" lon="19.277369"><ele>683</ele></trkpt>
+    <trkpt lat="49.037647" lon="19.277163"><ele>685</ele></trkpt>
+    <trkpt lat="49.037689" lon="19.276521"><ele>685</ele></trkpt>
+    <trkpt lat="49.037725" lon="19.276346"><ele>685</ele></trkpt>
+    <trkpt lat="49.037261" lon="19.275802"><ele>678</ele></trkpt>
+  </trkseg></trk>
+</gpx>

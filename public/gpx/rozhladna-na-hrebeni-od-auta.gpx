@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Rozhľadňa na hrebeni</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Rozhľadňa na hrebeni</name><trkseg>
+    <trkpt lat="48.805794" lon="17.166379"><ele>202</ele></trkpt>
+    <trkpt lat="48.804873" lon="17.167413"><ele>204</ele></trkpt>
+    <trkpt lat="48.803626" lon="17.168653"><ele>208</ele></trkpt>
+    <trkpt lat="48.803297" lon="17.169018"><ele>209</ele></trkpt>
+    <trkpt lat="48.803021" lon="17.169407"><ele>210</ele></trkpt>
+    <trkpt lat="48.802684" lon="17.169623"><ele>209</ele></trkpt>
+    <trkpt lat="48.802460" lon="17.169832"><ele>210</ele></trkpt>
+    <trkpt lat="48.802231" lon="17.170121"><ele>210</ele></trkpt>
+    <trkpt lat="48.801275" lon="17.171616"><ele>218</ele></trkpt>
+    <trkpt lat="48.800985" lon="17.171984"><ele>219</ele></trkpt>
+    <trkpt lat="48.800898" lon="17.172028"><ele>219</ele></trkpt>
+    <trkpt lat="48.800749" lon="17.172255"><ele>221</ele></trkpt>
+    <trkpt lat="48.800539" lon="17.172351"><ele>225</ele></trkpt>
+    <trkpt lat="48.800525" lon="17.172141"><ele>225</ele></trkpt>
+    <trkpt lat="48.800539" lon="17.172351"><ele>225</ele></trkpt>
+    <trkpt lat="48.800685" lon="17.172304"><ele>222</ele></trkpt>
+    <trkpt lat="48.801275" lon="17.171616"><ele>218</ele></trkpt>
+    <trkpt lat="48.802231" lon="17.170121"><ele>210</ele></trkpt>
+    <trkpt lat="48.802460" lon="17.169832"><ele>210</ele></trkpt>
+    <trkpt lat="48.802684" lon="17.169623"><ele>209</ele></trkpt>
+    <trkpt lat="48.803021" lon="17.169407"><ele>210</ele></trkpt>
+    <trkpt lat="48.803297" lon="17.169018"><ele>209</ele></trkpt>
+    <trkpt lat="48.803626" lon="17.168653"><ele>208</ele></trkpt>
+    <trkpt lat="48.804873" lon="17.167413"><ele>204</ele></trkpt>
+    <trkpt lat="48.805794" lon="17.166379"><ele>202</ele></trkpt>
+  </trkseg></trk>
+</gpx>

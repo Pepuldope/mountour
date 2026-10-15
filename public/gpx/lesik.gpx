@@ -2,19 +2,11 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Lesík</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Lesík</name><trkseg>
-    <trkpt lat="48.978392" lon="21.111354"><ele>367</ele></trkpt>
-    <trkpt lat="48.978404" lon="21.111516"><ele>368</ele></trkpt>
-    <trkpt lat="48.978090" lon="21.112481"><ele>368</ele></trkpt>
-    <trkpt lat="48.977923" lon="21.113126"><ele>367</ele></trkpt>
-    <trkpt lat="48.977732" lon="21.113474"><ele>366</ele></trkpt>
-    <trkpt lat="48.977636" lon="21.113787"><ele>366</ele></trkpt>
-    <trkpt lat="48.977475" lon="21.113876"><ele>365</ele></trkpt>
-    <trkpt lat="48.977286" lon="21.114076"><ele>366</ele></trkpt>
-    <trkpt lat="48.977111" lon="21.114336"><ele>365</ele></trkpt>
-    <trkpt lat="48.977012" lon="21.114392"><ele>363</ele></trkpt>
-    <trkpt lat="48.976884" lon="21.114308"><ele>363</ele></trkpt>
-    <trkpt lat="48.976602" lon="21.113888"><ele>360</ele></trkpt>
-    <trkpt lat="48.976137" lon="21.113577"><ele>365</ele></trkpt>
+    <trkpt lat="48.977613" lon="21.110034"><ele>370</ele></trkpt>
+    <trkpt lat="48.977415" lon="21.110319"><ele>370</ele></trkpt>
+    <trkpt lat="48.977268" lon="21.110626"><ele>370</ele></trkpt>
+    <trkpt lat="48.976935" lon="21.111933"><ele>369</ele></trkpt>
+    <trkpt lat="48.976638" lon="21.112674"><ele>368</ele></trkpt>
     <trkpt lat="48.975656" lon="21.114427"><ele>361</ele></trkpt>
     <trkpt lat="48.974844" lon="21.115484"><ele>361</ele></trkpt>
     <trkpt lat="48.973482" lon="21.117516"><ele>355</ele></trkpt>
@@ -76,18 +68,10 @@
     <trkpt lat="48.973482" lon="21.117516"><ele>355</ele></trkpt>
     <trkpt lat="48.974844" lon="21.115484"><ele>361</ele></trkpt>
     <trkpt lat="48.975656" lon="21.114427"><ele>361</ele></trkpt>
-    <trkpt lat="48.976137" lon="21.113577"><ele>365</ele></trkpt>
-    <trkpt lat="48.976602" lon="21.113888"><ele>360</ele></trkpt>
-    <trkpt lat="48.976884" lon="21.114308"><ele>363</ele></trkpt>
-    <trkpt lat="48.977012" lon="21.114392"><ele>363</ele></trkpt>
-    <trkpt lat="48.977111" lon="21.114336"><ele>365</ele></trkpt>
-    <trkpt lat="48.977286" lon="21.114076"><ele>366</ele></trkpt>
-    <trkpt lat="48.977475" lon="21.113876"><ele>365</ele></trkpt>
-    <trkpt lat="48.977636" lon="21.113787"><ele>366</ele></trkpt>
-    <trkpt lat="48.977732" lon="21.113474"><ele>366</ele></trkpt>
-    <trkpt lat="48.977923" lon="21.113126"><ele>367</ele></trkpt>
-    <trkpt lat="48.978090" lon="21.112481"><ele>368</ele></trkpt>
-    <trkpt lat="48.978404" lon="21.111516"><ele>368</ele></trkpt>
-    <trkpt lat="48.978392" lon="21.111354"><ele>367</ele></trkpt>
+    <trkpt lat="48.976638" lon="21.112674"><ele>368</ele></trkpt>
+    <trkpt lat="48.976935" lon="21.111933"><ele>369</ele></trkpt>
+    <trkpt lat="48.977268" lon="21.110626"><ele>370</ele></trkpt>
+    <trkpt lat="48.977415" lon="21.110319"><ele>370</ele></trkpt>
+    <trkpt lat="48.977613" lon="21.110034"><ele>370</ele></trkpt>
   </trkseg></trk>
 </gpx>
