@@ -191,8 +191,8 @@ def _report(trips, rep, now, osm_at, drive):
           "about as quick).", "",
           "| Goal | Kind | Why | Start | Town metres |", "|---|---|---|---|---|"]
     L += [f"| {n} | {k} | {w} | {st} | {m} |" for n, k, w, st, m in town if not w.startswith("streets")]
-    L += [f"| {n} | | streets, start out of town used | {st} | {m} |"
-          for n, k, w, st, m in [x for x in town if x[2].startswith("streets")][:80]]
+    L += [f"| {n} | instead: {k} | streets, start out of town used | {st} | {m} |"
+          for n, k, w, st, m in [x for x in town if x[2].startswith("streets")]]
     nm = rep.get("names") or {}
     found = names.problems(trips)
     L += ["", "## Name check", "",
