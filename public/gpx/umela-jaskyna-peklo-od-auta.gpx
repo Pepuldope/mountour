@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Umelá jaskyňa "Peklo"</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Umelá jaskyňa "Peklo"</name><trkseg>
+    <trkpt lat="48.420986" lon="18.942292"><ele>444</ele></trkpt>
+    <trkpt lat="48.420887" lon="18.942283"><ele>443</ele></trkpt>
+    <trkpt lat="48.420889" lon="18.942198"><ele>442</ele></trkpt>
+    <trkpt lat="48.420935" lon="18.942197"><ele>442</ele></trkpt>
+    <trkpt lat="48.420962" lon="18.942069"><ele>441</ele></trkpt>
+    <trkpt lat="48.421292" lon="18.941735"><ele>435</ele></trkpt>
+    <trkpt lat="48.421603" lon="18.941830"><ele>435</ele></trkpt>
+    <trkpt lat="48.421653" lon="18.941783"><ele>434</ele></trkpt>
+    <trkpt lat="48.421682" lon="18.941695"><ele>432</ele></trkpt>
+    <trkpt lat="48.421681" lon="18.941113"><ele>426</ele></trkpt>
+    <trkpt lat="48.421420" lon="18.941073"><ele>426</ele></trkpt>
+    <trkpt lat="48.421427" lon="18.940957"><ele>425</ele></trkpt>
+    <trkpt lat="48.421329" lon="18.940923"><ele>425</ele></trkpt>
+    <trkpt lat="48.421324" lon="18.940993"><ele>425</ele></trkpt>
+    <trkpt lat="48.421329" lon="18.940923"><ele>425</ele></trkpt>
+    <trkpt lat="48.421427" lon="18.940957"><ele>425</ele></trkpt>
+    <trkpt lat="48.421420" lon="18.941073"><ele>426</ele></trkpt>
+    <trkpt lat="48.421681" lon="18.941113"><ele>426</ele></trkpt>
+    <trkpt lat="48.421682" lon="18.941695"><ele>432</ele></trkpt>
+    <trkpt lat="48.421603" lon="18.941830"><ele>435</ele></trkpt>
+    <trkpt lat="48.421292" lon="18.941735"><ele>435</ele></trkpt>
+    <trkpt lat="48.420962" lon="18.942069"><ele>441</ele></trkpt>
+    <trkpt lat="48.420935" lon="18.942197"><ele>442</ele></trkpt>
+    <trkpt lat="48.420889" lon="18.942198"><ele>442</ele></trkpt>
+    <trkpt lat="48.420887" lon="18.942283"><ele>443</ele></trkpt>
+    <trkpt lat="48.420986" lon="18.942292"><ele>444</ele></trkpt>
+  </trkseg></trk>
+</gpx>

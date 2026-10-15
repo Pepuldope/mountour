@@ -25,6 +25,8 @@ FAMOUS = 6  # Wikipedia languages with an article: a place known well beyond its
 DISTINCT_GOALS = {"vodopad", "pleso", "jaskyna", "hrad", "roklina"}  # two of these near each other are two goals
 GORGE_VALLEY_FAME = 3
 GORGE_TOP_MAX_ELE = 1300  # m; a valley reaching higher is a mountain valley  # a plain "dolina" counts as a gorge when this many Wikipedias have it
+SHORT_LABEL = "Krátko od auta"  # a car park by the goal: look round the castle, no hike
+SHORT_KINDS = {"hrad", "jaskyna", "vodopad", "vyhliadka", "pleso", "ine"}
 VERY_FAMOUS = 12  # every Tatra peak has a few (Polish, German); this many is a household name
 
 
@@ -122,15 +124,32 @@ class TripBuilder:
             for f in self.osm.towns
         )
 
-    def town_walk_m(self, path):
-        """Metres of a walk (graph nodes) that run through built-up areas."""
-        if len(path) < 2 or not self.town_cells:
-            return 0.0
+    def city_walk(self, path, dest, lim):
+        """How much of a walk runs through a town, and whether that is too much: this site is
+        for getting into nature, not touring a town. Returns (metres, verdict): "hard" when the
+        walk runs long through a built-up area (never kept), "soft" when village or town
+        streets are a big part of the way to a goal in nature (kept only when no start out of
+        town is about as quick), else None. A goal in town (a castle above it) gets only the
+        hard check."""
+        if len(path) < 2:
+            return 0.0, None
+        g = self.g
+        idx = g.edges(path)
         size = self.t.get("town_cell_m", 250)
-        xy = self.proj.xy(self.g.lat[path], self.g.lon[path])
-        seg = np.hypot(*np.diff(xy, axis=0).T)
-        cells = map(tuple, ((xy[:-1] + xy[1:]) / 2 // size).astype(int))
-        return float(sum(L for c, L in zip(cells, seg) if c in self.town_cells))
+        xy = self.proj.xy(g.lat[path], g.lon[path])
+        cells = [tuple(c) for c in ((xy[:-1] + xy[1:]) / 2 // size).astype(int)]
+        lens = g.edge_len[idx]
+        dense = float(sum(L for c, L in zip(cells, lens) if c in self.town_cells))
+        one_way = float(lens.sum())
+        if dense > lim.get("town_walk_max_m", 1500) or (dense > 800 and dense > 0.5 * one_way):
+            return dense, "hard"
+        streets = float(sum(L for c, L, w in zip(cells, lens, g.edge_way[idx])
+                            if c in self.town_cells or g.ways[w].highway in TOWN_STREETS))
+        if self._in_town(dest["lat"], dest["lon"]):
+            return streets, None
+        if streets > lim.get("town_walk_free_m", 1000) and streets > lim.get("town_walk_share", 0.35) * one_way:
+            return streets, "soft"
+        return streets, None
 
     def in_country(self, lat, lon):
         if self.osm.border is None:
@@ -397,6 +416,7 @@ class TripBuilder:
         # Plain huts and viewpoints along the way are often cottages or nameless spots, so not those.
         goals = {t["destination"]["osm"]: t["destination"]["name"] for t in trips
                  if t["destination"]["osm"] and t["rank"] >= 40}
+        via, by_place = {}, {}
         for v in variants:
             v.pop("_score", None)
             main = by_slug[v["variant_of"]]
@@ -404,10 +424,15 @@ class TripBuilder:
             if not v["curated"]:
                 v["name"] = main["name"]
             on_main = {p["osm"] for p in main["pois"]}
-            via = next((goals[p["osm"]] for p in v["pois"] if p["osm"] in goals and p["osm"] not in on_main
+            hit = next((goals[p["osm"]] for p in v["pois"] if p["osm"] in goals and p["osm"] not in on_main
                         and goals[p["osm"]] != v["destination"]["name"] and len(goals[p["osm"]]) <= 26), None)
-            if via:
-                v["route_label"] = f"Cez {via}"
+            if hit and names.fold(hit) not in names.fold(v["start"]["name"]):  # not "Cez Devín" from Devín
+                via[v["slug"]] = hit
+            by_place.setdefault(v["variant_of"], []).append(v)
+        for slug, routes in by_place.items():
+            self.assign_labels(by_slug[slug], routes, via)
+        start = lambda t: t["start"]["osm"] or t["start"]["name"]
+        self.report["alternatives"] = sum(len(rs) + 1 - len({start(t) for t in rs + [by_slug[s]]}) for s, rs in by_place.items())
         self.report["variants"] = len(variants)
         return trips + variants
 
@@ -436,7 +461,8 @@ class TripBuilder:
         st = main["start"]
         self._set_slug(main, self._slug(f"{dest['osm'] or dest['name']}|{st['osm'] or st['name']}", dest["name"], st["name"]))
         main["_score"] = c.score
-        main["_others"] = [r for r in routes if r is not main]
+        others = [r for r in routes if r is not main]
+        main["_others"] = others + self._alternatives_for(main, others, c.node, dest, c.region, routes)
         return main
 
     def routes_to(self, target, dest, region, ths, th_nodes, known=(), limits=None):
@@ -453,7 +479,7 @@ class TripBuilder:
         if not np.isfinite(costs).any():
             return [], "no trailhead within reach"
         seen = list(known)
-        out, why, looked = [], "trailheads too close", 0
+        out, why, looked, town_walks = [], "trailheads too close", 0, []
         for i in np.argsort(costs):
             if not np.isfinite(costs[i]) or looked >= self.t.get("route_trailheads_max", 25):
                 break
@@ -471,9 +497,12 @@ class TripBuilder:
             trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
             bad = self._quality(trip, dest["kind"], lim) if trip else "could not build"
             if not bad:
-                town = self.town_walk_m(path)
-                one_way = trip["distance_m"] / (1 if trip["route"] == "okruh" else 2)
-                if town > lim.get("town_walk_max_m", 1500) or (town > 800 and town > 0.5 * one_way):
+                town, verdict = self.city_walk(path, dest, lim)
+                if verdict == "soft":
+                    # Half the way through village streets: only if no start out of town is about as quick.
+                    town_walks.append((trip, edges, st.name, round(town)))
+                    continue
+                if verdict:
                     # Nobody walks an hour through streets to reach a hill; from the edge of town, fine.
                     bad = "city walk"
                     self.report.setdefault("town", []).append((dest["name"], dest["kind"], "city walk", st.name, round(town)))
@@ -484,8 +513,25 @@ class TripBuilder:
             trip["_edges"] = edges
             seen.append(edges)
             out.append(trip)
-            if len(out) >= 2 * self.t.get("max_routes_per_destination", 3):
+            if len(out) >= 2 * self.t.get("max_starts_per_destination", 3):
                 break
+        if town_walks:
+            trip, edges, name, town = min(town_walks, key=lambda t: t[0]["duration_min"])
+            quick = trip["duration_min"] + max(60, 0.5 * trip["duration_min"])
+            # The start out of town must do the same job: by car, so with parking (the main route needs it).
+            other = next((t for t in out if t["duration_min"] <= quick and t["parking"]), None)
+            # A long way from far out that ends on the same path is no reason to drop it (Zobor from Nitra).
+            longer = [t for t in out if self._overlap(edges, t["_edges"])]
+            if not other and not any(self._overlap(edges, e) for e in known):
+                out = [t for t in out if not any(t is x for x in longer)]
+                trip["_known"] = self.known_score(trip["_st"])
+                trip["_edges"] = edges
+                out.append(trip)
+                self.report.setdefault("town_kept", []).append((dest["name"], name, town))
+            else:
+                instead = f"{other['start']['name']} {other['duration_min']} min" if other else "a hand-picked route"
+                for _, _, name, town in town_walks:
+                    self.report.setdefault("town", []).append((dest["name"], instead, "streets, start out of town used", name, town))
         return out, why
 
     def _quality(self, trip, kind, lim):
@@ -555,52 +601,218 @@ class TripBuilder:
         ok = [r for r in with_parking if r["duration_min"] <= min(1.5 * shortest, shortest + 60)]
         return max(ok, key=lambda r: (r["_known"] - (r["duration_min"] - shortest) / 10, -r["duration_min"]))
 
+    def _keep_starts(self, others):
+        """The other starts a place keeps: a hand-picked route always, then the best-known."""
+        starts = [r for r in others if "_alt_of" not in r and not r.get("_short")]
+        starts = sorted(starts, key=lambda r: (not r["curated"], -r["_known"], r["duration_min"]))
+        return starts[: self.t.get("max_starts_per_destination", 3) - 1]
+
+    def _alternatives_for(self, main, others, target, dest, region, routes, limits=None):
+        """Other ways up from the main start and from each other start the place keeps."""
+        if not self.t.get("alt_routes_per_start", 1):
+            return []
+        lim = {**self.t, **(limits or {})}
+        seen = [r.get("_edges") or self._edge_set(r["_path"]) for r in routes]
+        alts = []
+        for base in [main] + self._keep_starts(others):
+            for a in self.alternatives(base, target, dest, region, seen, lim):
+                seen.append(a["_edges"])
+                alts.append(a)
+        short = self.short_visit(main, routes, target, dest, region)
+        return alts + ([short] if short else [])
+
+    def short_visit(self, main, routes, target, dest, region):
+        """Park by the castle and look round it: a few hundred metres from a car park at the goal.
+        Never the main route and only where the main route is a real walk; an option for people
+        who came for the place, not the hike."""
+        if dest["kind"] not in SHORT_KINDS or main["duration_min"] < self.t.get("short_main_min", 60):
+            return None
+        if any(r["duration_min"] <= self.t.get("short_max_min", 45) for r in routes):
+            return None  # a short route is there already
+        g, max_m = self.g, self.t.get("short_walk_max_m", 800)
+        for d, f in self._near(self.parking_tree, self.osm.parking, dest["lat"], dest["lon"], max_m):
+            if self.car_ok and not self.car_ok(f):
+                continue
+            node = g.snap(f.lat, f.lon, 150)
+            if node is None or node == target:
+                continue
+            dist, pred = g.costs_from(node, 4 * max_m)
+            path = g.walk_from_source(pred, node, target) if np.isfinite(dist[target]) else None
+            if path is None or len(path) < 2 or float(g.edge_len[g.edges(path)].sum()) > max_m:
+                continue
+            st = self.make_start(f.name or "Parkovisko", f.lat, f.lon, None, f.osm, node)
+            trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
+            if not trip or trip["duration_min"] > self.t.get("short_max_min", 45):
+                continue
+            trip["_known"] = 0
+            trip["_short"] = True
+            return trip
+        return None
+
+    def alternatives(self, base, target, dest, region, seen, lim):
+        """Other ways from the same start: the shortest way to Devínska Kobyla skirts the hill, a
+        longer one goes over the top. Found by making the walks already found dearer and routing
+        again, like a map app's "other routes". A way counts when a good part of it is new and
+        mostly on marked trails, and it is not much longer."""
+        g, st = self.g, base["_st"]
+        taken = [base["_path"]]
+        union = dict(self._edge_set(base["_path"]))
+        out = []
+        tries = self.report.setdefault("alt_tries", [])
+
+        def why(text, **kw):
+            # The hand-picked trips show in the report why no other way was found (Devínska Kobyla).
+            if base["curated"]:
+                tries.append(dict(slug=base["slug"], start=st.name, why=text, **kw))
+
+        for _ in range(self.t.get("alt_tries", 3)):
+            if len(out) >= self.t.get("alt_routes_per_start", 1):
+                break
+            pos = np.unique(np.concatenate([g.data_pos(p) for p in taken]))
+            old = g.G.data[pos].copy()
+            g.G.data[pos] = old * self.t.get("alt_penalty", 4.0)
+            try:
+                dist, pred = g.costs_from(st.node, ROUTE_LIMIT * 2)
+            finally:
+                g.G.data[pos] = old
+            if not np.isfinite(dist[target]):
+                why("no other path")
+                break
+            path = g.walk_from_source(pred, st.node, target)
+            if path is None:
+                why("no other path")
+                break
+            taken.append(path)
+            edges = self._edge_set(path)
+            idx = g.edges(path)
+            # A marked trail or a plain footpath (a ridge path, a nature trail); not a forest road.
+            new = [(L, bool(g.ways[w].routes) or g.ways[w].highway in ("path", "footway", "steps"))
+                   for a, b, L, w in zip(path[:-1], path[1:], g.edge_len[idx], g.edge_way[idx])
+                   if (min(a, b), max(a, b)) not in union]
+            union.update(edges)
+            new_m = sum(L for L, _ in new)
+            good_m = sum(L for L, ok in new if ok)
+            if new_m < max(self.t.get("alt_new_min_m", 1000), self.t.get("alt_new_share", 0.35) * sum(edges.values())):
+                why("same walk with a small detour", new_m=round(new_m))
+                continue
+            if good_m < self.t.get("alt_new_marked_share", 0.6) * new_m:
+                why("new part mostly forest road", new_m=round(new_m), good_m=round(good_m))
+                continue
+            if any(self._overlap(edges, e) for e in seen if e is not None):
+                why("another start's route", new_m=round(new_m))
+                continue
+            trip = self.make_trip(st, dest, path, region, curated=False, slug=PENDING)
+            # Ridge paths and nature trails are often unmarked (Devínska Kobyla over the top), so the
+            # other way may be less marked than a first route, as long as its new part is footpath.
+            alt_lim = {**lim, "min_marked_share": self.t.get("alt_min_marked_share", 0.35)}
+            bad = self._quality(trip, dest["kind"], alt_lim) if trip else "could not build"
+            if bad:
+                why(bad, new_m=round(new_m))
+                continue
+            if trip["duration_min"] > base["duration_min"] + max(60, 0.8 * base["duration_min"]):
+                why("much longer", new_m=round(new_m), min=trip["duration_min"])
+                continue
+            town, verdict = self.city_walk(path, dest, lim)
+            if verdict:
+                why("city walk", new_m=round(new_m))
+                continue
+            why("kept", new_m=round(new_m), min=trip["duration_min"])
+            trip["_known"] = base.get("_known", 0)
+            trip["_edges"] = edges
+            trip["_alt_of"] = base
+            out.append(trip)
+        return out
+
     def _finish_variants(self, main, others):
-        """Slugs and labels for up to max_routes_per_destination - 1 other routes."""
-        main.pop("_known", None)
-        main.pop("_edges", None)
-        # A hand-picked route always stays; then the best-known starts.
-        keep = sorted(others, key=lambda r: (not r["curated"], -r["_known"], r["duration_min"]))
-        keep = keep[: self.t.get("max_routes_per_destination", 3) - 1]
+        """Slugs for the other routes a place keeps: up to max_starts_per_destination - 1 other
+        starts, plus other ways from the main start and from those starts, at most
+        max_routes_per_destination - 1 in all. Labels come later (assign_labels)."""
+        starts = self._keep_starts(others)
+        kept = {id(main)} | {id(r) for r in starts}
+        alts = [r for r in others if "_alt_of" in r and id(r["_alt_of"]) in kept]
+        short = [r for r in others if r.get("_short")]
+        # The main start's other way first: most people start there. The car park by the goal
+        # always stays, last.
+        alts.sort(key=lambda r: r["_alt_of"] is not main)
+        keep = (alts[:1] + starts + alts[1:])[: self.t.get("max_routes_per_destination", 5) - 1 - len(short)] + short
         out = []
         for r in keep:
-            r.pop("_known", None)
-            r.pop("_edges", None)
             if r["slug"] == PENDING:
                 self._set_slug(r, self._variant_slug(main, r))
             r["variant_of"] = main["slug"]
-            r["route_label"] = self._label(r, main)
+            r["route_label"] = SHORT_LABEL if r.get("_short") else "Iná cesta"
             r["region"], r["region_name"], r["protected_area"] = main["region"], main["region_name"], main["protected_area"]
             out.append(r)
+        for r in [main] + others:
+            for k in ("_known", "_edges", "_st", "_path", "_alt_of", "_short"):
+                r.pop(k, None)
         if out:  # one route only: no route fields at all
             main["route_label"] = "Hlavná cesta"
             main["route_count"] = 1 + len(out)
         return out
 
-    def _label(self, r, main):
-        """One or two words on why someone would pick this route over the main one."""
-        if r["transit"] and not main["transit"]:
-            return "Autobusom"
-        if r["duration_min"] <= main["duration_min"] - 30:
-            return "Kratšia"
-        if r["duration_min"] >= 300 and r["duration_min"] >= main["duration_min"] + 60:
-            return "Na celý deň"
-        if r["duration_min"] >= main["duration_min"] + 45:
-            return "Dlhšia"
-        if main["ascent_m"] and r["ascent_m"] <= 0.7 * main["ascent_m"]:
-            return "Menej do kopca"
-        return "Iná cesta"
+    @staticmethod
+    def assign_labels(main, routes, via):
+        """One or two words on why someone would pick each route over the main one, each used once
+        per place: of two shorter routes the shortest is "Kratšia", the other gets the next word
+        that fits it. `via` maps a route's slug to a known place it passes ("Cez Pajštún")."""
+        m = main
+        key = lambda r: r["start"]["osm"] or r["start"]["name"]
+        starts = [key(m)] + [key(r) for r in routes]
+        # Another way from a start the place already has (the main one's or another route's).
+        same_start = lambda r: starts.count(key(r)) > 1
+        rules = [  # (label, fits, better), better = lower sort key
+            ("Autobusom", lambda r: r["transit"] and not m["transit"], lambda r: r["duration_min"]),
+            ("Kratšia", lambda r: r["duration_min"] <= m["duration_min"] - 30, lambda r: r["duration_min"]),
+            ("Na celý deň", lambda r: r["duration_min"] >= 300 and r["duration_min"] >= m["duration_min"] + 60,
+             lambda r: -r["duration_min"]),
+            ("Dlhšia", lambda r: r["duration_min"] >= m["duration_min"] + 45, lambda r: -r["duration_min"]),
+            ("Menej do kopca", lambda r: m["ascent_m"] and r["ascent_m"] <= 0.7 * m["ascent_m"], lambda r: r["ascent_m"]),
+            ("Iným chodníkom", same_start, lambda r: r["duration_min"]),
+            ("Okľukou", same_start, lambda r: r["duration_min"]),
+        ]
+        # The car park by the goal keeps its own word.
+        label = {r["slug"]: SHORT_LABEL for r in routes if r.get("route_label") == SHORT_LABEL}
+        used = {"Hlavná cesta", SHORT_LABEL}
+        # A place it passes says the most; then the rules, each word to the route it fits best.
+        for r in sorted(routes, key=lambda r: r["duration_min"]):
+            v = via.get(r["slug"])
+            if v and f"Cez {v}" not in used:
+                label[r["slug"]] = f"Cez {v}"
+                used.add(label[r["slug"]])
+        for word, fits, better in rules:
+            free = [r for r in routes if r["slug"] not in label and fits(r)]
+            if free:
+                label[min(free, key=better)["slug"]] = word
+                used.add(word)
+        for r in sorted(routes, key=lambda r: r["duration_min"]):
+            if r["slug"] in label:
+                continue
+            # Then the side of the hill it comes up from (the start's name is on the row already).
+            sides = [] if same_start(r) else _sides(r)
+            word = next((w for w in sides if w not in used), None)
+            n = 2
+            while word is None or word in used:
+                word, n = ("Iná cesta" if n == 2 else f"Iná cesta {n - 1}"), n + 1
+            label[r["slug"]] = word
+            used.add(word)
+        for r in routes:
+            r["route_label"] = label[r["slug"]]
 
     def _set_slug(self, trip, slug):
         trip["slug"] = slug
         trip["gpx_url"] = f"/gpx/{slug}.gpx"
 
     def _variant_slug(self, main, r):
-        """Stable per destination and start: '<main slug>-<start>'."""
+        """Stable per destination and start: '<main slug>-<start>', another way from that start
+        '<main slug>-<start>-ina-cesta'."""
+        tag = "alt" if "_alt_of" in r else "short" if r.get("_short") else ""
         key = f"v|{main['destination']['osm'] or main['destination']['name']}|{r['start']['osm'] or r['start']['name']}"
+        key += f"|{tag}" if tag else ""
         s = self.slugs.get(key)
         if not s or s in self.used_slugs:
-            base = f"{main['slug']}-{slugify(r['start']['name'], 24)}"
+            base = (f"{main['slug']}-od-auta" if tag == "short"
+                    else f"{main['slug']}-{slugify(r['start']['name'], 24)}" + ("-ina-cesta" if tag else ""))
             s, n = base, 2
             taken = set(self.slugs.values()) | self.used_slugs
             while s in taken:
@@ -653,7 +865,9 @@ class TripBuilder:
                 # Not hand-picked itself: the hand-picked route stays curated (the regression set).
                 main["name"] = d["name"]
         main["_score"] = 60
-        main["_others"] = [r for r in [trip] + others if r is not main]
+        rest = [r for r in [trip] + others if r is not main]
+        main["_others"] = rest + self._alternatives_for(main, rest, d_node, dest, region, [trip] + others,
+                                                        p.get("route_limits"))
         return main
 
     # ------------------------------------------------------- trip record --
@@ -799,6 +1013,8 @@ class TripBuilder:
             transit_alternatives=stops[1:],
             pois=pois,
             _gpx=(lat, lon, ele if have_dem else None, rt, turn, bool(back_path)),
+            _st=st,
+            _path=out_path,
         )
         return trip
 
@@ -875,6 +1091,22 @@ class TripBuilder:
 
 
 # ---------------------------------------------------------------- utils --
+SIDES4 = ["Zo severu", "Z východu", "Z juhu", "Zo západu"]
+SIDES8 = ["Zo severu", "Zo severovýchodu", "Z východu", "Z juhovýchodu", "Z juhu", "Z juhozápadu", "Zo západu",
+          "Zo severozápadu"]
+
+
+def _sides(r):
+    """Where a route's start lies seen from its goal, as a label: the nearest of four sides, then of eight."""
+    s, d = r["start"].get("location"), r.get("destination", {}).get("location")
+    if not s or not d:
+        return []
+    dx = (s["lon"] - d["lon"]) * math.cos(math.radians(d["lat"]))
+    dy = s["lat"] - d["lat"]
+    deg = math.degrees(math.atan2(dx, dy)) % 360
+    return [SIDES4[int((deg + 45) // 90) % 4], SIDES8[int((deg + 22.5) // 45) % 8]]
+
+
 def _same_goal(a, b):
     """Could two goal kinds this close be one place? A waterfall in a gorge, or a peak above one, is a
     goal of its own (Kmeťov vodopád, Závojový vodopád in Suchá Belá)."""

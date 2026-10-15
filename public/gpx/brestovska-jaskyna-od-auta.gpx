@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Brestovská jaskyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Brestovská jaskyňa</name><trkseg>
+    <trkpt lat="49.259417" lon="19.659247"><ele>870</ele></trkpt>
+    <trkpt lat="49.260026" lon="19.659256"><ele>872</ele></trkpt>
+    <trkpt lat="49.259879" lon="19.661426"><ele>870</ele></trkpt>
+    <trkpt lat="49.259823" lon="19.661417"><ele>869</ele></trkpt>
+    <trkpt lat="49.259879" lon="19.661426"><ele>870</ele></trkpt>
+    <trkpt lat="49.260026" lon="19.659256"><ele>872</ele></trkpt>
+    <trkpt lat="49.259417" lon="19.659247"><ele>870</ele></trkpt>
+  </trkseg></trk>
+</gpx>

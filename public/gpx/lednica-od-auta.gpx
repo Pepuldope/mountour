@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Hrad Lednica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Lednica</name><trkseg>
+    <trkpt lat="49.110264" lon="18.213289"><ele>401</ele></trkpt>
+    <trkpt lat="49.110409" lon="18.213014"><ele>403</ele></trkpt>
+    <trkpt lat="49.110556" lon="18.212827"><ele>403</ele></trkpt>
+    <trkpt lat="49.111031" lon="18.212453"><ele>404</ele></trkpt>
+    <trkpt lat="49.110556" lon="18.212827"><ele>403</ele></trkpt>
+    <trkpt lat="49.110409" lon="18.213014"><ele>403</ele></trkpt>
+    <trkpt lat="49.110264" lon="18.213289"><ele>401</ele></trkpt>
+  </trkseg></trk>
+</gpx>

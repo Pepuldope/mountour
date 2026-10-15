@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Jaskyňa pod Černokňažníkom</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Jaskyňa pod Černokňažníkom</name><trkseg>
+    <trkpt lat="49.139909" lon="18.508641"><ele>380</ele></trkpt>
+    <trkpt lat="49.139903" lon="18.508423"><ele>379</ele></trkpt>
+    <trkpt lat="49.139810" lon="18.508435"><ele>379</ele></trkpt>
+    <trkpt lat="49.139743" lon="18.508597"><ele>379</ele></trkpt>
+    <trkpt lat="49.139617" lon="18.508641"><ele>394</ele></trkpt>
+    <trkpt lat="49.139602" lon="18.508475"><ele>397</ele></trkpt>
+    <trkpt lat="49.139625" lon="18.508367"><ele>394</ele></trkpt>
+    <trkpt lat="49.139574" lon="18.508200"><ele>402</ele></trkpt>
+    <trkpt lat="49.139574" lon="18.508085"><ele>403</ele></trkpt>
+    <trkpt lat="49.139597" lon="18.507974"><ele>401</ele></trkpt>
+    <trkpt lat="49.139680" lon="18.507858"><ele>393</ele></trkpt>
+    <trkpt lat="49.139581" lon="18.507781"><ele>404</ele></trkpt>
+    <trkpt lat="49.139570" lon="18.507706"><ele>407</ele></trkpt>
+    <trkpt lat="49.139374" lon="18.507429"><ele>426</ele></trkpt>
+    <trkpt lat="49.139386" lon="18.507247"><ele>426</ele></trkpt>
+    <trkpt lat="49.139354" lon="18.507030"><ele>428</ele></trkpt>
+    <trkpt lat="49.139263" lon="18.506810"><ele>436</ele></trkpt>
+    <trkpt lat="49.139277" lon="18.506635"><ele>436</ele></trkpt>
+    <trkpt lat="49.139240" lon="18.506546"><ele>441</ele></trkpt>
+    <trkpt lat="49.139373" lon="18.506345"><ele>438</ele></trkpt>
+    <trkpt lat="49.139475" lon="18.506257"><ele>433</ele></trkpt>
+    <trkpt lat="49.139373" lon="18.506345"><ele>438</ele></trkpt>
+    <trkpt lat="49.139240" lon="18.506546"><ele>441</ele></trkpt>
+    <trkpt lat="49.139277" lon="18.506635"><ele>436</ele></trkpt>
+    <trkpt lat="49.139263" lon="18.506810"><ele>436</ele></trkpt>
+    <trkpt lat="49.139354" lon="18.507030"><ele>428</ele></trkpt>
+    <trkpt lat="49.139386" lon="18.507247"><ele>426</ele></trkpt>
+    <trkpt lat="49.139374" lon="18.507429"><ele>426</ele></trkpt>
+    <trkpt lat="49.139570" lon="18.507706"><ele>407</ele></trkpt>
+    <trkpt lat="49.139581" lon="18.507781"><ele>404</ele></trkpt>
+    <trkpt lat="49.139680" lon="18.507858"><ele>393</ele></trkpt>
+    <trkpt lat="49.139597" lon="18.507974"><ele>401</ele></trkpt>
+    <trkpt lat="49.139574" lon="18.508085"><ele>403</ele></trkpt>
+    <trkpt lat="49.139574" lon="18.508200"><ele>402</ele></trkpt>
+    <trkpt lat="49.139625" lon="18.508367"><ele>394</ele></trkpt>
+    <trkpt lat="49.139602" lon="18.508475"><ele>397</ele></trkpt>
+    <trkpt lat="49.139617" lon="18.508641"><ele>394</ele></trkpt>
+    <trkpt lat="49.139743" lon="18.508597"><ele>379</ele></trkpt>
+    <trkpt lat="49.139810" lon="18.508435"><ele>379</ele></trkpt>
+    <trkpt lat="49.139903" lon="18.508423"><ele>379</ele></trkpt>
+    <trkpt lat="49.139909" lon="18.508641"><ele>380</ele></trkpt>
+  </trkseg></trk>
+</gpx>

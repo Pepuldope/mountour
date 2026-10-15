@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Jasovská jaskyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Jasovská jaskyňa</name><trkseg>
+    <trkpt lat="48.678755" lon="20.976756"><ele>257</ele></trkpt>
+    <trkpt lat="48.678638" lon="20.977129"><ele>256</ele></trkpt>
+    <trkpt lat="48.678417" lon="20.977023"><ele>256</ele></trkpt>
+    <trkpt lat="48.678163" lon="20.976976"><ele>257</ele></trkpt>
+    <trkpt lat="48.677973" lon="20.976822"><ele>260</ele></trkpt>
+    <trkpt lat="48.677899" lon="20.976810"><ele>262</ele></trkpt>
+    <trkpt lat="48.677527" lon="20.976951"><ele>267</ele></trkpt>
+    <trkpt lat="48.677222" lon="20.977177"><ele>261</ele></trkpt>
+    <trkpt lat="48.677527" lon="20.976951"><ele>267</ele></trkpt>
+    <trkpt lat="48.677899" lon="20.976810"><ele>262</ele></trkpt>
+    <trkpt lat="48.677973" lon="20.976822"><ele>260</ele></trkpt>
+    <trkpt lat="48.678163" lon="20.976976"><ele>257</ele></trkpt>
+    <trkpt lat="48.678417" lon="20.977023"><ele>256</ele></trkpt>
+    <trkpt lat="48.678638" lon="20.977129"><ele>256</ele></trkpt>
+    <trkpt lat="48.678755" lon="20.976756"><ele>257</ele></trkpt>
+  </trkseg></trk>
+</gpx>

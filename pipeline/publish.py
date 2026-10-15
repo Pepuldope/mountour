@@ -170,19 +170,29 @@ def _report(trips, rep, now, osm_at, drive):
         groups.setdefault(t.get("variant_of") or t["slug"], []).append(t)
     multi = [g for g in groups.values() if len(g) > 1]
     L += ["", "## Places with more than one route", "",
-          f"{len(multi)} of {len(groups)} places have other routes; {rep.get('variants', 0)} other routes in all.", "",
+          f"{len(multi)} of {len(groups)} places have other routes; {rep.get('variants', 0)} other routes in all, "
+          f"{rep.get('alternatives', 0)} of them another way from a start the place already has.", "",
           "| Place | Main route (start, time) | Other routes |", "|---|---|---|"]
     for g in sorted(multi, key=lambda g: -g[0]["rank"])[:60]:
         m, rest = g[0], g[1:]
         fmt = lambda t: f"{t['start']['name']} {t['duration_min'] // 60}:{t['duration_min'] % 60:02d}"
         L.append(f"| {m['slug']} | {fmt(m)} | " + "; ".join(f"{t['route_label']}: {fmt(t)}" for t in rest) + " |")
+    tries = rep.get("alt_tries", [])
+    L += ["", "## Other ways from the same start (hand-picked trips)", "",
+          "| Trip | Start | Result | New metres | Minutes |", "|---|---|---|---|---|"]
+    L += [f"| {x['slug']} | {x['start']} | {x['why']} | {x.get('new_m', '')} | {x.get('min', '')} |" for x in tries]
     town = rep.get("town", [])
     L += ["", "## Town filter", "",
           f"{sum(1 for x in town if x[2] == 'city centre')} goals in city centres and "
           f"{sum(1 for x in town if x[2] == 'in town')} sights in towns left out; "
-          f"{sum(1 for x in town if x[2] == 'city walk')} routes left out as city walks.", "",
+          f"{sum(1 for x in town if x[2] == 'city walk')} routes left out as city walks; "
+          f"{len({x[0] for x in town if x[2].startswith('streets')})} goals in nature start out of town instead of "
+          f"walking village or town streets, {len(rep.get('town_kept', []))} keep such a start (none out of town is "
+          "about as quick).", "",
           "| Goal | Kind | Why | Start | Town metres |", "|---|---|---|---|---|"]
-    L += [f"| {n} | {k} | {w} | {st} | {m} |" for n, k, w, st, m in town]
+    L += [f"| {n} | {k} | {w} | {st} | {m} |" for n, k, w, st, m in town if not w.startswith("streets")]
+    L += [f"| {n} | instead: {k} | streets, start out of town used | {st} | {m} |"
+          for n, k, w, st, m in [x for x in town if x[2].startswith("streets")]]
     nm = rep.get("names") or {}
     found = names.problems(trips)
     L += ["", "## Name check", "",

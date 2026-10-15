@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Plešivský hrad</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Plešivský hrad</name><trkseg>
+    <trkpt lat="48.546616" lon="20.401960"><ele>217</ele></trkpt>
+    <trkpt lat="48.546517" lon="20.401904"><ele>217</ele></trkpt>
+    <trkpt lat="48.546509" lon="20.401766"><ele>217</ele></trkpt>
+    <trkpt lat="48.546107" lon="20.401550"><ele>219</ele></trkpt>
+    <trkpt lat="48.545885" lon="20.401997"><ele>219</ele></trkpt>
+    <trkpt lat="48.545744" lon="20.402189"><ele>219</ele></trkpt>
+    <trkpt lat="48.545617" lon="20.402270"><ele>220</ele></trkpt>
+    <trkpt lat="48.545452" lon="20.402274"><ele>220</ele></trkpt>
+    <trkpt lat="48.545245" lon="20.403049"><ele>221</ele></trkpt>
+    <trkpt lat="48.545789" lon="20.403395"><ele>221</ele></trkpt>
+    <trkpt lat="48.545926" lon="20.403412"><ele>221</ele></trkpt>
+    <trkpt lat="48.546081" lon="20.403505"><ele>220</ele></trkpt>
+    <trkpt lat="48.546042" lon="20.403649"><ele>220</ele></trkpt>
+    <trkpt lat="48.546493" lon="20.403985"><ele>218</ele></trkpt>
+    <trkpt lat="48.546042" lon="20.403649"><ele>220</ele></trkpt>
+    <trkpt lat="48.546081" lon="20.403505"><ele>220</ele></trkpt>
+    <trkpt lat="48.545926" lon="20.403412"><ele>221</ele></trkpt>
+    <trkpt lat="48.545789" lon="20.403395"><ele>221</ele></trkpt>
+    <trkpt lat="48.545245" lon="20.403049"><ele>221</ele></trkpt>
+    <trkpt lat="48.545452" lon="20.402274"><ele>220</ele></trkpt>
+    <trkpt lat="48.545617" lon="20.402270"><ele>220</ele></trkpt>
+    <trkpt lat="48.545744" lon="20.402189"><ele>219</ele></trkpt>
+    <trkpt lat="48.545885" lon="20.401997"><ele>219</ele></trkpt>
+    <trkpt lat="48.546107" lon="20.401550"><ele>219</ele></trkpt>
+    <trkpt lat="48.546509" lon="20.401766"><ele>217</ele></trkpt>
+    <trkpt lat="48.546517" lon="20.401904"><ele>217</ele></trkpt>
+    <trkpt lat="48.546616" lon="20.401960"><ele>217</ele></trkpt>
+  </trkseg></trk>
+</gpx>

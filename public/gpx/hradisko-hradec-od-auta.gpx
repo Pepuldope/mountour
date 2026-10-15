@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Hradisko Hradec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hradisko Hradec</name><trkseg>
+    <trkpt lat="48.762856" lon="18.683898"><ele>446</ele></trkpt>
+    <trkpt lat="48.761655" lon="18.682468"><ele>451</ele></trkpt>
+    <trkpt lat="48.760803" lon="18.684269"><ele>462</ele></trkpt>
+    <trkpt lat="48.760166" lon="18.683635"><ele>468</ele></trkpt>
+    <trkpt lat="48.759645" lon="18.682880"><ele>478</ele></trkpt>
+    <trkpt lat="48.760166" lon="18.683635"><ele>468</ele></trkpt>
+    <trkpt lat="48.760803" lon="18.684269"><ele>462</ele></trkpt>
+    <trkpt lat="48.761655" lon="18.682468"><ele>451</ele></trkpt>
+    <trkpt lat="48.762856" lon="18.683898"><ele>446</ele></trkpt>
+  </trkseg></trk>
+</gpx>

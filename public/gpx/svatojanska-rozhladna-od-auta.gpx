@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Svätojánska rozhľadňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Svätojánska rozhľadňa</name><trkseg>
+    <trkpt lat="49.045023" lon="19.676997"><ele>648</ele></trkpt>
+    <trkpt lat="49.044941" lon="19.676966"><ele>649</ele></trkpt>
+    <trkpt lat="49.044889" lon="19.677194"><ele>649</ele></trkpt>
+    <trkpt lat="49.044272" lon="19.677671"><ele>647</ele></trkpt>
+    <trkpt lat="49.043891" lon="19.677553"><ele>647</ele></trkpt>
+    <trkpt lat="49.043779" lon="19.677998"><ele>644</ele></trkpt>
+    <trkpt lat="49.043292" lon="19.678490"><ele>647</ele></trkpt>
+    <trkpt lat="49.043092" lon="19.678737"><ele>647</ele></trkpt>
+    <trkpt lat="49.042918" lon="19.679036"><ele>653</ele></trkpt>
+    <trkpt lat="49.043092" lon="19.678737"><ele>647</ele></trkpt>
+    <trkpt lat="49.043292" lon="19.678490"><ele>647</ele></trkpt>
+    <trkpt lat="49.043779" lon="19.677998"><ele>644</ele></trkpt>
+    <trkpt lat="49.043891" lon="19.677553"><ele>647</ele></trkpt>
+    <trkpt lat="49.044272" lon="19.677671"><ele>647</ele></trkpt>
+    <trkpt lat="49.044889" lon="19.677194"><ele>649</ele></trkpt>
+    <trkpt lat="49.044941" lon="19.676966"><ele>649</ele></trkpt>
+    <trkpt lat="49.045023" lon="19.676997"><ele>648</ele></trkpt>
+  </trkseg></trk>
+</gpx>

@@ -60,6 +60,7 @@ class Graph:
         self.edge_way = way_idx[sel]
         self.n = n
         self.G = csr_matrix((cost[sel], (src[sel], dst[sel])), shape=(n, n))
+        self.G.sort_indices()  # data_pos() searches each row
         self.GT = self.G.T.tocsr()
         self.ways = ways
 
@@ -115,6 +116,17 @@ class Graph:
                 return None
             path.append(int(p))
         return path[::-1]
+
+    def data_pos(self, path):
+        """Where the edges of a node path sit in G.data, both ways (to make a walk dearer for a while)."""
+        G, out = self.G, []
+        for x, y in zip(path[:-1], path[1:]):
+            for a, b in ((x, y), (y, x)):
+                s, e = G.indptr[a], G.indptr[a + 1]
+                j = s + int(np.searchsorted(G.indices[s:e], b))
+                if j < e and G.indices[j] == b:
+                    out.append(j)
+        return np.unique(np.asarray(out, np.int64))
 
     def edges(self, path):
         """Edge indices along a node path."""

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Hrad Šomoška</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Hrad Šomoška</name><trkseg>
+    <trkpt lat="48.171397" lon="19.855847"><ele>477</ele></trkpt>
+    <trkpt lat="48.170995" lon="19.855899"><ele>475</ele></trkpt>
+    <trkpt lat="48.171091" lon="19.855956"><ele>477</ele></trkpt>
+    <trkpt lat="48.171166" lon="19.856101"><ele>481</ele></trkpt>
+    <trkpt lat="48.171441" lon="19.856326"><ele>487</ele></trkpt>
+    <trkpt lat="48.171528" lon="19.856460"><ele>489</ele></trkpt>
+    <trkpt lat="48.171650" lon="19.856784"><ele>496</ele></trkpt>
+    <trkpt lat="48.171528" lon="19.856460"><ele>489</ele></trkpt>
+    <trkpt lat="48.171441" lon="19.856326"><ele>487</ele></trkpt>
+    <trkpt lat="48.171166" lon="19.856101"><ele>481</ele></trkpt>
+    <trkpt lat="48.171091" lon="19.855956"><ele>477</ele></trkpt>
+    <trkpt lat="48.170995" lon="19.855899"><ele>475</ele></trkpt>
+    <trkpt lat="48.171397" lon="19.855847"><ele>477</ele></trkpt>
+  </trkseg></trk>
+</gpx>

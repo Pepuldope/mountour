@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Starý zámok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Starý zámok</name><trkseg>
+    <trkpt lat="48.459732" lon="18.891624"><ele>626</ele></trkpt>
+    <trkpt lat="48.459770" lon="18.891584"><ele>627</ele></trkpt>
+    <trkpt lat="48.459732" lon="18.891624"><ele>626</ele></trkpt>
+  </trkseg></trk>
+</gpx>

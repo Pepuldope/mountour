@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Červený Kameň z Častej</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Červený Kameň z Častej</name><trkseg>
+    <trkpt lat="48.393323" lon="17.333482"><ele>344</ele></trkpt>
+    <trkpt lat="48.393166" lon="17.334248"><ele>346</ele></trkpt>
+    <trkpt lat="48.392842" lon="17.334051"><ele>348</ele></trkpt>
+    <trkpt lat="48.392687" lon="17.334088"><ele>348</ele></trkpt>
+    <trkpt lat="48.392030" lon="17.334863"><ele>343</ele></trkpt>
+    <trkpt lat="48.391829" lon="17.335229"><ele>342</ele></trkpt>
+    <trkpt lat="48.391764" lon="17.335153"><ele>337</ele></trkpt>
+    <trkpt lat="48.391514" lon="17.335611"><ele>344</ele></trkpt>
+    <trkpt lat="48.391764" lon="17.335153"><ele>337</ele></trkpt>
+    <trkpt lat="48.391829" lon="17.335229"><ele>342</ele></trkpt>
+    <trkpt lat="48.392030" lon="17.334863"><ele>343</ele></trkpt>
+    <trkpt lat="48.392687" lon="17.334088"><ele>348</ele></trkpt>
+    <trkpt lat="48.392842" lon="17.334051"><ele>348</ele></trkpt>
+    <trkpt lat="48.393166" lon="17.334248"><ele>346</ele></trkpt>
+    <trkpt lat="48.393323" lon="17.333482"><ele>344</ele></trkpt>
+  </trkseg></trk>
+</gpx>
