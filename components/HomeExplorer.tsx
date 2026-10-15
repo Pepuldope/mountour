@@ -51,6 +51,8 @@ const TOWN_EXACT_KM = 10;
 
 /** The list shows the trips on the map plus this share of its size around it. */
 const LIST_MARGIN = 0.3;
+/** Zoomed far in, the list still covers at least about 22 x 22 km around the map's centre (half-widths in degrees). */
+const LIST_MIN_HALF: [number, number] = [0.15, 0.1];
 
 /** Trips outside the named mountain ranges: they join the closest area. */
 const OTHER_REGION = "Ďalšie";
@@ -111,6 +113,15 @@ function grow([w, s, e, n]: Box, k: number): Box {
   const dx = (e - w) * k;
   const dy = (n - s) * k;
   return [w - dx, s - dy, e + dx, n + dy];
+}
+
+/** The box, widened around its centre to at least the given half-widths. */
+function atLeast([w, s, e, n]: Box, [hx, hy]: [number, number]): Box {
+  const cx = (w + e) / 2;
+  const cy = (s + n) / 2;
+  const dx = Math.max((e - w) / 2, hx);
+  const dy = Math.max((n - s) / 2, hy);
+  return [cx - dx, cy - dy, cx + dx, cy + dy];
 }
 
 /** One dot per mountain range for the zoomed-out map; trips outside the ranges join the closest. */
@@ -345,7 +356,7 @@ export function HomeExplorer({ trails: initial }: Props) {
   const scoped = useMemo(() => {
     if (words.length > 0) return listedAll.filter((i) => matches(i.detail));
     if (!mapView || mapView.zoom < mapView.areaZoom - 1) return listedAll;
-    const box = grow(mapView.bounds, LIST_MARGIN);
+    const box = atLeast(grow(mapView.bounds, LIST_MARGIN), LIST_MIN_HALF);
     return listedAll.filter((i) => inBox(goalOf(i.detail), box));
   }, [listedAll, words, matches, mapView]);
 
