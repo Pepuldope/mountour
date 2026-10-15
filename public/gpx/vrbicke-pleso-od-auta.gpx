@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Vrbické pleso</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vrbické pleso</name><trkseg>
+    <trkpt lat="48.969151" lon="19.575445"><ele>1139</ele></trkpt>
+    <trkpt lat="48.969377" lon="19.575449"><ele>1138</ele></trkpt>
+    <trkpt lat="48.969708" lon="19.575333"><ele>1143</ele></trkpt>
+    <trkpt lat="48.969914" lon="19.575335"><ele>1142</ele></trkpt>
+    <trkpt lat="48.970118" lon="19.575425"><ele>1141</ele></trkpt>
+    <trkpt lat="48.970487" lon="19.575979"><ele>1141</ele></trkpt>
+    <trkpt lat="48.970807" lon="19.576632"><ele>1139</ele></trkpt>
+    <trkpt lat="48.970487" lon="19.575979"><ele>1141</ele></trkpt>
+    <trkpt lat="48.970118" lon="19.575425"><ele>1141</ele></trkpt>
+    <trkpt lat="48.969914" lon="19.575335"><ele>1142</ele></trkpt>
+    <trkpt lat="48.969708" lon="19.575333"><ele>1143</ele></trkpt>
+    <trkpt lat="48.969377" lon="19.575449"><ele>1138</ele></trkpt>
+    <trkpt lat="48.969151" lon="19.575445"><ele>1139</ele></trkpt>
+  </trkseg></trk>
+</gpx>

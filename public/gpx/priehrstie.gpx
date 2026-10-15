@@ -2,10 +2,24 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Priehrštie</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Priehrštie</name><trkseg>
-    <trkpt lat="49.282359" lon="20.218448"><ele>1135</ele></trkpt>
-    <trkpt lat="49.282243" lon="20.218655"><ele>1134</ele></trkpt>
-    <trkpt lat="49.282084" lon="20.219492"><ele>1131</ele></trkpt>
-    <trkpt lat="49.281998" lon="20.220256"><ele>1131</ele></trkpt>
+    <trkpt lat="49.274147" lon="20.228343"><ele>1022</ele></trkpt>
+    <trkpt lat="49.274311" lon="20.228247"><ele>1023</ele></trkpt>
+    <trkpt lat="49.274863" lon="20.227394"><ele>1029</ele></trkpt>
+    <trkpt lat="49.275060" lon="20.227142"><ele>1031</ele></trkpt>
+    <trkpt lat="49.275736" lon="20.226447"><ele>1038</ele></trkpt>
+    <trkpt lat="49.276950" lon="20.225001"><ele>1056</ele></trkpt>
+    <trkpt lat="49.277038" lon="20.224956"><ele>1057</ele></trkpt>
+    <trkpt lat="49.277213" lon="20.224768"><ele>1060</ele></trkpt>
+    <trkpt lat="49.279517" lon="20.222177"><ele>1086</ele></trkpt>
+    <trkpt lat="49.279855" lon="20.221893"><ele>1092</ele></trkpt>
+    <trkpt lat="49.280016" lon="20.221831"><ele>1095</ele></trkpt>
+    <trkpt lat="49.280175" lon="20.221667"><ele>1098</ele></trkpt>
+    <trkpt lat="49.280371" lon="20.221557"><ele>1102</ele></trkpt>
+    <trkpt lat="49.281339" lon="20.221086"><ele>1121</ele></trkpt>
+    <trkpt lat="49.281514" lon="20.221019"><ele>1125</ele></trkpt>
+    <trkpt lat="49.281657" lon="20.221025"><ele>1127</ele></trkpt>
+    <trkpt lat="49.281816" lon="20.221158"><ele>1128</ele></trkpt>
+    <trkpt lat="49.281921" lon="20.221302"><ele>1128</ele></trkpt>
     <trkpt lat="49.281913" lon="20.221619"><ele>1126</ele></trkpt>
     <trkpt lat="49.281838" lon="20.222214"><ele>1126</ele></trkpt>
     <trkpt lat="49.281825" lon="20.223084"><ele>1131</ele></trkpt>
@@ -69,9 +83,23 @@
     <trkpt lat="49.281825" lon="20.223084"><ele>1131</ele></trkpt>
     <trkpt lat="49.281838" lon="20.222214"><ele>1126</ele></trkpt>
     <trkpt lat="49.281913" lon="20.221619"><ele>1126</ele></trkpt>
-    <trkpt lat="49.281998" lon="20.220256"><ele>1131</ele></trkpt>
-    <trkpt lat="49.282084" lon="20.219492"><ele>1131</ele></trkpt>
-    <trkpt lat="49.282243" lon="20.218655"><ele>1134</ele></trkpt>
-    <trkpt lat="49.282359" lon="20.218448"><ele>1135</ele></trkpt>
+    <trkpt lat="49.281921" lon="20.221302"><ele>1128</ele></trkpt>
+    <trkpt lat="49.281816" lon="20.221158"><ele>1128</ele></trkpt>
+    <trkpt lat="49.281657" lon="20.221025"><ele>1127</ele></trkpt>
+    <trkpt lat="49.281514" lon="20.221019"><ele>1125</ele></trkpt>
+    <trkpt lat="49.281339" lon="20.221086"><ele>1121</ele></trkpt>
+    <trkpt lat="49.280371" lon="20.221557"><ele>1102</ele></trkpt>
+    <trkpt lat="49.280175" lon="20.221667"><ele>1098</ele></trkpt>
+    <trkpt lat="49.280016" lon="20.221831"><ele>1095</ele></trkpt>
+    <trkpt lat="49.279855" lon="20.221893"><ele>1092</ele></trkpt>
+    <trkpt lat="49.279517" lon="20.222177"><ele>1086</ele></trkpt>
+    <trkpt lat="49.277213" lon="20.224768"><ele>1060</ele></trkpt>
+    <trkpt lat="49.277038" lon="20.224956"><ele>1057</ele></trkpt>
+    <trkpt lat="49.276950" lon="20.225001"><ele>1056</ele></trkpt>
+    <trkpt lat="49.275736" lon="20.226447"><ele>1038</ele></trkpt>
+    <trkpt lat="49.275060" lon="20.227142"><ele>1031</ele></trkpt>
+    <trkpt lat="49.274863" lon="20.227394"><ele>1029</ele></trkpt>
+    <trkpt lat="49.274311" lon="20.228247"><ele>1023</ele></trkpt>
+    <trkpt lat="49.274147" lon="20.228343"><ele>1022</ele></trkpt>
   </trkseg></trk>
 </gpx>

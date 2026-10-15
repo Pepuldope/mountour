@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Vodopád Hučák</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Vodopád Hučák</name><trkseg>
+    <trkpt lat="48.394004" lon="17.325283"><ele>271</ele></trkpt>
+    <trkpt lat="48.393968" lon="17.325307"><ele>273</ele></trkpt>
+    <trkpt lat="48.393961" lon="17.325601"><ele>269</ele></trkpt>
+    <trkpt lat="48.393789" lon="17.325717"><ele>274</ele></trkpt>
+    <trkpt lat="48.393490" lon="17.326122"><ele>278</ele></trkpt>
+    <trkpt lat="48.393789" lon="17.325717"><ele>274</ele></trkpt>
+    <trkpt lat="48.393961" lon="17.325601"><ele>269</ele></trkpt>
+    <trkpt lat="48.393968" lon="17.325307"><ele>273</ele></trkpt>
+    <trkpt lat="48.394004" lon="17.325283"><ele>271</ele></trkpt>
+  </trkseg></trk>
+</gpx>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Demänovská Kykula</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Demänovská Kykula</name><trkseg>
+    <trkpt lat="49.389184" lon="19.126354"><ele>937</ele></trkpt>
+    <trkpt lat="49.389082" lon="19.126653"><ele>936</ele></trkpt>
+    <trkpt lat="49.388700" lon="19.126841"><ele>934</ele></trkpt>
+    <trkpt lat="49.388433" lon="19.127071"><ele>931</ele></trkpt>
+    <trkpt lat="49.388014" lon="19.127219"><ele>933</ele></trkpt>
+    <trkpt lat="49.387857" lon="19.127350"><ele>934</ele></trkpt>
+    <trkpt lat="49.387780" lon="19.127497"><ele>934</ele></trkpt>
+    <trkpt lat="49.387688" lon="19.127248"><ele>934</ele></trkpt>
+    <trkpt lat="49.387634" lon="19.126661"><ele>936</ele></trkpt>
+    <trkpt lat="49.387338" lon="19.125670"><ele>938</ele></trkpt>
+    <trkpt lat="49.387054" lon="19.124472"><ele>940</ele></trkpt>
+    <trkpt lat="49.386983" lon="19.124255"><ele>941</ele></trkpt>
+    <trkpt lat="49.386894" lon="19.124119"><ele>941</ele></trkpt>
+    <trkpt lat="49.386759" lon="19.124032"><ele>938</ele></trkpt>
+    <trkpt lat="49.386677" lon="19.123887"><ele>936</ele></trkpt>
+    <trkpt lat="49.386611" lon="19.123654"><ele>936</ele></trkpt>
+    <trkpt lat="49.386514" lon="19.123566"><ele>937</ele></trkpt>
+    <trkpt lat="49.385783" lon="19.123606"><ele>941</ele></trkpt>
+    <trkpt lat="49.385306" lon="19.123576"><ele>956</ele></trkpt>
+    <trkpt lat="49.385170" lon="19.123488"><ele>960</ele></trkpt>
+    <trkpt lat="49.384966" lon="19.123431"><ele>967</ele></trkpt>
+    <trkpt lat="49.384687" lon="19.123462"><ele>970</ele></trkpt>
+    <trkpt lat="49.384595" lon="19.123407"><ele>972</ele></trkpt>
+    <trkpt lat="49.384349" lon="19.123052"><ele>976</ele></trkpt>
+    <trkpt lat="49.384253" lon="19.122994"><ele>976</ele></trkpt>
+    <trkpt lat="49.384021" lon="19.122993"><ele>979</ele></trkpt>
+    <trkpt lat="49.383045" lon="19.123155"><ele>991</ele></trkpt>
+    <trkpt lat="49.382598" lon="19.122825"><ele>1012</ele></trkpt>
+    <trkpt lat="49.382359" lon="19.122752"><ele>1022</ele></trkpt>
+    <trkpt lat="49.381753" lon="19.122775"><ele>1032</ele></trkpt>
+    <trkpt lat="49.381253" lon="19.122678"><ele>1033</ele></trkpt>
+    <trkpt lat="49.381753" lon="19.122775"><ele>1032</ele></trkpt>
+    <trkpt lat="49.382359" lon="19.122752"><ele>1022</ele></trkpt>
+    <trkpt lat="49.382598" lon="19.122825"><ele>1012</ele></trkpt>
+    <trkpt lat="49.383045" lon="19.123155"><ele>991</ele></trkpt>
+    <trkpt lat="49.384021" lon="19.122993"><ele>979</ele></trkpt>
+    <trkpt lat="49.384253" lon="19.122994"><ele>976</ele></trkpt>
+    <trkpt lat="49.384349" lon="19.123052"><ele>976</ele></trkpt>
+    <trkpt lat="49.384595" lon="19.123407"><ele>972</ele></trkpt>
+    <trkpt lat="49.384687" lon="19.123462"><ele>970</ele></trkpt>
+    <trkpt lat="49.384966" lon="19.123431"><ele>967</ele></trkpt>
+    <trkpt lat="49.385170" lon="19.123488"><ele>960</ele></trkpt>
+    <trkpt lat="49.385306" lon="19.123576"><ele>956</ele></trkpt>
+    <trkpt lat="49.385783" lon="19.123606"><ele>941</ele></trkpt>
+    <trkpt lat="49.386514" lon="19.123566"><ele>937</ele></trkpt>
+    <trkpt lat="49.386611" lon="19.123654"><ele>936</ele></trkpt>
+    <trkpt lat="49.386677" lon="19.123887"><ele>936</ele></trkpt>
+    <trkpt lat="49.386759" lon="19.124032"><ele>938</ele></trkpt>
+    <trkpt lat="49.386894" lon="19.124119"><ele>941</ele></trkpt>
+    <trkpt lat="49.386983" lon="19.124255"><ele>941</ele></trkpt>
+    <trkpt lat="49.387054" lon="19.124472"><ele>940</ele></trkpt>
+    <trkpt lat="49.387338" lon="19.125670"><ele>938</ele></trkpt>
+    <trkpt lat="49.387634" lon="19.126661"><ele>936</ele></trkpt>
+    <trkpt lat="49.387688" lon="19.127248"><ele>934</ele></trkpt>
+    <trkpt lat="49.387780" lon="19.127497"><ele>934</ele></trkpt>
+    <trkpt lat="49.387857" lon="19.127350"><ele>934</ele></trkpt>
+    <trkpt lat="49.388014" lon="19.127219"><ele>933</ele></trkpt>
+    <trkpt lat="49.388433" lon="19.127071"><ele>931</ele></trkpt>
+    <trkpt lat="49.388700" lon="19.126841"><ele>934</ele></trkpt>
+    <trkpt lat="49.389082" lon="19.126653"><ele>936</ele></trkpt>
+    <trkpt lat="49.389184" lon="19.126354"><ele>937</ele></trkpt>
+  </trkseg></trk>
+</gpx>
