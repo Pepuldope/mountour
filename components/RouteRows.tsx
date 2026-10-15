@@ -26,7 +26,8 @@ export function RouteRows({ routes, at }: { routes: RouteBrief[]; at: number }) 
         <span className="flex min-w-0 flex-col">
           <span className="text-[15px] font-bold">{routeLabel(r)}</span>
           <span className="text-[13px] text-[var(--muted)]">
-            štart {r.start_name} · {routeAccess(r)}
+            štart {r.start_name} ·{" "}
+            {r.parking ? routeAccess(r) : <span className="font-bold text-[var(--warn)]">⚠ bez parkoviska, len autobusom</span>}
           </span>
         </span>
         <span className="font-data ml-auto shrink-0 text-right text-[16px] leading-tight">

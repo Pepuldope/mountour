@@ -9,7 +9,7 @@ import type { GeoPoint, RouteBrief } from "@/lib/tripSchema";
 import type { BBox } from "@/lib/types";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
-import { routeAccess, routeKm, routeLabel } from "@/components/routeBits";
+import { NoParkingWarning, routeAccess, routeKm, routeLabel } from "@/components/routeBits";
 
 interface Props {
   /** The trip the visitor came from. */
@@ -106,6 +106,7 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
                     </span>
                   </span>
                 </span>
+                {!r.parking && <NoParkingWarning />}
                 <span className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-[12.5px] text-[var(--muted)]">
                   <span>Čas</span>
                   <Bar share={r.duration_min / maxMin} colour={colour(i)} />
