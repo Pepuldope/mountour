@@ -518,7 +518,9 @@ class TripBuilder:
         if town_walks:
             trip, edges, name, town = min(town_walks, key=lambda t: t[0]["duration_min"])
             quick = trip["duration_min"] + max(60, 0.5 * trip["duration_min"])
-            if not any(t["duration_min"] <= quick for t in out) and not any(self._overlap(edges, e) for e in seen):
+            # The start out of town must do the same job: one with parking when this one has it.
+            other = any(t["duration_min"] <= quick and (t["parking"] or not trip["parking"]) for t in out)
+            if not other and not any(self._overlap(edges, e) for e in seen):
                 trip["_known"] = self.known_score(trip["_st"])
                 trip["_edges"] = edges
                 out.append(trip)
