@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
+  <metadata><name>Jaskyňa Abrázna</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
+  <trk><name>Jaskyňa Abrázna</name><trkseg>
+    <trkpt lat="48.210317" lon="16.972978"><ele>151</ele></trkpt>
+    <trkpt lat="48.210313" lon="16.973027"><ele>151</ele></trkpt>
+    <trkpt lat="48.210130" lon="16.972989"><ele>152</ele></trkpt>
+    <trkpt lat="48.210144" lon="16.972861"><ele>152</ele></trkpt>
+    <trkpt lat="48.209875" lon="16.972765"><ele>152</ele></trkpt>
+    <trkpt lat="48.208665" lon="16.972464"><ele>151</ele></trkpt>
+    <trkpt lat="48.207252" lon="16.972308"><ele>150</ele></trkpt>
+    <trkpt lat="48.206921" lon="16.972172"><ele>152</ele></trkpt>
+    <trkpt lat="48.206732" lon="16.972647"><ele>152</ele></trkpt>
+    <trkpt lat="48.206619" lon="16.972783"><ele>152</ele></trkpt>
+    <trkpt lat="48.206566" lon="16.972759"><ele>153</ele></trkpt>
+    <trkpt lat="48.206217" lon="16.973229"><ele>155</ele></trkpt>
+    <trkpt lat="48.206041" lon="16.973293"><ele>156</ele></trkpt>
+    <trkpt lat="48.202796" lon="16.973862"><ele>177</ele></trkpt>
+    <trkpt lat="48.202781" lon="16.973708"><ele>178</ele></trkpt>
+    <trkpt lat="48.202814" lon="16.973123"><ele>181</ele></trkpt>
+    <trkpt lat="48.202788" lon="16.972936"><ele>182</ele></trkpt>
+    <trkpt lat="48.202738" lon="16.972877"><ele>183</ele></trkpt>
+    <trkpt lat="48.202667" lon="16.973054"><ele>184</ele></trkpt>
+    <trkpt lat="48.202544" lon="16.973241"><ele>186</ele></trkpt>
+    <trkpt lat="48.202453" lon="16.973360"><ele>187</ele></trkpt>
+    <trkpt lat="48.202141" lon="16.973610"><ele>189</ele></trkpt>
+    <trkpt lat="48.202080" lon="16.973755"><ele>189</ele></trkpt>
+    <trkpt lat="48.201814" lon="16.973678"><ele>192</ele></trkpt>
+    <trkpt lat="48.202080" lon="16.973755"><ele>189</ele></trkpt>
+    <trkpt lat="48.202141" lon="16.973610"><ele>189</ele></trkpt>
+    <trkpt lat="48.202453" lon="16.973360"><ele>187</ele></trkpt>
+    <trkpt lat="48.202544" lon="16.973241"><ele>186</ele></trkpt>
+    <trkpt lat="48.202667" lon="16.973054"><ele>184</ele></trkpt>
+    <trkpt lat="48.202738" lon="16.972877"><ele>183</ele></trkpt>
+    <trkpt lat="48.202788" lon="16.972936"><ele>182</ele></trkpt>
+    <trkpt lat="48.202814" lon="16.973123"><ele>181</ele></trkpt>
+    <trkpt lat="48.202781" lon="16.973708"><ele>178</ele></trkpt>
+    <trkpt lat="48.202796" lon="16.973862"><ele>177</ele></trkpt>
+    <trkpt lat="48.206041" lon="16.973293"><ele>156</ele></trkpt>
+    <trkpt lat="48.206217" lon="16.973229"><ele>155</ele></trkpt>
+    <trkpt lat="48.206566" lon="16.972759"><ele>153</ele></trkpt>
+    <trkpt lat="48.206619" lon="16.972783"><ele>152</ele></trkpt>
+    <trkpt lat="48.206732" lon="16.972647"><ele>152</ele></trkpt>
+    <trkpt lat="48.206921" lon="16.972172"><ele>152</ele></trkpt>
+    <trkpt lat="48.207252" lon="16.972308"><ele>150</ele></trkpt>
+    <trkpt lat="48.208665" lon="16.972464"><ele>151</ele></trkpt>
+    <trkpt lat="48.209875" lon="16.972765"><ele>152</ele></trkpt>
+    <trkpt lat="48.210144" lon="16.972861"><ele>152</ele></trkpt>
+    <trkpt lat="48.210130" lon="16.972989"><ele>152</ele></trkpt>
+    <trkpt lat="48.210313" lon="16.973027"><ele>151</ele></trkpt>
+    <trkpt lat="48.210317" lon="16.972978"><ele>151</ele></trkpt>
+  </trkseg></trk>
+</gpx>
