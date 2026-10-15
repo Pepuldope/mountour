@@ -2,9 +2,8 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Vyhliadka Sedliská</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Vyhliadka Sedliská</name><trkseg>
-    <trkpt lat="48.461540" lon="17.837638"><ele>218</ele></trkpt>
-    <trkpt lat="48.461481" lon="17.837607"><ele>217</ele></trkpt>
-    <trkpt lat="48.461298" lon="17.837017"><ele>218</ele></trkpt>
+    <trkpt lat="48.461571" lon="17.837646"><ele>218</ele></trkpt>
+    <trkpt lat="48.461478" lon="17.837633"><ele>218</ele></trkpt>
     <trkpt lat="48.460432" lon="17.833906"><ele>219</ele></trkpt>
     <trkpt lat="48.460066" lon="17.833928"><ele>232</ele></trkpt>
     <trkpt lat="48.459267" lon="17.833579"><ele>252</ele></trkpt>
@@ -112,8 +111,7 @@
     <trkpt lat="48.459267" lon="17.833579"><ele>252</ele></trkpt>
     <trkpt lat="48.460066" lon="17.833928"><ele>232</ele></trkpt>
     <trkpt lat="48.460432" lon="17.833906"><ele>219</ele></trkpt>
-    <trkpt lat="48.461298" lon="17.837017"><ele>218</ele></trkpt>
-    <trkpt lat="48.461481" lon="17.837607"><ele>217</ele></trkpt>
-    <trkpt lat="48.461540" lon="17.837638"><ele>218</ele></trkpt>
+    <trkpt lat="48.461478" lon="17.837633"><ele>218</ele></trkpt>
+    <trkpt lat="48.461571" lon="17.837646"><ele>218</ele></trkpt>
   </trkseg></trk>
 </gpx>

@@ -2,14 +2,14 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Lazy</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Lazy</name><trkseg>
+    <trkpt lat="48.812170" lon="21.528358"><ele>666</ele></trkpt>
     <trkpt lat="48.812008" lon="21.528249"><ele>665</ele></trkpt>
-    <trkpt lat="48.811906" lon="21.528212"><ele>665</ele></trkpt>
+    <trkpt lat="48.811847" lon="21.528243"><ele>666</ele></trkpt>
     <trkpt lat="48.811726" lon="21.528311"><ele>669</ele></trkpt>
     <trkpt lat="48.811353" lon="21.528697"><ele>676</ele></trkpt>
     <trkpt lat="48.811121" lon="21.528610"><ele>681</ele></trkpt>
     <trkpt lat="48.810856" lon="21.528661"><ele>686</ele></trkpt>
     <trkpt lat="48.810519" lon="21.529008"><ele>698</ele></trkpt>
-    <trkpt lat="48.810327" lon="21.529098"><ele>701</ele></trkpt>
     <trkpt lat="48.810272" lon="21.529161"><ele>702</ele></trkpt>
     <trkpt lat="48.810187" lon="21.529373"><ele>703</ele></trkpt>
     <trkpt lat="48.809754" lon="21.529802"><ele>712</ele></trkpt>
@@ -23,7 +23,7 @@
     <trkpt lat="48.807835" lon="21.530238"><ele>754</ele></trkpt>
     <trkpt lat="48.807682" lon="21.530342"><ele>756</ele></trkpt>
     <trkpt lat="48.807490" lon="21.530393"><ele>759</ele></trkpt>
-    <trkpt lat="48.807141" lon="21.530317"><ele>763</ele></trkpt>
+    <trkpt lat="48.807226" lon="21.530313"><ele>762</ele></trkpt>
     <trkpt lat="48.806983" lon="21.530375"><ele>766</ele></trkpt>
     <trkpt lat="48.806780" lon="21.530820"><ele>776</ele></trkpt>
     <trkpt lat="48.806647" lon="21.531004"><ele>779</ele></trkpt>
@@ -239,7 +239,7 @@
     <trkpt lat="48.806647" lon="21.531004"><ele>779</ele></trkpt>
     <trkpt lat="48.806780" lon="21.530820"><ele>776</ele></trkpt>
     <trkpt lat="48.806983" lon="21.530375"><ele>766</ele></trkpt>
-    <trkpt lat="48.807141" lon="21.530317"><ele>763</ele></trkpt>
+    <trkpt lat="48.807226" lon="21.530313"><ele>762</ele></trkpt>
     <trkpt lat="48.807490" lon="21.530393"><ele>759</ele></trkpt>
     <trkpt lat="48.807682" lon="21.530342"><ele>756</ele></trkpt>
     <trkpt lat="48.807835" lon="21.530238"><ele>754</ele></trkpt>
@@ -253,13 +253,13 @@
     <trkpt lat="48.809754" lon="21.529802"><ele>712</ele></trkpt>
     <trkpt lat="48.810187" lon="21.529373"><ele>703</ele></trkpt>
     <trkpt lat="48.810272" lon="21.529161"><ele>702</ele></trkpt>
-    <trkpt lat="48.810327" lon="21.529098"><ele>701</ele></trkpt>
     <trkpt lat="48.810519" lon="21.529008"><ele>698</ele></trkpt>
     <trkpt lat="48.810856" lon="21.528661"><ele>686</ele></trkpt>
     <trkpt lat="48.811121" lon="21.528610"><ele>681</ele></trkpt>
     <trkpt lat="48.811353" lon="21.528697"><ele>676</ele></trkpt>
     <trkpt lat="48.811726" lon="21.528311"><ele>669</ele></trkpt>
-    <trkpt lat="48.811906" lon="21.528212"><ele>665</ele></trkpt>
+    <trkpt lat="48.811847" lon="21.528243"><ele>666</ele></trkpt>
     <trkpt lat="48.812008" lon="21.528249"><ele>665</ele></trkpt>
+    <trkpt lat="48.812170" lon="21.528358"><ele>666</ele></trkpt>
   </trkseg></trk>
 </gpx>
