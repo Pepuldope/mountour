@@ -45,11 +45,17 @@ Local runtime secrets go in `.dev.vars` (git-ignored), e.g. `ORS_API_KEY=...`.
 
 - Free plan: 100k requests/day, 10 ms CPU per request. Files in `public/` are served without the
   Worker. Drawing a Next.js page costs the Worker several times 10 ms, so no page is drawn per visit
-  (error 1102 on 2026-10-13 and 2026-10-14): the home and info pages are built ahead and shipped as
-  files, and each trip page is drawn on its first visit and kept in the free KV store `PAGE_CACHE`
-  until the next deploy (`lib/pageCache.ts`, `open-next.config.ts`). The first deploy with that
-  binding creates the KV store by itself. CI runs `scripts/check-page-cache.mjs` after the build and
-  fails on a page that would be drawn per visit or uses `revalidate`.
-- KV's free plan writes 1,000 entries a day. A deploy starts the cache fresh; past the limit, trip
+  (error 1102 on 2026-10-13 and 2026-10-14): the home, info and trip pages are all built ahead
+  and shipped as files, so even a trip's first visit after a deploy is quick (2026-10-15: drawn on
+  the first visit, it took a second or two). Only pages the build can't know (the route
+  comparison `/trasa/<slug>/cesty`, a trip newer than the build) are drawn on their first visit and
+  kept in the free KV store `PAGE_CACHE` until the next deploy (`lib/pageCache.ts`,
+  `open-next.config.ts`). The first deploy with that binding creates the KV store by itself. CI runs
+  `scripts/check-page-cache.mjs` after the build and fails on a page that would be drawn per visit,
+  uses `revalidate`, a trip page not built ahead, or more files than the free plan's 20,000.
+- Free plan: at most 20,000 files per deploy (`public/`, the built pages and the code). The trip
+  files, GPX files and trip pages are three per trip, so ~16,200 files for 5,266 trips (2026-10-15).
+  Past the limit, build only the main routes ahead in `app/trasa/[slug]/page.tsx`.
+- KV's free plan writes 1,000 entries a day. A deploy starts the cache fresh; past the limit, those
   pages are drawn per visit again until the next day.
 - `@opennextjs/cloudflare` requires Next.js ≥ 16.3.8, so `next` is pinned there.

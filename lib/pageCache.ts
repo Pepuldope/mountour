@@ -7,12 +7,13 @@ import type { CacheEntryType, CacheValue, IncrementalCache, WithLastModified } f
 // instead of on every visit (error 1102, 2026-10-14: drawing a trip page costs
 // several times the free plan's 10 ms of CPU per request).
 //
-// 1. Pages built ahead (home, sitemap, info pages) ship with the deploy as
-//    static files. Keeping the static-assets cache's name makes the deploy copy
-//    them there (opennextjs-cloudflare populateCache).
-// 2. Trip pages are drawn on their first visit and kept in the free KV store
-//    PAGE_CACHE (wrangler.jsonc). Keys carry the build id, so a deploy (also the
-//    weekly trip data) starts fresh; entries expire on their own.
+// 1. Pages built ahead (home, sitemap, info pages, every trip page) ship with
+//    the deploy as static files. Keeping the static-assets cache's name makes the
+//    deploy copy them there (opennextjs-cloudflare populateCache).
+// 2. Pages the build can't know (route comparisons, a trip newer than the build)
+//    are drawn on their first visit and kept in the free KV store PAGE_CACHE
+//    (wrangler.jsonc). Keys carry the build id, so a deploy (also the weekly trip
+//    data) starts fresh; entries expire on their own.
 //
 // KV allows 1,000 writes a day on the free plan. Past that, a page is simply
 // drawn again on each visit, as before: every KV error is swallowed here.

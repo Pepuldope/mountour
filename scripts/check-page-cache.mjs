@@ -1,10 +1,12 @@
 // Guard against error 1102 ("Worker exceeded resource limits") coming back.
 // The free Worker plan gives each request 10 ms of CPU, and drawing a page
 // costs several times that, so a page may never be drawn on every visit: it
-// must be built ahead (home, info pages) or drawn once and kept (trip pages,
-// lib/pageCache.ts). Run after `next build`; fails when a page would be drawn
-// per visit or would ask to be redrawn on a timer.
-import { readFileSync } from "node:fs";
+// must be built ahead (home, info and trip pages) or drawn once and kept (route
+// comparisons, lib/pageCache.ts). Run after `npm run cf:build`; fails when a page
+// would be drawn per visit or would ask to be redrawn on a timer, when trip pages
+// aren't built ahead, or when the deploy would hold too many files.
+import { readFileSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 
 /** Pages that may draw on every visit, and why. */
 const ALLOWED_PER_VISIT = {
@@ -43,8 +45,28 @@ if (!/incrementalCache:\s*pageCache/.test(config) || !/enableCacheInterception:\
   problems.push("open-next.config.ts must use lib/pageCache.ts with enableCacheInterception: true.");
 }
 
+// Trip pages are built ahead, so a trip's first visit after a deploy is quick (2026-10-15).
+const tripFiles = readdirSync("public/data/trips").filter((f) => f.endsWith(".json") && f !== "index.json" && f !== "list.json");
+const builtTrips = Object.keys(prerender.routes).filter((path) => /^\/trasa\/[^/]+$/.test(path));
+if (builtTrips.length < tripFiles.length) {
+  problems.push(`Only ${builtTrips.length} of ${tripFiles.length} trip pages are built ahead; the rest are slow on their first visit.`);
+}
+
+// The free plan takes at most 20,000 files per deploy: the assets plus the built pages,
+// which the deploy copies in next to them (static-assets cache).
+const MAX_FILES = 20000;
+const COPIED_CACHE = join(".open-next", "assets", "cdn-cgi", "_next_cache"); // after a preview: counted once below
+const countFiles = (dir) =>
+  dir === COPIED_CACHE
+    ? 0
+    : readdirSync(dir, { withFileTypes: true }).reduce((n, e) => n + (e.isDirectory() ? countFiles(join(dir, e.name)) : 1), 0);
+const deployFiles = countFiles(join(".open-next", "assets")) + countFiles(join(".open-next", "cache"));
+if (deployFiles > MAX_FILES) {
+  problems.push(`The deploy would hold ${deployFiles} files, over the free plan's ${MAX_FILES}. Build fewer trip pages ahead (docs/DEPLOY-CLOUDFLARE.md).`);
+}
+
 if (problems.length) {
   console.error("Pages that would run the free Worker out of CPU (error 1102):\n- " + problems.join("\n- "));
   process.exit(1);
 }
-console.log(`Page cache check: ${pages.length} pages, all built ahead or kept after the first visit.`);
+console.log(`Page cache check: ${pages.length} pages, all built ahead or kept after the first visit; ${builtTrips.length} trip pages built ahead; ${deployFiles} files to deploy.`);
