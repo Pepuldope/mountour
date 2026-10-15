@@ -1,8 +1,8 @@
 # Trip pipeline report
 
-Run: 2026-10-15T11:02:24+00:00 · OSM data: 2026-10-14T20:21:12Z
+Run: 2026-10-15T11:31:44+00:00 · OSM data: 2026-10-14T20:21:12Z
 
-**6462 trips**
+**6463 trips**
 
 | Region | Trips | Family | Candidates |
 |---|---|---|---|
@@ -22,7 +22,7 @@ Run: 2026-10-15T11:02:24+00:00 · OSM data: 2026-10-14T20:21:12Z
 | polana-muran | 303 | 54 | 115 |
 | slovensky-kras | 340 | 72 | 151 |
 | levocske-cergov | 585 | 130 | 217 |
-| vychod | 321 | 83 | 148 |
+| vychod | 322 | 84 | 148 |
 | zahorie-podunajsko | 45 | 10 | 30 |
 | krupina-cerova | 189 | 47 | 94 |
 | kosice-juh | 35 | 8 | 20 |
@@ -47,7 +47,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Places with more than one route
 
-1900 of 2130 places have other routes; 4336 other routes in all, 1102 of them another way from a start the place already has.
+1901 of 2130 places have other routes; 4337 other routes in all, 1102 of them another way from a start the place already has.
 
 | Place | Main route (start, time) | Other routes |
 |---|---|---|
@@ -143,7 +143,7 @@ Flag ⚠ when off by more than 15 %.
 
 ## Town filter
 
-9 goals in city centres and 8 sights in towns left out; 32 routes left out as city walks; 82 goals in nature start out of town instead of walking village or town streets, 8 keep such a start (none out of town is about as quick).
+9 goals in city centres and 8 sights in towns left out; 32 routes left out as city walks; 81 goals in nature start out of town instead of walking village or town streets, 9 keep such a start (none out of town is about as quick).
 
 | Goal | Kind | Why | Start | Town metres |
 |---|---|---|---|---|
@@ -7208,7 +7208,8 @@ Foreign names left out: Apostoły, Barát-fő, Barátfői kilátó, Biała Skał
 | zbojnicky-hrad-hradova | vychod | Hradová | 9.5 | 291 | 3:15 | stredna |  |
 | durkovec | vychod | Runina | 8.1 | 633 | 4:30 | stredna |  |
 | durkovec-nova-sedlica-taborisko | vychod | Nová Sedlica (táborisko) | 19.4 | 839 | 7:15 | tazka |  |
-| kapusiansky-hrad | vychod | Fintice, kameňolom | 7.6 | 204 | 2:30 | lahka |  |
+| kapusiansky-hrad | vychod | Kapušany, stanica | 4.2 | 226 | 1:45 | lahka |  |
+| kapusiansky-hrad-fintice-kamenolom | vychod | Fintice, kameňolom | 7.6 | 204 | 2:30 | lahka |  |
 | nezabec | vychod | Krivec | 11.0 | 573 | 4:30 | stredna |  |
 | nezabec-pod-tromi-tablami | vychod | Pod tromi Tablami | 9.3 | 524 | 4:00 | stredna |  |
 | nezabec-strihovce | vychod | Strihovce | 17.8 | 734 | 6:30 | tazka |  |
