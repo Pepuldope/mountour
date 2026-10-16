@@ -49,10 +49,12 @@ const DIFFICULTIES: Difficulty[] = ["lahka", "stredna", "tazka"];
 /** Starts further than this from the nearest precomputed town get "~" on their drive times. */
 const TOWN_EXACT_KM = 10;
 
-/** The list shows the trips on the map plus this share of its size around it. */
-const LIST_MARGIN = 0.3;
-/** Zoomed far in, the list still covers at least about 22 x 22 km around the map's centre (half-widths in degrees). */
-const LIST_MIN_HALF: [number, number] = [0.15, 0.1];
+/**
+ * Zoomed in, the list shows the trips nearest the map's centre, the better known ones a little
+ * ahead: each point of popularity (rank 0-100) counts as this many km closer. 0.1 = the best
+ * known trip competes with one 10 km nearer. Raise it to favour popular trips, lower it for distance.
+ */
+const KM_PER_RANK = 0.1;
 
 /** Trips outside the named mountain ranges: they join the closest area. */
 const OTHER_REGION = "Ďalšie";
@@ -104,25 +106,6 @@ function useAllTrails(initial: TrailDetail[]): TrailDetail[] {
 }
 
 const goalOf = (d: TrailDetail): LatLng | null => d.trail.goal_location ?? primaryTrailhead(d)?.location ?? null;
-
-function inBox(p: LatLng | null, [w, s, e, n]: Box): boolean {
-  return p !== null && p.lon >= w && p.lon <= e && p.lat >= s && p.lat <= n;
-}
-
-function grow([w, s, e, n]: Box, k: number): Box {
-  const dx = (e - w) * k;
-  const dy = (n - s) * k;
-  return [w - dx, s - dy, e + dx, n + dy];
-}
-
-/** The box, widened around its centre to at least the given half-widths. */
-function atLeast([w, s, e, n]: Box, [hx, hy]: [number, number]): Box {
-  const cx = (w + e) / 2;
-  const cy = (s + n) / 2;
-  const dx = Math.max((e - w) / 2, hx);
-  const dy = Math.max((n - s) / 2, hy);
-  return [cx - dx, cy - dy, cx + dx, cy + dy];
-}
 
 /** One dot per mountain range for the zoomed-out map; trips outside the ranges join the closest. */
 function areasOf(trails: TrailDetail[]): BrowseArea[] {
@@ -219,6 +202,23 @@ export function HomeExplorer({ trails: initial }: Props) {
   const transit = travel === "transit";
   const { start } = useUserLocation();
   const [selected, setSelected] = useState<string | null>(null);
+  // The picked trip's other routes to the same place, from its own file.
+  const [otherRoutes, setOtherRoutes] = useState<{ slug: string; lines: number[][][] } | null>(null);
+  useEffect(() => {
+    if (!selected) return;
+    let cancelled = false;
+    fetch(`/data/trips/${selected}.json`)
+      .then((r) => (r.ok ? (r.json() as Promise<{ routes?: { slug: string; up: number[][] }[] }>) : null))
+      .then((t) => {
+        if (cancelled) return;
+        setOtherRoutes({ slug: selected, lines: (t?.routes ?? []).filter((r) => r.slug !== selected).map((r) => r.up) });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [selected]);
+  const alternatives = selected && otherRoutes?.slug === selected ? otherRoutes.lines : undefined;
   const [pointed, setPointed] = useState<string | null>(null);
   // Testers didn't see at first that the map can be tapped: a hint until the first touch, once per browser.
   const [mapHint, setMapHint] = useState(false);
@@ -365,8 +365,15 @@ export function HomeExplorer({ trails: initial }: Props) {
   const scoped = useMemo(() => {
     if (words.length > 0) return listedAll.filter((i) => matches(i.detail));
     if (!mapView || mapView.zoom < mapView.areaZoom - 1) return listedAll;
-    const box = atLeast(grow(mapView.bounds, LIST_MARGIN), LIST_MIN_HALF);
-    return listedAll.filter((i) => inBox(goalOf(i.detail), box));
+    const [lon, lat] = mapView.center;
+    const score = (i: TripCardItem) => {
+      const at = goalOf(i.detail);
+      return at ? haversineM({ lat, lon }, at) / 1000 - KM_PER_RANK * (i.detail.trail.rank ?? 0) : Infinity;
+    };
+    // Best first; trips the day is too short for stay after the ones that fit, as on the rest of the list.
+    const ranked = listedAll.map((i) => ({ i, s: score(i), late: !!i.fit && i.fit.status !== "fits" }));
+    ranked.sort((a, b) => Number(a.late) - Number(b.late) || a.s - b.s);
+    return ranked.filter((r) => r.s < Infinity).map((r) => r.i);
   }, [listedAll, words, matches, mapView]);
 
   // Cards come in pages; a new filter or another part of the map starts again from the first page.
@@ -479,13 +486,18 @@ export function HomeExplorer({ trails: initial }: Props) {
 
   const filterCount = goalFilter.length + diffFilter.length;
 
+  const zoomedIn = !!mapView && mapView.zoom >= mapView.areaZoom - 1;
   const heading = words.length > 0
     ? `Výsledky pre „${query.trim()}“`
-    : dayWord && !noneFit
-      ? `Stihnete ${dayWord}${start ? ", najbližšie prvé" : ""}`
-      : start
-        ? "Najbližšie výlety"
-        : "Tisíce výletov po celom Slovensku";
+    : zoomedIn
+      ? dayWord && !noneFit
+        ? `Stihnete ${dayWord}, najbližšie k stredu mapy`
+        : "Najbližšie k stredu mapy"
+      : dayWord && !noneFit
+        ? `Stihnete ${dayWord}${start ? ", najbližšie prvé" : ""}`
+        : start
+          ? "Najbližšie výlety"
+          : "Tisíce výletov po celom Slovensku";
 
   const pickedItem = isDesktop && selected ? bySlug.get(selected) : undefined;
 
@@ -587,6 +599,7 @@ export function HomeExplorer({ trails: initial }: Props) {
         areas={areas}
         outlines={outlines}
         selected={selected}
+        alternatives={alternatives}
         highlighted={pointed}
         focus={focus}
         initialView={mapView}
