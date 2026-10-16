@@ -41,6 +41,8 @@ SHORTCUT_SAVING_M = 200
 # (the trip stays a trip, not a stroll from a stop beside the goal).
 SHORTCUT_STEP_M = 120
 SHORTCUT_MAX_SHARE = 0.5
+# ...and at least this share of the trail it skips (no 4 km walk to skip 4.5 km of trail).
+SHORTCUT_MIN_RATIO = 0.25
 # lib/trailJoin.ts TOUCH_M: the walk must end this close to the trail for the site to join there.
 TOUCH_M = 25
 
@@ -124,30 +126,53 @@ def table(osrm_url, frm, tos):
     return res["distances"][0][1:]
 
 
-def shortcut(osrm_url, path, upto_index, frm, to):
-    """A point further up the trail where the walk from `frm` makes the way up clearly shorter
-    than walking to `to`, or None. The walk + the trail left from there is what counts."""
+def shortcuts(osrm_url, path, upto_index, frm, to, tries=3):
+    """(walk to `to` minus the trail before it, [(walk minus trail before p, p), ...]): the points
+    further up whose walk from `frm` looks clearly shorter by the OSRM table, best first."""
     cands = [c for c in candidates(path, upto_index) if c[0] > along_m(path, to) + SHORTCUT_STEP_M / 2]
     if not cands:
-        return None
+        return None, []
     dist = table(osrm_url, frm, [to, *(p for _, p in cands)])
     if dist[0] is None:
-        return None
+        return None, []
     base = dist[0] - along_m(path, to)
-    best = None
-    for (along, p), d in zip(cands, dist[1:]):
-        if d is None or d > MAX_WALK_M:
+    better = sorted((d - along, p) for (along, p), d in zip(cands, dist[1:])
+                    if d is not None and d <= MAX_WALK_M and d - along <= base - SHORTCUT_SAVING_M)
+    return base, [p for _, p in better[:tries]]
+
+
+def to_first_touch(walk, path):
+    """The walk cut where it first reaches the trail (as the site joins it), or None if it never does.
+    A walk that follows the trail from the start, cutting its corners, touches it right away."""
+    line = walk["line"]
+    geo, total = [0.0], 0.0
+    for k in range(1, len(line)):
+        total += _m((line[k - 1][1], line[k - 1][0]), (line[k][1], line[k][0]))
+        geo.append(total)
+    for k, (lon, lat) in enumerate(line):
+        if _nearest_on_path(path, lat, lon)[3] <= TOUCH_M:
+            share = geo[k] / total if total > 0 else 0.0
+            return {"line": line[: k + 1], "m": int(round(walk["m"] * share)),
+                    "min": max(1, int(round(walk["min"] * share)))}
+    return None
+
+
+def better_walk(osrm_url, path, upto_index, frm, to):
+    """A walk joining the trail further up that makes the way up clearly shorter, or None.
+    Judged on where it really meets the trail: the saving must be SHORTCUT_SAVING_M and at
+    least SHORTCUT_MIN_RATIO of the trail it skips, so a long walk to skip a long trail stays out."""
+    base, tries = shortcuts(osrm_url, path, upto_index, frm, to)
+    for p in tries:
+        walk = route(osrm_url, frm, p)
+        cut = walk and to_first_touch(walk, path)
+        if not cut:
             continue
-        cost = d - along
-        if cost <= base - SHORTCUT_SAVING_M and (best is None or cost < best[0]):
-            best = (cost, p)
-    return best[1] if best else None
-
-
-def ends_on_trail(walk, path):
-    """The walk's last point is on the trail (OSRM may snap a point to a road beside it)."""
-    lon, lat = walk["line"][-1]
-    return _nearest_on_path(path, lat, lon)[3] <= TOUCH_M
+        end = cut["line"][-1]
+        skip = along_m(path, (end[1], end[0])) - along_m(path, to)
+        saving = base - (cut["m"] - along_m(path, (end[1], end[0])))
+        if skip > 0 and saving >= max(SHORTCUT_SAVING_M, SHORTCUT_MIN_RATIO * skip):
+            return cut
+    return None
 
 
 def route(osrm_url, frm, to):
@@ -191,11 +216,9 @@ def add(osrm_url, trips, log=print, workers=8):
         try:
             if key in paths:
                 path, upto = paths[key]
-                better = shortcut(osrm_url, path, upto, *key)
-                if better:
-                    walk = route(osrm_url, key[0], better)
-                    if walk and ends_on_trail(walk, path):
-                        return key, walk, True
+                walk = better_walk(osrm_url, path, upto, *key)
+                if walk:
+                    return key, walk, True
             return key, route(osrm_url, *key), False
         except Exception as err:  # noqa: BLE001 - one bad walk must not stop the weekly run
             log(f"walk {key}: {err}")

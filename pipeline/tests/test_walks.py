@@ -96,3 +96,20 @@ def test_no_shortcut_when_it_saves_little_or_the_trip_is_a_loop(monkeypatch):
     loop = {**trip, "route": "okruh", "transit": dict(stop)}
     walks.add("http://osrm", [loop], log=lambda *_: None)
     assert calls == [(48.0, 19.0)]
+
+
+def test_a_walk_that_just_follows_the_trail_is_no_shortcut(monkeypatch):
+    # OSRM cuts the trail's corners: 4 km up costs 3.7 km, but the walk is on the trail from the start.
+    monkeypatch.setattr(walks, "table", lambda url, frm, tos: [80 if (p[0] - 48.0) * 111200 < 50 else 0.9 * (p[0] - 48.0) * 111200 for p in tos])
+    calls = []
+
+    def fake_route(url, frm, to):
+        calls.append(to)
+        return {"line": [[frm[1], frm[0]], [19.0, 48.0], [to[1], to[0]]], "m": 900, "min": 12}
+
+    monkeypatch.setattr(walks, "route", fake_route)
+    stop = {"location": {"lat": 47.9993, "lon": 19.0}, "walk_m": 80}
+    trip = {"path": PATH, "route": "tam-a-spat", "turnaround_index": 20, "start": {"location": START},
+            "parking": None, "parking_alternatives": [], "transit": stop, "transit_alternatives": []}
+    walks.add("http://osrm", [trip], log=lambda *_: None)
+    assert calls[-1] == (48.0, 19.0)
