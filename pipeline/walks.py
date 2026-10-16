@@ -8,6 +8,14 @@ is worked out here once a week and stored on the parking or stop itself:
 
 It ends where the site joins the trail (lib/trailJoin.ts, ported below): the
 trail's nearest point when that saves at least 100 m, else the trail start.
+
+The nearest point is not always the best way in. A bus stop beside the road
+can be 500 m from the start as the crow flies yet 1.2 km on paths, while a
+path from the stop climbs straight up to the trail further on (Vilmošove
+vodopády from Kačínska dolina). So for there-and-back trips the walk is also
+measured (OSRM table) to points along the first half of the way up, and it
+goes to the one that makes the whole way up clearly shorter. The site then
+joins the trail where the stored walk first meets it (lib/trailJoin.ts).
 """
 
 import json
@@ -27,6 +35,14 @@ AT_TRAIL_M = 60
 SHAPE_TOL_M = 2
 # A "walk" over this is a wrong snap, not the way in (/api/walk refuses past 5 km too).
 MAX_WALK_M = 5000
+# A way in further up the trail must shorten the whole way up (walk + trail) by this much.
+SHORTCUT_SAVING_M = 200
+# Points tried along the trail: this far apart, and only on the first half of the way up
+# (the trip stays a trip, not a stroll from a stop beside the goal).
+SHORTCUT_STEP_M = 120
+SHORTCUT_MAX_SHARE = 0.5
+# lib/trailJoin.ts TOUCH_M: the walk must end this close to the trail for the site to join there.
+TOUCH_M = 25
 
 
 def _nearest_on_path(path, lat, lon):
@@ -67,6 +83,73 @@ def _simplify(coords):
     return [[round(coords[k][0], 5), round(coords[k][1], 5)] for k in keep]
 
 
+def _m(a, b):
+    """Metres between two (lat, lon)."""
+    return float(haversine(a[0], a[1], b[0], b[1]))
+
+
+def candidates(path, upto_index):
+    """(along metres, (lat, lon)) every SHORTCUT_STEP_M on the first SHORTCUT_MAX_SHARE of path[:upto_index + 1]."""
+    pts = [(p[1], p[0]) for p in path[: upto_index + 1]]
+    total = sum(_m(pts[i], pts[i + 1]) for i in range(len(pts) - 1))
+    limit = total * SHORTCUT_MAX_SHARE
+    out, along, next_at = [], 0.0, SHORTCUT_STEP_M
+    for i in range(len(pts) - 1):
+        seg = _m(pts[i], pts[i + 1])
+        while seg > 0 and next_at <= along + seg and next_at <= limit:
+            t = (next_at - along) / seg
+            a, b = pts[i], pts[i + 1]
+            out.append((next_at, (round(a[0] + t * (b[0] - a[0]), 6), round(a[1] + t * (b[1] - a[1]), 6))))
+            next_at += SHORTCUT_STEP_M
+        along += seg
+    return out
+
+
+def along_m(path, point):
+    """Trail metres from the start to the trail's nearest point to `point` (lat, lon)."""
+    i, t, _, _ = _nearest_on_path(path, point[0], point[1])
+    pts = [(p[1], p[0]) for p in path]
+    m = sum(_m(pts[k], pts[k + 1]) for k in range(i))
+    return m + t * _m(pts[i], pts[i + 1]) if i + 1 < len(pts) else m
+
+
+def table(osrm_url, frm, tos):
+    """Metres on paths from (lat, lon) to each of `tos`, None where OSRM finds no way."""
+    coords = ";".join(f"{lon},{lat}" for lat, lon in [frm, *tos])
+    url = f"{osrm_url.rstrip('/')}/table/v1/foot/{coords}?sources=0&annotations=distance"
+    with urllib.request.urlopen(url, timeout=60) as r:
+        res = json.loads(r.read())
+    if res.get("code") != "Ok":
+        return [None] * len(tos)
+    return res["distances"][0][1:]
+
+
+def shortcut(osrm_url, path, upto_index, frm, to):
+    """A point further up the trail where the walk from `frm` makes the way up clearly shorter
+    than walking to `to`, or None. The walk + the trail left from there is what counts."""
+    cands = [c for c in candidates(path, upto_index) if c[0] > along_m(path, to) + SHORTCUT_STEP_M / 2]
+    if not cands:
+        return None
+    dist = table(osrm_url, frm, [to, *(p for _, p in cands)])
+    if dist[0] is None:
+        return None
+    base = dist[0] - along_m(path, to)
+    best = None
+    for (along, p), d in zip(cands, dist[1:]):
+        if d is None or d > MAX_WALK_M:
+            continue
+        cost = d - along
+        if cost <= base - SHORTCUT_SAVING_M and (best is None or cost < best[0]):
+            best = (cost, p)
+    return best[1] if best else None
+
+
+def ends_on_trail(walk, path):
+    """The walk's last point is on the trail (OSRM may snap a point to a road beside it)."""
+    lon, lat = walk["line"][-1]
+    return _nearest_on_path(path, lat, lon)[3] <= TOUCH_M
+
+
 def route(osrm_url, frm, to):
     """One walk from (lat, lon) to (lat, lon), or None when OSRM finds none."""
     url = (f"{osrm_url.rstrip('/')}/route/v1/foot/{frm[1]},{frm[0]};{to[1]},{to[0]}"
@@ -85,6 +168,7 @@ def route(osrm_url, frm, to):
 def add(osrm_url, trips, log=print, workers=8):
     """Set "walk" on every parking and stop of every trip (in place). Returns how many got one."""
     jobs = {}  # (from, to) -> objects that share that walk
+    paths = {}  # (from, to) -> (trip path, index of the goal) to look for a shorter way in along
     for t in trips:
         path = t.get("path") or []
         if not path:
@@ -98,23 +182,35 @@ def add(osrm_url, trips, log=print, workers=8):
             to = join_point(path, loc, p["walk_m"], t["start"]["location"])
             if haversine(loc["lat"], loc["lon"], *to) <= AT_TRAIL_M:
                 continue
-            jobs.setdefault(((loc["lat"], loc["lon"]), to), []).append(p)
+            key = ((loc["lat"], loc["lon"]), to)
+            jobs.setdefault(key, []).append(p)
+            if t.get("route") == "tam-a-spat" and t.get("turnaround_index"):
+                paths.setdefault(key, (path, t["turnaround_index"]))
 
     def one(key):
         try:
-            return key, route(osrm_url, *key)
+            if key in paths:
+                path, upto = paths[key]
+                better = shortcut(osrm_url, path, upto, *key)
+                if better:
+                    walk = route(osrm_url, key[0], better)
+                    if walk and ends_on_trail(walk, path):
+                        return key, walk, True
+            return key, route(osrm_url, *key), False
         except Exception as err:  # noqa: BLE001 - one bad walk must not stop the weekly run
             log(f"walk {key}: {err}")
-            return key, None
+            return key, None, False
 
-    done = 0
+    done = cut = 0
     with ThreadPoolExecutor(workers) as pool:
-        for n, (key, walk) in enumerate(pool.map(one, list(jobs)), start=1):
+        for n, (key, walk, shorter) in enumerate(pool.map(one, list(jobs)), start=1):
+            cut += shorter
             if walk:
                 for p in jobs[key]:
                     p["walk"] = walk
                 done += len(jobs[key])
             if n % 2000 == 0:
                 log(f"walks: {n}/{len(jobs)}")
-    log(f"walks: {done} parking spots and stops have one ({len(jobs)} distinct)")
+    log(f"walks: {done} parking spots and stops have one ({len(jobs)} distinct); "
+        f"{cut} join the trail further up, where that makes the way up at least {SHORTCUT_SAVING_M} m shorter")
     return done

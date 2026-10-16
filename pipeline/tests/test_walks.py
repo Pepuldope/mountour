@@ -40,3 +40,59 @@ def test_index_summaries_leave_the_walks_in_the_trip_file():
     walk = {"line": [[19.0, 48.0]], "m": 1, "min": 1}
     summary = publish._without_walks({"parking": {"name": "P", "walk": walk}, "transit": None})
     assert "walk" not in summary["parking"]
+
+
+def test_candidates_cover_the_first_half_of_the_way_up():
+    cands = walks.candidates(PATH, 20)  # ~2.2 km up
+    assert cands[0][0] == walks.SHORTCUT_STEP_M
+    assert cands[-1][0] <= 0.5 * 2224 + 1
+    assert all(abs(lon - 19.0) < 1e-9 for _, (lat, lon) in cands)
+
+
+def _osrm(monkeypatch, metres_to, calls):
+    """A fake OSRM where the walk from anywhere to a point costs metres_to(point)."""
+
+    def fake_table(url, frm, tos):
+        return [metres_to(p) for p in tos]
+
+    def fake_route(url, frm, to):
+        calls.append(to)
+        return {"line": [[frm[1], frm[0]], [to[1], to[0]]], "m": round(metres_to(to)), "min": 9}
+
+    monkeypatch.setattr(walks, "table", fake_table)
+    monkeypatch.setattr(walks, "route", fake_route)
+
+
+def test_a_stop_with_a_path_straight_up_joins_the_trail_further_on(monkeypatch):
+    # The stop is 500 m east of the start, but the road to it bends: 1.2 km to the start,
+    # while a path from the stop reaches the trail 800 m up after 700 m.
+    def metres_to(p):
+        along = (p[0] - 48.0) * 111200
+        return 1200 if along < 50 else 2 * abs(along - 800) + 700
+
+    calls = []
+    _osrm(monkeypatch, metres_to, calls)
+    stop = {"location": {"lat": 48.0, "lon": 19.0067}, "walk_m": 500}
+    trip = {"path": PATH, "route": "tam-a-spat", "turnaround_index": 20, "start": {"location": START},
+            "parking": None, "parking_alternatives": [], "transit": stop, "transit_alternatives": []}
+    assert walks.add("http://osrm", [trip], log=lambda *_: None) == 1
+    lat, lon = calls[-1]
+    assert abs((lat - 48.0) * 111200 - 800) < walks.SHORTCUT_STEP_M
+    assert stop["walk"]["m"] < 800
+
+
+def test_no_shortcut_when_it_saves_little_or_the_trip_is_a_loop(monkeypatch):
+    calls = []
+    # Joining further up saves only 100 m of the way up.
+    _osrm(monkeypatch, lambda p: 600 if (p[0] - 48.0) * 111200 < 50 else 600 + (p[0] - 48.0) * 111200 - 100, calls)
+    stop = {"location": {"lat": 48.0, "lon": 19.0067}, "walk_m": 500}
+    trip = {"path": PATH, "route": "tam-a-spat", "turnaround_index": 20, "start": {"location": START},
+            "parking": None, "parking_alternatives": [], "transit": stop, "transit_alternatives": []}
+    walks.add("http://osrm", [trip], log=lambda *_: None)
+    assert calls == [(48.0, 19.0)]
+
+    calls.clear()
+    _osrm(monkeypatch, lambda p: 1200 if (p[0] - 48.0) * 111200 < 50 else 700, calls)
+    loop = {**trip, "route": "okruh", "transit": dict(stop)}
+    walks.add("http://osrm", [loop], log=lambda *_: None)
+    assert calls == [(48.0, 19.0)]
