@@ -6,7 +6,7 @@ import type { LatLng } from "@/lib/types";
 import type { DestinationKind } from "@/lib/tripSchema";
 import { MAP_STYLE_URL, mapPixelRatio } from "@/lib/mapLayers";
 import { keepInSlovakia } from "@/lib/slovakia";
-import { GOAL_COLOUR, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
+import { GOAL_COLOUR, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE, desaturate } from "@/lib/palette";
 import { lineFeeder } from "@/lib/mapFeed";
 import { fetchLines } from "@/lib/packedLines";
 import { attachTrailNetwork, cellsInView, LINE_TILE_MAX } from "@/lib/trailNetwork";
@@ -93,10 +93,11 @@ const SPACING = 54;
 const SUN = "#ffb81c";
 const AREA_LINE = "#1769d1";
 const NIGHT = "#14233b";
-/** Trips the picked day is too short for: grey lines and squares. */
-const DIM_LINE = "#7d8796";
-const DIM_SQUARE = "#a7b0bd";
-const RAMP = ["match", ["get", "p"], ...POPULARITY_RAMP.flatMap((c, i) => [i, c]), POPULARITY_RAMP[0]] as unknown as ExpressionSpecification;
+const ramp = (colours: readonly string[]) =>
+  ["match", ["get", "p"], ...colours.flatMap((c, i) => [i, c]), colours[0]] as unknown as ExpressionSpecification;
+const RAMP = ramp(POPULARITY_RAMP);
+/** Trips the picked day is too short for: the same colours, washed out. */
+const DIM_RAMP = ramp(POPULARITY_RAMP.map((c) => desaturate(c)));
 
 const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
 
@@ -351,7 +352,7 @@ export function BrowseMap({
 
         // Squares: one layer per level, each fading in as its zoom is reached.
         for (const [kind, colour] of Object.entries(GOAL_COLOUR)) m.addImage(`sq-${kind}`, squareImage(colour, "#ffffff", 16), { pixelRatio: 2 });
-        m.addImage("sq-dim", squareImage(DIM_SQUARE, "#ffffff", 16), { pixelRatio: 2 });
+        for (const [kind, colour] of Object.entries(GOAL_COLOUR)) m.addImage(`sq-dim-${kind}`, squareImage(desaturate(colour), "#ffffff", 16), { pixelRatio: 2 });
         m.addImage("sq-active", squareImage(SUN, NIGHT, 22), { pixelRatio: 2 });
         m.addSource("squares", { type: "geojson", data: EMPTY });
         for (let z = SQUARE_MIN; z <= SQUARE_MAX; z++) {
@@ -362,7 +363,7 @@ export function BrowseMap({
             source: "squares",
             minzoom: z - shift - 0.01,
             filter: ["==", ["get", "z"], z],
-            layout: { "icon-image": ["case", ["get", "d"], "sq-dim", ["concat", "sq-", ["get", "g"]]], "icon-allow-overlap": true, "icon-ignore-placement": true, "symbol-sort-key": ["-", 0, ["get", "r"]] },
+            layout: { "icon-image": ["concat", ["case", ["get", "d"], "sq-dim-", "sq-"], ["get", "g"]], "icon-allow-overlap": true, "icon-ignore-placement": true, "symbol-sort-key": ["-", 0, ["get", "r"]] },
             paint: { "icon-opacity": fade },
           });
         }
@@ -635,9 +636,9 @@ export function BrowseMap({
       map.setFilter(`${src}-line`, only);
       map.setFilter(`${src}-hit`, only);
       map.setFilter(`${src}-top`, ["all", ["==", ["get", "p"], 4], only, ["!", dim]] as unknown as ExpressionSpecification);
-      map.setPaintProperty(`${src}-line`, "line-color", ["case", dim, DIM_LINE, RAMP]);
-      map.setPaintProperty(`${src}-line`, "line-opacity", ["case", dim, 0.55, ["==", ["get", "p"], 0], 1, 0.95]);
-      // Grey lines go under the coloured ones.
+      map.setPaintProperty(`${src}-line`, "line-color", ["case", dim, DIM_RAMP, RAMP]);
+      map.setPaintProperty(`${src}-line`, "line-opacity", ["case", dim, 0.8, ["==", ["get", "p"], 0], 1, 0.95]);
+      // Washed-out lines go under the coloured ones.
       map.setLayoutProperty(`${src}-line`, "line-sort-key", ["case", dim, -1, ["get", "r"]]);
     }
     const level = squareLevels(trips, ctx.shift);

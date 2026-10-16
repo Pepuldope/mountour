@@ -13,6 +13,14 @@ export const POPULARITY_RAMP = ["#ffe600", "#f3a12f", "#e8682a", "#d9481f", "#c8
 /** Outline around the busiest level only, about 0.8 px each side. */
 export const POPULARITY_TOP_OUTLINE = "#ffffff";
 
+/** A colour washed out towards grey: `amount` 0 keeps it, 1 is plain grey of the same lightness. */
+export function desaturate(hex: string, amount = 0.75): string {
+  const n = parseInt(hex.slice(1), 16);
+  const rgb = [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  const grey = 0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2];
+  return `#${rgb.map((c) => Math.round(c + (grey - c) * amount).toString(16).padStart(2, "0")).join("")}`;
+}
+
 
 export const POPULARITY_LABEL = ["málo chodená", "", "", "", "najobľúbenejšia"] as const;
 

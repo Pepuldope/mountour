@@ -383,7 +383,7 @@ export function HomeExplorer({ trails: initial }: Props) {
   const season = seasonOf(date ? new Date(`${date}T12:00`) : new Date());
   const dayWord = date && today ? dayInSentence(date, new Date()) : null;
 
-  // The map: every trip that passes the filters; the ones the day is too short for in faint grey.
+  // The map: every trip that passes the filters; the ones the day is too short for washed out.
   const mapTrips = useMemo<BrowseTrip[]>(
     () =>
       listedAll.flatMap(({ detail, fit }) => {
@@ -621,7 +621,7 @@ export function HomeExplorer({ trails: initial }: Props) {
         </span>
         {dayWord && mapTrips.some((t) => t.dim) && (
           <span className="flex items-center gap-1.5">
-            <i className="block h-1 w-5 rounded-full bg-[#7d8796] opacity-55" /> {dayWord} nestihnete
+            <i className="block h-1.5 w-5 rounded-full bg-[linear-gradient(90deg,#ded89e,#9f7f70,#724947)] opacity-80" /> {dayWord} nestihnete
           </span>
         )}
       </div>
