@@ -6,7 +6,7 @@ import type { LatLng } from "@/lib/types";
 import type { DestinationKind } from "@/lib/tripSchema";
 import { MAP_STYLE_URL, mapPixelRatio } from "@/lib/mapLayers";
 import { keepInSlovakia } from "@/lib/slovakia";
-import { GOAL_COLOUR, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
+import { GOAL_COLOUR, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE, desaturate } from "@/lib/palette";
 import { lineFeeder } from "@/lib/mapFeed";
 import { fetchLines } from "@/lib/packedLines";
 import { attachTrailNetwork, cellsInView, LINE_TILE_MAX } from "@/lib/trailNetwork";
@@ -24,6 +24,8 @@ export interface BrowseTrip {
   /** The goal (peak, waterfall...): where its square sits. */
   location: LatLng;
   start: LatLng;
+  /** Not doable on the picked day: drawn in faint grey, under the others. */
+  dim?: boolean;
 }
 
 /** A mountain area: one dot while zoomed out. */
@@ -91,6 +93,11 @@ const SPACING = 54;
 const SUN = "#ffb81c";
 const AREA_LINE = "#1769d1";
 const NIGHT = "#14233b";
+const ramp = (colours: readonly string[]) =>
+  ["match", ["get", "p"], ...colours.flatMap((c, i) => [i, c]), colours[0]] as unknown as ExpressionSpecification;
+const RAMP = ramp(POPULARITY_RAMP);
+/** Trips the picked day is too short for: the same colours, washed out. */
+const DIM_RAMP = ramp(POPULARITY_RAMP.map((c) => desaturate(c)));
 
 const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
 
@@ -131,7 +138,8 @@ function squareImage(fill: string, edge: string, size: number): ImageData {
 function squareLevels(trips: BrowseTrip[], shift: number): Map<string, number> {
   const out = new Map<string, number>();
   const placed: BrowseTrip[] = [];
-  const sorted = [...trips].sort((a, b) => b.rank - a.rank);
+  // Greyed trips get a square only where the doable ones leave room.
+  const sorted = [...trips].sort((a, b) => Number(!!a.dim) - Number(!!b.dim) || b.rank - a.rank);
   for (let z = SQUARE_MIN; z <= SQUARE_MAX; z++) {
     // Spacing is measured where the level shows: zoom z, moved earlier by shift on narrow screens.
     const world = 512 * 2 ** (z - shift);
@@ -313,7 +321,6 @@ export function BrowseMap({
           },
         });
 
-        const ramp = ["match", ["get", "p"], ...POPULARITY_RAMP.flatMap((c, i) => [i, c]), POPULARITY_RAMP[0]] as unknown as ExpressionSpecification;
         const width = (a: number, b: number, c: number, extra = 0) =>
           [
             "interpolate", ["linear"], ["zoom"],
@@ -334,7 +341,7 @@ export function BrowseMap({
           m.addSource(src, { type: "geojson", data: EMPTY, maxzoom: tileMax });
           // The best known trips get a thin white edge, like on the trail network before.
           m.addLayer({ id: `${src}-top`, type: "line", source: src, ...range, filter: ["==", ["get", "p"], 4], layout, paint: { "line-color": POPULARITY_TOP_OUTLINE, "line-width": width(0.6, 1.4, 2.5, 1), "line-opacity": 0.9 } });
-          m.addLayer({ id: `${src}-line`, type: "line", source: src, ...range, layout, paint: { "line-color": ramp, "line-width": width(0.6, 1.4, 2.5), "line-opacity": ["case", ["==", ["get", "p"], 0], 1, 0.95] } });
+          m.addLayer({ id: `${src}-line`, type: "line", source: src, ...range, layout, paint: { "line-color": RAMP, "line-width": width(0.6, 1.4, 2.5), "line-opacity": ["case", ["==", ["get", "p"], 0], 1, 0.95] } });
           // Wide and invisible, so a thin line is easy to hit.
           m.addLayer({ id: `${src}-hit`, type: "line", source: src, ...range, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0 } });
         }
@@ -349,6 +356,7 @@ export function BrowseMap({
 
         // Squares: one layer per level, each fading in as its zoom is reached.
         for (const [kind, colour] of Object.entries(GOAL_COLOUR)) m.addImage(`sq-${kind}`, squareImage(colour, "#ffffff", 16), { pixelRatio: 2 });
+        for (const [kind, colour] of Object.entries(GOAL_COLOUR)) m.addImage(`sq-dim-${kind}`, squareImage(desaturate(colour), "#ffffff", 16), { pixelRatio: 2 });
         m.addImage("sq-active", squareImage(SUN, NIGHT, 22), { pixelRatio: 2 });
         m.addSource("squares", { type: "geojson", data: EMPTY });
         for (let z = SQUARE_MIN; z <= SQUARE_MAX; z++) {
@@ -359,7 +367,7 @@ export function BrowseMap({
             source: "squares",
             minzoom: z - shift - 0.01,
             filter: ["==", ["get", "z"], z],
-            layout: { "icon-image": ["concat", "sq-", ["get", "g"]], "icon-allow-overlap": true, "icon-ignore-placement": true, "symbol-sort-key": ["-", 0, ["get", "r"]] },
+            layout: { "icon-image": ["concat", ["case", ["get", "d"], "sq-dim-", "sq-"], ["get", "g"]], "icon-allow-overlap": true, "icon-ignore-placement": true, "symbol-sort-key": ["-", 0, ["get", "r"]] },
             paint: { "icon-opacity": fade },
           });
         }
@@ -643,17 +651,22 @@ export function BrowseMap({
     const { map } = ctx;
     const slugs = trips.map((t) => t.slug);
     const only = ["in", ["get", "s"], ["literal", slugs]] as unknown as ExpressionSpecification;
+    const dim = ["in", ["get", "s"], ["literal", trips.filter((t) => t.dim).map((t) => t.slug)]] as unknown as ExpressionSpecification;
     for (const src of ["trip-lines", "trip-lines-gap", "trip-lines-d"]) {
       map.setFilter(`${src}-line`, only);
       map.setFilter(`${src}-hit`, only);
-      map.setFilter(`${src}-top`, ["all", ["==", ["get", "p"], 4], only] as unknown as ExpressionSpecification);
+      map.setFilter(`${src}-top`, ["all", ["==", ["get", "p"], 4], only, ["!", dim]] as unknown as ExpressionSpecification);
+      map.setPaintProperty(`${src}-line`, "line-color", ["case", dim, DIM_RAMP, RAMP]);
+      map.setPaintProperty(`${src}-line`, "line-opacity", ["case", dim, 0.8, ["==", ["get", "p"], 0], 1, 0.95]);
+      // Washed-out lines go under the coloured ones.
+      map.setLayoutProperty(`${src}-line`, "line-sort-key", ["case", dim, -1, ["get", "r"]]);
     }
     const level = squareLevels(trips, ctx.shift);
     (map.getSource("squares") as GeoJSONSource | undefined)?.setData({
       type: "FeatureCollection",
       features: trips.map((t) => ({
         type: "Feature",
-        properties: { s: t.slug, g: t.goal, r: t.rank, z: level.get(t.slug) },
+        properties: { s: t.slug, g: t.goal, r: t.rank, z: level.get(t.slug), d: !!t.dim },
         geometry: { type: "Point", coordinates: [t.location.lon, t.location.lat] },
       })),
     });

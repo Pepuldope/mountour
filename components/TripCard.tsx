@@ -99,7 +99,7 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
       onFocus={() => onActive(trail.slug)}
       className={`grid grid-cols-[54px_1fr] gap-3 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-3 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
         big ? "border-2 border-[var(--accent)] shadow-[0_10px_28px_rgba(20,35,59,0.22)]" : active ? "trip-card-active border-[var(--accent)]" : "border-[var(--border)]"
-      } ${pill?.tone === "no" && !big ? "opacity-70" : ""}`}
+      } ${pill?.tone === "no" && !big ? "opacity-70 grayscale-[75%]" : ""}`}
     >
       <span
         aria-hidden

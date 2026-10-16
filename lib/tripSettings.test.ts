@@ -16,15 +16,15 @@ describe("defaultDeparture", () => {
 });
 
 describe("defaultDay", () => {
-  it("is today while the sun is up", () => {
-    expect(defaultDay(new Date(2026, 9, 14, 17, 30))).toBe("2026-10-14");
+  it("is tomorrow during the day", () => {
+    expect(defaultDay(new Date(2026, 9, 14, 9, 30))).toBe("2026-10-15");
   });
 
-  it("is tomorrow once the sun has set", () => {
-    expect(defaultDay(new Date(2026, 9, 14, 18, 40))).toBe("2026-10-15");
+  it("is tomorrow after midnight too", () => {
+    expect(defaultDay(new Date(2026, 9, 15, 0, 30))).toBe("2026-10-16");
   });
 
-  it("is today again after midnight", () => {
-    expect(defaultDay(new Date(2026, 9, 15, 0, 30))).toBe("2026-10-15");
+  it("crosses the month", () => {
+    expect(defaultDay(new Date(2026, 9, 31, 12, 0))).toBe("2026-11-01");
   });
 });
