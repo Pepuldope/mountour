@@ -6,6 +6,7 @@ import { useTripSettings } from "@/lib/tripSettings";
 import type { Travel } from "@/lib/tripSettings";
 import type { UiIconName } from "@/lib/uiIcons";
 import { UiIcon } from "@/components/UiIcon";
+import { NoParkingChip } from "@/components/routeBits";
 
 const OPTIONS: { value: Travel; label: string; icon: UiIconName }[] = [
   { value: "car", label: "Autom", icon: "car" },
@@ -15,13 +16,40 @@ const OPTIONS: { value: Travel; label: string; icon: UiIconName }[] = [
 /**
  * Car or public transport, as two equal options: the plan, times and the way
  * back follow. Remembered across visits, so the home list follows it too.
+ * With no car park at the start (`noCar`) the car is greyed out with the warning
+ * and the bus is the only choice, without changing what is remembered.
  */
-export function TravelSwitch({ roadMin = null, trainMin = null }: { roadMin?: number | null; trainMin?: number | null }) {
-  const { travel, update } = useTripSettings();
+export function TravelSwitch({
+  roadMin = null,
+  trainMin = null,
+  noCar = false,
+}: {
+  roadMin?: number | null;
+  trainMin?: number | null;
+  noCar?: boolean;
+}) {
+  const settings = useTripSettings();
+  const { update } = settings;
+  const travel: Travel = noCar ? "transit" : settings.travel;
   return (
     <div role="radiogroup" aria-label="Ako sa dopravíte" className="grid grid-cols-2 gap-[3px] rounded-xl bg-[var(--segment-bg)] p-[3px]">
       {OPTIONS.map((o) => {
         const on = travel === o.value;
+        if (noCar && o.value === "car")
+          return (
+            <span
+              key={o.value}
+              role="radio"
+              aria-checked={false}
+              aria-disabled
+              title="Pri štarte tejto cesty nie je parkovisko"
+              className="inline-flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 rounded-[10px] bg-[var(--off-bg)] px-2 py-2 text-sm font-semibold text-[var(--off-fg)]"
+            >
+              <UiIcon name={o.icon} size={18} />
+              <span className="line-through">{o.label}</span>
+              <NoParkingChip />
+            </span>
+          );
         return (
           <button
             key={o.value}

@@ -59,7 +59,7 @@ const part =
 export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: fullProfile, gpxUrl, bbox, walk, intro, children, outro, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
-  const { destination, rideTo, approachMin, trailStart, transit, stop, skip, walkFrom, trailJoin } = useTripAccess();
+  const { destination, rideTo, approachMin, trailStart, transit, noCar, stop, skip, walkFrom, trailJoin } = useTripAccess();
   // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day;
   // parked up the trail, the stretch below is skipped both ways.
   const baseHikeMin = joinedMinutes(trailHikeMin, skip) + (transit || start ? 2 * approachMin : 0);
@@ -68,7 +68,8 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
     sun,
     rideTo,
     baseHikeMin,
-    transit && stop?.mode === "vlak" ? stop.location : null
+    transit && stop?.mode === "vlak" ? stop.location : null,
+    noCar
   );
   const [shared, setShared] = useState<SharedPlan | null>(null);
   const weather = useTripWeather(plan, trailStart, goal, profile?.points[0]?.ele ?? null);
@@ -138,7 +139,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
         {/* In the order of the day: where from, how, which day and time. */}
         <StartChip />
 
-        <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} />
+        <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} noCar={noCar} />
 
         <section aria-label="Deň a odchod" className="flex flex-col gap-3">
           <FilterChips variant="trip" activeDate={date} />

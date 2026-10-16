@@ -38,10 +38,17 @@ export interface TripPlan {
  * One trail's day, from the shared inputs (start, day, departure, kids). Cheap to call in several places.
  * `destination` is where the ride ends: the parking by car, the stop by bus or train.
  */
-export function useTripPlan(sun: LatLng | null, destination: LatLng | null, baseHikeMin: number, railStation: LatLng | null = null): TripPlan {
+export function useTripPlan(
+  sun: LatLng | null,
+  destination: LatLng | null,
+  baseHikeMin: number,
+  railStation: LatLng | null = null,
+  /** No car park at the start: plan by bus or train whatever the remembered choice. */
+  noCar = false
+): TripPlan {
   const { start } = useUserLocation();
   const { withKids, travel } = useTripSettings();
-  const transit = travel === "transit";
+  const transit = noCar || travel === "transit";
   const { date, time } = useTripDay();
   const drive = useDriveRoute(start, destination);
   const hikeMin = hikeMinutes(baseHikeMin, withKids);
