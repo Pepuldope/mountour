@@ -59,6 +59,8 @@ interface Props {
   /** The areas' outlines (they split all of Slovakia), drawn while zoomed out. */
   outlines: GeoJSON.FeatureCollection | null;
   selected: string | null;
+  /** The picked trip's other routes to the same place ([lon, lat] lines): drawn in slate, as on the trip page. */
+  alternatives?: number[][][];
   /** A card hovered in the list: its line is outlined. */
   highlighted: string | null;
   focus: MapFocus | null;
@@ -100,6 +102,9 @@ const RAMP = ramp(POPULARITY_RAMP);
 const DIM_RAMP = ramp(POPULARITY_RAMP.map((c) => desaturate(c)));
 
 const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: [] };
+const NO_LINES: number[][][] = [];
+/** Other routes to the picked place: the trip page's slate (OTHER_ROUTE_COLOUR in TripMap). */
+const ALT_ROUTE = "#6b7a93";
 
 interface Meta {
   generated_at: string;
@@ -218,6 +223,7 @@ export function BrowseMap({
   areas,
   outlines,
   selected,
+  alternatives = NO_LINES,
   highlighted,
   focus,
   initialView,
@@ -346,6 +352,9 @@ export function BrowseMap({
           m.addLayer({ id: `${src}-hit`, type: "line", source: src, ...range, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0 } });
         }
 
+        m.addSource("alt", { type: "geojson", data: EMPTY, maxzoom: LINE_TILE_MAX });
+        m.addLayer({ id: "alt-casing", type: "line", source: "alt", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": "#ffffff", "line-width": 7, "line-opacity": 0.85 } });
+        m.addLayer({ id: "alt-line", type: "line", source: "alt", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": ALT_ROUTE, "line-width": 3.5 } });
         m.addSource("hover", { type: "geojson", data: EMPTY, maxzoom: LINE_TILE_MAX });
         m.addLayer({ id: "hover-line", type: "line", source: "hover", layout: { "line-cap": "round", "line-join": "round" }, paint: { "line-color": NIGHT, "line-width": 5, "line-opacity": 0.55 } });
         m.addSource("sel", { type: "geojson", data: EMPTY, maxzoom: LINE_TILE_MAX });
@@ -683,6 +692,15 @@ export function BrowseMap({
     );
     map.setFilter("sq-active", ["==", ["get", "s"], selected ?? ""]);
   }, [ctx, selected, trips, linesVersion]);
+
+  // The picked trip's other routes.
+  useEffect(() => {
+    if (!ctx) return;
+    (ctx.map.getSource("alt") as GeoJSONSource | undefined)?.setData({
+      type: "FeatureCollection",
+      features: alternatives.map((coordinates) => ({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates } })),
+    });
+  }, [ctx, alternatives]);
 
   // Outline for a trip pointed at (on the map or in the list).
   useEffect(() => {
