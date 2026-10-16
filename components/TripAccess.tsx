@@ -37,6 +37,8 @@ export interface TripAccess {
   stop: TransitStop | null;
   /** By car: the drive goes on. By train/bus: an estimated ride to the stop, the walk starts there. */
   transit: boolean;
+  /** No car park at this start, only a stop: bus or train whatever the remembered choice. */
+  noCar: boolean;
   /** Where the walk to the trail starts: the chosen parking, or the stop. */
   walkFrom: LatLng | null;
   /** That walk on paths, worked out weekly (null: none stored, ask the router). */
@@ -63,6 +65,7 @@ const Ctx = createContext<TripAccess>({
   chooseStop: () => {},
   stop: null,
   transit: false,
+  noCar: false,
   walkFrom: null,
   walkLine: null,
   approachMin: 0,
@@ -129,7 +132,10 @@ export function TripAccessProvider({
     [transitStops]
   );
   const [stopChoice, chooseStop] = usePick(STOP_KEY, slug, stops.length);
-  const transit = useTripSettings().travel === "transit";
+  // Without a car park the bus is the only way; the remembered choice stays as it is for other trips.
+  const noCar = parkingLots.length === 0 && transitStops.length > 0;
+  const { travel } = useTripSettings();
+  const transit = noCar || travel === "transit";
 
   const value = useMemo<TripAccess>(() => {
     const parking = parkingLots[choice] ?? null;
@@ -151,13 +157,14 @@ export function TripAccessProvider({
       chooseStop,
       stop,
       transit,
+      noCar,
       walkFrom: transit ? (stop?.location ?? null) : (parking?.location ?? null),
       walkLine: transit ? (stop?.walk ?? null) : (parking?.walk ?? null),
       approachMin: transit ? stopApproach : parkingApproach,
       trailJoin: join?.location ?? trailStart,
       skip: join && join.skip_m > 0 ? join : null,
     };
-  }, [parkingLots, stops, choice, choose, stopChoice, chooseStop, trailStart, transit]);
+  }, [parkingLots, stops, choice, choose, stopChoice, chooseStop, trailStart, transit, noCar]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

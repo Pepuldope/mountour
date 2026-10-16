@@ -12,6 +12,7 @@ import { useUserLocation } from "@/lib/userLocation";
 import { track } from "@/lib/analytics";
 import { ShareButton } from "@/components/ShareButton";
 import type { ShareInfo } from "@/components/ShareButton";
+import { useTripAccess } from "@/components/TripAccess";
 
 interface Props extends ShareInfo {
   gpxUrl: string | null;
@@ -63,7 +64,8 @@ export function SaveTripButton({ gpxUrl, bbox, sun, destination, baseHikeMin, pr
   const { slug, name } = trip;
   const { trips, save, patch, remove } = useSavedTrips();
   const { start } = useUserLocation();
-  const { plan, date, time, hikeMin, driveMin, route } = useTripPlan(sun, destination, baseHikeMin);
+  const { noCar } = useTripAccess();
+  const { plan, date, time, hikeMin, driveMin, route } = useTripPlan(sun, destination, baseHikeMin, null, noCar);
   const [status, setStatus] = useState<Status>("idle");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [askShare, setAskShare] = useState(false);
