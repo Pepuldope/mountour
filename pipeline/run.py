@@ -131,9 +131,10 @@ def main(argv=None):
 
     publish.write(root, trips, dem, drive, slugs, tb.report, a.osm_timestamp)
     log("map lines: %d trips in %d cells" % maplines.write(root))
-    log("map areas: %d" % areas.write(root))
     if osm.border is not None:
         log("map border: %d points" % border.write(root, osm.border))
+    # After the border: the areas are cut to it.
+    log("map areas: %d" % areas.write(root))
     log("done")
     return 0
 
