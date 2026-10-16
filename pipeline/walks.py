@@ -168,9 +168,11 @@ def better_walk(osrm_url, path, upto_index, frm, to):
         if not cut:
             continue
         end = cut["line"][-1]
-        skip = along_m(path, (end[1], end[0])) - along_m(path, to)
-        saving = base - (cut["m"] - along_m(path, (end[1], end[0])))
-        if skip > 0 and saving >= max(SHORTCUT_SAVING_M, SHORTCUT_MIN_RATIO * skip):
+        along = along_m(path, (end[1], end[0]))
+        skip = along - along_m(path, to)
+        saving = base - (cut["m"] - along)
+        # lib/trailJoin.ts joins on the walk only from MIN_SAVING_M up the trail.
+        if along >= MIN_SAVING_M and skip >= MIN_SAVING_M and saving >= max(SHORTCUT_SAVING_M, SHORTCUT_MIN_RATIO * skip):
             return cut
     return None
 
