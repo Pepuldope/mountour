@@ -43,6 +43,9 @@ SHORTCUT_STEP_M = 120
 SHORTCUT_MAX_SHARE = 0.5
 # ...and at least this share of the trail it skips (no 4 km walk to skip 4.5 km of trail).
 SHORTCUT_MIN_RATIO = 0.25
+# ...and the walk may be at most this much longer than the usual one: a stop or car park on the
+# wrong side of the start, not a 4 km walk on other paths instead of the marked trail.
+SHORTCUT_MAX_EXTRA_M = 500
 # lib/trailJoin.ts TOUCH_M: the walk must end this close to the trail for the site to join there.
 TOUCH_M = 25
 
@@ -127,18 +130,18 @@ def table(osrm_url, frm, tos):
 
 
 def shortcuts(osrm_url, path, upto_index, frm, to, tries=3):
-    """(walk to `to` minus the trail before it, [(walk minus trail before p, p), ...]): the points
+    """(walk to `to`, that minus the trail before it, [(walk minus trail before p, p), ...]): the points
     further up whose walk from `frm` looks clearly shorter by the OSRM table, best first."""
     cands = [c for c in candidates(path, upto_index) if c[0] > along_m(path, to) + SHORTCUT_STEP_M / 2]
     if not cands:
-        return None, []
+        return None, None, []
     dist = table(osrm_url, frm, [to, *(p for _, p in cands)])
     if dist[0] is None:
-        return None, []
+        return None, None, []
     base = dist[0] - along_m(path, to)
     better = sorted((d - along, p) for (along, p), d in zip(cands, dist[1:])
                     if d is not None and d <= MAX_WALK_M and d - along <= base - SHORTCUT_SAVING_M)
-    return base, [p for _, p in better[:tries]]
+    return dist[0], base, [p for _, p in better[:tries]]
 
 
 def to_first_touch(walk, path):
@@ -161,7 +164,7 @@ def better_walk(osrm_url, path, upto_index, frm, to):
     """A walk joining the trail further up that makes the way up clearly shorter, or None.
     Judged on where it really meets the trail: the saving must be SHORTCUT_SAVING_M and at
     least SHORTCUT_MIN_RATIO of the trail it skips, so a long walk to skip a long trail stays out."""
-    base, tries = shortcuts(osrm_url, path, upto_index, frm, to)
+    plain_m, base, tries = shortcuts(osrm_url, path, upto_index, frm, to)
     for p in tries:
         walk = route(osrm_url, frm, p)
         cut = walk and to_first_touch(walk, path)
@@ -172,7 +175,7 @@ def better_walk(osrm_url, path, upto_index, frm, to):
         skip = along - along_m(path, to)
         saving = base - (cut["m"] - along)
         # lib/trailJoin.ts joins on the walk only from MIN_SAVING_M up the trail.
-        if along >= MIN_SAVING_M and skip >= MIN_SAVING_M and saving >= max(SHORTCUT_SAVING_M, SHORTCUT_MIN_RATIO * skip):
+        if cut["m"] <= plain_m + SHORTCUT_MAX_EXTRA_M and along >= MIN_SAVING_M and skip >= MIN_SAVING_M and saving >= max(SHORTCUT_SAVING_M, SHORTCUT_MIN_RATIO * skip):
             return cut
     return None
 
