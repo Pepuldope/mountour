@@ -324,7 +324,9 @@ export function BrowseMap({
           ] as unknown as ExpressionSpecification;
         const layout: LineLayerSpecification["layout"] = { "line-cap": "round", "line-join": "round", "line-sort-key": ["get", "r"] };
         for (const [src, range, tileMax] of [
-          ["trip-lines", { maxzoom: areaZoom }, Math.ceil(areaZoom)],
+          // The overview has no upper zoom: it stays under the detailed lines until they are drawn,
+          // so zooming into an area for the first time never shows an empty map for a moment.
+          ["trip-lines", {}, Math.ceil(areaZoom)],
           ["trip-lines-d", { minzoom: areaZoom }, LINE_TILE_MAX],
         ] as [string, { maxzoom?: number; minzoom?: number }, number][]) {
           m.addSource(src, { type: "geojson", data: EMPTY, maxzoom: tileMax });
@@ -389,6 +391,16 @@ export function BrowseMap({
     const pending = new Set<string>();
     const onMap = new Set<unknown>();
     const addLines = lineFeeder(() => map?.getSource("trip-lines-d") as GeoJSONSource | undefined);
+    // Overview line ids by trip, and the trips whose detailed line is on the map but whose
+    // overview line is not yet taken away (that waits until the detailed one is drawn).
+    const overviewId = new Map<unknown, string | number>();
+    const covered: unknown[] = [];
+    const dropCovered = () => {
+      const m = map;
+      if (!m || !covered.length) return;
+      const ids = covered.splice(0).map((s) => overviewId.get(s)).filter((id) => id !== undefined);
+      if (ids.length) (m.getSource("trip-lines") as GeoJSONSource | undefined)?.updateData({ remove: ids }, true);
+    };
     const getJson = async <T,>(url: string): Promise<T | null> => {
       try {
         const r = await fetch(url);
@@ -413,6 +425,7 @@ export function BrowseMap({
         const overview = await fetchLines(`${MAP_DATA}/overview.json?v=${meta.generated_at}`);
         if (overview && !cancelled) {
           lineFeeder(() => m.getSource("trip-lines") as GeoJSONSource | undefined)(overview.features);
+          for (const f of overview.features) if (f.id !== undefined) overviewId.set(f.properties?.s, f.id);
           remember(overview.features, false);
         }
       }
@@ -433,6 +446,9 @@ export function BrowseMap({
           const add = got.features.filter((f) => !onMap.has(f.properties?.s));
           add.forEach((f) => onMap.add(f.properties?.s));
           addLines(add);
+          covered.push(...add.map((f) => f.properties?.s));
+          // "idle": every source is loaded and drawn, so the detailed lines are on screen.
+          m.once("idle", dropCovered);
           remember(got.features, true);
         })
       );
