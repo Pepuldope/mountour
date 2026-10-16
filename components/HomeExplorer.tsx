@@ -198,6 +198,14 @@ let lastView: MapView | null = null;
  * map, nearest first. Picking a day adds "Vyrazte najneskôr" and moves trips
  * that don't fit that day's daylight behind a button.
  */
+/** The button under the list for trips left out: closed that day, or no stop when going by bus. */
+function hiddenLabel(hidden: TripCardItem[]): string {
+  const closed = hidden.some((i) => i.closed);
+  const noStop = hidden.some((i) => i.noStop);
+  if (closed && noStop) return "Ukázať aj uzavreté a bez zastávky";
+  return closed ? "Ukázať aj uzavreté" : "Ukázať aj výlety bez zastávky";
+}
+
 export function HomeExplorer({ trails: initial }: Props) {
   const trails = useAllTrails(initial);
   const { date, today, withKids, travel, update } = useTripSettings();
@@ -313,11 +321,12 @@ export function HomeExplorer({ trails: initial }: Props) {
       all.sort((a, b) => key(a) - key(b));
     }
     const open = all.filter((i) => !i.closed && !i.noStop);
-    const fitting = open.filter((i) => !i.fit || i.fit.status === "fits");
-    // Nothing fits the day (late evening): list every trip, each card says why, rather than an empty page.
+    const fits = (i: TripCardItem) => !i.fit || i.fit.status === "fits";
+    const fitting = open.filter(fits);
+    // Trips the day is too short for stay on the map and in the list, greyed, after the ones that fit.
+    const late = open.filter((i) => !fits(i));
     const noneFit = fitting.length === 0 && open.length > 0;
-    const listed = new Set(noneFit ? open : fitting);
-    return { shown: [...listed], hidden: all.filter((i) => !listed.has(i)), noneFit };
+    return { shown: [...fitting, ...late], hidden: all.filter((i) => i.closed || i.noStop), noneFit };
   }, [trails, destinations, drives, driveStatus, withKids, goalFilter, diffFilter, date, today, start, transit]);
 
   const listedAll = useMemo(() => (showHidden ? [...shown, ...hidden] : shown), [showHidden, shown, hidden]);
@@ -374,14 +383,15 @@ export function HomeExplorer({ trails: initial }: Props) {
   const season = seasonOf(date ? new Date(`${date}T12:00`) : new Date());
   const dayWord = date && today ? dayInSentence(date, new Date()) : null;
 
-  // The map: every trip that passes the filters.
+  // The map: every trip that passes the filters; the ones the day is too short for in faint grey.
   const mapTrips = useMemo<BrowseTrip[]>(
     () =>
-      listedAll.flatMap(({ detail }) => {
+      listedAll.flatMap(({ detail, fit }) => {
         const at = goalOf(detail);
         const th = primaryTrailhead(detail);
         if (!at) return [];
-        return [{ slug: detail.trail.slug, goal: detail.trail.goal ?? "ine", rank: detail.trail.rank ?? 0, location: at, start: th?.location ?? at }];
+        const dim = !!fit && fit.status !== "fits";
+        return [{ slug: detail.trail.slug, goal: detail.trail.goal ?? "ine", rank: detail.trail.rank ?? 0, location: at, start: th?.location ?? at, dim }];
       }),
     [listedAll]
   );
@@ -609,6 +619,11 @@ export function HomeExplorer({ trails: initial }: Props) {
         <span className="flex items-center gap-1.5">
           <i className="block h-[3px] w-5 rounded-full bg-[#8a8f7a] opacity-60" /> chodník bez výletu
         </span>
+        {dayWord && mapTrips.some((t) => t.dim) && (
+          <span className="flex items-center gap-1.5">
+            <i className="block h-1 w-5 rounded-full bg-[#7d8796] opacity-55" /> {dayWord} nestihnete
+          </span>
+        )}
       </div>
       {mapHint && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-[5] -translate-x-1/2 rounded-full bg-[#14233b]/90 px-4 py-2 text-[13px] font-semibold whitespace-nowrap text-white shadow-[var(--shadow-float)]" role="note">
@@ -778,11 +793,7 @@ export function HomeExplorer({ trails: initial }: Props) {
       {visible.length === 0 && (
         <div className="flex flex-col gap-2 rounded-[var(--radius-card)] border border-dashed border-[var(--border)] p-4 text-sm">
           <p>
-            {shown.length === 0
-              ? dayWord
-                ? `${dayWord === "dnes" ? "Dnes" : "Vtedy"} s týmito filtrami nič nestihnete.`
-                : "S týmito filtrami nič nenachádzame."
-              : "Tu nič nie je. Posuňte mapu alebo hľadajte inde."}
+            {shown.length === 0 ? "S týmito filtrami nič nenachádzame." : "Tu nič nie je. Posuňte mapu alebo hľadajte inde."}
           </p>
           <div className="flex flex-wrap gap-3">
             {filterCount > 0 && (
@@ -833,7 +844,7 @@ export function HomeExplorer({ trails: initial }: Props) {
 
       {hidden.length > 0 && !showHidden && limit >= scoped.length && (
         <button type="button" onClick={() => setShowHidden(true)} className="w-fit text-sm font-semibold text-[var(--accent)] underline">
-          {dayWord ? `Ukázať aj tie, čo ${dayWord} nestihnete` : "Ukázať aj výlety bez zastávky"}
+          {hiddenLabel(hidden)}
         </button>
       )}
     </section>
