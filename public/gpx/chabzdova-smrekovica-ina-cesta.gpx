@@ -3,8 +3,8 @@
   <metadata><name>Chabzdová</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Chabzdová</name><trkseg>
     <trkpt lat="48.999028" lon="19.205773"><ele>1350</ele></trkpt>
-    <trkpt lat="48.999561" lon="19.207169"><ele>1372</ele></trkpt>
-    <trkpt lat="48.999551" lon="19.207361"><ele>1372</ele></trkpt>
+    <trkpt lat="48.999537" lon="19.207081"><ele>1371</ele></trkpt>
+    <trkpt lat="48.999641" lon="19.208487"><ele>1376</ele></trkpt>
     <trkpt lat="48.999690" lon="19.208822"><ele>1377</ele></trkpt>
     <trkpt lat="48.999784" lon="19.208967"><ele>1380</ele></trkpt>
     <trkpt lat="49.000000" lon="19.209919"><ele>1379</ele></trkpt>
@@ -558,8 +558,8 @@
     <trkpt lat="49.000000" lon="19.209919"><ele>1379</ele></trkpt>
     <trkpt lat="48.999784" lon="19.208967"><ele>1380</ele></trkpt>
     <trkpt lat="48.999690" lon="19.208822"><ele>1377</ele></trkpt>
-    <trkpt lat="48.999551" lon="19.207361"><ele>1372</ele></trkpt>
-    <trkpt lat="48.999561" lon="19.207169"><ele>1372</ele></trkpt>
+    <trkpt lat="48.999641" lon="19.208487"><ele>1376</ele></trkpt>
+    <trkpt lat="48.999537" lon="19.207081"><ele>1371</ele></trkpt>
     <trkpt lat="48.999028" lon="19.205773"><ele>1350</ele></trkpt>
   </trkseg></trk>
 </gpx>
