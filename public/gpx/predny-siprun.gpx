@@ -3,8 +3,8 @@
   <metadata><name>Predný Šiprúň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Predný Šiprúň</name><trkseg>
     <trkpt lat="48.999028" lon="19.205773"><ele>1350</ele></trkpt>
-    <trkpt lat="48.999561" lon="19.207169"><ele>1372</ele></trkpt>
-    <trkpt lat="48.999551" lon="19.207361"><ele>1372</ele></trkpt>
+    <trkpt lat="48.999537" lon="19.207081"><ele>1371</ele></trkpt>
+    <trkpt lat="48.999641" lon="19.208487"><ele>1376</ele></trkpt>
     <trkpt lat="48.999690" lon="19.208822"><ele>1377</ele></trkpt>
     <trkpt lat="48.999727" lon="19.208916"><ele>1378</ele></trkpt>
     <trkpt lat="48.999924" lon="19.209082"><ele>1385</ele></trkpt>
@@ -14,7 +14,8 @@
     <trkpt lat="49.000659" lon="19.209089"><ele>1404</ele></trkpt>
     <trkpt lat="49.000814" lon="19.209027"><ele>1408</ele></trkpt>
     <trkpt lat="49.001327" lon="19.208508"><ele>1422</ele></trkpt>
-    <trkpt lat="49.001775" lon="19.208471"><ele>1432</ele></trkpt>
+    <trkpt lat="49.001643" lon="19.208485"><ele>1430</ele></trkpt>
+    <trkpt lat="49.001707" lon="19.208446"><ele>1431</ele></trkpt>
     <trkpt lat="49.002307" lon="19.208699"><ele>1430</ele></trkpt>
     <trkpt lat="49.002537" lon="19.208672"><ele>1434</ele></trkpt>
     <trkpt lat="49.002958" lon="19.208935"><ele>1436</ele></trkpt>
@@ -27,9 +28,12 @@
     <trkpt lat="49.006642" lon="19.208731"><ele>1466</ele></trkpt>
     <trkpt lat="49.007024" lon="19.208425"><ele>1468</ele></trkpt>
     <trkpt lat="49.007464" lon="19.208246"><ele>1469</ele></trkpt>
-    <trkpt lat="49.007895" lon="19.208002"><ele>1470</ele></trkpt>
+    <trkpt lat="49.007727" lon="19.208092"><ele>1469</ele></trkpt>
+    <trkpt lat="49.007837" lon="19.208096"><ele>1470</ele></trkpt>
+    <trkpt lat="49.007934" lon="19.207962"><ele>1471</ele></trkpt>
     <trkpt lat="49.008878" lon="19.207363"><ele>1462</ele></trkpt>
-    <trkpt lat="49.009899" lon="19.206239"><ele>1445</ele></trkpt>
+    <trkpt lat="49.009216" lon="19.207014"><ele>1455</ele></trkpt>
+    <trkpt lat="49.009411" lon="19.206754"><ele>1450</ele></trkpt>
     <trkpt lat="49.009996" lon="19.206162"><ele>1446</ele></trkpt>
     <trkpt lat="49.010245" lon="19.206116"><ele>1449</ele></trkpt>
     <trkpt lat="49.010821" lon="19.205748"><ele>1457</ele></trkpt>
@@ -135,9 +139,12 @@
     <trkpt lat="49.010821" lon="19.205748"><ele>1457</ele></trkpt>
     <trkpt lat="49.010245" lon="19.206116"><ele>1449</ele></trkpt>
     <trkpt lat="49.009996" lon="19.206162"><ele>1446</ele></trkpt>
-    <trkpt lat="49.009899" lon="19.206239"><ele>1445</ele></trkpt>
+    <trkpt lat="49.009411" lon="19.206754"><ele>1450</ele></trkpt>
+    <trkpt lat="49.009216" lon="19.207014"><ele>1455</ele></trkpt>
     <trkpt lat="49.008878" lon="19.207363"><ele>1462</ele></trkpt>
-    <trkpt lat="49.007895" lon="19.208002"><ele>1470</ele></trkpt>
+    <trkpt lat="49.007934" lon="19.207962"><ele>1471</ele></trkpt>
+    <trkpt lat="49.007837" lon="19.208096"><ele>1470</ele></trkpt>
+    <trkpt lat="49.007727" lon="19.208092"><ele>1469</ele></trkpt>
     <trkpt lat="49.007464" lon="19.208246"><ele>1469</ele></trkpt>
     <trkpt lat="49.007024" lon="19.208425"><ele>1468</ele></trkpt>
     <trkpt lat="49.006642" lon="19.208731"><ele>1466</ele></trkpt>
@@ -150,7 +157,8 @@
     <trkpt lat="49.002958" lon="19.208935"><ele>1436</ele></trkpt>
     <trkpt lat="49.002537" lon="19.208672"><ele>1434</ele></trkpt>
     <trkpt lat="49.002307" lon="19.208699"><ele>1430</ele></trkpt>
-    <trkpt lat="49.001775" lon="19.208471"><ele>1432</ele></trkpt>
+    <trkpt lat="49.001707" lon="19.208446"><ele>1431</ele></trkpt>
+    <trkpt lat="49.001643" lon="19.208485"><ele>1430</ele></trkpt>
     <trkpt lat="49.001327" lon="19.208508"><ele>1422</ele></trkpt>
     <trkpt lat="49.000814" lon="19.209027"><ele>1408</ele></trkpt>
     <trkpt lat="49.000659" lon="19.209089"><ele>1404</ele></trkpt>
@@ -160,8 +168,8 @@
     <trkpt lat="48.999924" lon="19.209082"><ele>1385</ele></trkpt>
     <trkpt lat="48.999727" lon="19.208916"><ele>1378</ele></trkpt>
     <trkpt lat="48.999690" lon="19.208822"><ele>1377</ele></trkpt>
-    <trkpt lat="48.999551" lon="19.207361"><ele>1372</ele></trkpt>
-    <trkpt lat="48.999561" lon="19.207169"><ele>1372</ele></trkpt>
+    <trkpt lat="48.999641" lon="19.208487"><ele>1376</ele></trkpt>
+    <trkpt lat="48.999537" lon="19.207081"><ele>1371</ele></trkpt>
     <trkpt lat="48.999028" lon="19.205773"><ele>1350</ele></trkpt>
   </trkseg></trk>
 </gpx>

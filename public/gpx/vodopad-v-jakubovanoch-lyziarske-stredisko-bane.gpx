@@ -4,8 +4,6 @@
   <trk><name>Vodopád v Jakubovanoch</name><trkseg>
     <trkpt lat="49.125847" lon="19.735677"><ele>806</ele></trkpt>
     <trkpt lat="49.125827" lon="19.735650"><ele>806</ele></trkpt>
-    <trkpt lat="49.125937" lon="19.735563"><ele>808</ele></trkpt>
-    <trkpt lat="49.126074" lon="19.735517"><ele>809</ele></trkpt>
     <trkpt lat="49.126233" lon="19.735386"><ele>812</ele></trkpt>
     <trkpt lat="49.126414" lon="19.735294"><ele>815</ele></trkpt>
     <trkpt lat="49.126520" lon="19.735286"><ele>816</ele></trkpt>
@@ -77,8 +75,6 @@
     <trkpt lat="49.126520" lon="19.735286"><ele>816</ele></trkpt>
     <trkpt lat="49.126414" lon="19.735294"><ele>815</ele></trkpt>
     <trkpt lat="49.126233" lon="19.735386"><ele>812</ele></trkpt>
-    <trkpt lat="49.126074" lon="19.735517"><ele>809</ele></trkpt>
-    <trkpt lat="49.125937" lon="19.735563"><ele>808</ele></trkpt>
     <trkpt lat="49.125827" lon="19.735650"><ele>806</ele></trkpt>
     <trkpt lat="49.125847" lon="19.735677"><ele>806</ele></trkpt>
   </trkseg></trk>

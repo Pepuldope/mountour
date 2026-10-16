@@ -35,7 +35,9 @@
     <trkpt lat="48.933574" lon="21.911169"><ele>152</ele></trkpt>
     <trkpt lat="48.933595" lon="21.911223"><ele>152</ele></trkpt>
     <trkpt lat="48.933416" lon="21.911380"><ele>154</ele></trkpt>
-    <trkpt lat="48.933315" lon="21.911391"><ele>154</ele></trkpt>
+    <trkpt lat="48.933267" lon="21.911422"><ele>154</ele></trkpt>
+    <trkpt lat="48.932387" lon="21.912027"><ele>152</ele></trkpt>
+    <trkpt lat="48.932384" lon="21.912072"><ele>152</ele></trkpt>
     <trkpt lat="48.932204" lon="21.912153"><ele>152</ele></trkpt>
     <trkpt lat="48.932031" lon="21.911621"><ele>151</ele></trkpt>
     <trkpt lat="48.930384" lon="21.912846"><ele>150</ele></trkpt>
@@ -207,7 +209,9 @@
     <trkpt lat="48.930384" lon="21.912846"><ele>150</ele></trkpt>
     <trkpt lat="48.932031" lon="21.911621"><ele>151</ele></trkpt>
     <trkpt lat="48.932204" lon="21.912153"><ele>152</ele></trkpt>
-    <trkpt lat="48.933315" lon="21.911391"><ele>154</ele></trkpt>
+    <trkpt lat="48.932384" lon="21.912072"><ele>152</ele></trkpt>
+    <trkpt lat="48.932387" lon="21.912027"><ele>152</ele></trkpt>
+    <trkpt lat="48.933267" lon="21.911422"><ele>154</ele></trkpt>
     <trkpt lat="48.933416" lon="21.911380"><ele>154</ele></trkpt>
     <trkpt lat="48.933595" lon="21.911223"><ele>152</ele></trkpt>
     <trkpt lat="48.933574" lon="21.911169"><ele>152</ele></trkpt>
