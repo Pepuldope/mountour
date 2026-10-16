@@ -7,7 +7,7 @@ export function InfoPage({ title, intro, children }: { title: string; intro?: Re
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-5 px-4 py-6">
       <Link href="/" className="w-fit text-sm font-semibold text-[var(--accent)]">
-        ← Kam dnes
+        ← Všetky výlety
       </Link>
       <header className="flex flex-col gap-1">
         <h1 className="text-[1.65rem] leading-tight font-extrabold">{title}</h1>

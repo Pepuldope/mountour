@@ -175,7 +175,7 @@ export default async function TripSheetPage({ params }: Props) {
                 className="inline-flex items-center gap-0.5 rounded-full border border-[var(--border)] bg-[var(--card-bg)]/90 px-3 py-1.5 text-sm font-semibold"
               >
                 <UiIcon name="back" size={15} />
-                Kam dnes
+                Všetky výlety
               </Link>
               <SavedTripsLink />
             </nav>

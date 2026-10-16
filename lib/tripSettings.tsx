@@ -23,7 +23,8 @@ interface TripSettingsState extends TripSettings {
   update: (patch: Partial<TripSettings>) => void;
 }
 
-const STORAGE_KEY = "mountour-trip-v2";
+// v3: earlier versions stored "today" as the default day; starting fresh makes Zajtra the default for them too.
+const STORAGE_KEY = "mountour-trip-v3";
 /** After this hour "now" makes a poor default departure: plan tomorrow morning instead. */
 const LATE_HOUR = 15;
 const MORNING = "08:00";

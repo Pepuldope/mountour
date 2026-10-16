@@ -193,7 +193,7 @@ function areasFrom(outlines: GeoJSON.FeatureCollection): BrowseArea[] {
 let lastView: MapView | null = null;
 
 /**
- * "Kam dnes" home, map first: every trip on one map (coloured lines over the
+ * Home, map first: every trip on one map (coloured lines over the
  * grey trail network), with search, a filter menu, and a list that follows the
  * map, nearest first. Picking a day adds "Vyrazte najneskôr" and moves trips
  * that don't fit that day's daylight behind a button.
@@ -619,11 +619,6 @@ export function HomeExplorer({ trails: initial }: Props) {
         <span className="flex items-center gap-1.5">
           <i className="block h-[3px] w-5 rounded-full bg-[#8a8f7a] opacity-60" /> chodník bez výletu
         </span>
-        {dayWord && mapTrips.some((t) => t.dim) && (
-          <span className="flex items-center gap-1.5">
-            <i className="block h-1.5 w-5 rounded-full bg-[linear-gradient(90deg,#ded89e,#9f7f70,#724947)] opacity-80" /> {dayWord} nestihnete
-          </span>
-        )}
       </div>
       {mapHint && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-[5] -translate-x-1/2 rounded-full bg-[#14233b]/90 px-4 py-2 text-[13px] font-semibold whitespace-nowrap text-white shadow-[var(--shadow-float)]" role="note">
@@ -866,7 +861,7 @@ export function HomeExplorer({ trails: initial }: Props) {
             <SavedTripsLink />
           </nav>
           <div className="relative flex flex-col gap-2 px-4 pt-6 pb-16 text-[#14233b]">
-            <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">Kam dnes?</h1>
+            <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">Kam sa vyberieme?</h1>
             <p className="max-w-[30ch] text-[15px] font-medium">Výlety, z ktorých budete späť za svetla.</p>
           </div>
         </header>
