@@ -113,3 +113,21 @@ def test_a_walk_that_just_follows_the_trail_is_no_shortcut(monkeypatch):
             "parking": None, "parking_alternatives": [], "transit": stop, "transit_alternatives": []}
     walks.add("http://osrm", [trip], log=lambda *_: None)
     assert calls[-1] == (48.0, 19.0)
+
+
+def test_trips_sharing_a_stop_each_get_a_way_in_to_their_own_trail(monkeypatch):
+    def metres_to(p):
+        along = (p[0] - 48.0) * 111200
+        return 1200 if along < 50 else 2 * abs(along - 800) + 700
+
+    calls = []
+    _osrm(monkeypatch, metres_to, calls)
+    west = [[19.0 - i * 0.0015, 48.0, 500] for i in range(21)]  # another goal, due west of the same start
+    stop = {"location": {"lat": 48.0, "lon": 19.0067}, "walk_m": 500}
+    north = {"slug": "north", "path": PATH, "route": "tam-a-spat", "turnaround_index": 20, "start": {"location": START},
+             "parking": None, "parking_alternatives": [], "transit": stop, "transit_alternatives": []}
+    other = {**north, "slug": "west", "path": west, "transit": dict(stop)}
+    monkeypatch.setattr(walks, "table", lambda url, frm, tos: [metres_to(p) if abs(p[1] - 19.0) < 1e-9 else 1200 + (19.0 - p[1]) * 74500 for p in tos])
+    walks.add("http://osrm", [north, other], log=lambda *_: None)
+    assert north["transit"]["walk"]["line"][-1] != [19.0, 48.0]
+    assert other["transit"]["walk"]["line"][-1] == [19.0, 48.0]

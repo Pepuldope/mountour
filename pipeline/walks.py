@@ -209,19 +209,26 @@ def add(osrm_url, trips, log=print, workers=8):
             to = join_point(path, loc, p["walk_m"], t["start"]["location"])
             if haversine(loc["lat"], loc["lon"], *to) <= AT_TRAIL_M:
                 continue
-            key = ((loc["lat"], loc["lon"]), to)
+            # A shorter way in depends on the trip's own trail: trips sharing a start and a stop
+            # (two goals from one village) each get theirs.
+            own = t.get("route") == "tam-a-spat" and t.get("turnaround_index")
+            key = ((loc["lat"], loc["lon"]), to, t.get("slug") if own else None)
             jobs.setdefault(key, []).append(p)
-            if t.get("route") == "tam-a-spat" and t.get("turnaround_index"):
-                paths.setdefault(key, (path, t["turnaround_index"]))
+            if own:
+                paths[key] = (path, t["turnaround_index"])
+
+    plain = {}  # (from, to) -> the walk there, shared by trips that keep it
 
     def one(key):
         try:
             if key in paths:
                 path, upto = paths[key]
-                walk = better_walk(osrm_url, path, upto, *key)
+                walk = better_walk(osrm_url, path, upto, key[0], key[1])
                 if walk:
                     return key, walk, True
-            return key, route(osrm_url, *key), False
+            if key[:2] not in plain:
+                plain[key[:2]] = route(osrm_url, key[0], key[1])
+            return key, plain[key[:2]], False
         except Exception as err:  # noqa: BLE001 - one bad walk must not stop the weekly run
             log(f"walk {key}: {err}")
             return key, None, False
