@@ -17,7 +17,9 @@ regions:
   - id: male-karpaty
     name: Malé Karpaty
     protected_area: CHKO Malé Karpaty
-    bboxes: [[16.95, 48.14, 17.80, 48.76]]
+    # The second box is the north-west corner (Skalica, Holíč, Senica, up to Myjava's edge):
+    # the nearest hills there are the Malé Karpaty, not Záhorie or the Biele Karpaty.
+    bboxes: [[16.95, 48.14, 17.80, 48.76], [16.80, 48.76, 17.55, 49.00]]
   # The rest of Slovakia, so the trip list covers the whole country. First match
   # wins, so these sit after the national parks above. No region has a trip cap:
   # every destination that makes a good trip is kept (max_trips: N would cap one).
