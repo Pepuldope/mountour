@@ -861,7 +861,7 @@ export function HomeExplorer({ trails: initial }: Props) {
             <SavedTripsLink />
           </nav>
           <div className="relative flex flex-col gap-2 px-4 pt-6 pb-16 text-[#14233b]">
-            <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">Kam sa vyberieme?</h1>
+            <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">Kam na výlet?</h1>
             <p className="max-w-[30ch] text-[15px] font-medium">Výlety, z ktorých budete späť za svetla.</p>
           </div>
         </header>
