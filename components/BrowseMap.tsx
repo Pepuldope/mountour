@@ -324,9 +324,11 @@ export function BrowseMap({
           ] as unknown as ExpressionSpecification;
         const layout: LineLayerSpecification["layout"] = { "line-cap": "round", "line-join": "round", "line-sort-key": ["get", "r"] };
         for (const [src, range, tileMax] of [
-          // The overview has no upper zoom: it stays under the detailed lines until they are drawn,
-          // so zooming into an area for the first time never shows an empty map for a moment.
-          ["trip-lines", {}, Math.ceil(areaZoom)],
+          ["trip-lines", { maxzoom: areaZoom }, Math.ceil(areaZoom)],
+          // A copy of the overview under the detailed lines, holding each trip only until its
+          // detailed line is drawn, so zooming into an area for the first time never shows an
+          // empty map for a moment. The overview itself stays whole for zooming back out.
+          ["trip-lines-gap", { minzoom: areaZoom }, Math.ceil(areaZoom)],
           ["trip-lines-d", { minzoom: areaZoom }, LINE_TILE_MAX],
         ] as [string, { maxzoom?: number; minzoom?: number }, number][]) {
           m.addSource(src, { type: "geojson", data: EMPTY, maxzoom: tileMax });
@@ -399,7 +401,7 @@ export function BrowseMap({
       const m = map;
       if (!m || !covered.length) return;
       const ids = covered.splice(0).map((s) => overviewId.get(s)).filter((id) => id !== undefined);
-      if (ids.length) (m.getSource("trip-lines") as GeoJSONSource | undefined)?.updateData({ remove: ids }, true);
+      if (ids.length) (m.getSource("trip-lines-gap") as GeoJSONSource | undefined)?.updateData({ remove: ids }, true);
     };
     const getJson = async <T,>(url: string): Promise<T | null> => {
       try {
@@ -425,6 +427,8 @@ export function BrowseMap({
         const overview = await fetchLines(`${MAP_DATA}/overview.json?v=${meta.generated_at}`);
         if (overview && !cancelled) {
           lineFeeder(() => m.getSource("trip-lines") as GeoJSONSource | undefined)(overview.features);
+          // The same features in the same order, so both sources give each trip the same id.
+          lineFeeder(() => m.getSource("trip-lines-gap") as GeoJSONSource | undefined)(overview.features);
           for (const f of overview.features) if (f.id !== undefined) overviewId.set(f.properties?.s, f.id);
           remember(overview.features, false);
         }
@@ -455,7 +459,7 @@ export function BrowseMap({
     }
 
     // ---- pointer
-    const hitLayers = ["trip-lines-hit", "trip-lines-d-hit"];
+    const hitLayers = ["trip-lines-hit", "trip-lines-gap-hit", "trip-lines-d-hit"];
     const squareLayers = Array.from({ length: SQUARE_MAX - SQUARE_MIN + 1 }, (_, i) => `sq-${SQUARE_MIN + i}`);
     function under(m: MlMap, e: MapMouseEvent, r: number): string[] {
       const box: [[number, number], [number, number]] = [[e.point.x - r, e.point.y - r], [e.point.x + r, e.point.y + r]];
@@ -639,7 +643,7 @@ export function BrowseMap({
     const { map } = ctx;
     const slugs = trips.map((t) => t.slug);
     const only = ["in", ["get", "s"], ["literal", slugs]] as unknown as ExpressionSpecification;
-    for (const src of ["trip-lines", "trip-lines-d"]) {
+    for (const src of ["trip-lines", "trip-lines-gap", "trip-lines-d"]) {
       map.setFilter(`${src}-line`, only);
       map.setFilter(`${src}-hit`, only);
       map.setFilter(`${src}-top`, ["all", ["==", ["get", "p"], 4], only] as unknown as ExpressionSpecification);
