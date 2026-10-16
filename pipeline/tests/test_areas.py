@@ -23,3 +23,20 @@ def test_areas_split_the_whole_country():
     assert covered > 0.95 * shape(COUNTRY).area
     w, s, e, n = by["east"]["properties"]["bbox"]
     assert w == 19.4 and s == 48.9
+
+
+def test_outer_edge_follows_the_border_and_strays_join_a_neighbour():
+    # A country with a notch, and one lone trail of "stray" inside the west's trails.
+    country = {"type": "Polygon", "coordinates": [[[17.0, 48.0], [20.0, 48.0], [20.0, 49.5], [18.6, 49.5],
+                                                   [18.5, 49.2], [18.4, 49.5], [17.0, 49.5], [17.0, 48.0]]]}
+    stray = dict(region="stray", region_name="Zatúlané", path=[[17.452, 48.582], [17.455, 48.583]])
+    trips = [trip("west", "Západ", 17.3, 48.5), trip("east", "Východ", 19.4, 48.9), stray]
+    fc = build(trips, country)
+    by = {f["properties"]["id"]: f for f in fc["features"]}
+    assert set(by) == {"west", "east"}
+    border = shape(country)
+    union = shape(by["west"]["geometry"]).union(shape(by["east"]["geometry"]))
+    # Nothing spills over the border, and the notch is followed, not cut across.
+    assert union.difference(border).area < 1e-6
+    assert not union.contains(Point(18.5, 49.4))
+    assert union.area > 0.95 * border.area
