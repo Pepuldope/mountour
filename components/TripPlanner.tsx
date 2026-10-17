@@ -64,13 +64,9 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
   // parked up the trail, the stretch below is skipped both ways.
   const baseHikeMin = joinedMinutes(trailHikeMin, skip) + (transit || start ? 2 * approachMin : 0);
   const profile = useMemo(() => (fullProfile && skip ? trimProfile(fullProfile, skip.skip_out, skip.skip_back) : fullProfile), [fullProfile, skip]);
-  const { plan, date, time, driveMin, roadMin, driveApprox, driveStatus, rail } = useTripPlan(
-    sun,
-    rideTo,
-    baseHikeMin,
-    transit && stop?.mode === "vlak" ? stop.location : null,
-    noCar
-  );
+  // One plan for the whole page: saving and sharing use the same train times the sun dial shows.
+  const tripPlan = useTripPlan(sun, rideTo, baseHikeMin, transit && stop?.mode === "vlak" ? stop.location : null, noCar);
+  const { plan, date, time, driveMin, roadMin, driveApprox, driveStatus, rail } = tripPlan;
   const [shared, setShared] = useState<SharedPlan | null>(null);
   const weather = useTripWeather(plan, trailStart, goal, profile?.points[0]?.ele ?? null);
 
@@ -204,7 +200,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
         {children}
 
         <section aria-label="Uložiť a zdieľať" className="flex flex-col gap-3">
-          <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} destination={rideTo} baseHikeMin={baseHikeMin} profile={profile} {...trip} />
+          <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} tripPlan={tripPlan} profile={profile} {...trip} />
           <NavHandoff drive={destination} start={start} walkFrom={walkStart} walk={walk} join={trailJoin} />
         </section>
 

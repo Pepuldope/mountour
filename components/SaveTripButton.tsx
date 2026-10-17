@@ -7,20 +7,18 @@ import type { TripProfile } from "@/lib/tripProfile";
 import { offlineMapUrls } from "@/lib/tiles";
 import { longDay } from "@/lib/days";
 import { useSavedTrips } from "@/lib/savedTrips";
-import { useTripPlan } from "@/lib/useTripPlan";
+import type { TripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
 import { track } from "@/lib/analytics";
 import { ShareButton } from "@/components/ShareButton";
 import type { ShareInfo } from "@/components/ShareButton";
-import { useTripAccess } from "@/components/TripAccess";
 
 interface Props extends ShareInfo {
   gpxUrl: string | null;
   bbox: BBox | null;
   sun: LatLng | null;
-  destination: LatLng | null;
-  /** Walking time before the kids pace. */
-  baseHikeMin: number;
+  /** The trip page's plan (with real train times), so the saved and shared day match what the page shows. */
+  tripPlan: TripPlan;
   profile: TripProfile | null;
 }
 
@@ -34,15 +32,29 @@ function loadedAssetUrls(): string[] {
     .filter((u) => new URL(u).pathname.startsWith("/_next/static/"));
 }
 
-/** Ask the service worker to store these URLs. */
-async function cacheTrip(slug: string, urls: string[], onProgress: (done: number, total: number) => void) {
-  const reg = await navigator.serviceWorker.ready;
+/** A few missing map tiles leave gaps; more than this share and the offline map isn't worth the name. */
+const MAX_MISSING_SHARE = 0.1;
+
+/**
+ * Ask the service worker to store these URLs. Fails when one of `required` (the page, the GPX)
+ * or too many of the rest could not be stored, so the page never says "works without signal" wrongly.
+ */
+async function cacheTrip(slug: string, urls: string[], required: string[], onProgress: (done: number, total: number) => void) {
+  // Never resolves when the service worker failed to register: give up instead of saving forever.
+  const reg = await Promise.race([
+    navigator.serviceWorker.ready,
+    new Promise<never>((_, reject) => setTimeout(() => reject(new Error("no service worker")), 10000)),
+  ]);
   const channel = new MessageChannel();
   const done = new Promise<void>((resolve, reject) => {
     channel.port1.onmessage = (event) => {
       const msg = event.data;
       if (msg.type === "PROGRESS") onProgress(msg.done, msg.total);
-      if (msg.type === "DONE") resolve();
+      if (msg.type === "DONE") {
+        const failed: string[] = msg.failed ?? [];
+        if (failed.some((u) => required.includes(u)) || failed.length > MAX_MISSING_SHARE * urls.length) reject(new Error("incomplete"));
+        else resolve();
+      }
     };
     setTimeout(() => reject(new Error("timeout")), 120000);
   });
@@ -60,12 +72,11 @@ const secondary =
  * device and stores it for offline use. Right after saving, one tap offers to
  * send the plan to the group.
  */
-export function SaveTripButton({ gpxUrl, bbox, sun, destination, baseHikeMin, profile, ...trip }: Props) {
+export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }: Props) {
   const { slug, name } = trip;
   const { trips, save, patch, remove } = useSavedTrips();
   const { start } = useUserLocation();
-  const { noCar } = useTripAccess();
-  const { plan, date, time, hikeMin, driveMin, route } = useTripPlan(sun, destination, baseHikeMin, null, noCar);
+  const { plan, date, time, hikeMin, driveMin, route } = tripPlan;
   const [status, setStatus] = useState<Status>("idle");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [askShare, setAskShare] = useState(false);
@@ -99,14 +110,13 @@ export function SaveTripButton({ gpxUrl, bbox, sun, destination, baseHikeMin, pr
       setStatus("idle");
       return;
     }
-    const urls = [
-      `/trasa/${slug}`,
-      ...(gpxUrl ? [gpxUrl] : []),
-      ...loadedAssetUrls(),
-      ...(bbox ? await offlineMapUrls(bbox) : []),
-    ];
+    const required = [`/trasa/${slug}`, ...(gpxUrl ? [gpxUrl] : [])];
+    const mapUrls = bbox ? await offlineMapUrls(bbox) : [];
+    const urls = [...required, ...loadedAssetUrls(), ...mapUrls];
     try {
-      await cacheTrip(slug, urls, (d, t) => setProgress({ done: d, total: t }));
+      await cacheTrip(slug, urls, required, (d, t) => setProgress({ done: d, total: t }));
+      // The map's style couldn't be read (no signal, map service down): the page and GPX are kept, but no map.
+      if (bbox && mapUrls.length === 0) throw new Error("no map");
       patch(slug, { offline: "ok" });
       setStatus("idle");
     } catch {
@@ -115,7 +125,8 @@ export function SaveTripButton({ gpxUrl, bbox, sun, destination, baseHikeMin, pr
     }
   }
 
-  const showButton = !saved || changed || saved.offline === "failed" || status === "saving";
+  // "pending" while this page isn't saving: the save was cut off (page closed, phone asleep).
+  const showButton = !saved || changed || saved.offline === "failed" || saved.offline === "pending" || status === "saving";
   const share = (
     <ShareButton
       {...trip}

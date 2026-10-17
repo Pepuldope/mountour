@@ -46,7 +46,10 @@ self.addEventListener("message", (event) => {
       }
       let done = 0;
       const total = urls.length;
+      // What could not be stored: the page decides whether the copy still works without signal.
+      const failed = [];
       for (const url of urls) {
+        let ok = false;
         try {
           const res = await fetch(url, { mode: "cors" }).catch(() => fetch(url));
           if (res && (res.ok || res.type === "opaque")) {
@@ -54,14 +57,16 @@ self.addEventListener("message", (event) => {
               ? shared
               : cache;
             await target.put(url, res.clone());
+            ok = true;
           }
         } catch {
           // Best-effort: one failed tile shouldn't abort the whole trip cache.
         }
+        if (!ok) failed.push(url);
         done += 1;
         if (port) port.postMessage({ type: "PROGRESS", done, total });
       }
-      if (port) port.postMessage({ type: "DONE", done, total });
+      if (port) port.postMessage({ type: "DONE", done, total, failed });
     })()
   );
 });
@@ -105,9 +110,20 @@ self.addEventListener("fetch", (event) => {
         }
       }
       const cached = await caches.match(key);
+      if (cached && url.origin !== self.location.origin && !isImmutable(url)) {
+        // The map style and TileJSON of a saved trip: they name tile URLs by the map's build
+        // date, which changes weekly. Online, use the current ones but don't overwrite the
+        // saved copy, so offline the map still asks for exactly the tiles that were saved.
+        try {
+          return await fetchWithin(req, FRESH_TIMEOUT_MS);
+        } catch {
+          return cached;
+        }
+      }
       if (cached) {
         // Cache-first for anything we've explicitly stored (tiles, GPX,
-        // the trip page). Refresh in the background when online.
+        // the trip page). Our own files refresh in the background when online.
+        if (url.origin !== self.location.origin) return cached;
         event.waitUntil(
           fetch(req)
             .then(async (res) => {
@@ -128,6 +144,31 @@ self.addEventListener("fetch", (event) => {
     })()
   );
 });
+
+/** Map pieces at fixed URLs (tiles, fonts, sprites): a saved copy never goes stale. */
+function isImmutable(url) {
+  return /\.(pbf|mvt|png|jpg|jpeg|webp)$/.test(url.pathname) || url.pathname.includes("/fonts/");
+}
+
+/** On a weak signal the saved copy is better than waiting: give the network this long. */
+const FRESH_TIMEOUT_MS = 4000;
+
+function fetchWithin(req, ms) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error("timeout")), ms);
+    fetch(req).then(
+      (res) => {
+        clearTimeout(timer);
+        if (res.ok) resolve(res);
+        else reject(new Error(String(res.status)));
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      }
+    );
+  });
+}
 
 async function matchingCacheName(req) {
   const names = await caches.keys();
