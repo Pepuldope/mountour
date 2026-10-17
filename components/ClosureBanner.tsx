@@ -68,12 +68,13 @@ export function ClosureBanner({ closures }: Props) {
   );
 
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[var(--ok-bg)] p-4">
-      <p className="font-semibold">
-        Podľa dostupných údajov v deň výletu ({formatDateSk(checkDate)}) neplatí žiadna uzávierka
-      </p>
+    // Neutral, not green: the date is when the rules were checked, and only seasonal
+    // park closures are tracked, so this is not "verified open".
+    <div className="rounded-xl border border-[var(--border)] bg-[var(--neutral-bg)] p-4">
+      <p className="font-semibold">V deň výletu ({formatDateSk(checkDate)}) nepoznáme uzávierku tohto chodníka</p>
       <p className="text-sm opacity-70">
-        Naposledy overené: {formatDateSk(mostRecentlyVerified.verified_on)}
+        Sledujeme sezónne uzávierky národných parkov, iné (ťažba, opravy) nie. Pravidlá overené{" "}
+        {formatDateSk(mostRecentlyVerified.verified_on)}.
       </p>
     </div>
   );

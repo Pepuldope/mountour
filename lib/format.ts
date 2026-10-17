@@ -61,8 +61,14 @@ export function formatDuration(minutes: number): string {
   return `${h}${NB}h${NB}${m}${NB}min`;
 }
 
+/** "18,4 km": Slovak decimal comma. */
 export function formatDistance(meters: number): string {
-  return `${(meters / 1000).toFixed(1)} km`;
+  return `${(meters / 1000).toFixed(1).replace(".", ",")} km`;
+}
+
+/** A walk to the trail or a stop: "350 m" under a kilometre, "2,4 km" from there. */
+export function formatWalk(meters: number): string {
+  return meters < 1000 ? `${meters} m` : formatDistance(meters);
 }
 
 export function formatTime(date: Date): string {

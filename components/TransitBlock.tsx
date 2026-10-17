@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { DayPlan } from "@/lib/dayPlan";
 import { approachMin } from "@/lib/dayPlan";
-import { formatDuration, formatFromUser, formatTime, stopLabel, TRANSIT_LABEL } from "@/lib/format";
+import { formatDuration, formatFromUser, formatWalk, formatTime, stopLabel, TRANSIT_LABEL } from "@/lib/format";
 import { appleTransitUrl, cpSkBackUrl, cpSkUrl, googleTransitUrl, startTown } from "@/lib/links";
 import type { RailJourney } from "@/lib/rail";
 import { linesAt } from "@/lib/stops";
@@ -50,7 +50,7 @@ export function StopsBlock() {
         </span>
         Zastávky pri trase
         <span className="ml-auto truncate text-sm font-medium text-[var(--muted)]">
-          {stop ? `${stop.join?.walk_m ?? stop.distance_m} m ${stop.join ? "k trase" : "k štartu"}` : "bez zastávky"}
+          {stop ? `${formatWalk(stop.join?.walk_m ?? stop.distance_m)} ${stop.join ? "k trase" : "k štartu"}` : "bez zastávky"}
         </span>
         <span className="text-[var(--muted)] transition-transform group-open:rotate-90">
           <UiIcon name="chev" size={16} />
