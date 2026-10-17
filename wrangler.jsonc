@@ -9,5 +9,9 @@
   "d1_databases": [{ "binding": "VISITS_DB", "database_name": "mountour-visits" }],
   // Finished trip pages (lib/pageCache.ts), so the Worker doesn't draw them on
   // every visit. No id on purpose: the first deploy creates the free KV store.
-  "kv_namespaces": [{ "binding": "PAGE_CACHE" }]
+  "kv_namespaces": [{ "binding": "PAGE_CACHE" }],
+  // New routes per visitor a minute (lib/routeGuard.ts), so a script can't spend
+  // the free OpenRouteService quota for everyone. Free; namespace_id is any number
+  // unique within the account.
+  "ratelimits": [{ "name": "ROUTE_LIMIT", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } }]
 }

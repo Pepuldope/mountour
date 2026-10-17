@@ -1,5 +1,6 @@
 import { roundCoord } from "@/lib/drive";
 import { withEdgeCache } from "@/lib/edgeCache";
+import { OTHER_SITE, fromOtherSite, overRouteLimit } from "@/lib/routeGuard";
 import { RateLimited, driveRoute, finishDrive, simplifyLine, walkRoute } from "@/lib/routing";
 
 /**
@@ -32,6 +33,7 @@ function parsePoint(raw: string | null, round: (n: number) => number): [number, 
 }
 
 export async function GET(req: Request) {
+  if (fromOtherSite(req)) return OTHER_SITE();
   const params = new URL(req.url).searchParams;
   // The visitor's start stays coarse (~100 m, never an exact home); the parking is a public place.
   const from = parsePoint(params.get("from"), roundCoord);
@@ -41,7 +43,12 @@ export async function GET(req: Request) {
   }
 
   // Same places, same answer for everyone: Cloudflare keeps it a day, the router is asked once.
+  // Keyed on the rounded places, so extra query parameters can't skip the cache.
+  const cacheKey = { from: from.join(","), to: to.join(",") };
   return withEdgeCache(req, DAY_S, async () => {
+    // A new route spends router quota: only so many a minute per visitor.
+    const limited = await overRouteLimit(req);
+    if (limited) return limited;
     try {
       const key = process.env.ORS_API_KEY;
       const road = await driveRoute(key, from, to, SNAP_M);
@@ -58,5 +65,5 @@ export async function GET(req: Request) {
       }
       return Response.json({ error: "Trasu autom sa nepodarilo vypočítať." }, { status: 502 });
     }
-  });
+  }, cacheKey);
 }

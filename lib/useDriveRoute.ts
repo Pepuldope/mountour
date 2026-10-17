@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { DriveRoute, TownDrives } from "@/lib/drive";
 import { roundCoord } from "@/lib/drive";
+import { nearestTown } from "@/lib/trips";
 import type { LatLng } from "@/lib/types";
 
 export type DriveStatus = "idle" | "loading" | "ok" | "error";
@@ -81,11 +82,18 @@ export function useDriveRoute(
   return { status, route: data };
 }
 
-/** Drive times from one start to every trip (the home list), via the nearest precomputed town. */
+/**
+ * Drive times from one start to every trip (the home list), via the nearest precomputed town:
+ * its weekly table straight from the static files, so a home visit costs no database reads.
+ */
 export function useTownDrives(from: LatLng | null): { status: DriveStatus; drives: TownDrives | null } {
-  const url = from ? `/api/drive-town?from=${pt(from)}` : null;
-  const { status, data } = useCachedJson<TownDrives>(url);
-  return { status, drives: data };
+  const town = from ? nearestTown({ lat: roundCoord(from.lat), lon: roundCoord(from.lon) }) : null;
+  const { status, data } = useCachedJson<{ minutes: TownDrives["minutes"] }>(town ? `/data/drive/${town.id}.json` : null);
+  const drives = useMemo(
+    () => (town && data ? { town: { name: town.name, lat: town.location.lat, lon: town.location.lon }, minutes: data.minutes } : null),
+    [town, data]
+  );
+  return { status, drives };
 }
 
 /** The walk from where the car stops to the trail start (both public places). */

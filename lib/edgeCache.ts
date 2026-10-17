@@ -13,10 +13,21 @@ function edgeCache(): EdgeCache | null {
   return c?.default ?? null;
 }
 
-/** A cached answer for this GET (by URL), else `compute()`; good answers are kept for `maxAgeS`. */
-export async function withEdgeCache(req: Request, maxAgeS: number, compute: () => Promise<Response>): Promise<Response> {
+/**
+ * A cached answer for this GET, else `compute()`; good answers are kept for `maxAgeS`.
+ * `params` (the parsed, rounded inputs) make the key, so extra or reordered query
+ * parameters can't skip the cache; without them the URL is the key.
+ */
+export async function withEdgeCache(
+  req: Request,
+  maxAgeS: number,
+  compute: () => Promise<Response>,
+  params?: Record<string, string>
+): Promise<Response> {
   const cache = edgeCache();
-  const key = new Request(req.url, { method: "GET" });
+  const url = new URL(req.url);
+  if (params) url.search = new URLSearchParams(params).toString();
+  const key = new Request(url.toString(), { method: "GET" });
   if (cache) {
     try {
       const hit = await cache.match(key);

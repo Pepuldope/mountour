@@ -200,19 +200,36 @@ export async function townDriveMinutes(townSlug: string): Promise<{ minutes: Rec
   return { minutes: await getTownDrives(townSlug), source: "subory" };
 }
 
+// The main trips in id order: thousands of rows read, so read once per Worker instance and
+// kept a few minutes (a weekly reload can change it), not on every request.
+const SLUG_ORDER_MS = 10 * 60 * 1000;
+let slugOrder: { at: number; slugs: Promise<string[]> } | null = null;
+
+function mainSlugsInOrder(db: D1Like): Promise<string[]> {
+  if (!slugOrder || Date.now() - slugOrder.at > SLUG_ORDER_MS) {
+    const slugs = db
+      .prepare("SELECT slug FROM trip WHERE variant_of IS NULL ORDER BY id")
+      .all<{ slug: string }>()
+      .then((r) => r.results.map((t) => t.slug));
+    slugs.catch(() => (slugOrder = null));
+    slugOrder = { at: Date.now(), slugs };
+  }
+  return slugOrder.slugs;
+}
+
 /** Car minutes by slug from the town's row of town_drive (an array over the main trips in id order), or null without one. */
 async function dbTownMinutes(db: D1Like, townSlug: string): Promise<Record<string, number | null> | null> {
-  const [row, trips] = await Promise.all([
+  const [row, slugs] = await Promise.all([
     db
       .prepare("SELECT td.minutes_json FROM town_drive td JOIN town ON town.id = td.town_id WHERE town.slug = ?1")
       .bind(townSlug)
       .first<{ minutes_json: string }>(),
-    db.prepare("SELECT slug FROM trip WHERE variant_of IS NULL ORDER BY id").all<{ slug: string }>(),
+    mainSlugsInOrder(db),
   ]);
   if (!row) return null;
   const minutes = JSON.parse(row.minutes_json) as (number | null)[];
   // One entry per main trip in id order; other routes to a place have no drive times (the home list never shows them).
-  return Object.fromEntries(trips.results.map((t, i) => [t.slug, minutes[i] ?? null]));
+  return Object.fromEntries(slugs.map((slug, i) => [slug, minutes[i] ?? null]));
 }
 
 export interface TripListItem {
