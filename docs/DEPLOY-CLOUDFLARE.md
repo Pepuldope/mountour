@@ -23,10 +23,8 @@ The free Workers plan allows commercial use (Vercel Hobby does not) and gives 10
    | Name | Where | Why |
    |---|---|---|
    | `ORS_API_KEY` | Runtime, as a **Secret** | drive time + route (`/api/drive*`); without it the OSRM demo fallback is used |
-   | `NEXT_PUBLIC_SUPABASE_URL` | **Build** variable | inlined at build time; without it the app reads `data/fixtures/trails.json` |
-   | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | **Build** variable | same |
 
-   The two Supabase variables go away once trail data ships as static files.
+   Trip data ships as static files (`public/data`) plus the D1 database; nothing else is needed.
 
 4. The site appears at `https://mountour.<your-subdomain>.workers.dev`. A custom domain is added later
    under Worker → Settings → Domains & Routes.

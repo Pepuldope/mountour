@@ -29,3 +29,11 @@ def write(root, border):
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(f, separators=(",", ":")) + "\n")
     return len(f["geometry"]["coordinates"][0])
+
+
+def read(root):
+    """Last run's border (simplified) as a shapely Polygon, or None."""
+    from shapely.geometry import shape
+
+    f = Path(root) / "public" / "data" / "map" / "border.json"
+    return shape(json.loads(f.read_text())["geometry"]) if f.exists() else None

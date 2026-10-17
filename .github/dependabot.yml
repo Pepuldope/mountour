@@ -1,0 +1,8 @@
+# Keeps the GitHub Actions in the workflows up to date (they run on a Node runtime GitHub is
+# retiring). npm packages are left to hand upgrades: next is pinned for OpenNext.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

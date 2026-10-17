@@ -1,55 +1,39 @@
 # MounTour
 
-A Slovak day-hike trip planner for Malé Karpaty (maturita school project).
-MounTour plans the *chain* around a hike — where you start, the drive there,
+A Slovak one-day-trip planner for the mountains and nature of all of Slovakia.
+MounTour plans the *chain* around a hike — where you start, the drive or bus there,
 where you park, the trail itself, and getting back before dark — and hands off
-to the tools that already do the rest: Google/Apple Maps for turn-by-turn
-driving, and a GPX file for the hike itself.
+to the tools that already do the rest: Google/Apple Maps or Mapy.com for
+turn-by-turn directions, and a GPX file for the hike itself.
 
 Live at https://mountour.nemcok-peter123.workers.dev (Cloudflare Workers, deployed
-from `main`; setup in `docs/DEPLOY-CLOUDFLARE.md`). The old Vercel address is paused.
-What is built and what was decided along the way is in `docs/ROADMAP.md`.
+from `main`; setup in `docs/DEPLOY-CLOUDFLARE.md`). What is built and what was
+decided along the way is in `docs/ROADMAP.md` (a dated log).
 
-## Locked scope
+## What it does
 
-MounTour does **not** do turn-by-turn navigation. It is deliberately narrow.
-In scope:
-
-- A trail picker (`/`): 10 real Malé Karpaty trails, filtered and sorted live by
-  your time budget, start place (GPS or typed), departure and whether you're
-  going with kids, each with a mini day timeline.
-- A trip sheet (`/trasa/[slug]`): trail summary, a Leaflet map (trail, drive leg,
-  parking, transit stops, POIs), a day timeline with the sunset safety check, a
-  closure banner, parking with a directions deep link, nearby transit stops with
-  a cp.sk link, and a save button.
+- Home (`/`): every place on a map of Slovakia and in a list, ranked by how long it
+  takes from your start (GPS or a town), for the chosen day, with or without kids.
+- A trip page (`/trasa/[slug]`): the route on a map with parking, stops and POIs,
+  the plan for the day with the sunset check, closures and fees, the other routes
+  to the same place (`/trasa/[slug]/cesty` compares them), and a save button.
 - Saved trips (`/ulozene`): per-device, and each saved trip works offline.
 
-The drive leg is the one deliberate exception to "no route-finding" (reopened
-2026-10-07, see roadmap #4): its line and duration come from OpenRouteService,
-but the actual navigation is still handed to Google/Apple Maps.
-
-Explicitly **out of scope** — do not add these without reopening the spec:
-
-- Parking prices or capacity/fullness
-- Multi-day trips or accommodation
-- Community features (reviews, check-ins, comments)
-- Personal records / stats over time
-- User-drawn routes
-- Turn-by-turn navigation or route-finding of any kind
-- User accounts / auth
+Out of scope: turn-by-turn navigation, accounts, reviews or other community
+features, multi-day trips.
 
 ## Stack
 
-- Next.js 16 (App Router) + React 19 + TypeScript + Tailwind 4, deployable on Vercel or
-  Cloudflare Workers (OpenNext)
-- Supabase Postgres + PostGIS for data (see `supabase/migrations/`), read through
-  the `trail_detail` view
-- Leaflet + OpenTopoMap base + Waymarked Trails hiking overlay for the map (no `react-leaflet` — plain
-  `leaflet` used directly from a client component, to keep the dependency
-  surface small)
+- Next.js 16 (App Router) + React 19 + TypeScript + Tailwind 4 on Cloudflare
+  Workers (OpenNext, free plan)
+- Trips: static files built weekly from OpenStreetMap (`pipeline/`,
+  `docs/TRIP-DATA.md`), 2,131 places with 6,463 routes, also loaded into
+  Cloudflare D1 (`pipeline/db.py`)
+- Maps: MapLibre GL with OpenFreeMap tiles and the site's own trail layer
 - A hand-written service worker (`public/sw.js`) for offline trip caching
-- OpenRouteService (`/api/drive`, `/api/drive-matrix`) for drive times, with the
-  public OSRM demo as a keyless fallback; Nominatim for typed start places
+- Drives: OpenRouteService (`/api/drive`, `/api/drive-town` reads the weekly
+  drive table), with the public OSRM demo as a keyless fallback in development
+- Weather: MET Norway (`/api/weather`); sunrise and sunset computed locally
 - No auth, no user accounts
 
 ## Running it
@@ -59,10 +43,8 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`. **No Supabase project is required** — if
-`NEXT_PUBLIC_SUPABASE_URL` and a key are unset (or the project is unreachable),
-the app reads `data/fixtures/trails.json` instead, which holds the same 10
-trails as `supabase/seed.sql`. Without `ORS_API_KEY`, drive times come from the
+Open `http://localhost:3000`. It reads the trip files in `public/data`; no
+database or keys are needed. Without `ORS_API_KEY`, drive times come from the
 public OSRM demo server, which is fine for development but has no SLA.
 
 ```bash
@@ -85,27 +67,13 @@ once CI is green. The weekly trip data is committed by a bot, which GitHub doesn
 run CI for, so `.github/workflows/trips.yml` runs the same tests, the Cloudflare
 build and the page check on the new data before committing it.
 
-## Supabase setup (optional, for real data)
-
-1. Create a Supabase project.
-2. Run the migrations in `supabase/migrations/` in order. They enable PostGIS,
-   create the tables, turn on read-only RLS for the public key, and create the
-   `trail_detail` view that returns each trail already shaped like the app's
-   `TrailDetail` type (geography decoded to `{lat, lon}` in SQL).
-3. Run `supabase/seed.sql` to load the 10 trails.
-4. Copy `.env.local.example` to `.env.local` and fill in the project URL and
-   publishable (or anon) key, plus `ORS_API_KEY` for drive times.
-
-Free-tier Supabase pauses after 7 idle days; the fixture fallback keeps the site
-working when it does, so a paused project is easy to miss.
-
 ## Trail data
 
-`scripts/build_trails.py` builds everything from open data: the on-foot track
-from BRouter, parking, transit stops and POIs from OpenStreetMap (Overpass). It
-overwrites `public/gpx/*.gpx`, `supabase/seed.sql` and `data/fixtures/trails.json`.
-Missing or wrong data is fixed in OSM and the script re-run. Closures are never
-generated; add them by hand with a real source.
+The weekly pipeline (`.github/workflows/trips.yml`, `pipeline/`) builds every trip
+from OpenStreetMap, Copernicus elevation and OSRM, and commits the files; how to
+change rules, names and places is in `docs/TRIP-DATA.md`. Missing or wrong data is
+fixed in OSM or `pipeline/overrides.yaml`. Closures are never generated; they come
+from `data/closure-rules.json`, each with an official source.
 
 ## Search and stats
 
@@ -113,23 +81,14 @@ SEO metadata, sitemap, Umami analytics and the visit-day counter are set up in
 [`docs/ANALYTICS-AND-SEO.md`](docs/ANALYTICS-AND-SEO.md). Non-secret settings (site address,
 Umami ID, contact e-mail) live in `lib/site.ts`.
 
-## Schema decisions (`supabase/migrations/0001_init.sql`)
+## Closure kinds
 
-- All five tables use `geography` (not `geometry`) columns so `ST_Distance`
-  etc. give directly useful metre results without extra SRID juggling.
-- `parking_lot` intentionally has no price/capacity columns — see "locked
-  scope" above.
-- `closure.source_url` and `closure.verified_on` are `NOT NULL` on purpose:
-  closure info must always be attributable and dated. Never add a closure row
-  without a real source.
-- `closure.kind`: `rocna` (recurring annual range, e.g. TANAP 1 Nov-15 Jun,
-  compared by month/day only — see `lib/closures.ts`, which also handles
-  ranges that wrap the new year) vs `jednorazova` (a one-off with real
-  calendar dates).
-- GIST indexes on every geography column (`trail.bbox`, `trailhead.location`,
-  `parking_lot.location`, `poi.location`).
-- The seed has no closure rows yet: no trail has a sourced closure, so every
-  trip page currently shows "Stav chodníka neoverený".
+- `rocna`: a yearly range (e.g. TANAP 1 Nov-31 May), compared by month and day
+  only; `lib/closures.ts` also handles ranges that wrap the new year.
+- `jednorazova`: a one-off with real calendar dates.
+
+Every rule needs a `source_url` and a `verified_on` date: closure info must always
+be attributable and dated.
 
 ## The sunset/safety rule
 
@@ -141,7 +100,7 @@ Bratislava's known sunset times in `lib/sun.test.ts`.
 `lib/dayPlan.ts` lays the trip on the day (drive there, hike, drive back) for
 the chosen date and departure, and judges safety at the **end of the hike**
 (driving home after dark is fine): ok / tesné (<30 min) / po západe / potme.
-The trip page and the home list both render it as a timeline.
+The trip page and the home list both show it.
 
 ## The closure rule (important, do not relax)
 

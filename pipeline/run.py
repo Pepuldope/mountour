@@ -91,6 +91,14 @@ def main(argv=None):
     osm = osm_mod.load(a.pbf, boxes, probe_names, name_keys=section_keys(closures + fees))
     log(f"routes {len(osm.routes)}, ways {len(osm.ways)}, guideposts {len(osm.guideposts)}, parking {len(osm.parking)}, "
         f"stops {len(osm.stops)}, destinations {len(osm.destinations)}, towns {len(osm.towns)}, border {'yes' if osm.border is not None else 'no'}")
+    if osm.border is None and (last := border.read(root)) is not None:
+        # The border relation didn't come through (a broken download, an edit mid-way): without it,
+        # trips abroad and foreign towns would slip in, so keep last week's outline.
+        from shapely.geometry import Point
+
+        log("border not in the OSM file: using last week's public/data/map/border.json")
+        osm.border = last
+        osm.towns = [f for f in osm.towns if last.contains(Point(f.lon, f.lat))]
     graph = Graph(osm)
     log(f"graph: {graph.n} nodes, {len(graph.edge_key)} edges")
     dem = Dem(a.dem) if a.dem else None

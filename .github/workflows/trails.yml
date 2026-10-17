@@ -9,9 +9,6 @@ on:
   schedule:
     - cron: "47 4 * * 1"
   workflow_dispatch:
-  push:
-    branches: ["claude/site-fixes-and-features-**", "claude/project-thread-l7lzd3"]
-    paths: ["pipeline/network.py", "pipeline/stops.py", ".github/workflows/trails.yml"]
 
 permissions:
   contents: write
@@ -65,6 +62,17 @@ jobs:
         run: |
           python -m pipeline.stops --pbf osm/slovakia.osm.pbf --osm-timestamp "$OSM_TS"
           du -sh public/data/stops
+
+      # A bot commit doesn't start the CI workflow but Cloudflare deploys it: run the site's
+      # tests, build and file-count check on the new data first.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run cf:build
+      - run: node scripts/check-page-cache.mjs
 
       - name: Commit the new data
         run: |

@@ -51,4 +51,11 @@ next-env.d.ts
 __pycache__/
 *.pyc
 /pipeline/.cache/
+.venv/
+# weekly pipeline inputs (.github/workflows/trips.yml)
+/osm/
+/osrm/
+/osrm-foot/
+*.osm.pbf
+rail-gtfs.zip
 .proto/

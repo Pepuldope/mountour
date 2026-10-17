@@ -22,3 +22,17 @@ jobs:
       - run: npm run cf:build
       # Every page is built ahead or kept after its first visit, never drawn per visit (error 1102).
       - run: node scripts/check-page-cache.mjs
+
+  # The trip pipeline's tests (pipeline/tests): the trips workflow runs them only when the
+  # pipeline changes, but the site's data and the database load depend on them too.
+  pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: pipeline/requirements.txt
+      - run: pip install -r pipeline/requirements.txt
+      - run: python -m pytest -q pipeline/tests

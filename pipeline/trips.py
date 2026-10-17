@@ -1119,9 +1119,10 @@ def _num(v):
     if v is None:
         return None
     try:
-        return float(str(v).replace(",", ".").split()[0].rstrip("m"))
+        x = float(str(v).replace(",", ".").split()[0].rstrip("m"))
     except (ValueError, IndexError):
         return None
+    return x if math.isfinite(x) else None  # ele=nan, ele=inf
 
 
 def _population(tags):

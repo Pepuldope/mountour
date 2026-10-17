@@ -2,8 +2,8 @@
 
 MounTour's trips are plain static files generated from OpenStreetMap by a weekly
 GitHub Actions job (`.github/workflows/trips.yml`, code in `pipeline/`). Every
-destination near a marked trail that makes a good day trip is kept (about 1,500
-trips; no per-region cap). The trip files are static assets in `public/data`, not
+destination near a marked trail that makes a good day trip is kept (2,131 places
+with 6,463 routes on 2026-10-16; no per-region cap). The trip files are static assets in `public/data`, not
 part of the site's code, so their number never counts against Cloudflare's Worker
 size limit. Types: `lib/tripSchema.ts`. Server reads: `lib/tripFiles.ts` (ASSETS
 binding on Cloudflare, the disk elsewhere). Small bundled data: `lib/trips.ts`.
@@ -85,7 +85,8 @@ only checks the SQL. It skips a load the database already holds (fingerprint in
 `data_version`), since D1's free plan writes 100k rows a day. Otherwise it reads which trips the
 database holds (each trip row carries a `content_hash` of itself and its parking, stops and POIs; ids
 are hashes of the slug, so they stay the same week to week) and writes only the trips and shared rows
-that changed. A full load (the first one, or after a schema change) writes about 55k rows.
+that changed. A full load (the first one, or after a schema change) writes about 65k rows
+(2026-10-16), so at most one full load fits in a day.
 
 ## Licences and credit
 

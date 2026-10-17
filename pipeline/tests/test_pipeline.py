@@ -271,3 +271,22 @@ def test_closure_section(tmp_path):
     # 300 m on the stretch is a shared start, not the closed walk; a goal in the middle of it is
     assert m.match(lats[:15], lons[:15], set(), set()) == []
     assert m.match(lats[:15], lons[:15], set(), set(), (48.186, 17.0875)) == ["usek"]
+
+
+def test_elevation_tags_that_are_not_numbers():
+    from pipeline.trips import _num
+
+    assert _num("2654,5") == 2654.5 and _num("2654m") == 2654.0
+    assert _num("nan") is None and _num("inf") is None and _num("?") is None and _num(None) is None
+
+
+def test_walks_stop_when_osrm_is_down():
+    import pytest
+
+    from pipeline import walks
+
+    path = [[19.0, 49.0, 500], [19.01, 49.0, 520], [19.02, 49.0, 540]]
+    trip = {"slug": "t", "path": path, "route": "okruh", "start": {"location": {"lat": 49.0, "lon": 19.0}},
+            "parking": {"location": {"lat": 49.01, "lon": 19.0}, "walk_m": 1200}}
+    with pytest.raises(RuntimeError):
+        walks.add("http://127.0.0.1:9", [trip], log=lambda *_: None)

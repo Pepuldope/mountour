@@ -15,6 +15,7 @@ site serves (no users or partners yet) plus the walk geometry per trip.
 import argparse
 import hashlib
 import json
+import math
 import sys
 from pathlib import Path
 
@@ -198,9 +199,11 @@ def q(v):
     if isinstance(v, bool):
         return "1" if v else "0"
     if isinstance(v, (int, float)):
+        if not math.isfinite(v):
+            raise ValueError(f"{v} can't go into the database (a NaN or infinite number in the trip data)")
         return repr(v)
     if isinstance(v, (list, dict)):
-        v = json.dumps(v, ensure_ascii=False, separators=(",", ":"))
+        v = json.dumps(v, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
     return "'" + str(v).replace("'", "''") + "'"
 
 
@@ -284,6 +287,8 @@ def build_rows(root=ROOT):
                                 key=lambda t: (t["region"], -t["rank"], t["slug"]))  # run.py's order
     town_list = json.loads((root / "data" / "towns.json").read_text())["towns"]
     closures = json.loads((root / "data" / "closure-rules.json").read_text())["rules"]
+    rule_ids = {r["id"] for r in closures}
+    orphans = set()
     summaries = index["trips"]
     details = {t["slug"]: json.loads((tdir / f"{t['slug']}.json").read_text()) for t in summaries}
 
@@ -339,7 +344,10 @@ def build_rows(root=ROOT):
         for i, p in enumerate(detail.get("pois", [])):
             own["poi"].append((tid, i, p["kind"], p["name"], p["location"]["lat"], p["location"]["lon"], p.get("osm")))
         for rule in summary["closure_rule_ids"]:
-            own["trip_closure"].append((tid, rule))
+            if rule in rule_ids:
+                own["trip_closure"].append((tid, rule))
+            else:  # removed from closure-rules.json since the trips were built: the weekly run drops it too
+                orphans.add(rule)
         for f in summary["fees"]:
             fid = fee_id[fee_key(f)]
             fees.setdefault(fid, (fid, f["kind"], f["text"], f.get("amount_eur"), f["source"], f.get("source_url"), f.get("rule_id")))
@@ -364,6 +372,8 @@ def build_rows(root=ROOT):
     rows["protected_area"] = list(areas.values())
     rows["transit_stop"] = list(stops.values())
     rows["fee"] = list(fees.values())
+    if orphans:
+        print(f"trips name closure rules no longer in closure-rules.json, left out: {', '.join(sorted(orphans))}", file=sys.stderr)
     rows["closure_rule"] = [
         (r["id"], r["reason"], r["kind"], r["starts_on"], r["ends_on"], r["source_url"], r["verified_on"], r.get("applies_to")) for r in closures]
     rows["town"] = [(town_id[t["id"]], t["id"], t["name"], t["location"]["lat"], t["location"]["lon"]) for t in town_list]
@@ -424,8 +434,8 @@ def same(a, b):
     """Rows equal, floats within a hair: SQLite reads 19.914771 back as 19.914771000000002."""
     if a is None or len(a) != len(b):
         return False
-    return all(abs(x - y) < 1e-9 if isinstance(x, float) or isinstance(y, float) else x == y
-               for x, y in zip(a, b))
+    return all(x == y if x is None or y is None or not (isinstance(x, float) or isinstance(y, float))
+               else abs(x - y) < 1e-9 for x, y in zip(a, b))
 
 
 def chunks(ids, n=500):
