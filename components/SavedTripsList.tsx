@@ -23,7 +23,7 @@ export function SavedTripsList() {
   const today = todayIso();
 
   function open(trip: SavedTrip) {
-    update({ date: trip.date, time: trip.time });
+    update({ date: trip.date, time: trip.time, ...(trip.travel ? { travel: trip.travel } : {}), ...(trip.withKids !== undefined ? { withKids: trip.withKids } : {}) });
     if (trip.start) setManualStart(trip.start);
     const href = `/trasa/${trip.slug}`;
     // Offline, a full page load lets the service worker serve the saved copy
@@ -45,12 +45,17 @@ export function SavedTripsList() {
   return (
     <ul className="flex flex-col gap-3">
       {trips.map((trip) => {
+        const transit = trip.transit ?? false;
+        const byTrain = transit && !!trip.fixed;
         const plan = planDay({
           date: trip.date,
           start: trip.time,
           driveMin: trip.driveMin,
           hikeMin: trip.hikeMin,
           location: trip.sun,
+          travelMode: transit ? "transit" : "auto",
+          approx: transit && !trip.fixed,
+          fixed: trip.fixed ?? null,
         });
         const past = trip.date < today;
         const good = plan?.verdict === "ok" || plan?.verdict === "close";
@@ -68,14 +73,14 @@ export function SavedTripsList() {
             </div>
             <p className="text-sm opacity-70">
               {trip.start ? `Štart: ${trip.start.label}` : "Bez miesta štartu"}
-              {trip.driveMin !== null && ` · autom ${formatDuration(trip.driveMin)}`}
+              {trip.driveMin !== null && ` · ${byTrain ? "vlakom" : transit ? "autobusom" : "autom"} ${formatDuration(trip.driveMin)}`}
               {" · "}
               {trip.offline === "ok" ? "dostupné offline" : "len online"}
             </p>
             {plan && (
               <>
                 <div className="-mx-4 overflow-hidden border-y border-[var(--border)]">
-                  <SunArc plan={plan} profile={trip.profile ?? null} sun={trip.sun} hasDrive={trip.driveMin !== null} />
+                  <SunArc plan={plan} profile={trip.profile ?? null} sun={trip.sun} hasDrive={trip.driveMin !== null} byBus={transit} byTrain={byTrain} />
                 </div>
                 <p className="text-sm">
                   <span className="opacity-70">koniec túry {formatTime(plan.hikeEnd)} </span>

@@ -3,6 +3,8 @@
 import { useCallback, useSyncExternalStore } from "react";
 import type { LatLng } from "@/lib/types";
 import type { TripProfile } from "@/lib/tripProfile";
+import type { FixedRide } from "@/lib/dayPlan";
+import type { Travel } from "@/lib/tripSettings";
 
 /**
  * A saved trip: one trail + the day it's planned for, kept on this device only
@@ -15,9 +17,17 @@ export interface SavedTrip {
   date: string;
   time: string;
   start: { lat: number; lon: number; label: string } | null;
-  /** One-way drive at save time; null without a start. */
+  /** One-way ride at save time (drive, or bus/train); null without a start. */
   driveMin: number | null;
+  /** Walking time as planned, kids pace and the walk from the parking or stop included. */
   hikeMin: number;
+  /** The group's travel choice when saved, put back on Otvoriť; missing on trips saved before it existed. */
+  travel?: Travel;
+  /** The plan went by bus or train (the choice, or a start with no parking). */
+  transit?: boolean;
+  withKids?: boolean;
+  /** Real train times the plan used, so the saved day shows the same times as the trip page. */
+  fixed?: FixedRide | null;
   sun: LatLng;
   /** Height profile for the sun-arc picture; missing on trips saved before it existed. */
   profile?: TripProfile | null;

@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { SAFE_MARGIN_MIN, atDayMinute, hikeMinutes, planDay } from "@/lib/dayPlan";
-import type { DayPlan } from "@/lib/dayPlan";
+import type { DayPlan, FixedRide } from "@/lib/dayPlan";
 import { estimateDriveMin, transitMinutes } from "@/lib/drive";
 import type { DriveRoute } from "@/lib/drive";
 import { useDriveRoute } from "@/lib/useDriveRoute";
@@ -30,7 +30,12 @@ export interface TripPlan {
   transit: boolean;
   /** Real train connections, when the stop is a train station and trains make the trip. */
   rail: RailTrip;
+  /** The timetabled train ride the plan uses, if any (saved with the trip so the saved day matches). */
+  fixed: FixedRide | null;
+  withKids: boolean;
   driveStatus: DriveStatus;
+  /** The drive or the train times are still loading: the plan will still change. */
+  loading: boolean;
   route: DriveRoute | null;
 }
 
@@ -82,5 +87,6 @@ export function useTripPlan(
     [date, time, driveMin, hikeMin, sun, transit, approx, rail.day, fixed?.there.leave, fixed?.there.arrive, fixed?.back?.leave, fixed?.back?.home]
   );
 
-  return { plan, date, time, hikeMin, driveMin, roadMin, driveApprox, transit, rail, driveStatus: drive.status, route: drive.route };
+  const loading = drive.status === "loading" || rail.status === "loading";
+  return { plan, date, time, hikeMin, driveMin, roadMin, driveApprox, transit, rail, fixed, withKids, driveStatus: drive.status, loading, route: drive.route };
 }
