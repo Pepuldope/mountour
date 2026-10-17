@@ -14,7 +14,7 @@ const DATA = join(process.cwd(), "public", "data");
 
 /** Read once per server instance by the home page and the sitemap: was 1.6 MB fine, 5.7 MB not. */
 const INDEX_MAX = 2.5 * MB;
-/** Read on every trip page and /api/drive-town request. */
+/** Read on every trip page request (and drive tables by /api/vylety). */
 const PER_REQUEST_MAX = 200 * 1024;
 
 const largest = (dir: string) =>

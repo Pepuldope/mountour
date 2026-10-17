@@ -57,9 +57,9 @@ trip page draws it instead of asking OpenRouteService (40 routes a minute on the
 ## Drive times
 
 `public/data/drive/<town>.json` holds car minutes (and km) by trip slug from one town
-centre to each trip's parking, by OSRM on the same OSM data. `/api/drive-town?from=lat,lon`
-picks the nearest town (`nearestTown()`) and returns its row; the home list adds the
-way from the user's start to that town.
+centre to each trip's parking, by OSRM on the same OSM data. The home page picks the
+nearest town (`nearestTown()`) and fetches that town's file directly (no database
+reads); the home list adds the way from the user's start to that town.
 
 ## Database and API
 
@@ -75,7 +75,7 @@ per town, minutes and km as JSON arrays in trip id order), and
   (an id from `data/towns.json`), drive there and back plus the walk, with
   `closed` for that day.
 - `GET /api/vylety/<slug>`: one trip in the `TripDetail` shape.
-- Trip pages and `/api/drive-town` read the database too.
+- Trip pages read the database too.
 
 Every read falls back to the files in `public/data` when the database is missing or not
 loaded (local dev, Vercel, before the first load); the `zdroj` field and `X-Zdroj`
