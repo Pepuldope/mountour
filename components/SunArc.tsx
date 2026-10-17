@@ -427,7 +427,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
                 <line x1={x1 + 4} x2={x2 - 4} y1={HOR + 3} y2={HOR + 3} stroke="#fff" strokeWidth={1.2} strokeDasharray="4 3.5" opacity={0.9} />
                 {x2 - x1 > 30 && (
                   <g transform={`translate(${mid} ${HOR + 19})`} fill="var(--foreground)" style={{ color: "var(--foreground)" }}>
-                    <g transform="translate(-27 -9) scale(.62)" dangerouslySetInnerHTML={{ __html: UI_ICON.car }} />
+                    <g transform="translate(-27 -9) scale(.62)" dangerouslySetInnerHTML={{ __html: byTrain ? UI_ICON.train : byBus ? UI_ICON.bus : UI_ICON.car }} />
                     <text x={-11} y={2.5} fontSize={13.5} fontWeight={700} className="font-data">
                       {formatDurationShort(Math.round((b - a) / MIN))}
                     </text>

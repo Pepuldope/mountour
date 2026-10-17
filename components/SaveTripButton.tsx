@@ -7,6 +7,7 @@ import type { TripProfile } from "@/lib/tripProfile";
 import { offlineMapUrls } from "@/lib/tiles";
 import { dayAfterNa } from "@/lib/days";
 import { useSavedTrips } from "@/lib/savedTrips";
+import { useTripSettings } from "@/lib/tripSettings";
 import type { TripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
 import { track } from "@/lib/analytics";
@@ -65,7 +66,7 @@ async function cacheTrip(slug: string, urls: string[], required: string[], onPro
 const primary =
   "w-full rounded-xl bg-[var(--accent)] px-4 py-3 text-base font-bold text-[var(--accent-contrast)] disabled:opacity-60";
 const secondary =
-  "rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-4 py-2.5 text-sm font-semibold hover:border-[var(--accent)]";
+  "rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-4 py-2.5 text-sm font-semibold hover:border-[var(--accent)] disabled:opacity-60";
 
 /**
  * "Uložiť výlet" is the main button (PD2): it remembers the trip on this
@@ -76,7 +77,8 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
   const { slug, name } = trip;
   const { trips, save, patch, remove } = useSavedTrips();
   const { start } = useUserLocation();
-  const { plan, date, time, hikeMin, driveMin, route } = tripPlan;
+  const { travel } = useTripSettings();
+  const { plan, date, time, hikeMin, driveMin, route, transit, fixed, withKids, loading } = tripPlan;
   const [status, setStatus] = useState<Status>("idle");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [askShare, setAskShare] = useState(false);
@@ -84,10 +86,16 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
   const saved = trips.find((t) => t.slug === slug) ?? null;
   const changed =
     saved !== null &&
-    (saved.date !== date || saved.time !== time || (saved.start?.label ?? null) !== (start?.label ?? null));
+    (saved.date !== date ||
+      saved.time !== time ||
+      (saved.start?.label ?? null) !== (start?.label ?? null) ||
+      (saved.transit ?? false) !== transit ||
+      (saved.withKids ?? false) !== withKids ||
+      saved.hikeMin !== hikeMin);
 
   async function onSave() {
-    if (!date || !time || !sun) return;
+    // While the drive or the trains load, the plan is still missing them: saving now would keep a wrong day.
+    if (!date || !time || !sun || loading) return;
     setStatus("saving");
     track("trip_saved", { trail: slug });
     save({
@@ -98,6 +106,10 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
       start: start ? { lat: start.lat, lon: start.lon, label: start.label } : null,
       driveMin,
       hikeMin,
+      travel,
+      transit,
+      withKids,
+      fixed,
       sun,
       profile,
       savedAt: new Date().toISOString(),
@@ -130,7 +142,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
   const share = (
     <ShareButton
       {...trip}
-      plan={plan}
+      plan={loading ? null : plan}
       date={date}
       time={time}
       hikeMin={hikeMin}
@@ -142,7 +154,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
   return (
     <div className="flex flex-col gap-3">
       {showButton && (
-        <button type="button" onClick={onSave} disabled={status === "saving" || !date || !time} className={primary}>
+        <button type="button" onClick={onSave} disabled={status === "saving" || !date || !time || loading} className={primary}>
           {status === "saving"
             ? `Ukladám aj na cestu bez signálu... (${progress.done}/${progress.total || "?"})`
             : saved
@@ -164,7 +176,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
           <div className="flex flex-wrap gap-2">
             <ShareButton
               {...trip}
-              plan={plan}
+              plan={loading ? null : plan}
               date={date}
               time={time}
               hikeMin={hikeMin}
