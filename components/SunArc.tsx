@@ -417,7 +417,10 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
           [
             [first, hs],
             [he, home],
-          ].map(([a, b]) => {
+          ]
+            // No way back known (no train back that day): no return pill.
+            .filter(([a, b]) => b > a)
+            .map(([a, b]) => {
             const x1 = scene.x(a);
             const x2 = scene.x(b);
             const mid = (x1 + x2) / 2;

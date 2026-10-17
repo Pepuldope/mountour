@@ -60,9 +60,10 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
   const { destination, rideTo, approachMin, trailStart, transit, noCar, stop, skip, walkFrom, trailJoin } = useTripAccess();
-  // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day;
-  // parked up the trail, the stretch below is skipped both ways.
-  const baseHikeMin = joinedMinutes(trailHikeMin, skip) + (transit || start ? 2 * approachMin : 0);
+  // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day,
+  // with or without a start: the walk back to the car must fit the light too. Parked up the trail, the
+  // stretch below is skipped both ways.
+  const baseHikeMin = joinedMinutes(trailHikeMin, skip) + 2 * approachMin;
   const profile = useMemo(() => (fullProfile && skip ? trimProfile(fullProfile, skip.skip_out, skip.skip_back) : fullProfile), [fullProfile, skip]);
   // One plan for the whole page: saving and sharing use the same train times the sun dial shows.
   const tripPlan = useTripPlan(sun, rideTo, baseHikeMin, transit && stop?.mode === "vlak" ? stop.location : null, noCar);
@@ -177,7 +178,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
             )}
             {profile && <Step label={GOAL_WORDS[profile.goalKind].noun} time={goalTime(plan, profile)} approx />}
             <Step label={transit && stop ? "späť na zastávke" : "späť"} time={plan.hikeEnd} />
-            {hasDrive && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
+            {plan.segments[plan.segments.length - 1].kind === "drive-back" && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
           <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} />
           {transit && <TransitLegs plan={plan} rail={rail} />}
