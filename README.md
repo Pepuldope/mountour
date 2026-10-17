@@ -81,7 +81,9 @@ types (e.g. `LayoutProps`) that plain `tsc` can't see otherwise.
 `.github/workflows/ci.yml` runs lint, typecheck, tests and the Cloudflare build
 (which includes `next build`) on every pull request and every push to `main`.
 Deploys from `main` don't wait for CI, so keep changes on a branch and merge
-once CI is green.
+once CI is green. The weekly trip data is committed by a bot, which GitHub doesn't
+run CI for, so `.github/workflows/trips.yml` runs the same tests, the Cloudflare
+build and the page check on the new data before committing it.
 
 ## Supabase setup (optional, for real data)
 

@@ -240,10 +240,34 @@ def test_helpers():
 
 
 def test_closure_probe():
-    rules = json.loads((ROOT / "data" / "closure-rules.json").read_text())["rules"]
+    rules = [dict(id="probe", selector=dict(bbox=[19.4, 49.05, 20.45, 49.33], probes=["Kriváň", "Nikde"]))]
     m = RuleMatcher(rules, {"Kriváň": [(49.16235, 19.99987)]})
     lats = np.linspace(49.12, 49.1622, 50)
     lons = np.linspace(20.06, 19.9999, 50)
-    assert m.match(lats, lons, set(), set()) == ["tanap-sezonna-uzavera"]
+    assert m.match(lats, lons, set(), set()) == ["probe"]
     assert m.match(lats[:20], lons[:20], set(), set()) == []
-    assert "tanap-sezonna-uzavera" in m.unresolved  # other probe names are missing from this tiny map
+    assert m.unresolved == {"probe": ["Nikde"]}
+
+
+def test_closure_section(tmp_path):
+    """A closed stretch of a marked route between two named places (the TANAP sections)."""
+    from pipeline import osm as osm_mod
+    from pipeline.graph import Graph
+    from pipeline.rules import section_keys
+
+    rules = [dict(id="usek", selector=dict(bbox=[17.0, 48.1, 17.2, 48.3], sections=[
+        dict(ref="0801", **{"from": ["Neznáma", "dolna studnicka"], "to": "Testovací vrch"})])),
+        dict(id="chyba", selector=dict(sections=[dict(ref="0801", **{"from": "Dolná studnička", "to": "Inde"}),
+                                                 dict(ref="9999", **{"from": "Dolná studnička", "to": "Testovací vrch"})]))]
+    f = tmp_path / "t.osm"
+    f.write_text(osm_xml())
+    osm = osm_mod.load(str(f), [[17.0, 48.1, 17.2, 48.3]], name_keys=section_keys(rules))
+    m = RuleMatcher(rules, osm.probes, Graph(osm), osm.named, osm.guideposts)
+    assert [label for label, _ in m.sections["usek"]] == ["0801 Neznáma / dolna studnicka – Testovací vrch"]
+    assert 1000 < m.sections["usek"][0][1] < 1500
+    assert len(m.unresolved["chyba"]) == 2 and "not found" in m.unresolved["chyba"][0]
+    lats, lons = np.linspace(48.190, 48.182, 60), np.linspace(17.082, 17.093, 60)
+    assert m.match(lats, lons, set(), set()) == ["usek"]
+    # 300 m on the stretch is a shared start, not the closed walk; a goal in the middle of it is
+    assert m.match(lats[:15], lons[:15], set(), set()) == []
+    assert m.match(lats[:15], lons[:15], set(), set(), (48.186, 17.0875)) == ["usek"]
