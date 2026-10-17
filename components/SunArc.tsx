@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import type { DayPlan } from "@/lib/dayPlan";
 import { formatDuration, formatDurationShort, formatTime } from "@/lib/format";
@@ -340,6 +340,10 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
     };
   }, []);
 
+  // Ids unique per dial: on /ulozene every card would otherwise paint the first card's sky.
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
+  const skyId = `sunarc-sky-${uid}`;
+  const capId = `sunarc-cap-${uid}`;
   const label = (x: number) => Math.max(34, Math.min(W - 34, x));
   const ground = "Figtree, system-ui, sans-serif";
 
@@ -353,8 +357,13 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
         ref={svgRef}
         viewBox={`0 0 ${W} ${H}`}
         className="block h-auto w-full cursor-ew-resize touch-pan-y"
-        role="img"
-        aria-label={`Slnko vychádza o ${formatTime(plan.sunrise)} a zapadá o ${formatTime(plan.sunset)}. Túra od ${formatTime(plan.hikeStart)} do ${formatTime(plan.hikeEnd)}.`}
+        // A slider for keyboards and screen readers: arrows move through the day, the time and what happens are read out.
+        role="slider"
+        aria-label={`Priebeh dňa. Slnko vychádza o ${formatTime(plan.sunrise)} a zapadá o ${formatTime(plan.sunset)}. Túra od ${formatTime(plan.hikeStart)} do ${formatTime(plan.hikeEnd)}.`}
+        aria-valuemin={slideLo}
+        aria-valuemax={slideHi}
+        aria-valuenow={Math.max(slideLo, Math.min(slideHi, t))}
+        aria-valuetext={`${formatTime(new Date(t))}, ${what}`}
         tabIndex={0}
         onPointerDown={(e) => {
           dragging.current = true;
@@ -370,12 +379,12 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
         }}
       >
         <defs>
-          <linearGradient id="sunarc-sky" x1="0" y1="0" x2="0" y2="1">
+          <linearGradient id={skyId} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stopColor={skyTop} />
             <stop offset="1" stopColor={skyBottom} />
           </linearGradient>
         </defs>
-        <rect x={0} y={0} width={W} height={HOR + 1} fill="url(#sunarc-sky)" />
+        <rect x={0} y={0} width={W} height={HOR + 1} fill={`url(#${skyId})`} />
         <g opacity={alt < -4 ? Math.min(1, (-4 - alt) / 4) : 0}>
           {STARS.map(([x, y]) => (
             <circle key={`${x}-${y}`} cx={x} cy={y} r={1.1} fill="#fff" />
@@ -385,11 +394,11 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
         <g dangerouslySetInnerHTML={{ __html: scene.snow }} />
         {scene.sky && <g dangerouslySetInnerHTML={{ __html: scene.sky.back }} />}
         <path d={scene.ridge} fill="#6d7fa6" opacity={0.18} />
-        <clipPath id="sunarc-cap">
+        <clipPath id={capId}>
           <rect x={0} y={0} width={W} height={scene.capY} />
         </clipPath>
         <path d={scene.hill} fill={land.hill} />
-        {(scene.season === "zima" || scene.season === "jar") && <path d={scene.hill} fill="#fff" clipPath="url(#sunarc-cap)" />}
+        {(scene.season === "zima" || scene.season === "jar") && <path d={scene.hill} fill="#fff" clipPath={`url(#${capId})`} />}
         <rect x={0} y={HOR} width={W} height={H - HOR} fill="var(--card-bg)" />
         <rect x={0} y={HOR} width={W} height={9} fill={land.front} />
         <g dangerouslySetInnerHTML={{ __html: scene.deco }} />
@@ -566,7 +575,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, weather = 
         />
       </div>
 
-      <div className="flex justify-between gap-3 border-t border-[var(--border)] px-4 pt-2.5 pb-3.5 text-sm" aria-live="polite">
+      <div className="flex justify-between gap-3 border-t border-[var(--border)] px-4 pt-2.5 pb-3.5 text-sm">
         <div>
           <div className="font-data text-[22px] leading-none">{formatTime(new Date(t))}</div>
           <div className="font-semibold">{what}</div>

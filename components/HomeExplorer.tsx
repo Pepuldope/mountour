@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { startTransition, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { startTransition, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { Difficulty, LatLng, TrailDetail } from "@/lib/types";
 import { defaultApproachMin, driveDestination, nearestStop, primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { activeClosures } from "@/lib/closures";
@@ -83,21 +83,36 @@ function useIsDesktop(): boolean {
   );
 }
 
+/**
+ * The whole list (1.7 MB) is fetched and built once per visit, not on every
+ * return to the home page; a failed fetch (offline) is tried again next time.
+ */
+let allTrailsP: Promise<TrailDetail[] | null> | null = null;
+let allTrailsDone: TrailDetail[] | null = null;
+function loadAllTrails(): Promise<TrailDetail[] | null> {
+  allTrailsP ??= fetch("/data/trips/list.json")
+    .then((r) => (r.ok ? (r.json() as Promise<TripList>) : null))
+    .then((list) => {
+      if (!list) return null;
+      const trips = list.trips.map(summaryFromList).sort((a, b) => b.rank - a.rank);
+      return (allTrailsDone = trips.map(trailDetailFrom));
+    })
+    .catch(() => null)
+    .then((trips) => {
+      if (!trips) allTrailsP = null;
+      return trips;
+    });
+  return allTrailsP;
+}
+
 /** Every trip from public/data/trips/list.json, best known first; `initial` until it has loaded. */
 function useAllTrails(initial: TrailDetail[]): TrailDetail[] {
-  const [all, setAll] = useState<TrailDetail[] | null>(null);
+  const [all, setAll] = useState<TrailDetail[] | null>(allTrailsDone);
   useEffect(() => {
+    if (allTrailsDone) return;
     let cancelled = false;
-    fetch("/data/trips/list.json")
-      .then((r) => (r.ok ? (r.json() as Promise<TripList>) : null))
-      .then((list) => {
-        if (cancelled || !list) return;
-        const trips = list.trips.map(summaryFromList).sort((a, b) => b.rank - a.rank);
-        setAll(trips.map(trailDetailFrom));
-      })
-      .catch(() => {
-        // Offline: the trips rendered with the page are still there.
-      });
+    // Offline: the trips rendered with the page are still there.
+    loadAllTrails().then((trips) => !cancelled && trips && setAll(trips));
     return () => {
       cancelled = true;
     };
@@ -328,7 +343,11 @@ export function HomeExplorer({ trails: initial }: Props) {
   const bySlug = useMemo(() => new Map(listedAll.map((i) => [i.detail.trail.slug, i])), [listedAll]);
 
   // The list: what the search finds anywhere, else the trips on the map and a little around it.
-  const words = useMemo(() => plain(query).split(/\s+/).filter(Boolean), [query]);
+  // Typing stays quick: the list follows a beat behind the keys on slow phones.
+  const deferredQuery = useDeferredValue(query);
+  const words = useMemo(() => plain(deferredQuery).split(/\s+/).filter(Boolean), [deferredQuery]);
+  // Each trip's searchable name, made once per list rather than on every key press.
+  const nameKeys = useMemo(() => new Map(trails.map((d) => [d, plain(`${d.trail.name} ${d.trail.region_name ?? ""}`)])), [trails]);
   // Places on and by the trips (starts, car parks, stops, huts): fetched once someone starts searching.
   const wantsPlaces = searchOpen || words.length > 0;
   useEffect(() => {
@@ -347,10 +366,10 @@ export function HomeExplorer({ trails: initial }: Props) {
   const placeResults = useMemo(() => (placeIndex ? searchPlaces(placeIndex, words) : null), [placeIndex, words]);
   const nameMatches = useCallback(
     (d: TrailDetail) => {
-      const key = plain(`${d.trail.name} ${d.trail.region_name ?? ""}`);
+      const key = nameKeys.get(d) ?? plain(`${d.trail.name} ${d.trail.region_name ?? ""}`);
       return words.every((w) => key.includes(w));
     },
-    [words]
+    [words, nameKeys]
   );
   // A trip matches by its name, or by a place it starts, passes or ends at (and the places right by it).
   const matches = useCallback(
@@ -782,8 +801,9 @@ export function HomeExplorer({ trails: initial }: Props) {
   };
 
   const list = (
-    <section className="flex flex-col gap-3" aria-live="polite">
-      <div className="flex flex-col">
+    <section className="flex flex-col gap-3">
+      {/* Only the heading is read out when the list changes, not every card in it. */}
+      <div className="flex flex-col" aria-live="polite">
         <h2 className="text-base font-bold">{heading}</h2>
       </div>
 
