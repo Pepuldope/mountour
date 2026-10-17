@@ -39,7 +39,7 @@ jobs:
           echo "OSM_TS=$TS" >> "$GITHUB_ENV"
 
       - name: Cache Wikipedia page views (refreshed monthly)
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: pipeline/.cache/pageviews.json
           key: pageviews-${{ github.run_id }}

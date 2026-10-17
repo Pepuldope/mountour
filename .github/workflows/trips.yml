@@ -67,7 +67,7 @@ jobs:
           echo "OSM data timestamp: $TS"
 
       - name: Cache elevation tiles
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: pipeline/.cache/dem
           key: dem-v1-${{ hashFiles('pipeline/config.yaml') }}
