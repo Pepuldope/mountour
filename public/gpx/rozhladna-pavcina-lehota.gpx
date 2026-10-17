@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Rozhľadňa Pavčina Lehota</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Rozhľadňa Pavčina Lehota</name><trkseg>
+  <trk><name>Rozhľadňa Pavčina Lehota</name><desc>rozhladna-pavcina-lehota</desc><trkseg>
     <trkpt lat="49.026588" lon="19.545168"><ele>691</ele></trkpt>
     <trkpt lat="49.026280" lon="19.545149"><ele>693</ele></trkpt>
     <trkpt lat="49.025363" lon="19.545322"><ele>700</ele></trkpt>
@@ -51,5 +51,28 @@
     <trkpt lat="49.025363" lon="19.545322"><ele>700</ele></trkpt>
     <trkpt lat="49.026280" lon="19.545149"><ele>693</ele></trkpt>
     <trkpt lat="49.026588" lon="19.545168"><ele>691</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Rozhľadňa Pavčina Lehota</name><desc>rozhladna-pavcina-lehota-od-auta</desc><trkseg>
+    <trkpt lat="49.026336" lon="19.562375"><ele>752</ele></trkpt>
+    <trkpt lat="49.025809" lon="19.562144"><ele>757</ele></trkpt>
+    <trkpt lat="49.025733" lon="19.561945"><ele>757</ele></trkpt>
+    <trkpt lat="49.025697" lon="19.561548"><ele>759</ele></trkpt>
+    <trkpt lat="49.025694" lon="19.561041"><ele>765</ele></trkpt>
+    <trkpt lat="49.025652" lon="19.560727"><ele>767</ele></trkpt>
+    <trkpt lat="49.025554" lon="19.560339"><ele>769</ele></trkpt>
+    <trkpt lat="49.025467" lon="19.559737"><ele>773</ele></trkpt>
+    <trkpt lat="49.025266" lon="19.559253"><ele>775</ele></trkpt>
+    <trkpt lat="49.025067" lon="19.558323"><ele>781</ele></trkpt>
+    <trkpt lat="49.025107" lon="19.557506"><ele>780</ele></trkpt>
+    <trkpt lat="49.025067" lon="19.558323"><ele>781</ele></trkpt>
+    <trkpt lat="49.025266" lon="19.559253"><ele>775</ele></trkpt>
+    <trkpt lat="49.025467" lon="19.559737"><ele>773</ele></trkpt>
+    <trkpt lat="49.025554" lon="19.560339"><ele>769</ele></trkpt>
+    <trkpt lat="49.025652" lon="19.560727"><ele>767</ele></trkpt>
+    <trkpt lat="49.025694" lon="19.561041"><ele>765</ele></trkpt>
+    <trkpt lat="49.025697" lon="19.561548"><ele>759</ele></trkpt>
+    <trkpt lat="49.025733" lon="19.561945"><ele>757</ele></trkpt>
+    <trkpt lat="49.025809" lon="19.562144"><ele>757</ele></trkpt>
+    <trkpt lat="49.026336" lon="19.562375"><ele>752</ele></trkpt>
   </trkseg></trk>
 </gpx>

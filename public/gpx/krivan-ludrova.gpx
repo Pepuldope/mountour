@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Kriváň (Ludrová)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kriváň (Ludrová)</name><trkseg>
+  <trk><name>Kriváň (Ludrová)</name><desc>krivan-ludrova</desc><trkseg>
     <trkpt lat="49.035662" lon="19.334069"><ele>587</ele></trkpt>
     <trkpt lat="49.035252" lon="19.333869"><ele>588</ele></trkpt>
     <trkpt lat="49.034864" lon="19.333479"><ele>590</ele></trkpt>

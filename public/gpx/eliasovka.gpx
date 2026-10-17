@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Eliášovka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Eliášovka</name><trkseg>
+  <trk><name>Eliášovka</name><desc>eliasovka</desc><trkseg>
     <trkpt lat="49.391127" lon="20.645628"><ele>830</ele></trkpt>
     <trkpt lat="49.391206" lon="20.645226"><ele>830</ele></trkpt>
     <trkpt lat="49.391297" lon="20.645167"><ele>830</ele></trkpt>

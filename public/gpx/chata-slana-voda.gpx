@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Chata Slaná voda</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Chata Slaná voda</name><trkseg>
+  <trk><name>Chata Slaná voda</name><desc>chata-slana-voda</desc><trkseg>
     <trkpt lat="49.507096" lon="19.461111"><ele>676</ele></trkpt>
     <trkpt lat="49.508221" lon="19.463351"><ele>686</ele></trkpt>
     <trkpt lat="49.510016" lon="19.466759"><ele>705</ele></trkpt>

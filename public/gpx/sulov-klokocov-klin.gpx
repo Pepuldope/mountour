@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Súľov</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Súľov</name><trkseg>
+  <trk><name>Súľov</name><desc>sulov-klokocov-klin</desc><trkseg>
     <trkpt lat="49.475490" lon="18.563218"><ele>597</ele></trkpt>
     <trkpt lat="49.475820" lon="18.563252"><ele>597</ele></trkpt>
     <trkpt lat="49.476147" lon="18.562935"><ele>599</ele></trkpt>

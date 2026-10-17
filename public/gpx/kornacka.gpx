@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Kornačka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kornačka</name><trkseg>
+  <trk><name>Kornačka</name><desc>kornacka</desc><trkseg>
     <trkpt lat="48.989683" lon="18.095944"><ele>261</ele></trkpt>
     <trkpt lat="48.989741" lon="18.096021"><ele>260</ele></trkpt>
     <trkpt lat="48.989826" lon="18.095959"><ele>261</ele></trkpt>

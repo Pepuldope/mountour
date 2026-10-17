@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Bratislavský Drieňovec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Bratislavský Drieňovec</name><trkseg>
+  <trk><name>Bratislavský Drieňovec</name><desc>bratislavsky-drienovec</desc><trkseg>
     <trkpt lat="48.188468" lon="17.103992"><ele>348</ele></trkpt>
     <trkpt lat="48.188501" lon="17.103897"><ele>348</ele></trkpt>
     <trkpt lat="48.188916" lon="17.104605"><ele>347</ele></trkpt>

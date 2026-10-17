@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Horný Necpalský vodopád</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Horný Necpalský vodopád</name><trkseg>
+  <trk><name>Horný Necpalský vodopád</name><desc>horny-necpalsky-vodopad</desc><trkseg>
     <trkpt lat="48.985506" lon="18.967503"><ele>503</ele></trkpt>
     <trkpt lat="48.985425" lon="18.967678"><ele>502</ele></trkpt>
     <trkpt lat="48.985409" lon="18.967798"><ele>502</ele></trkpt>

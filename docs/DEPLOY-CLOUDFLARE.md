@@ -53,9 +53,10 @@ Local runtime secrets go in `.dev.vars` (git-ignored), e.g. `ORS_API_KEY=...`.
   `open-next.config.ts`). The first deploy with that binding creates the KV store by itself. CI runs
   `scripts/check-page-cache.mjs` after the build and fails on a page that would be drawn per visit,
   uses `revalidate`, a trip page not built ahead, or more files than the free plan's 20,000.
-- Free plan: at most 20,000 files per deploy (`public/`, the built pages and the code). The trip
-  files, GPX files and trip pages are three per trip, so ~16,200 files for 5,266 trips (2026-10-15).
-  Past the limit, build only the main routes ahead in `app/trasa/[slug]/page.tsx`.
+- Free plan: at most 20,000 files per deploy (`public/`, the built pages and the code). Each route
+  has a trip file and a built page, and each place one GPX file holding all its routes, so ~15,500
+  files for 6,463 routes at 2,131 places (2026-10-17; a GPX per route had reached 19,812). The check
+  warns over 19,000. Past the limit, build only the main routes ahead in `app/trasa/[slug]/page.tsx`.
 - KV's free plan writes 1,000 entries a day. A deploy starts the cache fresh; past the limit, those
   pages are drawn per visit again until the next day.
 - `@opennextjs/cloudflare` requires Next.js ≥ 16.3.8, so `next` is pinned there.

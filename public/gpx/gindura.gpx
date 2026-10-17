@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Gindura</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Gindura</name><trkseg>
+  <trk><name>Gindura</name><desc>gindura</desc><trkseg>
     <trkpt lat="48.836598" lon="20.046081"><ele>711</ele></trkpt>
     <trkpt lat="48.835739" lon="20.045351"><ele>716</ele></trkpt>
     <trkpt lat="48.835557" lon="20.045049"><ele>719</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Noviny</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Noviny</name><trkseg>
+  <trk><name>Noviny</name><desc>noviny</desc><trkseg>
     <trkpt lat="49.216198" lon="19.163527"><ele>504</ele></trkpt>
     <trkpt lat="49.216267" lon="19.163087"><ele>502</ele></trkpt>
     <trkpt lat="49.216257" lon="19.162782"><ele>503</ele></trkpt>

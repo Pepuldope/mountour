@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Kopec (Košariská)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kopec (Košariská)</name><trkseg>
+  <trk><name>Kopec (Košariská)</name><desc>kopec-dolne-kosariska</desc><trkseg>
     <trkpt lat="48.670308" lon="17.597080"><ele>349</ele></trkpt>
     <trkpt lat="48.669968" lon="17.597183"><ele>352</ele></trkpt>
     <trkpt lat="48.669787" lon="17.597369"><ele>354</ele></trkpt>

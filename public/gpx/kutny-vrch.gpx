@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Kútny vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kútny vrch</name><trkseg>
+  <trk><name>Kútny vrch</name><desc>kutny-vrch</desc><trkseg>
     <trkpt lat="49.122773" lon="19.194552"><ele>453</ele></trkpt>
     <trkpt lat="49.122701" lon="19.194328"><ele>452</ele></trkpt>
     <trkpt lat="49.122543" lon="19.194318"><ele>449</ele></trkpt>

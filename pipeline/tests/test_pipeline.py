@@ -164,7 +164,11 @@ def test_end_to_end(tmp_path):
     assert other["rank"] == main["rank"] and other["slug"] != main["slug"]
     assert alt["slug"].endswith("-ina-cesta") and alt["variant_of"] == main["slug"] and alt["marking"] == ["green"]
     assert len({t["route_label"] for t in peak}) == 3
-    assert (tmp_path / "public" / "gpx" / f"{other['slug']}.gpx").exists()
+    # one GPX per place: the main route's track first, each route's track tagged with its slug
+    assert not (tmp_path / "public" / "gpx" / f"{other['slug']}.gpx").exists()
+    assert main["gpx_url"] == f"/gpx/{main['slug']}.gpx" and other["gpx_url"] == f"/gpx/{main['slug']}.gpx#{other['slug']}"
+    gpx = (tmp_path / "public" / "gpx" / f"{main['slug']}.gpx").read_text()
+    assert gpx.count("<trk>") == 3 and gpx.index(f"<desc>{main['slug']}</desc>") < gpx.index(f"<desc>{other['slug']}</desc>")
     # the castle: the hike from the village is the main route, the car park by the walls a short option
     castle = [t for t in index["trips"] + variants if t["destination"]["name"] == "Hrad Skúška"]
     c_main = next(t for t in castle if not t.get("variant_of"))

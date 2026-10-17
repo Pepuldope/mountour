@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Siná</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Siná</name><trkseg>
+  <trk><name>Siná</name><desc>sina</desc><trkseg>
     <trkpt lat="48.981258" lon="19.592461"><ele>929</ele></trkpt>
     <trkpt lat="48.981256" lon="19.592792"><ele>932</ele></trkpt>
     <trkpt lat="48.981523" lon="19.592789"><ele>930</ele></trkpt>

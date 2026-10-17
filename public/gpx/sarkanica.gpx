@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Šarkanica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Šarkanica</name><trkseg>
+  <trk><name>Šarkanica</name><desc>sarkanica</desc><trkseg>
     <trkpt lat="48.691907" lon="19.933107"><ele>433</ele></trkpt>
     <trkpt lat="48.692412" lon="19.933176"><ele>434</ele></trkpt>
     <trkpt lat="48.692726" lon="19.933042"><ele>434</ele></trkpt>

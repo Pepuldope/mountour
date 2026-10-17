@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Mládky</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Mládky</name><trkseg>
+  <trk><name>Mládky</name><desc>mladky</desc><trkseg>
     <trkpt lat="49.133146" lon="19.789485"><ele>907</ele></trkpt>
     <trkpt lat="49.133561" lon="19.788682"><ele>925</ele></trkpt>
     <trkpt lat="49.133764" lon="19.787965"><ele>943</ele></trkpt>

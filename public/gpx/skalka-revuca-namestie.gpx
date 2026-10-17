@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Skalka (Revúca)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Skalka (Revúca)</name><trkseg>
+  <trk><name>Skalka (Revúca)</name><desc>skalka-revuca-namestie</desc><trkseg>
     <trkpt lat="48.622831" lon="20.099457"><ele>346</ele></trkpt>
     <trkpt lat="48.622803" lon="20.099454"><ele>346</ele></trkpt>
     <trkpt lat="48.622806" lon="20.099391"><ele>345</ele></trkpt>

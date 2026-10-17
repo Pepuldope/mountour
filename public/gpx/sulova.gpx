@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Súľová</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Súľová</name><trkseg>
+  <trk><name>Súľová</name><desc>sulova</desc><trkseg>
     <trkpt lat="48.786158" lon="20.597979"><ele>632</ele></trkpt>
     <trkpt lat="48.786097" lon="20.597897"><ele>633</ele></trkpt>
     <trkpt lat="48.786043" lon="20.597659"><ele>633</ele></trkpt>

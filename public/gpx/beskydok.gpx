@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Beskydok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Beskydok</name><trkseg>
+  <trk><name>Beskydok</name><desc>beskydok</desc><trkseg>
     <trkpt lat="49.540929" lon="19.424299"><ele>704</ele></trkpt>
     <trkpt lat="49.547417" lon="19.419456"><ele>714</ele></trkpt>
     <trkpt lat="49.548481" lon="19.418426"><ele>716</ele></trkpt>

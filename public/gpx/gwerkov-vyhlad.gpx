@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Gwerkov výhľad</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Gwerkov výhľad</name><trkseg>
+  <trk><name>Gwerkov výhľad</name><desc>gwerkov-vyhlad</desc><trkseg>
     <trkpt lat="48.403695" lon="18.751801"><ele>614</ele></trkpt>
     <trkpt lat="48.403422" lon="18.750544"><ele>607</ele></trkpt>
     <trkpt lat="48.403258" lon="18.750248"><ele>605</ele></trkpt>

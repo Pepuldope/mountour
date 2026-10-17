@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Hájnica (U Šurabov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hájnica (U Šurabov)</name><trkseg>
+  <trk><name>Hájnica (U Šurabov)</name><desc>hajnica</desc><trkseg>
     <trkpt lat="49.392239" lon="18.862330"><ele>406</ele></trkpt>
     <trkpt lat="49.392257" lon="18.861955"><ele>407</ele></trkpt>
     <trkpt lat="49.392222" lon="18.861732"><ele>409</ele></trkpt>

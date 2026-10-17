@@ -1,9 +1,16 @@
 import type { LatLng } from "@/lib/types";
 
-/** Minimal GPX track-point parser — no dependency, just DOMParser. */
-export function parseGpxTrack(gpxText: string): LatLng[] {
+/**
+ * Minimal GPX track-point parser — no dependency, just DOMParser. A place's file holds a track per
+ * route (pipeline/publish.py), each with its trip's slug in <desc>: `track` picks one, else the
+ * first (the main route) is used.
+ */
+export function parseGpxTrack(gpxText: string, track?: string): LatLng[] {
   const doc = new DOMParser().parseFromString(gpxText, "application/xml");
-  const points = Array.from(doc.getElementsByTagName("trkpt"));
+  const tracks = Array.from(doc.getElementsByTagName("trk"));
+  const trk =
+    (track && tracks.find((t) => t.getElementsByTagName("desc")[0]?.textContent === track)) || tracks[0] || doc;
+  const points = Array.from(trk.getElementsByTagName("trkpt"));
   return points
     .map((pt) => {
       const lat = parseFloat(pt.getAttribute("lat") ?? "");
@@ -15,13 +22,13 @@ export function parseGpxTrack(gpxText: string): LatLng[] {
 
 const trackCache = new Map<string, Promise<LatLng[]>>();
 
-/** Fetches + parses a GPX file once per page load; resolves to [] on any failure. */
+/** Fetches + parses a GPX track ("/gpx/<place>.gpx#<slug>") once per page load; resolves to [] on any failure. */
 export function fetchTrack(gpxUrl: string): Promise<LatLng[]> {
   let p = trackCache.get(gpxUrl);
   if (!p) {
     p = fetch(gpxUrl)
       .then((res) => (res.ok ? res.text() : ""))
-      .then((text) => (text ? parseGpxTrack(text) : []))
+      .then((text) => (text ? parseGpxTrack(text, decodeURIComponent(new URL(gpxUrl, "http://x").hash.slice(1))) : []))
       .catch(() => []);
     trackCache.set(gpxUrl, p);
     // Don't pin failures (offline / not cached yet): allow a retry next time.

@@ -31,15 +31,27 @@ def write(root, trips, dem, drive, slugs, report, osm_data_at, now=None):
     for f in tdir.glob("*.json"):
         if f.name not in ("index.json", "list.json") and f.stem not in keep:
             f.unlink()
+    place_files = {t.get("variant_of") or t["slug"] for t in trips}
     for f in gdir.glob("*.gpx"):
-        if f.stem not in keep:
+        if f.stem not in place_files:
             f.unlink()
 
     _attach_routes(trips)
+    # One GPX file per place, the main route first, then its other routes, each track tagged with
+    # its trip's slug: Cloudflare's free plan takes at most 20,000 files per deploy, and a file per
+    # route (a third of them) pushed the deploy to its edge. The trip points at its own track with
+    # "#<slug>" (lib/gpx.ts); a reader that ignores it gets the main route.
+    places = {}
+    for t in trips:
+        places.setdefault(t.get("variant_of") or t["slug"], []).append(t)
+    for place, group in places.items():
+        group.sort(key=lambda t: bool(t.get("variant_of")))
+        tracks = [(t["slug"], t["name"], t.pop("_gpx")) for t in group]
+        (gdir / f"{place}.gpx").write_text(_gpx(group[0]["name"], tracks, dem))
+        for t in group:
+            t["gpx_url"] = f"/gpx/{place}.gpx" + (f"#{t['slug']}" if t.get("variant_of") else "")
     summaries = []
     for t in trips:
-        gpx = t.pop("_gpx")
-        (gdir / f"{t['slug']}.gpx").write_text(_gpx(t["name"], gpx, dem))
         _dump(tdir / f"{t['slug']}.json", t)
         summaries.append(_without_walks({k: v for k, v in t.items() if k not in DETAIL_ONLY}))
 
@@ -123,23 +135,26 @@ def _list_item(summary):
     return t
 
 
-def _gpx(name, g, dem):
-    lat, lon, _ele, _rt, turn, loop = g
-    lat, lon = np.asarray(lat), np.asarray(lon)
-    if not loop:
-        lat = np.concatenate([lat[: turn + 1], lat[:turn][::-1]])
-        lon = np.concatenate([lon[: turn + 1], lon[:turn][::-1]])
-    keep = rdp_indices(LocalProjection().xy(lat, lon), 2.0)
-    lat, lon = lat[keep], lon[keep]
-    ele = dem.sample(lat, lon) if dem else np.full(len(lat), np.nan)
+def _gpx(name, tracks, dem):
+    """GPX with one track per (slug, name, line) in tracks; the slug goes in the track's <desc>."""
     n = escape(name)
     out = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">',
-           f'  <metadata><name>{n}</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>',
-           f"  <trk><name>{n}</name><trkseg>"]
-    for la, lo, e in zip(lat, lon, ele):
-        out.append(f'    <trkpt lat="{la:.6f}" lon="{lo:.6f}">' + (f"<ele>{e:.0f}</ele>" if np.isfinite(e) else "") + "</trkpt>")
-    out += ["  </trkseg></trk>", "</gpx>", ""]
+           f'  <metadata><name>{n}</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>']
+    for slug, tname, g in tracks:
+        lat, lon, _ele, _rt, turn, loop = g
+        lat, lon = np.asarray(lat), np.asarray(lon)
+        if not loop:
+            lat = np.concatenate([lat[: turn + 1], lat[:turn][::-1]])
+            lon = np.concatenate([lon[: turn + 1], lon[:turn][::-1]])
+        keep = rdp_indices(LocalProjection().xy(lat, lon), 2.0)
+        lat, lon = lat[keep], lon[keep]
+        ele = dem.sample(lat, lon) if dem else np.full(len(lat), np.nan)
+        out.append(f"  <trk><name>{escape(tname)}</name><desc>{escape(slug)}</desc><trkseg>")
+        for la, lo, e in zip(lat, lon, ele):
+            out.append(f'    <trkpt lat="{la:.6f}" lon="{lo:.6f}">' + (f"<ele>{e:.0f}</ele>" if np.isfinite(e) else "") + "</trkpt>")
+        out.append("  </trkseg></trk>")
+    out += ["</gpx>", ""]
     return "\n".join(out)
 
 

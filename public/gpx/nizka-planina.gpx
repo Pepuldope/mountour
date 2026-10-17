@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Nízka planina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Nízka planina</name><trkseg>
+  <trk><name>Nízka planina</name><desc>nizka-planina</desc><trkseg>
     <trkpt lat="48.548483" lon="20.405295"><ele>215</ele></trkpt>
     <trkpt lat="48.548561" lon="20.405303"><ele>215</ele></trkpt>
     <trkpt lat="48.548563" lon="20.405129"><ele>215</ele></trkpt>

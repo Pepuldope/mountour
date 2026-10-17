@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Oselný vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Oselný vrch</name><trkseg>
+  <trk><name>Oselný vrch</name><desc>oselny-vrch</desc><trkseg>
     <trkpt lat="48.592182" lon="18.454955"><ele>253</ele></trkpt>
     <trkpt lat="48.592230" lon="18.454815"><ele>253</ele></trkpt>
     <trkpt lat="48.591769" lon="18.455273"><ele>261</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Butkov</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Butkov</name><trkseg>
+  <trk><name>Butkov</name><desc>butkov</desc><trkseg>
     <trkpt lat="48.978315" lon="18.316083"><ele>326</ele></trkpt>
     <trkpt lat="48.979316" lon="18.316404"><ele>330</ele></trkpt>
     <trkpt lat="48.979582" lon="18.316433"><ele>332</ele></trkpt>

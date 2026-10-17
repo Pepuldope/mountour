@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Hradská</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hradská</name><trkseg>
+  <trk><name>Hradská</name><desc>hradska</desc><trkseg>
     <trkpt lat="48.768380" lon="21.783268"><ele>123</ele></trkpt>
     <trkpt lat="48.768315" lon="21.783492"><ele>124</ele></trkpt>
     <trkpt lat="48.767663" lon="21.784366"><ele>128</ele></trkpt>

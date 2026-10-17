@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Kvetnicové pleso</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kvetnicové pleso</name><trkseg>
+  <trk><name>Kvetnicové pleso</name><desc>kvetnicove-pleso</desc><trkseg>
     <trkpt lat="49.151871" lon="20.162444"><ele>1565</ele></trkpt>
     <trkpt lat="49.152205" lon="20.162119"><ele>1570</ele></trkpt>
     <trkpt lat="49.152638" lon="20.161379"><ele>1580</ele></trkpt>

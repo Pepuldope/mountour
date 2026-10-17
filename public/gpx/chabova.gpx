@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Chabová</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Chabová</name><trkseg>
+  <trk><name>Chabová</name><desc>chabova</desc><trkseg>
     <trkpt lat="48.979488" lon="17.924976"><ele>600</ele></trkpt>
     <trkpt lat="48.979161" lon="17.924856"><ele>598</ele></trkpt>
     <trkpt lat="48.978585" lon="17.924820"><ele>598</ele></trkpt>

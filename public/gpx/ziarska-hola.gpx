@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Žiarska hoľa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Žiarska hoľa</name><trkseg>
+  <trk><name>Žiarska hoľa</name><desc>ziarska-hola</desc><trkseg>
     <trkpt lat="48.870932" lon="19.521612"><ele>672</ele></trkpt>
     <trkpt lat="48.870865" lon="19.521313"><ele>670</ele></trkpt>
     <trkpt lat="48.870767" lon="19.521117"><ele>668</ele></trkpt>

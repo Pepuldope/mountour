@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Tri chotáre (Gočaltovo)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tri chotáre (Gočaltovo)</name><trkseg>
+  <trk><name>Tri chotáre (Gočaltovo)</name><desc>tri-chotare-sedlo-hradok</desc><trkseg>
     <trkpt lat="48.648992" lon="20.296106"><ele>607</ele></trkpt>
     <trkpt lat="48.648790" lon="20.296053"><ele>608</ele></trkpt>
     <trkpt lat="48.648452" lon="20.295771"><ele>611</ele></trkpt>
