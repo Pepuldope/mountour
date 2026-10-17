@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Hlboký vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hlboký vrch</name><trkseg>
+  <trk><name>Hlboký vrch</name><desc>hlboky-vrch-palota</desc><trkseg>
     <trkpt lat="49.268684" lon="21.989174"><ele>442</ele></trkpt>
     <trkpt lat="49.268496" lon="21.989460"><ele>443</ele></trkpt>
     <trkpt lat="49.268265" lon="21.989922"><ele>445</ele></trkpt>

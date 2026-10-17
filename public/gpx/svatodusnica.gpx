@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Svätodušnica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Svätodušnica</name><trkseg>
+  <trk><name>Svätodušnica</name><desc>svatodusnica</desc><trkseg>
     <trkpt lat="48.549855" lon="17.552630"><ele>317</ele></trkpt>
     <trkpt lat="48.550038" lon="17.552914"><ele>316</ele></trkpt>
     <trkpt lat="48.551005" lon="17.554878"><ele>304</ele></trkpt>

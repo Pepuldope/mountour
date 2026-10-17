@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Žobrák</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Žobrák</name><trkseg>
+  <trk><name>Žobrák</name><desc>zobrak</desc><trkseg>
     <trkpt lat="49.151996" lon="19.129774"><ele>433</ele></trkpt>
     <trkpt lat="49.152393" lon="19.129778"><ele>435</ele></trkpt>
     <trkpt lat="49.152409" lon="19.129393"><ele>435</ele></trkpt>

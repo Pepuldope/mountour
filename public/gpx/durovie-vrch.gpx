@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Ďurovie vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Ďurovie vrch</name><trkseg>
+  <trk><name>Ďurovie vrch</name><desc>durovie-vrch</desc><trkseg>
     <trkpt lat="48.458806" lon="19.220643"><ele>597</ele></trkpt>
     <trkpt lat="48.458595" lon="19.221551"><ele>602</ele></trkpt>
     <trkpt lat="48.458352" lon="19.222856"><ele>609</ele></trkpt>

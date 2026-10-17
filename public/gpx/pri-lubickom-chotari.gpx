@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Pri ľubickom chotári</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Pri ľubickom chotári</name><trkseg>
+  <trk><name>Pri ľubickom chotári</name><desc>pri-lubickom-chotari</desc><trkseg>
     <trkpt lat="49.144491" lon="20.434224"><ele>617</ele></trkpt>
     <trkpt lat="49.143636" lon="20.435388"><ele>622</ele></trkpt>
     <trkpt lat="49.143586" lon="20.435524"><ele>623</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Markušovský hrad</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Markušovský hrad</name><trkseg>
+  <trk><name>Markušovský hrad</name><desc>markusovsky-hrad</desc><trkseg>
     <trkpt lat="48.917048" lon="20.669953"><ele>417</ele></trkpt>
     <trkpt lat="48.917361" lon="20.669734"><ele>417</ele></trkpt>
     <trkpt lat="48.917480" lon="20.669568"><ele>417</ele></trkpt>
@@ -203,5 +203,26 @@
     <trkpt lat="48.917480" lon="20.669568"><ele>417</ele></trkpt>
     <trkpt lat="48.917361" lon="20.669734"><ele>417</ele></trkpt>
     <trkpt lat="48.917048" lon="20.669953"><ele>417</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Markušovský hrad</name><desc>markusovsky-hrad-od-auta</desc><trkseg>
+    <trkpt lat="48.916114" lon="20.620850"><ele>447</ele></trkpt>
+    <trkpt lat="48.916130" lon="20.621036"><ele>447</ele></trkpt>
+    <trkpt lat="48.916156" lon="20.621070"><ele>447</ele></trkpt>
+    <trkpt lat="48.916224" lon="20.622302"><ele>444</ele></trkpt>
+    <trkpt lat="48.916187" lon="20.622756"><ele>438</ele></trkpt>
+    <trkpt lat="48.916107" lon="20.622915"><ele>435</ele></trkpt>
+    <trkpt lat="48.916041" lon="20.622943"><ele>435</ele></trkpt>
+    <trkpt lat="48.915550" lon="20.622856"><ele>430</ele></trkpt>
+    <trkpt lat="48.915543" lon="20.623561"><ele>431</ele></trkpt>
+    <trkpt lat="48.915457" lon="20.623534"><ele>429</ele></trkpt>
+    <trkpt lat="48.915543" lon="20.623561"><ele>431</ele></trkpt>
+    <trkpt lat="48.915550" lon="20.622856"><ele>430</ele></trkpt>
+    <trkpt lat="48.916041" lon="20.622943"><ele>435</ele></trkpt>
+    <trkpt lat="48.916107" lon="20.622915"><ele>435</ele></trkpt>
+    <trkpt lat="48.916187" lon="20.622756"><ele>438</ele></trkpt>
+    <trkpt lat="48.916224" lon="20.622302"><ele>444</ele></trkpt>
+    <trkpt lat="48.916156" lon="20.621070"><ele>447</ele></trkpt>
+    <trkpt lat="48.916130" lon="20.621036"><ele>447</ele></trkpt>
+    <trkpt lat="48.916114" lon="20.620850"><ele>447</ele></trkpt>
   </trkseg></trk>
 </gpx>

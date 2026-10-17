@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Gazdoráň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Gazdoráň</name><trkseg>
+  <trk><name>Gazdoráň</name><desc>gazdoran</desc><trkseg>
     <trkpt lat="49.048383" lon="22.290650"><ele>482</ele></trkpt>
     <trkpt lat="49.048510" lon="22.290341"><ele>481</ele></trkpt>
     <trkpt lat="49.048530" lon="22.289916"><ele>491</ele></trkpt>

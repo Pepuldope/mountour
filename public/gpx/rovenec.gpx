@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Rovenec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Rovenec</name><trkseg>
+  <trk><name>Rovenec</name><desc>rovenec</desc><trkseg>
     <trkpt lat="48.594575" lon="19.860140"><ele>547</ele></trkpt>
     <trkpt lat="48.594536" lon="19.860256"><ele>547</ele></trkpt>
     <trkpt lat="48.594362" lon="19.860390"><ele>549</ele></trkpt>

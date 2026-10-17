@@ -9,7 +9,7 @@
 //   data/towns.json                Towns           the towns of the drive table
 //   data/closure-rules.json        ClosureRules    hand-kept, every rule has an official source
 //   data/fee-rules.json            FeeRules        hand-kept entry fees (vstupné) with sources
-//   public/gpx/<slug>.gpx                          full-resolution GPX per trip
+//   public/gpx/<main slug>.gpx                     full-resolution GPX, a track per route of the place
 //
 // Rules for consumers:
 // - Never show a trip as "open" because closure_rule_ids is empty. No rule

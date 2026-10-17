@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Krivín</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Krivín</name><trkseg>
+  <trk><name>Krivín</name><desc>krivin</desc><trkseg>
     <trkpt lat="48.290299" lon="18.538220"><ele>176</ele></trkpt>
     <trkpt lat="48.295748" lon="18.536671"><ele>177</ele></trkpt>
     <trkpt lat="48.295829" lon="18.536674"><ele>177</ele></trkpt>

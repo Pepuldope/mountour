@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Roklina Konský dol</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Roklina Konský dol</name><trkseg>
+  <trk><name>Roklina Konský dol</name><desc>konsky-dol</desc><trkseg>
     <trkpt lat="48.936166" lon="18.937517"><ele>531</ele></trkpt>
     <trkpt lat="48.935892" lon="18.937984"><ele>536</ele></trkpt>
     <trkpt lat="48.935455" lon="18.938450"><ele>542</ele></trkpt>

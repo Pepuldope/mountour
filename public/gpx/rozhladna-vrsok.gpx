@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Rozhľadňa Vŕšok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Rozhľadňa Vŕšok</name><trkseg>
+  <trk><name>Rozhľadňa Vŕšok</name><desc>rozhladna-vrsok</desc><trkseg>
     <trkpt lat="48.510595" lon="19.940655"><ele>257</ele></trkpt>
     <trkpt lat="48.510919" lon="19.940989"><ele>257</ele></trkpt>
     <trkpt lat="48.511918" lon="19.941865"><ele>258</ele></trkpt>

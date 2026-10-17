@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Malý Lysec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Malý Lysec</name><trkseg>
+  <trk><name>Malý Lysec</name><desc>maly-lysec</desc><trkseg>
     <trkpt lat="49.012053" lon="19.030696"><ele>590</ele></trkpt>
     <trkpt lat="49.012096" lon="19.032158"><ele>601</ele></trkpt>
     <trkpt lat="49.012160" lon="19.032683"><ele>601</ele></trkpt>

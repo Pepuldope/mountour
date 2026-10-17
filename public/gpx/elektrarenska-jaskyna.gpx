@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Elektrárenská jaskyňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Elektrárenská jaskyňa</name><trkseg>
+  <trk><name>Elektrárenská jaskyňa</name><desc>elektrarenska-jaskyna</desc><trkseg>
     <trkpt lat="49.194148" lon="20.300737"><ele>901</ele></trkpt>
     <trkpt lat="49.194736" lon="20.299233"><ele>909</ele></trkpt>
     <trkpt lat="49.194848" lon="20.298624"><ele>911</ele></trkpt>
@@ -215,5 +215,14 @@
     <trkpt lat="49.194848" lon="20.298624"><ele>911</ele></trkpt>
     <trkpt lat="49.194736" lon="20.299233"><ele>909</ele></trkpt>
     <trkpt lat="49.194148" lon="20.300737"><ele>901</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Elektrárenská jaskyňa</name><desc>elektrarenska-jaskyna-od-auta</desc><trkseg>
+    <trkpt lat="49.229360" lon="20.316575"><ele>777</ele></trkpt>
+    <trkpt lat="49.229183" lon="20.316783"><ele>779</ele></trkpt>
+    <trkpt lat="49.229351" lon="20.316959"><ele>774</ele></trkpt>
+    <trkpt lat="49.229548" lon="20.317346"><ele>773</ele></trkpt>
+    <trkpt lat="49.229351" lon="20.316959"><ele>774</ele></trkpt>
+    <trkpt lat="49.229183" lon="20.316783"><ele>779</ele></trkpt>
+    <trkpt lat="49.229360" lon="20.316575"><ele>777</ele></trkpt>
   </trkseg></trk>
 </gpx>

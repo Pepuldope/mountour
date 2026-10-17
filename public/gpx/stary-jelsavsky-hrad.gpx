@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Starý Jelšavský hrad</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Starý Jelšavský hrad</name><trkseg>
+  <trk><name>Starý Jelšavský hrad</name><desc>stary-jelsavsky-hrad</desc><trkseg>
     <trkpt lat="48.631262" lon="20.235610"><ele>262</ele></trkpt>
     <trkpt lat="48.631408" lon="20.235446"><ele>265</ele></trkpt>
     <trkpt lat="48.631352" lon="20.235352"><ele>266</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Kamenná lúka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Kamenná lúka</name><trkseg>
+  <trk><name>Kamenná lúka</name><desc>kamenna-luka-polana</desc><trkseg>
     <trkpt lat="49.055605" lon="22.508505"><ele>422</ele></trkpt>
     <trkpt lat="49.055747" lon="22.508664"><ele>421</ele></trkpt>
     <trkpt lat="49.056094" lon="22.508907"><ele>423</ele></trkpt>

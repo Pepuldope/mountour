@@ -61,8 +61,12 @@ const countFiles = (dir) =>
     ? 0
     : readdirSync(dir, { withFileTypes: true }).reduce((n, e) => n + (e.isDirectory() ? countFiles(join(dir, e.name)) : 1), 0);
 const deployFiles = countFiles(join(".open-next", "assets")) + countFiles(join(".open-next", "cache"));
+const WARN_FILES = 19000;
 if (deployFiles > MAX_FILES) {
   problems.push(`The deploy would hold ${deployFiles} files, over the free plan's ${MAX_FILES}. Build fewer trip pages ahead (docs/DEPLOY-CLOUDFLARE.md).`);
+} else if (deployFiles > WARN_FILES) {
+  // A GitHub Actions warning: shows on the run's summary page, doesn't fail it.
+  console.log(`::warning::The deploy holds ${deployFiles} files, close to the free plan's ${MAX_FILES}.`);
 }
 
 if (problems.length) {

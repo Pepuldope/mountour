@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Hrad Rákoš</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrad Rákoš</name><trkseg>
+  <trk><name>Hrad Rákoš</name><desc>rakos</desc><trkseg>
     <trkpt lat="48.602902" lon="20.129453"><ele>358</ele></trkpt>
     <trkpt lat="48.602882" lon="20.129621"><ele>358</ele></trkpt>
     <trkpt lat="48.602942" lon="20.129787"><ele>358</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Hrad Veľký Kamenec</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hrad Veľký Kamenec</name><trkseg>
+  <trk><name>Hrad Veľký Kamenec</name><desc>velky-kamenec</desc><trkseg>
     <trkpt lat="48.379553" lon="21.758733"><ele>101</ele></trkpt>
     <trkpt lat="48.379547" lon="21.758878"><ele>101</ele></trkpt>
     <trkpt lat="48.379714" lon="21.758844"><ele>102</ele></trkpt>
@@ -251,5 +251,10 @@
     <trkpt lat="48.379714" lon="21.758844"><ele>102</ele></trkpt>
     <trkpt lat="48.379547" lon="21.758878"><ele>101</ele></trkpt>
     <trkpt lat="48.379553" lon="21.758733"><ele>101</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Hrad Veľký Kamenec</name><desc>velky-kamenec-od-auta</desc><trkseg>
+    <trkpt lat="48.358781" lon="21.806487"><ele>108</ele></trkpt>
+    <trkpt lat="48.358953" lon="21.806409"><ele>109</ele></trkpt>
+    <trkpt lat="48.358781" lon="21.806487"><ele>108</ele></trkpt>
   </trkseg></trk>
 </gpx>

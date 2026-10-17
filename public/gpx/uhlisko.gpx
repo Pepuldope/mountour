@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Uhlisko</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Uhlisko</name><trkseg>
+  <trk><name>Uhlisko</name><desc>uhlisko</desc><trkseg>
     <trkpt lat="49.356799" lon="19.595741"><ele>603</ele></trkpt>
     <trkpt lat="49.356880" lon="19.595321"><ele>606</ele></trkpt>
     <trkpt lat="49.356949" lon="19.595167"><ele>606</ele></trkpt>

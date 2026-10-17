@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Maršalkov grúň</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Maršalkov grúň</name><trkseg>
+  <trk><name>Maršalkov grúň</name><desc>marsalkov-grun</desc><trkseg>
     <trkpt lat="49.391798" lon="19.283310"><ele>790</ele></trkpt>
     <trkpt lat="49.391920" lon="19.283012"><ele>788</ele></trkpt>
     <trkpt lat="49.392189" lon="19.282561"><ele>787</ele></trkpt>

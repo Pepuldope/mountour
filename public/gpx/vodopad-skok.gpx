@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Vodopád Skok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vodopád Skok</name><trkseg>
+  <trk><name>Vodopád Skok</name><desc>vodopad-skok</desc><trkseg>
     <trkpt lat="49.123187" lon="20.064155"><ele>1353</ele></trkpt>
     <trkpt lat="49.123655" lon="20.063886"><ele>1354</ele></trkpt>
     <trkpt lat="49.123816" lon="20.063738"><ele>1357</ele></trkpt>

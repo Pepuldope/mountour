@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Vyhliadka nad Železníkom</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vyhliadka nad Železníkom</name><trkseg>
+  <trk><name>Vyhliadka nad Železníkom</name><desc>nad-zeleznikom</desc><trkseg>
     <trkpt lat="48.621270" lon="20.099370"><ele>340</ele></trkpt>
     <trkpt lat="48.620744" lon="20.099569"><ele>341</ele></trkpt>
     <trkpt lat="48.620757" lon="20.099929"><ele>347</ele></trkpt>
@@ -83,5 +83,18 @@
     <trkpt lat="48.620757" lon="20.099929"><ele>347</ele></trkpt>
     <trkpt lat="48.620744" lon="20.099569"><ele>341</ele></trkpt>
     <trkpt lat="48.621270" lon="20.099370"><ele>340</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Vyhliadka nad Železníkom</name><desc>nad-zeleznikom-od-auta</desc><trkseg>
+    <trkpt lat="48.621725" lon="20.113077"><ele>516</ele></trkpt>
+    <trkpt lat="48.622075" lon="20.112669"><ele>517</ele></trkpt>
+    <trkpt lat="48.622137" lon="20.112813"><ele>521</ele></trkpt>
+    <trkpt lat="48.622133" lon="20.113228"><ele>527</ele></trkpt>
+    <trkpt lat="48.622071" lon="20.113622"><ele>536</ele></trkpt>
+    <trkpt lat="48.621933" lon="20.113707"><ele>536</ele></trkpt>
+    <trkpt lat="48.622071" lon="20.113622"><ele>536</ele></trkpt>
+    <trkpt lat="48.622099" lon="20.113544"><ele>534</ele></trkpt>
+    <trkpt lat="48.622137" lon="20.112813"><ele>521</ele></trkpt>
+    <trkpt lat="48.622075" lon="20.112669"><ele>517</ele></trkpt>
+    <trkpt lat="48.621725" lon="20.113077"><ele>516</ele></trkpt>
   </trkseg></trk>
 </gpx>

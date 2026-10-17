@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Látaná dolina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Látaná dolina</name><trkseg>
+  <trk><name>Látaná dolina</name><desc>latana-dolina</desc><trkseg>
     <trkpt lat="49.244555" lon="19.710999"><ele>1025</ele></trkpt>
     <trkpt lat="49.244555" lon="19.710892"><ele>1024</ele></trkpt>
     <trkpt lat="49.244708" lon="19.710905"><ele>1021</ele></trkpt>

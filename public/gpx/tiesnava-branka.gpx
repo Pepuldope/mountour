@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Tiesňava Bránka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tiesňava Bránka</name><trkseg>
+  <trk><name>Tiesňava Bránka</name><desc>tiesnava-branka</desc><trkseg>
     <trkpt lat="49.265194" lon="20.141437"><ele>1005</ele></trkpt>
     <trkpt lat="49.263503" lon="20.141355"><ele>1011</ele></trkpt>
     <trkpt lat="49.263305" lon="20.141244"><ele>1013</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Sokolie</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Sokolie</name><trkseg>
+  <trk><name>Sokolie</name><desc>sokolie</desc><trkseg>
     <trkpt lat="49.238392" lon="19.027835"><ele>1039</ele></trkpt>
     <trkpt lat="49.238224" lon="19.027416"><ele>1029</ele></trkpt>
     <trkpt lat="49.238158" lon="19.026864"><ele>1030</ele></trkpt>

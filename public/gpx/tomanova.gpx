@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Tomanová</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Tomanová</name><trkseg>
+  <trk><name>Tomanová</name><desc>tomanova</desc><trkseg>
     <trkpt lat="49.143824" lon="19.907422"><ele>940</ele></trkpt>
     <trkpt lat="49.144143" lon="19.908289"><ele>940</ele></trkpt>
     <trkpt lat="49.144552" lon="19.909109"><ele>943</ele></trkpt>

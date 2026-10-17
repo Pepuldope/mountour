@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Rozhľadňa Brabírka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Rozhľadňa Brabírka</name><trkseg>
+  <trk><name>Rozhľadňa Brabírka</name><desc>rozhladna-brabirka</desc><trkseg>
     <trkpt lat="49.346091" lon="19.387692"><ele>662</ele></trkpt>
     <trkpt lat="49.347493" lon="19.385358"><ele>654</ele></trkpt>
     <trkpt lat="49.347968" lon="19.384344"><ele>653</ele></trkpt>

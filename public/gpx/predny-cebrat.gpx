@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Predný Čebrať</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Predný Čebrať</name><trkseg>
+  <trk><name>Predný Čebrať</name><desc>predny-cebrat</desc><trkseg>
     <trkpt lat="49.087631" lon="19.297925"><ele>483</ele></trkpt>
     <trkpt lat="49.088251" lon="19.297295"><ele>510</ele></trkpt>
     <trkpt lat="49.088458" lon="19.297003"><ele>517</ele></trkpt>

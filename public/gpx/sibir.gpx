@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Sibír</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Sibír</name><trkseg>
+  <trk><name>Sibír</name><desc>sibir</desc><trkseg>
     <trkpt lat="49.198628" lon="18.196451"><ele>373</ele></trkpt>
     <trkpt lat="49.199230" lon="18.196711"><ele>376</ele></trkpt>
     <trkpt lat="49.199596" lon="18.196970"><ele>379</ele></trkpt>

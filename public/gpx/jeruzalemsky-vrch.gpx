@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Jeruzalemský vrch</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Jeruzalemský vrch</name><trkseg>
+  <trk><name>Jeruzalemský vrch</name><desc>jeruzalemsky-vrch</desc><trkseg>
     <trkpt lat="49.144609" lon="20.431481"><ele>615</ele></trkpt>
     <trkpt lat="49.144397" lon="20.432980"><ele>615</ele></trkpt>
     <trkpt lat="49.144491" lon="20.434224"><ele>617</ele></trkpt>
@@ -45,5 +45,133 @@
     <trkpt lat="49.144491" lon="20.434224"><ele>617</ele></trkpt>
     <trkpt lat="49.144397" lon="20.432980"><ele>615</ele></trkpt>
     <trkpt lat="49.144609" lon="20.431481"><ele>615</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Jeruzalemský vrch</name><desc>jeruzalemsky-vrch-kezmarok-nizna-brana-ina-cesta</desc><trkseg>
+    <trkpt lat="49.144609" lon="20.431481"><ele>615</ele></trkpt>
+    <trkpt lat="49.144591" lon="20.431621"><ele>615</ele></trkpt>
+    <trkpt lat="49.143236" lon="20.431392"><ele>615</ele></trkpt>
+    <trkpt lat="49.142309" lon="20.431791"><ele>616</ele></trkpt>
+    <trkpt lat="49.141743" lon="20.432329"><ele>616</ele></trkpt>
+    <trkpt lat="49.141061" lon="20.432555"><ele>618</ele></trkpt>
+    <trkpt lat="49.140991" lon="20.432603"><ele>620</ele></trkpt>
+    <trkpt lat="49.140961" lon="20.432690"><ele>620</ele></trkpt>
+    <trkpt lat="49.140786" lon="20.433743"><ele>618</ele></trkpt>
+    <trkpt lat="49.140820" lon="20.433875"><ele>617</ele></trkpt>
+    <trkpt lat="49.141099" lon="20.434175"><ele>617</ele></trkpt>
+    <trkpt lat="49.141327" lon="20.434514"><ele>615</ele></trkpt>
+    <trkpt lat="49.141296" lon="20.434551"><ele>615</ele></trkpt>
+    <trkpt lat="49.141725" lon="20.434932"><ele>619</ele></trkpt>
+    <trkpt lat="49.142191" lon="20.435254"><ele>621</ele></trkpt>
+    <trkpt lat="49.142648" lon="20.435349"><ele>620</ele></trkpt>
+    <trkpt lat="49.143286" lon="20.435325"><ele>620</ele></trkpt>
+    <trkpt lat="49.143586" lon="20.435524"><ele>623</ele></trkpt>
+    <trkpt lat="49.143927" lon="20.435645"><ele>632</ele></trkpt>
+    <trkpt lat="49.144165" lon="20.435968"><ele>642</ele></trkpt>
+    <trkpt lat="49.144624" lon="20.436312"><ele>658</ele></trkpt>
+    <trkpt lat="49.145341" lon="20.436484"><ele>669</ele></trkpt>
+    <trkpt lat="49.146064" lon="20.436308"><ele>675</ele></trkpt>
+    <trkpt lat="49.146296" lon="20.436362"><ele>677</ele></trkpt>
+    <trkpt lat="49.146410" lon="20.436477"><ele>679</ele></trkpt>
+    <trkpt lat="49.146527" lon="20.436705"><ele>681</ele></trkpt>
+    <trkpt lat="49.148114" lon="20.438046"><ele>691</ele></trkpt>
+    <trkpt lat="49.149159" lon="20.439066"><ele>695</ele></trkpt>
+    <trkpt lat="49.149594" lon="20.439645"><ele>686</ele></trkpt>
+    <trkpt lat="49.149671" lon="20.439902"><ele>683</ele></trkpt>
+    <trkpt lat="49.149669" lon="20.440046"><ele>683</ele></trkpt>
+    <trkpt lat="49.149619" lon="20.440208"><ele>684</ele></trkpt>
+    <trkpt lat="49.149479" lon="20.440139"><ele>687</ele></trkpt>
+    <trkpt lat="49.149124" lon="20.440160"><ele>692</ele></trkpt>
+    <trkpt lat="49.148745" lon="20.440096"><ele>696</ele></trkpt>
+    <trkpt lat="49.147278" lon="20.440112"><ele>708</ele></trkpt>
+    <trkpt lat="49.148745" lon="20.440096"><ele>696</ele></trkpt>
+    <trkpt lat="49.149124" lon="20.440160"><ele>692</ele></trkpt>
+    <trkpt lat="49.149479" lon="20.440139"><ele>687</ele></trkpt>
+    <trkpt lat="49.149619" lon="20.440208"><ele>684</ele></trkpt>
+    <trkpt lat="49.149669" lon="20.440046"><ele>683</ele></trkpt>
+    <trkpt lat="49.149671" lon="20.439902"><ele>683</ele></trkpt>
+    <trkpt lat="49.149594" lon="20.439645"><ele>686</ele></trkpt>
+    <trkpt lat="49.149159" lon="20.439066"><ele>695</ele></trkpt>
+    <trkpt lat="49.148114" lon="20.438046"><ele>691</ele></trkpt>
+    <trkpt lat="49.146527" lon="20.436705"><ele>681</ele></trkpt>
+    <trkpt lat="49.146410" lon="20.436477"><ele>679</ele></trkpt>
+    <trkpt lat="49.146296" lon="20.436362"><ele>677</ele></trkpt>
+    <trkpt lat="49.146064" lon="20.436308"><ele>675</ele></trkpt>
+    <trkpt lat="49.145341" lon="20.436484"><ele>669</ele></trkpt>
+    <trkpt lat="49.144624" lon="20.436312"><ele>658</ele></trkpt>
+    <trkpt lat="49.144165" lon="20.435968"><ele>642</ele></trkpt>
+    <trkpt lat="49.143927" lon="20.435645"><ele>632</ele></trkpt>
+    <trkpt lat="49.143586" lon="20.435524"><ele>623</ele></trkpt>
+    <trkpt lat="49.143286" lon="20.435325"><ele>620</ele></trkpt>
+    <trkpt lat="49.142648" lon="20.435349"><ele>620</ele></trkpt>
+    <trkpt lat="49.142191" lon="20.435254"><ele>621</ele></trkpt>
+    <trkpt lat="49.141725" lon="20.434932"><ele>619</ele></trkpt>
+    <trkpt lat="49.141296" lon="20.434551"><ele>615</ele></trkpt>
+    <trkpt lat="49.141327" lon="20.434514"><ele>615</ele></trkpt>
+    <trkpt lat="49.141099" lon="20.434175"><ele>617</ele></trkpt>
+    <trkpt lat="49.140820" lon="20.433875"><ele>617</ele></trkpt>
+    <trkpt lat="49.140786" lon="20.433743"><ele>618</ele></trkpt>
+    <trkpt lat="49.140961" lon="20.432690"><ele>620</ele></trkpt>
+    <trkpt lat="49.140991" lon="20.432603"><ele>620</ele></trkpt>
+    <trkpt lat="49.141061" lon="20.432555"><ele>618</ele></trkpt>
+    <trkpt lat="49.141743" lon="20.432329"><ele>616</ele></trkpt>
+    <trkpt lat="49.142309" lon="20.431791"><ele>616</ele></trkpt>
+    <trkpt lat="49.143236" lon="20.431392"><ele>615</ele></trkpt>
+    <trkpt lat="49.144591" lon="20.431621"><ele>615</ele></trkpt>
+    <trkpt lat="49.144609" lon="20.431481"><ele>615</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Jeruzalemský vrch</name><desc>jeruzalemsky-vrch-maly-jarecek</desc><trkseg>
+    <trkpt lat="49.154150" lon="20.443327"><ele>616</ele></trkpt>
+    <trkpt lat="49.154066" lon="20.443769"><ele>617</ele></trkpt>
+    <trkpt lat="49.153836" lon="20.444355"><ele>617</ele></trkpt>
+    <trkpt lat="49.153701" lon="20.444583"><ele>619</ele></trkpt>
+    <trkpt lat="49.153328" lon="20.444993"><ele>622</ele></trkpt>
+    <trkpt lat="49.152882" lon="20.445219"><ele>624</ele></trkpt>
+    <trkpt lat="49.152678" lon="20.445227"><ele>625</ele></trkpt>
+    <trkpt lat="49.152010" lon="20.445095"><ele>629</ele></trkpt>
+    <trkpt lat="49.152004" lon="20.444989"><ele>628</ele></trkpt>
+    <trkpt lat="49.152068" lon="20.444940"><ele>629</ele></trkpt>
+    <trkpt lat="49.152233" lon="20.444977"><ele>628</ele></trkpt>
+    <trkpt lat="49.152650" lon="20.444747"><ele>630</ele></trkpt>
+    <trkpt lat="49.152850" lon="20.444516"><ele>631</ele></trkpt>
+    <trkpt lat="49.152893" lon="20.444371"><ele>632</ele></trkpt>
+    <trkpt lat="49.152942" lon="20.443599"><ele>640</ele></trkpt>
+    <trkpt lat="49.152864" lon="20.443400"><ele>642</ele></trkpt>
+    <trkpt lat="49.152685" lon="20.443191"><ele>645</ele></trkpt>
+    <trkpt lat="49.152528" lon="20.443121"><ele>647</ele></trkpt>
+    <trkpt lat="49.152085" lon="20.443041"><ele>653</ele></trkpt>
+    <trkpt lat="49.151770" lon="20.442531"><ele>657</ele></trkpt>
+    <trkpt lat="49.151058" lon="20.441887"><ele>666</ele></trkpt>
+    <trkpt lat="49.150321" lon="20.441077"><ele>673</ele></trkpt>
+    <trkpt lat="49.149619" lon="20.440208"><ele>684</ele></trkpt>
+    <trkpt lat="49.149479" lon="20.440139"><ele>687</ele></trkpt>
+    <trkpt lat="49.149124" lon="20.440160"><ele>692</ele></trkpt>
+    <trkpt lat="49.148745" lon="20.440096"><ele>696</ele></trkpt>
+    <trkpt lat="49.147278" lon="20.440112"><ele>708</ele></trkpt>
+    <trkpt lat="49.148745" lon="20.440096"><ele>696</ele></trkpt>
+    <trkpt lat="49.149124" lon="20.440160"><ele>692</ele></trkpt>
+    <trkpt lat="49.149479" lon="20.440139"><ele>687</ele></trkpt>
+    <trkpt lat="49.149619" lon="20.440208"><ele>684</ele></trkpt>
+    <trkpt lat="49.150321" lon="20.441077"><ele>673</ele></trkpt>
+    <trkpt lat="49.151058" lon="20.441887"><ele>666</ele></trkpt>
+    <trkpt lat="49.151770" lon="20.442531"><ele>657</ele></trkpt>
+    <trkpt lat="49.152085" lon="20.443041"><ele>653</ele></trkpt>
+    <trkpt lat="49.152528" lon="20.443121"><ele>647</ele></trkpt>
+    <trkpt lat="49.152685" lon="20.443191"><ele>645</ele></trkpt>
+    <trkpt lat="49.152864" lon="20.443400"><ele>642</ele></trkpt>
+    <trkpt lat="49.152942" lon="20.443599"><ele>640</ele></trkpt>
+    <trkpt lat="49.152893" lon="20.444371"><ele>632</ele></trkpt>
+    <trkpt lat="49.152850" lon="20.444516"><ele>631</ele></trkpt>
+    <trkpt lat="49.152650" lon="20.444747"><ele>630</ele></trkpt>
+    <trkpt lat="49.152233" lon="20.444977"><ele>628</ele></trkpt>
+    <trkpt lat="49.152068" lon="20.444940"><ele>629</ele></trkpt>
+    <trkpt lat="49.152004" lon="20.444989"><ele>628</ele></trkpt>
+    <trkpt lat="49.152010" lon="20.445095"><ele>629</ele></trkpt>
+    <trkpt lat="49.152678" lon="20.445227"><ele>625</ele></trkpt>
+    <trkpt lat="49.152882" lon="20.445219"><ele>624</ele></trkpt>
+    <trkpt lat="49.153328" lon="20.444993"><ele>622</ele></trkpt>
+    <trkpt lat="49.153701" lon="20.444583"><ele>619</ele></trkpt>
+    <trkpt lat="49.153836" lon="20.444355"><ele>617</ele></trkpt>
+    <trkpt lat="49.154066" lon="20.443769"><ele>617</ele></trkpt>
+    <trkpt lat="49.154150" lon="20.443327"><ele>616</ele></trkpt>
   </trkseg></trk>
 </gpx>

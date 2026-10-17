@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Rozhľadňa Trchovnica</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Rozhľadňa Trchovnica</name><trkseg>
+  <trk><name>Rozhľadňa Trchovnica</name><desc>rozhladna-trchovnica</desc><trkseg>
     <trkpt lat="49.481147" lon="19.480388"><ele>642</ele></trkpt>
     <trkpt lat="49.481722" lon="19.481303"><ele>645</ele></trkpt>
     <trkpt lat="49.482874" lon="19.479985"><ele>645</ele></trkpt>
@@ -113,5 +113,18 @@
     <trkpt lat="49.482874" lon="19.479985"><ele>645</ele></trkpt>
     <trkpt lat="49.481722" lon="19.481303"><ele>645</ele></trkpt>
     <trkpt lat="49.481147" lon="19.480388"><ele>642</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Rozhľadňa Trchovnica</name><desc>rozhladna-trchovnica-od-auta</desc><trkseg>
+    <trkpt lat="49.508085" lon="19.463077"><ele>684</ele></trkpt>
+    <trkpt lat="49.510016" lon="19.466759"><ele>705</ele></trkpt>
+    <trkpt lat="49.510866" lon="19.468136"><ele>717</ele></trkpt>
+    <trkpt lat="49.512060" lon="19.469817"><ele>732</ele></trkpt>
+    <trkpt lat="49.512261" lon="19.469965"><ele>733</ele></trkpt>
+    <trkpt lat="49.512296" lon="19.470115"><ele>733</ele></trkpt>
+    <trkpt lat="49.512261" lon="19.469965"><ele>733</ele></trkpt>
+    <trkpt lat="49.512060" lon="19.469817"><ele>732</ele></trkpt>
+    <trkpt lat="49.510866" lon="19.468136"><ele>717</ele></trkpt>
+    <trkpt lat="49.510016" lon="19.466759"><ele>705</ele></trkpt>
+    <trkpt lat="49.508085" lon="19.463077"><ele>684</ele></trkpt>
   </trkseg></trk>
 </gpx>

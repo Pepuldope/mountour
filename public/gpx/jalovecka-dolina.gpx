@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Jalovecká dolina</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Jalovecká dolina</name><trkseg>
+  <trk><name>Jalovecká dolina</name><desc>jalovecka-dolina</desc><trkseg>
     <trkpt lat="49.161043" lon="19.640930"><ele>790</ele></trkpt>
     <trkpt lat="49.161140" lon="19.641791"><ele>789</ele></trkpt>
     <trkpt lat="49.161465" lon="19.642449"><ele>795</ele></trkpt>

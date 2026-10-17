@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Vodopád Lipnerova rizňa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Vodopád Lipnerova rizňa</name><trkseg>
+  <trk><name>Vodopád Lipnerova rizňa</name><desc>lipnerova-rizna</desc><trkseg>
     <trkpt lat="49.208613" lon="19.042873"><ele>754</ele></trkpt>
     <trkpt lat="49.208569" lon="19.042809"><ele>749</ele></trkpt>
     <trkpt lat="49.208199" lon="19.043235"><ele>752</ele></trkpt>

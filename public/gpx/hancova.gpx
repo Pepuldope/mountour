@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Hančová</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Hančová</name><trkseg>
+  <trk><name>Hančová</name><desc>hancova</desc><trkseg>
     <trkpt lat="49.207889" lon="20.793398"><ele>686</ele></trkpt>
     <trkpt lat="49.207457" lon="20.792260"><ele>687</ele></trkpt>
     <trkpt lat="49.207268" lon="20.791971"><ele>688</ele></trkpt>

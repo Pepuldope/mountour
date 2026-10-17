@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Zákopa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Zákopa</name><trkseg>
+  <trk><name>Zákopa</name><desc>zakopa</desc><trkseg>
     <trkpt lat="49.116960" lon="18.432760"><ele>285</ele></trkpt>
     <trkpt lat="49.116978" lon="18.432830"><ele>285</ele></trkpt>
     <trkpt lat="49.116951" lon="18.432896"><ele>286</ele></trkpt>

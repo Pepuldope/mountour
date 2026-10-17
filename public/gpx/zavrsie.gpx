@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Závršie</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Závršie</name><trkseg>
+  <trk><name>Závršie</name><desc>zavrsie</desc><trkseg>
     <trkpt lat="49.305316" lon="18.683345"><ele>471</ele></trkpt>
     <trkpt lat="49.305446" lon="18.683474"><ele>472</ele></trkpt>
     <trkpt lat="49.305667" lon="18.683600"><ele>474</ele></trkpt>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Havrany</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
-  <trk><name>Havrany</name><trkseg>
+  <trk><name>Havrany</name><desc>havrany</desc><trkseg>
     <trkpt lat="48.976097" lon="19.607281"><ele>1050</ele></trkpt>
     <trkpt lat="48.976904" lon="19.607388"><ele>1039</ele></trkpt>
     <trkpt lat="48.977226" lon="19.607284"><ele>1038</ele></trkpt>
