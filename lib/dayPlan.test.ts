@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { approachMin, COMFORT_MARGIN_MIN, hikeMinutes, planDay, SAFE_MARGIN_MIN } from "./dayPlan";
+import { approachMin, atDayMinute, COMFORT_MARGIN_MIN, hikeMinutes, planDay, SAFE_MARGIN_MIN } from "./dayPlan";
 
 const BRATISLAVA = { lat: 48.1486, lon: 17.1077 };
 const MIN = 60000;
@@ -68,6 +68,33 @@ describe("planDay", () => {
   it("flags a hike that starts before sunrise", () => {
     const p = planDay({ date: "2026-12-21", start: "05:30", driveMin: 30, hikeMin: 120, location: BRATISLAVA })!;
     expect(p.startsInDark).toBe(true);
+  });
+
+  // Train times are minutes after midnight on the wall clock; the clocks change on these days.
+  for (const date of ["2026-10-25", "2026-03-29"]) {
+    it(`keeps train times on the wall clock when the clocks change (${date})`, () => {
+      const fixed = { there: { leave: 600, arrive: 780 }, back: { leave: 1080, home: 1140 } };
+      const p = planDay({ date, start: "10:00", driveMin: null, hikeMin: 240, location: BRATISLAVA, fixed })!;
+      expect(hhmm(p.segments[0].start)).toBe("10:00");
+      expect(hhmm(p.hikeStart)).toBe("13:00");
+      expect(hhmm(p.hikeEnd)).toBe("17:00");
+      expect(hhmm(p.segments[2].end)).toBe("19:00");
+    });
+  }
+
+  it("a train arriving 13:00 on 25 Oct with a 4 h hike ends after the 16:4x sunset", () => {
+    const fixed = { there: { leave: 600, arrive: 780 }, back: null };
+    const p = planDay({ date: "2026-10-25", start: "10:00", driveMin: null, hikeMin: 240, location: BRATISLAVA, fixed })!;
+    expect(hhmm(p.sunset).startsWith("16:")).toBe(true);
+    expect(p.hikeEnd > p.sunset).toBe(true);
+    expect(["after-sunset", "after-dusk"]).toContain(p.verdict);
+  });
+
+  it("atDayMinute reads minutes as wall-clock time, also past midnight", () => {
+    expect(hhmm(atDayMinute("2026-10-25", 13 * 60 + 5))).toBe("13:05");
+    expect(hhmm(atDayMinute("2026-03-29", 2))).toBe("00:02");
+    const late = atDayMinute("2026-10-25", 24 * 60 + 30);
+    expect([late.getDate(), hhmm(late)]).toEqual([26, "00:30"]);
   });
 
   it("rejects malformed input", () => {

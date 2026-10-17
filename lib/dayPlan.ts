@@ -103,6 +103,16 @@ function addMin(d: Date, minutes: number): Date {
   return new Date(d.getTime() + minutes * MIN);
 }
 
+/**
+ * Wall-clock time `minutes` after midnight on the given day (train times are
+ * minutes after midnight). Not midnight + elapsed minutes: on the day the
+ * clocks change that lands an hour off.
+ */
+export function atDayMinute(date: string, minutes: number): Date {
+  const [y, mo, d] = date.split("-").map(Number);
+  return new Date(y, mo - 1, d, 0, minutes);
+}
+
 /** Returns null for unparseable input or a date with no sunset (polar regions). */
 export function planDay(input: DayPlanInput): DayPlan | null {
   const [y, mo, d] = input.date.split("-").map(Number);
@@ -112,8 +122,7 @@ export function planDay(input: DayPlanInput): DayPlan | null {
   // Local wall-clock time in the visitor's timezone; sun times are absolute
   // instants, so the two compare correctly whatever the timezone.
   const fixed = input.fixed ?? null;
-  const midnight = new Date(y, mo - 1, d);
-  const dayStart = fixed ? addMin(midnight, fixed.there.leave) : new Date(y, mo - 1, d, h, mi);
+  const dayStart = fixed ? atDayMinute(input.date, fixed.there.leave) : new Date(y, mo - 1, d, h, mi);
   const utcDay = new Date(Date.UTC(y, mo - 1, d));
   const sun = getSunTimes(utcDay, input.location.lat, input.location.lon);
   const twilight = getSunTimes(utcDay, input.location.lat, input.location.lon, CIVIL_TWILIGHT_DEG);
@@ -130,7 +139,7 @@ export function planDay(input: DayPlanInput): DayPlan | null {
   segments.push({ kind: "hike", start: hikeStart, end: hikeEnd });
   if (fixed?.back) {
     // From the end of the walk: waiting at the station counts as part of the way home.
-    segments.push({ kind: "drive-back", start: hikeEnd, end: addMin(midnight, Math.max(fixed.back.home, fixed.back.leave)) });
+    segments.push({ kind: "drive-back", start: hikeEnd, end: atDayMinute(input.date, Math.max(fixed.back.home, fixed.back.leave)) });
   } else if (input.driveMin !== null || fixed) {
     segments.push({ kind: "drive-back", start: hikeEnd, end: addMin(hikeEnd, drive) });
   }
