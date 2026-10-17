@@ -9,7 +9,9 @@ import type { GeoPoint, RouteBrief } from "@/lib/tripSchema";
 import type { BBox } from "@/lib/types";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
-import { BusOk, NoParkingChip, routeAccess, routeKm, routeLabel } from "@/components/routeBits";
+import type { RouteWalk } from "@/lib/walkFacts";
+import { BusOk, NoParkingChip, routeAccess, routeLabel } from "@/components/routeBits";
+import { useRouteNumbers } from "@/components/RouteRows";
 
 interface Props {
   /** The trip the visitor came from. */
@@ -17,6 +19,8 @@ interface Props {
   destination: string;
   goal: GeoPoint;
   routes: RouteBrief[];
+  /** Each route's walk from its default parking and stop, as its trip page counts it. */
+  walks: Record<string, RouteWalk>;
   /** The page header (back link and title). */
   children: ReactNode;
 }
@@ -25,7 +29,7 @@ const colour = (i: number) => ROUTE_COLOURS[i % ROUTE_COLOURS.length];
 const letter = (i: number) => ROUTE_LETTERS[i % ROUTE_LETTERS.length];
 
 /** All routes to a place on one map, each with its letter and colour; tap one to bring it forward. */
-export function RouteCompare({ slug, destination, goal, routes, children }: Props) {
+export function RouteCompare({ slug, destination, goal, routes, walks, children }: Props) {
   const [sel, setSel] = useState(Math.max(0, routes.findIndex((r) => r.slug === slug)));
   // Under the pointer, on a card or on the map: lit up on the map, outlined in the list.
   const [hover, setHover] = useState<number | null>(null);
@@ -33,8 +37,9 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
     const i = routes.findIndex((r) => r.slug === s);
     setHover(i >= 0 ? i : null);
   };
-  const maxMin = Math.max(...routes.map((r) => r.duration_min));
-  const maxUp = Math.max(1, ...routes.map((r) => r.ascent_m));
+  const numbers = useRouteNumbers(routes, walks, null);
+  const maxMin = Math.max(1, ...numbers.map((n) => n.min));
+  const maxUp = Math.max(1, ...numbers.map((n) => n.ascentM));
 
   // Memoised: the map redraws its lines when `tracks` changes and re-adds every pin when `markers` does,
   // so neither may be rebuilt on unrelated renders, and hovering must not touch the pins.
@@ -55,14 +60,14 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
       kind: "poi" as const,
       location: { lat: r.up[0][1], lon: r.up[0][0] },
       title: `${letter(i)} · ${r.start_name}`,
-      lines: [routeLabel(r), formatDuration(r.duration_min)],
+      lines: [routeLabel(r), formatDuration(numbers[i].min)],
       colour: colour(i),
       icon: letter(i),
       active: i === sel,
       onClick: () => setSel(i),
     })),
     { id: "goal", kind: "trailhead" as const, location: goal, title: destination },
-  ], [routes, sel, goal, destination]);
+  ], [routes, numbers, sel, goal, destination]);
   const bounds = useMemo<BBox>(() => {
     const pts = routes.flatMap((r) => r.up);
     const lons = pts.map((p) => p[0]);
@@ -111,14 +116,14 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
                   </span>
                   <span className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-[12.5px] text-[var(--muted)]">
                     <span>Čas</span>
-                    <Bar share={r.duration_min / maxMin} colour={colour(i)} />
-                    <span className="font-data text-right text-[15px] text-[var(--foreground)]">{formatDuration(r.duration_min)}</span>
+                    <Bar share={numbers[i].min / maxMin} colour={colour(i)} />
+                    <span className="font-data text-right text-[15px] text-[var(--foreground)]">{formatDuration(numbers[i].min)}</span>
                     <span>Do kopca</span>
-                    <Bar share={r.ascent_m / maxUp} colour={colour(i)} />
-                    <span className="font-data text-right text-[15px] text-[var(--foreground)]">+{r.ascent_m} m</span>
+                    <Bar share={numbers[i].ascentM / maxUp} colour={colour(i)} />
+                    <span className="font-data text-right text-[15px] text-[var(--foreground)]">+{numbers[i].ascentM} m</span>
                     <span>Dĺžka</span>
                     <span />
-                    <span className="font-data text-right text-[15px] text-[var(--foreground)]">{routeKm(r)}</span>
+                    <span className="font-data text-right text-[15px] text-[var(--foreground)]">{numbers[i].km}</span>
                   </span>
                 </button>
                 {i === sel && (

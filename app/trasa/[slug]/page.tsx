@@ -5,7 +5,7 @@ import { cache } from "react";
 import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
 import { getTripLive } from "@/lib/tripDb";
-import { getAllTripSlugs, getTrip } from "@/lib/tripFiles";
+import { getAllTripSlugs, getRouteWalks, getTrip } from "@/lib/tripFiles";
 import { buildProfile } from "@/lib/tripProfile";
 import { GOAL_LABEL, POI_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
@@ -154,16 +154,18 @@ export default async function TripSheetPage({ params }: Props) {
   const goal = trail.goal ?? "ine";
   const also = secondGoal(detail);
   const goalEle = trip?.destination.ele_m;
+  const trailNumbers = { distance_m: trail.distance_m, ascent_m: trail.ascent_m, duration_min: trail.duration_min };
   // Other routes to the same place: listed under the facts, drawn faint on the map. They come
   // with the trip's own file (the database row doesn't carry them), never from the whole index.
   const routes =
     trip.routes ?? (trip.variant_of || trip.route_count ? ((await getTrip(trail.slug))?.routes ?? []) : []);
+  const walks = routes.length > 1 ? await getRouteWalks(routes.map((r) => r.slug)) : {};
   const others: OtherRoute[] = routes
     .filter((r) => r.slug !== trail.slug)
     .map((r) => ({ slug: r.slug, label: r.route_label ?? r.start_name, points: r.up.map(([lon, lat]) => [lat, lon]) }));
 
   return (
-    <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} transitStops={transitStops} trailStart={trailStart}>
+    <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} transitStops={transitStops} trailStart={trailStart} trail={trailNumbers}>
       <main className="flex flex-1 flex-col bg-[var(--page-sunk)] lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
         <JsonLd data={trailJsonLd(detail)} />
         <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
@@ -211,7 +213,6 @@ export default async function TripSheetPage({ params }: Props) {
               ele: trip.destination.ele_m,
               name: trip.destination.name,
             }}
-            baseHikeMin={trail.duration_min}
             profile={profile}
             gpxUrl={gpxUrl}
             bbox={trail.bbox}
@@ -219,15 +220,12 @@ export default async function TripSheetPage({ params }: Props) {
               <>
                 <div className="flex flex-col gap-2">
                   <TripFacts
-                    distanceM={trail.distance_m}
-                    ascentM={trail.ascent_m}
-                    durationMin={trail.duration_min}
                     difficulty={trail.difficulty}
                     familyFriendly={trail.family_friendly}
                   />
                   {trail.description && <p className="text-sm text-[var(--muted)]">{trail.description}</p>}
                 </div>
-                <RouteChoice slug={trail.slug} destination={trip.destination.name} routes={routes} />
+                <RouteChoice slug={trail.slug} destination={trip.destination.name} routes={routes} walks={walks} />
                 {/* A real closure stays up top; "no data" is a quiet note under the map. */}
                 {closures.length > 0 && <ClosureBanner closures={closures} />}
               </>

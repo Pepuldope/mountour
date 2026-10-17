@@ -23,14 +23,11 @@ import { useTripAccess } from "@/components/TripAccess";
 import { WeatherReport, useTripWeather } from "@/components/WeatherBlock";
 import { TransitLegs } from "@/components/TransitBlock";
 import { TravelSwitch } from "@/components/TravelSwitch";
-import { GOAL_WORDS, trimProfile } from "@/lib/tripProfile";
-import { joinedMinutes } from "@/lib/trailJoin";
+import { GOAL_WORDS, trimProfile, withApproach } from "@/lib/tripProfile";
 import type { TripProfile } from "@/lib/tripProfile";
 
 interface Props extends ShareInfo {
   sun: LatLng | null;
-  /** The trail's own walking time (parking approach is added here). */
-  baseHikeMin: number;
   /** The trip's goal, for the weather up there. */
   goal: (LatLng & { ele: number | null; name: string }) | null;
   profile: TripProfile | null;
@@ -56,15 +53,19 @@ const part =
  * (sun dial, times, weather, a warning only when the start is too late), then getting there
  * (parking, map...) with Uložiť (main), share and navigation hand-offs.
  */
-export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: fullProfile, gpxUrl, bbox, walk, intro, children, outro, ...trip }: Props) {
+export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, walk, intro, children, outro, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
-  const { destination, rideTo, approachMin, trailStart, transit, noCar, stop, skip, walkFrom, trailJoin } = useTripAccess();
+  const { destination, rideTo, approachMin, trailStart, transit, noCar, stop, skip, walkFrom, trailJoin, walk: onFoot } = useTripAccess();
   // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day,
   // with or without a start: the walk back to the car must fit the light too. Parked up the trail, the
   // stretch below is skipped both ways.
-  const baseHikeMin = joinedMinutes(trailHikeMin, skip) + 2 * approachMin;
-  const profile = useMemo(() => (fullProfile && skip ? trimProfile(fullProfile, skip.skip_out, skip.skip_back) : fullProfile), [fullProfile, skip]);
+  const baseHikeMin = onFoot.min;
+  // The walk to the trail comes first and last, so the goal time counts it too.
+  const profile = useMemo(() => {
+    const trail = fullProfile && skip ? trimProfile(fullProfile, skip.skip_out, skip.skip_back) : fullProfile;
+    return trail && withApproach(trail, approachMin / Math.max(1, baseHikeMin));
+  }, [fullProfile, skip, approachMin, baseHikeMin]);
   // One plan for the whole page: saving and sharing use the same train times the sun dial shows.
   const tripPlan = useTripPlan(sun, rideTo, baseHikeMin, transit && stop?.mode === "vlak" ? stop.location : null, noCar);
   const { plan, date, time, driveMin, roadMin, driveApprox, driveStatus, rail } = tripPlan;

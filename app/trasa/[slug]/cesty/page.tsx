@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
-import { getTrip } from "@/lib/tripFiles";
+import { getRouteWalks, getTrip } from "@/lib/tripFiles";
 import { UiIcon } from "@/components/UiIcon";
 import { RouteCompare } from "@/components/RouteCompare";
 
@@ -36,10 +36,11 @@ export default async function RoutesComparePage({ params }: Props) {
   if (!trip) notFound();
   const routes = trip.routes ?? [];
   if (routes.length < 2) redirect(`/trasa/${slug}`);
+  const walks = await getRouteWalks(routes.map((r) => r.slug));
 
   return (
     <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
-      <RouteCompare slug={slug} destination={trip.destination.name} goal={trip.destination.location} routes={routes}>
+      <RouteCompare slug={slug} destination={trip.destination.name} goal={trip.destination.location} routes={routes} walks={walks}>
         <nav aria-label="Navigácia" className="flex items-center gap-3">
           <Link
             href={`/trasa/${slug}`}

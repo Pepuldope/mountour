@@ -111,6 +111,15 @@ jobs:
             --strict-rules
           cat data/pipeline-report.md >> "$GITHUB_STEP_SUMMARY"
 
+      # The home list has no trail paths: store where the trip pages join the trail from the
+      # default parking and stop, so its walking times match theirs (lib/listJoins.test.ts).
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run list-joins
+
       # Error 1102 guard (lib/assetBudget.test.ts has the same limits): the Worker parses these
       # files on requests; too big and it runs out of CPU. Keep last week's data rather than ship that.
       - name: Check the files the site reads stay small
@@ -133,11 +142,6 @@ jobs:
       # made with GITHUB_TOKEN), yet Cloudflare deploys them: run the same checks on the new data
       # first, so a broken build or a deploy over the free plan's 20,000 files never reaches main.
       - run: python -m pytest -q pipeline/tests/test_db.py
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
       - run: npm test
       - run: npm run cf:build
       - run: node scripts/check-page-cache.mjs

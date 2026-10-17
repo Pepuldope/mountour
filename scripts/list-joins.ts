@@ -1,0 +1,44 @@
+// The home list (public/data/trips/list.json) has no trail paths, so it can't work out where a
+// parking or stop up the trail joins it, and its walking times came out longer than the trip
+// page's (Velká Javorina: 1 h 45 on the list, 35 min on the page). This stores the trip page's
+// join with the default parking and the default stop (lib/walkFacts.ts) in the list.
+// Run after every pipeline build: npm run list-joins (lib/listJoins.test.ts checks it was).
+import { readFileSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
+import { nearestStop, trailDetailFrom } from "@/lib/data";
+import type { TrailJoin } from "@/lib/trailJoin";
+import type { ListJoin, TripDetail, TripList } from "@/lib/tripSchema";
+
+const DIR = join(process.cwd(), "public", "data", "trips");
+const LIST = join(DIR, "list.json");
+
+function stored(j: TrailJoin | null): ListJoin | undefined {
+  if (!j) return undefined;
+  const r = (x: number) => Number(x.toFixed(6));
+  return { location: j.location, walk_m: j.walk_m, skip_out: r(j.skip_out), skip_back: r(j.skip_back), skip_m: j.skip_m, skip_ascent_m: j.skip_ascent_m };
+}
+
+const list = JSON.parse(readFileSync(LIST, "utf8")) as TripList;
+let joins = 0;
+for (const item of list.trips) {
+  const trip = JSON.parse(readFileSync(join(DIR, `${item.slug}.json`), "utf8")) as TripDetail;
+  const detail = trailDetailFrom(trip);
+  if (item.parking) {
+    const j = stored(detail.parkingLots[0]?.join ?? null);
+    item.parking = { ...item.parking, ...(j ? { join: j } : {}) };
+    if (j) joins++;
+  }
+  // The trip page starts by bus from the stop with the shortest walk to the trail, not always the nearest to the start.
+  const stop = nearestStop(detail);
+  if (stop) {
+    const i = Number(stop.id.split(":").pop());
+    const raw = [trip.transit, ...trip.transit_alternatives].filter((s) => s != null)[i];
+    const j = stored(stop.join);
+    // Without the OSM id and the walk line, as publish.py lists stops.
+    item.transit = { name: raw.name, mode: raw.mode, location: raw.location, walk_m: raw.walk_m, ...(j ? { join: j } : {}) } as TripList["trips"][number]["transit"];
+    if (j) joins++;
+  }
+}
+// Same layout as pipeline/publish.py writes it.
+writeFileSync(LIST, JSON.stringify(list) + "\n");
+console.log(`list.json: ${joins} joins for ${list.trips.length} trips`);

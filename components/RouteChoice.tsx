@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { RouteBrief } from "@/lib/tripSchema";
+import type { RouteWalk } from "@/lib/walkFacts";
 import { RouteRows } from "@/components/RouteRows";
 import { Dot, routeLabel } from "@/components/routeBits";
 
@@ -11,6 +12,8 @@ interface Props {
   destination: string;
   /** The main route first, then the others (the trip file's "routes"). */
   routes: RouteBrief[];
+  /** Each route's walk from its default parking and stop (lib/tripFiles.ts getRouteWalks). */
+  walks: Record<string, RouteWalk>;
 }
 
 /**
@@ -18,13 +21,13 @@ interface Props {
  * people use); here you switch to another. Phones get one folded "Cesta" row so the page stays
  * easy to scroll; wider screens list the routes as cards. Both link to the map comparison.
  */
-export function RouteChoice({ slug, destination, routes }: Props) {
+export function RouteChoice({ slug, destination, routes, walks }: Props) {
   if (routes.length < 2) return null;
   const at = Math.max(0, routes.findIndex((r) => r.slug === slug));
   const current = routes[at];
   const compare = `/trasa/${slug}/cesty`;
 
-  const rows = <RouteRows routes={routes} at={at} />;
+  const rows = <RouteRows routes={routes} at={at} walks={walks} />;
 
   return (
     <section aria-label={`Cesty na ${destination}`} className="flex flex-col gap-2">

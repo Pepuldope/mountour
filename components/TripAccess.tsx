@@ -6,6 +6,8 @@ import { approachMin } from "@/lib/dayPlan";
 import { useTripSettings } from "@/lib/tripSettings";
 import type { TrailJoin } from "@/lib/trailJoin";
 import type { WalkLine } from "@/lib/tripSchema";
+import { stopsByWalk, walkFacts } from "@/lib/walkFacts";
+import type { WalkFacts } from "@/lib/walkFacts";
 import type { LatLng, ParkingLot, TransitStop } from "@/lib/types";
 
 /**
@@ -49,6 +51,8 @@ export interface TripAccess {
   trailJoin: LatLng | null;
   /** Parked or got off up the trail: the part of the walk skipped (null = the whole trail). */
   skip: Pick<TrailJoin, "skip_out" | "skip_back" | "skip_m" | "skip_ascent_m"> | null;
+  /** The walk from there (lib/walkFacts.ts): what the facts, the route list and the day all count. */
+  walk: WalkFacts;
 }
 
 const Ctx = createContext<TripAccess>({
@@ -71,6 +75,7 @@ const Ctx = createContext<TripAccess>({
   approachMin: 0,
   trailJoin: null,
   skip: null,
+  walk: { min: 0, m: 0, ascentM: 0, approachMin: 0, skipped: false },
 });
 
 // Picks are remembered per trip for this browser session (back and forth between pages).
@@ -117,9 +122,12 @@ export function TripAccessProvider({
   parkingLots,
   transitStops,
   trailStart,
+  trail,
   children,
 }: {
   slug: string;
+  /** The route's own numbers, from its start. */
+  trail: { distance_m: number; ascent_m: number; duration_min: number };
   parkingLots: ParkingLot[];
   transitStops: TransitStop[];
   trailStart: LatLng | null;
@@ -127,10 +135,7 @@ export function TripAccessProvider({
 }) {
   const [choice, choose] = usePick(PARKING_KEY, slug, parkingLots.length);
   // Nearest walk to the trail first (a stop up the trail counts from where it joins).
-  const stops = useMemo(
-    () => [...transitStops].sort((a, b) => (a.join?.walk_m ?? a.distance_m) - (b.join?.walk_m ?? b.distance_m)),
-    [transitStops]
-  );
+  const stops = useMemo(() => stopsByWalk(transitStops), [transitStops]);
   const [stopChoice, chooseStop] = usePick(STOP_KEY, slug, stops.length);
   // Without a car park the bus is the only way; the remembered choice stays as it is for other trips.
   const noCar = parkingLots.length === 0 && transitStops.length > 0;
@@ -140,8 +145,8 @@ export function TripAccessProvider({
   const value = useMemo<TripAccess>(() => {
     const parking = parkingLots[choice] ?? null;
     const stop = stops[stopChoice] ?? null;
+    const walk = walkFacts(trail, transit ? stop : parking);
     const parkingApproach = parking ? approachMin(parking.join?.walk_m ?? parking.walk_m) : 0;
-    const stopApproach = stop ? approachMin(stop.join?.walk_m ?? stop.distance_m) : 0;
     const join = transit ? (stop?.join ?? null) : (parking?.join ?? null);
     return {
       parkingLots,
@@ -160,11 +165,12 @@ export function TripAccessProvider({
       noCar,
       walkFrom: transit ? (stop?.location ?? null) : (parking?.location ?? null),
       walkLine: transit ? (stop?.walk ?? null) : (parking?.walk ?? null),
-      approachMin: transit ? stopApproach : parkingApproach,
+      approachMin: walk.approachMin,
       trailJoin: join?.location ?? trailStart,
       skip: join && join.skip_m > 0 ? join : null,
+      walk,
     };
-  }, [parkingLots, stops, choice, choose, stopChoice, chooseStop, trailStart, transit, noCar]);
+  }, [parkingLots, stops, choice, choose, stopChoice, chooseStop, trailStart, trail, transit, noCar]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
