@@ -133,7 +133,7 @@ jobs:
       # made with GITHUB_TOKEN), yet Cloudflare deploys them: run the same checks on the new data
       # first, so a broken build or a deploy over the free plan's 20,000 files never reaches main.
       - run: python -m pytest -q pipeline/tests/test_db.py
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
