@@ -62,6 +62,7 @@ class OsmData:
     places: list = field(default_factory=list)  # villages and towns near trails (how well known a start is)
     others: list = field(default_factory=list)  # well-known named features that are no goal kind (report only)
     probes: dict = field(default_factory=dict)  # name -> [(lat, lon)]
+    named: list = field(default_factory=list)  # (name, plain name, lat, lon) whose plain name holds a name_keys entry
     border: object = None  # shapely geometry of the country, or None
     data_at: str | None = None
 
@@ -73,6 +74,13 @@ def kst_colour(tags):
         if part in KST_COLOURS:
             return KST_COLOURS[part]
     return KST_COLOURS.get(tags.get("colour", "").lower())
+
+
+def plain(name):
+    """Lower case without diacritics, for loose name matching ("Rázcestie nad Žabím potokom")."""
+    import unicodedata
+
+    return "".join(c for c in unicodedata.normalize("NFKD", name.lower()) if not unicodedata.combining(c))
 
 
 def clean_name(t):
@@ -200,12 +208,14 @@ class _Boxes:
         return any(lon0 <= e and lon1 >= w and lat0 <= n and lat1 >= s for w, s, e, n in self.b)
 
 
-def load(path, boxes, probe_names=(), border_relation=14296):
-    """Read everything inside `boxes` ([w,s,e,n] list), plus towns and probes anywhere."""
+def load(path, boxes, probe_names=(), border_relation=14296, name_keys=()):
+    """Read everything inside `boxes` ([w,s,e,n] list), plus towns and probes anywhere. Named features
+    inside the boxes whose plain() name contains one of `name_keys` go to `named` (closure sections)."""
     data = OsmData()
     feature_box = _Boxes(boxes, 0.03)
     way_box = _Boxes(boxes, 0.05)
     probe_names = set(probe_names)
+    name_keys = tuple(set(name_keys))
 
     # pass 1: hiking routes
     way_routes = {}
@@ -226,6 +236,10 @@ def load(path, boxes, probe_names=(), border_relation=14296):
         name = clean_name(t)
         if t.get("name") in probe_names or name in probe_names:
             data.probes.setdefault(name, []).append((lat, lon))
+        if name and name_keys and (lat, lon) in feature_box:
+            p = plain(name)
+            if any(k in p for k in name_keys):
+                data.named.append((name, p, lat, lon))
         if t.get("place") in PLACES and name and osm_ref.startswith("node") and (lat, lon) in feature_box:
             data.places.append(Feature(osm_ref, name, lat, lon, {"place": t["place"]}))
         if t.get("place") in ("city", "town") and name and osm_ref.startswith("node"):

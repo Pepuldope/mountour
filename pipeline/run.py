@@ -21,7 +21,7 @@ from . import publish
 from . import walks
 from .dem import Dem
 from .graph import Graph
-from .rules import RuleMatcher
+from .rules import RuleMatcher, section_keys
 from .trips import TripBuilder
 
 UA = "MounTour trip pipeline (https://github.com/Pepuldope/mountour)"
@@ -72,6 +72,9 @@ def main(argv=None):
     ap.add_argument("--root", default=".")
     ap.add_argument("--osm-timestamp", default=None)
     ap.add_argument("--force", action="store_true", help="publish even if the trip count dropped a lot")
+    ap.add_argument("--strict-rules", action="store_true",
+                    help="stop when a closure or fee rule names a place or trail stretch OSM lacks, or covers no trip")
+    ap.add_argument("--rules-only", action="store_true", help="only find the rule places and stretches, print them and stop")
     a = ap.parse_args(argv)
     root = Path(a.root)
 
@@ -85,7 +88,7 @@ def main(argv=None):
     boxes = [b for r in cfg["regions"] for b in r["bboxes"]]
 
     log("reading OSM")
-    osm = osm_mod.load(a.pbf, boxes, probe_names)
+    osm = osm_mod.load(a.pbf, boxes, probe_names, name_keys=section_keys(closures + fees))
     log(f"routes {len(osm.routes)}, ways {len(osm.ways)}, guideposts {len(osm.guideposts)}, parking {len(osm.parking)}, "
         f"stops {len(osm.stops)}, destinations {len(osm.destinations)}, towns {len(osm.towns)}, border {'yes' if osm.border is not None else 'no'}")
     graph = Graph(osm)
@@ -98,7 +101,15 @@ def main(argv=None):
     qids = [f.tags["wikidata"] for _, f in osm.destinations if f.tags.get("wikidata")]
     qids += [f.tags["wikidata"] for f in osm.others if f.tags.get("wikidata")]
     links = sitelinks(qids) if a.wikidata else {}
-    cm, fm = RuleMatcher(closures, osm.probes), RuleMatcher(fees, osm.probes)
+    cm, fm = (RuleMatcher(rs, osm.probes, graph, osm.named, osm.guideposts) for rs in (closures, fees))
+    unresolved = {**cm.unresolved, **fm.unresolved}
+    if a.rules_only:
+        for rid, secs in {**cm.sections, **fm.sections}.items():
+            for label, m in secs:
+                print(f"{rid}: {label} ({m / 1000:.1f} km)")
+        for rid, what in unresolved.items():
+            print(f"NOT FOUND {rid}: " + "; ".join(what))
+        return 1 if unresolved else 0
     car_ok = drive_mod.CarCheck(a.osrm, cfg["trips"]["parking_road_max_m"]) if a.osrm else None
     tb = TripBuilder(cfg, osm, graph, dem, cm, fm, slugs, links, log, car_ok)
     trips = tb.build()
@@ -107,8 +118,22 @@ def main(argv=None):
     trips.sort(key=lambda t: (t["region"], -t["rank"], t["slug"]))
     if car_ok:
         log(f"parkings checked for car access: {car_ok.checked}, unreachable: {car_ok.rejected}")
-    tb.report["unresolved"] = {**cm.unresolved, **fm.unresolved}
+    tb.report["unresolved"] = unresolved
+    tb.report["rule_sections"] = cm.sections
     log(f"{len(trips)} trips")
+    # A rule that finds no place or covers no trip is a rule that silently stopped working
+    # (tanap-juranova-dolina covered nothing for weeks, 2026-10-17): stop before publishing.
+    used = {i for t in trips for i in t["closure_rule_ids"]} | {f["rule_id"] for t in trips for f in t["fees"]}
+    idle = [r["id"] for r in closures + fees
+            if r.get("selector") and not r["selector"].get("may_cover_no_trip") and r["id"] not in used]
+    tb.report["idle_rules"] = idle
+    if a.strict_rules and (unresolved or idle):
+        for rid, what in unresolved.items():
+            log(f"rule {rid}: not found in OSM: " + "; ".join(what))
+        for rid in idle:
+            log(f"rule {rid} covers no trip")
+        log("rules don't match the map: refusing to publish (fix data/*-rules.json, or run without --strict-rules)")
+        return 1
 
     prev = root / "public" / "data" / "trips" / "index.json"
     if prev.exists() and not a.force:

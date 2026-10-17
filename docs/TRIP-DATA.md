@@ -110,3 +110,10 @@ that changed. A full load (the first one, or after a schema change) writes about
 - Closure or fee: edit the JSON rule files (needs a source URL and a check date). Dates
   and texts apply at the next site build; a new rule area needs the next pipeline run
   (Actions → "Weekly trip data" → Run workflow).
+- TANAP closures follow the official list of closed stretches (príloha č. 3 of the visitor
+  rules): each `sections` entry is a marked route number with the named places it runs between,
+  found on the OSM route relation (`pipeline/rules.py`). A trip is closed when it walks 400 m of a
+  stretch or its goal lies on one. The weekly run (`--strict-rules`) keeps last week's trips when
+  a stretch or place isn't found on the map or a rule covers no trip; a pull request that changes
+  the rules runs `python -m pipeline.run --pbf <extract> --rules-only` to show each stretch and
+  its length. The report's "Closure rules" section lists each rule's trips, lowest first.

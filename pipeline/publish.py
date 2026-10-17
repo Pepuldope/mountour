@@ -237,6 +237,15 @@ def _report(trips, rep, now, osm_at, drive):
     if rep.get("unresolved"):
         L += ["", "## Rule place names not found in OSM (check spelling in the rule files)", ""]
         L += [f"- {rid}: {', '.join(names)}" for rid, names in rep["unresolved"].items()]
+    # What each closure covers, to catch a rule on the wrong trips: a ridge closure on a trip that
+    # never climbs above the huts, or a rule that covers nothing.
+    L += ["", "## Closure rules", "", "| Rule | Trips | Lowest top (m) | Lowest trips |", "|---|---|---|---|"]
+    for rid in sorted({i for t in trips for i in t["closure_rule_ids"]} | set(rep.get("idle_rules", []))):
+        on = sorted((t for t in trips if rid in t["closure_rule_ids"]), key=lambda t: t.get("max_ele_m") or 0)
+        low = ", ".join(f"{t['slug']} ({t.get('max_ele_m')})" for t in on[:5])
+        L.append(f"| {rid} | {len(on)} | {on[0].get('max_ele_m') if on else '-'} | {low} |")
+    for rid, secs in rep.get("rule_sections", {}).items():
+        L += ["", f"Stretches of {rid}:", ""] + [f"- {label}: {m / 1000:.1f} km" for label, m in secs]
     L += ["", "## Trips", "", "| Slug | Region | Start | km | ↑ m | Time | Diff. | Rules |", "|---|---|---|---|---|---|---|---|"]
     for t in trips:
         rules = ", ".join(t["closure_rule_ids"] + [f["rule_id"] or "osm fee" for f in t["fees"]])
