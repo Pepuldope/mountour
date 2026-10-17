@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { SAFE_MARGIN_MIN, hikeMinutes, planDay } from "@/lib/dayPlan";
+import { SAFE_MARGIN_MIN, atDayMinute, hikeMinutes, planDay } from "@/lib/dayPlan";
 import type { DayPlan } from "@/lib/dayPlan";
 import { estimateDriveMin, transitMinutes } from "@/lib/drive";
 import type { DriveRoute } from "@/lib/drive";
@@ -71,11 +71,9 @@ export function useTripPlan(
       const p = date && time && sun ? planDay({ date, start: time, driveMin, hikeMin, location: sun, travelMode: transit ? "transit" : "auto", approx, fixed }) : null;
       // By train, the latest departure is a real train: the last one that still gets you off the trail in time.
       if (p && fixed && rail.day.length) {
-        const [y, m, d] = date!.split("-").map(Number);
-        const midnight = new Date(y, m - 1, d).getTime();
-        const ok = rail.day.filter((j) => midnight + (j.arr + hikeMin + SAFE_MARGIN_MIN) * 60000 <= p.sunset.getTime());
+        const ok = rail.day.filter((j) => atDayMinute(date!, j.arr + hikeMin + SAFE_MARGIN_MIN) <= p.sunset);
         const last = ok[ok.length - 1] ?? rail.day[0];
-        p.latestStart = new Date(midnight + last.leave * 60000);
+        p.latestStart = atDayMinute(date!, last.leave);
       }
       return p;
     },
