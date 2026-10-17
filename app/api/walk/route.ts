@@ -1,5 +1,6 @@
 import { haversineM } from "@/lib/geo";
 import { withEdgeCache } from "@/lib/edgeCache";
+import { OTHER_SITE, fromOtherSite, overRouteLimit } from "@/lib/routeGuard";
 import { RateLimited, walkRoute } from "@/lib/routing";
 
 /**
@@ -25,10 +26,12 @@ function parsePoint(raw: string | null): [number, number] | null {
   const [lat, lon] = raw.split(",").map(Number);
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) return null;
   if (lat < AREA.minLat || lat > AREA.maxLat || lon < AREA.minLon || lon > AREA.maxLon) return null;
-  return [lat, lon];
+  // ~1 m: the same place always gives the same cache key.
+  return [Math.round(lat * 1e5) / 1e5, Math.round(lon * 1e5) / 1e5];
 }
 
 export async function GET(req: Request) {
+  if (fromOtherSite(req)) return OTHER_SITE();
   const params = new URL(req.url).searchParams;
   const from = parsePoint(params.get("from"));
   const to = parsePoint(params.get("to"));
@@ -40,7 +43,12 @@ export async function GET(req: Request) {
   }
 
   // Same places, same answer for everyone: Cloudflare keeps it a day, the router is asked once.
+  // Keyed on the rounded places, so extra query parameters can't skip the cache.
+  const cacheKey = { from: from.join(","), to: to.join(",") };
   return withEdgeCache(req, DAY_S, async () => {
+    // A new route spends router quota: only so many a minute per visitor.
+    const limited = await overRouteLimit(req);
+    if (limited) return limited;
     try {
       const key = process.env.ORS_API_KEY;
       const route = await walkRoute(key, from, to, SNAP_M);
@@ -55,5 +63,5 @@ export async function GET(req: Request) {
       }
       return Response.json({ error: "Cestu pešo sa nepodarilo vypočítať." }, { status: 502 });
     }
-  });
+  }, cacheKey);
 }
