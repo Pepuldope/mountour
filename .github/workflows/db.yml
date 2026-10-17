@@ -35,7 +35,7 @@ jobs:
       DB: mountour-visits
     steps:
       # The weekly run commits to main; take main as it is now, not the commit that started it.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: main
       - uses: actions/setup-python@v5
