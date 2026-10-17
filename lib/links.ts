@@ -33,12 +33,27 @@ export interface SharedPlan {
   town: string | null;
 }
 
+/** "2026-10-17", and a day the calendar has (not 2026-02-30). */
+function realDate(date: string): boolean {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  if (!m) return false;
+  const [y, mo, d] = [Number(m[1]), Number(m[2]), Number(m[3])];
+  const day = new Date(Date.UTC(y, mo - 1, d));
+  return day.getUTCFullYear() === y && day.getUTCMonth() === mo - 1 && day.getUTCDate() === d;
+}
+
+/** "08:50", within a day. */
+function realTime(time: string): boolean {
+  const m = /^(\d{2}):(\d{2})$/.exec(time);
+  return !!m && Number(m[1]) < 24 && Number(m[2]) < 60;
+}
+
 /** Reads a shared plan from a query string; null unless both day and time are valid. */
 export function readSharedPlan(search: string): SharedPlan | null {
   const q = new URLSearchParams(search);
   const date = q.get(SHARE_PARAMS.date) ?? "";
   const time = q.get(SHARE_PARAMS.time) ?? "";
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !/^\d{2}:\d{2}$/.test(time)) return null;
+  if (!realDate(date) || !realTime(time)) return null;
   const town = q.get(SHARE_PARAMS.from)?.slice(0, 60).trim() || null;
   return { date, time, town };
 }
@@ -85,18 +100,28 @@ export interface WalkRoute {
   loop: boolean;
 }
 
-/** `n` points spread evenly by distance along `pts`, ends excluded. */
+/**
+ * `n` points spread evenly by distance along `pts`, ends excluded. Each lies on
+ * the line between two trail points, so a short walk with few points still gets
+ * `n` different stops (taking the next trail point repeated them, and a maps app
+ * then went "there and back" to the same spot).
+ */
 function spread(pts: LatLng[], n: number): LatLng[] {
   if (pts.length < 2 || n <= 0) return [];
   const along = [0];
   for (let i = 1; i < pts.length; i++) along.push(along[i - 1] + haversineM(pts[i - 1], pts[i]));
   const total = along[along.length - 1];
+  if (total === 0) return [];
   const out: LatLng[] = [];
   let i = 0;
   for (let k = 1; k <= n; k++) {
     const want = (total * k) / (n + 1);
-    while (i < pts.length - 1 && along[i + 1] < want) i++;
-    out.push(pts[Math.min(i + 1, pts.length - 1)]);
+    while (i < pts.length - 2 && along[i + 1] < want) i++;
+    const seg = along[i + 1] - along[i];
+    const f = seg > 0 ? Math.min(1, Math.max(0, (want - along[i]) / seg)) : 0;
+    const a = pts[i];
+    const b = pts[i + 1];
+    out.push({ lat: a.lat + (b.lat - a.lat) * f, lon: a.lon + (b.lon - a.lon) * f });
   }
   return out;
 }

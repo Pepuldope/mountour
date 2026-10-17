@@ -58,9 +58,18 @@ const SEVERITY = [
   "clearsky",
 ];
 
+/**
+ * Rank of a MET code. The longest name it contains decides ("lightrainshowers"
+ * is light rain, not rain; "partlycloudy" is not "cloudy"), except that any
+ * thunder ("rainandthunder") counts as thunder.
+ */
 function severity(code: string): number {
-  const i = SEVERITY.findIndex((s) => code.includes(s));
-  return i < 0 ? SEVERITY.length : i;
+  if (code.includes("thunder")) return 0;
+  let best = -1;
+  SEVERITY.forEach((s, i) => {
+    if (code.includes(s) && (best < 0 || s.length > SEVERITY[best].length)) best = i;
+  });
+  return best < 0 ? SEVERITY.length : best;
 }
 
 /** "lightrainshowers_day" -> "lightrainshowers". */
@@ -74,7 +83,8 @@ export function summarize(forecast: WeatherForecast, from: Date, to: Date): Weat
   const b = to.getTime();
   const steps = forecast.steps.filter((s) => {
     const t = new Date(s.t).getTime();
-    return t <= b && t + s.hours * HOUR > a;
+    // A step that starts as the walk ends is not part of it.
+    return t < b && t + s.hours * HOUR > a;
   });
   if (steps.length === 0) return null;
   const last = steps[steps.length - 1];

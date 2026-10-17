@@ -33,6 +33,10 @@ const MONTH_TOTALS = `
 
 let ready: Promise<void> | null = null;
 let lastCloseOut = "";
+const salts = new Map<string, string>();
+/** /statistiky reads every row of the month; a few minutes old is fine. */
+const STATS_TTL_MS = 5 * 60_000;
+let statsMemo: { at: number; rows: MonthStats[] } | null = null;
 
 async function prepared(db: D1Like): Promise<void> {
   ready ??= db
@@ -49,7 +53,9 @@ async function prepared(db: D1Like): Promise<void> {
 async function closeOutFinishedMonths(db: D1Like, currentMonth: string): Promise<void> {
   if (lastCloseOut === currentMonth) return;
   await db.batch([
-    db.prepare(`INSERT OR REPLACE INTO visit_month ${MONTH_TOTALS} WHERE month < ?1 GROUP BY month`).bind(currentMonth),
+    // OR IGNORE: a month is closed once. A visit that slipped in just after
+    // midnight on another server must not replace the month's totals.
+    db.prepare(`INSERT OR IGNORE INTO visit_month ${MONTH_TOTALS} WHERE month < ?1 GROUP BY month`).bind(currentMonth),
     db.prepare(`DELETE FROM visit_day WHERE substr(day, 1, 7) < ?1`).bind(currentMonth),
     db.prepare(`DELETE FROM visit_salt WHERE month < ?1`).bind(currentMonth),
   ]);
@@ -65,13 +71,21 @@ function randomHex(bytes: number): string {
  * no database, so the caller can skip counting.
  */
 export async function monthSalt(month: string): Promise<string | null> {
+  const known = salts.get(month);
+  if (known) return known;
   const db = await getDb();
   if (!db) return null;
   await prepared(db);
   await closeOutFinishedMonths(db, month);
+  // A month already closed out gets no new key (and so no new rows).
+  const closed = await db.prepare(`SELECT 1 FROM visit_month WHERE month = ?1`).bind(month).first();
+  if (closed) return null;
   await db.prepare(`INSERT OR IGNORE INTO visit_salt (month, salt) VALUES (?1, ?2)`).bind(month, randomHex(32)).run();
   const row = await db.prepare(`SELECT salt FROM visit_salt WHERE month = ?1`).bind(month).first<{ salt: string }>();
-  return row?.salt ?? null;
+  if (!row) return null;
+  salts.clear();
+  salts.set(month, row.salt);
+  return row.salt;
 }
 
 export async function recordVisitDay(visitor: string, day: string): Promise<void> {
@@ -82,17 +96,18 @@ export async function recordVisitDay(visitor: string, day: string): Promise<void
 
 /** Every month, newest first: finished months from visit_month, the current one live. */
 export async function monthlyStats(): Promise<MonthStats[] | null> {
+  if (statsMemo && Date.now() - statsMemo.at < STATS_TTL_MS) return statsMemo.rows;
   const db = await getDb();
   if (!db) return null;
   await prepared(db);
   const { results } = await db
     .prepare(
-      `${MONTH_TOTALS} GROUP BY month
+      `${MONTH_TOTALS} WHERE month NOT IN (SELECT month FROM visit_month) GROUP BY month
        UNION ALL
        SELECT month, visitors, visitors_2plus_days, visitors_4plus_days, avg_days FROM visit_month
-       WHERE month NOT IN (SELECT DISTINCT substr(day, 1, 7) FROM visit_day)
        ORDER BY month DESC`,
     )
     .all<MonthStats>();
+  statsMemo = { at: Date.now(), rows: results };
   return results;
 }

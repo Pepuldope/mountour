@@ -1,3 +1,4 @@
+import { withEdgeCache } from "@/lib/edgeCache";
 import type { WeatherForecast, WeatherStep } from "@/lib/weather";
 
 /**
@@ -7,11 +8,17 @@ import type { WeatherForecast, WeatherStep } from "@/lib/weather";
  * in User-Agent, at most 4 decimals, cache, never call it straight from the
  * browser. Trail starts and summits are public places, so nothing personal
  * is sent. `alt` corrects the temperature for a summit's height.
+ *
+ * MET's grid is 2.5 km, so places are snapped to ~1 km and heights to 10 m:
+ * nearby trips share one cached forecast and MET is asked far less often.
  */
 
 const UA = "MounTour/1.0 https://github.com/Pepuldope/mountour nemcok.peter123@gmail.com";
 const AREA = { minLat: 47, maxLat: 50, minLon: 16, maxLon: 23 };
 const CACHE_S = 1800;
+/** MET answering slowly must not hold the page. */
+const TIMEOUT_MS = 8000;
+const snap = (n: number) => Math.round(n * 100) / 100;
 
 interface MetStep {
   time: string;
@@ -38,9 +45,9 @@ function trim(s: MetStep): WeatherStep {
 
 export async function GET(req: Request) {
   const q = new URL(req.url).searchParams;
-  const lat = Number(q.get("lat"));
-  const lon = Number(q.get("lon"));
-  const alt = q.get("alt") ? Math.round(Number(q.get("alt"))) : null;
+  const lat = snap(Number(q.get("lat")));
+  const lon = snap(Number(q.get("lon")));
+  const alt = q.get("alt") ? Math.round(Number(q.get("alt")) / 10) * 10 : null;
   if (
     !Number.isFinite(lat) ||
     !Number.isFinite(lon) ||
@@ -55,9 +62,14 @@ export async function GET(req: Request) {
 
   const url =
     "https://api.met.no/weatherapi/locationforecast/2.0/compact" +
-    `?lat=${lat.toFixed(4)}&lon=${lon.toFixed(4)}${alt !== null ? `&altitude=${alt}` : ""}`;
+    `?lat=${lat.toFixed(2)}&lon=${lon.toFixed(2)}${alt !== null ? `&altitude=${alt}` : ""}`;
+  const cacheKey = { lat: lat.toFixed(2), lon: lon.toFixed(2), alt: alt === null ? "" : String(alt) };
+  return withEdgeCache(req, CACHE_S, () => forecast(url), cacheKey);
+}
+
+async function forecast(url: string): Promise<Response> {
   try {
-    const res = await fetch(url, { headers: { "User-Agent": UA }, next: { revalidate: CACHE_S } });
+    const res = await fetch(url, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(TIMEOUT_MS) });
     if (!res.ok) throw new Error(`MET ${res.status}`);
     const data = await res.json();
     const body: WeatherForecast = {

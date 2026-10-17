@@ -5,7 +5,7 @@ import Link from "next/link";
 import type { BBox, LatLng } from "@/lib/types";
 import type { TripProfile } from "@/lib/tripProfile";
 import { offlineMapUrls } from "@/lib/tiles";
-import { longDay } from "@/lib/days";
+import { dayAfterNa } from "@/lib/days";
 import { useSavedTrips } from "@/lib/savedTrips";
 import type { TripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
@@ -181,7 +181,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
 
       {saved && !askShare && status !== "saving" && (
         <p className="text-sm">
-          Uložené na <strong>{longDay(saved.date)}</strong> o <strong>{saved.time}</strong>
+          Uložené na <strong>{dayAfterNa(saved.date)}</strong> o <strong>{saved.time}</strong>
           {saved.offline === "ok" ? ", funguje aj bez signálu. " : ". "}
           <button type="button" onClick={() => remove(slug)} className="text-[var(--muted)] underline">
             Odstrániť

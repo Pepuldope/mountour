@@ -13,8 +13,12 @@ function edgeCache(): EdgeCache | null {
   return c?.default ?? null;
 }
 
+/** An answer may ask to be kept for less time than usual (a route that is only partly right). */
+export const KEEP_FOR = "X-Keep-For";
+
 /**
- * A cached answer for this GET, else `compute()`; good answers are kept for `maxAgeS`.
+ * A cached answer for this GET, else `compute()`; good answers are kept for `maxAgeS`
+ * (or the shorter `X-Keep-For` seconds the answer names).
  * `params` (the parsed, rounded inputs) make the key, so extra or reordered query
  * parameters can't skip the cache; without them the URL is the key.
  */
@@ -37,10 +41,13 @@ export async function withEdgeCache(
     }
   }
   const res = await compute();
+  const keepFor = Number(res.headers.get(KEEP_FOR));
+  const ageS = keepFor > 0 ? Math.min(keepFor, maxAgeS) : maxAgeS;
   if (cache && res.ok) {
     try {
       const copy = new Response(res.clone().body, res);
-      copy.headers.set("Cache-Control", `public, max-age=${maxAgeS}`);
+      copy.headers.delete(KEEP_FOR);
+      copy.headers.set("Cache-Control", `public, max-age=${ageS}`);
       await cache.put(key, copy);
     } catch {
       // Not cached this time; the answer still goes out.

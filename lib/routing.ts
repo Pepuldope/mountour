@@ -10,6 +10,8 @@ export type Pt = [number, number];
 type OrsProfile = "driving-car" | "foot-hiking" | "foot-walking";
 
 const DAY_S = 86400;
+/** A router that hangs must not hold the page: give up after this long. */
+export const ROUTER_TIMEOUT_MS = 8000;
 
 /**
  * The free OpenRouteService key allows 40 routes a minute and 2,000 a day, and a trip page asks
@@ -47,6 +49,7 @@ export async function viaOrs(key: string, profile: OrsProfile, from: Pt, to: Pt,
       ],
       radiuses,
     }),
+    signal: AbortSignal.timeout(ROUTER_TIMEOUT_MS),
   });
   if (res.status === 429) throw new RateLimited(`ORS ${profile} 429`);
   if (!res.ok) throw new Error(`ORS ${profile} ${res.status}`);
@@ -61,7 +64,7 @@ export async function viaOrs(key: string, profile: OrsProfile, from: Pt, to: Pt,
 
 export async function viaOsrm(base: string, from: Pt, to: Pt): Promise<DriveRoute> {
   const url = `${base}/route/v1/driving/${from[1]},${from[0]};${to[1]},${to[0]}?overview=full&geometries=geojson`;
-  const res = await fetch(url, { next: { revalidate: DAY_S } } as RequestInit);
+  const res = await fetch(url, { next: { revalidate: DAY_S }, signal: AbortSignal.timeout(ROUTER_TIMEOUT_MS) } as RequestInit);
   if (!res.ok) throw new Error(`OSRM ${res.status}`);
   const data = await res.json();
   const r = data.routes?.[0];
@@ -109,8 +112,16 @@ const LAST_STRETCH_KMH = 20;
  * far away, and the line would then jump straight to the parking. Follow the
  * real ways for that last stretch with the foot router (it knows tracks and
  * minor roads) and add it to the drive at a slow pace.
+ *
+ * `onTailFailed` hears when that last stretch could not be asked for (router
+ * down or busy): the drive then stops short, and should not be kept long.
  */
-export async function finishDrive(route: DriveRoute, to: Pt, tail: (from: Pt, to: Pt) => Promise<DriveRoute>): Promise<DriveRoute> {
+export async function finishDrive(
+  route: DriveRoute,
+  to: Pt,
+  tail: (from: Pt, to: Pt) => Promise<DriveRoute>,
+  onTailFailed?: () => void
+): Promise<DriveRoute> {
   const end = route.points[route.points.length - 1];
   if (!end) return route;
   const gap = dist(end, to);
@@ -128,6 +139,7 @@ export async function finishDrive(route: DriveRoute, to: Pt, tail: (from: Pt, to
     };
   } catch (err) {
     console.warn("drive: last stretch to the parking failed", err);
+    onTailFailed?.();
     return route;
   }
 }

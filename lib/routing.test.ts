@@ -24,6 +24,15 @@ describe("finishDrive", () => {
     expect(await finishDrive(road, [49.008, 19.0], async () => far)).toBe(road);
     expect(await finishDrive(road, [49.008, 19.0], () => Promise.reject(new Error("down")))).toBe(road);
   });
+
+  it("says when the last stretch could not be asked for, not when it was a detour", async () => {
+    const far = { durationMin: 60, distanceM: 9000, points: [[49.0, 19.0], [49.008, 19.0]] as [number, number][] };
+    let failed = 0;
+    await finishDrive(road, [49.008, 19.0], async () => far, () => failed++);
+    expect(failed).toBe(0);
+    await finishDrive(road, [49.008, 19.0], () => Promise.reject(new Error("down")), () => failed++);
+    expect(failed).toBe(1);
+  });
 });
 
 describe("dropDeadEnd", () => {
