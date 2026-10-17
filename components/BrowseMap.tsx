@@ -112,6 +112,17 @@ interface Meta {
   cells: string[];
 }
 
+/** A rounded square path; ctx.roundRect is missing before Safari 16, and without the marks the map shows no trips. */
+function roundSquare(g: CanvasRenderingContext2D, x: number, y: number, size: number, r: number) {
+  if (typeof g.roundRect === "function") return g.roundRect(x, y, size, size, r);
+  g.moveTo(x + r, y);
+  g.arcTo(x + size, y, x + size, y + size, r);
+  g.arcTo(x + size, y + size, x, y + size, r);
+  g.arcTo(x, y + size, x, y, r);
+  g.arcTo(x, y, x + size, y, r);
+  g.closePath();
+}
+
 /** The site's square trail mark (16 px, white edge, soft shadow), drawn for the map at 2x. */
 function squareImage(fill: string, edge: string, size: number): ImageData {
   const r = 2;
@@ -125,12 +136,12 @@ function squareImage(fill: string, edge: string, size: number): ImageData {
   g.shadowOffsetY = 1 * r;
   g.fillStyle = edge;
   g.beginPath();
-  g.roundRect(pad, pad, s, s, 3 * r);
+  roundSquare(g, pad, pad, s, 3 * r);
   g.fill();
   g.shadowColor = "transparent";
   g.fillStyle = fill;
   g.beginPath();
-  g.roundRect(pad + 2 * r, pad + 2 * r, s - 4 * r, s - 4 * r, 1.5 * r);
+  roundSquare(g, pad + 2 * r, pad + 2 * r, s - 4 * r, 1.5 * r);
   g.fill();
   return g.getImageData(0, 0, c.width, c.height);
 }
@@ -437,11 +448,17 @@ export function BrowseMap({
       }
       setLinesVersion((v) => v + 1);
     };
-    async function loadLines(m: MlMap) {
-      if (!meta) {
-        meta = await getJson<Meta>(`${MAP_DATA}/meta.json`);
-        if (!meta || cancelled) return;
-        const overview = await fetchLines(`${MAP_DATA}/overview.json?v=${meta.generated_at}`);
+    // Once per map: the first load and an early "moveend" must not both fetch the
+    // overview (and re-add lines that dropCovered already took away).
+    let overviewP: Promise<Meta | null> | null = null;
+    const loadOverview = (m: MlMap) =>
+      (overviewP ??= (async () => {
+        const got = await getJson<Meta>(`${MAP_DATA}/meta.json`);
+        if (!got || cancelled) {
+          overviewP = null;
+          return null;
+        }
+        const overview = await fetchLines(`${MAP_DATA}/overview.json?v=${got.generated_at}`);
         if (overview && !cancelled) {
           lineFeeder(() => m.getSource("trip-lines") as GeoJSONSource | undefined)(overview.features);
           // The same features in the same order, so both sources give each trip the same id.
@@ -449,6 +466,12 @@ export function BrowseMap({
           for (const f of overview.features) if (f.id !== undefined) overviewId.set(f.properties?.s, f.id);
           remember(overview.features, false);
         }
+        return got;
+      })());
+    async function loadLines(m: MlMap) {
+      if (!meta) {
+        meta = await loadOverview(m);
+        if (!meta || cancelled) return;
       }
       if (m.getZoom() < areaZoom - 0.5) return;
       const b = m.getBounds();

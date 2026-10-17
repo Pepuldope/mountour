@@ -116,6 +116,24 @@ export function TripSettingsProvider({ children }: { children: ReactNode }) {
     setSettings({ ...DEFAULTS, ...stored, ...(fresh ? { date: defaultDay(), time: null } : {}), ...(travel ? { travel } : {}) });
   }, []);
 
+  // A tab left open past midnight: "Dnes" moves to the new day, and a day now in the past
+  // goes back to the default, as on a new visit. Checked when the tab comes back and each minute.
+  useEffect(() => {
+    if (!today) return;
+    const check = () => {
+      const now = isoDate(new Date());
+      if (now === today) return;
+      setToday(now);
+      setSettings((prev) => (prev.date && prev.date < now ? { ...prev, date: defaultDay(), time: null } : prev));
+    };
+    const timer = setInterval(check, 60_000);
+    document.addEventListener("visibilitychange", check);
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", check);
+    };
+  }, [today]);
+
   const update = useCallback((patch: Partial<TripSettings>) => {
     if (patch.travel) storeTravel(patch.travel);
     setSettings((prev) => {

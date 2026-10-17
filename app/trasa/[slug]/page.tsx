@@ -79,7 +79,8 @@ function trailJsonLd(detail: TrailDetail) {
         url,
         ...(trail.description ? { description: trail.description } : {}),
         image: absoluteUrl("/og-image.png"),
-        isAccessibleForFree: true,
+        // Only when an entry fee is known; no known fee doesn't mean free.
+        ...(detail.fees.some((f) => f.kind === "vstupne") ? { isAccessibleForFree: false } : {}),
         publicAccess: true,
         touristType: trail.family_friendly ? ["Rodiny s deťmi", "Turisti"] : ["Turisti"],
         ...(start ? { geo: { "@type": "GeoCoordinates", latitude: start.lat, longitude: start.lon } } : {}),
