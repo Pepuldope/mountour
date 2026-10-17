@@ -208,12 +208,15 @@ export function simplifyLine(points: Pt[], tolM: number): Pt[] {
     const [bx, by] = xy[b];
     const dx = bx - ax;
     const dy = by - ay;
-    const len = Math.hypot(dx, dy);
+    const len2 = dx * dx + dy * dy;
     let far = -1;
     let farD = tolM;
     for (let i = a + 1; i < b; i++) {
       const [px, py] = xy[i];
-      const d = len > 0 ? Math.abs(dy * (px - ax) - dx * (py - ay)) / len : Math.hypot(px - ax, py - ay);
+      // Distance to the segment, not the endless line through it: a spur that runs out past an end
+      // and comes back the same way lies on that line and would otherwise be cut off.
+      const t = len2 > 0 ? Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / len2)) : 0;
+      const d = Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
       if (d > farD) {
         farD = d;
         far = i;
