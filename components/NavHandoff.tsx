@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import { googleMapsUrl, googleWalkUrl, mapyUrl, mapyWalkUrl } from "@/lib/links";
 import type { WalkRoute } from "@/lib/links";
 import type { LatLng } from "@/lib/types";
+import { useTripAccess } from "@/components/TripAccess";
 
 type App = "google" | "mapy";
 
@@ -59,6 +60,8 @@ export function NavHandoff({
   walk: WalkRoute;
   join: LatLng | null;
 }) {
+  // Without a parking lot the drive ends on the nearest road, not at a parking.
+  const { parking } = useTripAccess();
   const app = useSyncExternalStore(subscribe, readApp, () => "google" as App);
   const canWalk = walkFrom !== null && walk.points.length > 1;
   if (!drive && !canWalk) return null;
@@ -86,7 +89,7 @@ export function NavHandoff({
             rel="noopener noreferrer"
             className={navButton}
           >
-            Na parkovisko
+            {parking ? "Na parkovisko" : "Navigovať autom"}
           </a>
         )}
         {canWalk && (

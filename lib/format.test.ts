@@ -16,3 +16,12 @@ describe("format", () => {
     expect(formatFromUser(238)).toBe("240 m");
   });
 });
+
+describe("distances", () => {
+  it("writes km with a comma, and short walks in metres", async () => {
+    const { formatDistance, formatWalk } = await import("./format");
+    expect(formatDistance(18400)).toBe("18,4 km");
+    expect(formatWalk(350)).toBe("350 m");
+    expect(formatWalk(2350)).toBe("2,4 km");
+  });
+});

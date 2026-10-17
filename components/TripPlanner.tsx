@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import type { DayPlan } from "@/lib/dayPlan";
-import { floorTo5, longDay } from "@/lib/days";
+import type { DayPlan, Verdict } from "@/lib/dayPlan";
+import { EARLIEST_DEPARTURE_HOUR, floorTo5, longDay } from "@/lib/days";
 import { formatDuration, formatTime, stopLabel } from "@/lib/format";
 import { searchPlaces } from "@/lib/geocode";
 import { readSharedPlan } from "@/lib/links";
@@ -110,6 +110,11 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
 
   // Only when the chosen start oversteps: one plain warning under the day, nothing otherwise.
   const late = plan !== null && (plan.verdict === "tight" || plan.verdict === "after-sunset" || plan.verdict === "after-dusk");
+  // Too long for the day's light: even leaving at first light (or before EARLIEST_DEPARTURE_HOUR) won't do.
+  const tooLong =
+    plan !== null &&
+    latest !== null &&
+    (latest.getTime() < plan.sunrise.getTime() - (driveMin ?? 0) * 60_000 || latest.getHours() < EARLIEST_DEPARTURE_HOUR);
   const startWord = hasDrive ? "Vyrazte" : transit && stop ? `Buďte na zastávke ${stopLabel(stop.name)}` : "Začnite túru";
 
   return (
@@ -160,7 +165,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
           {sun && (
             // Framed inside the card: its sky would otherwise blend into the page.
             <div className="overflow-hidden rounded-xl">
-              <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} byBus={transit} weather={weather.below} />
+              <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} byBus={transit} byTrain={transit && rail.status === "ok"} weather={weather.below} />
             </div>
           )}
           {plan.startsInDark && <p className="text-sm text-[var(--warn)]">Túra začína pred východom slnka, vezmite si čelovku.</p>}
@@ -188,9 +193,7 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
           {!start && !transit && <p className="text-xs text-[var(--muted)]">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>}
           {(late || latestPassed) && (
             <p role="status" className="rounded-xl bg-[var(--warn-bg)] px-3.5 py-3 text-base font-semibold text-[var(--warn)]">
-              {latestPassed
-                ? "Na dnes je to už neskoro, späť by ste boli po tme. Skúste zajtra ráno."
-                : `Späť by ste boli po západe slnka. ${startWord} najneskôr o ${formatTime(latest!)}.`}
+              {lateText(plan!.verdict, { latestPassed: !!latestPassed, tooLong, startWord, latest: formatTime(latest!) })}
             </p>
           )}
         </section>
@@ -208,6 +211,19 @@ export function TripPlanner({ sun, baseHikeMin: trailHikeMin, goal, profile: ful
       </section>
     </div>
   );
+}
+
+/** One warning, in the words the trip page uses for each case. */
+function lateText(
+  verdict: Verdict,
+  o: { latestPassed: boolean; tooLong: boolean; startWord: string; latest: string }
+): string {
+  if (o.tooLong) return "V tento deň je táto túra na denné svetlo pridlhá. Skúste kratšiu trasu z ponuky nižšie alebo dlhší deň.";
+  if (o.latestPassed) return "Na dnes je to už neskoro, späť by ste boli po tme. Skúste zajtra ráno.";
+  const leave = `${o.startWord} najneskôr o ${o.latest}.`;
+  if (verdict === "tight") return `Stihnete to tesne pred západom slnka. Pre rezervu ${o.startWord.charAt(0).toLowerCase()}${o.startWord.slice(1)} najneskôr o ${o.latest}.`;
+  if (verdict === "after-dusk") return `Späť by ste boli až po tme. ${leave}`;
+  return `Späť by ste boli po západe slnka. ${leave}`;
 }
 
 function Step({ label, time, approx = false }: { label: string; time: Date; approx?: boolean }) {

@@ -1,5 +1,6 @@
 import { approachMin } from "@/lib/dayPlan";
 import { distanceAlongM } from "@/lib/geo";
+import { formatWalk } from "@/lib/format";
 import { trailJoin } from "@/lib/trailJoin";
 import type { TrailJoin } from "@/lib/trailJoin";
 import { closureRulesFor } from "@/lib/trips";
@@ -18,7 +19,7 @@ function parkingLot(p: Parking, slug: string, i: number, join: TrailJoin | null)
     name: p.name ?? "Parkovisko",
     location: p.location,
     surface_type: null,
-    note: join ? `${join.walk_m} m od trasy${fee}. Zdroj: OpenStreetMap.` : `${p.walk_m} m od začiatku trasy${fee}. Zdroj: OpenStreetMap.`,
+    note: join ? `${formatWalk(join.walk_m)} od trasy${fee}. Zdroj: OpenStreetMap.` : `${formatWalk(p.walk_m)} od začiatku trasy${fee}. Zdroj: OpenStreetMap.`,
     verified_on: null,
     walk_m: p.walk_m,
     fee: p.fee,

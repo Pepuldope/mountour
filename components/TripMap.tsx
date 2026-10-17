@@ -8,7 +8,7 @@ import { useDriveRoute, useWalkRoute } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { useHomeStop } from "@/lib/useHomeStop";
 import { fetchTrack } from "@/lib/gpx";
-import { GOAL_LABEL, POI_LABEL, TRANSIT_LABEL } from "@/lib/format";
+import { GOAL_LABEL, POI_LABEL, TRANSIT_LABEL, formatWalk } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR, POI_COLOUR } from "@/lib/palette";
 import { trackColor } from "@/lib/mapLayers";
@@ -162,7 +162,7 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
             title: s.name,
             lines: [
               TRANSIT_LABEL[s.mode],
-              s.join ? `${s.join.walk_m} m od trasy` : `${s.distance_m} m od začiatku trasy`,
+              s.join ? `${formatWalk(s.join.walk_m)} od trasy` : `${formatWalk(s.distance_m)} od začiatku trasy`,
               ...(i === stopChoice ? ["Tu vystúpite"] : []),
             ],
             active: i === stopChoice,
@@ -177,7 +177,7 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
               kind: `transit-${homeStop.mode}` as const,
               location: homeStop.location,
               title: homeStop.name,
-              lines: [`Tu nastúpite, ${homeStop.distance_m} m od štartu`],
+              lines: [`Tu nastúpite, ${formatWalk(homeStop.distance_m)} od štartu`],
             },
           ]
         : []),

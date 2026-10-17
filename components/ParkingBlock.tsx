@@ -1,6 +1,6 @@
 "use client";
 
-import { formatDuration } from "@/lib/format";
+import { formatDuration, formatWalk } from "@/lib/format";
 import { useTripAccess } from "@/components/TripAccess";
 import { approachMin } from "@/lib/dayPlan";
 import { UiIcon } from "@/components/UiIcon";
@@ -17,16 +17,16 @@ function walkLabel(p: ParkingLot): string {
   if (p.join) {
     const min = approachMin(p.join.walk_m);
     const km = (p.join.skip_m / 1000).toFixed(1).replace(".", ",");
-    const walk = min > 0 ? `${p.join.walk_m} m pešo k trase (~${formatDuration(min)})` : "priamo pri trase";
+    const walk = min > 0 ? `${formatWalk(p.join.walk_m)} pešo k trase (~${formatDuration(min)})` : "priamo pri trase";
     return p.join.skip_m > 0 ? `${walk}, túra kratšia o ${km} km` : walk;
   }
   const min = approachMin(p.walk_m);
-  return min > 0 ? `${p.walk_m} m pešo k začiatku (~${formatDuration(min)})` : "pri začiatku trasy";
+  return min > 0 ? `${formatWalk(p.walk_m)} pešo k začiatku (~${formatDuration(min)})` : "pri začiatku trasy";
 }
 
 function summaryWalk(p: ParkingLot): string {
-  if (p.join) return p.join.walk_m < 150 ? "pri trase" : `${p.join.walk_m} m k trase`;
-  return p.walk_m < 150 ? "pri štarte" : `${p.walk_m} m`;
+  if (p.join) return p.join.walk_m < 150 ? "pri trase" : `${formatWalk(p.join.walk_m)} k trase`;
+  return p.walk_m < 150 ? "pri štarte" : formatWalk(p.walk_m);
 }
 
 /**
@@ -34,7 +34,7 @@ function summaryWalk(p: ParkingLot): string {
  * visitor picks one; the drive, the walk to the trail and the plan follow.
  */
 export function ParkingBlock() {
-  const { parkingLots, choice, choose, parking, transit } = useTripAccess();
+  const { parkingLots, choice, choose, parking, transit, stops } = useTripAccess();
   const options = parkingLots.slice(0, MAX_OPTIONS);
   if (transit) return null;
 
@@ -55,8 +55,8 @@ export function ParkingBlock() {
       <div className="flex flex-col gap-2 px-4 pb-3.5">
       {!parking && (
         <p className="text-sm">
-          Pri začiatku trasy nemáme parkovisko. Navigácia vás dovedie na najbližšiu cestu, odtiaľ pešo. Skúste aj vlak
-          alebo autobus.
+          Pri začiatku trasy nemáme parkovisko. Navigácia vás dovedie na najbližšiu cestu, odtiaľ pešo.
+          {stops.length > 0 && " Skúste aj vlak alebo autobus."}
         </p>
       )}
       {options.length > 1 && <p className="text-sm text-[var(--muted)]">Vyberte, kde zaparkujete. Cesta autom aj pešo sa prepočíta.</p>}
