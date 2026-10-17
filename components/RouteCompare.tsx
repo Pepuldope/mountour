@@ -36,14 +36,20 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
   const maxMin = Math.max(...routes.map((r) => r.duration_min));
   const maxUp = Math.max(1, ...routes.map((r) => r.ascent_m));
 
-  const tracks: MapTrack[] = routes.map((r, i) => ({
-    slug: r.slug,
-    label: routeLabel(r),
-    points: r.up.map(([lon, lat]) => [lat, lon]),
-    color: colour(i),
-    state: i === sel || i === hover ? "selected" : "dimmed",
-  }));
-  const markers: MapMarker[] = [
+  // Memoised: the map redraws its lines when `tracks` changes and re-adds every pin when `markers` does,
+  // so neither may be rebuilt on unrelated renders, and hovering must not touch the pins.
+  const tracks = useMemo<MapTrack[]>(
+    () =>
+      routes.map((r, i) => ({
+        slug: r.slug,
+        label: routeLabel(r),
+        points: r.up.map(([lon, lat]) => [lat, lon] as [number, number]),
+        color: colour(i),
+        state: i === sel || i === hover ? "selected" : "dimmed",
+      })),
+    [routes, sel, hover]
+  );
+  const markers = useMemo<MapMarker[]>(() => [
     ...routes.map((r, i) => ({
       id: `start-${r.slug}`,
       kind: "poi" as const,
@@ -56,7 +62,7 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
       onClick: () => setSel(i),
     })),
     { id: "goal", kind: "trailhead" as const, location: goal, title: destination },
-  ];
+  ], [routes, sel, goal, destination]);
   const bounds = useMemo<BBox>(() => {
     const pts = routes.flatMap((r) => r.up);
     const lons = pts.map((p) => p[0]);
