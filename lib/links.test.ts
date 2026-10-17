@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { cpSkUrl, googleWalkUrl, mapyUrl, mapyWalkUrl, readSharedPlan, sharePath, shareText, startTown, walkStops } from "./links";
-import { dayChips, dayFit, dayInSentence, longDay } from "./days";
+import { dayAfterNa, dayChips, dayFit, dayInSentence, longDay } from "./days";
 
 const BRATISLAVA = { lat: 48.1486, lon: 17.1077 };
 
@@ -14,6 +14,9 @@ describe("shared plan links", () => {
   it("ignores broken shared links", () => {
     expect(readSharedPlan("den=zajtra&odchod=08:50")).toBeNull();
     expect(readSharedPlan("den=2026-10-17")).toBeNull();
+    expect(readSharedPlan("den=2026-02-30&odchod=08:50")).toBeNull();
+    expect(readSharedPlan("den=2026-10-17&odchod=25:99")).toBeNull();
+    expect(readSharedPlan("den=2028-02-29&odchod=23:59")).not.toBeNull();
   });
 
   it("shares a GPS start only as its town name", () => {
@@ -164,5 +167,23 @@ describe("walking hand-off", () => {
     const { via, end } = walkStops({ points: loop, loop: true }, null, 3, false);
     expect(end).toBe("start");
     expect(via).toHaveLength(3);
+  });
+});
+
+describe("walk stops on a short walk", () => {
+  it("never repeats a point or the goal", () => {
+    const walk = { points: [[49, 19], [49.001, 19]] as [number, number][], loop: false };
+    const { via, end } = walkStops(walk, null, 15, true);
+    expect(end).toBe("start");
+    const keys = via.map((p) => `${p.lat},${p.lon}`);
+    keys.forEach((k, i) => expect(k).not.toBe(keys[i - 1]));
+    expect(keys.filter((k) => k === "49.001,19")).toHaveLength(1);
+  });
+});
+
+describe("dayAfterNa", () => {
+  it("reads after \"na\"", () => {
+    expect(dayAfterNa("2026-10-18")).toBe("nedeľu 18. 10.");
+    expect(dayAfterNa("2026-10-22")).toBe("štvrtok 22. 10.");
   });
 });

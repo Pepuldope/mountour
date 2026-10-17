@@ -33,6 +33,19 @@ describe("summarize", () => {
     const s = summarize(forecast, new Date("2026-10-17T12:00:00Z"), new Date("2026-10-17T15:00:00Z"))!;
     expect(s.rainMm).toBe(0.6);
   });
+  it("ranks rain over light rain, and cloudy over partly cloudy", () => {
+    const f = (a: string, b: string): WeatherForecast => ({ updated: "", steps: [hourly(8, 5, 0, a), hourly(9, 5, 0, b)] });
+    const at = (x: WeatherForecast) => summarize(x, new Date("2026-10-17T08:00:00Z"), new Date("2026-10-17T10:00:00Z"))!.symbol;
+    expect(at(f("lightrainshowers_day", "rainshowers_day"))).toBe("rainshowers");
+    expect(at(f("lightsnow", "snow"))).toBe("snow");
+    expect(at(f("partlycloudy_day", "cloudy"))).toBe("cloudy");
+    expect(at(f("rain", "lightrainandthunder"))).toBe("lightrainandthunder");
+  });
+  it("leaves out a step that starts as the walk ends", () => {
+    const s = summarize(forecast, new Date("2026-10-17T10:00:00Z"), new Date("2026-10-17T12:00:00Z"))!;
+    expect(s.symbol).toBe("cloudy");
+    expect(s.tempMax).toBe(10);
+  });
   it("is null past the end of the forecast", () => {
     expect(summarize(forecast, new Date("2026-10-17T16:00:00Z"), new Date("2026-10-17T20:00:00Z"))).toBeNull();
   });

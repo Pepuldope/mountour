@@ -39,5 +39,7 @@ describe("cellsAround", () => {
   it("adds the neighbour cell near an edge", () => {
     const all = new Set(["0_1", "1_1", "0_2"]);
     expect(cellsAround(grid, all, { lat: 47.96, lon: 17.24 }).sort()).toEqual(["0_1", "1_1"]);
+    // ~3 km from the edge: a stop just over it can still be the nearest.
+    expect(cellsAround(grid, all, { lat: 48.05, lon: 17.21 }).sort()).toEqual(["0_1", "1_1"]);
   });
 });

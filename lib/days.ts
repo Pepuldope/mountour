@@ -85,6 +85,11 @@ export function longDay(iso: string): string {
   return `${WEEKDAY[parseIso(iso).getDay()]} ${shortDate(iso)}`;
 }
 
+/** After "na": "nedeľu 18. 10." ("Uložené na nedeľu 18. 10."). */
+export function dayAfterNa(iso: string): string {
+  return `${WEEKDAY_IN[parseIso(iso).getDay()].replace(/^vo? /, "")} ${shortDate(iso)}`;
+}
+
 /** For sentences: "dnes", "zajtra", "v sobotu", or "v pondelok 19. 10." further out. */
 export function dayInSentence(iso: string, now: Date): string {
   const today = isoDate(now);

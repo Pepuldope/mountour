@@ -22,12 +22,16 @@ type Row = [name: string, mode: "a" | "v" | "e", lat: number, lon: number, lines
 
 const BASE = "/data/stops";
 const MODE: Record<Row[1], TransitMode> = { a: "autobus", v: "vlak", e: "elektricka" };
-/** Look this far around the start (~2 km), so a start near a cell edge still finds its stop. */
-const PAD_DEG = 0.02;
 /** A train station this much further than the nearest bus stop is still worth naming (it often goes direct). */
 const STATION_EXTRA_M = 800;
 /** Further than this, there's no stop "near your start" to speak of. */
 export const MAX_HOME_STOP_M = 5000;
+/**
+ * Look as far around the start as a stop may be (MAX_HOME_STOP_M), so a nearer
+ * stop just over a cell edge is not missed. Grid cells are far larger than this.
+ */
+const PAD_LAT = MAX_HOME_STOP_M / 111_000;
+const PAD_LON = MAX_HOME_STOP_M / 72_000; // a degree of longitude is ~72-76 km in Slovakia
 
 let metaP: Promise<StopsMeta | null> | null = null;
 const cellP = new Map<string, Promise<Row[]>>();
@@ -47,11 +51,11 @@ function cell(key: string): Promise<Row[]> {
   return p;
 }
 
-/** Grid cells ("ix_iy") within PAD_DEG of a point. */
+/** Grid cells ("ix_iy") within MAX_HOME_STOP_M of a point. */
 export function cellsAround(grid: StopsMeta["grid"], available: Set<string>, p: LatLng): string[] {
   const out = new Set<string>();
-  for (const dLat of [-PAD_DEG, 0, PAD_DEG]) {
-    for (const dLon of [-PAD_DEG, 0, PAD_DEG]) {
+  for (const dLat of [-PAD_LAT, 0, PAD_LAT]) {
+    for (const dLon of [-PAD_LON, 0, PAD_LON]) {
       const key = `${Math.floor((p.lon + dLon - grid.lon0) / grid.dx)}_${Math.floor((p.lat + dLat - grid.lat0) / grid.dy)}`;
       if (available.has(key)) out.add(key);
     }

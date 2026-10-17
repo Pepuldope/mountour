@@ -1,5 +1,5 @@
 import { roundCoord } from "@/lib/drive";
-import { withEdgeCache } from "@/lib/edgeCache";
+import { KEEP_FOR, withEdgeCache } from "@/lib/edgeCache";
 import { OTHER_SITE, fromOtherSite, overRouteLimit } from "@/lib/routeGuard";
 import { RateLimited, driveRoute, finishDrive, simplifyLine, walkRoute } from "@/lib/routing";
 
@@ -17,6 +17,8 @@ const AREA = { minLat: 45, maxLat: 52, minLon: 12, maxLon: 25 };
 /** Simplify the drawn line to within this many metres of the road (small, so bends stay on the road when zoomed in). */
 const SHAPE_TOL_M = 2;
 const DAY_S = 86400;
+/** A drive that stops short of the parking (the last stretch failed): ask again soon. */
+const PARTIAL_S = 600;
 /** The router counts per minute: a few seconds' wait usually gets through. */
 const RETRY_S = 8;
 /** How far from a road a point may be and still be routed (to the nearest road). */
@@ -52,10 +54,15 @@ export async function GET(req: Request) {
     try {
       const key = process.env.ORS_API_KEY;
       const road = await driveRoute(key, from, to, SNAP_M);
-      const full = await finishDrive(road, to, (a, b) => walkRoute(key, a, b, TAIL_SNAP_M));
+      let partial = false;
+      const full = await finishDrive(road, to, (a, b) => walkRoute(key, a, b, TAIL_SNAP_M), () => (partial = true));
       const route = { ...full, points: simplifyLine(full.points, SHAPE_TOL_M) };
+      const keepS = partial ? PARTIAL_S : DAY_S;
       return Response.json(route, {
-        headers: { "Cache-Control": `public, s-maxage=${DAY_S}, stale-while-revalidate=${DAY_S}` },
+        headers: {
+          "Cache-Control": `public, s-maxage=${keepS}, stale-while-revalidate=${keepS}`,
+          ...(partial ? { [KEEP_FOR]: String(PARTIAL_S) } : {}),
+        },
       });
     } catch (err) {
       console.error("drive route failed", err);
