@@ -178,15 +178,11 @@ let lastView: MapView | null = null;
 /**
  * Home, map first: every trip on one map (coloured lines over the
  * grey trail network), with search, a filter menu, and a list that follows the
- * map, nearest first. Picking a day adds "Vyrazte najneskôr" and moves trips
- * that don't fit that day's daylight behind a button.
+ * map, nearest first. Picking a day adds "Vyrazte najneskôr"; trips that don't
+ * fit that day (too late, closed, no stop by bus) are washed out after the rest.
  */
-/** The button under the list for trips left out: closed that day, or no stop when going by bus. */
-function hiddenLabel(hidden: TripCardItem[]): string {
-  const closed = hidden.some((i) => i.closed);
-  const noStop = hidden.some((i) => i.noStop);
-  if (closed && noStop) return "Ukázať aj uzavreté a bez zastávky";
-  return closed ? "Ukázať aj uzavreté" : "Ukázať aj výlety bez zastávky";
+function fitsDay(i: TripCardItem): boolean {
+  return !i.closed && !i.noStop && (!i.fit || i.fit.status === "fits");
 }
 
 export function HomeExplorer({ trails: initial }: Props) {
@@ -254,7 +250,6 @@ export function HomeExplorer({ trails: initial }: Props) {
   // Back on the home page the map opens where it was left (kept for this visit, not stored).
   const [mapView, setMapView] = useState<MapView | null>(() => lastView);
   const [focus, setFocus] = useState<MapFocus | null>(null);
-  const [showHidden, setShowHidden] = useState(false);
   const itemRefs = useRef(new Map<string, HTMLElement>());
   const columnRef = useRef<HTMLDivElement>(null);
   const toolsRef = useRef<HTMLDivElement>(null);
@@ -271,7 +266,7 @@ export function HomeExplorer({ trails: initial }: Props) {
   // Drive times are shown by train/bus too (muted), so the two can be compared.
   const { drives, status: driveStatus } = useTownDrives(start);
 
-  const { shown, hidden, noneFit } = useMemo(() => {
+  const { listedAll, noneFit } = useMemo(() => {
     const now = new Date();
     // Getting from the start to its table town: added on top, and "~" when that is a long way.
     const town: LatLng | null = drives ? { lat: drives.town.lat, lon: drives.town.lon } : null;
@@ -320,16 +315,16 @@ export function HomeExplorer({ trails: initial }: Props) {
       const key = (i: TripCardItem) => i.carMin ?? (i.distanceM ?? Infinity) / 1000;
       all.sort((a, b) => key(a) - key(b));
     }
-    const open = all.filter((i) => !i.closed && !i.noStop);
-    const fits = (i: TripCardItem) => !i.fit || i.fit.status === "fits";
-    const fitting = open.filter(fits);
-    // Trips the day is too short for stay on the map and in the list, greyed, after the ones that fit.
-    const late = open.filter((i) => !fits(i));
+    const out = (i: TripCardItem) => i.closed || i.noStop;
+    const open = all.filter((i) => !out(i));
+    const fitting = open.filter(fitsDay);
+    // Trips the day is too short for, then closed ones and ones with no stop, stay on the map and in
+    // the list, washed out, after the ones that fit; so a search for Rysy in winter still finds it.
+    const late = open.filter((i) => !fitsDay(i));
     const noneFit = fitting.length === 0 && open.length > 0;
-    return { shown: [...fitting, ...late], hidden: all.filter((i) => i.closed || i.noStop), noneFit };
+    return { listedAll: [...fitting, ...late, ...all.filter(out)], noneFit };
   }, [trails, destinations, drives, driveStatus, withKids, goalFilter, diffFilter, date, today, start, transit]);
 
-  const listedAll = useMemo(() => (showHidden ? [...shown, ...hidden] : shown), [showHidden, shown, hidden]);
   const bySlug = useMemo(() => new Map(listedAll.map((i) => [i.detail.trail.slug, i])), [listedAll]);
 
   // The list: what the search finds anywhere, else the trips on the map and a little around it.
@@ -363,7 +358,11 @@ export function HomeExplorer({ trails: initial }: Props) {
     [nameMatches, placeResults]
   );
   const scoped = useMemo(() => {
-    if (words.length > 0) return listedAll.filter((i) => matches(i.detail));
+    // A trip named like the search comes first, even when it is closed or too long that day.
+    if (words.length > 0) {
+      const found = listedAll.filter((i) => matches(i.detail));
+      return [...found.filter((i) => nameMatches(i.detail)), ...found.filter((i) => !nameMatches(i.detail))];
+    }
     if (!mapView || mapView.zoom < mapView.areaZoom - 1) return listedAll;
     const [lon, lat] = mapView.center;
     const score = (i: TripCardItem) => {
@@ -371,10 +370,10 @@ export function HomeExplorer({ trails: initial }: Props) {
       return at ? haversineM({ lat, lon }, at) / 1000 - KM_PER_RANK * (i.detail.trail.rank ?? 0) : Infinity;
     };
     // Best first; trips the day is too short for stay after the ones that fit, as on the rest of the list.
-    const ranked = listedAll.map((i) => ({ i, s: score(i), late: !!i.fit && i.fit.status !== "fits" }));
+    const ranked = listedAll.map((i) => ({ i, s: score(i), late: !fitsDay(i) }));
     ranked.sort((a, b) => Number(a.late) - Number(b.late) || a.s - b.s);
     return ranked.filter((r) => r.s < Infinity).map((r) => r.i);
-  }, [listedAll, words, matches, mapView]);
+  }, [listedAll, words, matches, nameMatches, mapView]);
 
   // Cards come in pages; a new filter or another part of the map starts again from the first page.
   const filterKey = [goalFilter.join(), diffFilter.join(), withKids, date, travel, query].join("|");
@@ -393,11 +392,12 @@ export function HomeExplorer({ trails: initial }: Props) {
   // The map: every trip that passes the filters; the ones the day is too short for washed out.
   const mapTrips = useMemo<BrowseTrip[]>(
     () =>
-      listedAll.flatMap(({ detail, fit }) => {
+      listedAll.flatMap((item) => {
+        const { detail } = item;
         const at = goalOf(detail);
         const th = primaryTrailhead(detail);
         if (!at) return [];
-        const dim = !!fit && fit.status !== "fits";
+        const dim = !fitsDay(item);
         return [{ slug: detail.trail.slug, goal: detail.trail.goal ?? "ine", rank: detail.trail.rank ?? 0, location: at, start: th?.location ?? at, dim }];
       }),
     [listedAll]
@@ -801,7 +801,7 @@ export function HomeExplorer({ trails: initial }: Props) {
       {visible.length === 0 && (
         <div className="flex flex-col gap-2 rounded-[var(--radius-card)] border border-dashed border-[var(--border)] p-4 text-sm">
           <p>
-            {shown.length === 0 ? "S týmito filtrami nič nenachádzame." : "Tu nič nie je. Posuňte mapu alebo hľadajte inde."}
+            {listedAll.length === 0 ? "S týmito filtrami nič nenachádzame." : "Tu nič nie je. Posuňte mapu alebo hľadajte inde."}
           </p>
           <div className="flex flex-wrap gap-3">
             {filterCount > 0 && (
@@ -850,11 +850,6 @@ export function HomeExplorer({ trails: initial }: Props) {
         </button>
       )}
 
-      {hidden.length > 0 && !showHidden && limit >= scoped.length && (
-        <button type="button" onClick={() => setShowHidden(true)} className="w-fit text-sm font-semibold text-[var(--accent)] underline">
-          {hiddenLabel(hidden)}
-        </button>
-      )}
     </section>
   );
 
