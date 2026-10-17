@@ -1,7 +1,8 @@
-import { approachMin } from "@/lib/dayPlan";
 import { distanceAlongM } from "@/lib/geo";
 import { formatWalk } from "@/lib/format";
 import { trailJoin } from "@/lib/trailJoin";
+import { stopsByWalk, walkFacts } from "@/lib/walkFacts";
+import type { RouteWalk } from "@/lib/walkFacts";
 import type { TrailJoin } from "@/lib/trailJoin";
 import { closureRulesFor } from "@/lib/trips";
 import type { Parking, TransitStop as TripStop, TripDetail, TripSummary, WalkLine } from "@/lib/tripSchema";
@@ -80,7 +81,9 @@ export function trailDetailFrom(t: TripSummary | TripDetail): TrailDetail {
   const stops = [t.transit, ...(d?.transit_alternatives ?? [])].filter((s): s is TripStop => s != null);
   // Parked or got off up the trail: join it at its nearest point (needs the path).
   // The stored walk counts too: where it first meets the trail is the natural way in.
-  const joinOf = (at: LatLng, walkM: number, walk?: WalkLine) => (d ? trailJoin(d.path, at, walkM, d.route === "okruh", walk) : null);
+  // Without the path (the home list) the join comes stored with the place (scripts/list-joins.ts).
+  const joinOf = (at: LatLng, walkM: number, walk?: WalkLine, stored?: TrailJoin) =>
+    d ? trailJoin(d.path, at, walkM, d.route === "okruh", walk) : (stored ?? null);
   const closures: Closure[] = closureRulesFor(t).map((r) => ({
     id: r.id,
     trail_id: t.slug,
@@ -94,8 +97,8 @@ export function trailDetailFrom(t: TripSummary | TripDetail): TrailDetail {
   return {
     trail: toTrail(t),
     trailheads: [{ id: `${t.slug}:start`, trail_id: t.slug, name: t.start.name, location: t.start.location, is_primary: true }],
-    parkingLots: parking.map((p, i) => parkingLot(p, t.slug, i, joinOf(p.location, p.walk_m, p.walk))),
-    transitStops: stops.map((s, i) => transitStop(s, t.slug, i, joinOf(s.location, s.walk_m, s.walk))),
+    parkingLots: parking.map((p, i) => parkingLot(p, t.slug, i, joinOf(p.location, p.walk_m, p.walk, p.join))),
+    transitStops: stops.map((s, i) => transitStop(s, t.slug, i, joinOf(s.location, s.walk_m, s.walk, s.join))),
     closures,
     fees: t.fees,
     pois: (d?.pois ?? [])
@@ -140,14 +143,18 @@ export function primaryTrailhead(detail: TrailDetail) {
   return detail.trailheads.find((t) => t.is_primary) ?? detail.trailheads[0] ?? null;
 }
 
-/** Walking time between the default parking and the trail start, one way (0 without parking). */
-export function defaultApproachMin(detail: TrailDetail): number {
-  return approachMin(detail.parkingLots[0]?.walk_m ?? 0);
+/** The stop the trip page starts from by bus or train (the shortest walk to the trail), or null. */
+export function nearestStop(detail: TrailDetail): TransitStop | null {
+  return stopsByWalk(detail.transitStops)[0] ?? null;
 }
 
-/** The public-transport stop closest to the trail start, or null. */
-export function nearestStop(detail: TrailDetail): TransitStop | null {
-  return [...detail.transitStops].sort((a, b) => a.distance_m - b.distance_m)[0] ?? null;
+/** The walk from the default parking and from the default stop, as the trip page counts them. */
+export function routeWalk(detail: TrailDetail): RouteWalk {
+  const stop = nearestStop(detail);
+  return {
+    car: walkFacts(detail.trail, detail.parkingLots[0] ?? null),
+    bus: stop ? walkFacts(detail.trail, stop) : null,
+  };
 }
 
 /** Where the drive ends: the nearest parking lot, else the trailhead itself. */

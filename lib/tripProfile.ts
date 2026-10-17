@@ -132,3 +132,16 @@ export function trimProfile(profile: TripProfile, out: number, back: number): Tr
   const goalIndex = Math.max(0, points.findIndex((p) => p.at >= goalAt - 1e-9));
   return { ...profile, points, goalIndex };
 }
+
+/**
+ * The profile with the walk from the parking or stop to the trail before it and back after it,
+ * `share` of the walking time each way: the goal comes that much later than on the trail alone.
+ */
+export function withApproach(profile: TripProfile, share: number): TripProfile {
+  if (share <= 0 || share >= 0.5) return profile;
+  const pts = profile.points;
+  const scaled = pts.map((p) => ({ ...p, at: share + p.at * (1 - 2 * share) }));
+  const first = { ele: pts[0].ele, at: 0, colour: null };
+  const last = { ele: pts[pts.length - 1].ele, at: 1, colour: null };
+  return { ...profile, points: [first, ...scaled, last], goalIndex: profile.goalIndex + 1 };
+}

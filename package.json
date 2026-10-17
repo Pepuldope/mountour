@@ -10,6 +10,7 @@
     "lint": "eslint",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "vitest run",
+    "list-joins": "vite-node --config vitest.config.ts scripts/list-joins.ts",
     "cf:build": "opennextjs-cloudflare build",
     "cf:preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "cf:deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
@@ -30,6 +31,7 @@
     "eslint-config-next": "16.3.8",
     "tailwindcss": "^4",
     "typescript": "^5",
+    "vite-node": "^2.1.9",
     "vitest": "^2.1.9",
     "wrangler": "^4.149.0"
   }

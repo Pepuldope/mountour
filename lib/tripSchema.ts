@@ -22,6 +22,8 @@ export const TRIP_SCHEMA_VERSION = 1;
 
 export type Difficulty = "lahka" | "stredna" | "tazka";
 
+import type { TrailJoin } from "@/lib/trailJoin";
+
 /** KST trail marking colours (turistické značky). */
 export type MarkColour = "red" | "blue" | "green" | "yellow" | "black";
 
@@ -104,6 +106,8 @@ export interface Parking {
   osm: OsmRef | null;
   /** Only in the trip's own file; absent when routing found none or the trail is right there. */
   walk?: WalkLine;
+  /** Only in list.json (scripts/list-joins.ts): where the trip page joins the trail, which the home list can't work out without the path. */
+  join?: ListJoin;
 }
 
 export interface TransitStop {
@@ -115,7 +119,12 @@ export interface TransitStop {
   osm: OsmRef | null;
   /** As on Parking. */
   walk?: WalkLine;
+  /** As on Parking. */
+  join?: ListJoin;
 }
+
+/** lib/trailJoin.ts TrailJoin as list.json stores it. */
+export type ListJoin = Omit<TrailJoin, "walk_cut">;
 
 export interface Fee {
   /** "vstupne" = entry to the area or sight; "parkovne" = parking charge known from a rule. */

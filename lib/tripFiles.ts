@@ -1,7 +1,8 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { trailDetailFrom } from "@/lib/data";
+import { routeWalk, trailDetailFrom } from "@/lib/data";
 import type { TownDriveFile, TripDetail, TripIndex, TripSummary } from "@/lib/tripSchema";
 import type { TrailDetail } from "@/lib/types";
+import type { RouteWalk } from "@/lib/walkFacts";
 
 // The trip files the weekly pipeline writes to public/data (docs/TRIP-DATA.md),
 // read on the server. They are static assets, not part of the code bundle, so
@@ -81,4 +82,16 @@ export async function getAllTripSlugs(): Promise<string[]> {
 export async function getTownDrives(townId: string): Promise<TownDriveFile["minutes"]> {
   if (!SLUG.test(townId)) return {};
   return (await readPublicJson<TownDriveFile>(`data/drive/${townId}.json`))?.minutes ?? {};
+}
+
+/** The walk from the default parking and stop for each route of a place, as each route's own page counts it. */
+export async function getRouteWalks(slugs: string[]): Promise<Record<string, RouteWalk>> {
+  const out: Record<string, RouteWalk> = {};
+  await Promise.all(
+    slugs.map(async (slug) => {
+      const trip = await getTrip(slug);
+      if (trip) out[slug] = routeWalk(trailDetailFrom(trip));
+    })
+  );
+  return out;
 }

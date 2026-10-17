@@ -6,13 +6,17 @@ import type { DayFit } from "@/lib/days";
 import { DIFFICULTY_LABEL, GOAL_LABEL, formatDurationShort, formatFromUser, formatTime, stopLabel } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
-import type { TrailDetail, TransitStop } from "@/lib/types";
+import { formatKm } from "@/lib/walkFacts";
+import type { ParkingLot, TrailDetail, TransitStop } from "@/lib/types";
 import { UiIcon } from "@/components/UiIcon";
 
 export interface TripCardItem {
   detail: TrailDetail;
-  /** Walking time for this group (kids pace applied). */
+  /** Walking time for this group (kids pace applied), from the parking or stop as the trip page counts it (lib/walkFacts.ts). */
   hikeMin: number;
+  /** ...its length and climb. */
+  walkM: number;
+  ascentM: number;
   /** One-way drive used for the plan; null by train/bus or when unknown. */
   driveMin: number | null;
   /** One-way drive for display, also shown when travelling by train/bus. */
@@ -84,7 +88,9 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
   const colour = GOAL_COLOUR[goal];
   const approx = driveApprox || transit ? "~" : "";
   const pill = pillFor(item, dayWord);
-  const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
+  const km = formatKm(item.walkM);
+  // A stop up the trail counts from where its walk meets the trail, as on the trip page.
+  const stopWalkM = nearStop ? (nearStop.join?.walk_m ?? nearStop.distance_m) : 0;
   const total = driveMin !== null && !item.fit ? hikeMin + 2 * driveMin : null;
   const big = onClose !== undefined;
   const th = detail.trailheads.find((t) => t.is_primary) ?? detail.trailheads[0];
@@ -133,7 +139,7 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
             {GOAL_LABEL[goal]}
           </span>
           {trail.region_name && <span>· {trail.region_name}</span>}
-          <span>· {km} km</span>
+          <span>· {km}</span>
           {trail.family_friendly && <span className="on-card-ok font-semibold text-[var(--ok)]">· pre deti</span>}
         </span>
         <span className="font-data flex flex-wrap items-center gap-x-3 text-[15px]">
@@ -141,9 +147,9 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
             <UiIcon name="car" size={15} />
             {carMin !== null ? `${driveApprox ? "~" : ""}${formatDurationShort(carMin)}` : driveLoading ? "…" : distanceM !== null ? formatFromUser(distanceM) : "–"}
           </span>
-          <span className={leg(transit)} title={nearStop ? `Zastávka ${stopLabel(nearStop.name)}, ${formatFromUser(nearStop.distance_m)} od štartu` : "Bez zastávky pri štarte"}>
+          <span className={leg(transit)} title={nearStop ? `Zastávka ${stopLabel(nearStop.name)}, ${formatFromUser(stopWalkM)} k trase` : "Bez zastávky pri štarte"}>
             <UiIcon name="bus" size={15} />
-            {transit && driveMin !== null ? `~${formatDurationShort(driveMin)}` : nearStop ? formatFromUser(nearStop.distance_m) : "–"}
+            {transit && driveMin !== null ? `~${formatDurationShort(driveMin)}` : nearStop ? formatFromUser(stopWalkM) : "–"}
           </span>
           <span className="inline-flex items-center gap-1 text-[var(--foreground)]">
             <UiIcon name="boot" size={15} />
@@ -161,8 +167,8 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
             <span className="mt-1.5 grid grid-cols-4 gap-1.5 border-y border-[var(--border)] py-2.5">
               {[
                 ["chôdza", formatDurationShort(hikeMin)],
-                ["dĺžka", `${km} km`],
-                ["stúpanie", `${trail.ascent_m} m`],
+                ["dĺžka", km],
+                ["stúpanie", `${item.ascentM} m`],
                 ["náročnosť", DIFFICULTY_LABEL[trail.difficulty].toLowerCase()],
               ].map(([label, value]) => (
                 <span key={label} className="flex flex-col">
@@ -173,8 +179,8 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
             </span>
             <span className="flex flex-col gap-0.5 text-[13.5px]">
               {th && <span>Štart: {th.name}</span>}
-              {parking && <span>Parkovanie {parking.walk_m < 150 ? "pri štarte" : `${formatFromUser(parking.walk_m)} od štartu`}</span>}
-              {nearStop && <span>Zastávka {stopLabel(nearStop.name)}, {formatFromUser(nearStop.distance_m)} pešo</span>}
+              {parking && <span>Parkovanie {parkingWhere(parking)}</span>}
+              {nearStop && <span>Zastávka {stopLabel(nearStop.name)}, {formatFromUser(stopWalkM)} pešo k trase</span>}
             </span>
           </>
         )}
@@ -190,4 +196,11 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
       </span>
     </Link>
   );
+}
+
+/** Where the parking is, as the trip page counts the walk: a parking up the trail is beside it. */
+function parkingWhere(p: ParkingLot): string {
+  const m = p.join?.walk_m ?? p.walk_m;
+  if (m < 150) return p.join ? "pri trase" : "pri štarte";
+  return `${formatFromUser(m)} ${p.join ? "k trase" : "od štartu"}`;
 }

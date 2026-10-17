@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { startTransition, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { Difficulty, LatLng, TrailDetail } from "@/lib/types";
-import { defaultApproachMin, driveDestination, nearestStop, primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
+import { driveDestination, nearestStop, primaryTrailhead, routeWalk, sunLocation, trailDetailFrom } from "@/lib/data";
+import { formatKm, pickWalk, walkMinutes } from "@/lib/walkFacts";
 import { activeClosures } from "@/lib/closures";
-import { approachMin, hikeMinutes } from "@/lib/dayPlan";
+import { hikeMinutes } from "@/lib/dayPlan";
 import { dayFit, dayInSentence, isoDate } from "@/lib/days";
 import { estimateDriveMin, transitMinutes } from "@/lib/drive";
 import { DIFFICULTY_LABEL, GOAL_LABEL, GOAL_PLURAL, formatDurationShort } from "@/lib/format";
@@ -304,15 +305,17 @@ export function HomeExplorer({ trails: initial }: Props) {
       const approx = estimate || (viaTown !== null && toTownKm! > TOWN_EXACT_KM);
       // By bus or train: an estimate from the road time (no timetables yet), so the day still counts the ride.
       const driveMin = transit ? (carMin !== null && stop ? transitMinutes(carMin) : null) : carMin;
-      // The walk from the parking (by car) or the stop (by train/bus) to the trail and back is part of the day.
-      const approach = transit ? (stop ? 2 * approachMin(stop.distance_m) : 0) : driveMin !== null ? 2 * defaultApproachMin(detail) : 0;
-      const hikeMin = hikeMinutes(detail.trail.duration_min + approach, withKids);
+      // The walk the trip page counts: from the parking (by car) or the stop (by train/bus), the walk to the trail and back included.
+      const walk = pickWalk(routeWalk(detail), transit, detail.parkingLots.length > 0);
+      const hikeMin = walk ? walkMinutes(walk, withKids) : hikeMinutes(detail.trail.duration_min, withKids);
       const th = primaryTrailhead(detail);
       const sun = sunLocation(detail);
       return [
         {
           detail,
           hikeMin,
+          walkM: walk?.m ?? detail.trail.distance_m,
+          ascentM: walk?.ascentM ?? detail.trail.ascent_m,
           driveMin,
           carMin,
           driveApprox: approx,
@@ -721,7 +724,7 @@ export function HomeExplorer({ trails: initial }: Props) {
             <MenuRow key={a.name} onClick={() => showOnMap({ kind: "box", bbox: a.bbox, maxZoom: 11 })} icon={<UiIcon name="up" size={16} />} title={a.name} note="Ukázať výlety v pohorí na mape" />
           ))}
           {results.trips.length > 0 && <MenuTitle>Výlety</MenuTitle>}
-          {results.trips.map(({ detail }) => (
+          {results.trips.map(({ detail, hikeMin }) => (
             <MenuRow
               key={detail.trail.slug}
               onClick={() => {
@@ -731,7 +734,7 @@ export function HomeExplorer({ trails: initial }: Props) {
               }}
               icon={<GoalTile goal={detail.trail.goal ?? "ine"} size={28} />}
               title={detail.trail.name}
-              note={`${GOAL_LABEL[detail.trail.goal ?? "ine"]} · ${detail.trail.region_name ?? ""} · ${formatDurationShort(detail.trail.duration_min)}`}
+              note={`${GOAL_LABEL[detail.trail.goal ?? "ine"]} · ${detail.trail.region_name ?? ""} · ${formatDurationShort(hikeMin)}`}
             />
           ))}
           {results.places.length > 0 && <MenuTitle>Obce a mestá</MenuTitle>}
@@ -972,7 +975,6 @@ function MenuRow({ icon, title, note, onClick }: { icon: React.ReactNode; title:
 function MiniCard({ item }: { item: TripCardItem }) {
   const { trail } = item.detail;
   const goal = trail.goal ?? "ine";
-  const km = (trail.distance_m / 1000).toFixed(1).replace(".", ",");
   return (
     <div className="flex items-start gap-3 pr-8">
       <GoalTile goal={goal} size={44} />
@@ -994,7 +996,7 @@ function MiniCard({ item }: { item: TripCardItem }) {
             <UiIcon name="boot" size={14} />
             {formatDurationShort(item.hikeMin)}
           </span>
-          <span>{km} km</span>
+          <span>{formatKm(item.walkM)}</span>
           <span>{DIFFICULTY_LABEL[trail.difficulty]}</span>
         </p>
       </div>
