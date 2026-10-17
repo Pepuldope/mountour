@@ -1,7 +1,7 @@
 import type { TrailJoin } from "@/lib/trailJoin";
 import type { DestinationKind, Fee, WalkLine } from "@/lib/tripSchema";
 
-// Shared domain types for MounTour. Mirrors supabase/migrations/0001_init.sql.
+// Shared domain types for MounTour (the shape the pages use; trip data is lib/tripSchema.ts).
 
 export type Difficulty = "lahka" | "stredna" | "tazka";
 export type ClosureKind = "rocna" | "jednorazova";

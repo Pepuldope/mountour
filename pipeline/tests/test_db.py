@@ -116,3 +116,13 @@ def test_an_incremental_load_hides_the_old_version_first():
     sql, _ = db.incremental_sql(new, version, _have(con))
     first = db.split_sql(sql, 10_000)[0]
     assert first.startswith("DELETE FROM data_version WHERE id = 1;")
+
+
+def test_values_that_sqlite_cannot_read_back_stop_the_load():
+    import pytest
+
+    for bad in (float("nan"), float("inf"), [1.0, float("nan")]):
+        with pytest.raises(ValueError):
+            db.q(bad)
+    assert db.same((None, 1.5), (None, 1.5000000001))
+    assert not db.same((None,), (1.5,)) and not db.same((1.5,), (None,))

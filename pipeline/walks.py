@@ -189,9 +189,10 @@ def route(osrm_url, frm, to):
     if res.get("code") != "Ok" or not res.get("routes"):
         return None
     best = res["routes"][0]
-    if best["distance"] > MAX_WALK_M:
+    line = _simplify(best["geometry"]["coordinates"])
+    if best["distance"] > MAX_WALK_M or len(line) < 2:
         return None
-    return {"line": _simplify(best["geometry"]["coordinates"]), "m": int(round(best["distance"])),
+    return {"line": line, "m": int(round(best["distance"])),
             "min": max(1, int(round(best["duration"] / 60)))}
 
 
@@ -234,8 +235,10 @@ def add(osrm_url, trips, log=print, workers=8):
             return key, plain[key[:2]], False
         except Exception as err:  # noqa: BLE001 - one bad walk must not stop the weekly run
             log(f"walk {key}: {err}")
+            failed.append(key)
             return key, None, False
 
+    failed = []
     done = cut = 0
     with ThreadPoolExecutor(workers) as pool:
         for n, (key, walk, shorter) in enumerate(pool.map(one, list(jobs)), start=1):
@@ -248,4 +251,7 @@ def add(osrm_url, trips, log=print, workers=8):
                 log(f"walks: {n}/{len(jobs)}")
     log(f"walks: {done} parking spots and stops have one ({len(jobs)} distinct); "
         f"{cut} join the trail further up, where that makes the way up at least {SHORTCUT_SAVING_M} m shorter")
+    if jobs and len(failed) > len(jobs) / 2:
+        # The local OSRM is down or wasn't built: publishing would wipe every walk the site draws.
+        raise RuntimeError(f"walks: {len(failed)} of {len(jobs)} failed, is OSRM running at {osrm_url}?")
     return done
