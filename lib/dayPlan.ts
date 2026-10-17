@@ -140,7 +140,8 @@ export function planDay(input: DayPlanInput): DayPlan | null {
   if (fixed?.back) {
     // From the end of the walk: waiting at the station counts as part of the way home.
     segments.push({ kind: "drive-back", start: hikeEnd, end: atDayMinute(input.date, Math.max(fixed.back.home, fixed.back.leave)) });
-  } else if (input.driveMin !== null || fixed) {
+  } else if (input.driveMin !== null && !fixed) {
+    // By train with no train back that day, the way home is unknown: no made-up "doma" time.
     segments.push({ kind: "drive-back", start: hikeEnd, end: addMin(hikeEnd, drive) });
   }
 

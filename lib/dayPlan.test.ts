@@ -90,6 +90,12 @@ describe("planDay", () => {
     expect(["after-sunset", "after-dusk"]).toContain(p.verdict);
   });
 
+  it("with no train back that day, the day ends at the station: no made-up way home", () => {
+    const fixed = { there: { leave: 480, arrive: 600 }, back: null };
+    const p = planDay({ date: "2026-10-25", start: "08:00", driveMin: null, hikeMin: 180, location: BRATISLAVA, fixed })!;
+    expect(p.segments.map((s) => s.kind)).toEqual(["drive-there", "hike"]);
+  });
+
   it("atDayMinute reads minutes as wall-clock time, also past midnight", () => {
     expect(hhmm(atDayMinute("2026-10-25", 13 * 60 + 5))).toBe("13:05");
     expect(hhmm(atDayMinute("2026-03-29", 2))).toBe("00:02");

@@ -135,6 +135,8 @@ function pinElement(className: string, glyph: string, title: string): HTMLElemen
   el.className = `mt-pin ${className}`;
   el.textContent = glyph;
   el.title = title;
+  // MapLibre names every pin "Map marker" for screen readers unless it already has a label.
+  el.setAttribute("aria-label", title);
   return el;
 }
 
@@ -435,8 +437,17 @@ export function TrailMap({
           .setPopup(new ml.Popup({ offset: 14, closeButton: false }).setDOMContent(popupContent(m.title, m.lines)))
           .addTo(map);
         const slug = m.trailSlug;
+        const onPick = m.onClick;
         if (slug) el.addEventListener("click", () => onSelectRef.current?.(slug));
-        if (m.onClick) el.addEventListener("click", m.onClick);
+        if (onPick) el.addEventListener("click", onPick);
+        // MapLibre's own Enter/Space only opens the popup: also pick the trail or parking, as a tap does.
+        if (slug || onPick)
+          el.addEventListener("keydown", (e) => {
+            if (e.key !== "Enter" && e.key !== " ") return;
+            e.preventDefault();
+            if (slug) onSelectRef.current?.(slug);
+            onPick?.();
+          });
         return marker;
       });
   }, [ctx, markers]);
