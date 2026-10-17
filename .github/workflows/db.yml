@@ -35,10 +35,10 @@ jobs:
       DB: mountour-visits
     steps:
       # The weekly run commits to main; take main as it is now, not the commit that started it.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: main
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - run: pip install pytest
@@ -49,7 +49,7 @@ jobs:
         if: env.CF_READY != 'true'
         run: echo "::notice::CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID secret not set; the site keeps using the static files."
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         if: env.CF_READY == 'true'
         with:
           node-version: 22
