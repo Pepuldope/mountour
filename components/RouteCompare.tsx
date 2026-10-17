@@ -74,19 +74,12 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
         <ul className="flex flex-col gap-2 px-4 pb-6">
           {routes.map((r, i) => (
             <li key={r.slug}>
+              {/* The card picks the route; the link to the trip sits beside the button, not inside it
+                  (a link inside a role=button card had its Enter swallowed by the card). */}
               <div
-                role="button"
-                tabIndex={0}
-                aria-pressed={i === sel}
                 onClick={() => setSel(i)}
                 onMouseEnter={() => setHover(i)}
                 onMouseLeave={() => setHover(null)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setSel(i);
-                  }
-                }}
                 className={`flex cursor-pointer flex-col gap-2 rounded-[var(--radius-card)] border bg-[var(--card-bg)] px-3.5 py-3 ${
                   i === sel
                     ? "border-[var(--accent)] shadow-[0_0_0_1px_var(--accent)]"
@@ -95,31 +88,33 @@ export function RouteCompare({ slug, destination, goal, routes, children }: Prop
                       : "border-[var(--border)]"
                 }`}
               >
-                <span className="flex items-center gap-2.5">
-                  <span aria-hidden className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold text-white" style={{ background: colour(i) }}>
-                    {letter(i)}
-                  </span>
-                  <span className="flex min-w-0 flex-col">
-                    <span className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[15px] font-bold">
-                      {routeLabel(r)}
-                      {!r.parking && <NoParkingChip />}
+                <button type="button" aria-pressed={i === sel} onClick={() => setSel(i)} className="flex flex-col gap-2 text-left">
+                  <span className="flex items-center gap-2.5">
+                    <span aria-hidden className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold text-white" style={{ background: colour(i) }}>
+                      {letter(i)}
                     </span>
-                    <span className="text-[13px] text-[var(--muted)]">
-                      štart {r.start_name} · {r.parking ? routeAccess(r) : <BusOk />}
+                    <span className="flex min-w-0 flex-col">
+                      <span className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[15px] font-bold">
+                        {routeLabel(r)}
+                        {!r.parking && <NoParkingChip />}
+                      </span>
+                      <span className="text-[13px] text-[var(--muted)]">
+                        štart {r.start_name} · {r.parking ? routeAccess(r) : <BusOk />}
+                      </span>
                     </span>
                   </span>
-                </span>
-                <span className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-[12.5px] text-[var(--muted)]">
-                  <span>Čas</span>
-                  <Bar share={r.duration_min / maxMin} colour={colour(i)} />
-                  <span className="font-data text-right text-[15px] text-[var(--foreground)]">{formatDuration(r.duration_min)}</span>
-                  <span>Do kopca</span>
-                  <Bar share={r.ascent_m / maxUp} colour={colour(i)} />
-                  <span className="font-data text-right text-[15px] text-[var(--foreground)]">+{r.ascent_m} m</span>
-                  <span>Dĺžka</span>
-                  <span />
-                  <span className="font-data text-right text-[15px] text-[var(--foreground)]">{routeKm(r)}</span>
-                </span>
+                  <span className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-[12.5px] text-[var(--muted)]">
+                    <span>Čas</span>
+                    <Bar share={r.duration_min / maxMin} colour={colour(i)} />
+                    <span className="font-data text-right text-[15px] text-[var(--foreground)]">{formatDuration(r.duration_min)}</span>
+                    <span>Do kopca</span>
+                    <Bar share={r.ascent_m / maxUp} colour={colour(i)} />
+                    <span className="font-data text-right text-[15px] text-[var(--foreground)]">+{r.ascent_m} m</span>
+                    <span>Dĺžka</span>
+                    <span />
+                    <span className="font-data text-right text-[15px] text-[var(--foreground)]">{routeKm(r)}</span>
+                  </span>
+                </button>
                 {i === sel && (
                   <Link
                     href={`/trasa/${r.slug}`}
