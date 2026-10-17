@@ -76,6 +76,26 @@ describe("simplifyLine", () => {
     expect(s).toContainEqual([49.0049, 19.003]);
     expect(s.length).toBeLessThan(6);
   });
+
+  it("keeps an out-and-back spur that runs past the end of the line", () => {
+    // North 500 m, a 300 m dead-end straight on north and back, then on east.
+    const spur: [number, number][] = [
+      [49.0, 19.0],
+      [49.0045, 19.0],
+      [49.0072, 19.0],
+      [49.0045, 19.0],
+      [49.0045, 19.004],
+    ];
+    expect(simplifyLine(spur, 10)).toContainEqual([49.0072, 19.0]);
+    // Start and end on one line with the spur between them, beyond the end.
+    const line: [number, number][] = [
+      [49.0, 19.0],
+      [49.003, 19.0],
+      [49.0, 19.0],
+      [49.001, 19.0],
+    ];
+    expect(simplifyLine(line, 10)).toContainEqual([49.003, 19.0]);
+  });
 });
 
 describe("walkRoute with the router's limits", () => {
