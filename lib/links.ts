@@ -18,19 +18,31 @@ export function startTown(start: Pick<StartPoint, "label" | "source"> | null, gp
 const pad = (n: number) => String(n).padStart(2, "0");
 const hhmm = (d: Date) => `${d.getHours()}:${pad(d.getMinutes())}`;
 
-/** Query keys of a shared plan: /trasa/pajstun?den=2026-10-17&odchod=08:50&z=Bratislava */
-export const SHARE_PARAMS = { date: "den", time: "odchod", from: "z" } as const;
-
-export function sharePath(slug: string, date: string, time: string, town: string | null): string {
-  const q = new URLSearchParams({ [SHARE_PARAMS.date]: date, [SHARE_PARAMS.time]: time });
-  if (town) q.set(SHARE_PARAMS.from, town);
-  return `/trasa/${slug}?${q.toString()}`;
-}
+/**
+ * Query keys of a shared plan: /trasa/pajstun?den=2026-10-17&odchod=08:50&z=Bratislava&cesta=bus&deti=1&p=1
+ * Beyond day, time and town the link carries what changes the sender's times: bus or train instead of the
+ * car, the kids pace and which parking or stop they picked (an index, 0 = ours, left out when 0).
+ */
+export const SHARE_PARAMS = { date: "den", time: "odchod", from: "z", travel: "cesta", kids: "deti", parking: "p", stop: "s" } as const;
 
 export interface SharedPlan {
   date: string;
   time: string;
   town: string | null;
+  /** By train or bus; false = by car. */
+  transit: boolean;
+  withKids: boolean;
+  /** Picked parking (by car) or stop (by bus or train); 0 = our default. */
+  pick: number;
+}
+
+export function sharePath(slug: string, plan: SharedPlan): string {
+  const q = new URLSearchParams({ [SHARE_PARAMS.date]: plan.date, [SHARE_PARAMS.time]: plan.time });
+  if (plan.town) q.set(SHARE_PARAMS.from, plan.town);
+  if (plan.transit) q.set(SHARE_PARAMS.travel, "bus");
+  if (plan.withKids) q.set(SHARE_PARAMS.kids, "1");
+  if (plan.pick > 0) q.set(plan.transit ? SHARE_PARAMS.stop : SHARE_PARAMS.parking, String(plan.pick));
+  return `/trasa/${slug}?${q.toString()}`;
 }
 
 /** "2026-10-17", and a day the calendar has (not 2026-02-30). */
@@ -48,14 +60,17 @@ function realTime(time: string): boolean {
   return !!m && Number(m[1]) < 24 && Number(m[2]) < 60;
 }
 
-/** Reads a shared plan from a query string; null unless both day and time are valid. */
+/** Reads a shared plan from a query string; null unless both day and time are valid. Links from before the extra keys read as car, no kids, our parking. */
 export function readSharedPlan(search: string): SharedPlan | null {
   const q = new URLSearchParams(search);
   const date = q.get(SHARE_PARAMS.date) ?? "";
   const time = q.get(SHARE_PARAMS.time) ?? "";
   if (!realDate(date) || !realTime(time)) return null;
   const town = q.get(SHARE_PARAMS.from)?.slice(0, 60).trim() || null;
-  return { date, time, town };
+  const transit = q.get(SHARE_PARAMS.travel) === "bus";
+  const raw = Number(q.get(transit ? SHARE_PARAMS.stop : SHARE_PARAMS.parking) ?? 0);
+  const pick = Number.isInteger(raw) && raw > 0 && raw < 100 ? raw : 0;
+  return { date, time, town, transit, withKids: q.get(SHARE_PARAMS.kids) === "1", pick };
 }
 
 export interface ShareTextInput {
@@ -79,8 +94,8 @@ export interface ShareTextInput {
 export function shareText(i: ShareTextInput): string {
   const light = i.inDaylight ? ", ešte za svetla." : ". Pozor, z túry zídete až po západe slnka.";
   const leave = i.hasDrive
-    ? `${i.town ? `Štart ${i.town}, odchod` : "Odchod"} ${hhmm(i.departure)}, späť okolo ${hhmm(i.back)}${light}`
-    : `Začiatok túry ${hhmm(i.departure)}, dole okolo ${hhmm(i.back)}${light}`;
+    ? `${i.town ? `Štart ${i.town}, odchod` : "Odchod"} ${hhmm(i.departure)}, doma okolo ${hhmm(i.back)}${light}`
+    : `Začiatok túry ${hhmm(i.departure)}, koniec túry okolo ${hhmm(i.back)}${light}`;
   const facts = [
     `${formatDuration(i.hikeMin).replaceAll("\u00a0", " ")} chôdze`,
     DIFFICULTY_LABEL[i.difficulty].toLowerCase(),

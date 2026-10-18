@@ -3,10 +3,11 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { DayPlan, Verdict } from "@/lib/dayPlan";
-import { EARLIEST_DEPARTURE_HOUR, floorTo5, longDay } from "@/lib/days";
+import { EARLIEST_DEPARTURE_HOUR, dayAfterNa, floorTo5, longDay } from "@/lib/days";
 import { formatDuration, formatTime, stopLabel } from "@/lib/format";
 import { searchPlaces } from "@/lib/geocode";
 import { readSharedPlan } from "@/lib/links";
+import { track } from "@/lib/analytics";
 import { findTown } from "@/lib/towns";
 import type { SharedPlan, WalkRoute } from "@/lib/links";
 import { useTripSettings } from "@/lib/tripSettings";
@@ -56,7 +57,7 @@ const part =
 export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, walk, intro, children, outro, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
-  const { destination, rideTo, approachMin, trailStart, transit, noCar, parking, stop, skip, walkFrom, trailJoin, walk: onFoot } = useTripAccess();
+  const { destination, rideTo, approachMin, trailStart, transit, noCar, parking, stop, skip, walkFrom, trailJoin, walk: onFoot, choose, chooseStop } = useTripAccess();
   // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day,
   // with or without a start: the walk back to the car must fit the light too. Parked up the trail, the
   // stretch below is skipped both ways.
@@ -72,14 +73,25 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
   const [shared, setShared] = useState<SharedPlan | null>(null);
   const weather = useTripWeather(plan, trailStart, goal, profile?.points[0]?.ele ?? null);
 
-  // A shared link opens the sender's day and departure (once, then it's ours to change).
+  // A shared link opens the sender's day, departure, bus or car, kids pace and parking or stop
+  // (once, then it's ours to change). A link for a day already gone only says so.
+  const [expired, setExpired] = useState<SharedPlan | null>(null);
   useEffect(() => {
     const fromLink = readSharedPlan(window.location.search);
-    if (!fromLink || !today || fromLink.date < today) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setShared(fromLink);
-    update({ date: fromLink.date, time: fromLink.time });
+    if (!fromLink || !today) return;
+    track("shared_open", { trail: trip.slug, expired: fromLink.date < today });
     window.history.replaceState(null, "", window.location.pathname);
+    if (fromLink.date < today) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setExpired(fromLink);
+      return;
+    }
+    setShared(fromLink);
+    update({ date: fromLink.date, time: fromLink.time, withKids: fromLink.withKids, ...(noCar ? {} : { travel: fromLink.transit ? "transit" : "car" }) });
+    if (fromLink.transit) chooseStop(fromLink.pick);
+    else choose(fromLink.pick);
+    // Once per link: the trip's own setters and slug don't change while the page is open.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [today, update]);
 
   // No start of our own yet: plan from the sender's town, so the times match theirs.
@@ -131,12 +143,20 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
             <p>
               Plán od kamaráta: <strong>{longDay(shared.date)}</strong>, odchod{" "}
               <strong className="font-data text-base">{shared.time}</strong>
-              {shared.town ? `, štart ${shared.town}` : ""}.
+              {shared.town ? `, štart ${shared.town}` : ""}
+              {shared.transit ? ", autobusom alebo vlakom" : ""}
+              {shared.withKids ? ", s deťmi" : ""}.
             </p>
             <p className="text-[var(--muted)]">
               {adopted ? `Nižšie je prepočítaný zo štartu ${start?.label}. Zmeniť ho môžete hneď nižšie.` : "Nižšie je prepočítaný z vášho miesta."}
             </p>
           </div>
+        )}
+
+        {expired && (
+          <p className="rounded-[var(--radius-card)] bg-[var(--accent-soft)] p-4 text-sm">
+            Plán od kamaráta bol na <strong>{dayAfterNa(expired.date)}</strong>, ten deň už prešiel. Nižšie si vyberte nový deň.
+          </p>
         )}
 
         {/* In the order of the day: where from, how, which day and time. */}
