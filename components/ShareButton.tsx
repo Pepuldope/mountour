@@ -6,6 +6,8 @@ import { sharePath, shareText, startTown } from "@/lib/links";
 import type { DayPlan } from "@/lib/dayPlan";
 import type { Difficulty } from "@/lib/types";
 import { useUserLocation } from "@/lib/userLocation";
+import { useTripSettings } from "@/lib/tripSettings";
+import { useTripAccess } from "@/components/TripAccess";
 import { track } from "@/lib/analytics";
 
 export interface ShareInfo {
@@ -30,16 +32,22 @@ interface Props extends ShareInfo {
 /**
  * "Poslať partii": the phone's share sheet with a chat-ready plan and a link
  * that opens the same day and departure. Desktop falls back to copying.
- * The start goes out as a town name only, never coordinates.
+ * The start goes out as a town name only, never coordinates; bus or car, kids pace and the
+ * picked parking or stop go too, so the friend's page shows the sender's times.
  */
 export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Poslať partii", className, onShared, ...trip }: Props) {
   const { start, fix } = useUserLocation();
+  const { withKids } = useTripSettings();
+  const { transit, choice, stopChoice } = useTripAccess();
   const [copied, setCopied] = useState(false);
 
   async function share() {
     if (!plan || !date || !time) return;
     const town = startTown(start, fix?.town);
-    const url = new URL(sharePath(trip.slug, date, time, town), window.location.origin).toString();
+    const url = new URL(
+      sharePath(trip.slug, { date, time, town, transit, withKids, pick: transit ? stopChoice : choice }),
+      window.location.origin
+    ).toString();
     const back = hasDrive ? plan.segments[plan.segments.length - 1].end : plan.hikeEnd;
     const text = shareText({
       name: trip.name,
@@ -59,6 +67,7 @@ export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Posl
     if (navigator.share) {
       try {
         await navigator.share({ text });
+        track("share_sent", { trail: trip.slug, how: "sheet" });
         onShared?.();
       } catch {
         // Closed the sheet: nothing to do.
@@ -67,6 +76,7 @@ export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Posl
     }
     try {
       await navigator.clipboard.writeText(text);
+      track("share_sent", { trail: trip.slug, how: "copy" });
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
       onShared?.();

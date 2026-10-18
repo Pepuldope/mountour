@@ -5,10 +5,29 @@ import { dayAfterNa, dayChips, dayFit, dayInSentence, longDay } from "./days";
 const BRATISLAVA = { lat: 48.1486, lon: 17.1077 };
 
 describe("shared plan links", () => {
+  const car = { date: "2026-10-17", time: "08:50", town: "Bratislava", transit: false, withKids: false, pick: 0 };
+
   it("round-trips day, time and town, never coordinates", () => {
-    const path = sharePath("pajstun", "2026-10-17", "08:50", "Bratislava");
+    const path = sharePath("pajstun", car);
     expect(path).toBe("/trasa/pajstun?den=2026-10-17&odchod=08%3A50&z=Bratislava");
-    expect(readSharedPlan(path.split("?")[1])).toEqual({ date: "2026-10-17", time: "08:50", town: "Bratislava" });
+    expect(readSharedPlan(path.split("?")[1])).toEqual(car);
+  });
+
+  it("carries bus or car, kids pace and the picked parking or stop", () => {
+    const bus = { ...car, transit: true, withKids: true, pick: 2 };
+    const path = sharePath("pajstun", bus);
+    expect(path).toBe("/trasa/pajstun?den=2026-10-17&odchod=08%3A50&z=Bratislava&cesta=bus&deti=1&s=2");
+    expect(readSharedPlan(path.split("?")[1])).toEqual(bus);
+    const parked = { ...car, pick: 1 };
+    expect(readSharedPlan(sharePath("pajstun", parked).split("?")[1])).toEqual(parked);
+  });
+
+  it("reads odd picks as our default", () => {
+    expect(readSharedPlan("den=2026-10-17&odchod=08:50&p=-1")?.pick).toBe(0);
+    expect(readSharedPlan("den=2026-10-17&odchod=08:50&p=1.5")?.pick).toBe(0);
+    expect(readSharedPlan("den=2026-10-17&odchod=08:50&p=x")?.pick).toBe(0);
+    // A parking pick doesn't count for a bus plan.
+    expect(readSharedPlan("den=2026-10-17&odchod=08:50&cesta=bus&p=2")?.pick).toBe(0);
   });
 
   it("ignores broken shared links", () => {
@@ -41,7 +60,7 @@ describe("shared plan links", () => {
     });
     expect(text).toBe(
       "Pajštún z Borinky, sobota 17. 10.\n" +
-        "Štart Bratislava, odchod 8:50, späť okolo 12:10, ešte za svetla.\n" +
+        "Štart Bratislava, odchod 8:50, doma okolo 12:10, ešte za svetla.\n" +
         "2 h 10 min chôdze, ľahká, vhodné pre deti.\n" +
         "https://mountour.sk/trasa/pajstun"
     );
@@ -61,7 +80,7 @@ describe("shared plan links", () => {
       familyFriendly: false,
       url: "https://mountour.sk/trasa/chleb",
     });
-    expect(text).toContain("späť okolo 21:10. Pozor, z túry zídete až po západe slnka.");
+    expect(text).toContain("doma okolo 21:10. Pozor, z túry zídete až po západe slnka.");
     expect(text).not.toContain("za svetla");
   });
 });

@@ -4,6 +4,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { cache } from "react";
 import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
+import { GpxDownload } from "@/components/GpxDownload";
 import { getTripLive } from "@/lib/tripDb";
 import { getAllTripSlugs, getRouteWalks, getTrip } from "@/lib/tripFiles";
 import { buildProfile } from "@/lib/tripProfile";
@@ -164,6 +165,10 @@ export default async function TripSheetPage({ params }: Props) {
     .filter((r) => r.slug !== trail.slug)
     .map((r) => ({ slug: r.slug, label: r.route_label ?? r.start_name, points: r.up.map(([lon, lat]) => [lat, lon]) }));
 
+  // Named for the route, as the route list calls it, when the place has several.
+  const ownLabel = routes.length > 1 ? routes.find((r) => r.slug === trail.slug)?.route_label : null;
+  const gpxName = ownLabel ? `${trail.name} (${ownLabel})` : trail.name;
+
   return (
     <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} transitStops={transitStops} trailStart={trailStart} trail={trailNumbers}>
       <main className="flex flex-1 flex-col bg-[var(--page-sunk)] lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
@@ -236,9 +241,7 @@ export default async function TripSheetPage({ params }: Props) {
               gpxUrl && (
                 <section className="flex flex-col gap-1 text-sm">
                   <h2 className="text-base font-bold">Na túru</h2>
-                  <a href={gpxUrl} download className="w-fit font-semibold text-[var(--accent)] underline">
-                    Stiahnuť GPX trasu
-                  </a>
+                  <GpxDownload gpxUrl={gpxUrl} slug={trail.slug} name={gpxName} />
                 </section>
               )
             }
