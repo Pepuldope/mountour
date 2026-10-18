@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { RateLimited, dropDeadEnd, finishDrive, simplifyLine, walkRoute } from "./routing";
+import { RateLimited, dropDeadEnd, finishDrive, knownTail, simplifyLine, walkRoute } from "./routing";
+import type { KnownTail, Pt } from "./routing";
 
 const road = { durationMin: 30, distanceM: 30000, points: [[48.0, 19.0], [49.0, 19.0]] as [number, number][] };
 
@@ -118,5 +119,38 @@ describe("walkRoute with the router's limits", () => {
     await expect(walkRoute("key", [48.2, 19.2], [48.21, 19.21], 1000)).rejects.toBeInstanceOf(RateLimited);
     expect(fetchMock).toHaveBeenCalledTimes(1);
     vi.unstubAllGlobals();
+  });
+});
+
+describe("knownTail", () => {
+  const tail = { durationMin: 3, distanceM: 600, points: [[49.1, 19.1], [49.105, 19.1]] as Pt[] };
+
+  it("asks once per parking for drives that stop at the same road point", async () => {
+    const ask = vi.fn(async () => tail);
+    const to: Pt = [49.105, 19.1001];
+    await knownTail([49.1, 19.1], to, ask);
+    // A drive from elsewhere that ends 10 m away shares the stretch.
+    expect(await knownTail([49.10009, 19.1], to, ask)).toBe(tail);
+    expect(ask).toHaveBeenCalledTimes(1);
+    // One that ends on another road asks again.
+    await knownTail([49.11, 19.12], to, ask);
+    expect(ask).toHaveBeenCalledTimes(2);
+  });
+
+  it("uses and fills the shared store between Workers", async () => {
+    const kept = new Map<string, KnownTail[]>();
+    const store = { get: async (to: Pt) => kept.get(String(to)) ?? null, put: async (to: Pt, t: KnownTail[]) => void kept.set(String(to), t) };
+    const ask = vi.fn(async () => tail);
+    await knownTail([48.5, 18.5], [48.505, 18.5], ask, store);
+    expect(kept.get(String([48.505, 18.5]))).toHaveLength(1);
+    // Another Worker (empty memory) finds it in the store: pretend by using a parking the memory never saw.
+    kept.set(String([48.6, 18.6]), [{ from: [48.59, 18.6], route: tail }]);
+    expect(await knownTail([48.59, 18.6], [48.6, 18.6], ask, store)).toBe(tail);
+    expect(ask).toHaveBeenCalledTimes(1);
+  });
+
+  it("still answers when the store fails", async () => {
+    const store = { get: () => Promise.reject(new Error("down")), put: () => Promise.reject(new Error("down")) };
+    expect(await knownTail([47.5, 17.5], [47.505, 17.5], async () => tail, store)).toBe(tail);
   });
 });

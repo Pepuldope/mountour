@@ -68,7 +68,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
     return trail && withApproach(trail, approachMin / Math.max(1, baseHikeMin));
   }, [fullProfile, skip, approachMin, baseHikeMin]);
   // One plan for the whole page: saving and sharing use the same train times the sun dial shows.
-  const tripPlan = useTripPlan(sun, rideTo, baseHikeMin, transit && stop?.mode === "vlak" ? stop.location : null, noCar);
+  const tripPlan = useTripPlan(sun, rideTo, baseHikeMin, transit && stop?.mode === "vlak" ? stop.location : null, noCar, trip.slug);
   const { plan, date, time, driveMin, roadMin, driveApprox, driveStatus, rail } = tripPlan;
   const [shared, setShared] = useState<SharedPlan | null>(null);
   const weather = useTripWeather(plan, trailStart, goal, profile?.points[0]?.ele ?? null);
@@ -220,7 +220,8 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
             <p className="text-xs text-[var(--muted)]">Cestu autom teraz odhadujeme podľa vzdialenosti (~{formatDuration(driveMin!)}).</p>
           )}
           {!start && !transit && <p className="text-xs text-[var(--muted)]">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>}
-          {(late || latestPassed) && (
+          {/* Not from the quick guess shown while the route loads: a warning that then vanishes would only confuse. */}
+          {!tripPlan.loading && (late || latestPassed) && (
             <p role="status" className="rounded-xl bg-[var(--warn-bg)] px-3.5 py-3 text-base font-semibold text-[var(--warn)]">
               {lateText(plan!.verdict, { latestPassed: !!latestPassed, tooLong, startWord, latest: formatTime(latest!) })}
             </p>

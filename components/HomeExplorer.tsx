@@ -8,7 +8,7 @@ import { formatKm, pickWalk, walkMinutes } from "@/lib/walkFacts";
 import { activeClosures } from "@/lib/closures";
 import { hikeMinutes } from "@/lib/dayPlan";
 import { dayFit, dayInSentence, isoDate } from "@/lib/days";
-import { estimateDriveMin, transitMinutes } from "@/lib/drive";
+import { TOWN_EXACT_KM, estimateDriveMin, transitMinutes } from "@/lib/drive";
 import { DIFFICULTY_LABEL, GOAL_LABEL, GOAL_PLURAL, formatDurationShort } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
@@ -46,9 +46,6 @@ const DESKTOP_QUERY = "(min-width: 1024px)";
 /** Goal filters, most common first. */
 const GOAL_FILTERS: DestinationKind[] = ["vrchol", "vodopad", "pleso", "hrad", "jaskyna", "roklina", "vyhliadka", "chata"];
 const DIFFICULTIES: Difficulty[] = ["lahka", "stredna", "tazka"];
-
-/** Starts further than this from the nearest precomputed town get "~" on their drive times. */
-const TOWN_EXACT_KM = 10;
 
 /**
  * Zoomed in, the list shows the trips nearest the map's centre, the better known ones a little
