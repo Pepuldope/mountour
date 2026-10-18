@@ -56,7 +56,7 @@ const part =
 export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, walk, intro, children, outro, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
-  const { destination, rideTo, approachMin, trailStart, transit, noCar, stop, skip, walkFrom, trailJoin, walk: onFoot } = useTripAccess();
+  const { destination, rideTo, approachMin, trailStart, transit, noCar, parking, stop, skip, walkFrom, trailJoin, walk: onFoot } = useTripAccess();
   // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day,
   // with or without a start: the walk back to the car must fit the light too. Parked up the trail, the
   // stretch below is skipped both ways.
@@ -172,13 +172,14 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
           )}
           {plan.startsInDark && <p className="text-sm text-[var(--warn)]">Túra začína pred východom slnka, vezmite si čelovku.</p>}
           <ol className="font-data grid grid-cols-4 gap-x-2 text-[1.3rem] leading-tight font-bold sm:text-[1.6rem]">
-            {hasDrive ? (
-              <Step label="odchod" time={plan.segments[0].start} />
-            ) : (
-              <Step label={transit && stop ? "zastávka" : "túra"} time={plan.hikeStart} />
-            )}
+            {/* Peter: the arrival is a big time; the departure (also set in the box above) sits small over it. */}
+            <Step
+              label={transit && stop ? "zastávka" : hasDrive ? (parking ? "parkovisko" : "na mieste") : "túra"}
+              time={plan.hikeStart}
+              above={hasDrive ? `odchod ${formatTime(plan.segments[0].start)}` : undefined}
+            />
             {profile && <Step label={GOAL_WORDS[profile.goalKind].noun} time={goalTime(plan, profile)} approx />}
-            <Step label={transit && stop ? "späť na zastávke" : "späť"} time={plan.hikeEnd} />
+            <Step label={transit && stop ? "späť na zastávke" : hasDrive ? "pri aute" : "späť"} time={plan.hikeEnd} />
             {plan.segments[plan.segments.length - 1].kind === "drive-back" && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
           <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} />
@@ -228,10 +229,11 @@ function lateText(
   return `Späť by ste boli po západe slnka. ${leave}`;
 }
 
-function Step({ label, time, approx = false }: { label: string; time: Date; approx?: boolean }) {
+function Step({ label, time, approx = false, above }: { label: string; time: Date; approx?: boolean; above?: string }) {
   return (
     // Bottom-aligned: a label that wraps ("späť na zastávke") keeps the times on one line.
     <li className="flex flex-col justify-end">
+      {above && <span className="block font-sans text-[12px] leading-tight font-semibold whitespace-nowrap text-[var(--muted)]">{above}</span>}
       <span className="block font-sans text-[13px] leading-tight font-medium text-[var(--muted)]">{label}</span>
       <span>
         {approx ? "~" : ""}
