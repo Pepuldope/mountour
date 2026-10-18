@@ -56,3 +56,19 @@ export function estimateDriveMin(from: LatLng, to: LatLng): number {
   const model = (m: typeof NEAR) => ((km * m.roadFactor) / m.kmh) * 60 + m.extraMin;
   return Math.max(5, Math.round(Math.min(model(NEAR), model(FAR)) / 5) * 5);
 }
+
+/** Starts further than this from the nearest precomputed town get "~" on their drive times. */
+export const TOWN_EXACT_KM = 10;
+
+/**
+ * A drive time with no router call, as the home list shows it: the weekly table from the town
+ * nearest the start (plus getting to that town), else the straight-line estimate. Far from the
+ * table town the straight-line guess can be closer (Ždiar -> Belianska jaskyňa), so the shorter wins.
+ */
+export function quickDriveMin(start: LatLng, to: LatLng, drives: TownDrives | null, tableMin: number | null): number {
+  if (!drives || tableMin === null) return estimateDriveMin(start, to);
+  const town = { lat: drives.town.lat, lon: drives.town.lon };
+  const toTownKm = haversineM(start, town) / 1000;
+  const viaTown = tableMin + (toTownKm > 2 ? estimateDriveMin(start, town) : 0);
+  return toTownKm > TOWN_EXACT_KM ? Math.min(viaTown, estimateDriveMin(start, to)) : viaTown;
+}

@@ -12,6 +12,8 @@ type OrsProfile = "driving-car" | "foot-hiking" | "foot-walking";
 const DAY_S = 86400;
 /** A router that hangs must not hold the page: give up after this long. */
 export const ROUTER_TIMEOUT_MS = 8000;
+/** The last stretch to a parking is a nicety (without it the drive stops a little short): never wait long for it. */
+export const TAIL_TIMEOUT_MS = 4000;
 
 /**
  * The free OpenRouteService key allows 40 routes a minute and 2,000 a day, and a trip page asks
@@ -34,7 +36,14 @@ function remember(key: string, route: DriveRoute): DriveRoute {
 /** GeoJSON [lon, lat] -> our [lat, lon]. */
 const flip = (coords: Pt[]): Pt[] => coords.map(([lon, lat]) => [lat, lon]);
 
-export async function viaOrs(key: string, profile: OrsProfile, from: Pt, to: Pt, radiuses: [number, number]): Promise<DriveRoute> {
+export async function viaOrs(
+  key: string,
+  profile: OrsProfile,
+  from: Pt,
+  to: Pt,
+  radiuses: [number, number],
+  timeoutMs = ROUTER_TIMEOUT_MS
+): Promise<DriveRoute> {
   const memoKey = `${profile}|${from}|${to}|${radiuses}`;
   const known = memo.get(memoKey);
   if (known) return known;
@@ -49,7 +58,7 @@ export async function viaOrs(key: string, profile: OrsProfile, from: Pt, to: Pt,
       ],
       radiuses,
     }),
-    signal: AbortSignal.timeout(ROUTER_TIMEOUT_MS),
+    signal: AbortSignal.timeout(timeoutMs),
   });
   if (res.status === 429) throw new RateLimited(`ORS ${profile} 429`);
   if (!res.ok) throw new Error(`ORS ${profile} ${res.status}`);
@@ -97,6 +106,65 @@ export async function walkRoute(key: string | undefined, from: Pt, to: Pt, snapM
     console.warn("walk: foot-hiking failed, trying foot-walking", err);
     return viaOrs(key, "foot-walking", from, to, [snapM, snapM]);
   }
+}
+
+/**
+ * The car's last stretch to a parking off the road network: one call on plain walking (minor
+ * roads and tracks, the ways a car takes in; hiking paths aren't), with a short timeout.
+ */
+export function lastStretch(key: string | undefined, from: Pt, to: Pt, snapM: number): Promise<DriveRoute> {
+  return key ? viaOrs(key, "foot-walking", from, to, [snapM, snapM], TAIL_TIMEOUT_MS) : viaOsrm(FOSSGIS_FOOT, from, to);
+}
+
+/** Drives that stop this close to each other for the same parking share its last stretch. */
+const SAME_END_M = 30;
+/** Ways in kept per parking (a parking reached from two valleys has two road ends). */
+const ENDS_PER_PARKING = 4;
+
+export interface KnownTail {
+  from: Pt;
+  route: DriveRoute;
+}
+
+/** Somewhere to keep last stretches between visitors (the edge cache), keyed by parking. */
+export interface TailStore {
+  get(to: Pt): Promise<KnownTail[] | null>;
+  put(to: Pt, tails: KnownTail[]): Promise<void>;
+}
+
+const tailMemo = new Map<string, KnownTail[]>();
+
+/**
+ * Where the car router stops for a parking hardly depends on where the drive came from, so
+ * the last stretch from there is asked once per parking, not once per visitor: from this
+ * Worker's memory, else the shared store, else the router (and then kept in both).
+ */
+export async function knownTail(
+  from: Pt,
+  to: Pt,
+  ask: (from: Pt, to: Pt) => Promise<DriveRoute>,
+  store?: TailStore
+): Promise<DriveRoute> {
+  const id = String(to);
+  const near = (list: KnownTail[] | null | undefined) => list?.find((t) => dist(t.from, from) <= SAME_END_M)?.route;
+  const mem = near(tailMemo.get(id));
+  if (mem) return mem;
+  const stored = store ? await store.get(to).catch(() => null) : null;
+  const hit = near(stored);
+  if (hit) {
+    rememberTails(id, stored!);
+    return hit;
+  }
+  const route = await ask(from, to);
+  const list = [{ from, route }, ...(stored ?? tailMemo.get(id) ?? [])].slice(0, ENDS_PER_PARKING);
+  rememberTails(id, list);
+  await store?.put(to, list).catch(() => undefined);
+  return route;
+}
+
+function rememberTails(id: string, list: KnownTail[]) {
+  if (tailMemo.size >= MEMO_MAX && !tailMemo.has(id)) tailMemo.delete(tailMemo.keys().next().value!);
+  tailMemo.set(id, list);
 }
 
 const dist = (a: Pt, b: Pt) => haversineM({ lat: a[0], lon: a[1] }, { lat: b[0], lon: b[1] });

@@ -1,7 +1,8 @@
 import { roundCoord } from "@/lib/drive";
-import { KEEP_FOR, withEdgeCache } from "@/lib/edgeCache";
+import { KEEP_FOR, edgeJson, withEdgeCache } from "@/lib/edgeCache";
 import { OTHER_SITE, fromOtherSite, overRouteLimit } from "@/lib/routeGuard";
-import { RateLimited, driveRoute, finishDrive, simplifyLine, walkRoute } from "@/lib/routing";
+import { RateLimited, driveRoute, finishDrive, knownTail, lastStretch, simplifyLine } from "@/lib/routing";
+import type { KnownTail, Pt, TailStore } from "@/lib/routing";
 
 /**
  * GET /api/drive?from=lat,lon&to=lat,lon -> DriveRoute
@@ -25,6 +26,12 @@ const RETRY_S = 8;
 const SNAP_M = 3000;
 /** The last stretch starts on a road and ends at the parking, both close to a way. */
 const TAIL_SNAP_M = 300;
+
+/** A parking's last stretch, shared by every drive to it that stops at the same road point. */
+function tailStore(req: Request): TailStore {
+  const json = edgeJson<KnownTail[]>(new URL(req.url).origin, "/api/drive/tail", DAY_S);
+  return { get: (to: Pt) => json.get(String(to)), put: (to: Pt, tails: KnownTail[]) => json.put(String(to), tails) };
+}
 
 function parsePoint(raw: string | null, round: (n: number) => number): [number, number] | null {
   if (!raw) return null;
@@ -55,7 +62,9 @@ export async function GET(req: Request) {
       const key = process.env.ORS_API_KEY;
       const road = await driveRoute(key, from, to, SNAP_M);
       let partial = false;
-      const full = await finishDrive(road, to, (a, b) => walkRoute(key, a, b, TAIL_SNAP_M), () => (partial = true));
+      const store = tailStore(req);
+      const ask = (a: Pt, b: Pt) => lastStretch(key, a, b, TAIL_SNAP_M);
+      const full = await finishDrive(road, to, (a, b) => knownTail(a, b, ask, store), () => (partial = true));
       const route = { ...full, points: simplifyLine(full.points, SHAPE_TOL_M) };
       const keepS = partial ? PARTIAL_S : DAY_S;
       return Response.json(route, {

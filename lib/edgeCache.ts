@@ -55,3 +55,32 @@ export async function withEdgeCache(
   }
   return res;
 }
+
+/**
+ * A small JSON value kept in the edge cache under a made-up URL on this site (not a route anyone
+ * calls), for answers shared between requests that aren't one URL's answer. Errors read as a miss.
+ */
+export function edgeJson<T>(origin: string, path: string, maxAgeS: number) {
+  const req = (id: string) => new Request(`${origin}${path}?k=${encodeURIComponent(id)}`, { method: "GET" });
+  return {
+    async get(id: string): Promise<T | null> {
+      const cache = edgeCache();
+      if (!cache) return null;
+      try {
+        const hit = await cache.match(req(id));
+        return hit ? ((await hit.json()) as T) : null;
+      } catch {
+        return null;
+      }
+    },
+    async put(id: string, value: T): Promise<void> {
+      const cache = edgeCache();
+      if (!cache) return;
+      try {
+        await cache.put(req(id), Response.json(value, { headers: { "Cache-Control": `public, max-age=${maxAgeS}` } }));
+      } catch {
+        // Not kept this time.
+      }
+    },
+  };
+}

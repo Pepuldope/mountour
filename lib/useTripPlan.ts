@@ -3,9 +3,9 @@
 import { useMemo } from "react";
 import { SAFE_MARGIN_MIN, atDayMinute, hikeMinutes, planDay } from "@/lib/dayPlan";
 import type { DayPlan, FixedRide } from "@/lib/dayPlan";
-import { estimateDriveMin, transitMinutes } from "@/lib/drive";
+import { estimateDriveMin, quickDriveMin, transitMinutes } from "@/lib/drive";
 import type { DriveRoute } from "@/lib/drive";
-import { useDriveRoute } from "@/lib/useDriveRoute";
+import { useDriveRoute, useTownDrives } from "@/lib/useDriveRoute";
 import { useRailTrip } from "@/lib/useRailTrip";
 import type { RailTrip } from "@/lib/useRailTrip";
 import type { DriveStatus } from "@/lib/useDriveRoute";
@@ -49,7 +49,9 @@ export function useTripPlan(
   baseHikeMin: number,
   railStation: LatLng | null = null,
   /** No car park at the start: plan by bus or train whatever the remembered choice. */
-  noCar = false
+  noCar = false,
+  /** The trip, to look it up in the start town's weekly drive table while the exact route loads. */
+  slug: string | null = null
 ): TripPlan {
   const { start } = useUserLocation();
   const { withKids, travel } = useTripSettings();
@@ -58,7 +60,13 @@ export function useTripPlan(
   const drive = useDriveRoute(start, destination);
   const hikeMin = hikeMinutes(baseHikeMin, withKids);
   const driveApprox = drive.status === "error" && start !== null && destination !== null;
-  const roadMin = drive.route?.durationMin ?? (driveApprox ? estimateDriveMin(start!, destination!) : null);
+  // While the exact route loads, the day is drawn from a distance estimate ("~"), not left waiting.
+  const driveGuess = (driveApprox || drive.status === "loading") && start !== null && destination !== null;
+  // The same number the home list showed for this trip, until the router's answer replaces it.
+  const { drives } = useTownDrives(drive.status === "loading" ? start : null);
+  const tableMin = slug ? (drives?.minutes[slug] ?? null) : null;
+  const guessMin = driveGuess ? (drive.status === "loading" ? quickDriveMin(start!, destination!, drives, tableMin) : estimateDriveMin(start!, destination!)) : null;
+  const roadMin = drive.route?.durationMin ?? guessMin;
   const rail = useRailTrip(start, transit ? railStation : null, date, time, hikeMin);
   const there = rail.status === "ok" ? rail.there[rail.thereChoice] : null;
   const back = rail.status === "ok" ? (rail.back[rail.backChoice] ?? null) : null;
@@ -69,7 +77,7 @@ export function useTripPlan(
       }
     : null;
   const driveMin = fixed ? fixed.there.arrive - fixed.there.leave : roadMin !== null && transit ? transitMinutes(roadMin) : roadMin;
-  const approx = fixed ? false : transit || driveApprox;
+  const approx = fixed ? false : transit || driveGuess;
 
   const plan = useMemo(
     () => {
