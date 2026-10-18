@@ -186,7 +186,8 @@ export default async function TripSheetPage({ params }: Props) {
               <div className="flex flex-wrap gap-1.5">
                 <Badge colour={GOAL_COLOUR[goal]} icon={kindSvg(goal, 16)}>
                   {GOAL_LABEL[goal]}
-                  {goalEle ? ` · ${goalEle} m` : ""}
+                  {/* Peter: always the height, said as height ("277 m" alone read like a distance). */}
+                  {goalEle ? ` · ${goalEle} m n. m.` : ""}
                 </Badge>
                 {also && (
                   <Badge colour={POI_COLOUR[also]} icon={kindSvg(also, 16)}>
@@ -220,6 +221,7 @@ export default async function TripSheetPage({ params }: Props) {
               <>
                 <div className="flex flex-col gap-2">
                   <TripFacts
+                    loop={trip.route === "okruh"}
                     difficulty={trail.difficulty}
                     familyFriendly={trail.family_friendly}
                   />
