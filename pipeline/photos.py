@@ -1,9 +1,13 @@
 """Photos for the places trips lead to, from Wikimedia Commons (free licences only).
 
-Each destination's OpenStreetMap object may carry a `wikidata` id (whose main image,
-P18, is used) or a `wikimedia_commons` file. The thumbnail address, author and licence
-go to public/data/photos.json, keyed by the OSM object ("node/123"). Places without a
-free photo are simply left out; the site draws its own tile for them.
+Sources, best first:
+1. the OSM object's `wikidata` main image (P18) or its `wikimedia_commons` file;
+2. the lead image of its Wikipedia article (OSM `wikipedia` tag or Wikidata sitelink);
+3. a photo taken right at the place, found by location on Commons, preferring one
+   whose title names the place and skipping guideposts, maps and boards.
+The thumbnail address, author and licence go to public/data/photos.json, keyed by
+the OSM object ("node/123"), with `via` saying which source matched. Places without
+a free photo are left out; the site draws its own tile for them.
 
     python -m pipeline.photos            # reads public/data/trips/index.json
 """
@@ -13,6 +17,7 @@ import json
 import re
 import sys
 import time
+import unicodedata
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -75,6 +80,79 @@ def wikidata_images(qids):
     return out
 
 
+def wikipedia_images(titles):
+    """Lead image file name per (lang, title), from Wikipedia's page images (free files only)."""
+    out = {}
+    by_lang = {}
+    for lang, title in titles:
+        by_lang.setdefault(lang, set()).add(title)
+    for lang, ts in by_lang.items():
+        ts = sorted(ts)
+        for k in range(0, len(ts), 50):
+            body = get_json(f"https://{lang}.wikipedia.org/w/api.php?action=query&format=json&redirects=1"
+                            "&prop=pageimages&piprop=name&pilicense=free&titles=" + urllib.parse.quote("|".join(ts[k : k + 50])))
+            q = (body or {}).get("query", {})
+            back = {}
+            for n in q.get("normalized", []) + q.get("redirects", []):
+                back[n["to"]] = back.get(n["from"], n["from"])
+            for pg in q.get("pages", {}).values():
+                if pg.get("pageimage"):
+                    out[(lang, back.get(pg["title"], pg["title"]))] = pg["pageimage"]
+    return out
+
+
+def sitelinks(qids):
+    """Wikipedia article (lang, title) per Wikidata id, Slovak first."""
+    out = {}
+    qids = sorted(qids)
+    for k in range(0, len(qids), 50):
+        body = get_json("https://www.wikidata.org/w/api.php?action=wbgetentities&props=sitelinks&format=json"
+                        "&sitefilter=skwiki|cswiki|enwiki|huwiki|plwiki|dewiki&ids=" + "|".join(qids[k : k + 50]))
+        for q, e in (body or {}).get("entities", {}).items():
+            links = e.get("sitelinks", {})
+            for site in ("skwiki", "cswiki", "enwiki", "huwiki", "plwiki", "dewiki"):
+                if site in links:
+                    out[q] = (site.removesuffix("wiki"), links[site]["title"])
+                    break
+    return out
+
+
+def plain(s):
+    return "".join(c for c in unicodedata.normalize("NFKD", s.lower()) if not unicodedata.combining(c))
+
+
+# Words that say what a place is, not which one; a title sharing only these doesn't name it.
+GENERIC = set("hrad hradu zrucanina zrucaniny vrch vrchol kopec jaskyna jaskyne pleso plesa vodopad vodopady chata chaty "
+              "rozhladna vyhliadka vyhlad skala skaly dolina nad pod velky velka velke maly mala male stary stara nova novy "
+              "sedlo vrchy hora".split())
+# Photos at the place that aren't of it.
+NOT_A_VIEW = re.compile(r"rozcestn|smerovn|guidepost|signpost|\bsign|tabul|tabuľ|\bmap|mapa|plan |plán|informa|"
+                        r"\bdoska|plaque|\berb\b|coat of arms|logo|\binterior|toilet|parkovisk|parking|\.svg|\.pdf|\.tif", re.I)
+
+
+def near_photos(places):
+    """Up to 3 candidate Commons files taken at each place, best first, as {osm id: [file, ...]}."""
+    out = {}
+    for n, (i, name, lat, lon) in enumerate(places):
+        body = get_json("https://commons.wikimedia.org/w/api.php?action=query&format=json&list=geosearch"
+                        f"&gsnamespace=6&gslimit=50&gsradius=1000&gscoord={lat}|{lon}")
+        words = [w for w in re.findall(r"[a-z]{4,}", plain(name)) if w not in GENERIC]
+        ranked = []
+        for g in (body or {}).get("query", {}).get("geosearch", []):
+            title = g["title"].removeprefix("File:")
+            if NOT_A_VIEW.search(title) or not re.search(r"\.(jpe?g|png|webp)$", title, re.I):
+                continue
+            named = any(w[:-1] in plain(title) for w in words)  # "Kamzíka" still names Kamzík
+            if named or g["dist"] <= 200:
+                ranked.append((not named, g["dist"], title))
+        if ranked:
+            out[i] = [t for _, _, t in sorted(ranked)[:3]]
+        if n % 200 == 0:
+            log(f"near {n}/{len(places)}")
+        time.sleep(0.1)
+    return out
+
+
 def strip_html(s):
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", s or ""))).strip()
 
@@ -100,6 +178,10 @@ def commons_info(files):
             if not FREE.match(lic) or ii.get("width", 0) < 400:
                 continue
             name = back.get(p["title"], p["title"]).removeprefix("File:")
+            # Square tiles crop hard: skip panoramas and very tall shots.
+            ratio = ii["width"] / max(ii["height"], 1)
+            if not 0.6 <= ratio <= 2.2:
+                continue
             out[name] = dict(
                 url=(ii.get("thumburl") or ii["url"]).split("?")[0],
                 w=ii.get("thumbwidth") or ii["width"],
@@ -113,27 +195,52 @@ def commons_info(files):
 
 def main():
     trips = json.loads(INDEX.read_text())["trips"]
-    ids = sorted({t["destination"]["osm"] for t in trips if t["destination"].get("osm")})
+    dest = {t["destination"]["osm"]: t["destination"] for t in trips if t["destination"].get("osm")}
+    ids = sorted(dest)
     log(f"{len(ids)} places")
     tags = osm_tags(ids)
     qid = {i: t["wikidata"].split(";")[0].strip() for i, t in tags.items() if re.fullmatch(r"Q\d+", t.get("wikidata", "").split(";")[0].strip())}
     p18 = wikidata_images(set(qid.values()))
-    file_of = {}
+    # Candidate files per place, best source first.
+    cands = {i: [] for i in ids}
+    via = {}
     for i in ids:
         f = p18.get(qid.get(i, ""))
         c = tags.get(i, {}).get("wikimedia_commons", "")
         if not f and c.startswith("File:"):
             f = c.removeprefix("File:")
         if f:
-            file_of[i] = f.replace("_", " ")
-    info = commons_info(set(file_of.values()))
-    photos = {i: info[f] for i, f in file_of.items() if f in info}
+            cands[i].append((f, "wikidata"))
+    article = {}
+    links = sitelinks({qid[i] for i in ids if i in qid})
+    for i in ids:
+        w = tags.get(i, {}).get("wikipedia", "")
+        if ":" in w:
+            lang, title = w.split(":", 1)
+            article[i] = (lang.strip(), title.strip())
+        elif qid.get(i) in links:
+            article[i] = links[qid[i]]
+    lead = wikipedia_images(set(article.values()))
+    for i, a in article.items():
+        if a in lead:
+            cands[i].append((lead[a], "wikipedia"))
+    near = near_photos([(i, dest[i]["name"], dest[i]["location"]["lat"], dest[i]["location"]["lon"]) for i in ids])
+    for i, fs in near.items():
+        cands[i] += [(f, "near") for f in fs]
+    info = commons_info({f.replace("_", " ") for fs in cands.values() for f, _ in fs})
+    photos = {}
+    for i, fs in cands.items():
+        for f, src in fs:
+            if f.replace("_", " ") in info:
+                photos[i] = dict(info[f.replace("_", " ")], via=src)
+                break
     OUT.write_text(json.dumps(dict(
         generated_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        source="Wikimedia Commons via Wikidata and OpenStreetMap",
+        source="Wikimedia Commons via Wikidata, Wikipedia and OpenStreetMap",
         photos=dict(sorted(photos.items())),
     ), ensure_ascii=False, separators=(",", ":")) + "\n")
-    log(f"tags {len(tags)}, wikidata {len(qid)}, with image {len(file_of)}, free photo {len(photos)} of {len(ids)} places")
+    counts = {s: sum(p["via"] == s for p in photos.values()) for s in ("wikidata", "wikipedia", "near")}
+    log(f"tags {len(tags)}, wikidata {len(qid)}, articles {len(article)}, free photo {len(photos)} of {len(ids)} places {counts}")
 
 
 if __name__ == "__main__":
