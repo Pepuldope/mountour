@@ -78,6 +78,24 @@ export async function getAllTripSlugs(): Promise<string[]> {
     .sort();
 }
 
+/** A free-licence photo of a trip's destination from Wikimedia Commons (pipeline/photos.py). */
+export interface PlacePhoto {
+  url: string;
+  w: number;
+  h: number;
+  author: string;
+  license: string;
+  page: string;
+}
+
+let photos: Promise<Record<string, PlacePhoto>> | null = null;
+
+/** Destination photos by OSM id ("node/123"); empty when the file is missing. */
+export function getPhotos(): Promise<Record<string, PlacePhoto>> {
+  photos ??= readPublicJson<{ photos: Record<string, PlacePhoto> }>("data/photos.json").then((f) => f?.photos ?? {});
+  return photos;
+}
+
 /** Car minutes from one precomputed town to every trip, by slug; empty for an unknown town. */
 export async function getTownDrives(townId: string): Promise<TownDriveFile["minutes"]> {
   if (!SLUG.test(townId)) return {};

@@ -20,7 +20,8 @@ from pathlib import Path
 UA = "MounTour photos (https://github.com/Pepuldope/mountour)"
 INDEX = Path("public/data/trips/index.json")
 OUT = Path("public/data/photos.json")
-THUMB_W = 640
+# One of Wikimedia's standard thumbnail steps (others are re-rounded up to 960 px).
+THUMB_W = 500
 # Licences that allow use on the site with a credit line.
 FREE = re.compile(r"^(cc0|cc[- ]by(-sa)?[- ]\d|public domain|pd)", re.I)
 
@@ -100,7 +101,7 @@ def commons_info(files):
                 continue
             name = back.get(p["title"], p["title"]).removeprefix("File:")
             out[name] = dict(
-                url=ii.get("thumburl") or ii["url"],
+                url=(ii.get("thumburl") or ii["url"]).split("?")[0],
                 w=ii.get("thumbwidth") or ii["width"],
                 h=ii.get("thumbheight") or ii["height"],
                 author=strip_html(meta.get("Artist", {}).get("value"))[:80] or "Wikimedia Commons",

@@ -1,53 +1,113 @@
-import { getAllTrails, getTownDrives } from "@/lib/tripFiles";
+import { getAllTrips, getPhotos, getTownDrives } from "@/lib/tripFiles";
+import type { PlacePhoto } from "@/lib/tripFiles";
+import { haversineM } from "@/lib/geo";
 import { getTowns } from "@/lib/trips";
-import type { Town } from "@/lib/tripSchema";
-import type { TrailDetail } from "@/lib/types";
+import type { DestinationKind, Town, TripSummary } from "@/lib/tripSchema";
 
-/** How far a town page reaches by car, in bands people think in. */
-export const TOWN_BANDS = [
-  { maxMin: 30, label: "Do pol hodiny autom" },
-  { maxMin: 60, label: "Do hodiny autom" },
-  { maxMin: 90, label: "Do hodiny a pol autom" },
-] as const;
+/** How far a town page reaches by car. */
+export const TOWN_MAX_MIN = 90;
 
-/** Trips shown per band; the rest are one tap away on the map. */
-const PER_BAND = 6;
+/** A trip starting this close to the town centre is "in town". */
+const IN_TOWN_M = 5000;
+
+/** Tiles per row; the rest are on the map. */
+const PER_ROW = 10;
+
+/** A town worth a home-page button: at least this many well-known trips within half an hour. */
+const KNOWN_TRIPS = 3;
+const KNOWN_RANK = 70;
+const KNOWN_MIN = 30;
 
 /** The biggest towns, shown first in the town list. */
 export const BIG_TOWNS = ["bratislava", "kosice", "presov", "zilina", "nitra", "banska-bystrica", "trnava", "trencin", "martin", "poprad"];
 
-export interface TownTrip {
-  detail: TrailDetail;
+/** Rows of a town page after "V meste", by what the trip leads to. */
+const KIND_ROWS: { title: string; kinds: DestinationKind[] }[] = [
+  { title: "Hrady a zrúcaniny", kinds: ["hrad"] },
+  { title: "Vrcholy", kinds: ["vrchol"] },
+  { title: "Vyhliadky", kinds: ["vyhliadka"] },
+  { title: "Jaskyne, plesá a vodopády", kinds: ["jaskyna", "pleso", "vodopad", "roklina"] },
+];
+
+export interface TownTile {
+  slug: string;
+  name: string;
+  kind: DestinationKind;
   carMin: number;
+  walkMin: number;
+  kids: boolean;
+  photo: PlacePhoto | null;
+}
+
+export interface TownRow {
+  title: string;
+  /** Trips of this kind within reach, more than the row shows. */
+  count: number;
+  tiles: TownTile[];
 }
 
 export interface TownTrips {
   town: Town;
-  bands: { label: string; count: number; trips: TownTrip[] }[];
-  /** Trips within the last band. */
   total: number;
-  kids: number;
+  rows: TownRow[];
 }
 
 export function getTown(id: string): Town | null {
   return getTowns().find((t) => t.id === id) ?? null;
 }
 
-/** The best known trips within each band of driving from a town (main routes, best known first). */
+/** Trips within reach of a town by car, best known first, with the drive. */
+async function reachable(id: string): Promise<{ trip: TripSummary; carMin: number }[]> {
+  const [trips, minutes] = await Promise.all([getAllTrips(), getTownDrives(id)]);
+  const out: { trip: TripSummary; carMin: number }[] = [];
+  for (const trip of trips) {
+    const carMin = minutes[trip.slug];
+    if (carMin != null && carMin <= TOWN_MAX_MIN) out.push({ trip, carMin });
+  }
+  return out.sort((a, b) => b.trip.rank - a.trip.rank);
+}
+
+/** A town page: trips in town, then rows by kind and one for kids, as photo tiles. */
 export async function getTownTrips(id: string): Promise<TownTrips | null> {
   const town = getTown(id);
   if (!town) return null;
-  const [trails, minutes] = await Promise.all([getAllTrails(), getTownDrives(id)]);
-  const reach: TownTrip[] = [];
-  for (const detail of trails) {
-    const carMin = minutes[detail.trail.slug];
-    if (carMin != null && carMin <= TOWN_BANDS[TOWN_BANDS.length - 1].maxMin) reach.push({ detail, carMin });
-  }
-  let from = 0;
-  const bands = TOWN_BANDS.map(({ maxMin, label }) => {
-    const inBand = reach.filter((t) => t.carMin > from && t.carMin <= maxMin);
-    from = maxMin;
-    return { label, count: inBand.length, trips: inBand.slice(0, PER_BAND) };
+  const [reach, photos] = await Promise.all([reachable(id), getPhotos()]);
+  const tile = ({ trip, carMin }: { trip: TripSummary; carMin: number }): TownTile => ({
+    slug: trip.slug,
+    name: trip.name,
+    kind: trip.destination.kind,
+    carMin,
+    walkMin: trip.duration_min,
+    kids: trip.family_friendly,
+    photo: (trip.destination.osm && photos[trip.destination.osm]) || null,
   });
-  return { town, bands, total: reach.length, kids: reach.filter((t) => t.detail.trail.family_friendly).length };
+  const inTown = reach.filter((r) => haversineM(r.trip.start.location, town.location) <= IN_TOWN_M);
+  const outside = reach.filter((r) => !inTown.includes(r));
+  const shown = new Set<string>();
+  const row = (title: string, list: typeof reach): TownRow => {
+    const tiles = list.slice(0, PER_ROW).map(tile);
+    for (const t of tiles) shown.add(t.slug);
+    return { title, count: list.length, tiles };
+  };
+  const rows = [
+    row("V meste", inTown),
+    ...KIND_ROWS.map(({ title, kinds }) => row(title, outside.filter((r) => kinds.includes(r.trip.destination.kind)))),
+  ];
+  // Kids get their own row of trips not already shown above, so the page doesn't repeat itself.
+  const kids = outside.filter((r) => r.trip.family_friendly && r.carMin <= 60);
+  rows.push(row("S deťmi do hodiny", kids.filter((r) => !shown.has(r.trip.slug))));
+  return { town, total: reach.length, rows: rows.filter((r) => r.tiles.length > 0) };
+}
+
+/** Towns with enough well-known trips close by to earn the home-page button. */
+export async function getKnownTownIds(): Promise<string[]> {
+  const trips = await getAllTrips();
+  const known = trips.filter((t) => t.rank >= KNOWN_RANK).map((t) => t.slug);
+  const ids = await Promise.all(
+    getTowns().map(async (town) => {
+      const minutes = await getTownDrives(town.id);
+      return known.filter((slug) => (minutes[slug] ?? Infinity) <= KNOWN_MIN).length >= KNOWN_TRIPS ? town.id : null;
+    }),
+  );
+  return ids.filter((id): id is string => id !== null);
 }
