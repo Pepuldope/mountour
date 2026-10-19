@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { InfoPage } from "@/components/InfoPage";
+import { OptOutNote } from "@/components/OptOutNote";
 import { monthlyEvents } from "@/lib/eventCounts";
 import { monthlyStats } from "@/lib/visitStore";
 
@@ -88,6 +89,7 @@ export default async function StatsPage() {
         Človek, ktorému sa medzi dňami zmení IP adresa (napr. mobil na inej sieti), sa počíta ako dvaja ľudia, takže
         čísla sú skôr nižšie ako skutočnosť.
       </p>
+      <OptOutNote />
     </InfoPage>
   );
 }
