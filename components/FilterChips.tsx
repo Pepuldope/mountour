@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import { BAD_SKY_LABEL, badSkySvg } from "@/lib/weatherIcons";
+import type { BadSky } from "@/lib/weather";
 import { dayStrip, isoDate, shortDay } from "@/lib/days";
 import { useTripSettings } from "@/lib/tripSettings";
 import { UiIcon } from "@/components/UiIcon";
@@ -12,6 +14,8 @@ interface Props {
   variant?: "home" | "trip";
   /** Trip page: the day being planned even when none was picked. */
   activeDate?: string | null;
+  /** Trip page: days whose walk gets rain, snow, fog or a storm, drawn under the day in the strip. */
+  dayWeather?: Record<string, BadSky>;
 }
 
 const segment = "grid grid-cols-3 gap-[3px] rounded-xl bg-[var(--segment-bg)] p-[3px]";
@@ -21,7 +25,7 @@ const segBtn = (on: boolean) =>
   }`;
 
 /** The day: Dnes, Zajtra, or Iný deň (two weeks to tap, and the full calendar). */
-export function FilterChips({ variant = "home", activeDate }: Props) {
+export function FilterChips({ variant = "home", activeDate, dayWeather }: Props) {
   const { date, today, update } = useTripSettings();
   const dateInput = useRef<HTMLInputElement>(null);
   const [stripOpen, setStripOpen] = useState(false);
@@ -132,6 +136,17 @@ export function FilterChips({ variant = "home", activeDate }: Props) {
                 >
                   <span className={`text-[11px] font-semibold ${on ? "" : "text-[var(--muted)]"}`}>{d.weekday}</span>
                   <span className="font-data text-[17px] leading-tight font-bold">{d.day}</span>
+                  {dayWeather?.[d.iso] && (
+                    <svg
+                      viewBox="0 0 24 24"
+                      width={20}
+                      height={20}
+                      role="img"
+                      aria-label={BAD_SKY_LABEL[dayWeather[d.iso]]}
+                      // Constant markup from lib/weatherIcons.ts, no user data.
+                      dangerouslySetInnerHTML={{ __html: badSkySvg(dayWeather[d.iso], on) }}
+                    />
+                  )}
                 </button>
               );
             })}

@@ -339,3 +339,37 @@ export function betterDay(below: WeatherForecast, top: WeatherForecast | null, f
   }
   return null;
 }
+
+/** Weather worth a symbol in the day strip: anything that wets the walk, fog and storms. */
+export type BadSky = "rain" | "sleet" | "snow" | "fog" | "thunder";
+
+const BAD_SKY: Partial<Record<SkyKind, BadSky>> = {
+  lightrain: "rain",
+  rain: "rain",
+  heavyrain: "rain",
+  sleet: "sleet",
+  lightsnow: "snow",
+  snow: "snow",
+  heavysnow: "snow",
+  fog: "fog",
+  thunder: "thunder",
+};
+
+/**
+ * For each day (YYYY-MM-DD) in the forecast range: the worst weather during a
+ * walk at the same clock time as [from, to], when it is rain, sleet, snow, fog
+ * or a storm. Fine days and days past the forecast are left out, so the strip
+ * only marks the days to think twice about.
+ */
+export function badDays(forecast: WeatherForecast, from: Date, to: Date, days: string[]): Record<string, BadSky> {
+  const base = new Date(from.getFullYear(), from.getMonth(), from.getDate()).getTime();
+  const out: Record<string, BadSky> = {};
+  for (const iso of days) {
+    const [y, m, d] = iso.split("-").map(Number);
+    const offset = Math.round((new Date(y, m - 1, d).getTime() - base) / (24 * HOUR));
+    const s = summarize(forecast, shiftDays(from, offset), shiftDays(to, offset));
+    const bad = s && BAD_SKY[skyKind(s.symbol)!];
+    if (bad) out[iso] = bad;
+  }
+  return out;
+}

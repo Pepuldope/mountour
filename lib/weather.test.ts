@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { baseSymbol, betterDay, skyKind, summarize, tripWeatherReport, weatherAt, weatherNotes, weatherWords } from "@/lib/weather";
+import { badDays, baseSymbol, betterDay, skyKind, summarize, tripWeatherReport, weatherAt, weatherNotes, weatherWords } from "@/lib/weather";
 import type { WeatherForecast } from "@/lib/weather";
 
 const hourly = (h: number, temp: number, rain: number, symbol: string) => ({
@@ -159,5 +159,25 @@ describe("better day", () => {
     expect(betterDay(wetSaturday, null, new Date(2026, 9, 25, 9), new Date(2026, 9, 25, 13), new Date(2026, 9, 24))).toBeNull();
     const allWet = sixHourly(() => "rain");
     expect(betterDay(allWet, null, sat[0], sat[1], new Date(2026, 9, 22))).toBeNull();
+  });
+});
+
+describe("bad days", () => {
+  const steps = (kind: (d: Date) => string): WeatherForecast => ({
+    updated: "2026-10-22T12:00:00Z",
+    steps: Array.from({ length: 4 * 4 }, (_, i) => {
+      const t = new Date(2026, 9, 23, i * 6);
+      return { t: t.toISOString(), temp: 2, wind: 3, rain: 0, hours: 6, symbol: kind(t) };
+    }),
+  });
+
+  it("marks only rain, snow, fog and storm days, and nothing past the forecast", () => {
+    const f = steps((t) => ({ 23: "fog", 24: "heavysnow", 25: "partlycloudy_day", 26: "rainandthunder" })[t.getDate()]!);
+    const days = ["2026-10-23", "2026-10-24", "2026-10-25", "2026-10-26", "2026-10-30"];
+    expect(badDays(f, new Date(2026, 9, 24, 9), new Date(2026, 9, 24, 13), days)).toEqual({
+      "2026-10-23": "fog",
+      "2026-10-24": "snow",
+      "2026-10-26": "thunder",
+    });
   });
 });
