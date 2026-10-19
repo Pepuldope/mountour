@@ -13,7 +13,9 @@ export type AnalyticsEvent =
   | "gpx_download" // "Stiahnuť GPX trasu" tapped
   | "nav_open" // hand-off to Google Maps / a map app
   | "transit_open" // cp.sk link opened
-  | "tester_signup_open"; // "Chcem testovať" footer link tapped
+  | "tester_signup_open" // "Chcem testovať" footer link tapped
+  | "plus_want" // "Chcem to" on /plus (MounTour+ price test)
+  | "plus_no"; // "Za túto cenu nie" on /plus
 
 type EventData = Record<string, string | number | boolean>;
 
