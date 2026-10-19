@@ -47,6 +47,11 @@ export default function SourcesPage() {
           <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>. Linky autobusov na zastávkach: údaje © OpenStreetMap.
         </li>
         <li>
+          Fotky miest: <a href="https://commons.wikimedia.org">Wikimedia Commons</a> cez{" "}
+          <a href="https://www.wikidata.org">Wikidata</a>, len voľné licencie (CC0, CC BY, CC BY-SA, voľné dielo). Autor a licencia
+          každej fotky sú pod zoznamom na stránke mesta.
+        </li>
+        <li>
           Presné spoje autobusov a vlakov: odkaz na <a href="https://cp.sk">cp.sk</a>, Google Mapy a Apple Mapy.
         </li>
       </ul>

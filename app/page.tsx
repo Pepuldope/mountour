@@ -1,4 +1,5 @@
 import { getAllTrails } from "@/lib/tripFiles";
+import { getKnownTownIds } from "@/lib/townTrips";
 import { HomeExplorer } from "@/components/HomeExplorer";
 import { JsonLd } from "@/components/JsonLd";
 import { pageMetadata } from "@/lib/seo";
@@ -19,7 +20,8 @@ const HOME_FIRST = 30;
 
 export default async function Home() {
   // The best known trips are in the page itself; the browser then loads every trip.
-  const trails = (await getAllTrails()).slice(0, HOME_FIRST);
+  const [all, knownTowns] = await Promise.all([getAllTrails(), getKnownTownIds()]);
+  const trails = all.slice(0, HOME_FIRST);
 
   return (
     <>
@@ -46,7 +48,7 @@ export default async function Home() {
           ],
         }}
       />
-      <HomeExplorer trails={trails} />
+      <HomeExplorer trails={trails} knownTowns={knownTowns} />
     </>
   );
 }

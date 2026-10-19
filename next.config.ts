@@ -10,7 +10,7 @@ const CSP = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' https://cloud.umami.is${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://tiles.openfreemap.org",
+  "img-src 'self' data: blob: https://tiles.openfreemap.org https://thumb.wikimedia.org https://upload.wikimedia.org",
   "font-src 'self' data:",
   "connect-src 'self' https://tiles.openfreemap.org https://nominatim.openstreetmap.org https://cloud.umami.is https://api-gateway.umami.dev",
   "worker-src 'self' blob:",

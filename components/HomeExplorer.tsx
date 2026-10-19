@@ -28,6 +28,7 @@ import { UiIcon } from "@/components/UiIcon";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { SiteFooter } from "@/components/SiteFooter";
 import { StartChip } from "@/components/StartChip";
+import { TownButton } from "@/components/TownButton";
 import { TripCard } from "@/components/TripCard";
 import type { TripCardItem } from "@/components/TripCard";
 import { BrowseMap } from "@/components/BrowseMap";
@@ -36,6 +37,8 @@ import type { BrowseArea, BrowseTrip, MapFocus, MapView } from "@/components/Bro
 interface Props {
   /** The best known trips, rendered with the page; every trip loads after it. */
   trails: TrailDetail[];
+  /** Towns that get the "Výlety okolo …" button (lib/townTrips.ts). */
+  knownTowns: string[];
 }
 
 /** Cards shown at first, and added by each "Ukázať ďalšie". */
@@ -198,7 +201,7 @@ function fitsDay(i: TripCardItem): boolean {
   return !i.closed && !i.noStop && (!i.fit || i.fit.status === "fits");
 }
 
-export function HomeExplorer({ trails: initial }: Props) {
+export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   const trails = useAllTrails(initial);
   const { date, today, withKids, travel, update } = useTripSettings();
   // Several kinds at once (testers): empty = every kind.
@@ -902,6 +905,8 @@ export function HomeExplorer({ trails: initial }: Props) {
           <FilterChips />
           <KidsSwitch />
         </div>
+
+        <TownButton start={start} knownTowns={knownTowns} />
 
         {/* Search, filters and Mapa / Zoznam stay on top while the map fills the screen. */}
         <div className="sticky top-0 z-20 -mx-4 bg-[var(--background)] px-4 py-2 lg:static lg:mx-0 lg:bg-transparent lg:p-0">{tools}</div>

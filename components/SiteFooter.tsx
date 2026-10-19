@@ -2,6 +2,8 @@ import Link from "next/link";
 import { TESTER_FORM_URL } from "@/lib/site";
 
 const LINKS = [
+  { href: "/vylety-z", label: "Výlety z miest" },
+  { href: "/o-nas", label: "O nás" },
   { href: "/sukromie", label: "Súkromie" },
   { href: "/upozornenie", label: "Upozornenie" },
   { href: "/zdroje", label: "Zdroje" },
