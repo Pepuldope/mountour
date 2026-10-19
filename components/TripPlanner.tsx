@@ -19,6 +19,7 @@ import { NavHandoff } from "@/components/NavHandoff";
 import { SaveTripButton } from "@/components/SaveTripButton";
 import type { ShareInfo } from "@/components/ShareButton";
 import { StartChip } from "@/components/StartChip";
+import { StartPill } from "@/components/StartPill";
 import { SunArc } from "@/components/SunArc";
 import { useTripAccess } from "@/components/TripAccess";
 import { WeatherReport, useTripWeather } from "@/components/WeatherBlock";
@@ -133,6 +134,8 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
 
   return (
     <div className="flex flex-col gap-5">
+      {/* First thing under the header: where the day is planned from, changeable without scrolling. */}
+      <StartPill />
       {/* Three cards, so the eye takes one step at a time:
           plan the trip, see the day, then get there. */}
       <section aria-label="Plán výletu" className={part}>

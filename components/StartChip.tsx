@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { searchPlaces } from "@/lib/geocode";
 import type { Place } from "@/lib/geocode";
 import { TOWNS } from "@/lib/towns";
@@ -18,9 +18,12 @@ const note = "w-fit rounded-lg bg-[var(--card-bg)] px-2.5 py-1.5 text-xs font-me
  * line "Vyrážate z … Zmeniť". The list works without a start; a start adds
  * travel times and sorts by them.
  */
-export function StartChip() {
+export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Zmeniť štart"): always open, closed by this. */ onDone?: () => void } = {}) {
   const { status, message, locate, start, setManualStart } = useUserLocation();
-  const [open, setOpen] = useState(false);
+  const [openState, setOpenState] = useState(false);
+  const open = onDone ? true : openState;
+  const setOpen = (v: boolean) => (onDone ? !v && onDone() : setOpenState(v));
+  const inputId = useId();
   const [query, setQuery] = useState("");
   const [search, setSearch] = useState<SearchState>("idle");
   const [results, setResults] = useState<Place[]>([]);
@@ -51,7 +54,10 @@ export function StartChip() {
   }
 
   return (
-    <section aria-label="Odkiaľ vyrážate" className="flex flex-col gap-2 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-3.5 shadow-[var(--shadow-float)]">
+    <section
+      aria-label="Odkiaľ vyrážate"
+      className={onDone ? "flex flex-col gap-2" : "flex flex-col gap-2 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-3.5 shadow-[var(--shadow-float)]"}
+    >
       {start && !open ? (
         <div className="flex items-center gap-3">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-[10px] bg-[var(--accent-soft)] text-[var(--accent)]">
@@ -71,7 +77,7 @@ export function StartChip() {
             <h2 className="text-[19px] leading-tight font-bold">Odkiaľ vyrážate?</h2>
             <p className="mt-0.5 text-[13.5px] text-[var(--muted)]">Zoradíme výlety podľa cesty a ukážeme, kedy vyraziť.</p>
           </div>
-          {start && (
+          {(start || onDone) && (
             <button type="button" onClick={() => setOpen(false)} aria-label="Zavrieť" className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--segment-bg)] text-[var(--muted)]">
               <UiIcon name="close" size={12} />
             </button>
@@ -117,11 +123,11 @@ export function StartChip() {
             <span className="text-[var(--muted)]">
               <UiIcon name="search" size={16} />
             </span>
-            <label htmlFor="start-from" className="sr-only">
+            <label htmlFor={inputId} className="sr-only">
               Iné mesto alebo obec
             </label>
             <input
-              id="start-from"
+              id={inputId}
               type="search"
               enterKeyHint="search"
               placeholder="Iné mesto alebo obec, napr. Pezinok"
