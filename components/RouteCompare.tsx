@@ -51,6 +51,8 @@ export function RouteCompare({ slug, destination, goal, routes, walks, children 
         points: r.up.map(([lon, lat]) => [lat, lon] as [number, number]),
         color: colour(i),
         state: i === sel || i === hover ? "selected" : "dimmed",
+        // Side by side where they share a path (A in the middle), so none hides behind another.
+        offset: (i % 2 ? -1 : 1) * 5 * Math.ceil(i / 2),
       })),
     [routes, sel, hover]
   );

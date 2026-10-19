@@ -29,10 +29,18 @@ interface Props {
   detail: TrailDetail;
   gpxUrl: string | null;
   others?: OtherRoute[];
+  /** Phones, map in the page: taps only (see TrailMap). */
+  tapOnly?: boolean;
 }
 
 /** Other routes in a muted slate: clearly not the walk you picked (that one keeps its trail colour), still easy to see. */
 const OTHER_ROUTE_COLOUR = "#6b7a93";
+/**
+ * Other routes often leave from the same start along the same path as the picked one, which then
+ * hid them. Each is drawn a little to one side (alternating, further out for the third and fourth).
+ */
+const sideBySide = (i: number) => (i % 2 ? -1 : 1) * 6 * (1 + Math.floor(i / 2));
+
 /** An other route under the pointer (on the map or in the route list) lights up. */
 const OTHER_ROUTE_HOVER = "#1769d1";
 
@@ -50,7 +58,7 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  * With a start, the whole way: the drive (dashed) to the chosen parking, the
  * walk from there to the trail (dotted), then the trail itself.
  */
-export function TripMap({ detail, gpxUrl, others = [] }: Props) {
+export function TripMap({ detail, gpxUrl, others = [], tapOnly = false }: Props) {
   const { trail, trailheads, pois } = detail;
   const router = useRouter();
   const { parkingLots, choice, choose, rideTo: destination, trailJoin, walkFrom, walkLine, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
@@ -101,10 +109,10 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
   const hovered = useHoveredRoute();
   const otherTracks = useMemo<MapTrack[]>(
     () =>
-      others.map((o) =>
+      others.map((o, i) =>
         o.slug === hovered
-          ? { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_HOVER, state: "selected" }
-          : { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal" }
+          ? { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_HOVER, state: "selected", offset: sideBySide(i) }
+          : { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal", offset: sideBySide(i) }
       ),
     [others, hovered]
   );
@@ -243,6 +251,7 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
       }}
       onHoverTrail={others.length ? (slug) => setHoveredRoute(others.some((o) => o.slug === slug) ? slug : null) : undefined}
       ariaLabel="Mapa trasy"
+      tapOnly={tapOnly}
     />
   );
 }

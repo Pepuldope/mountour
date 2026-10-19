@@ -7,7 +7,7 @@ import { useTripSettings } from "@/lib/tripSettings";
 import type { Travel } from "@/lib/tripSettings";
 import type { UiIconName } from "@/lib/uiIcons";
 import { UiIcon } from "@/components/UiIcon";
-import { NoParkingChip } from "@/components/routeBits";
+import { NoParkingChip, NoStopChip } from "@/components/routeBits";
 
 const OPTIONS: { value: Travel; label: string; icon: UiIconName }[] = [
   { value: "car", label: "Autom", icon: "car" },
@@ -19,20 +19,22 @@ const OPTIONS: { value: Travel; label: string; icon: UiIconName }[] = [
  * back follow. Remembered across visits, so the home list follows it too.
  * With no car park at the start (`noCar`) the car is greyed out with the warning
  * and the bus is the only choice, without changing what is remembered; tapping the
- * greyed car says why.
+ * greyed car says why. With no stop near the start (`noBus`) it is the same the other way round.
  */
 export function TravelSwitch({
   roadMin = null,
   trainMin = null,
   noCar = false,
+  noBus = false,
 }: {
   roadMin?: number | null;
   trainMin?: number | null;
   noCar?: boolean;
+  noBus?: boolean;
 }) {
   const settings = useTripSettings();
   const { update } = settings;
-  const travel: Travel = noCar ? "transit" : settings.travel;
+  const travel: Travel = noCar ? "transit" : noBus ? "car" : settings.travel;
   const [why, setWhy] = useState(false);
   return (
     <div className="flex flex-col gap-2">
@@ -43,7 +45,7 @@ export function TravelSwitch({
       >
         {OPTIONS.map((o) => {
           const on = travel === o.value;
-          if (noCar && o.value === "car")
+          if ((noCar && o.value === "car") || (noBus && o.value === "transit"))
             return (
               <button
                 key={o.value}
@@ -56,7 +58,7 @@ export function TravelSwitch({
               >
                 <UiIcon name={o.icon} size={18} />
                 <span className="line-through">{o.label}</span>
-                <NoParkingChip />
+                {o.value === "car" ? <NoParkingChip /> : <NoStopChip />}
               </button>
             );
           return (
@@ -89,6 +91,16 @@ export function TravelSwitch({
           );
         })}
       </div>
+      {noBus && why && (
+        <p
+          role="status"
+          className="rounded-xl border-2 border-[var(--warn)] bg-[var(--warn-bg)] px-3 py-2 text-sm text-[var(--warn)]"
+        >
+          <b>Autobusom ani vlakom sa sem nedá.</b> Pri štarte tejto cesty
+          nepoznáme zastávku, preto plánujeme cestu autom. Ak chcete ísť
+          autobusom, vyberte inú cestu so zastávkou.
+        </p>
+      )}
       {noCar && why && (
         <p
           role="status"

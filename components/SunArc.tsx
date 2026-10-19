@@ -24,6 +24,8 @@ const RULER = HOR + 26;
 const PAD = 8;
 /** Knob size of the phone slider, px (.time-slider in globals.css). */
 const SLIDER_KNOB = 36;
+/** How long "Play" takes to run through the whole day, ms. */
+const PLAY_MS = 10000;
 // The picture is a sky, so it keeps its own day colours in dark mode too.
 const INK = "#14233b";
 const WALKER = "#1769d1";
@@ -101,6 +103,8 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
   const [scrub, setScrub] = useState<number | null>(null);
   const [intro, setIntro] = useState<number | null>(null);
   const dragging = useRef(false);
+  // "Play": the day runs by on its own, so the weather, the light and the climb can be watched change.
+  const [playing, setPlaying] = useState(false);
   // Phone slider width, so its knob can sit exactly under the dial's time line.
   const sliderRef = useRef<HTMLInputElement>(null);
   const [sliderW, setSliderW] = useState(0);
@@ -222,6 +226,32 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (!playing) return;
+    // The whole day in about ten seconds; from where the dial stands, or from the start once it reached the end.
+    const span = scene.hi - scene.lo;
+    const at = scrubRef.current ?? restT;
+    let from = at >= scene.hi - span / 50 ? scene.lo : at;
+    let last = performance.now();
+    let raf = requestAnimationFrame(function step(now) {
+      from = Math.min(scene.hi, from + ((now - last) / PLAY_MS) * span);
+      last = now;
+      setScrub(from);
+      if (from < scene.hi) raf = requestAnimationFrame(step);
+      else setPlaying(false);
+    });
+    return () => cancelAnimationFrame(raf);
+    // Started and stopped by the button; the scene stays put while it plays.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playing]);
+  const scrubRef = useRef(scrub);
+  scrubRef.current = scrub;
+  // Any touch on the dial takes over from the playing day.
+  const take = (at: number | null) => {
+    setPlaying(false);
+    setScrub(at);
+  };
+
   const t = Math.max(scene.lo, Math.min(scene.hi, scrub ?? intro ?? restT));
   const alt = sunAltitude(new Date(t), sun.lat, sun.lon);
   // The weather at this moment greys the sky and dims the sun.
@@ -309,7 +339,9 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
     return scene.lo + ((vx - PAD) / (W - 2 * PAD)) * (scene.hi - scene.lo);
   };
   const onMove = (e: ReactPointerEvent) => {
-    if (e.pointerType === "mouse" || dragging.current) setScrub(timeAt(e.clientX));
+    if (dragging.current) take(timeAt(e.clientX));
+    // A mouse just passing over does not stop a playing day (it is on its way to the button).
+    else if (e.pointerType === "mouse" && !playing) setScrub(timeAt(e.clientX));
   };
   const timeAtRef = useRef(timeAt);
   timeAtRef.current = timeAt;
@@ -340,6 +372,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         if (!sideways) return;
       }
       if (e.cancelable) e.preventDefault();
+      setPlaying(false);
       setScrub(timeAtRef.current(clientX));
     };
     el.addEventListener("touchstart", start, { passive: true });
@@ -361,8 +394,9 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
     <div
       className="touch-pan-y select-none [-webkit-touch-callout:none]"
       onPointerMove={onMove}
-      onPointerLeave={(e) => e.pointerType === "mouse" && setScrub(null)}
+      onPointerLeave={(e) => e.pointerType === "mouse" && !playing && setScrub(null)}
     >
+      <div className="relative">
       <svg
         ref={svgRef}
         viewBox={`0 0 ${W} ${H}`}
@@ -378,14 +412,14 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         onPointerDown={(e) => {
           dragging.current = true;
           e.currentTarget.setPointerCapture(e.pointerId);
-          setScrub(timeAt(e.clientX));
+          take(timeAt(e.clientX));
         }}
         onPointerUp={() => (dragging.current = false)}
         onPointerCancel={() => (dragging.current = false)}
         onKeyDown={(e) => {
           if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
           e.preventDefault();
-          setScrub(t + (e.key === "ArrowRight" ? 10 : -10) * MIN);
+          take(t + (e.key === "ArrowRight" ? 10 : -10) * MIN);
         }}
       >
         <defs>
@@ -569,8 +603,30 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
           <text x={-25} y={16} textAnchor="middle" fontSize={16} fontWeight={700} fill="#14233b" className="font-data">
             {formatTime(new Date(t))}
           </text>
+          {/* The temperature at that moment, right under the time (higher up the trail it is colder). */}
+          {temp !== null && (
+            <>
+              <rect x={-50} y={26} width={50} height={20} rx={10} fill="#fff" opacity={0.92} />
+              <text x={-25} y={40.5} textAnchor="middle" fontSize={13.5} fontWeight={700} fill="#14233b" className="font-data">
+                {temp} °C
+              </text>
+            </>
+          )}
         </g>
       </svg>
+      <button
+        type="button"
+        onClick={() => setPlaying((p) => !p)}
+        aria-pressed={playing}
+        aria-label={playing ? "Zastaviť" : "Prehrať celý deň"}
+        className="absolute top-[2.2%] left-[2.2%] inline-flex h-7 items-center gap-1 rounded-full bg-white/90 pr-2.5 pl-2 text-[13px] font-bold text-[#14233b] shadow-sm focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+      >
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          {playing ? <path d="M4 3h3v10H4zM9 3h3v10H9z" fill="currentColor" /> : <path d="M4.5 2.5v11l9-5.5z" fill="currentColor" />}
+        </svg>
+        {playing ? "Stop" : "Prehrať"}
+      </button>
+      </div>
 
       {/* Phones: a plain slider right under the picture, easier to hit with a thumb. Computers point with the mouse. */}
       <div className="-mt-1 pb-1 sm:hidden">
@@ -581,7 +637,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
           max={slideHi}
           step={5 * MIN}
           value={Math.max(slideLo, Math.min(slideHi, t))}
-          onChange={(e) => setScrub(Number(e.target.value))}
+          onChange={(e) => take(Number(e.target.value))}
           className="time-slider"
           aria-label="Čas počas dňa"
           aria-valuetext={formatTime(new Date(t))}
@@ -595,9 +651,10 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         </div>
         <div className="flex flex-col items-end gap-0.5 text-right text-[13px] text-[var(--muted)]">
           {kind && now && (
-            <span className="inline-flex items-center gap-1 font-semibold text-[var(--foreground)]">
+            // One line always (the temperature sits under the time in the picture).
+            <span className="inline-flex items-center gap-1 font-semibold whitespace-nowrap text-[var(--foreground)]">
               <svg viewBox="0 0 22 22" className="h-[18px] w-[22px]" aria-hidden="true" dangerouslySetInnerHTML={{ __html: weatherIconSvg(kind) }} />
-              {weatherWords(baseSymbol(now.symbol!)).split(" (")[0]}, {temp} °C
+              {weatherWords(baseSymbol(now.symbol!)).split(" (")[0]}
             </span>
           )}
           <div>{sunNote}</div>

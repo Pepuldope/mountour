@@ -157,34 +157,54 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
   );
 }
 
-/** "Idete s deťmi?": slower pace and only trips suitable for kids. */
+/** Two questions (Peter, 2026-10-19): kids along (slower pace) and easier trips only (the list). */
 export function KidsSwitch() {
-  const { withKids, update } = useTripSettings();
+  const { withKids, easier, update } = useTripSettings();
   return (
-    <div className="flex items-center gap-2.5">
-      <span className="inline-flex text-[var(--accent)]">
-        <UiIcon name="kid" size={22} />
-      </span>
-      <span className="flex min-w-0 flex-1 flex-col">
-        <span className="text-[14.5px] font-bold">Idete s deťmi?</span>
-        <span className="text-[12.5px] text-[var(--muted)]">
-          {withKids ? "Rátame pomalšie tempo a ukážeme len trasy vhodné pre deti." : "Prispôsobíme tempo aj výber trás."}
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-2.5">
+        <span className="inline-flex text-[var(--accent)]">
+          <UiIcon name="kid" size={22} />
         </span>
-      </span>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={withKids}
-        aria-label="Idete s deťmi"
-        onClick={() => update({ withKids: !withKids })}
-        className={`relative h-7 w-[46px] shrink-0 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
-          withKids ? "bg-[var(--accent)]" : "bg-[#cfd5de]"
-        }`}
-      >
-        <span
-          className={`absolute top-[3px] left-[3px] h-[22px] w-[22px] rounded-full bg-white shadow transition-transform ${withKids ? "translate-x-[18px]" : ""}`}
-        />
-      </button>
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="text-[14.5px] font-bold">Idete s deťmi?</span>
+          <span className="text-[12.5px] text-[var(--muted)]">{withKids ? "Rátame pomalšie tempo." : "Prispôsobíme tempo chôdze."}</span>
+        </span>
+        {/* Kids along usually means easier trips too: one tap turns both on, the second can be undone below. */}
+        <Switch on={withKids} label="Idete s deťmi" onChange={(on) => update({ withKids: on, easier: on })} />
+      </div>
+      <div className="flex items-center gap-2.5">
+        <span className="inline-flex w-[22px] justify-center text-[var(--accent)]">
+          <UiIcon name="walker" size={20} />
+        </span>
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="text-[14.5px] font-bold">Ukázať ľahšie trasy?</span>
+          <span className="text-[12.5px] text-[var(--muted)]">{easier ? "Len trasy vhodné pre deti a začiatočníkov." : "Ukážeme všetky trasy."}</span>
+        </span>
+        <Switch on={easier} label="Ukázať ľahšie trasy" onChange={(on) => update({ easier: on })} />
+      </div>
     </div>
+  );
+}
+
+/** A plain on/off switch, as on phones. */
+export function Switch({ on, label, onChange, small = false }: { on: boolean; label: string; onChange: (on: boolean) => void; small?: boolean }) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label={label}
+      onClick={() => onChange(!on)}
+      className={`relative shrink-0 rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
+        small ? "h-[22px] w-9" : "h-7 w-[46px]"
+      } ${on ? "bg-[var(--accent)]" : "bg-[#cfd5de]"}`}
+    >
+      <span
+        className={`absolute top-[3px] left-[3px] rounded-full bg-white shadow transition-transform ${small ? "h-4 w-4" : "h-[22px] w-[22px]"} ${
+          on ? (small ? "translate-x-[14px]" : "translate-x-[18px]") : ""
+        }`}
+      />
+    </button>
   );
 }

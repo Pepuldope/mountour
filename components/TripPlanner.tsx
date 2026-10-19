@@ -15,7 +15,8 @@ import { useTripSettings } from "@/lib/tripSettings";
 import { useTripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
 import type { BBox, LatLng } from "@/lib/types";
-import { FilterChips } from "@/components/FilterChips";
+import { FilterChips, Switch } from "@/components/FilterChips";
+import { UiIcon } from "@/components/UiIcon";
 import { NavHandoff } from "@/components/NavHandoff";
 import { SaveTripButton } from "@/components/SaveTripButton";
 import type { ShareInfo } from "@/components/ShareButton";
@@ -59,7 +60,7 @@ const part =
 export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, walk, intro, children, outro, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
-  const { destination, rideTo, approachMin, trailStart, transit, noCar, parking, stop, skip, walkFrom, trailJoin, walk: onFoot, choose, chooseStop } = useTripAccess();
+  const { destination, rideTo, approachMin, trailStart, transit, noCar, noBus, parking, stop, skip, walkFrom, trailJoin, walk: onFoot, choose, chooseStop } = useTripAccess();
   // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day,
   // with or without a start: the walk back to the car must fit the light too. Parked up the trail, the
   // stretch below is skipped both ways.
@@ -70,7 +71,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
     return trail && withApproach(trail, approachMin / Math.max(1, baseHikeMin));
   }, [fullProfile, skip, approachMin, baseHikeMin]);
   // One plan for the whole page: saving and sharing use the same train times the sun dial shows.
-  const tripPlan = useTripPlan(sun, rideTo, baseHikeMin, transit && stop?.mode === "vlak" ? stop.location : null, noCar, trip.slug);
+  const tripPlan = useTripPlan(sun, rideTo, baseHikeMin, transit && stop?.mode === "vlak" ? stop.location : null, transit, trip.slug);
   const { plan, date, time, driveMin, roadMin, driveApprox, driveStatus, rail } = tripPlan;
   const [shared, setShared] = useState<SharedPlan | null>(null);
   const weather = useTripWeather(plan, trailStart, goal, profile?.points[0]?.ele ?? null);
@@ -138,10 +139,33 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
     (latest.getTime() < plan.sunrise.getTime() - (driveMin ?? 0) * 60_000 || latest.getHours() < EARLIEST_DEPARTURE_HOUR);
   const startWord = hasDrive ? "Vyrazte" : transit && stop ? `Buďte na zastávke ${stopLabel(stop.name)}` : "Začnite túru";
 
+  // A time picked by hand that is far off a usual day out (back only in the dark, or leaving in the
+  // middle of the night) is asked about once: change it to the latest good start, or keep it.
+  const [asked, setAsked] = useState<string | null>(null);
+  const [confirm, setConfirm] = useState<string | null>(null);
+  const unusual =
+    plan !== null &&
+    !tripPlan.loading &&
+    (plan.verdict === "after-dusk" || plan.segments[0].start.getHours() < UNUSUAL_BEFORE_HOUR);
+  useEffect(() => {
+    if (!asked || asked !== time) return;
+    // Wait for the typing (and the route) to settle; the question is about the final time.
+    const timer = setTimeout(() => {
+      if (unusual) setConfirm(asked);
+      setAsked(null);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [asked, time, unusual]);
+  const better = latest && !tooLong && !latestPassed ? formatTime(latest) : null;
+
   return (
     <div className="flex flex-col gap-5">
-      {/* First thing under the header: where the day is planned from, changeable without scrolling. */}
-      <StartPill />
+      {/* First thing under the header: where the day is planned from, changeable without scrolling,
+          and kids along or not (Peter: top right, opposite the start). */}
+      <div className="flex items-center justify-between gap-2">
+        <StartPill />
+        <KidsToggle />
+      </div>
       {/* Three cards, so the eye takes one step at a time:
           plan the trip, see the day, then get there. */}
       <section aria-label="Plán výletu" className={part}>
@@ -171,7 +195,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
         {/* In the order of the day: where from, how, which day and time. */}
         <StartChip />
 
-        <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} noCar={noCar} />
+        <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} noCar={noCar} noBus={noBus} />
 
         <section aria-label="Deň a odchod" className="flex flex-col gap-3">
           <FilterChips variant="trip" activeDate={date} dayWeather={dayWeather} />
@@ -182,14 +206,42 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
                 type="time"
                 step={300}
                 value={time ?? ""}
-                onChange={(e) => e.target.value && update({ time: e.target.value })}
+                onChange={(e) => {
+                  if (!e.target.value) return;
+                  update({ time: e.target.value });
+                  setAsked(e.target.value);
+                }}
                 className="font-data w-32 rounded-lg border border-[var(--border)] bg-[var(--card-bg)] px-3 py-1.5 text-lg"
               />
             </label>
           </div>
+          {/* Right under the time it is about (Peter). Not from the quick guess shown while the route loads:
+              a warning that then vanishes would only confuse. */}
+          {plan && !tripPlan.loading && (late || latestPassed) && (
+            <p role="status" className="rounded-xl bg-[var(--warn-bg)] px-3.5 py-3 text-base font-semibold text-[var(--warn)]">
+              {lateText(plan.verdict, { latestPassed: !!latestPassed, tooLong, startWord, latest: formatTime(latest!) })}
+            </p>
+          )}
           {driveStatus === "loading" && <p className="text-xs text-[var(--muted)]">{transit ? "Počítam cestu na zastávku..." : "Počítam cestu autom..."}</p>}
         </section>
       </section>
+
+      {confirm && plan && (
+        <UnusualTime
+          time={confirm}
+          text={
+            late || latestPassed
+              ? lateText(plan.verdict, { latestPassed: !!latestPassed, tooLong, startWord, latest: better ?? "" })
+              : "To je uprostred noci, cesta by začínala po tme. Nemysleli ste ráno?"
+          }
+          better={late || latestPassed ? better : NIGHT_FIX}
+          onBetter={() => {
+            update({ time: better! });
+            setConfirm(null);
+          }}
+          onKeep={() => setConfirm(null)}
+        />
+      )}
 
       {plan && (
         <section aria-label="Priebeh dňa" className={part}>
@@ -229,12 +281,6 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
             <p className="text-xs text-[var(--muted)]">Cestu autom teraz odhadujeme podľa vzdialenosti (~{formatDuration(driveMin!)}).</p>
           )}
           {!start && !transit && <p className="text-xs text-[var(--muted)]">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>}
-          {/* Not from the quick guess shown while the route loads: a warning that then vanishes would only confuse. */}
-          {!tripPlan.loading && (late || latestPassed) && (
-            <p role="status" className="rounded-xl bg-[var(--warn-bg)] px-3.5 py-3 text-base font-semibold text-[var(--warn)]">
-              {lateText(plan!.verdict, { latestPassed: !!latestPassed, tooLong, startWord, latest: formatTime(latest!) })}
-            </p>
-          )}
         </section>
       )}
 
@@ -248,6 +294,51 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
 
         {outro}
       </section>
+    </div>
+  );
+}
+
+/** Leaving before this hour is not a usual day out: asked about once (a mistyped "01:00" for "10:00"). */
+const UNUSUAL_BEFORE_HOUR = 4;
+/** What a night-time departure is changed to. */
+const NIGHT_FIX = "08:00";
+
+/** "Naozaj o 16:30?": change to the latest good start, or keep the odd time. */
+function UnusualTime({ time, text, better, onBetter, onKeep }: { time: string; text: string; better: string | null; onBetter: () => void; onKeep: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onKeep();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onKeep]);
+  return (
+    <div className="fixed inset-0 z-[60] flex items-end justify-center sm:items-center" role="alertdialog" aria-modal="true" aria-labelledby="unusual-time">
+      <div className="absolute inset-0 bg-black/45" onClick={onKeep} />
+      <div className="relative flex w-full flex-col gap-3 rounded-t-[20px] bg-[var(--card-bg)] px-5 pt-5 pb-[max(24px,env(safe-area-inset-bottom))] shadow-[var(--shadow-float)] sm:max-w-[420px] sm:rounded-[20px] sm:pb-5">
+        <h2 id="unusual-time" className="text-lg font-bold">
+          Naozaj o <span className="font-data">{time}</span>?
+        </h2>
+        <p className="text-[15px]">{text}</p>
+        <div className="flex flex-col gap-2 sm:flex-row-reverse">
+          {better && (
+            <button
+              type="button"
+              onClick={onBetter}
+              autoFocus
+              className="rounded-xl bg-[var(--accent)] px-4 py-3 text-[15px] font-bold text-[var(--accent-contrast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+            >
+              Zmeniť na <span className="font-data">{better}</span>
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={onKeep}
+            autoFocus={!better}
+            className="rounded-xl border border-[var(--border)] px-4 py-3 text-[15px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+          >
+            Ponechať <span className="font-data">{time}</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -282,4 +373,18 @@ function Step({ label, time, approx = false }: { label: string; time: Date; appr
 function goalTime(plan: DayPlan, profile: TripProfile): Date {
   const at = profile.points[profile.goalIndex].at;
   return new Date(plan.hikeStart.getTime() + at * (plan.hikeEnd.getTime() - plan.hikeStart.getTime()));
+}
+
+/** "S deťmi" on the trip page: the pace changes the times here at once. */
+function KidsToggle() {
+  const { withKids, update } = useTripSettings();
+  return (
+    <label className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card-bg)] py-1.5 pr-2 pl-2.5 text-sm font-semibold shadow-[var(--shadow-float)]">
+      <span className="text-[var(--accent)]">
+        <UiIcon name="kid" size={18} />
+      </span>
+      S deťmi
+      <Switch small on={withKids} label="Idete s deťmi" onChange={(on) => update({ withKids: on })} />
+    </label>
+  );
 }

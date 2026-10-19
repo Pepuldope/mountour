@@ -10,7 +10,10 @@ export interface TripSettings {
   date: string | null;
   /** Departure HH:MM chosen on a trip page; null = the default for the day. */
   time: string | null;
+  /** Kids along: the walk is timed at a slower pace. */
   withKids: boolean;
+  /** Only easier trips, the ones marked suitable for kids (asked separately from the pace). */
+  easier: boolean;
   /** How the group gets there: by car, or by train/bus (then the plan starts at the stop). */
   travel: Travel;
 }
@@ -57,7 +60,7 @@ export function defaultDay(now = new Date()): string {
   return isoDate(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
 }
 
-const DEFAULTS: TripSettings = { date: null, time: null, withKids: false, travel: "car" };
+const DEFAULTS: TripSettings = { date: null, time: null, withKids: false, easier: false, travel: "car" };
 
 function readStored(): Partial<TripSettings> | null {
   try {

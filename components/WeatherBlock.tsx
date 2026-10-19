@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import type { ReactNode } from "react";
 import type { DayPlan } from "@/lib/dayPlan";
 import { useCachedJson } from "@/lib/useDriveRoute";
 import { dayInSentence, isoDate } from "@/lib/days";
 import { FORECAST_DAYS, betterDay, summarize, tripWeatherReport, weatherNotes, weatherWords } from "@/lib/weather";
 import type { BetterDay, WeatherForecast, WeatherSummary } from "@/lib/weather";
+import { badSkySvg } from "@/lib/weatherIcons";
 import type { LatLng } from "@/lib/types";
 
 type Goal = (LatLng & { ele: number | null; name: string }) | null;
@@ -114,25 +116,43 @@ export function WeatherReport({
         {/* Rain, snow and storms get their own warning lines below. */}
         {r.wet ? "." : r.worstWhen ? `, najhoršie ${r.worst} ${r.worstWhen}.` : `, ${r.worst}.`}
       </p>
+      {/* Warnings in a box with a sign (Peter: plain coloured text was easy to overlook). */}
       {r.wet && !stormy && (
-        <p className="font-semibold text-[var(--warn)]">
+        <Warning kind={r.wet.snow ? "snow" : "rain"}>
           {r.wet.snow ? "Môže snežiť" : "Môže pršať"} {r.wet.when}
           {r.wet.mmPerHour >= 0.1 ? ` (${r.wet.mmPerHour < 0.5 ? "slabo" : r.wet.mmPerHour < 2 ? "mierne" : "výdatne"}, do ${mm(r.wet.mmPerHour)} mm/h)` : ""}. Vezmite si nepremokavú bundu.
-        </p>
+        </Warning>
       )}
-      {notes.map((n) =>
-        n.strong ? (
-          <p key={n.text} className="rounded-xl bg-[var(--danger-bg)] px-3 py-2 font-semibold text-[var(--danger)]">
-            {n.text}
-          </p>
-        ) : (
-          <p key={n.text} className="font-semibold text-[var(--warn)]">
-            {n.text}
-          </p>
-        )
-      )}
+      {notes.map((n) => (
+        <Warning key={n.text} kind={n.strong ? "storm" : "warn"}>
+          {n.text}
+        </Warning>
+      ))}
       {better && <BetterDayTip better={better} hikeStart={plan.hikeStart} onPickDay={onPickDay!} />}
     </section>
+  );
+}
+
+const SIGN: Record<"rain" | "snow" | "storm" | "warn", string> = {
+  rain: badSkySvg("rain", false),
+  snow: badSkySvg("snow", false),
+  storm: badSkySvg("thunder", false),
+  warn: '<path d="M12 3 22 20H2z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 9.5v4.5M12 16.8v.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>',
+};
+
+/** A weather warning: a coloured box with a thick edge and its sign; storms in red, the rest amber. */
+function Warning({ kind, children }: { kind: keyof typeof SIGN; children: ReactNode }) {
+  const red = kind === "storm";
+  return (
+    <p
+      className={`flex items-start gap-2.5 rounded-xl border-2 px-3 py-2.5 font-semibold ${
+        red ? "border-[var(--danger)] bg-[var(--danger-bg)] text-[var(--danger)]" : "border-[var(--warn)] bg-[var(--warn-bg)] text-[var(--warn)]"
+      }`}
+    >
+      {/* Constant markup (lib/weatherIcons.ts and the triangle above). */}
+      <svg viewBox="0 0 24 24" className="mt-px h-6 w-6 shrink-0" aria-hidden="true" dangerouslySetInnerHTML={{ __html: SIGN[kind] }} />
+      <span>{children}</span>
+    </p>
   );
 }
 

@@ -26,7 +26,7 @@ export function StartPill() {
         type="button"
         onClick={() => setOpen(true)}
         aria-haspopup="dialog"
-        className="inline-flex max-w-full items-center gap-1.5 self-start rounded-full border border-[var(--border)] bg-[var(--card-bg)] py-1.5 pr-3.5 pl-2.5 text-sm font-semibold shadow-[var(--shadow-float)]"
+        className="inline-flex max-w-full min-w-0 items-center gap-1.5 self-start rounded-full border border-[var(--border)] bg-[var(--card-bg)] py-1.5 pr-3.5 pl-2.5 text-sm font-semibold shadow-[var(--shadow-float)]"
       >
         <span className="shrink-0 text-[var(--accent)]">
           <UiIcon name="pin" size={16} />
