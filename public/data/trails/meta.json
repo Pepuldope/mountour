@@ -1,7 +1,7 @@
 {
  "version": 1,
- "generated_at": "2026-10-13T16:17:35+00:00",
- "osm_data_at": "2026-10-12T20:21:35Z",
+ "generated_at": "2026-10-19T10:48:29+00:00",
+ "osm_data_at": "2026-10-18T20:25:06Z",
  "attribution": "© OpenStreetMap contributors (ODbL); popularity from Wikipedia page views (Wikimedia, CC0)",
  "grid": {
   "lon0": 16.75,
@@ -80,20 +80,20 @@
   "9_7"
  ],
  "levels": 5,
- "km": 19870,
- "pieces": 72240,
+ "km": 19873,
+ "pieces": 72314,
  "level_km": [
-  7948,
+  7949,
   4968,
-  3576,
+  3577,
   2186,
-  1192
+  1193
  ],
  "cuts": [
-  417,
-  1221,
-  3002,
-  10843
+  436,
+  1322,
+  3227,
+  11523
  ],
  "top_goals": [
   {
@@ -167,11 +167,6 @@
    "views": 52740
   },
   {
-   "name": "Sútok Bieleho a Čierneho Váhu",
-   "kind": "vyhliadka",
-   "views": 50472
-  },
-  {
    "name": "Devín",
    "kind": "hrad",
    "views": 50323
@@ -180,6 +175,11 @@
    "name": "Dóm svätej Alžbety",
    "kind": "vyhliadka",
    "views": 49315
+  },
+  {
+   "name": "Dolina Pięciu Stawów Polskich",
+   "kind": "roklina",
+   "views": 46793
   },
   {
    "name": "Svinica",
@@ -202,6 +202,11 @@
    "views": 33070
   },
   {
+   "name": "Sútok Bieleho a Čierneho Váhu",
+   "kind": "vyhliadka",
+   "views": 29914
+  },
+  {
    "name": "Pilsko",
    "kind": "vrchol",
    "views": 27852
@@ -215,11 +220,6 @@
    "name": "Sokolica",
    "kind": "vrchol",
    "views": 25588
-  },
-  {
-   "name": "Popradské pleso",
-   "kind": "pleso",
-   "views": 24100
   }
  ]
 }
