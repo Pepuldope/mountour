@@ -2,12 +2,11 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Čičerman</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Čičerman</name><desc>cicerman</desc><trkseg>
-    <trkpt lat="48.954706" lon="18.515939"><ele>649</ele></trkpt>
+    <trkpt lat="48.954708" lon="18.515933"><ele>649</ele></trkpt>
     <trkpt lat="48.953307" lon="18.514343"><ele>652</ele></trkpt>
     <trkpt lat="48.952142" lon="18.513493"><ele>656</ele></trkpt>
-    <trkpt lat="48.951804" lon="18.513755"><ele>657</ele></trkpt>
-    <trkpt lat="48.951713" lon="18.513755"><ele>658</ele></trkpt>
-    <trkpt lat="48.951340" lon="18.513402"><ele>659</ele></trkpt>
+    <trkpt lat="48.951747" lon="18.513798"><ele>658</ele></trkpt>
+    <trkpt lat="48.951416" lon="18.513464"><ele>659</ele></trkpt>
     <trkpt lat="48.951183" lon="18.513322"><ele>659</ele></trkpt>
     <trkpt lat="48.950885" lon="18.513558"><ele>661</ele></trkpt>
     <trkpt lat="48.950681" lon="18.513616"><ele>662</ele></trkpt>
@@ -211,12 +210,11 @@
     <trkpt lat="48.950681" lon="18.513616"><ele>662</ele></trkpt>
     <trkpt lat="48.950885" lon="18.513558"><ele>661</ele></trkpt>
     <trkpt lat="48.951183" lon="18.513322"><ele>659</ele></trkpt>
-    <trkpt lat="48.951340" lon="18.513402"><ele>659</ele></trkpt>
-    <trkpt lat="48.951713" lon="18.513755"><ele>658</ele></trkpt>
-    <trkpt lat="48.951804" lon="18.513755"><ele>657</ele></trkpt>
+    <trkpt lat="48.951416" lon="18.513464"><ele>659</ele></trkpt>
+    <trkpt lat="48.951747" lon="18.513798"><ele>658</ele></trkpt>
     <trkpt lat="48.952142" lon="18.513493"><ele>656</ele></trkpt>
     <trkpt lat="48.953307" lon="18.514343"><ele>652</ele></trkpt>
-    <trkpt lat="48.954706" lon="18.515939"><ele>649</ele></trkpt>
+    <trkpt lat="48.954708" lon="18.515933"><ele>649</ele></trkpt>
   </trkseg></trk>
   <trk><name>Čičerman</name><desc>cicerman-cavoj-krizovatka</desc><trkseg>
     <trkpt lat="48.882045" lon="18.457019"><ele>401</ele></trkpt>

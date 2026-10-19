@@ -134,6 +134,19 @@
     <trkpt lat="49.300738" lon="20.693326"><ele>527</ele></trkpt>
     <trkpt lat="49.300613" lon="20.693575"><ele>527</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Historický tábor</name><desc>historicky-tabor-od-auta</desc><trkseg>
+    <trkpt lat="49.320788" lon="20.692813"><ele>600</ele></trkpt>
+    <trkpt lat="49.320418" lon="20.691963"><ele>591</ele></trkpt>
+    <trkpt lat="49.320203" lon="20.691324"><ele>588</ele></trkpt>
+    <trkpt lat="49.320036" lon="20.690279"><ele>583</ele></trkpt>
+    <trkpt lat="49.319750" lon="20.689852"><ele>580</ele></trkpt>
+    <trkpt lat="49.319438" lon="20.689487"><ele>574</ele></trkpt>
+    <trkpt lat="49.319750" lon="20.689852"><ele>580</ele></trkpt>
+    <trkpt lat="49.320036" lon="20.690279"><ele>583</ele></trkpt>
+    <trkpt lat="49.320203" lon="20.691324"><ele>588</ele></trkpt>
+    <trkpt lat="49.320418" lon="20.691963"><ele>591</ele></trkpt>
+    <trkpt lat="49.320788" lon="20.692813"><ele>600</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Historický tábor</name><desc>historicky-tabor-odbocka-na-horu-zvir</desc><trkseg>
     <trkpt lat="49.391127" lon="20.645628"><ele>830</ele></trkpt>
     <trkpt lat="49.391112" lon="20.645690"><ele>830</ele></trkpt>
@@ -588,19 +601,6 @@
     <trkpt lat="49.390699" lon="20.646052"><ele>825</ele></trkpt>
     <trkpt lat="49.391112" lon="20.645690"><ele>830</ele></trkpt>
     <trkpt lat="49.391127" lon="20.645628"><ele>830</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Historický tábor</name><desc>historicky-tabor-od-auta</desc><trkseg>
-    <trkpt lat="49.320788" lon="20.692813"><ele>600</ele></trkpt>
-    <trkpt lat="49.320418" lon="20.691963"><ele>591</ele></trkpt>
-    <trkpt lat="49.320203" lon="20.691324"><ele>588</ele></trkpt>
-    <trkpt lat="49.320036" lon="20.690279"><ele>583</ele></trkpt>
-    <trkpt lat="49.319750" lon="20.689852"><ele>580</ele></trkpt>
-    <trkpt lat="49.319438" lon="20.689487"><ele>574</ele></trkpt>
-    <trkpt lat="49.319750" lon="20.689852"><ele>580</ele></trkpt>
-    <trkpt lat="49.320036" lon="20.690279"><ele>583</ele></trkpt>
-    <trkpt lat="49.320203" lon="20.691324"><ele>588</ele></trkpt>
-    <trkpt lat="49.320418" lon="20.691963"><ele>591</ele></trkpt>
-    <trkpt lat="49.320788" lon="20.692813"><ele>600</ele></trkpt>
   </trkseg></trk>
   <trk><name>Historický tábor</name><desc>historicky-tabor-udol</desc><trkseg>
     <trkpt lat="49.293026" lon="20.797908"><ele>537</ele></trkpt>

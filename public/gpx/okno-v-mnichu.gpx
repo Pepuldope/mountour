@@ -228,35 +228,6 @@
     <trkpt lat="49.261259" lon="19.054353"><ele>612</ele></trkpt>
     <trkpt lat="49.261019" lon="19.054496"><ele>611</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Okno v Mníchu</name><desc>okno-v-mnichu-od-auta</desc><trkseg>
-    <trkpt lat="49.244889" lon="19.038397"><ele>571</ele></trkpt>
-    <trkpt lat="49.244677" lon="19.038330"><ele>572</ele></trkpt>
-    <trkpt lat="49.244689" lon="19.038165"><ele>578</ele></trkpt>
-    <trkpt lat="49.244807" lon="19.038052"><ele>581</ele></trkpt>
-    <trkpt lat="49.244842" lon="19.037965"><ele>586</ele></trkpt>
-    <trkpt lat="49.245238" lon="19.037711"><ele>605</ele></trkpt>
-    <trkpt lat="49.245317" lon="19.037605"><ele>615</ele></trkpt>
-    <trkpt lat="49.245437" lon="19.037673"><ele>617</ele></trkpt>
-    <trkpt lat="49.245603" lon="19.037559"><ele>632</ele></trkpt>
-    <trkpt lat="49.245987" lon="19.037421"><ele>649</ele></trkpt>
-    <trkpt lat="49.246062" lon="19.037472"><ele>647</ele></trkpt>
-    <trkpt lat="49.246097" lon="19.037558"><ele>644</ele></trkpt>
-    <trkpt lat="49.246203" lon="19.037395"><ele>650</ele></trkpt>
-    <trkpt lat="49.246180" lon="19.037286"><ele>655</ele></trkpt>
-    <trkpt lat="49.246203" lon="19.037395"><ele>650</ele></trkpt>
-    <trkpt lat="49.246097" lon="19.037558"><ele>644</ele></trkpt>
-    <trkpt lat="49.246062" lon="19.037472"><ele>647</ele></trkpt>
-    <trkpt lat="49.245987" lon="19.037421"><ele>649</ele></trkpt>
-    <trkpt lat="49.245603" lon="19.037559"><ele>632</ele></trkpt>
-    <trkpt lat="49.245437" lon="19.037673"><ele>617</ele></trkpt>
-    <trkpt lat="49.245317" lon="19.037605"><ele>615</ele></trkpt>
-    <trkpt lat="49.245238" lon="19.037711"><ele>605</ele></trkpt>
-    <trkpt lat="49.244842" lon="19.037965"><ele>586</ele></trkpt>
-    <trkpt lat="49.244807" lon="19.038052"><ele>581</ele></trkpt>
-    <trkpt lat="49.244689" lon="19.038165"><ele>578</ele></trkpt>
-    <trkpt lat="49.244677" lon="19.038330"><ele>572</ele></trkpt>
-    <trkpt lat="49.244889" lon="19.038397"><ele>571</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Okno v Mníchu</name><desc>okno-v-mnichu-male-noclahy</desc><trkseg>
     <trkpt lat="49.241308" lon="19.028854"><ele>1014</ele></trkpt>
     <trkpt lat="49.241341" lon="19.029144"><ele>1009</ele></trkpt>
@@ -379,6 +350,35 @@
     <trkpt lat="49.241417" lon="19.029286"><ele>1006</ele></trkpt>
     <trkpt lat="49.241341" lon="19.029144"><ele>1009</ele></trkpt>
     <trkpt lat="49.241308" lon="19.028854"><ele>1014</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Okno v Mníchu</name><desc>okno-v-mnichu-od-auta</desc><trkseg>
+    <trkpt lat="49.244889" lon="19.038397"><ele>571</ele></trkpt>
+    <trkpt lat="49.244677" lon="19.038330"><ele>572</ele></trkpt>
+    <trkpt lat="49.244689" lon="19.038165"><ele>578</ele></trkpt>
+    <trkpt lat="49.244807" lon="19.038052"><ele>581</ele></trkpt>
+    <trkpt lat="49.244842" lon="19.037965"><ele>586</ele></trkpt>
+    <trkpt lat="49.245238" lon="19.037711"><ele>605</ele></trkpt>
+    <trkpt lat="49.245317" lon="19.037605"><ele>615</ele></trkpt>
+    <trkpt lat="49.245437" lon="19.037673"><ele>617</ele></trkpt>
+    <trkpt lat="49.245603" lon="19.037559"><ele>632</ele></trkpt>
+    <trkpt lat="49.245987" lon="19.037421"><ele>649</ele></trkpt>
+    <trkpt lat="49.246062" lon="19.037472"><ele>647</ele></trkpt>
+    <trkpt lat="49.246097" lon="19.037558"><ele>644</ele></trkpt>
+    <trkpt lat="49.246203" lon="19.037395"><ele>650</ele></trkpt>
+    <trkpt lat="49.246180" lon="19.037286"><ele>655</ele></trkpt>
+    <trkpt lat="49.246203" lon="19.037395"><ele>650</ele></trkpt>
+    <trkpt lat="49.246097" lon="19.037558"><ele>644</ele></trkpt>
+    <trkpt lat="49.246062" lon="19.037472"><ele>647</ele></trkpt>
+    <trkpt lat="49.245987" lon="19.037421"><ele>649</ele></trkpt>
+    <trkpt lat="49.245603" lon="19.037559"><ele>632</ele></trkpt>
+    <trkpt lat="49.245437" lon="19.037673"><ele>617</ele></trkpt>
+    <trkpt lat="49.245317" lon="19.037605"><ele>615</ele></trkpt>
+    <trkpt lat="49.245238" lon="19.037711"><ele>605</ele></trkpt>
+    <trkpt lat="49.244842" lon="19.037965"><ele>586</ele></trkpt>
+    <trkpt lat="49.244807" lon="19.038052"><ele>581</ele></trkpt>
+    <trkpt lat="49.244689" lon="19.038165"><ele>578</ele></trkpt>
+    <trkpt lat="49.244677" lon="19.038330"><ele>572</ele></trkpt>
+    <trkpt lat="49.244889" lon="19.038397"><ele>571</ele></trkpt>
   </trkseg></trk>
   <trk><name>Okno v Mníchu</name><desc>okno-v-mnichu-osada-mazgutovci</desc><trkseg>
     <trkpt lat="49.243866" lon="18.993602"><ele>534</ele></trkpt>

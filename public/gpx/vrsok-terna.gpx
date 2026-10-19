@@ -252,45 +252,6 @@
     <trkpt lat="49.110223" lon="21.237878"><ele>378</ele></trkpt>
     <trkpt lat="49.109913" lon="21.237667"><ele>378</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Vŕšok (Geraltov)</name><desc>vrsok-terna-zavadka</desc><trkseg>
-    <trkpt lat="49.147486" lon="21.238790"><ele>567</ele></trkpt>
-    <trkpt lat="49.147947" lon="21.238676"><ele>573</ele></trkpt>
-    <trkpt lat="49.148118" lon="21.238696"><ele>575</ele></trkpt>
-    <trkpt lat="49.148306" lon="21.236955"><ele>591</ele></trkpt>
-    <trkpt lat="49.148294" lon="21.236151"><ele>598</ele></trkpt>
-    <trkpt lat="49.148443" lon="21.234975"><ele>606</ele></trkpt>
-    <trkpt lat="49.148680" lon="21.234380"><ele>610</ele></trkpt>
-    <trkpt lat="49.149045" lon="21.233980"><ele>614</ele></trkpt>
-    <trkpt lat="49.149304" lon="21.233587"><ele>615</ele></trkpt>
-    <trkpt lat="49.149628" lon="21.232973"><ele>617</ele></trkpt>
-    <trkpt lat="49.150127" lon="21.232206"><ele>622</ele></trkpt>
-    <trkpt lat="49.150362" lon="21.231637"><ele>625</ele></trkpt>
-    <trkpt lat="49.150503" lon="21.231083"><ele>627</ele></trkpt>
-    <trkpt lat="49.150891" lon="21.229829"><ele>629</ele></trkpt>
-    <trkpt lat="49.151295" lon="21.228751"><ele>632</ele></trkpt>
-    <trkpt lat="49.151740" lon="21.227909"><ele>645</ele></trkpt>
-    <trkpt lat="49.152129" lon="21.227539"><ele>649</ele></trkpt>
-    <trkpt lat="49.152577" lon="21.226899"><ele>653</ele></trkpt>
-    <trkpt lat="49.152959" lon="21.226719"><ele>660</ele></trkpt>
-    <trkpt lat="49.152577" lon="21.226899"><ele>653</ele></trkpt>
-    <trkpt lat="49.152129" lon="21.227539"><ele>649</ele></trkpt>
-    <trkpt lat="49.151740" lon="21.227909"><ele>645</ele></trkpt>
-    <trkpt lat="49.151295" lon="21.228751"><ele>632</ele></trkpt>
-    <trkpt lat="49.150891" lon="21.229829"><ele>629</ele></trkpt>
-    <trkpt lat="49.150503" lon="21.231083"><ele>627</ele></trkpt>
-    <trkpt lat="49.150362" lon="21.231637"><ele>625</ele></trkpt>
-    <trkpt lat="49.150127" lon="21.232206"><ele>622</ele></trkpt>
-    <trkpt lat="49.149628" lon="21.232973"><ele>617</ele></trkpt>
-    <trkpt lat="49.149304" lon="21.233587"><ele>615</ele></trkpt>
-    <trkpt lat="49.149045" lon="21.233980"><ele>614</ele></trkpt>
-    <trkpt lat="49.148680" lon="21.234380"><ele>610</ele></trkpt>
-    <trkpt lat="49.148443" lon="21.234975"><ele>606</ele></trkpt>
-    <trkpt lat="49.148294" lon="21.236151"><ele>598</ele></trkpt>
-    <trkpt lat="49.148306" lon="21.236955"><ele>591</ele></trkpt>
-    <trkpt lat="49.148118" lon="21.238696"><ele>575</ele></trkpt>
-    <trkpt lat="49.147947" lon="21.238676"><ele>573</ele></trkpt>
-    <trkpt lat="49.147486" lon="21.238790"><ele>567</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Vŕšok (Geraltov)</name><desc>vrsok-terna-hertnik-razcestie</desc><trkseg>
     <trkpt lat="49.207866" lon="21.227784"><ele>493</ele></trkpt>
     <trkpt lat="49.207892" lon="21.227303"><ele>494</ele></trkpt>
@@ -775,5 +736,44 @@
     <trkpt lat="49.207784" lon="21.227329"><ele>493</ele></trkpt>
     <trkpt lat="49.207892" lon="21.227303"><ele>494</ele></trkpt>
     <trkpt lat="49.207866" lon="21.227784"><ele>493</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Vŕšok (Geraltov)</name><desc>vrsok-terna-zavadka</desc><trkseg>
+    <trkpt lat="49.147486" lon="21.238790"><ele>567</ele></trkpt>
+    <trkpt lat="49.147947" lon="21.238676"><ele>573</ele></trkpt>
+    <trkpt lat="49.148118" lon="21.238696"><ele>575</ele></trkpt>
+    <trkpt lat="49.148306" lon="21.236955"><ele>591</ele></trkpt>
+    <trkpt lat="49.148294" lon="21.236151"><ele>598</ele></trkpt>
+    <trkpt lat="49.148443" lon="21.234975"><ele>606</ele></trkpt>
+    <trkpt lat="49.148680" lon="21.234380"><ele>610</ele></trkpt>
+    <trkpt lat="49.149045" lon="21.233980"><ele>614</ele></trkpt>
+    <trkpt lat="49.149304" lon="21.233587"><ele>615</ele></trkpt>
+    <trkpt lat="49.149628" lon="21.232973"><ele>617</ele></trkpt>
+    <trkpt lat="49.150127" lon="21.232206"><ele>622</ele></trkpt>
+    <trkpt lat="49.150362" lon="21.231637"><ele>625</ele></trkpt>
+    <trkpt lat="49.150503" lon="21.231083"><ele>627</ele></trkpt>
+    <trkpt lat="49.150891" lon="21.229829"><ele>629</ele></trkpt>
+    <trkpt lat="49.151295" lon="21.228751"><ele>632</ele></trkpt>
+    <trkpt lat="49.151740" lon="21.227909"><ele>645</ele></trkpt>
+    <trkpt lat="49.152129" lon="21.227539"><ele>649</ele></trkpt>
+    <trkpt lat="49.152577" lon="21.226899"><ele>653</ele></trkpt>
+    <trkpt lat="49.152959" lon="21.226719"><ele>660</ele></trkpt>
+    <trkpt lat="49.152577" lon="21.226899"><ele>653</ele></trkpt>
+    <trkpt lat="49.152129" lon="21.227539"><ele>649</ele></trkpt>
+    <trkpt lat="49.151740" lon="21.227909"><ele>645</ele></trkpt>
+    <trkpt lat="49.151295" lon="21.228751"><ele>632</ele></trkpt>
+    <trkpt lat="49.150891" lon="21.229829"><ele>629</ele></trkpt>
+    <trkpt lat="49.150503" lon="21.231083"><ele>627</ele></trkpt>
+    <trkpt lat="49.150362" lon="21.231637"><ele>625</ele></trkpt>
+    <trkpt lat="49.150127" lon="21.232206"><ele>622</ele></trkpt>
+    <trkpt lat="49.149628" lon="21.232973"><ele>617</ele></trkpt>
+    <trkpt lat="49.149304" lon="21.233587"><ele>615</ele></trkpt>
+    <trkpt lat="49.149045" lon="21.233980"><ele>614</ele></trkpt>
+    <trkpt lat="49.148680" lon="21.234380"><ele>610</ele></trkpt>
+    <trkpt lat="49.148443" lon="21.234975"><ele>606</ele></trkpt>
+    <trkpt lat="49.148294" lon="21.236151"><ele>598</ele></trkpt>
+    <trkpt lat="49.148306" lon="21.236955"><ele>591</ele></trkpt>
+    <trkpt lat="49.148118" lon="21.238696"><ele>575</ele></trkpt>
+    <trkpt lat="49.147947" lon="21.238676"><ele>573</ele></trkpt>
+    <trkpt lat="49.147486" lon="21.238790"><ele>567</ele></trkpt>
   </trkseg></trk>
 </gpx>

@@ -88,55 +88,6 @@
     <trkpt lat="48.377059" lon="17.275821"><ele>483</ele></trkpt>
     <trkpt lat="48.376854" lon="17.275874"><ele>487</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Klokoč (Píla)</name><desc>klokoc-piesok-chata-uk-tri-kopce</desc><trkseg>
-    <trkpt lat="48.376295" lon="17.303989"><ele>437</ele></trkpt>
-    <trkpt lat="48.376408" lon="17.303792"><ele>434</ele></trkpt>
-    <trkpt lat="48.376719" lon="17.303580"><ele>429</ele></trkpt>
-    <trkpt lat="48.377466" lon="17.302515"><ele>428</ele></trkpt>
-    <trkpt lat="48.377873" lon="17.301877"><ele>426</ele></trkpt>
-    <trkpt lat="48.378105" lon="17.301405"><ele>406</ele></trkpt>
-    <trkpt lat="48.378303" lon="17.301160"><ele>405</ele></trkpt>
-    <trkpt lat="48.379162" lon="17.300460"><ele>405</ele></trkpt>
-    <trkpt lat="48.379558" lon="17.300275"><ele>417</ele></trkpt>
-    <trkpt lat="48.379837" lon="17.299528"><ele>420</ele></trkpt>
-    <trkpt lat="48.380021" lon="17.299138"><ele>416</ele></trkpt>
-    <trkpt lat="48.380252" lon="17.298722"><ele>417</ele></trkpt>
-    <trkpt lat="48.380591" lon="17.298222"><ele>420</ele></trkpt>
-    <trkpt lat="48.380905" lon="17.297513"><ele>428</ele></trkpt>
-    <trkpt lat="48.381126" lon="17.296779"><ele>436</ele></trkpt>
-    <trkpt lat="48.381184" lon="17.296342"><ele>438</ele></trkpt>
-    <trkpt lat="48.381335" lon="17.295764"><ele>438</ele></trkpt>
-    <trkpt lat="48.381701" lon="17.294658"><ele>449</ele></trkpt>
-    <trkpt lat="48.381944" lon="17.294287"><ele>449</ele></trkpt>
-    <trkpt lat="48.382601" lon="17.293596"><ele>452</ele></trkpt>
-    <trkpt lat="48.382949" lon="17.293036"><ele>456</ele></trkpt>
-    <trkpt lat="48.383112" lon="17.292616"><ele>458</ele></trkpt>
-    <trkpt lat="48.383141" lon="17.292074"><ele>460</ele></trkpt>
-    <trkpt lat="48.383234" lon="17.291506"><ele>462</ele></trkpt>
-    <trkpt lat="48.383141" lon="17.292074"><ele>460</ele></trkpt>
-    <trkpt lat="48.383112" lon="17.292616"><ele>458</ele></trkpt>
-    <trkpt lat="48.382949" lon="17.293036"><ele>456</ele></trkpt>
-    <trkpt lat="48.382601" lon="17.293596"><ele>452</ele></trkpt>
-    <trkpt lat="48.381944" lon="17.294287"><ele>449</ele></trkpt>
-    <trkpt lat="48.381701" lon="17.294658"><ele>449</ele></trkpt>
-    <trkpt lat="48.381335" lon="17.295764"><ele>438</ele></trkpt>
-    <trkpt lat="48.381184" lon="17.296342"><ele>438</ele></trkpt>
-    <trkpt lat="48.381126" lon="17.296779"><ele>436</ele></trkpt>
-    <trkpt lat="48.380905" lon="17.297513"><ele>428</ele></trkpt>
-    <trkpt lat="48.380591" lon="17.298222"><ele>420</ele></trkpt>
-    <trkpt lat="48.380252" lon="17.298722"><ele>417</ele></trkpt>
-    <trkpt lat="48.380021" lon="17.299138"><ele>416</ele></trkpt>
-    <trkpt lat="48.379837" lon="17.299528"><ele>420</ele></trkpt>
-    <trkpt lat="48.379558" lon="17.300275"><ele>417</ele></trkpt>
-    <trkpt lat="48.379162" lon="17.300460"><ele>405</ele></trkpt>
-    <trkpt lat="48.378303" lon="17.301160"><ele>405</ele></trkpt>
-    <trkpt lat="48.378105" lon="17.301405"><ele>406</ele></trkpt>
-    <trkpt lat="48.377873" lon="17.301877"><ele>426</ele></trkpt>
-    <trkpt lat="48.377466" lon="17.302515"><ele>428</ele></trkpt>
-    <trkpt lat="48.376719" lon="17.303580"><ele>429</ele></trkpt>
-    <trkpt lat="48.376408" lon="17.303792"><ele>434</ele></trkpt>
-    <trkpt lat="48.376295" lon="17.303989"><ele>437</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Klokoč (Píla)</name><desc>klokoc-piesok-chata-uk-horna-pila</desc><trkseg>
     <trkpt lat="48.395919" lon="17.323163"><ele>287</ele></trkpt>
     <trkpt lat="48.396479" lon="17.322124"><ele>280</ele></trkpt>
@@ -265,6 +216,55 @@
     <trkpt lat="48.396782" lon="17.321379"><ele>285</ele></trkpt>
     <trkpt lat="48.396479" lon="17.322124"><ele>280</ele></trkpt>
     <trkpt lat="48.395919" lon="17.323163"><ele>287</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Klokoč (Píla)</name><desc>klokoc-piesok-chata-uk-tri-kopce</desc><trkseg>
+    <trkpt lat="48.376295" lon="17.303989"><ele>437</ele></trkpt>
+    <trkpt lat="48.376408" lon="17.303792"><ele>434</ele></trkpt>
+    <trkpt lat="48.376719" lon="17.303580"><ele>429</ele></trkpt>
+    <trkpt lat="48.377466" lon="17.302515"><ele>428</ele></trkpt>
+    <trkpt lat="48.377873" lon="17.301877"><ele>426</ele></trkpt>
+    <trkpt lat="48.378105" lon="17.301405"><ele>406</ele></trkpt>
+    <trkpt lat="48.378303" lon="17.301160"><ele>405</ele></trkpt>
+    <trkpt lat="48.379162" lon="17.300460"><ele>405</ele></trkpt>
+    <trkpt lat="48.379558" lon="17.300275"><ele>417</ele></trkpt>
+    <trkpt lat="48.379837" lon="17.299528"><ele>420</ele></trkpt>
+    <trkpt lat="48.380021" lon="17.299138"><ele>416</ele></trkpt>
+    <trkpt lat="48.380252" lon="17.298722"><ele>417</ele></trkpt>
+    <trkpt lat="48.380591" lon="17.298222"><ele>420</ele></trkpt>
+    <trkpt lat="48.380905" lon="17.297513"><ele>428</ele></trkpt>
+    <trkpt lat="48.381126" lon="17.296779"><ele>436</ele></trkpt>
+    <trkpt lat="48.381184" lon="17.296342"><ele>438</ele></trkpt>
+    <trkpt lat="48.381335" lon="17.295764"><ele>438</ele></trkpt>
+    <trkpt lat="48.381701" lon="17.294658"><ele>449</ele></trkpt>
+    <trkpt lat="48.381944" lon="17.294287"><ele>449</ele></trkpt>
+    <trkpt lat="48.382601" lon="17.293596"><ele>452</ele></trkpt>
+    <trkpt lat="48.382949" lon="17.293036"><ele>456</ele></trkpt>
+    <trkpt lat="48.383112" lon="17.292616"><ele>458</ele></trkpt>
+    <trkpt lat="48.383141" lon="17.292074"><ele>460</ele></trkpt>
+    <trkpt lat="48.383234" lon="17.291506"><ele>462</ele></trkpt>
+    <trkpt lat="48.383141" lon="17.292074"><ele>460</ele></trkpt>
+    <trkpt lat="48.383112" lon="17.292616"><ele>458</ele></trkpt>
+    <trkpt lat="48.382949" lon="17.293036"><ele>456</ele></trkpt>
+    <trkpt lat="48.382601" lon="17.293596"><ele>452</ele></trkpt>
+    <trkpt lat="48.381944" lon="17.294287"><ele>449</ele></trkpt>
+    <trkpt lat="48.381701" lon="17.294658"><ele>449</ele></trkpt>
+    <trkpt lat="48.381335" lon="17.295764"><ele>438</ele></trkpt>
+    <trkpt lat="48.381184" lon="17.296342"><ele>438</ele></trkpt>
+    <trkpt lat="48.381126" lon="17.296779"><ele>436</ele></trkpt>
+    <trkpt lat="48.380905" lon="17.297513"><ele>428</ele></trkpt>
+    <trkpt lat="48.380591" lon="17.298222"><ele>420</ele></trkpt>
+    <trkpt lat="48.380252" lon="17.298722"><ele>417</ele></trkpt>
+    <trkpt lat="48.380021" lon="17.299138"><ele>416</ele></trkpt>
+    <trkpt lat="48.379837" lon="17.299528"><ele>420</ele></trkpt>
+    <trkpt lat="48.379558" lon="17.300275"><ele>417</ele></trkpt>
+    <trkpt lat="48.379162" lon="17.300460"><ele>405</ele></trkpt>
+    <trkpt lat="48.378303" lon="17.301160"><ele>405</ele></trkpt>
+    <trkpt lat="48.378105" lon="17.301405"><ele>406</ele></trkpt>
+    <trkpt lat="48.377873" lon="17.301877"><ele>426</ele></trkpt>
+    <trkpt lat="48.377466" lon="17.302515"><ele>428</ele></trkpt>
+    <trkpt lat="48.376719" lon="17.303580"><ele>429</ele></trkpt>
+    <trkpt lat="48.376408" lon="17.303792"><ele>434</ele></trkpt>
+    <trkpt lat="48.376295" lon="17.303989"><ele>437</ele></trkpt>
   </trkseg></trk>
   <trk><name>Klokoč (Píla)</name><desc>klokoc-piesok-chata-uk-tri-kopce-ina-cesta</desc><trkseg>
     <trkpt lat="48.376295" lon="17.303989"><ele>437</ele></trkpt>

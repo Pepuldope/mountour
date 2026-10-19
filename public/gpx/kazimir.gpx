@@ -218,6 +218,23 @@
     <trkpt lat="48.571199" lon="21.504097"><ele>383</ele></trkpt>
     <trkpt lat="48.571468" lon="21.504308"><ele>381</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Hrad Kazimír</name><desc>kazimir-od-auta</desc><trkseg>
+    <trkpt lat="48.525615" lon="21.583224"><ele>150</ele></trkpt>
+    <trkpt lat="48.525747" lon="21.583242"><ele>150</ele></trkpt>
+    <trkpt lat="48.526288" lon="21.584496"><ele>152</ele></trkpt>
+    <trkpt lat="48.526354" lon="21.584449"><ele>151</ele></trkpt>
+    <trkpt lat="48.526384" lon="21.584550"><ele>151</ele></trkpt>
+    <trkpt lat="48.526619" lon="21.584375"><ele>151</ele></trkpt>
+    <trkpt lat="48.526158" lon="21.583133"><ele>149</ele></trkpt>
+    <trkpt lat="48.526132" lon="21.582916"><ele>148</ele></trkpt>
+    <trkpt lat="48.526158" lon="21.583133"><ele>149</ele></trkpt>
+    <trkpt lat="48.526619" lon="21.584375"><ele>151</ele></trkpt>
+    <trkpt lat="48.526384" lon="21.584550"><ele>151</ele></trkpt>
+    <trkpt lat="48.526354" lon="21.584449"><ele>151</ele></trkpt>
+    <trkpt lat="48.526288" lon="21.584496"><ele>152</ele></trkpt>
+    <trkpt lat="48.525747" lon="21.583242"><ele>150</ele></trkpt>
+    <trkpt lat="48.525615" lon="21.583224"><ele>150</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Hrad Kazimír</name><desc>kazimir-pod-izrou-ina-cesta</desc><trkseg>
     <trkpt lat="48.571468" lon="21.504308"><ele>381</ele></trkpt>
     <trkpt lat="48.571199" lon="21.504097"><ele>383</ele></trkpt>
@@ -754,22 +771,5 @@
     <trkpt lat="48.570892" lon="21.503956"><ele>382</ele></trkpt>
     <trkpt lat="48.571199" lon="21.504097"><ele>383</ele></trkpt>
     <trkpt lat="48.571468" lon="21.504308"><ele>381</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Hrad Kazimír</name><desc>kazimir-od-auta</desc><trkseg>
-    <trkpt lat="48.525615" lon="21.583224"><ele>150</ele></trkpt>
-    <trkpt lat="48.525747" lon="21.583242"><ele>150</ele></trkpt>
-    <trkpt lat="48.526288" lon="21.584496"><ele>152</ele></trkpt>
-    <trkpt lat="48.526354" lon="21.584449"><ele>151</ele></trkpt>
-    <trkpt lat="48.526384" lon="21.584550"><ele>151</ele></trkpt>
-    <trkpt lat="48.526619" lon="21.584375"><ele>151</ele></trkpt>
-    <trkpt lat="48.526158" lon="21.583133"><ele>149</ele></trkpt>
-    <trkpt lat="48.526132" lon="21.582916"><ele>148</ele></trkpt>
-    <trkpt lat="48.526158" lon="21.583133"><ele>149</ele></trkpt>
-    <trkpt lat="48.526619" lon="21.584375"><ele>151</ele></trkpt>
-    <trkpt lat="48.526384" lon="21.584550"><ele>151</ele></trkpt>
-    <trkpt lat="48.526354" lon="21.584449"><ele>151</ele></trkpt>
-    <trkpt lat="48.526288" lon="21.584496"><ele>152</ele></trkpt>
-    <trkpt lat="48.525747" lon="21.583242"><ele>150</ele></trkpt>
-    <trkpt lat="48.525615" lon="21.583224"><ele>150</ele></trkpt>
   </trkseg></trk>
 </gpx>

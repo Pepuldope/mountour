@@ -407,6 +407,19 @@
     <trkpt lat="48.700340" lon="19.084235"><ele>638</ele></trkpt>
     <trkpt lat="48.700226" lon="19.084817"><ele>634</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Malachovský vodopád</name><desc>malachovsky-vodopad-od-auta</desc><trkseg>
+    <trkpt lat="48.709470" lon="19.060635"><ele>573</ele></trkpt>
+    <trkpt lat="48.709420" lon="19.060388"><ele>575</ele></trkpt>
+    <trkpt lat="48.709315" lon="19.060119"><ele>581</ele></trkpt>
+    <trkpt lat="48.708921" lon="19.059487"><ele>592</ele></trkpt>
+    <trkpt lat="48.708852" lon="19.059246"><ele>593</ele></trkpt>
+    <trkpt lat="48.708782" lon="19.058677"><ele>598</ele></trkpt>
+    <trkpt lat="48.708852" lon="19.059246"><ele>593</ele></trkpt>
+    <trkpt lat="48.708921" lon="19.059487"><ele>592</ele></trkpt>
+    <trkpt lat="48.709315" lon="19.060119"><ele>581</ele></trkpt>
+    <trkpt lat="48.709420" lon="19.060388"><ele>575</ele></trkpt>
+    <trkpt lat="48.709470" lon="19.060635"><ele>573</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Malachovský vodopád</name><desc>malachovsky-vodopad-suchy-vrch-odb-na</desc><trkseg>
     <trkpt lat="48.723066" lon="19.066006"><ele>739</ele></trkpt>
     <trkpt lat="48.722854" lon="19.064728"><ele>755</ele></trkpt>
@@ -811,18 +824,5 @@
     <trkpt lat="48.722777" lon="19.064521"><ele>758</ele></trkpt>
     <trkpt lat="48.722854" lon="19.064728"><ele>755</ele></trkpt>
     <trkpt lat="48.723066" lon="19.066006"><ele>739</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Malachovský vodopád</name><desc>malachovsky-vodopad-od-auta</desc><trkseg>
-    <trkpt lat="48.709470" lon="19.060635"><ele>573</ele></trkpt>
-    <trkpt lat="48.709420" lon="19.060388"><ele>575</ele></trkpt>
-    <trkpt lat="48.709315" lon="19.060119"><ele>581</ele></trkpt>
-    <trkpt lat="48.708921" lon="19.059487"><ele>592</ele></trkpt>
-    <trkpt lat="48.708852" lon="19.059246"><ele>593</ele></trkpt>
-    <trkpt lat="48.708782" lon="19.058677"><ele>598</ele></trkpt>
-    <trkpt lat="48.708852" lon="19.059246"><ele>593</ele></trkpt>
-    <trkpt lat="48.708921" lon="19.059487"><ele>592</ele></trkpt>
-    <trkpt lat="48.709315" lon="19.060119"><ele>581</ele></trkpt>
-    <trkpt lat="48.709420" lon="19.060388"><ele>575</ele></trkpt>
-    <trkpt lat="48.709470" lon="19.060635"><ele>573</ele></trkpt>
   </trkseg></trk>
 </gpx>

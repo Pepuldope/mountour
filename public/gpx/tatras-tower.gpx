@@ -296,15 +296,6 @@
     <trkpt lat="49.082954" lon="20.067574"><ele>896</ele></trkpt>
     <trkpt lat="49.083586" lon="20.066711"><ele>900</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Tatras Tower</name><desc>tatras-tower-od-auta</desc><trkseg>
-    <trkpt lat="49.127851" lon="20.061669"><ele>1363</ele></trkpt>
-    <trkpt lat="49.127680" lon="20.061432"><ele>1364</ele></trkpt>
-    <trkpt lat="49.127532" lon="20.061334"><ele>1366</ele></trkpt>
-    <trkpt lat="49.127513" lon="20.061260"><ele>1366</ele></trkpt>
-    <trkpt lat="49.127532" lon="20.061334"><ele>1366</ele></trkpt>
-    <trkpt lat="49.127680" lon="20.061432"><ele>1364</ele></trkpt>
-    <trkpt lat="49.127851" lon="20.061669"><ele>1363</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Tatras Tower</name><desc>tatras-tower-byvala-vazecka-chata</desc><trkseg>
     <trkpt lat="49.135220" lon="19.970226"><ele>1176</ele></trkpt>
     <trkpt lat="49.135427" lon="19.970378"><ele>1177</ele></trkpt>
@@ -1314,5 +1305,14 @@
     <trkpt lat="49.132937" lon="19.969776"><ele>1168</ele></trkpt>
     <trkpt lat="49.134306" lon="19.969978"><ele>1174</ele></trkpt>
     <trkpt lat="49.135220" lon="19.970226"><ele>1176</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Tatras Tower</name><desc>tatras-tower-od-auta</desc><trkseg>
+    <trkpt lat="49.127851" lon="20.061669"><ele>1363</ele></trkpt>
+    <trkpt lat="49.127680" lon="20.061432"><ele>1364</ele></trkpt>
+    <trkpt lat="49.127532" lon="20.061334"><ele>1366</ele></trkpt>
+    <trkpt lat="49.127513" lon="20.061260"><ele>1366</ele></trkpt>
+    <trkpt lat="49.127532" lon="20.061334"><ele>1366</ele></trkpt>
+    <trkpt lat="49.127680" lon="20.061432"><ele>1364</ele></trkpt>
+    <trkpt lat="49.127851" lon="20.061669"><ele>1363</ele></trkpt>
   </trkseg></trk>
 </gpx>

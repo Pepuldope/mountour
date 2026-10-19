@@ -102,6 +102,21 @@
     <trkpt lat="48.183604" lon="16.982862"><ele>250</ele></trkpt>
     <trkpt lat="48.183595" lon="16.982654"><ele>248</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Hrad Devín</name><desc>devin-od-auta</desc><trkseg>
+    <trkpt lat="48.173985" lon="16.982692"><ele>154</ele></trkpt>
+    <trkpt lat="48.173714" lon="16.982998"><ele>154</ele></trkpt>
+    <trkpt lat="48.173682" lon="16.982901"><ele>154</ele></trkpt>
+    <trkpt lat="48.173658" lon="16.982929"><ele>154</ele></trkpt>
+    <trkpt lat="48.173271" lon="16.981721"><ele>164</ele></trkpt>
+    <trkpt lat="48.173324" lon="16.981610"><ele>166</ele></trkpt>
+    <trkpt lat="48.173967" lon="16.981042"><ele>162</ele></trkpt>
+    <trkpt lat="48.173324" lon="16.981610"><ele>166</ele></trkpt>
+    <trkpt lat="48.173271" lon="16.981721"><ele>164</ele></trkpt>
+    <trkpt lat="48.173658" lon="16.982929"><ele>154</ele></trkpt>
+    <trkpt lat="48.173682" lon="16.982901"><ele>154</ele></trkpt>
+    <trkpt lat="48.173714" lon="16.982998"><ele>154</ele></trkpt>
+    <trkpt lat="48.173985" lon="16.982692"><ele>154</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Hrad Devín</name><desc>devin-pod-devinskou-kobylou-ina-cesta</desc><trkseg>
     <trkpt lat="48.183595" lon="16.982654"><ele>248</ele></trkpt>
     <trkpt lat="48.183604" lon="16.982862"><ele>250</ele></trkpt>
@@ -261,20 +276,5 @@
     <trkpt lat="48.183207" lon="16.983222"><ele>243</ele></trkpt>
     <trkpt lat="48.183604" lon="16.982862"><ele>250</ele></trkpt>
     <trkpt lat="48.183595" lon="16.982654"><ele>248</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Hrad Devín</name><desc>devin-od-auta</desc><trkseg>
-    <trkpt lat="48.173985" lon="16.982692"><ele>154</ele></trkpt>
-    <trkpt lat="48.173714" lon="16.982998"><ele>154</ele></trkpt>
-    <trkpt lat="48.173682" lon="16.982901"><ele>154</ele></trkpt>
-    <trkpt lat="48.173658" lon="16.982929"><ele>154</ele></trkpt>
-    <trkpt lat="48.173271" lon="16.981721"><ele>164</ele></trkpt>
-    <trkpt lat="48.173324" lon="16.981610"><ele>166</ele></trkpt>
-    <trkpt lat="48.173967" lon="16.981042"><ele>162</ele></trkpt>
-    <trkpt lat="48.173324" lon="16.981610"><ele>166</ele></trkpt>
-    <trkpt lat="48.173271" lon="16.981721"><ele>164</ele></trkpt>
-    <trkpt lat="48.173658" lon="16.982929"><ele>154</ele></trkpt>
-    <trkpt lat="48.173682" lon="16.982901"><ele>154</ele></trkpt>
-    <trkpt lat="48.173714" lon="16.982998"><ele>154</ele></trkpt>
-    <trkpt lat="48.173985" lon="16.982692"><ele>154</ele></trkpt>
   </trkseg></trk>
 </gpx>

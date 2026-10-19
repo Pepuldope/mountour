@@ -208,37 +208,6 @@
     <trkpt lat="48.960429" lon="18.272891"><ele>434</ele></trkpt>
     <trkpt lat="48.960300" lon="18.273037"><ele>435</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Hrad Ilava</name><desc>hrad-ilava-od-auta</desc><trkseg>
-    <trkpt lat="48.999389" lon="18.232466"><ele>240</ele></trkpt>
-    <trkpt lat="48.998722" lon="18.230670"><ele>240</ele></trkpt>
-    <trkpt lat="48.998346" lon="18.230727"><ele>241</ele></trkpt>
-    <trkpt lat="48.998309" lon="18.230678"><ele>241</ele></trkpt>
-    <trkpt lat="48.998055" lon="18.230838"><ele>242</ele></trkpt>
-    <trkpt lat="48.997679" lon="18.231152"><ele>243</ele></trkpt>
-    <trkpt lat="48.997367" lon="18.231562"><ele>245</ele></trkpt>
-    <trkpt lat="48.997118" lon="18.232054"><ele>247</ele></trkpt>
-    <trkpt lat="48.997169" lon="18.232357"><ele>252</ele></trkpt>
-    <trkpt lat="48.997305" lon="18.232618"><ele>256</ele></trkpt>
-    <trkpt lat="48.997386" lon="18.232688"><ele>257</ele></trkpt>
-    <trkpt lat="48.997379" lon="18.232849"><ele>259</ele></trkpt>
-    <trkpt lat="48.997533" lon="18.233146"><ele>259</ele></trkpt>
-    <trkpt lat="48.997520" lon="18.233314"><ele>259</ele></trkpt>
-    <trkpt lat="48.997611" lon="18.233394"><ele>259</ele></trkpt>
-    <trkpt lat="48.997520" lon="18.233314"><ele>259</ele></trkpt>
-    <trkpt lat="48.997533" lon="18.233146"><ele>259</ele></trkpt>
-    <trkpt lat="48.997379" lon="18.232849"><ele>259</ele></trkpt>
-    <trkpt lat="48.997386" lon="18.232688"><ele>257</ele></trkpt>
-    <trkpt lat="48.997305" lon="18.232618"><ele>256</ele></trkpt>
-    <trkpt lat="48.997169" lon="18.232357"><ele>252</ele></trkpt>
-    <trkpt lat="48.997118" lon="18.232054"><ele>247</ele></trkpt>
-    <trkpt lat="48.997367" lon="18.231562"><ele>245</ele></trkpt>
-    <trkpt lat="48.997679" lon="18.231152"><ele>243</ele></trkpt>
-    <trkpt lat="48.998055" lon="18.230838"><ele>242</ele></trkpt>
-    <trkpt lat="48.998309" lon="18.230678"><ele>241</ele></trkpt>
-    <trkpt lat="48.998346" lon="18.230727"><ele>241</ele></trkpt>
-    <trkpt lat="48.998722" lon="18.230670"><ele>240</ele></trkpt>
-    <trkpt lat="48.999389" lon="18.232466"><ele>240</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Hrad Ilava</name><desc>hrad-ilava-iliavka</desc><trkseg>
     <trkpt lat="48.956622" lon="18.265705"><ele>422</ele></trkpt>
     <trkpt lat="48.957214" lon="18.265843"><ele>422</ele></trkpt>
@@ -455,5 +424,36 @@
     <trkpt lat="48.957720" lon="18.265777"><ele>425</ele></trkpt>
     <trkpt lat="48.957214" lon="18.265843"><ele>422</ele></trkpt>
     <trkpt lat="48.956622" lon="18.265705"><ele>422</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Hrad Ilava</name><desc>hrad-ilava-od-auta</desc><trkseg>
+    <trkpt lat="48.999389" lon="18.232466"><ele>240</ele></trkpt>
+    <trkpt lat="48.998722" lon="18.230670"><ele>240</ele></trkpt>
+    <trkpt lat="48.998346" lon="18.230727"><ele>241</ele></trkpt>
+    <trkpt lat="48.998309" lon="18.230678"><ele>241</ele></trkpt>
+    <trkpt lat="48.998055" lon="18.230838"><ele>242</ele></trkpt>
+    <trkpt lat="48.997679" lon="18.231152"><ele>243</ele></trkpt>
+    <trkpt lat="48.997367" lon="18.231562"><ele>245</ele></trkpt>
+    <trkpt lat="48.997118" lon="18.232054"><ele>247</ele></trkpt>
+    <trkpt lat="48.997169" lon="18.232357"><ele>252</ele></trkpt>
+    <trkpt lat="48.997305" lon="18.232618"><ele>256</ele></trkpt>
+    <trkpt lat="48.997386" lon="18.232688"><ele>257</ele></trkpt>
+    <trkpt lat="48.997379" lon="18.232849"><ele>259</ele></trkpt>
+    <trkpt lat="48.997533" lon="18.233146"><ele>259</ele></trkpt>
+    <trkpt lat="48.997520" lon="18.233314"><ele>259</ele></trkpt>
+    <trkpt lat="48.997611" lon="18.233394"><ele>259</ele></trkpt>
+    <trkpt lat="48.997520" lon="18.233314"><ele>259</ele></trkpt>
+    <trkpt lat="48.997533" lon="18.233146"><ele>259</ele></trkpt>
+    <trkpt lat="48.997379" lon="18.232849"><ele>259</ele></trkpt>
+    <trkpt lat="48.997386" lon="18.232688"><ele>257</ele></trkpt>
+    <trkpt lat="48.997305" lon="18.232618"><ele>256</ele></trkpt>
+    <trkpt lat="48.997169" lon="18.232357"><ele>252</ele></trkpt>
+    <trkpt lat="48.997118" lon="18.232054"><ele>247</ele></trkpt>
+    <trkpt lat="48.997367" lon="18.231562"><ele>245</ele></trkpt>
+    <trkpt lat="48.997679" lon="18.231152"><ele>243</ele></trkpt>
+    <trkpt lat="48.998055" lon="18.230838"><ele>242</ele></trkpt>
+    <trkpt lat="48.998309" lon="18.230678"><ele>241</ele></trkpt>
+    <trkpt lat="48.998346" lon="18.230727"><ele>241</ele></trkpt>
+    <trkpt lat="48.998722" lon="18.230670"><ele>240</ele></trkpt>
+    <trkpt lat="48.999389" lon="18.232466"><ele>240</ele></trkpt>
   </trkseg></trk>
 </gpx>

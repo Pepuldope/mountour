@@ -320,15 +320,6 @@
     <trkpt lat="49.086795" lon="18.184533"><ele>360</ele></trkpt>
     <trkpt lat="49.086395" lon="18.185500"><ele>358</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Hrad Vršatec</name><desc>vrsatec-od-auta</desc><trkseg>
-    <trkpt lat="49.067230" lon="18.153023"><ele>726</ele></trkpt>
-    <trkpt lat="49.066628" lon="18.152804"><ele>715</ele></trkpt>
-    <trkpt lat="49.066311" lon="18.152629"><ele>714</ele></trkpt>
-    <trkpt lat="49.065704" lon="18.152477"><ele>703</ele></trkpt>
-    <trkpt lat="49.066311" lon="18.152629"><ele>714</ele></trkpt>
-    <trkpt lat="49.066628" lon="18.152804"><ele>715</ele></trkpt>
-    <trkpt lat="49.067230" lon="18.153023"><ele>726</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Hrad Vršatec</name><desc>vrsatec-horne-srnie-rybniky</desc><trkseg>
     <trkpt lat="49.028509" lon="18.057970"><ele>272</ele></trkpt>
     <trkpt lat="49.028560" lon="18.058048"><ele>272</ele></trkpt>
@@ -741,5 +732,14 @@
     <trkpt lat="49.029371" lon="18.058338"><ele>274</ele></trkpt>
     <trkpt lat="49.028560" lon="18.058048"><ele>272</ele></trkpt>
     <trkpt lat="49.028509" lon="18.057970"><ele>272</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Hrad Vršatec</name><desc>vrsatec-od-auta</desc><trkseg>
+    <trkpt lat="49.067230" lon="18.153023"><ele>726</ele></trkpt>
+    <trkpt lat="49.066628" lon="18.152804"><ele>715</ele></trkpt>
+    <trkpt lat="49.066311" lon="18.152629"><ele>714</ele></trkpt>
+    <trkpt lat="49.065704" lon="18.152477"><ele>703</ele></trkpt>
+    <trkpt lat="49.066311" lon="18.152629"><ele>714</ele></trkpt>
+    <trkpt lat="49.066628" lon="18.152804"><ele>715</ele></trkpt>
+    <trkpt lat="49.067230" lon="18.153023"><ele>726</ele></trkpt>
   </trkseg></trk>
 </gpx>

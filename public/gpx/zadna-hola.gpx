@@ -2,11 +2,9 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Zadná hoľa</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Zadná hoľa</name><desc>zadna-hola</desc><trkseg>
-    <trkpt lat="48.852382" lon="19.853596"><ele>619</ele></trkpt>
-    <trkpt lat="48.852564" lon="19.853565"><ele>620</ele></trkpt>
-    <trkpt lat="48.852604" lon="19.853850"><ele>621</ele></trkpt>
+    <trkpt lat="48.852479" lon="19.853858"><ele>621</ele></trkpt>
     <trkpt lat="48.852851" lon="19.853840"><ele>621</ele></trkpt>
-    <trkpt lat="48.853647" lon="19.853619"><ele>623</ele></trkpt>
+    <trkpt lat="48.853349" lon="19.853712"><ele>625</ele></trkpt>
     <trkpt lat="48.854333" lon="19.853322"><ele>626</ele></trkpt>
     <trkpt lat="48.855707" lon="19.853014"><ele>634</ele></trkpt>
     <trkpt lat="48.857247" lon="19.853032"><ele>637</ele></trkpt>
@@ -252,11 +250,9 @@
     <trkpt lat="48.857247" lon="19.853032"><ele>637</ele></trkpt>
     <trkpt lat="48.855707" lon="19.853014"><ele>634</ele></trkpt>
     <trkpt lat="48.854333" lon="19.853322"><ele>626</ele></trkpt>
-    <trkpt lat="48.853647" lon="19.853619"><ele>623</ele></trkpt>
+    <trkpt lat="48.853349" lon="19.853712"><ele>625</ele></trkpt>
     <trkpt lat="48.852851" lon="19.853840"><ele>621</ele></trkpt>
-    <trkpt lat="48.852604" lon="19.853850"><ele>621</ele></trkpt>
-    <trkpt lat="48.852564" lon="19.853565"><ele>620</ele></trkpt>
-    <trkpt lat="48.852382" lon="19.853596"><ele>619</ele></trkpt>
+    <trkpt lat="48.852479" lon="19.853858"><ele>621</ele></trkpt>
   </trkseg></trk>
   <trk><name>Zadná hoľa</name><desc>zadna-hola-helpa-krivula</desc><trkseg>
     <trkpt lat="48.871791" lon="19.965769"><ele>704</ele></trkpt>

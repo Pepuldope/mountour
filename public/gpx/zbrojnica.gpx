@@ -360,6 +360,17 @@
     <trkpt lat="48.429511" lon="19.564213"><ele>261</ele></trkpt>
     <trkpt lat="48.429575" lon="19.564122"><ele>261</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Zbrojnica</name><desc>zbrojnica-od-auta</desc><trkseg>
+    <trkpt lat="48.354305" lon="19.574227"><ele>269</ele></trkpt>
+    <trkpt lat="48.354175" lon="19.574042"><ele>266</ele></trkpt>
+    <trkpt lat="48.354079" lon="19.574016"><ele>266</ele></trkpt>
+    <trkpt lat="48.354060" lon="19.573943"><ele>266</ele></trkpt>
+    <trkpt lat="48.354539" lon="19.573379"><ele>267</ele></trkpt>
+    <trkpt lat="48.354060" lon="19.573943"><ele>266</ele></trkpt>
+    <trkpt lat="48.354079" lon="19.574016"><ele>266</ele></trkpt>
+    <trkpt lat="48.354175" lon="19.574042"><ele>266</ele></trkpt>
+    <trkpt lat="48.354305" lon="19.574227"><ele>269</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Zbrojnica</name><desc>zbrojnica-polichno-namestie</desc><trkseg>
     <trkpt lat="48.404964" lon="19.497615"><ele>595</ele></trkpt>
     <trkpt lat="48.404878" lon="19.497562"><ele>595</ele></trkpt>
@@ -577,17 +588,6 @@
     <trkpt lat="48.404502" lon="19.497955"><ele>597</ele></trkpt>
     <trkpt lat="48.404878" lon="19.497562"><ele>595</ele></trkpt>
     <trkpt lat="48.404964" lon="19.497615"><ele>595</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Zbrojnica</name><desc>zbrojnica-od-auta</desc><trkseg>
-    <trkpt lat="48.354305" lon="19.574227"><ele>269</ele></trkpt>
-    <trkpt lat="48.354175" lon="19.574042"><ele>266</ele></trkpt>
-    <trkpt lat="48.354079" lon="19.574016"><ele>266</ele></trkpt>
-    <trkpt lat="48.354060" lon="19.573943"><ele>266</ele></trkpt>
-    <trkpt lat="48.354539" lon="19.573379"><ele>267</ele></trkpt>
-    <trkpt lat="48.354060" lon="19.573943"><ele>266</ele></trkpt>
-    <trkpt lat="48.354079" lon="19.574016"><ele>266</ele></trkpt>
-    <trkpt lat="48.354175" lon="19.574042"><ele>266</ele></trkpt>
-    <trkpt lat="48.354305" lon="19.574227"><ele>269</ele></trkpt>
   </trkseg></trk>
   <trk><name>Zbrojnica</name><desc>zbrojnica-praha</desc><trkseg>
     <trkpt lat="48.363173" lon="19.508889"><ele>495</ele></trkpt>

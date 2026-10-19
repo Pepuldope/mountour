@@ -188,61 +188,6 @@
     <trkpt lat="48.446766" lon="18.970381"><ele>570</ele></trkpt>
     <trkpt lat="48.446140" lon="18.971383"><ele>573</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Vyhliadka z Fándlyho</name><desc>z-fandlyho-od-auta</desc><trkseg>
-    <trkpt lat="48.451543" lon="18.916600"><ele>575</ele></trkpt>
-    <trkpt lat="48.451431" lon="18.916056"><ele>576</ele></trkpt>
-    <trkpt lat="48.451338" lon="18.916079"><ele>577</ele></trkpt>
-    <trkpt lat="48.451264" lon="18.915734"><ele>576</ele></trkpt>
-    <trkpt lat="48.451217" lon="18.915673"><ele>576</ele></trkpt>
-    <trkpt lat="48.451080" lon="18.915672"><ele>576</ele></trkpt>
-    <trkpt lat="48.450985" lon="18.915526"><ele>576</ele></trkpt>
-    <trkpt lat="48.450933" lon="18.915520"><ele>577</ele></trkpt>
-    <trkpt lat="48.450401" lon="18.915755"><ele>577</ele></trkpt>
-    <trkpt lat="48.450290" lon="18.915724"><ele>577</ele></trkpt>
-    <trkpt lat="48.450246" lon="18.915657"><ele>576</ele></trkpt>
-    <trkpt lat="48.450206" lon="18.915716"><ele>576</ele></trkpt>
-    <trkpt lat="48.450175" lon="18.915862"><ele>576</ele></trkpt>
-    <trkpt lat="48.450165" lon="18.916610"><ele>574</ele></trkpt>
-    <trkpt lat="48.450015" lon="18.916927"><ele>572</ele></trkpt>
-    <trkpt lat="48.450121" lon="18.917128"><ele>573</ele></trkpt>
-    <trkpt lat="48.450188" lon="18.917537"><ele>573</ele></trkpt>
-    <trkpt lat="48.450318" lon="18.918039"><ele>576</ele></trkpt>
-    <trkpt lat="48.449828" lon="18.918269"><ele>570</ele></trkpt>
-    <trkpt lat="48.449790" lon="18.918652"><ele>570</ele></trkpt>
-    <trkpt lat="48.449830" lon="18.919360"><ele>566</ele></trkpt>
-    <trkpt lat="48.449673" lon="18.919272"><ele>566</ele></trkpt>
-    <trkpt lat="48.449604" lon="18.919148"><ele>566</ele></trkpt>
-    <trkpt lat="48.449551" lon="18.918885"><ele>565</ele></trkpt>
-    <trkpt lat="48.449527" lon="18.918451"><ele>563</ele></trkpt>
-    <trkpt lat="48.449704" lon="18.917506"><ele>561</ele></trkpt>
-    <trkpt lat="48.449700" lon="18.917043"><ele>562</ele></trkpt>
-    <trkpt lat="48.449704" lon="18.917506"><ele>561</ele></trkpt>
-    <trkpt lat="48.449527" lon="18.918451"><ele>563</ele></trkpt>
-    <trkpt lat="48.449551" lon="18.918885"><ele>565</ele></trkpt>
-    <trkpt lat="48.449604" lon="18.919148"><ele>566</ele></trkpt>
-    <trkpt lat="48.449673" lon="18.919272"><ele>566</ele></trkpt>
-    <trkpt lat="48.449830" lon="18.919360"><ele>566</ele></trkpt>
-    <trkpt lat="48.449790" lon="18.918652"><ele>570</ele></trkpt>
-    <trkpt lat="48.449828" lon="18.918269"><ele>570</ele></trkpt>
-    <trkpt lat="48.450318" lon="18.918039"><ele>576</ele></trkpt>
-    <trkpt lat="48.450188" lon="18.917537"><ele>573</ele></trkpt>
-    <trkpt lat="48.450121" lon="18.917128"><ele>573</ele></trkpt>
-    <trkpt lat="48.450015" lon="18.916927"><ele>572</ele></trkpt>
-    <trkpt lat="48.450165" lon="18.916610"><ele>574</ele></trkpt>
-    <trkpt lat="48.450175" lon="18.915862"><ele>576</ele></trkpt>
-    <trkpt lat="48.450206" lon="18.915716"><ele>576</ele></trkpt>
-    <trkpt lat="48.450246" lon="18.915657"><ele>576</ele></trkpt>
-    <trkpt lat="48.450290" lon="18.915724"><ele>577</ele></trkpt>
-    <trkpt lat="48.450401" lon="18.915755"><ele>577</ele></trkpt>
-    <trkpt lat="48.450933" lon="18.915520"><ele>577</ele></trkpt>
-    <trkpt lat="48.450985" lon="18.915526"><ele>576</ele></trkpt>
-    <trkpt lat="48.451080" lon="18.915672"><ele>576</ele></trkpt>
-    <trkpt lat="48.451217" lon="18.915673"><ele>576</ele></trkpt>
-    <trkpt lat="48.451264" lon="18.915734"><ele>576</ele></trkpt>
-    <trkpt lat="48.451338" lon="18.916079"><ele>577</ele></trkpt>
-    <trkpt lat="48.451431" lon="18.916056"><ele>576</ele></trkpt>
-    <trkpt lat="48.451543" lon="18.916600"><ele>575</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Vyhliadka z Fándlyho</name><desc>z-fandlyho-dinas</desc><trkseg>
     <trkpt lat="48.471193" lon="18.944263"><ele>450</ele></trkpt>
     <trkpt lat="48.470807" lon="18.944226"><ele>451</ele></trkpt>
@@ -530,5 +475,60 @@
     <trkpt lat="48.466457" lon="18.903940"><ele>643</ele></trkpt>
     <trkpt lat="48.466843" lon="18.903753"><ele>645</ele></trkpt>
     <trkpt lat="48.467232" lon="18.903385"><ele>647</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Vyhliadka z Fándlyho</name><desc>z-fandlyho-od-auta</desc><trkseg>
+    <trkpt lat="48.451543" lon="18.916600"><ele>575</ele></trkpt>
+    <trkpt lat="48.451431" lon="18.916056"><ele>576</ele></trkpt>
+    <trkpt lat="48.451338" lon="18.916079"><ele>577</ele></trkpt>
+    <trkpt lat="48.451264" lon="18.915734"><ele>576</ele></trkpt>
+    <trkpt lat="48.451217" lon="18.915673"><ele>576</ele></trkpt>
+    <trkpt lat="48.451080" lon="18.915672"><ele>576</ele></trkpt>
+    <trkpt lat="48.450985" lon="18.915526"><ele>576</ele></trkpt>
+    <trkpt lat="48.450933" lon="18.915520"><ele>577</ele></trkpt>
+    <trkpt lat="48.450401" lon="18.915755"><ele>577</ele></trkpt>
+    <trkpt lat="48.450290" lon="18.915724"><ele>577</ele></trkpt>
+    <trkpt lat="48.450246" lon="18.915657"><ele>576</ele></trkpt>
+    <trkpt lat="48.450206" lon="18.915716"><ele>576</ele></trkpt>
+    <trkpt lat="48.450175" lon="18.915862"><ele>576</ele></trkpt>
+    <trkpt lat="48.450165" lon="18.916610"><ele>574</ele></trkpt>
+    <trkpt lat="48.450015" lon="18.916927"><ele>572</ele></trkpt>
+    <trkpt lat="48.450121" lon="18.917128"><ele>573</ele></trkpt>
+    <trkpt lat="48.450188" lon="18.917537"><ele>573</ele></trkpt>
+    <trkpt lat="48.450318" lon="18.918039"><ele>576</ele></trkpt>
+    <trkpt lat="48.449828" lon="18.918269"><ele>570</ele></trkpt>
+    <trkpt lat="48.449790" lon="18.918652"><ele>570</ele></trkpt>
+    <trkpt lat="48.449830" lon="18.919360"><ele>566</ele></trkpt>
+    <trkpt lat="48.449673" lon="18.919272"><ele>566</ele></trkpt>
+    <trkpt lat="48.449604" lon="18.919148"><ele>566</ele></trkpt>
+    <trkpt lat="48.449551" lon="18.918885"><ele>565</ele></trkpt>
+    <trkpt lat="48.449527" lon="18.918451"><ele>563</ele></trkpt>
+    <trkpt lat="48.449704" lon="18.917506"><ele>561</ele></trkpt>
+    <trkpt lat="48.449700" lon="18.917043"><ele>562</ele></trkpt>
+    <trkpt lat="48.449704" lon="18.917506"><ele>561</ele></trkpt>
+    <trkpt lat="48.449527" lon="18.918451"><ele>563</ele></trkpt>
+    <trkpt lat="48.449551" lon="18.918885"><ele>565</ele></trkpt>
+    <trkpt lat="48.449604" lon="18.919148"><ele>566</ele></trkpt>
+    <trkpt lat="48.449673" lon="18.919272"><ele>566</ele></trkpt>
+    <trkpt lat="48.449830" lon="18.919360"><ele>566</ele></trkpt>
+    <trkpt lat="48.449790" lon="18.918652"><ele>570</ele></trkpt>
+    <trkpt lat="48.449828" lon="18.918269"><ele>570</ele></trkpt>
+    <trkpt lat="48.450318" lon="18.918039"><ele>576</ele></trkpt>
+    <trkpt lat="48.450188" lon="18.917537"><ele>573</ele></trkpt>
+    <trkpt lat="48.450121" lon="18.917128"><ele>573</ele></trkpt>
+    <trkpt lat="48.450015" lon="18.916927"><ele>572</ele></trkpt>
+    <trkpt lat="48.450165" lon="18.916610"><ele>574</ele></trkpt>
+    <trkpt lat="48.450175" lon="18.915862"><ele>576</ele></trkpt>
+    <trkpt lat="48.450206" lon="18.915716"><ele>576</ele></trkpt>
+    <trkpt lat="48.450246" lon="18.915657"><ele>576</ele></trkpt>
+    <trkpt lat="48.450290" lon="18.915724"><ele>577</ele></trkpt>
+    <trkpt lat="48.450401" lon="18.915755"><ele>577</ele></trkpt>
+    <trkpt lat="48.450933" lon="18.915520"><ele>577</ele></trkpt>
+    <trkpt lat="48.450985" lon="18.915526"><ele>576</ele></trkpt>
+    <trkpt lat="48.451080" lon="18.915672"><ele>576</ele></trkpt>
+    <trkpt lat="48.451217" lon="18.915673"><ele>576</ele></trkpt>
+    <trkpt lat="48.451264" lon="18.915734"><ele>576</ele></trkpt>
+    <trkpt lat="48.451338" lon="18.916079"><ele>577</ele></trkpt>
+    <trkpt lat="48.451431" lon="18.916056"><ele>576</ele></trkpt>
+    <trkpt lat="48.451543" lon="18.916600"><ele>575</ele></trkpt>
   </trkseg></trk>
 </gpx>

@@ -68,71 +68,6 @@
     <trkpt lat="48.182858" lon="17.098414"><ele>418</ele></trkpt>
     <trkpt lat="48.182797" lon="17.098627"><ele>411</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Rozhľadňa Americké námestie</name><desc>rozhladna-americke-namestie-kamzik-luka-ina-cesta</desc><trkseg>
-    <trkpt lat="48.182797" lon="17.098627"><ele>411</ele></trkpt>
-    <trkpt lat="48.182858" lon="17.098414"><ele>418</ele></trkpt>
-    <trkpt lat="48.182963" lon="17.098231"><ele>420</ele></trkpt>
-    <trkpt lat="48.183276" lon="17.097892"><ele>418</ele></trkpt>
-    <trkpt lat="48.183774" lon="17.097215"><ele>412</ele></trkpt>
-    <trkpt lat="48.183883" lon="17.096969"><ele>412</ele></trkpt>
-    <trkpt lat="48.184162" lon="17.096663"><ele>411</ele></trkpt>
-    <trkpt lat="48.185533" lon="17.094849"><ele>433</ele></trkpt>
-    <trkpt lat="48.184926" lon="17.094275"><ele>410</ele></trkpt>
-    <trkpt lat="48.184584" lon="17.094078"><ele>402</ele></trkpt>
-    <trkpt lat="48.184570" lon="17.093953"><ele>402</ele></trkpt>
-    <trkpt lat="48.184653" lon="17.093469"><ele>398</ele></trkpt>
-    <trkpt lat="48.184577" lon="17.093045"><ele>399</ele></trkpt>
-    <trkpt lat="48.184671" lon="17.092038"><ele>385</ele></trkpt>
-    <trkpt lat="48.184641" lon="17.091551"><ele>379</ele></trkpt>
-    <trkpt lat="48.184455" lon="17.090794"><ele>375</ele></trkpt>
-    <trkpt lat="48.184290" lon="17.090499"><ele>373</ele></trkpt>
-    <trkpt lat="48.184017" lon="17.090341"><ele>375</ele></trkpt>
-    <trkpt lat="48.183775" lon="17.090052"><ele>376</ele></trkpt>
-    <trkpt lat="48.183423" lon="17.089504"><ele>371</ele></trkpt>
-    <trkpt lat="48.183192" lon="17.089333"><ele>370</ele></trkpt>
-    <trkpt lat="48.182675" lon="17.089239"><ele>380</ele></trkpt>
-    <trkpt lat="48.182353" lon="17.089022"><ele>382</ele></trkpt>
-    <trkpt lat="48.182164" lon="17.088966"><ele>384</ele></trkpt>
-    <trkpt lat="48.181753" lon="17.088549"><ele>392</ele></trkpt>
-    <trkpt lat="48.181636" lon="17.088279"><ele>394</ele></trkpt>
-    <trkpt lat="48.181361" lon="17.088061"><ele>396</ele></trkpt>
-    <trkpt lat="48.180876" lon="17.087833"><ele>394</ele></trkpt>
-    <trkpt lat="48.180707" lon="17.087700"><ele>392</ele></trkpt>
-    <trkpt lat="48.180426" lon="17.087657"><ele>388</ele></trkpt>
-    <trkpt lat="48.179954" lon="17.087696"><ele>382</ele></trkpt>
-    <trkpt lat="48.179842" lon="17.087165"><ele>377</ele></trkpt>
-    <trkpt lat="48.179954" lon="17.087696"><ele>382</ele></trkpt>
-    <trkpt lat="48.180426" lon="17.087657"><ele>388</ele></trkpt>
-    <trkpt lat="48.180707" lon="17.087700"><ele>392</ele></trkpt>
-    <trkpt lat="48.180876" lon="17.087833"><ele>394</ele></trkpt>
-    <trkpt lat="48.181361" lon="17.088061"><ele>396</ele></trkpt>
-    <trkpt lat="48.181636" lon="17.088279"><ele>394</ele></trkpt>
-    <trkpt lat="48.181753" lon="17.088549"><ele>392</ele></trkpt>
-    <trkpt lat="48.182164" lon="17.088966"><ele>384</ele></trkpt>
-    <trkpt lat="48.182353" lon="17.089022"><ele>382</ele></trkpt>
-    <trkpt lat="48.182675" lon="17.089239"><ele>380</ele></trkpt>
-    <trkpt lat="48.183192" lon="17.089333"><ele>370</ele></trkpt>
-    <trkpt lat="48.183423" lon="17.089504"><ele>371</ele></trkpt>
-    <trkpt lat="48.183775" lon="17.090052"><ele>376</ele></trkpt>
-    <trkpt lat="48.184017" lon="17.090341"><ele>375</ele></trkpt>
-    <trkpt lat="48.184290" lon="17.090499"><ele>373</ele></trkpt>
-    <trkpt lat="48.184455" lon="17.090794"><ele>375</ele></trkpt>
-    <trkpt lat="48.184641" lon="17.091551"><ele>379</ele></trkpt>
-    <trkpt lat="48.184671" lon="17.092038"><ele>385</ele></trkpt>
-    <trkpt lat="48.184577" lon="17.093045"><ele>399</ele></trkpt>
-    <trkpt lat="48.184653" lon="17.093469"><ele>398</ele></trkpt>
-    <trkpt lat="48.184570" lon="17.093953"><ele>402</ele></trkpt>
-    <trkpt lat="48.184584" lon="17.094078"><ele>402</ele></trkpt>
-    <trkpt lat="48.184926" lon="17.094275"><ele>410</ele></trkpt>
-    <trkpt lat="48.185533" lon="17.094849"><ele>433</ele></trkpt>
-    <trkpt lat="48.184162" lon="17.096663"><ele>411</ele></trkpt>
-    <trkpt lat="48.183883" lon="17.096969"><ele>412</ele></trkpt>
-    <trkpt lat="48.183774" lon="17.097215"><ele>412</ele></trkpt>
-    <trkpt lat="48.183276" lon="17.097892"><ele>418</ele></trkpt>
-    <trkpt lat="48.182963" lon="17.098231"><ele>420</ele></trkpt>
-    <trkpt lat="48.182858" lon="17.098414"><ele>418</ele></trkpt>
-    <trkpt lat="48.182797" lon="17.098627"><ele>411</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Rozhľadňa Americké námestie</name><desc>rozhladna-americke-namestie-figaro</desc><trkseg>
     <trkpt lat="48.172570" lon="17.126791"><ele>143</ele></trkpt>
     <trkpt lat="48.172783" lon="17.124529"><ele>149</ele></trkpt>
@@ -289,6 +224,71 @@
     <trkpt lat="48.172781" lon="17.123222"><ele>158</ele></trkpt>
     <trkpt lat="48.172783" lon="17.124529"><ele>149</ele></trkpt>
     <trkpt lat="48.172570" lon="17.126791"><ele>143</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Rozhľadňa Americké námestie</name><desc>rozhladna-americke-namestie-kamzik-luka-ina-cesta</desc><trkseg>
+    <trkpt lat="48.182797" lon="17.098627"><ele>411</ele></trkpt>
+    <trkpt lat="48.182858" lon="17.098414"><ele>418</ele></trkpt>
+    <trkpt lat="48.182963" lon="17.098231"><ele>420</ele></trkpt>
+    <trkpt lat="48.183276" lon="17.097892"><ele>418</ele></trkpt>
+    <trkpt lat="48.183774" lon="17.097215"><ele>412</ele></trkpt>
+    <trkpt lat="48.183883" lon="17.096969"><ele>412</ele></trkpt>
+    <trkpt lat="48.184162" lon="17.096663"><ele>411</ele></trkpt>
+    <trkpt lat="48.185533" lon="17.094849"><ele>433</ele></trkpt>
+    <trkpt lat="48.184926" lon="17.094275"><ele>410</ele></trkpt>
+    <trkpt lat="48.184584" lon="17.094078"><ele>402</ele></trkpt>
+    <trkpt lat="48.184570" lon="17.093953"><ele>402</ele></trkpt>
+    <trkpt lat="48.184653" lon="17.093469"><ele>398</ele></trkpt>
+    <trkpt lat="48.184577" lon="17.093045"><ele>399</ele></trkpt>
+    <trkpt lat="48.184671" lon="17.092038"><ele>385</ele></trkpt>
+    <trkpt lat="48.184641" lon="17.091551"><ele>379</ele></trkpt>
+    <trkpt lat="48.184455" lon="17.090794"><ele>375</ele></trkpt>
+    <trkpt lat="48.184290" lon="17.090499"><ele>373</ele></trkpt>
+    <trkpt lat="48.184017" lon="17.090341"><ele>375</ele></trkpt>
+    <trkpt lat="48.183775" lon="17.090052"><ele>376</ele></trkpt>
+    <trkpt lat="48.183423" lon="17.089504"><ele>371</ele></trkpt>
+    <trkpt lat="48.183192" lon="17.089333"><ele>370</ele></trkpt>
+    <trkpt lat="48.182675" lon="17.089239"><ele>380</ele></trkpt>
+    <trkpt lat="48.182353" lon="17.089022"><ele>382</ele></trkpt>
+    <trkpt lat="48.182164" lon="17.088966"><ele>384</ele></trkpt>
+    <trkpt lat="48.181753" lon="17.088549"><ele>392</ele></trkpt>
+    <trkpt lat="48.181636" lon="17.088279"><ele>394</ele></trkpt>
+    <trkpt lat="48.181361" lon="17.088061"><ele>396</ele></trkpt>
+    <trkpt lat="48.180876" lon="17.087833"><ele>394</ele></trkpt>
+    <trkpt lat="48.180707" lon="17.087700"><ele>392</ele></trkpt>
+    <trkpt lat="48.180426" lon="17.087657"><ele>388</ele></trkpt>
+    <trkpt lat="48.179954" lon="17.087696"><ele>382</ele></trkpt>
+    <trkpt lat="48.179842" lon="17.087165"><ele>377</ele></trkpt>
+    <trkpt lat="48.179954" lon="17.087696"><ele>382</ele></trkpt>
+    <trkpt lat="48.180426" lon="17.087657"><ele>388</ele></trkpt>
+    <trkpt lat="48.180707" lon="17.087700"><ele>392</ele></trkpt>
+    <trkpt lat="48.180876" lon="17.087833"><ele>394</ele></trkpt>
+    <trkpt lat="48.181361" lon="17.088061"><ele>396</ele></trkpt>
+    <trkpt lat="48.181636" lon="17.088279"><ele>394</ele></trkpt>
+    <trkpt lat="48.181753" lon="17.088549"><ele>392</ele></trkpt>
+    <trkpt lat="48.182164" lon="17.088966"><ele>384</ele></trkpt>
+    <trkpt lat="48.182353" lon="17.089022"><ele>382</ele></trkpt>
+    <trkpt lat="48.182675" lon="17.089239"><ele>380</ele></trkpt>
+    <trkpt lat="48.183192" lon="17.089333"><ele>370</ele></trkpt>
+    <trkpt lat="48.183423" lon="17.089504"><ele>371</ele></trkpt>
+    <trkpt lat="48.183775" lon="17.090052"><ele>376</ele></trkpt>
+    <trkpt lat="48.184017" lon="17.090341"><ele>375</ele></trkpt>
+    <trkpt lat="48.184290" lon="17.090499"><ele>373</ele></trkpt>
+    <trkpt lat="48.184455" lon="17.090794"><ele>375</ele></trkpt>
+    <trkpt lat="48.184641" lon="17.091551"><ele>379</ele></trkpt>
+    <trkpt lat="48.184671" lon="17.092038"><ele>385</ele></trkpt>
+    <trkpt lat="48.184577" lon="17.093045"><ele>399</ele></trkpt>
+    <trkpt lat="48.184653" lon="17.093469"><ele>398</ele></trkpt>
+    <trkpt lat="48.184570" lon="17.093953"><ele>402</ele></trkpt>
+    <trkpt lat="48.184584" lon="17.094078"><ele>402</ele></trkpt>
+    <trkpt lat="48.184926" lon="17.094275"><ele>410</ele></trkpt>
+    <trkpt lat="48.185533" lon="17.094849"><ele>433</ele></trkpt>
+    <trkpt lat="48.184162" lon="17.096663"><ele>411</ele></trkpt>
+    <trkpt lat="48.183883" lon="17.096969"><ele>412</ele></trkpt>
+    <trkpt lat="48.183774" lon="17.097215"><ele>412</ele></trkpt>
+    <trkpt lat="48.183276" lon="17.097892"><ele>418</ele></trkpt>
+    <trkpt lat="48.182963" lon="17.098231"><ele>420</ele></trkpt>
+    <trkpt lat="48.182858" lon="17.098414"><ele>418</ele></trkpt>
+    <trkpt lat="48.182797" lon="17.098627"><ele>411</ele></trkpt>
   </trkseg></trk>
   <trk><name>Rozhľadňa Americké námestie</name><desc>rozhladna-americke-namestie-od-auta</desc><trkseg>
     <trkpt lat="48.182914" lon="17.094782"><ele>437</ele></trkpt>

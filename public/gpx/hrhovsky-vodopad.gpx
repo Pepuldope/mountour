@@ -342,27 +342,6 @@
     <trkpt lat="48.631085" lon="20.766162"><ele>569</ele></trkpt>
     <trkpt lat="48.630947" lon="20.764816"><ele>565</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Hrhovský vodopád</name><desc>hrhovsky-vodopad-od-auta</desc><trkseg>
-    <trkpt lat="48.605934" lon="20.749433"><ele>208</ele></trkpt>
-    <trkpt lat="48.605862" lon="20.749433"><ele>207</ele></trkpt>
-    <trkpt lat="48.605763" lon="20.748744"><ele>208</ele></trkpt>
-    <trkpt lat="48.605642" lon="20.748249"><ele>208</ele></trkpt>
-    <trkpt lat="48.605826" lon="20.748237"><ele>209</ele></trkpt>
-    <trkpt lat="48.606226" lon="20.748358"><ele>211</ele></trkpt>
-    <trkpt lat="48.606494" lon="20.748280"><ele>212</ele></trkpt>
-    <trkpt lat="48.606688" lon="20.748078"><ele>214</ele></trkpt>
-    <trkpt lat="48.606949" lon="20.748188"><ele>216</ele></trkpt>
-    <trkpt lat="48.607400" lon="20.748145"><ele>217</ele></trkpt>
-    <trkpt lat="48.606949" lon="20.748188"><ele>216</ele></trkpt>
-    <trkpt lat="48.606688" lon="20.748078"><ele>214</ele></trkpt>
-    <trkpt lat="48.606494" lon="20.748280"><ele>212</ele></trkpt>
-    <trkpt lat="48.606226" lon="20.748358"><ele>211</ele></trkpt>
-    <trkpt lat="48.605826" lon="20.748237"><ele>209</ele></trkpt>
-    <trkpt lat="48.605642" lon="20.748249"><ele>208</ele></trkpt>
-    <trkpt lat="48.605763" lon="20.748744"><ele>208</ele></trkpt>
-    <trkpt lat="48.605862" lon="20.749433"><ele>207</ele></trkpt>
-    <trkpt lat="48.605934" lon="20.749433"><ele>208</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Hrhovský vodopád</name><desc>hrhovsky-vodopad-jablonovske-sedlo</desc><trkseg>
     <trkpt lat="48.619230" lon="20.629232"><ele>538</ele></trkpt>
     <trkpt lat="48.619180" lon="20.629676"><ele>542</ele></trkpt>
@@ -879,5 +858,26 @@
     <trkpt lat="48.619273" lon="20.629854"><ele>543</ele></trkpt>
     <trkpt lat="48.619180" lon="20.629676"><ele>542</ele></trkpt>
     <trkpt lat="48.619230" lon="20.629232"><ele>538</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Hrhovský vodopád</name><desc>hrhovsky-vodopad-od-auta</desc><trkseg>
+    <trkpt lat="48.605934" lon="20.749433"><ele>208</ele></trkpt>
+    <trkpt lat="48.605862" lon="20.749433"><ele>207</ele></trkpt>
+    <trkpt lat="48.605763" lon="20.748744"><ele>208</ele></trkpt>
+    <trkpt lat="48.605642" lon="20.748249"><ele>208</ele></trkpt>
+    <trkpt lat="48.605826" lon="20.748237"><ele>209</ele></trkpt>
+    <trkpt lat="48.606226" lon="20.748358"><ele>211</ele></trkpt>
+    <trkpt lat="48.606494" lon="20.748280"><ele>212</ele></trkpt>
+    <trkpt lat="48.606688" lon="20.748078"><ele>214</ele></trkpt>
+    <trkpt lat="48.606949" lon="20.748188"><ele>216</ele></trkpt>
+    <trkpt lat="48.607400" lon="20.748145"><ele>217</ele></trkpt>
+    <trkpt lat="48.606949" lon="20.748188"><ele>216</ele></trkpt>
+    <trkpt lat="48.606688" lon="20.748078"><ele>214</ele></trkpt>
+    <trkpt lat="48.606494" lon="20.748280"><ele>212</ele></trkpt>
+    <trkpt lat="48.606226" lon="20.748358"><ele>211</ele></trkpt>
+    <trkpt lat="48.605826" lon="20.748237"><ele>209</ele></trkpt>
+    <trkpt lat="48.605642" lon="20.748249"><ele>208</ele></trkpt>
+    <trkpt lat="48.605763" lon="20.748744"><ele>208</ele></trkpt>
+    <trkpt lat="48.605862" lon="20.749433"><ele>207</ele></trkpt>
+    <trkpt lat="48.605934" lon="20.749433"><ele>208</ele></trkpt>
   </trkseg></trk>
 </gpx>

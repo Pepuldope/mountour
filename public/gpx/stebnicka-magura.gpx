@@ -893,7 +893,7 @@
   <trk><name>Stebnícka Magura</name><desc>stebnicka-magura-cigelka</desc><trkseg>
     <trkpt lat="49.405985" lon="21.148291"><ele>500</ele></trkpt>
     <trkpt lat="49.406037" lon="21.148320"><ele>500</ele></trkpt>
-    <trkpt lat="49.406304" lon="21.149571"><ele>506</ele></trkpt>
+    <trkpt lat="49.406278" lon="21.149415"><ele>506</ele></trkpt>
     <trkpt lat="49.406727" lon="21.152472"><ele>518</ele></trkpt>
     <trkpt lat="49.406764" lon="21.152603"><ele>518</ele></trkpt>
     <trkpt lat="49.406850" lon="21.152718"><ele>519</ele></trkpt>
@@ -1314,7 +1314,7 @@
     <trkpt lat="49.406850" lon="21.152718"><ele>519</ele></trkpt>
     <trkpt lat="49.406764" lon="21.152603"><ele>518</ele></trkpt>
     <trkpt lat="49.406727" lon="21.152472"><ele>518</ele></trkpt>
-    <trkpt lat="49.406304" lon="21.149571"><ele>506</ele></trkpt>
+    <trkpt lat="49.406278" lon="21.149415"><ele>506</ele></trkpt>
     <trkpt lat="49.406037" lon="21.148320"><ele>500</ele></trkpt>
     <trkpt lat="49.405985" lon="21.148291"><ele>500</ele></trkpt>
   </trkseg></trk>

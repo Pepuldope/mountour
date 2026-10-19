@@ -2,8 +2,8 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Priečna</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Priečna</name><desc>priecna</desc><trkseg>
-    <trkpt lat="48.954706" lon="18.515939"><ele>649</ele></trkpt>
-    <trkpt lat="48.954626" lon="18.515851"><ele>650</ele></trkpt>
+    <trkpt lat="48.954708" lon="18.515933"><ele>649</ele></trkpt>
+    <trkpt lat="48.954628" lon="18.515848"><ele>650</ele></trkpt>
     <trkpt lat="48.954361" lon="18.516429"><ele>650</ele></trkpt>
     <trkpt lat="48.954024" lon="18.516684"><ele>652</ele></trkpt>
     <trkpt lat="48.953942" lon="18.516789"><ele>653</ele></trkpt>
@@ -219,8 +219,8 @@
     <trkpt lat="48.953942" lon="18.516789"><ele>653</ele></trkpt>
     <trkpt lat="48.954024" lon="18.516684"><ele>652</ele></trkpt>
     <trkpt lat="48.954361" lon="18.516429"><ele>650</ele></trkpt>
-    <trkpt lat="48.954626" lon="18.515851"><ele>650</ele></trkpt>
-    <trkpt lat="48.954706" lon="18.515939"><ele>649</ele></trkpt>
+    <trkpt lat="48.954628" lon="18.515848"><ele>650</ele></trkpt>
+    <trkpt lat="48.954708" lon="18.515933"><ele>649</ele></trkpt>
   </trkseg></trk>
   <trk><name>Priečna</name><desc>priecna-fackovske-sedlo</desc><trkseg>
     <trkpt lat="48.963600" lon="18.611148"><ele>801</ele></trkpt>

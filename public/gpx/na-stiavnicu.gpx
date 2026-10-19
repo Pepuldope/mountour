@@ -116,45 +116,6 @@
     <trkpt lat="48.458714" lon="18.893280"><ele>601</ele></trkpt>
     <trkpt lat="48.458781" lon="18.893455"><ele>600</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Vyhliadka na Štiavnicu</name><desc>na-stiavnicu-od-auta</desc><trkseg>
-    <trkpt lat="48.451323" lon="18.881123"><ele>714</ele></trkpt>
-    <trkpt lat="48.451131" lon="18.881294"><ele>716</ele></trkpt>
-    <trkpt lat="48.450902" lon="18.881589"><ele>715</ele></trkpt>
-    <trkpt lat="48.450660" lon="18.882792"><ele>718</ele></trkpt>
-    <trkpt lat="48.450645" lon="18.883018"><ele>715</ele></trkpt>
-    <trkpt lat="48.450708" lon="18.883910"><ele>702</ele></trkpt>
-    <trkpt lat="48.450741" lon="18.883995"><ele>699</ele></trkpt>
-    <trkpt lat="48.450453" lon="18.885163"><ele>711</ele></trkpt>
-    <trkpt lat="48.450449" lon="18.885527"><ele>709</ele></trkpt>
-    <trkpt lat="48.450386" lon="18.885665"><ele>711</ele></trkpt>
-    <trkpt lat="48.450392" lon="18.886167"><ele>710</ele></trkpt>
-    <trkpt lat="48.450353" lon="18.886896"><ele>707</ele></trkpt>
-    <trkpt lat="48.450316" lon="18.887108"><ele>705</ele></trkpt>
-    <trkpt lat="48.450233" lon="18.887306"><ele>705</ele></trkpt>
-    <trkpt lat="48.449974" lon="18.887677"><ele>703</ele></trkpt>
-    <trkpt lat="48.449784" lon="18.887815"><ele>702</ele></trkpt>
-    <trkpt lat="48.449616" lon="18.887833"><ele>702</ele></trkpt>
-    <trkpt lat="48.449055" lon="18.887744"><ele>699</ele></trkpt>
-    <trkpt lat="48.447892" lon="18.887897"><ele>702</ele></trkpt>
-    <trkpt lat="48.449055" lon="18.887744"><ele>699</ele></trkpt>
-    <trkpt lat="48.449616" lon="18.887833"><ele>702</ele></trkpt>
-    <trkpt lat="48.449784" lon="18.887815"><ele>702</ele></trkpt>
-    <trkpt lat="48.449974" lon="18.887677"><ele>703</ele></trkpt>
-    <trkpt lat="48.450233" lon="18.887306"><ele>705</ele></trkpt>
-    <trkpt lat="48.450316" lon="18.887108"><ele>705</ele></trkpt>
-    <trkpt lat="48.450353" lon="18.886896"><ele>707</ele></trkpt>
-    <trkpt lat="48.450392" lon="18.886167"><ele>710</ele></trkpt>
-    <trkpt lat="48.450386" lon="18.885665"><ele>711</ele></trkpt>
-    <trkpt lat="48.450449" lon="18.885527"><ele>709</ele></trkpt>
-    <trkpt lat="48.450453" lon="18.885163"><ele>711</ele></trkpt>
-    <trkpt lat="48.450741" lon="18.883995"><ele>699</ele></trkpt>
-    <trkpt lat="48.450708" lon="18.883910"><ele>702</ele></trkpt>
-    <trkpt lat="48.450645" lon="18.883018"><ele>715</ele></trkpt>
-    <trkpt lat="48.450660" lon="18.882792"><ele>718</ele></trkpt>
-    <trkpt lat="48.450902" lon="18.881589"><ele>715</ele></trkpt>
-    <trkpt lat="48.451131" lon="18.881294"><ele>716</ele></trkpt>
-    <trkpt lat="48.451323" lon="18.881123"><ele>714</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Vyhliadka na Štiavnicu</name><desc>na-stiavnicu-horna-roven</desc><trkseg>
     <trkpt lat="48.447909" lon="18.874893"><ele>821</ele></trkpt>
     <trkpt lat="48.447432" lon="18.876184"><ele>805</ele></trkpt>
@@ -234,5 +195,44 @@
     <trkpt lat="48.447000" lon="18.876669"><ele>800</ele></trkpt>
     <trkpt lat="48.447432" lon="18.876184"><ele>805</ele></trkpt>
     <trkpt lat="48.447909" lon="18.874893"><ele>821</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Vyhliadka na Štiavnicu</name><desc>na-stiavnicu-od-auta</desc><trkseg>
+    <trkpt lat="48.451323" lon="18.881123"><ele>714</ele></trkpt>
+    <trkpt lat="48.451131" lon="18.881294"><ele>716</ele></trkpt>
+    <trkpt lat="48.450902" lon="18.881589"><ele>715</ele></trkpt>
+    <trkpt lat="48.450660" lon="18.882792"><ele>718</ele></trkpt>
+    <trkpt lat="48.450645" lon="18.883018"><ele>715</ele></trkpt>
+    <trkpt lat="48.450708" lon="18.883910"><ele>702</ele></trkpt>
+    <trkpt lat="48.450741" lon="18.883995"><ele>699</ele></trkpt>
+    <trkpt lat="48.450453" lon="18.885163"><ele>711</ele></trkpt>
+    <trkpt lat="48.450449" lon="18.885527"><ele>709</ele></trkpt>
+    <trkpt lat="48.450386" lon="18.885665"><ele>711</ele></trkpt>
+    <trkpt lat="48.450392" lon="18.886167"><ele>710</ele></trkpt>
+    <trkpt lat="48.450353" lon="18.886896"><ele>707</ele></trkpt>
+    <trkpt lat="48.450316" lon="18.887108"><ele>705</ele></trkpt>
+    <trkpt lat="48.450233" lon="18.887306"><ele>705</ele></trkpt>
+    <trkpt lat="48.449974" lon="18.887677"><ele>703</ele></trkpt>
+    <trkpt lat="48.449784" lon="18.887815"><ele>702</ele></trkpt>
+    <trkpt lat="48.449616" lon="18.887833"><ele>702</ele></trkpt>
+    <trkpt lat="48.449055" lon="18.887744"><ele>699</ele></trkpt>
+    <trkpt lat="48.447892" lon="18.887897"><ele>702</ele></trkpt>
+    <trkpt lat="48.449055" lon="18.887744"><ele>699</ele></trkpt>
+    <trkpt lat="48.449616" lon="18.887833"><ele>702</ele></trkpt>
+    <trkpt lat="48.449784" lon="18.887815"><ele>702</ele></trkpt>
+    <trkpt lat="48.449974" lon="18.887677"><ele>703</ele></trkpt>
+    <trkpt lat="48.450233" lon="18.887306"><ele>705</ele></trkpt>
+    <trkpt lat="48.450316" lon="18.887108"><ele>705</ele></trkpt>
+    <trkpt lat="48.450353" lon="18.886896"><ele>707</ele></trkpt>
+    <trkpt lat="48.450392" lon="18.886167"><ele>710</ele></trkpt>
+    <trkpt lat="48.450386" lon="18.885665"><ele>711</ele></trkpt>
+    <trkpt lat="48.450449" lon="18.885527"><ele>709</ele></trkpt>
+    <trkpt lat="48.450453" lon="18.885163"><ele>711</ele></trkpt>
+    <trkpt lat="48.450741" lon="18.883995"><ele>699</ele></trkpt>
+    <trkpt lat="48.450708" lon="18.883910"><ele>702</ele></trkpt>
+    <trkpt lat="48.450645" lon="18.883018"><ele>715</ele></trkpt>
+    <trkpt lat="48.450660" lon="18.882792"><ele>718</ele></trkpt>
+    <trkpt lat="48.450902" lon="18.881589"><ele>715</ele></trkpt>
+    <trkpt lat="48.451131" lon="18.881294"><ele>716</ele></trkpt>
+    <trkpt lat="48.451323" lon="18.881123"><ele>714</ele></trkpt>
   </trkseg></trk>
 </gpx>

@@ -3,15 +3,15 @@
   <metadata><name>Barvienok (Tarnov)</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Barvienok (Tarnov)</name><desc>barvienok-mihalov</desc><trkseg>
     <trkpt lat="49.276649" lon="21.234295"><ele>512</ele></trkpt>
-    <trkpt lat="49.277088" lon="21.234168"><ele>515</ele></trkpt>
-    <trkpt lat="49.277434" lon="21.233973"><ele>518</ele></trkpt>
-    <trkpt lat="49.277516" lon="21.233879"><ele>518</ele></trkpt>
-    <trkpt lat="49.277529" lon="21.233688"><ele>519</ele></trkpt>
-    <trkpt lat="49.277081" lon="21.232926"><ele>518</ele></trkpt>
-    <trkpt lat="49.277151" lon="21.232573"><ele>520</ele></trkpt>
-    <trkpt lat="49.277403" lon="21.231997"><ele>525</ele></trkpt>
-    <trkpt lat="49.277763" lon="21.231413"><ele>528</ele></trkpt>
-    <trkpt lat="49.277939" lon="21.231007"><ele>529</ele></trkpt>
+    <trkpt lat="49.276996" lon="21.234210"><ele>514</ele></trkpt>
+    <trkpt lat="49.277403" lon="21.233986"><ele>518</ele></trkpt>
+    <trkpt lat="49.277569" lon="21.233746"><ele>519</ele></trkpt>
+    <trkpt lat="49.277085" lon="21.232966"><ele>517</ele></trkpt>
+    <trkpt lat="49.277106" lon="21.232674"><ele>519</ele></trkpt>
+    <trkpt lat="49.277382" lon="21.232021"><ele>524</ele></trkpt>
+    <trkpt lat="49.277629" lon="21.231624"><ele>527</ele></trkpt>
+    <trkpt lat="49.277928" lon="21.231009"><ele>529</ele></trkpt>
+    <trkpt lat="49.278105" lon="21.230571"><ele>529</ele></trkpt>
     <trkpt lat="49.278239" lon="21.230128"><ele>529</ele></trkpt>
     <trkpt lat="49.278498" lon="21.229537"><ele>529</ele></trkpt>
     <trkpt lat="49.278951" lon="21.228761"><ele>530</ele></trkpt>
@@ -209,15 +209,15 @@
     <trkpt lat="49.278951" lon="21.228761"><ele>530</ele></trkpt>
     <trkpt lat="49.278498" lon="21.229537"><ele>529</ele></trkpt>
     <trkpt lat="49.278239" lon="21.230128"><ele>529</ele></trkpt>
-    <trkpt lat="49.277939" lon="21.231007"><ele>529</ele></trkpt>
-    <trkpt lat="49.277763" lon="21.231413"><ele>528</ele></trkpt>
-    <trkpt lat="49.277403" lon="21.231997"><ele>525</ele></trkpt>
-    <trkpt lat="49.277151" lon="21.232573"><ele>520</ele></trkpt>
-    <trkpt lat="49.277081" lon="21.232926"><ele>518</ele></trkpt>
-    <trkpt lat="49.277529" lon="21.233688"><ele>519</ele></trkpt>
-    <trkpt lat="49.277516" lon="21.233879"><ele>518</ele></trkpt>
-    <trkpt lat="49.277434" lon="21.233973"><ele>518</ele></trkpt>
-    <trkpt lat="49.277088" lon="21.234168"><ele>515</ele></trkpt>
+    <trkpt lat="49.278105" lon="21.230571"><ele>529</ele></trkpt>
+    <trkpt lat="49.277928" lon="21.231009"><ele>529</ele></trkpt>
+    <trkpt lat="49.277629" lon="21.231624"><ele>527</ele></trkpt>
+    <trkpt lat="49.277382" lon="21.232021"><ele>524</ele></trkpt>
+    <trkpt lat="49.277106" lon="21.232674"><ele>519</ele></trkpt>
+    <trkpt lat="49.277085" lon="21.232966"><ele>517</ele></trkpt>
+    <trkpt lat="49.277569" lon="21.233746"><ele>519</ele></trkpt>
+    <trkpt lat="49.277403" lon="21.233986"><ele>518</ele></trkpt>
+    <trkpt lat="49.276996" lon="21.234210"><ele>514</ele></trkpt>
     <trkpt lat="49.276649" lon="21.234295"><ele>512</ele></trkpt>
   </trkseg></trk>
   <trk><name>Barvienok (Tarnov)</name><desc>barvienok-mihalov-kruzlov</desc><trkseg>

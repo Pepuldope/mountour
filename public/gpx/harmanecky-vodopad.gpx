@@ -873,4 +873,11 @@
     <trkpt lat="48.876579" lon="19.040511"><ele>1273</ele></trkpt>
     <trkpt lat="48.876417" lon="19.040508"><ele>1271</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Harmanecký vodopád</name><desc>harmanecky-vodopad-od-auta</desc><trkseg>
+    <trkpt lat="48.822816" lon="19.032228"><ele>588</ele></trkpt>
+    <trkpt lat="48.822913" lon="19.032081"><ele>591</ele></trkpt>
+    <trkpt lat="48.823256" lon="19.031209"><ele>599</ele></trkpt>
+    <trkpt lat="48.822913" lon="19.032081"><ele>591</ele></trkpt>
+    <trkpt lat="48.822816" lon="19.032228"><ele>588</ele></trkpt>
+  </trkseg></trk>
 </gpx>

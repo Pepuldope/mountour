@@ -144,6 +144,23 @@
     <trkpt lat="48.498252" lon="18.919673"><ele>600</ele></trkpt>
     <trkpt lat="48.498287" lon="18.919853"><ele>600</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Vyhliadka z cesty na Jergištôlňu</name><desc>z-cesty-na-jergistolnu-od-auta</desc><trkseg>
+    <trkpt lat="48.474898" lon="18.906455"><ele>628</ele></trkpt>
+    <trkpt lat="48.474503" lon="18.906250"><ele>630</ele></trkpt>
+    <trkpt lat="48.474160" lon="18.906211"><ele>630</ele></trkpt>
+    <trkpt lat="48.473647" lon="18.906312"><ele>632</ele></trkpt>
+    <trkpt lat="48.473095" lon="18.906589"><ele>635</ele></trkpt>
+    <trkpt lat="48.472905" lon="18.906634"><ele>636</ele></trkpt>
+    <trkpt lat="48.472772" lon="18.906627"><ele>636</ele></trkpt>
+    <trkpt lat="48.472237" lon="18.906439"><ele>639</ele></trkpt>
+    <trkpt lat="48.472772" lon="18.906627"><ele>636</ele></trkpt>
+    <trkpt lat="48.472905" lon="18.906634"><ele>636</ele></trkpt>
+    <trkpt lat="48.473095" lon="18.906589"><ele>635</ele></trkpt>
+    <trkpt lat="48.473647" lon="18.906312"><ele>632</ele></trkpt>
+    <trkpt lat="48.474160" lon="18.906211"><ele>630</ele></trkpt>
+    <trkpt lat="48.474503" lon="18.906250"><ele>630</ele></trkpt>
+    <trkpt lat="48.474898" lon="18.906455"><ele>628</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Vyhliadka z cesty na Jergištôlňu</name><desc>z-cesty-na-jergistolnu-sedlo-pod-cukmantlom</desc><trkseg>
     <trkpt lat="48.469545" lon="18.871781"><ele>774</ele></trkpt>
     <trkpt lat="48.469394" lon="18.872305"><ele>777</ele></trkpt>
@@ -290,22 +307,5 @@
     <trkpt lat="48.469386" lon="18.872694"><ele>774</ele></trkpt>
     <trkpt lat="48.469394" lon="18.872305"><ele>777</ele></trkpt>
     <trkpt lat="48.469545" lon="18.871781"><ele>774</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Vyhliadka z cesty na Jergištôlňu</name><desc>z-cesty-na-jergistolnu-od-auta</desc><trkseg>
-    <trkpt lat="48.474898" lon="18.906455"><ele>628</ele></trkpt>
-    <trkpt lat="48.474503" lon="18.906250"><ele>630</ele></trkpt>
-    <trkpt lat="48.474160" lon="18.906211"><ele>630</ele></trkpt>
-    <trkpt lat="48.473647" lon="18.906312"><ele>632</ele></trkpt>
-    <trkpt lat="48.473095" lon="18.906589"><ele>635</ele></trkpt>
-    <trkpt lat="48.472905" lon="18.906634"><ele>636</ele></trkpt>
-    <trkpt lat="48.472772" lon="18.906627"><ele>636</ele></trkpt>
-    <trkpt lat="48.472237" lon="18.906439"><ele>639</ele></trkpt>
-    <trkpt lat="48.472772" lon="18.906627"><ele>636</ele></trkpt>
-    <trkpt lat="48.472905" lon="18.906634"><ele>636</ele></trkpt>
-    <trkpt lat="48.473095" lon="18.906589"><ele>635</ele></trkpt>
-    <trkpt lat="48.473647" lon="18.906312"><ele>632</ele></trkpt>
-    <trkpt lat="48.474160" lon="18.906211"><ele>630</ele></trkpt>
-    <trkpt lat="48.474503" lon="18.906250"><ele>630</ele></trkpt>
-    <trkpt lat="48.474898" lon="18.906455"><ele>628</ele></trkpt>
   </trkseg></trk>
 </gpx>

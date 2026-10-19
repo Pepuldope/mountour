@@ -58,53 +58,6 @@
     <trkpt lat="49.214124" lon="20.914535"><ele>585</ele></trkpt>
     <trkpt lat="49.213967" lon="20.914246"><ele>584</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Perúnova jaskyňa</name><desc>perunova-jaskyna-od-auta</desc><trkseg>
-    <trkpt lat="49.208649" lon="20.927038"><ele>585</ele></trkpt>
-    <trkpt lat="49.208545" lon="20.927153"><ele>584</ele></trkpt>
-    <trkpt lat="49.208904" lon="20.927372"><ele>591</ele></trkpt>
-    <trkpt lat="49.209117" lon="20.927626"><ele>596</ele></trkpt>
-    <trkpt lat="49.209196" lon="20.927850"><ele>599</ele></trkpt>
-    <trkpt lat="49.209230" lon="20.928039"><ele>602</ele></trkpt>
-    <trkpt lat="49.209143" lon="20.929038"><ele>609</ele></trkpt>
-    <trkpt lat="49.209063" lon="20.929613"><ele>613</ele></trkpt>
-    <trkpt lat="49.209121" lon="20.929703"><ele>615</ele></trkpt>
-    <trkpt lat="49.209174" lon="20.930181"><ele>622</ele></trkpt>
-    <trkpt lat="49.209288" lon="20.930498"><ele>630</ele></trkpt>
-    <trkpt lat="49.209331" lon="20.930944"><ele>641</ele></trkpt>
-    <trkpt lat="49.209311" lon="20.931198"><ele>646</ele></trkpt>
-    <trkpt lat="49.209339" lon="20.931448"><ele>654</ele></trkpt>
-    <trkpt lat="49.209300" lon="20.931721"><ele>656</ele></trkpt>
-    <trkpt lat="49.209377" lon="20.931735"><ele>660</ele></trkpt>
-    <trkpt lat="49.209514" lon="20.931845"><ele>669</ele></trkpt>
-    <trkpt lat="49.209706" lon="20.931687"><ele>681</ele></trkpt>
-    <trkpt lat="49.209790" lon="20.931697"><ele>682</ele></trkpt>
-    <trkpt lat="49.209819" lon="20.931780"><ele>683</ele></trkpt>
-    <trkpt lat="49.209704" lon="20.931883"><ele>684</ele></trkpt>
-    <trkpt lat="49.209767" lon="20.932091"><ele>687</ele></trkpt>
-    <trkpt lat="49.209767" lon="20.932298"><ele>688</ele></trkpt>
-    <trkpt lat="49.209767" lon="20.932091"><ele>687</ele></trkpt>
-    <trkpt lat="49.209704" lon="20.931883"><ele>684</ele></trkpt>
-    <trkpt lat="49.209819" lon="20.931780"><ele>683</ele></trkpt>
-    <trkpt lat="49.209790" lon="20.931697"><ele>682</ele></trkpt>
-    <trkpt lat="49.209706" lon="20.931687"><ele>681</ele></trkpt>
-    <trkpt lat="49.209514" lon="20.931845"><ele>669</ele></trkpt>
-    <trkpt lat="49.209377" lon="20.931735"><ele>660</ele></trkpt>
-    <trkpt lat="49.209300" lon="20.931721"><ele>656</ele></trkpt>
-    <trkpt lat="49.209339" lon="20.931448"><ele>654</ele></trkpt>
-    <trkpt lat="49.209311" lon="20.931198"><ele>646</ele></trkpt>
-    <trkpt lat="49.209331" lon="20.930944"><ele>641</ele></trkpt>
-    <trkpt lat="49.209288" lon="20.930498"><ele>630</ele></trkpt>
-    <trkpt lat="49.209174" lon="20.930181"><ele>622</ele></trkpt>
-    <trkpt lat="49.209121" lon="20.929703"><ele>615</ele></trkpt>
-    <trkpt lat="49.209063" lon="20.929613"><ele>613</ele></trkpt>
-    <trkpt lat="49.209143" lon="20.929038"><ele>609</ele></trkpt>
-    <trkpt lat="49.209230" lon="20.928039"><ele>602</ele></trkpt>
-    <trkpt lat="49.209196" lon="20.927850"><ele>599</ele></trkpt>
-    <trkpt lat="49.209117" lon="20.927626"><ele>596</ele></trkpt>
-    <trkpt lat="49.208904" lon="20.927372"><ele>591</ele></trkpt>
-    <trkpt lat="49.208545" lon="20.927153"><ele>584</ele></trkpt>
-    <trkpt lat="49.208649" lon="20.927038"><ele>585</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Perúnova jaskyňa</name><desc>perunova-jaskyna-kamenica-kostol</desc><trkseg>
     <trkpt lat="49.192014" lon="20.960351"><ele>495</ele></trkpt>
     <trkpt lat="49.192077" lon="20.960369"><ele>495</ele></trkpt>
@@ -329,5 +282,52 @@
     <trkpt lat="49.184891" lon="20.953536"><ele>468</ele></trkpt>
     <trkpt lat="49.184751" lon="20.953363"><ele>467</ele></trkpt>
     <trkpt lat="49.184646" lon="20.953164"><ele>466</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Perúnova jaskyňa</name><desc>perunova-jaskyna-od-auta</desc><trkseg>
+    <trkpt lat="49.208649" lon="20.927038"><ele>585</ele></trkpt>
+    <trkpt lat="49.208545" lon="20.927153"><ele>584</ele></trkpt>
+    <trkpt lat="49.208904" lon="20.927372"><ele>591</ele></trkpt>
+    <trkpt lat="49.209117" lon="20.927626"><ele>596</ele></trkpt>
+    <trkpt lat="49.209196" lon="20.927850"><ele>599</ele></trkpt>
+    <trkpt lat="49.209230" lon="20.928039"><ele>602</ele></trkpt>
+    <trkpt lat="49.209143" lon="20.929038"><ele>609</ele></trkpt>
+    <trkpt lat="49.209063" lon="20.929613"><ele>613</ele></trkpt>
+    <trkpt lat="49.209121" lon="20.929703"><ele>615</ele></trkpt>
+    <trkpt lat="49.209174" lon="20.930181"><ele>622</ele></trkpt>
+    <trkpt lat="49.209288" lon="20.930498"><ele>630</ele></trkpt>
+    <trkpt lat="49.209331" lon="20.930944"><ele>641</ele></trkpt>
+    <trkpt lat="49.209311" lon="20.931198"><ele>646</ele></trkpt>
+    <trkpt lat="49.209339" lon="20.931448"><ele>654</ele></trkpt>
+    <trkpt lat="49.209300" lon="20.931721"><ele>656</ele></trkpt>
+    <trkpt lat="49.209377" lon="20.931735"><ele>660</ele></trkpt>
+    <trkpt lat="49.209514" lon="20.931845"><ele>669</ele></trkpt>
+    <trkpt lat="49.209706" lon="20.931687"><ele>681</ele></trkpt>
+    <trkpt lat="49.209790" lon="20.931697"><ele>682</ele></trkpt>
+    <trkpt lat="49.209819" lon="20.931780"><ele>683</ele></trkpt>
+    <trkpt lat="49.209704" lon="20.931883"><ele>684</ele></trkpt>
+    <trkpt lat="49.209767" lon="20.932091"><ele>687</ele></trkpt>
+    <trkpt lat="49.209767" lon="20.932298"><ele>688</ele></trkpt>
+    <trkpt lat="49.209767" lon="20.932091"><ele>687</ele></trkpt>
+    <trkpt lat="49.209704" lon="20.931883"><ele>684</ele></trkpt>
+    <trkpt lat="49.209819" lon="20.931780"><ele>683</ele></trkpt>
+    <trkpt lat="49.209790" lon="20.931697"><ele>682</ele></trkpt>
+    <trkpt lat="49.209706" lon="20.931687"><ele>681</ele></trkpt>
+    <trkpt lat="49.209514" lon="20.931845"><ele>669</ele></trkpt>
+    <trkpt lat="49.209377" lon="20.931735"><ele>660</ele></trkpt>
+    <trkpt lat="49.209300" lon="20.931721"><ele>656</ele></trkpt>
+    <trkpt lat="49.209339" lon="20.931448"><ele>654</ele></trkpt>
+    <trkpt lat="49.209311" lon="20.931198"><ele>646</ele></trkpt>
+    <trkpt lat="49.209331" lon="20.930944"><ele>641</ele></trkpt>
+    <trkpt lat="49.209288" lon="20.930498"><ele>630</ele></trkpt>
+    <trkpt lat="49.209174" lon="20.930181"><ele>622</ele></trkpt>
+    <trkpt lat="49.209121" lon="20.929703"><ele>615</ele></trkpt>
+    <trkpt lat="49.209063" lon="20.929613"><ele>613</ele></trkpt>
+    <trkpt lat="49.209143" lon="20.929038"><ele>609</ele></trkpt>
+    <trkpt lat="49.209230" lon="20.928039"><ele>602</ele></trkpt>
+    <trkpt lat="49.209196" lon="20.927850"><ele>599</ele></trkpt>
+    <trkpt lat="49.209117" lon="20.927626"><ele>596</ele></trkpt>
+    <trkpt lat="49.208904" lon="20.927372"><ele>591</ele></trkpt>
+    <trkpt lat="49.208545" lon="20.927153"><ele>584</ele></trkpt>
+    <trkpt lat="49.208649" lon="20.927038"><ele>585</ele></trkpt>
   </trkseg></trk>
 </gpx>

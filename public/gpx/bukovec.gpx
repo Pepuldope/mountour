@@ -488,23 +488,18 @@
     <trkpt lat="48.841892" lon="20.620232"><ele>533</ele></trkpt>
     <trkpt lat="48.841604" lon="20.619452"><ele>530</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Bukovec</name><desc>bukovec-porac</desc><trkseg>
-    <trkpt lat="48.884074" lon="20.725243"><ele>772</ele></trkpt>
-    <trkpt lat="48.884110" lon="20.725368"><ele>772</ele></trkpt>
-    <trkpt lat="48.884014" lon="20.725303"><ele>771</ele></trkpt>
-    <trkpt lat="48.883933" lon="20.725301"><ele>771</ele></trkpt>
-    <trkpt lat="48.883926" lon="20.725932"><ele>766</ele></trkpt>
-    <trkpt lat="48.883854" lon="20.726068"><ele>765</ele></trkpt>
+  <trk><name>Bukovec</name><desc>bukovec-porac-2</desc><trkseg>
+    <trkpt lat="48.883943" lon="20.726094"><ele>766</ele></trkpt>
+    <trkpt lat="48.883902" lon="20.726014"><ele>765</ele></trkpt>
+    <trkpt lat="48.883770" lon="20.726110"><ele>765</ele></trkpt>
     <trkpt lat="48.882483" lon="20.726389"><ele>761</ele></trkpt>
     <trkpt lat="48.881498" lon="20.726336"><ele>762</ele></trkpt>
     <trkpt lat="48.881385" lon="20.726222"><ele>763</ele></trkpt>
     <trkpt lat="48.880954" lon="20.726201"><ele>766</ele></trkpt>
-    <trkpt lat="48.880453" lon="20.726118"><ele>766</ele></trkpt>
     <trkpt lat="48.880303" lon="20.726073"><ele>767</ele></trkpt>
-    <trkpt lat="48.879946" lon="20.725834"><ele>770</ele></trkpt>
+    <trkpt lat="48.880098" lon="20.725953"><ele>769</ele></trkpt>
     <trkpt lat="48.879756" lon="20.725653"><ele>771</ele></trkpt>
-    <trkpt lat="48.877749" lon="20.722956"><ele>788</ele></trkpt>
-    <trkpt lat="48.877438" lon="20.722472"><ele>790</ele></trkpt>
+    <trkpt lat="48.877593" lon="20.722723"><ele>789</ele></trkpt>
     <trkpt lat="48.877285" lon="20.722147"><ele>792</ele></trkpt>
     <trkpt lat="48.877231" lon="20.722111"><ele>792</ele></trkpt>
     <trkpt lat="48.877141" lon="20.721704"><ele>793</ele></trkpt>
@@ -724,21 +719,16 @@
     <trkpt lat="48.877141" lon="20.721704"><ele>793</ele></trkpt>
     <trkpt lat="48.877231" lon="20.722111"><ele>792</ele></trkpt>
     <trkpt lat="48.877285" lon="20.722147"><ele>792</ele></trkpt>
-    <trkpt lat="48.877438" lon="20.722472"><ele>790</ele></trkpt>
-    <trkpt lat="48.877749" lon="20.722956"><ele>788</ele></trkpt>
+    <trkpt lat="48.877593" lon="20.722723"><ele>789</ele></trkpt>
     <trkpt lat="48.879756" lon="20.725653"><ele>771</ele></trkpt>
-    <trkpt lat="48.879946" lon="20.725834"><ele>770</ele></trkpt>
+    <trkpt lat="48.880098" lon="20.725953"><ele>769</ele></trkpt>
     <trkpt lat="48.880303" lon="20.726073"><ele>767</ele></trkpt>
-    <trkpt lat="48.880453" lon="20.726118"><ele>766</ele></trkpt>
     <trkpt lat="48.880954" lon="20.726201"><ele>766</ele></trkpt>
     <trkpt lat="48.881385" lon="20.726222"><ele>763</ele></trkpt>
     <trkpt lat="48.881498" lon="20.726336"><ele>762</ele></trkpt>
     <trkpt lat="48.882483" lon="20.726389"><ele>761</ele></trkpt>
-    <trkpt lat="48.883854" lon="20.726068"><ele>765</ele></trkpt>
-    <trkpt lat="48.883926" lon="20.725932"><ele>766</ele></trkpt>
-    <trkpt lat="48.883933" lon="20.725301"><ele>771</ele></trkpt>
-    <trkpt lat="48.884014" lon="20.725303"><ele>771</ele></trkpt>
-    <trkpt lat="48.884110" lon="20.725368"><ele>772</ele></trkpt>
-    <trkpt lat="48.884074" lon="20.725243"><ele>772</ele></trkpt>
+    <trkpt lat="48.883770" lon="20.726110"><ele>765</ele></trkpt>
+    <trkpt lat="48.883902" lon="20.726014"><ele>765</ele></trkpt>
+    <trkpt lat="48.883943" lon="20.726094"><ele>766</ele></trkpt>
   </trkseg></trk>
 </gpx>

@@ -111,10 +111,8 @@
   <trk><name>Bencúrova veža</name><desc>bencurova-veza-demanovska-jaskyna</desc><trkseg>
     <trkpt lat="48.996368" lon="19.582603"><ele>842</ele></trkpt>
     <trkpt lat="48.996285" lon="19.582589"><ele>841</ele></trkpt>
-    <trkpt lat="48.996232" lon="19.582754"><ele>837</ele></trkpt>
-    <trkpt lat="48.995997" lon="19.583004"><ele>839</ele></trkpt>
-    <trkpt lat="48.995793" lon="19.583379"><ele>841</ele></trkpt>
-    <trkpt lat="48.995682" lon="19.583446"><ele>844</ele></trkpt>
+    <trkpt lat="48.996237" lon="19.582741"><ele>838</ele></trkpt>
+    <trkpt lat="48.995974" lon="19.583011"><ele>839</ele></trkpt>
     <trkpt lat="48.995648" lon="19.583525"><ele>845</ele></trkpt>
     <trkpt lat="48.995493" lon="19.583454"><ele>848</ele></trkpt>
     <trkpt lat="48.995440" lon="19.583508"><ele>851</ele></trkpt>
@@ -360,10 +358,8 @@
     <trkpt lat="48.995440" lon="19.583508"><ele>851</ele></trkpt>
     <trkpt lat="48.995493" lon="19.583454"><ele>848</ele></trkpt>
     <trkpt lat="48.995648" lon="19.583525"><ele>845</ele></trkpt>
-    <trkpt lat="48.995682" lon="19.583446"><ele>844</ele></trkpt>
-    <trkpt lat="48.995793" lon="19.583379"><ele>841</ele></trkpt>
-    <trkpt lat="48.995997" lon="19.583004"><ele>839</ele></trkpt>
-    <trkpt lat="48.996232" lon="19.582754"><ele>837</ele></trkpt>
+    <trkpt lat="48.995974" lon="19.583011"><ele>839</ele></trkpt>
+    <trkpt lat="48.996237" lon="19.582741"><ele>838</ele></trkpt>
     <trkpt lat="48.996285" lon="19.582589"><ele>841</ele></trkpt>
     <trkpt lat="48.996368" lon="19.582603"><ele>842</ele></trkpt>
   </trkseg></trk>

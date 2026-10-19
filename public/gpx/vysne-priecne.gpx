@@ -27,12 +27,11 @@
     <trkpt lat="48.968364" lon="19.580334"><ele>1134</ele></trkpt>
     <trkpt lat="48.968155" lon="19.580088"><ele>1137</ele></trkpt>
     <trkpt lat="48.967799" lon="19.579951"><ele>1142</ele></trkpt>
-    <trkpt lat="48.966999" lon="19.579998"><ele>1151</ele></trkpt>
-    <trkpt lat="48.966412" lon="19.580067"><ele>1158</ele></trkpt>
+    <trkpt lat="48.966434" lon="19.580054"><ele>1158</ele></trkpt>
     <trkpt lat="48.966387" lon="19.580102"><ele>1159</ele></trkpt>
     <trkpt lat="48.966403" lon="19.580193"><ele>1159</ele></trkpt>
-    <trkpt lat="48.966553" lon="19.580430"><ele>1160</ele></trkpt>
-    <trkpt lat="48.966633" lon="19.580803"><ele>1161</ele></trkpt>
+    <trkpt lat="48.966567" lon="19.580486"><ele>1160</ele></trkpt>
+    <trkpt lat="48.966654" lon="19.580850"><ele>1161</ele></trkpt>
     <trkpt lat="48.966773" lon="19.580936"><ele>1161</ele></trkpt>
     <trkpt lat="48.966775" lon="19.581073"><ele>1163</ele></trkpt>
     <trkpt lat="48.966998" lon="19.581683"><ele>1175</ele></trkpt>
@@ -140,12 +139,11 @@
     <trkpt lat="48.966998" lon="19.581683"><ele>1175</ele></trkpt>
     <trkpt lat="48.966775" lon="19.581073"><ele>1163</ele></trkpt>
     <trkpt lat="48.966773" lon="19.580936"><ele>1161</ele></trkpt>
-    <trkpt lat="48.966633" lon="19.580803"><ele>1161</ele></trkpt>
-    <trkpt lat="48.966553" lon="19.580430"><ele>1160</ele></trkpt>
+    <trkpt lat="48.966654" lon="19.580850"><ele>1161</ele></trkpt>
+    <trkpt lat="48.966567" lon="19.580486"><ele>1160</ele></trkpt>
     <trkpt lat="48.966403" lon="19.580193"><ele>1159</ele></trkpt>
     <trkpt lat="48.966387" lon="19.580102"><ele>1159</ele></trkpt>
-    <trkpt lat="48.966412" lon="19.580067"><ele>1158</ele></trkpt>
-    <trkpt lat="48.966999" lon="19.579998"><ele>1151</ele></trkpt>
+    <trkpt lat="48.966434" lon="19.580054"><ele>1158</ele></trkpt>
     <trkpt lat="48.967799" lon="19.579951"><ele>1142</ele></trkpt>
     <trkpt lat="48.968155" lon="19.580088"><ele>1137</ele></trkpt>
     <trkpt lat="48.968364" lon="19.580334"><ele>1134</ele></trkpt>
@@ -414,10 +412,8 @@
   <trk><name>Vyšné Priečne</name><desc>vysne-priecne-demanovska-jaskyna-ina-cesta</desc><trkseg>
     <trkpt lat="48.996368" lon="19.582603"><ele>842</ele></trkpt>
     <trkpt lat="48.996285" lon="19.582589"><ele>841</ele></trkpt>
-    <trkpt lat="48.996232" lon="19.582754"><ele>837</ele></trkpt>
-    <trkpt lat="48.995997" lon="19.583004"><ele>839</ele></trkpt>
-    <trkpt lat="48.995793" lon="19.583379"><ele>841</ele></trkpt>
-    <trkpt lat="48.995682" lon="19.583446"><ele>844</ele></trkpt>
+    <trkpt lat="48.996237" lon="19.582741"><ele>838</ele></trkpt>
+    <trkpt lat="48.995974" lon="19.583011"><ele>839</ele></trkpt>
     <trkpt lat="48.995648" lon="19.583525"><ele>845</ele></trkpt>
     <trkpt lat="48.995493" lon="19.583454"><ele>848</ele></trkpt>
     <trkpt lat="48.995440" lon="19.583508"><ele>851</ele></trkpt>
@@ -785,10 +781,8 @@
     <trkpt lat="48.995440" lon="19.583508"><ele>851</ele></trkpt>
     <trkpt lat="48.995493" lon="19.583454"><ele>848</ele></trkpt>
     <trkpt lat="48.995648" lon="19.583525"><ele>845</ele></trkpt>
-    <trkpt lat="48.995682" lon="19.583446"><ele>844</ele></trkpt>
-    <trkpt lat="48.995793" lon="19.583379"><ele>841</ele></trkpt>
-    <trkpt lat="48.995997" lon="19.583004"><ele>839</ele></trkpt>
-    <trkpt lat="48.996232" lon="19.582754"><ele>837</ele></trkpt>
+    <trkpt lat="48.995974" lon="19.583011"><ele>839</ele></trkpt>
+    <trkpt lat="48.996237" lon="19.582741"><ele>838</ele></trkpt>
     <trkpt lat="48.996285" lon="19.582589"><ele>841</ele></trkpt>
     <trkpt lat="48.996368" lon="19.582603"><ele>842</ele></trkpt>
   </trkseg></trk>

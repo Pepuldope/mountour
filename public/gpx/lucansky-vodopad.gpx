@@ -84,6 +84,21 @@
     <trkpt lat="49.126123" lon="19.415040"><ele>563</ele></trkpt>
     <trkpt lat="49.126050" lon="19.415144"><ele>563</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Lúčanský vodopád</name><desc>lucansky-vodopad-od-auta</desc><trkseg>
+    <trkpt lat="49.128986" lon="19.404016"><ele>586</ele></trkpt>
+    <trkpt lat="49.128822" lon="19.403450"><ele>582</ele></trkpt>
+    <trkpt lat="49.129142" lon="19.403223"><ele>587</ele></trkpt>
+    <trkpt lat="49.129280" lon="19.402899"><ele>592</ele></trkpt>
+    <trkpt lat="49.129422" lon="19.402839"><ele>596</ele></trkpt>
+    <trkpt lat="49.129464" lon="19.402924"><ele>595</ele></trkpt>
+    <trkpt lat="49.129645" lon="19.402813"><ele>600</ele></trkpt>
+    <trkpt lat="49.129464" lon="19.402924"><ele>595</ele></trkpt>
+    <trkpt lat="49.129422" lon="19.402839"><ele>596</ele></trkpt>
+    <trkpt lat="49.129280" lon="19.402899"><ele>592</ele></trkpt>
+    <trkpt lat="49.129142" lon="19.403223"><ele>587</ele></trkpt>
+    <trkpt lat="49.128822" lon="19.403450"><ele>582</ele></trkpt>
+    <trkpt lat="49.128986" lon="19.404016"><ele>586</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Lúčanský vodopád</name><desc>lucansky-vodopad-turik</desc><trkseg>
     <trkpt lat="49.097554" lon="19.388074"><ele>512</ele></trkpt>
     <trkpt lat="49.097725" lon="19.387866"><ele>512</ele></trkpt>
@@ -312,21 +327,6 @@
     <trkpt lat="49.097913" lon="19.387725"><ele>513</ele></trkpt>
     <trkpt lat="49.097725" lon="19.387866"><ele>512</ele></trkpt>
     <trkpt lat="49.097554" lon="19.388074"><ele>512</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Lúčanský vodopád</name><desc>lucansky-vodopad-od-auta</desc><trkseg>
-    <trkpt lat="49.128986" lon="19.404016"><ele>586</ele></trkpt>
-    <trkpt lat="49.128822" lon="19.403450"><ele>582</ele></trkpt>
-    <trkpt lat="49.129142" lon="19.403223"><ele>587</ele></trkpt>
-    <trkpt lat="49.129280" lon="19.402899"><ele>592</ele></trkpt>
-    <trkpt lat="49.129422" lon="19.402839"><ele>596</ele></trkpt>
-    <trkpt lat="49.129464" lon="19.402924"><ele>595</ele></trkpt>
-    <trkpt lat="49.129645" lon="19.402813"><ele>600</ele></trkpt>
-    <trkpt lat="49.129464" lon="19.402924"><ele>595</ele></trkpt>
-    <trkpt lat="49.129422" lon="19.402839"><ele>596</ele></trkpt>
-    <trkpt lat="49.129280" lon="19.402899"><ele>592</ele></trkpt>
-    <trkpt lat="49.129142" lon="19.403223"><ele>587</ele></trkpt>
-    <trkpt lat="49.128822" lon="19.403450"><ele>582</ele></trkpt>
-    <trkpt lat="49.128986" lon="19.404016"><ele>586</ele></trkpt>
   </trkseg></trk>
   <trk><name>Lúčanský vodopád</name><desc>lucansky-vodopad-woodlandia</desc><trkseg>
     <trkpt lat="49.139787" lon="19.464413"><ele>612</ele></trkpt>

@@ -78,11 +78,6 @@
     <trkpt lat="48.450741" lon="18.883995"><ele>699</ele></trkpt>
     <trkpt lat="48.450773" lon="18.884176"><ele>695</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Nový zámok</name><desc>novy-zamok-od-auta</desc><trkseg>
-    <trkpt lat="48.455978" lon="18.894930"><ele>634</ele></trkpt>
-    <trkpt lat="48.455977" lon="18.894431"><ele>633</ele></trkpt>
-    <trkpt lat="48.455978" lon="18.894930"><ele>634</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Nový zámok</name><desc>novy-zamok-dolny-hodrussky-jarok</desc><trkseg>
     <trkpt lat="48.466996" lon="18.866445"><ele>766</ele></trkpt>
     <trkpt lat="48.467113" lon="18.866558"><ele>768</ele></trkpt>
@@ -229,5 +224,10 @@
     <trkpt lat="48.467201" lon="18.866759"><ele>770</ele></trkpt>
     <trkpt lat="48.467113" lon="18.866558"><ele>768</ele></trkpt>
     <trkpt lat="48.466996" lon="18.866445"><ele>766</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Nový zámok</name><desc>novy-zamok-od-auta</desc><trkseg>
+    <trkpt lat="48.455978" lon="18.894930"><ele>634</ele></trkpt>
+    <trkpt lat="48.455977" lon="18.894431"><ele>633</ele></trkpt>
+    <trkpt lat="48.455978" lon="18.894930"><ele>634</ele></trkpt>
   </trkseg></trk>
 </gpx>

@@ -66,6 +66,21 @@
     <trkpt lat="48.750471" lon="19.846161"><ele>795</ele></trkpt>
     <trkpt lat="48.750585" lon="19.846221"><ele>801</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Rozhľadňa Zbojská</name><desc>rozhladna-zbojska-od-auta</desc><trkseg>
+    <trkpt lat="48.743696" lon="19.850921"><ele>732</ele></trkpt>
+    <trkpt lat="48.743519" lon="19.850891"><ele>734</ele></trkpt>
+    <trkpt lat="48.742925" lon="19.850953"><ele>739</ele></trkpt>
+    <trkpt lat="48.742116" lon="19.850653"><ele>750</ele></trkpt>
+    <trkpt lat="48.742038" lon="19.850600"><ele>751</ele></trkpt>
+    <trkpt lat="48.741596" lon="19.850062"><ele>757</ele></trkpt>
+    <trkpt lat="48.741371" lon="19.849696"><ele>760</ele></trkpt>
+    <trkpt lat="48.741596" lon="19.850062"><ele>757</ele></trkpt>
+    <trkpt lat="48.742038" lon="19.850600"><ele>751</ele></trkpt>
+    <trkpt lat="48.742116" lon="19.850653"><ele>750</ele></trkpt>
+    <trkpt lat="48.742925" lon="19.850953"><ele>739</ele></trkpt>
+    <trkpt lat="48.743519" lon="19.850891"><ele>734</ele></trkpt>
+    <trkpt lat="48.743696" lon="19.850921"><ele>732</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Rozhľadňa Zbojská</name><desc>rozhladna-zbojska-tisovec-slavca</desc><trkseg>
     <trkpt lat="48.691907" lon="19.933107"><ele>433</ele></trkpt>
     <trkpt lat="48.691666" lon="19.933028"><ele>433</ele></trkpt>
@@ -498,20 +513,5 @@
     <trkpt lat="48.694667" lon="19.929801"><ele>440</ele></trkpt>
     <trkpt lat="48.691666" lon="19.933028"><ele>433</ele></trkpt>
     <trkpt lat="48.691907" lon="19.933107"><ele>433</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Rozhľadňa Zbojská</name><desc>rozhladna-zbojska-od-auta</desc><trkseg>
-    <trkpt lat="48.743696" lon="19.850921"><ele>732</ele></trkpt>
-    <trkpt lat="48.743519" lon="19.850891"><ele>734</ele></trkpt>
-    <trkpt lat="48.742925" lon="19.850953"><ele>739</ele></trkpt>
-    <trkpt lat="48.742116" lon="19.850653"><ele>750</ele></trkpt>
-    <trkpt lat="48.742038" lon="19.850600"><ele>751</ele></trkpt>
-    <trkpt lat="48.741596" lon="19.850062"><ele>757</ele></trkpt>
-    <trkpt lat="48.741371" lon="19.849696"><ele>760</ele></trkpt>
-    <trkpt lat="48.741596" lon="19.850062"><ele>757</ele></trkpt>
-    <trkpt lat="48.742038" lon="19.850600"><ele>751</ele></trkpt>
-    <trkpt lat="48.742116" lon="19.850653"><ele>750</ele></trkpt>
-    <trkpt lat="48.742925" lon="19.850953"><ele>739</ele></trkpt>
-    <trkpt lat="48.743519" lon="19.850891"><ele>734</ele></trkpt>
-    <trkpt lat="48.743696" lon="19.850921"><ele>732</ele></trkpt>
   </trkseg></trk>
 </gpx>

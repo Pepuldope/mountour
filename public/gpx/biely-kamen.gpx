@@ -105,6 +105,33 @@
     <trkpt lat="48.258159" lon="17.187374"><ele>386</ele></trkpt>
     <trkpt lat="48.258141" lon="17.187085"><ele>385</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Biely Kameň</name><desc>biely-kamen-od-auta</desc><trkseg>
+    <trkpt lat="48.262321" lon="17.196754"><ele>254</ele></trkpt>
+    <trkpt lat="48.261749" lon="17.198422"><ele>254</ele></trkpt>
+    <trkpt lat="48.261662" lon="17.199164"><ele>239</ele></trkpt>
+    <trkpt lat="48.261534" lon="17.199199"><ele>248</ele></trkpt>
+    <trkpt lat="48.261509" lon="17.199368"><ele>248</ele></trkpt>
+    <trkpt lat="48.261440" lon="17.199496"><ele>251</ele></trkpt>
+    <trkpt lat="48.261248" lon="17.199814"><ele>259</ele></trkpt>
+    <trkpt lat="48.261101" lon="17.199959"><ele>264</ele></trkpt>
+    <trkpt lat="48.261120" lon="17.199511"><ele>269</ele></trkpt>
+    <trkpt lat="48.261044" lon="17.199018"><ele>274</ele></trkpt>
+    <trkpt lat="48.261024" lon="17.198647"><ele>277</ele></trkpt>
+    <trkpt lat="48.261140" lon="17.197865"><ele>289</ele></trkpt>
+    <trkpt lat="48.261504" lon="17.196953"><ele>294</ele></trkpt>
+    <trkpt lat="48.261140" lon="17.197865"><ele>289</ele></trkpt>
+    <trkpt lat="48.261060" lon="17.198314"><ele>281</ele></trkpt>
+    <trkpt lat="48.261029" lon="17.198827"><ele>275</ele></trkpt>
+    <trkpt lat="48.261120" lon="17.199511"><ele>269</ele></trkpt>
+    <trkpt lat="48.261101" lon="17.199959"><ele>264</ele></trkpt>
+    <trkpt lat="48.261137" lon="17.199944"><ele>263</ele></trkpt>
+    <trkpt lat="48.261248" lon="17.199814"><ele>259</ele></trkpt>
+    <trkpt lat="48.261509" lon="17.199368"><ele>248</ele></trkpt>
+    <trkpt lat="48.261534" lon="17.199199"><ele>248</ele></trkpt>
+    <trkpt lat="48.261662" lon="17.199164"><ele>239</ele></trkpt>
+    <trkpt lat="48.261749" lon="17.198422"><ele>254</ele></trkpt>
+    <trkpt lat="48.262321" lon="17.196754"><ele>254</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Biely Kameň</name><desc>biely-kamen-svaty-jur-infocentrum-ina-cesta</desc><trkseg>
     <trkpt lat="48.256242" lon="17.208815"><ele>180</ele></trkpt>
     <trkpt lat="48.256014" lon="17.209290"><ele>179</ele></trkpt>
@@ -179,32 +206,5 @@
     <trkpt lat="48.256006" lon="17.209371"><ele>179</ele></trkpt>
     <trkpt lat="48.256014" lon="17.209290"><ele>179</ele></trkpt>
     <trkpt lat="48.256242" lon="17.208815"><ele>180</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Biely Kameň</name><desc>biely-kamen-od-auta</desc><trkseg>
-    <trkpt lat="48.262321" lon="17.196754"><ele>254</ele></trkpt>
-    <trkpt lat="48.261749" lon="17.198422"><ele>254</ele></trkpt>
-    <trkpt lat="48.261662" lon="17.199164"><ele>239</ele></trkpt>
-    <trkpt lat="48.261534" lon="17.199199"><ele>248</ele></trkpt>
-    <trkpt lat="48.261509" lon="17.199368"><ele>248</ele></trkpt>
-    <trkpt lat="48.261440" lon="17.199496"><ele>251</ele></trkpt>
-    <trkpt lat="48.261248" lon="17.199814"><ele>259</ele></trkpt>
-    <trkpt lat="48.261101" lon="17.199959"><ele>264</ele></trkpt>
-    <trkpt lat="48.261120" lon="17.199511"><ele>269</ele></trkpt>
-    <trkpt lat="48.261044" lon="17.199018"><ele>274</ele></trkpt>
-    <trkpt lat="48.261024" lon="17.198647"><ele>277</ele></trkpt>
-    <trkpt lat="48.261140" lon="17.197865"><ele>289</ele></trkpt>
-    <trkpt lat="48.261504" lon="17.196953"><ele>294</ele></trkpt>
-    <trkpt lat="48.261140" lon="17.197865"><ele>289</ele></trkpt>
-    <trkpt lat="48.261060" lon="17.198314"><ele>281</ele></trkpt>
-    <trkpt lat="48.261029" lon="17.198827"><ele>275</ele></trkpt>
-    <trkpt lat="48.261120" lon="17.199511"><ele>269</ele></trkpt>
-    <trkpt lat="48.261101" lon="17.199959"><ele>264</ele></trkpt>
-    <trkpt lat="48.261137" lon="17.199944"><ele>263</ele></trkpt>
-    <trkpt lat="48.261248" lon="17.199814"><ele>259</ele></trkpt>
-    <trkpt lat="48.261509" lon="17.199368"><ele>248</ele></trkpt>
-    <trkpt lat="48.261534" lon="17.199199"><ele>248</ele></trkpt>
-    <trkpt lat="48.261662" lon="17.199164"><ele>239</ele></trkpt>
-    <trkpt lat="48.261749" lon="17.198422"><ele>254</ele></trkpt>
-    <trkpt lat="48.262321" lon="17.196754"><ele>254</ele></trkpt>
   </trkseg></trk>
 </gpx>

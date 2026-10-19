@@ -136,15 +136,6 @@
     <trkpt lat="48.762160" lon="21.234582"><ele>444</ele></trkpt>
     <trkpt lat="48.762376" lon="21.234121"><ele>441</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Gloriet v Jakabovej záhrade</name><desc>gloriet-v-jakabovej-zahrade-od-auta</desc><trkseg>
-    <trkpt lat="48.756764" lon="21.251124"><ele>213</ele></trkpt>
-    <trkpt lat="48.756258" lon="21.251392"><ele>215</ele></trkpt>
-    <trkpt lat="48.755875" lon="21.250118"><ele>216</ele></trkpt>
-    <trkpt lat="48.755199" lon="21.248254"><ele>216</ele></trkpt>
-    <trkpt lat="48.755875" lon="21.250118"><ele>216</ele></trkpt>
-    <trkpt lat="48.756258" lon="21.251392"><ele>215</ele></trkpt>
-    <trkpt lat="48.756764" lon="21.251124"><ele>213</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Gloriet v Jakabovej záhrade</name><desc>gloriet-v-jakabovej-zahrade-dolny-bankov</desc><trkseg>
     <trkpt lat="48.747112" lon="21.207468"><ele>373</ele></trkpt>
     <trkpt lat="48.747173" lon="21.207468"><ele>371</ele></trkpt>
@@ -626,5 +617,14 @@
     <trkpt lat="48.747260" lon="21.207579"><ele>368</ele></trkpt>
     <trkpt lat="48.747173" lon="21.207468"><ele>371</ele></trkpt>
     <trkpt lat="48.747112" lon="21.207468"><ele>373</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Gloriet v Jakabovej záhrade</name><desc>gloriet-v-jakabovej-zahrade-od-auta</desc><trkseg>
+    <trkpt lat="48.756764" lon="21.251124"><ele>213</ele></trkpt>
+    <trkpt lat="48.756258" lon="21.251392"><ele>215</ele></trkpt>
+    <trkpt lat="48.755875" lon="21.250118"><ele>216</ele></trkpt>
+    <trkpt lat="48.755199" lon="21.248254"><ele>216</ele></trkpt>
+    <trkpt lat="48.755875" lon="21.250118"><ele>216</ele></trkpt>
+    <trkpt lat="48.756258" lon="21.251392"><ele>215</ele></trkpt>
+    <trkpt lat="48.756764" lon="21.251124"><ele>213</ele></trkpt>
   </trkseg></trk>
 </gpx>

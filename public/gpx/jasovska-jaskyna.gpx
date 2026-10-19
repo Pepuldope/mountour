@@ -270,23 +270,6 @@
     <trkpt lat="48.675678" lon="20.878592"><ele>413</ele></trkpt>
     <trkpt lat="48.674969" lon="20.876941"><ele>406</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Jasovská jaskyňa</name><desc>jasovska-jaskyna-od-auta</desc><trkseg>
-    <trkpt lat="48.678755" lon="20.976756"><ele>257</ele></trkpt>
-    <trkpt lat="48.678638" lon="20.977129"><ele>256</ele></trkpt>
-    <trkpt lat="48.678417" lon="20.977023"><ele>256</ele></trkpt>
-    <trkpt lat="48.678163" lon="20.976976"><ele>257</ele></trkpt>
-    <trkpt lat="48.677973" lon="20.976822"><ele>260</ele></trkpt>
-    <trkpt lat="48.677899" lon="20.976810"><ele>262</ele></trkpt>
-    <trkpt lat="48.677527" lon="20.976951"><ele>267</ele></trkpt>
-    <trkpt lat="48.677222" lon="20.977177"><ele>261</ele></trkpt>
-    <trkpt lat="48.677527" lon="20.976951"><ele>267</ele></trkpt>
-    <trkpt lat="48.677899" lon="20.976810"><ele>262</ele></trkpt>
-    <trkpt lat="48.677973" lon="20.976822"><ele>260</ele></trkpt>
-    <trkpt lat="48.678163" lon="20.976976"><ele>257</ele></trkpt>
-    <trkpt lat="48.678417" lon="20.977023"><ele>256</ele></trkpt>
-    <trkpt lat="48.678638" lon="20.977129"><ele>256</ele></trkpt>
-    <trkpt lat="48.678755" lon="20.976756"><ele>257</ele></trkpt>
-  </trkseg></trk>
   <trk><name>Jasovská jaskyňa</name><desc>jasovska-jaskyna-drienovec</desc><trkseg>
     <trkpt lat="48.607570" lon="20.950525"><ele>189</ele></trkpt>
     <trkpt lat="48.607081" lon="20.951177"><ele>189</ele></trkpt>
@@ -820,5 +803,22 @@
     <trkpt lat="48.607355" lon="20.951322"><ele>189</ele></trkpt>
     <trkpt lat="48.607081" lon="20.951177"><ele>189</ele></trkpt>
     <trkpt lat="48.607570" lon="20.950525"><ele>189</ele></trkpt>
+  </trkseg></trk>
+  <trk><name>Jasovská jaskyňa</name><desc>jasovska-jaskyna-od-auta</desc><trkseg>
+    <trkpt lat="48.678755" lon="20.976756"><ele>257</ele></trkpt>
+    <trkpt lat="48.678638" lon="20.977129"><ele>256</ele></trkpt>
+    <trkpt lat="48.678417" lon="20.977023"><ele>256</ele></trkpt>
+    <trkpt lat="48.678163" lon="20.976976"><ele>257</ele></trkpt>
+    <trkpt lat="48.677973" lon="20.976822"><ele>260</ele></trkpt>
+    <trkpt lat="48.677899" lon="20.976810"><ele>262</ele></trkpt>
+    <trkpt lat="48.677527" lon="20.976951"><ele>267</ele></trkpt>
+    <trkpt lat="48.677222" lon="20.977177"><ele>261</ele></trkpt>
+    <trkpt lat="48.677527" lon="20.976951"><ele>267</ele></trkpt>
+    <trkpt lat="48.677899" lon="20.976810"><ele>262</ele></trkpt>
+    <trkpt lat="48.677973" lon="20.976822"><ele>260</ele></trkpt>
+    <trkpt lat="48.678163" lon="20.976976"><ele>257</ele></trkpt>
+    <trkpt lat="48.678417" lon="20.977023"><ele>256</ele></trkpt>
+    <trkpt lat="48.678638" lon="20.977129"><ele>256</ele></trkpt>
+    <trkpt lat="48.678755" lon="20.976756"><ele>257</ele></trkpt>
   </trkseg></trk>
 </gpx>

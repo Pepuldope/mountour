@@ -273,6 +273,19 @@
     <trkpt lat="49.133376" lon="19.419799"><ele>580</ele></trkpt>
     <trkpt lat="49.133449" lon="19.419820"><ele>580</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Woodlandia</name><desc>woodlandia-od-auta</desc><trkseg>
+    <trkpt lat="49.139444" lon="19.464182"><ele>611</ele></trkpt>
+    <trkpt lat="49.139497" lon="19.464152"><ele>611</ele></trkpt>
+    <trkpt lat="49.139806" lon="19.464451"><ele>612</ele></trkpt>
+    <trkpt lat="49.140022" lon="19.463829"><ele>612</ele></trkpt>
+    <trkpt lat="49.140435" lon="19.461210"><ele>616</ele></trkpt>
+    <trkpt lat="49.140540" lon="19.460292"><ele>617</ele></trkpt>
+    <trkpt lat="49.140435" lon="19.461210"><ele>616</ele></trkpt>
+    <trkpt lat="49.140022" lon="19.463829"><ele>612</ele></trkpt>
+    <trkpt lat="49.139806" lon="19.464451"><ele>612</ele></trkpt>
+    <trkpt lat="49.139497" lon="19.464152"><ele>611</ele></trkpt>
+    <trkpt lat="49.139444" lon="19.464182"><ele>611</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Woodlandia</name><desc>woodlandia-vlasky-kostol</desc><trkseg>
     <trkpt lat="49.098077" lon="19.469915"><ele>522</ele></trkpt>
     <trkpt lat="49.098127" lon="19.470112"><ele>523</ele></trkpt>
@@ -473,18 +486,5 @@
     <trkpt lat="49.098335" lon="19.469935"><ele>524</ele></trkpt>
     <trkpt lat="49.098127" lon="19.470112"><ele>523</ele></trkpt>
     <trkpt lat="49.098077" lon="19.469915"><ele>522</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Woodlandia</name><desc>woodlandia-od-auta</desc><trkseg>
-    <trkpt lat="49.139444" lon="19.464182"><ele>611</ele></trkpt>
-    <trkpt lat="49.139497" lon="19.464152"><ele>611</ele></trkpt>
-    <trkpt lat="49.139806" lon="19.464451"><ele>612</ele></trkpt>
-    <trkpt lat="49.140022" lon="19.463829"><ele>612</ele></trkpt>
-    <trkpt lat="49.140435" lon="19.461210"><ele>616</ele></trkpt>
-    <trkpt lat="49.140540" lon="19.460292"><ele>617</ele></trkpt>
-    <trkpt lat="49.140435" lon="19.461210"><ele>616</ele></trkpt>
-    <trkpt lat="49.140022" lon="19.463829"><ele>612</ele></trkpt>
-    <trkpt lat="49.139806" lon="19.464451"><ele>612</ele></trkpt>
-    <trkpt lat="49.139497" lon="19.464152"><ele>611</ele></trkpt>
-    <trkpt lat="49.139444" lon="19.464182"><ele>611</ele></trkpt>
   </trkseg></trk>
 </gpx>

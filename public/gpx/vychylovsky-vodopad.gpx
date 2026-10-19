@@ -68,6 +68,15 @@
     <trkpt lat="49.380136" lon="19.088925"><ele>660</ele></trkpt>
     <trkpt lat="49.380312" lon="19.089982"><ele>662</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Vychylovský vodopád</name><desc>vychylovsky-vodopad-od-auta</desc><trkseg>
+    <trkpt lat="49.372986" lon="19.065269"><ele>611</ele></trkpt>
+    <trkpt lat="49.372536" lon="19.064777"><ele>611</ele></trkpt>
+    <trkpt lat="49.372299" lon="19.064434"><ele>612</ele></trkpt>
+    <trkpt lat="49.371571" lon="19.062588"><ele>610</ele></trkpt>
+    <trkpt lat="49.372299" lon="19.064434"><ele>612</ele></trkpt>
+    <trkpt lat="49.372536" lon="19.064777"><ele>611</ele></trkpt>
+    <trkpt lat="49.372986" lon="19.065269"><ele>611</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Vychylovský vodopád</name><desc>vychylovsky-vodopad-vychylovka-pavelkovia</desc><trkseg>
     <trkpt lat="49.363057" lon="19.050253"><ele>584</ele></trkpt>
     <trkpt lat="49.363516" lon="19.049735"><ele>588</ele></trkpt>
@@ -270,14 +279,5 @@
     <trkpt lat="49.363588" lon="19.049561"><ele>589</ele></trkpt>
     <trkpt lat="49.363516" lon="19.049735"><ele>588</ele></trkpt>
     <trkpt lat="49.363057" lon="19.050253"><ele>584</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Vychylovský vodopád</name><desc>vychylovsky-vodopad-od-auta</desc><trkseg>
-    <trkpt lat="49.372986" lon="19.065269"><ele>611</ele></trkpt>
-    <trkpt lat="49.372536" lon="19.064777"><ele>611</ele></trkpt>
-    <trkpt lat="49.372299" lon="19.064434"><ele>612</ele></trkpt>
-    <trkpt lat="49.371571" lon="19.062588"><ele>610</ele></trkpt>
-    <trkpt lat="49.372299" lon="19.064434"><ele>612</ele></trkpt>
-    <trkpt lat="49.372536" lon="19.064777"><ele>611</ele></trkpt>
-    <trkpt lat="49.372986" lon="19.065269"><ele>611</ele></trkpt>
   </trkseg></trk>
 </gpx>

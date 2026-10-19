@@ -551,6 +551,15 @@
     <trkpt lat="49.062722" lon="18.279809"><ele>279</ele></trkpt>
     <trkpt lat="49.062556" lon="18.280454"><ele>278</ele></trkpt>
   </trkseg></trk>
+  <trk><name>Hrad Lednica</name><desc>lednica-od-auta</desc><trkseg>
+    <trkpt lat="49.110264" lon="18.213289"><ele>401</ele></trkpt>
+    <trkpt lat="49.110409" lon="18.213014"><ele>403</ele></trkpt>
+    <trkpt lat="49.110556" lon="18.212827"><ele>403</ele></trkpt>
+    <trkpt lat="49.111031" lon="18.212453"><ele>404</ele></trkpt>
+    <trkpt lat="49.110556" lon="18.212827"><ele>403</ele></trkpt>
+    <trkpt lat="49.110409" lon="18.213014"><ele>403</ele></trkpt>
+    <trkpt lat="49.110264" lon="18.213289"><ele>401</ele></trkpt>
+  </trkseg></trk>
   <trk><name>Hrad Lednica</name><desc>lednica-zubak</desc><trkseg>
     <trkpt lat="49.149382" lon="18.216886"><ele>424</ele></trkpt>
     <trkpt lat="49.149330" lon="18.216317"><ele>424</ele></trkpt>
@@ -777,14 +786,5 @@
     <trkpt lat="49.149171" lon="18.216254"><ele>424</ele></trkpt>
     <trkpt lat="49.149330" lon="18.216317"><ele>424</ele></trkpt>
     <trkpt lat="49.149382" lon="18.216886"><ele>424</ele></trkpt>
-  </trkseg></trk>
-  <trk><name>Hrad Lednica</name><desc>lednica-od-auta</desc><trkseg>
-    <trkpt lat="49.110264" lon="18.213289"><ele>401</ele></trkpt>
-    <trkpt lat="49.110409" lon="18.213014"><ele>403</ele></trkpt>
-    <trkpt lat="49.110556" lon="18.212827"><ele>403</ele></trkpt>
-    <trkpt lat="49.111031" lon="18.212453"><ele>404</ele></trkpt>
-    <trkpt lat="49.110556" lon="18.212827"><ele>403</ele></trkpt>
-    <trkpt lat="49.110409" lon="18.213014"><ele>403</ele></trkpt>
-    <trkpt lat="49.110264" lon="18.213289"><ele>401</ele></trkpt>
   </trkseg></trk>
 </gpx>
