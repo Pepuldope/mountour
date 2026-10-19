@@ -311,11 +311,18 @@ function UnusualTime({ time, text, better, onBetter, onKeep }: { time: string; t
     return () => window.removeEventListener("keydown", onKey);
   }, [onKeep]);
   return (
-    <div className="fixed inset-0 z-[60] flex items-end justify-center sm:items-center" role="alertdialog" aria-modal="true" aria-labelledby="unusual-time">
-      <div className="absolute inset-0 bg-black/45" onClick={onKeep} />
-      <div className="relative flex w-full flex-col gap-3 rounded-t-[20px] bg-[var(--card-bg)] px-5 pt-5 pb-[max(24px,env(safe-area-inset-bottom))] shadow-[var(--shadow-float)] sm:max-w-[420px] sm:rounded-[20px] sm:pb-5">
-        <h2 id="unusual-time" className="text-lg font-bold">
-          Naozaj o <span className="font-data">{time}</span>?
+    // In the middle of the screen, also on phones (Peter: a bottom sheet looked too unimportant).
+    <div className="fixed inset-0 z-[60] flex items-center justify-center px-4" role="alertdialog" aria-modal="true" aria-labelledby="unusual-time">
+      <div className="absolute inset-0 bg-black/50" onClick={onKeep} />
+      <div className="relative flex w-full max-w-[420px] flex-col gap-3 rounded-[20px] border-2 border-[var(--warn)] bg-[var(--card-bg)] p-5 shadow-[var(--shadow-float)]">
+        <h2 id="unusual-time" className="flex items-center gap-2 text-lg font-bold">
+          <svg viewBox="0 0 24 24" className="h-6 w-6 shrink-0 text-[var(--warn)]" aria-hidden="true">
+            <path d="M12 3 22 20H2z" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+            <path d="M12 9.5v4.5M12 16.8v.4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+          </svg>
+          <span>
+            Naozaj o <span className="font-data">{time}</span>?
+          </span>
         </h2>
         <p className="text-[15px]">{text}</p>
         <div className="flex flex-col gap-2 sm:flex-row-reverse">

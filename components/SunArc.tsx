@@ -292,6 +292,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
   // With the walker right in front of the sun, its glow and white ring would sit round the head like a halo.
   const behindWalker = onTrail && Math.hypot(sx - walker[0], sy - (walker[1] - 18)) < sunR + 18;
   const temp = now ? Math.round(now.temp - climbed * LAPSE_PER_M) : null;
+  const tempW = temp === null ? 0 : 20 + `${temp}`.length * 7;
 
   const marker = onTrail ? "walker" : inCar ? (byBus ? (byTrain ? "train" : "bus") : "car") : "dot";
   const goalWords = profile ? GOAL_WORDS[profile.goalKind] : null;
@@ -606,8 +607,9 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
           {/* The temperature at that moment, right under the time (higher up the trail it is colder). */}
           {temp !== null && (
             <>
-              <rect x={-50} y={26} width={50} height={20} rx={10} fill="#fff" opacity={0.92} />
-              <text x={-25} y={40.5} textAnchor="middle" fontSize={13.5} fontWeight={700} fill="#14233b" className="font-data">
+              {/* As narrow as its number: "8 °C" needs less room than "-12 °C". */}
+              <rect x={-tempW} y={25} width={tempW} height={16} rx={8} fill="#fff" opacity={0.92} />
+              <text x={-tempW / 2} y={37} textAnchor="middle" fontSize={12} fontWeight={700} fill="#14233b" className="font-data">
                 {temp} °C
               </text>
             </>
@@ -619,12 +621,13 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         onClick={() => setPlaying((p) => !p)}
         aria-pressed={playing}
         aria-label={playing ? "Zastaviť" : "Prehrať celý deň"}
-        className="absolute top-[2.2%] left-[2.2%] inline-flex h-7 items-center gap-1 rounded-full bg-white/90 pr-2.5 pl-2 text-[13px] font-bold text-[#14233b] shadow-sm focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+        title={playing ? "Zastaviť" : "Prehrať celý deň"}
+        className="absolute top-[2.2%] left-[2.2%] inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-[#14233b] shadow-sm focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
       >
-        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
-          {playing ? <path d="M4 3h3v10H4zM9 3h3v10H9z" fill="currentColor" /> : <path d="M4.5 2.5v11l9-5.5z" fill="currentColor" />}
+        {/* Just the sign, so it hides as little of the sky and weather as it can. */}
+        <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+          {playing ? <path d="M4 3h3v10H4zM9 3h3v10H9z" fill="currentColor" /> : <path d="M5 2.5v11l9-5.5z" fill="currentColor" />}
         </svg>
-        {playing ? "Stop" : "Prehrať"}
       </button>
       </div>
 
