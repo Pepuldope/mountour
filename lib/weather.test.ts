@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { baseSymbol, skyKind, summarize, tripWeatherReport, weatherAt, weatherNotes, weatherWords } from "@/lib/weather";
+import { baseSymbol, betterDay, skyKind, summarize, tripWeatherReport, weatherAt, weatherNotes, weatherWords } from "@/lib/weather";
 import type { WeatherForecast } from "@/lib/weather";
 
 const hourly = (h: number, temp: number, rain: number, symbol: string) => ({
@@ -128,3 +128,36 @@ describe("trip weather report", () => {
 function hm(d: Date) {
   return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
 }
+
+describe("better day", () => {
+  // Six-hour steps from Friday 23 Oct to Tuesday 27 Oct (local time), rain all Saturday.
+  const sixHourly = (symbolFor: (d: Date) => string): WeatherForecast => ({
+    updated: "2026-10-22T12:00:00Z",
+    steps: Array.from({ length: 4 * 5 }, (_, i) => {
+      const t = new Date(2026, 9, 23, i * 6);
+      const symbol = symbolFor(t);
+      return { t: t.toISOString(), temp: 8, wind: 3, rain: symbol.includes("rain") ? 3 : 0, hours: 6, symbol };
+    }),
+  });
+  const wetSaturday = sixHourly((t) => (t.getDate() === 24 ? "rain" : t.getDate() === 23 ? "cloudy" : "partlycloudy_day"));
+  const sat = [new Date(2026, 9, 24, 9), new Date(2026, 9, 24, 13)] as const;
+
+  it("suggests the next dry day at the same time, across the clock change", () => {
+    const r = betterDay(wetSaturday, null, sat[0], sat[1], new Date(2026, 9, 24, 7))!;
+    expect(r.offset).toBe(1);
+    expect(r.summary.symbol).toBe("partlycloudy");
+  });
+
+  it("prefers an earlier day when it is still ahead and as near", () => {
+    const r = betterDay(wetSaturday, null, sat[0], sat[1], new Date(2026, 9, 22, 20))!;
+    expect(r.offset).toBe(1);
+    const fridayOnly = sixHourly((t) => (t.getDate() === 23 ? "fair_day" : "rain"));
+    expect(betterDay(fridayOnly, null, sat[0], sat[1], new Date(2026, 9, 22, 20))!.offset).toBe(-1);
+  });
+
+  it("says nothing on a dry day or when every day is wet", () => {
+    expect(betterDay(wetSaturday, null, new Date(2026, 9, 25, 9), new Date(2026, 9, 25, 13), new Date(2026, 9, 24))).toBeNull();
+    const allWet = sixHourly(() => "rain");
+    expect(betterDay(allWet, null, sat[0], sat[1], new Date(2026, 9, 22))).toBeNull();
+  });
+});
