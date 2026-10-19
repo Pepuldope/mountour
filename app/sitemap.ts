@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next";
 import { getAllTrails } from "@/lib/tripFiles";
 import { absoluteUrl } from "@/lib/site";
+import { getTowns } from "@/lib/trips";
 
 // Built once per deploy (every push to main, including the weekly trip refresh), so new
 // trips appear without touching this file and the Worker never re-reads the index for it.
 export const dynamic = "force-static";
 
-const INFO_PAGES = ["/zdroje", "/sukromie", "/upozornenie"];
+const INFO_PAGES = ["/o-nas", "/zdroje", "/sukromie", "/upozornenie"];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const trails = await getAllTrails();
@@ -17,6 +18,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly" as const,
       priority: 0.8,
     })),
+    { url: absoluteUrl("/vylety-z"), changeFrequency: "weekly" as const, priority: 0.6 },
+    ...getTowns().map((t) => ({ url: absoluteUrl(`/vylety-z/${t.id}`), changeFrequency: "weekly" as const, priority: 0.6 })),
     ...INFO_PAGES.map((path) => ({ url: absoluteUrl(path), changeFrequency: "yearly" as const, priority: 0.2 })),
   ];
 }
