@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { track } from "@/lib/analytics";
 import { reverseTown } from "@/lib/geocode";
 
 export interface UserFix {
@@ -102,12 +103,17 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
   const [fix, setFix] = useState<UserFix | null>(null);
   const [manual, setManual] = useState<Omit<StartPoint, "source"> | null>(null);
   const [ready, setReady] = useState(false);
+  // How the first start of this visit came about, for the "start_set" event.
+  const startHow = useRef<"gps" | "manual" | "remembered" | null>(null);
+  const startSent = useRef(false);
 
   // Restore after hydration (browser storage doesn't exist on the server).
   useEffect(() => {
+    const restored = readManual();
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setManual(readManual());
+    setManual(restored);
     const cached = readCached();
+    if (restored || cached) startHow.current = "remembered";
     if (cached) {
       setFix(cached);
       setStatus("ok");
@@ -129,6 +135,7 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
           accuracy: pos.coords.accuracy,
         };
         writeCached(next);
+        startHow.current = "gps";
         setFix(next);
         // Asking for GPS means "start from where I am": drop a typed place.
         writeManual(null);
@@ -151,6 +158,7 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
 
   const setManualStart = useCallback((place: Omit<StartPoint, "source"> | null) => {
     writeManual(place);
+    if (place) startHow.current = "manual";
     setManual(place);
   }, []);
 
@@ -159,6 +167,15 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
     if (fix) return { lat: fix.lat, lon: fix.lon, label: fix.town ?? "Vaša poloha", source: "gps" };
     return null;
   }, [manual, fix]);
+
+  // Activation: once per visit, the first time a start is known. Only how, never where.
+  useEffect(() => {
+    if (!start || startSent.current) return;
+    startSent.current = true;
+    const how = startHow.current ?? start.source;
+    // Umami's script loads after hydration; give it a moment, as TrackEvent does.
+    setTimeout(() => track("start_set", { how }), 1500);
+  }, [start]);
 
   const value = useMemo<UserLocationState>(
     () => ({ status, ready, fix, start, setManualStart, message: MESSAGES[status] ?? null, locate }),

@@ -10,7 +10,7 @@ import { useSavedTrips } from "@/lib/savedTrips";
 import { useTripSettings } from "@/lib/tripSettings";
 import type { TripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
-import { track } from "@/lib/analytics";
+import { sinceArrival, track } from "@/lib/analytics";
 import { ShareButton } from "@/components/ShareButton";
 import type { ShareInfo } from "@/components/ShareButton";
 
@@ -97,7 +97,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
     // While the drive or the trains load, the plan is still missing them: saving now would keep a wrong day.
     if (!date || !time || !sun || loading) return;
     setStatus("saving");
-    track("trip_saved", { trail: slug });
+    track("trip_saved", { trail: slug, took: sinceArrival() });
     save({
       slug,
       name,
