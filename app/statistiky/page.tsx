@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { InfoPage } from "@/components/InfoPage";
+import { monthlyEvents } from "@/lib/eventCounts";
 import { monthlyStats } from "@/lib/visitStore";
 
 export const metadata: Metadata = { title: "Štatistika návštev", robots: { index: false, follow: false } };
@@ -13,7 +14,7 @@ export const dynamic = "force-dynamic";
  * Sources, pages and events are in Umami.
  */
 export default async function StatsPage() {
-  const rows = await monthlyStats();
+  const [rows, events] = await Promise.all([monthlyStats(), monthlyEvents()]);
 
   return (
     <InfoPage
@@ -47,6 +48,41 @@ export default async function StatsPage() {
             ))}
           </tbody>
         </table>
+      )}
+      {events && events.length > 0 && (
+        <>
+          <h2>Plány</h2>
+          <p className="text-sm">
+            Koľkokrát v mesiaci bol zadaný štart, výlet uložený, plán poslaný (z toho do 2 minút od príchodu), plán
+            otvorený kamarátom a spustená navigácia.
+          </p>
+          <table className="w-full text-left text-sm">
+            <thead>
+              <tr className="border-b border-[var(--border)]">
+                <th className="py-2">Mesiac</th>
+                <th>Štart</th>
+                <th>Uložené</th>
+                <th>Poslané</th>
+                <th>Do 2 min</th>
+                <th>Otvorené</th>
+                <th>Navigácia</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.map((e) => (
+                <tr key={e.month} className="border-b border-[var(--border)]">
+                  <td className="py-2">{e.month}</td>
+                  <td>{e.starts}</td>
+                  <td>{e.saved}</td>
+                  <td className="font-semibold">{e.sent}</td>
+                  <td>{e.sentFast}</td>
+                  <td>{e.friendOpens}</td>
+                  <td>{e.navigations}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
       )}
       <p className="text-xs opacity-70">
         Človek, ktorému sa medzi dňami zmení IP adresa (napr. mobil na inej sieti), sa počíta ako dvaja ľudia, takže

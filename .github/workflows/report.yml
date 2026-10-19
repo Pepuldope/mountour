@@ -1,8 +1,9 @@
 name: Monthly report
 
-# The month's usage numbers (scripts/monthly_report.py): Umami events and the
-# D1 visit counter, as JSON and a table in the run's summary. Also the monthly
-# backup of the visit totals, the only D1 data not rebuilt from this repository.
+# The month's usage numbers (scripts/monthly_report.py): the site's own counters
+# in D1 (people, visit days, plan actions), as JSON and a table in the run's
+# summary. Also the monthly backup of those totals, the only D1 data not rebuilt
+# from this repository.
 # Reads only: nothing is written to D1 or deployed. Runs on the 1st for the
 # month before, or by hand from the Actions tab for any month.
 on:
@@ -39,7 +40,7 @@ jobs:
 
       # Finished months from visit_month, the running month from its raw rows (same sums as
       # lib/visitStore.ts). Totals only: no visitor hashes or salts leave the database.
-      - name: Read the visit counter
+      - name: Read the counters
         if: env.CF_READY == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -52,13 +53,13 @@ jobs:
                    SUM(days >= 4) AS visitors_4plus_days, ROUND(AVG(days), 2) AS avg_days
             FROM (SELECT substr(day, 1, 7) AS month, visitor, COUNT(*) AS days FROM visit_day GROUP BY 1, 2)
             GROUP BY month" > build/visits.json || rm -f build/visits.json
+          npx wrangler d1 execute "$DB" --remote --json \
+            --command "SELECT month, name, detail, n FROM event_month" > build/events.json || rm -f build/events.json
 
       - name: Make the report
-        env:
-          UMAMI_API_KEY: ${{ secrets.UMAMI_API_KEY }}
-          # Public anyway: it is in every page (lib/site.ts).
-          UMAMI_WEBSITE_ID: da63a714-c5cf-412f-8194-a13cefc0d4f6
-        run: python scripts/monthly_report.py --month "${{ inputs.month }}" --visits build/visits.json --out build/report
+        run: >-
+          python scripts/monthly_report.py --month "${{ inputs.month }}"
+          --visits build/visits.json --events build/events.json --out build/report
 
       - uses: actions/upload-artifact@v4
         with:

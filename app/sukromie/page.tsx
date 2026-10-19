@@ -35,6 +35,11 @@ export default function PrivacyPage() {
         adresu neukladáme a z odtlačku sa nedá spätne zistiť, kto ste. Po skončení mesiaca kľúč aj odtlačky
         zmažeme a ostanú len súhrnné čísla (napríklad „120 ľudí, z toho 15 aspoň 4 dni“).
       </p>
+      <p>
+        Pre niekoľko krokov (zadaný štart, uložený alebo poslaný plán, otvorený plán od kamaráta, navigácia) si
+        server navyše pripočíta jedna k mesačnému súčtu, pri pláne aj to, či to bolo do 2 minút od príchodu. Neukladá
+        sa pri tom nič o vás ani o mieste.
+      </p>
 
       <h2>Prihláška na testovanie a spätná väzba</h2>
       <p>
