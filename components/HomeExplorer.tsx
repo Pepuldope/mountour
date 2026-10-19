@@ -11,7 +11,7 @@ import { dayFit, dayInSentence, isoDate } from "@/lib/days";
 import { TOWN_EXACT_KM, estimateDriveMin, transitMinutes } from "@/lib/drive";
 import { DIFFICULTY_LABEL, GOAL_LABEL, GOAL_PLURAL, formatDurationShort } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
-import { GOAL_COLOUR } from "@/lib/palette";
+import { GOAL_COLOUR, POPULARITY_RAMP } from "@/lib/palette";
 import { seasonOf } from "@/lib/season";
 import type { DestinationKind, TripList } from "@/lib/tripSchema";
 import { getTowns, summaryFromList } from "@/lib/trips";
@@ -646,7 +646,7 @@ export function HomeExplorer({ trails: initial }: Props) {
         aria-hidden
       >
         <span className="flex items-center gap-1.5">
-          málo chodené <i className="block h-1.5 w-12 rounded-full bg-[linear-gradient(90deg,#ffe600,#f3a12f,#e8682a,#d9481f,#c8261b)]" /> obľúbené
+          málo chodené <PopularityKey /> obľúbené
         </span>
         <span className="flex items-center gap-1.5">
           <i className="block h-[3px] w-5 rounded-full bg-[#8a8f7a] opacity-60" /> chodník bez výletu
@@ -1021,5 +1021,26 @@ function OtherTrips({ title, items, onPick }: { title: string; items: { item: Tr
         );
       })}
     </div>
+  );
+}
+
+/** The map key: the five popularity levels as on the map, the quiet two dotted and dashed. */
+function PopularityKey() {
+  return (
+    <svg width="56" height="8" viewBox="0 0 56 8" className="block">
+      {POPULARITY_RAMP.map((c, p) => (
+        <line
+          key={c}
+          x1={p * 11.5 + 1}
+          x2={p * 11.5 + 9}
+          y1="4"
+          y2="4"
+          stroke={c}
+          strokeWidth={1.6 + 0.6 * p}
+          strokeLinecap={p === 0 ? "round" : "butt"}
+          strokeDasharray={p === 0 ? "0.1 3" : p === 1 ? "3 2" : undefined}
+        />
+      ))}
+    </svg>
   );
 }

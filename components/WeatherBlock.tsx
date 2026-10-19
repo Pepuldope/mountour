@@ -3,8 +3,9 @@
 import { useState } from "react";
 import type { DayPlan } from "@/lib/dayPlan";
 import { useCachedJson } from "@/lib/useDriveRoute";
-import { FORECAST_DAYS, summarize, tripWeatherReport, weatherNotes, weatherWords } from "@/lib/weather";
-import type { WeatherForecast, WeatherSummary } from "@/lib/weather";
+import { dayInSentence, isoDate } from "@/lib/days";
+import { FORECAST_DAYS, betterDay, summarize, tripWeatherReport, weatherNotes, weatherWords } from "@/lib/weather";
+import type { BetterDay, WeatherForecast, WeatherSummary } from "@/lib/weather";
 import type { LatLng } from "@/lib/types";
 
 type Goal = (LatLng & { ele: number | null; name: string }) | null;
@@ -79,7 +80,20 @@ const mm = (n: number) => String(n).replace(".", ",");
  * (even one light hour), and the storm, wind and frost warnings. By bus the
  * window is the whole day out, since waiting at a stop is outdoors too.
  */
-export function WeatherReport({ plan, weather, goal, wholeDay }: { plan: DayPlan; weather: TripWeather; goal: Goal; wholeDay: boolean }) {
+export function WeatherReport({
+  plan,
+  weather,
+  goal,
+  wholeDay,
+  onPickDay,
+}: {
+  plan: DayPlan;
+  weather: TripWeather;
+  goal: Goal;
+  wholeDay: boolean;
+  /** Moves the trip to another day (YYYY-MM-DD), for the drier-day suggestion. */
+  onPickDay?: (iso: string) => void;
+}) {
   if (weather.loading) return <p className="text-xs text-[var(--muted)]">Načítavam predpoveď počasia...</p>;
   if (!weather.below) return null;
   const from = wholeDay ? plan.segments[0].start : plan.hikeStart;
@@ -89,6 +103,8 @@ export function WeatherReport({ plan, weather, goal, wholeDay }: { plan: DayPlan
   const notes = weatherNotes(weather.below, weather.above, plan.hikeStart, plan.hikeEnd);
   const stormy = notes.some((n) => n.strong);
   const temps = r.tempMin === r.tempMax ? `${r.tempMin} °C` : `${r.tempMin} až ${r.tempMax} °C`;
+  // A wet or stormy walk always gets a next step: the nearest dry day in the forecast, same start time.
+  const better = onPickDay ? betterDay(weather.below, weather.above, plan.hikeStart, plan.hikeEnd, new Date()) : null;
 
   return (
     <section aria-label="Počasie" className="flex flex-col gap-1.5 text-sm">
@@ -115,6 +131,30 @@ export function WeatherReport({ plan, weather, goal, wholeDay }: { plan: DayPlan
           </p>
         )
       )}
+      {better && <BetterDayTip better={better} hikeStart={plan.hikeStart} onPickDay={onPickDay!} />}
     </section>
+  );
+}
+
+/** "Lepšie vyzerá v nedeľu: polojasno, 7 až 11 °C, bez zrážok." and a button that moves the plan there. */
+function BetterDayTip({ better, hikeStart, onPickDay }: { better: BetterDay; hikeStart: Date; onPickDay: (iso: string) => void }) {
+  const iso = isoDate(new Date(hikeStart.getFullYear(), hikeStart.getMonth(), hikeStart.getDate() + better.offset));
+  const when = dayInSentence(iso, new Date());
+  const s = better.summary;
+  const temps = s.tempMin === s.tempMax ? `${s.tempMin} °C` : `${s.tempMin} až ${s.tempMax} °C`;
+  return (
+    <div className="flex flex-col items-start gap-2 rounded-xl bg-[var(--accent-soft)] px-3 py-2.5">
+      <p>
+        <span className="font-semibold">Lepšie vyzerá {when}:</span> {weatherWords(s.symbol)}, {temps}, bez zrážok.
+      </p>
+      <button
+        type="button"
+        onClick={() => onPickDay(iso)}
+        className="rounded-[10px] bg-[var(--accent)] px-3 py-2 text-sm font-bold text-[var(--accent-contrast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+      >
+        {/* "v nedeľu 1. 11." -> "Prepnúť na nedeľu" */}
+        Prepnúť na {when.replace(/^vo? /, "").replace(/ \d.*$/, "")}
+      </button>
+    </div>
   );
 }

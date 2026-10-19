@@ -5,10 +5,26 @@ import type { DestinationKind, PoiKind } from "@/lib/tripSchema";
 
 /**
  * Trail popularity, quiet (0) to busiest (4): pipeline/network.py levels.
- * Bright yellow to red; quiet trails thin (and dotted in the prototype), the
- * reddest are the most popular and get a very thin white outline.
+ * Yellow to red; quiet trails thin, the reddest are the most popular and get a
+ * very thin white outline. The yellow is a deep one (#e0b000, not lemon
+ * #ffe600, which was 1.2:1 against the map), Peter's pick "D", 2026-10-19.
  */
-export const POPULARITY_RAMP = ["#ffe600", "#f3a12f", "#e8682a", "#d9481f", "#c8261b"] as const;
+export const POPULARITY_RAMP = ["#e0b000", "#ef9128", "#e2622a", "#cd421f", "#b31f1a"] as const;
+
+/**
+ * The two quietest levels also differ by shape, so they read without colour
+ * (red-green colour blindness, sun on the screen): dotted, then dashed, then
+ * solid. In line widths, for round-capped lines (the cap adds about one width).
+ */
+export const POPULARITY_DASH = [
+  "match",
+  ["get", "p"],
+  0,
+  ["literal", [0.01, 2.2]],
+  1,
+  ["literal", [1.4, 2.2]],
+  ["literal", [1, 0]],
+] as const;
 
 /** Outline around the busiest level only, about 0.8 px each side. */
 export const POPULARITY_TOP_OUTLINE = "#ffffff";
