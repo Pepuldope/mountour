@@ -41,7 +41,9 @@ export function PhoneTripMap({ detail, gpxUrl, others }: { detail: TrailDetail; 
       }
     >
       <TripMap detail={detail} gpxUrl={gpxUrl} others={others} tapOnly={!full} />
+      {/* Top left: the map's zoom buttons sit top right. */}
       <MapExpandButton
+        side="left"
         full={full}
         onClick={() => {
           setFull((f) => !f);

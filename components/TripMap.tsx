@@ -35,12 +35,6 @@ interface Props {
 
 /** Other routes in a muted slate: clearly not the walk you picked (that one keeps its trail colour), still easy to see. */
 const OTHER_ROUTE_COLOUR = "#6b7a93";
-/**
- * Other routes often leave from the same start along the same path as the picked one, which then
- * hid them. Each is drawn a little to one side (alternating, further out for the third and fourth).
- */
-const sideBySide = (i: number) => (i % 2 ? -1 : 1) * 6 * (1 + Math.floor(i / 2));
-
 /** An other route under the pointer (on the map or in the route list) lights up. */
 const OTHER_ROUTE_HOVER = "#1769d1";
 
@@ -109,10 +103,10 @@ export function TripMap({ detail, gpxUrl, others = [], tapOnly = false }: Props)
   const hovered = useHoveredRoute();
   const otherTracks = useMemo<MapTrack[]>(
     () =>
-      others.map((o, i) =>
+      others.map((o) =>
         o.slug === hovered
-          ? { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_HOVER, state: "selected", offset: sideBySide(i) }
-          : { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal", offset: sideBySide(i) }
+          ? { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_HOVER, state: "selected", showThrough: true }
+          : { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal", showThrough: true }
       ),
     [others, hovered]
   );

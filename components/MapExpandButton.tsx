@@ -1,12 +1,12 @@
 import { UiIcon } from "@/components/UiIcon";
 
 /** Phones: opens a map in the page full screen (where it can be moved and zoomed) and closes it again. */
-export function MapExpandButton({ full, onClick }: { full: boolean; onClick: () => void }) {
+export function MapExpandButton({ full, onClick, side = "right" }: { full: boolean; onClick: () => void; side?: "left" | "right" }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="absolute top-2.5 right-2.5 z-[6] inline-flex h-12 items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--card-bg)] px-4 text-[15px] font-bold shadow-[var(--shadow-float)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+      className={`absolute top-2.5 ${side === "left" ? "left-2.5" : "right-2.5"} z-[6] inline-flex h-12 items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card-bg)] px-3.5 text-[15px] font-bold shadow-[var(--shadow-float)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]`}
       style={full ? { top: "calc(10px + env(safe-area-inset-top))" } : undefined}
       aria-label={full ? "Zavrieť mapu" : "Mapa na celú obrazovku"}
     >
