@@ -16,6 +16,7 @@ import { SeasonScene } from "@/components/SeasonScene";
 import { UiIcon } from "@/components/UiIcon";
 import { FeeBlock } from "@/components/FeeBlock";
 import { ParkingBlock } from "@/components/ParkingBlock";
+import { PhoneTripMap } from "@/components/PhoneTripMap";
 import { PoiList } from "@/components/PoiList";
 import { StopsBlock } from "@/components/TransitBlock";
 import { ClosureBanner } from "@/components/ClosureBanner";
@@ -251,8 +252,8 @@ export default async function TripSheetPage({ params }: Props) {
             <ParkingBlock />
             <StopsBlock />
 
-            <div className="h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] lg:hidden">
-              <TripMap detail={detail} gpxUrl={gpxUrl} others={others} />
+            <div className="lg:hidden">
+              <PhoneTripMap detail={detail} gpxUrl={gpxUrl} others={others} />
             </div>
 
             {closures.length === 0 && <ClosureBanner closures={closures} />}

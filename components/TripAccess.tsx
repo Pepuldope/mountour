@@ -41,6 +41,8 @@ export interface TripAccess {
   transit: boolean;
   /** No car park at this start, only a stop: bus or train whatever the remembered choice. */
   noCar: boolean;
+  /** No stop near this start, only a car park: by car whatever the remembered choice. */
+  noBus: boolean;
   /** Where the walk to the trail starts: the chosen parking, or the stop. */
   walkFrom: LatLng | null;
   /** That walk on paths, worked out weekly (null: none stored, ask the router). */
@@ -70,6 +72,7 @@ const Ctx = createContext<TripAccess>({
   stop: null,
   transit: false,
   noCar: false,
+  noBus: false,
   walkFrom: null,
   walkLine: null,
   approachMin: 0,
@@ -139,8 +142,10 @@ export function TripAccessProvider({
   const [stopChoice, chooseStop] = usePick(STOP_KEY, slug, stops.length);
   // Without a car park the bus is the only way; the remembered choice stays as it is for other trips.
   const noCar = parkingLots.length === 0 && transitStops.length > 0;
+  // And the other way round: with no stop, a remembered "bus" would leave the day without a ride at all.
+  const noBus = transitStops.length === 0;
   const { travel } = useTripSettings();
-  const transit = noCar || travel === "transit";
+  const transit = noCar || (travel === "transit" && !noBus);
 
   const value = useMemo<TripAccess>(() => {
     const parking = parkingLots[choice] ?? null;
@@ -163,6 +168,7 @@ export function TripAccessProvider({
       stop,
       transit,
       noCar,
+      noBus,
       walkFrom: transit ? (stop?.location ?? null) : (parking?.location ?? null),
       walkLine: transit ? (stop?.walk ?? null) : (parking?.walk ?? null),
       approachMin: walk.approachMin,
@@ -170,7 +176,7 @@ export function TripAccessProvider({
       skip: join && join.skip_m > 0 ? join : null,
       walk,
     };
-  }, [parkingLots, stops, choice, choose, stopChoice, chooseStop, trailStart, trail, transit, noCar]);
+  }, [parkingLots, stops, choice, choose, stopChoice, chooseStop, trailStart, trail, transit, noCar, noBus]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

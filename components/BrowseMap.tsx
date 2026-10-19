@@ -10,6 +10,7 @@ import { GOAL_COLOUR, POPULARITY_DASH, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE, 
 import { lineFeeder } from "@/lib/mapFeed";
 import { fetchLines } from "@/lib/packedLines";
 import { attachTrailNetwork, cellsInView, LINE_TILE_MAX } from "@/lib/trailNetwork";
+import { setTapOnly } from "@/lib/mapGestures";
 import { useUserLocation } from "@/lib/userLocation";
 import { FALLBACK_STYLE, SLOVAKIA, hideBasePois } from "@/components/TrailMap";
 
@@ -74,6 +75,8 @@ interface Props {
   onTrailTap: (tap: { nearby: { slug: string; km: number }[]; x: number; y: number }) => void;
   /** Phones keep the bottom of the map free for the preview. */
   bottomInset: number;
+  /** Phones, map in the page: taps only, a drag scrolls the page (lib/mapGestures.ts). */
+  tapOnly?: boolean;
   ariaLabel: string;
 }
 
@@ -243,6 +246,7 @@ export function BrowseMap({
   onHover,
   onTrailTap,
   bottomInset,
+  tapOnly = false,
   ariaLabel,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -251,6 +255,9 @@ export function BrowseMap({
   const lines = useRef(new Map<string, { coords: number[][]; detailed: boolean }>());
   const [linesVersion, setLinesVersion] = useState(0);
   const handlers = useRef({ onView, onPick, onHover, onTrailTap });
+  useEffect(() => {
+    if (ctx) setTapOnly(ctx.map, tapOnly);
+  }, [ctx, tapOnly]);
   const tripsRef = useRef(trips);
   const areasRef = useRef(areas);
   const areaEls = useRef<HTMLElement[]>([]);

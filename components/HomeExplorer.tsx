@@ -22,6 +22,7 @@ import { useTripSettings } from "@/lib/tripSettings";
 import { useTownDrives } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { FilterChips, KidsSwitch } from "@/components/FilterChips";
+import { MapExpandButton } from "@/components/MapExpandButton";
 import { SeasonScene } from "@/components/SeasonScene";
 import { PullSky, SunPull } from "@/components/SunPull";
 import { UiIcon } from "@/components/UiIcon";
@@ -203,7 +204,7 @@ function fitsDay(i: TripCardItem): boolean {
 
 export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   const trails = useAllTrails(initial);
-  const { date, today, withKids, travel, update } = useTripSettings();
+  const { date, today, withKids, easier, travel, update } = useTripSettings();
   // Several kinds at once (testers): empty = every kind.
   const [goalFilter, setGoalFilter] = useState<DestinationKind[]>([]);
   const [diffFilter, setDiffFilter] = useState<Difficulty[]>([]);
@@ -292,7 +293,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
       const dest = destinations[i];
       const stop = nearestStop(detail);
       const table = drives?.minutes[detail.trail.slug] ?? null;
-      if (withKids && !detail.trail.family_friendly) return [];
+      if (easier && !detail.trail.family_friendly) return [];
       if (goalFilter.length > 0 && !goalFilter.includes(detail.trail.goal ?? "ine")) return [];
       if (diffFilter.length > 0 && !diffFilter.includes(detail.trail.difficulty)) return [];
       // Table missing (offline, or a trip newer than the table): a straight-line estimate beats a blank, marked with "~".
@@ -341,7 +342,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
     const late = open.filter((i) => !fitsDay(i));
     const noneFit = fitting.length === 0 && open.length > 0;
     return { listedAll: [...fitting, ...late, ...all.filter(out)], noneFit };
-  }, [trails, destinations, drives, driveStatus, withKids, goalFilter, diffFilter, date, today, start, transit]);
+  }, [trails, destinations, drives, driveStatus, withKids, easier, goalFilter, diffFilter, date, today, start, transit]);
 
   const bySlug = useMemo(() => new Map(listedAll.map((i) => [i.detail.trail.slug, i])), [listedAll]);
 
@@ -398,7 +399,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   }, [listedAll, words, matches, nameMatches, mapView]);
 
   // Cards come in pages; a new filter or another part of the map starts again from the first page.
-  const filterKey = [goalFilter.join(), diffFilter.join(), withKids, date, travel, query].join("|");
+  const filterKey = [goalFilter.join(), diffFilter.join(), withKids, easier, date, travel, query].join("|");
   const [paging, setPaging] = useState({ key: filterKey, n: PAGE });
   const limit = paging.key === filterKey ? paging.n : PAGE;
   const visible = useMemo(() => {
@@ -641,6 +642,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
           setPreview({ kind: "trail", ...t });
         }}
         bottomInset={isDesktop ? 0 : SHEET_INSET}
+        tapOnly={!isDesktop && !fullMap}
         ariaLabel="Mapa všetkých výletov"
       />
       <div
@@ -832,9 +834,9 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
                 Zrušiť filtre
               </button>
             )}
-            {withKids && (
-              <button type="button" onClick={() => update({ withKids: false })} className="font-semibold text-[var(--accent)] underline">
-                Zrušiť s deťmi
+            {easier && (
+              <button type="button" onClick={() => update({ easier: false })} className="font-semibold text-[var(--accent)] underline">
+                Ukázať aj náročnejšie trasy
               </button>
             )}
             {dayWord === "dnes" && (
@@ -912,7 +914,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
         <div className="sticky top-0 z-20 -mx-4 bg-[var(--background)] px-4 py-2 lg:static lg:mx-0 lg:bg-transparent lg:p-0">{tools}</div>
 
         {!isDesktop && (
-          // A card with gutters: a thumb beside it still scrolls the page past the map.
+          // A card with gutters; in the page the map only takes taps, so a thumb anywhere on it scrolls past (experimental).
           <div
             ref={mapCardRef}
             className={
@@ -922,16 +924,8 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
             }
           >
             {map}
-            <button
-              type="button"
-              onClick={() => setFullMap((v) => !v)}
-              className="absolute top-2.5 right-2.5 z-[6] grid h-10 w-10 place-items-center rounded-full border border-[var(--border)] bg-[var(--card-bg)] shadow-[var(--shadow-float)]"
-              style={fullMap ? { top: "calc(10px + env(safe-area-inset-top))" } : undefined}
-              aria-label={fullMap ? "Zavrieť mapu" : "Mapa na celú obrazovku"}
-              title={fullMap ? "Zavrieť mapu" : "Mapa na celú obrazovku"}
-            >
-              {fullMap ? <UiIcon name="close" size={14} /> : <UiIcon name="expand" size={18} />}
-            </button>
+            {/* Bigger now that the map in the page only takes taps (experimental): this is the way to move it. */}
+            <MapExpandButton full={fullMap} onClick={() => setFullMap((v) => !v)} />
           </div>
         )}
 
