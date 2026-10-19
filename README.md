@@ -123,3 +123,7 @@ departure, start, drive time) in localStorage and asks the service worker
 the trail at zoom 13-15 (`lib/tiles.ts`), and the build assets the page runs on.
 Build assets are served cache-first; pages network-first with the saved copy
 as the offline fallback. Removing a saved trip also drops its cache.
+
+## Licence
+
+All rights reserved: the code is public to read, not to reuse. See [LICENSE](LICENSE). Map data © OpenStreetMap contributors (ODbL).

@@ -1,0 +1,15 @@
+Copyright (c) 2026 Peter Nemčok. All rights reserved.
+
+The source code of MounTour is public so it can be read and reviewed, but it
+is not open source. No permission is granted to copy, modify, publish,
+distribute or run this code, in whole or in part, for any purpose, without
+written permission from the copyright holder.
+
+This does not cover:
+- Map and trail data from OpenStreetMap, © OpenStreetMap contributors,
+  available under the Open Database License (ODbL) 1.0:
+  https://www.openstreetmap.org/copyright
+- Other data sources listed on the site's /zdroje page, under their own terms.
+- Third-party libraries in package.json, under their own licences.
+
+Contact: https://github.com/Pepuldope/mountour/issues
