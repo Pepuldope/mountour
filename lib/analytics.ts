@@ -1,3 +1,5 @@
+import { COUNTED_HOSTS } from "@/lib/site";
+
 // Product events sent to Umami (see components/Analytics.tsx). Umami sets no
 // cookies and stores nothing on the device. Never put coordinates, typed
 // places or anything personal into event data: a trail slug is the most.
@@ -16,6 +18,9 @@ export type AnalyticsEvent =
   | "tester_signup_open"; // "Chcem testovať" footer link tapped
 
 type EventData = Record<string, string | number | boolean>;
+
+/** Also added to our own monthly totals (app/api/event, lib/eventCounts.ts), since Umami's free plan has no export. */
+const KEPT: ReadonlySet<AnalyticsEvent> = new Set(["start_set", "trip_saved", "share_sent", "shared_open", "nav_open"]);
 
 declare global {
   interface Window {
@@ -42,6 +47,13 @@ export function track(name: AnalyticsEvent, data?: EventData): void {
   if (typeof window === "undefined") return;
   try {
     window.umami?.track(name, data);
+    if (KEPT.has(name) && COUNTED_HOSTS.includes(window.location.host) && !navigator.webdriver) {
+      const detail = data?.took ?? data?.how ?? "";
+      const body = JSON.stringify({ name, detail });
+      if (!navigator.sendBeacon?.("/api/event", body)) {
+        fetch("/api/event", { method: "POST", body, keepalive: true }).catch(() => {});
+      }
+    }
   } catch {
     // Analytics must never break the app.
   }
