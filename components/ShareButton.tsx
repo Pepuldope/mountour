@@ -8,7 +8,7 @@ import type { Difficulty } from "@/lib/types";
 import { useUserLocation } from "@/lib/userLocation";
 import { useTripSettings } from "@/lib/tripSettings";
 import { useTripAccess } from "@/components/TripAccess";
-import { track } from "@/lib/analytics";
+import { sinceArrival, track } from "@/lib/analytics";
 
 export interface ShareInfo {
   slug: string;
@@ -63,11 +63,11 @@ export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Posl
       url,
     });
     // The URL is already the text's last line; passing it twice duplicates it in most chat apps.
-    track("share", { trail: trip.slug });
+    track("share", { trail: trip.slug, took: sinceArrival() });
     if (navigator.share) {
       try {
         await navigator.share({ text });
-        track("share_sent", { trail: trip.slug, how: "sheet" });
+        track("share_sent", { trail: trip.slug, how: "sheet", took: sinceArrival() });
         onShared?.();
       } catch {
         // Closed the sheet: nothing to do.
@@ -76,7 +76,7 @@ export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Posl
     }
     try {
       await navigator.clipboard.writeText(text);
-      track("share_sent", { trail: trip.slug, how: "copy" });
+      track("share_sent", { trail: trip.slug, how: "copy", took: sinceArrival() });
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
       onShared?.();

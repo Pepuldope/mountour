@@ -1,0 +1,68 @@
+name: Monthly report
+
+# The month's usage numbers (scripts/monthly_report.py): the site's own counters
+# in D1 (people, visit days, plan actions), as JSON and a table in the run's
+# summary. Also the monthly backup of those totals, the only D1 data not rebuilt
+# from this repository.
+# Reads only: nothing is written to D1 or deployed. Runs on the 1st for the
+# month before, or by hand from the Actions tab for any month.
+on:
+  schedule:
+    - cron: "17 4 1 * *"
+  workflow_dispatch:
+    inputs:
+      month:
+        description: "Month as YYYY-MM (empty = last month)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    env:
+      CF_READY: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
+      DB: mountour-visits
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v7
+        if: env.CF_READY == 'true'
+        with:
+          node-version: 22
+          cache: npm
+      - if: env.CF_READY == 'true'
+        run: npm ci --ignore-scripts
+
+      # Finished months from visit_month, the running month from its raw rows (same sums as
+      # lib/visitStore.ts). Totals only: no visitor hashes or salts leave the database.
+      - name: Read the counters
+        if: env.CF_READY == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          mkdir -p build
+          npx wrangler d1 execute "$DB" --remote --json --command "
+            SELECT month, visitors, visitors_2plus_days, visitors_4plus_days, avg_days FROM visit_month;
+            SELECT month, COUNT(*) AS visitors, SUM(days >= 2) AS visitors_2plus_days,
+                   SUM(days >= 4) AS visitors_4plus_days, ROUND(AVG(days), 2) AS avg_days
+            FROM (SELECT substr(day, 1, 7) AS month, visitor, COUNT(*) AS days FROM visit_day GROUP BY 1, 2)
+            GROUP BY month" > build/visits.json || rm -f build/visits.json
+          npx wrangler d1 execute "$DB" --remote --json \
+            --command "SELECT month, name, detail, n FROM event_month" > build/events.json || rm -f build/events.json
+
+      - name: Make the report
+        run: >-
+          python scripts/monthly_report.py --month "${{ inputs.month }}"
+          --visits build/visits.json --events build/events.json --out build/report
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: report
+          path: build/report/
+          retention-days: 90

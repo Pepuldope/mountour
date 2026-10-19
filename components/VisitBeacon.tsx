@@ -1,16 +1,17 @@
 "use client";
 
 import { useEffect } from "react";
-import { COUNTED_HOSTS } from "@/lib/site";
+import { applyOptOut, countsHere } from "@/lib/analytics";
 
 /**
  * Tells the server "someone visited today" once per page load (see
- * app/api/visit/route.ts). Sends nothing in the body and stores nothing here.
+ * app/api/visit/route.ts). Sends nothing in the body. Also where "?nepocitat=1"
+ * switches counting off for this browser (lib/analytics.ts).
  */
 export function VisitBeacon() {
   useEffect(() => {
-    if (!COUNTED_HOSTS.includes(window.location.host)) return;
-    if (navigator.webdriver) return;
+    applyOptOut();
+    if (!countsHere()) return;
     try {
       if (!navigator.sendBeacon?.("/api/visit")) {
         fetch("/api/visit", { method: "POST", keepalive: true }).catch(() => {});

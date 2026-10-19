@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import type { DayPlan, Verdict } from "@/lib/dayPlan";
-import { EARLIEST_DEPARTURE_HOUR, dayAfterNa, floorTo5, longDay } from "@/lib/days";
+import { EARLIEST_DEPARTURE_HOUR, dayAfterNa, dayStrip, floorTo5, longDay } from "@/lib/days";
+import { badDays } from "@/lib/weather";
 import { formatDuration, formatTime, stopLabel } from "@/lib/format";
 import { searchPlaces } from "@/lib/geocode";
 import { readSharedPlan } from "@/lib/links";
@@ -73,6 +74,11 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
   const { plan, date, time, driveMin, roadMin, driveApprox, driveStatus, rail } = tripPlan;
   const [shared, setShared] = useState<SharedPlan | null>(null);
   const weather = useTripWeather(plan, trailStart, goal, profile?.points[0]?.ele ?? null);
+  // The day strip marks the days in the forecast whose walk (same start time) gets rain, snow, fog or storms.
+  const dayWeather = useMemo(
+    () => (plan && weather.below ? badDays(weather.below, plan.hikeStart, plan.hikeEnd, dayStrip(new Date()).map((d) => d.iso)) : undefined),
+    [plan, weather.below]
+  );
 
   // A shared link opens the sender's day, departure, bus or car, kids pace and parking or stop
   // (once, then it's ours to change). A link for a day already gone only says so.
@@ -168,7 +174,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
         <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} noCar={noCar} />
 
         <section aria-label="Deň a odchod" className="flex flex-col gap-3">
-          <FilterChips variant="trip" activeDate={date} />
+          <FilterChips variant="trip" activeDate={date} dayWeather={dayWeather} />
           <div className="flex flex-wrap items-center gap-3">
             <label className="flex items-center gap-2 text-sm font-semibold">
               {hasDrive ? "Odchod" : transit && stop ? "Na zastávke" : "Začiatok túry"}
@@ -211,7 +217,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
             <Step label={transit && stop ? "na zastávke" : hasDrive ? "pri aute" : "späť"} time={plan.hikeEnd} />
             {plan.segments[plan.segments.length - 1].kind === "drive-back" && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
-          <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} />
+          <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} onPickDay={(iso) => update({ date: iso })} />
           {transit && <TransitLegs plan={plan} rail={rail} />}
           {transit && hasDrive && rail.status !== "ok" && (
             <p className="text-xs text-[var(--muted)]">

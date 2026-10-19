@@ -4,6 +4,7 @@
 import type { GeoJSONSource, Map as MlMap } from "maplibre-gl";
 import { lineFeeder } from "@/lib/mapFeed";
 import { fetchLines } from "@/lib/packedLines";
+import { POPULARITY_DASH } from "@/lib/palette";
 
 export type NetworkMode = "full" | "context";
 
@@ -111,16 +112,16 @@ export function attachTrailNetwork(
         layout,
         paint: { "line-color": topOutline, "line-width": widthAt(0.6, 1.4, 2.5, 1), "line-opacity": opacity },
       });
-      // The quietest trails: thin and dotted.
+      // The two quietest levels: thin, dotted then dashed.
       map.addLayer({
         id: `${prefix}-quiet`,
         type: "line",
         source,
         minzoom,
         maxzoom,
-        filter: ["==", ["get", "p"], 0],
-        layout: { "line-join": "round" },
-        paint: { "line-color": colour, "line-width": width, "line-opacity": opacity, "line-dasharray": [1, 2] },
+        filter: ["<=", ["get", "p"], 1],
+        layout,
+        paint: { "line-color": colour, "line-width": width, "line-opacity": opacity, "line-dasharray": POPULARITY_DASH as unknown as number[] },
       });
     }
     map.addLayer({
@@ -129,7 +130,7 @@ export function attachTrailNetwork(
       source,
       minzoom,
       maxzoom,
-      ...(full ? { filter: [">", ["get", "p"], 0] as unknown as boolean } : {}),
+      ...(full ? { filter: [">", ["get", "p"], 1] as unknown as boolean } : {}),
       layout,
       paint: { "line-color": colour, "line-width": width, "line-opacity": opacity },
     });

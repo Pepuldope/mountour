@@ -301,3 +301,75 @@ export function tripWeatherReport(
       : null,
   };
 }
+
+/** The same clock time `n` calendar days later (a plain +24 h would slip an hour across a clock change). */
+function shiftDays(d: Date, n: number): Date {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n, d.getHours(), d.getMinutes());
+}
+
+/** Rain, sleet or snow during the walk, or a storm/heavy-weather warning: the day the trip page warns about. */
+export function wetWalk(below: WeatherForecast, top: WeatherForecast | null, from: Date, to: Date): boolean {
+  const r = tripWeatherReport(below, top, from, to);
+  return !!r && (!!r.wet || weatherNotes(below, top, from, to).some((n) => n.strong));
+}
+
+export interface BetterDay {
+  /** Calendar days from the planned day (negative: an earlier day that is still ahead). */
+  offset: number;
+  /** The walk's weather that day, for "polojasno, 7 až 11 °C". */
+  summary: WeatherSummary;
+}
+
+/**
+ * When the walk would be wet, the nearest day in the forecast with a dry walk at
+ * the same clock time: one day later, one earlier (if still ahead of `now`), two
+ * later... Null when the planned day is fine or no day in range is better.
+ */
+export function betterDay(below: WeatherForecast, top: WeatherForecast | null, from: Date, to: Date, now: Date): BetterDay | null {
+  if (!wetWalk(below, top, from, to)) return null;
+  for (let step = 1; step < FORECAST_DAYS; step++) {
+    for (const offset of [step, -step]) {
+      const a = shiftDays(from, offset);
+      const b = shiftDays(to, offset);
+      if (a < now || !tripWeatherReport(below, top, a, b)) continue;
+      if (wetWalk(below, top, a, b)) continue;
+      const summary = summarize(below, a, b);
+      if (summary) return { offset, summary };
+    }
+  }
+  return null;
+}
+
+/** Weather worth a symbol in the day strip: anything that wets the walk, fog and storms. */
+export type BadSky = "rain" | "sleet" | "snow" | "fog" | "thunder";
+
+const BAD_SKY: Partial<Record<SkyKind, BadSky>> = {
+  lightrain: "rain",
+  rain: "rain",
+  heavyrain: "rain",
+  sleet: "sleet",
+  lightsnow: "snow",
+  snow: "snow",
+  heavysnow: "snow",
+  fog: "fog",
+  thunder: "thunder",
+};
+
+/**
+ * For each day (YYYY-MM-DD) in the forecast range: the worst weather during a
+ * walk at the same clock time as [from, to], when it is rain, sleet, snow, fog
+ * or a storm. Fine days and days past the forecast are left out, so the strip
+ * only marks the days to think twice about.
+ */
+export function badDays(forecast: WeatherForecast, from: Date, to: Date, days: string[]): Record<string, BadSky> {
+  const base = new Date(from.getFullYear(), from.getMonth(), from.getDate()).getTime();
+  const out: Record<string, BadSky> = {};
+  for (const iso of days) {
+    const [y, m, d] = iso.split("-").map(Number);
+    const offset = Math.round((new Date(y, m - 1, d).getTime() - base) / (24 * HOUR));
+    const s = summarize(forecast, shiftDays(from, offset), shiftDays(to, offset));
+    const bad = s && BAD_SKY[skyKind(s.symbol)!];
+    if (bad) out[iso] = bad;
+  }
+  return out;
+}

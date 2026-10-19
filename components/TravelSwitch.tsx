@@ -11,7 +11,7 @@ import { NoParkingChip } from "@/components/routeBits";
 
 const OPTIONS: { value: Travel; label: string; icon: UiIconName }[] = [
   { value: "car", label: "Autom", icon: "car" },
-  { value: "transit", label: "Busom, vlakom", icon: "bus" },
+  { value: "transit", label: "Bus/vlak", icon: "bus" },
 ];
 
 /**
