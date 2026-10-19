@@ -90,7 +90,7 @@ export interface PlacePhoto {
 
 let photos: Promise<Record<string, PlacePhoto>> | null = null;
 
-/** Destination photos by OSM id ("node/123"); empty when the file is missing. */
+/** Destination photos by OSM id ("node/123"), or "trip/<slug>" for hand-made trips; empty when the file is missing. */
 export function getPhotos(): Promise<Record<string, PlacePhoto>> {
   photos ??= readPublicJson<{ photos: Record<string, PlacePhoto> }>("data/photos.json").then((f) => f?.photos ?? {});
   return photos;

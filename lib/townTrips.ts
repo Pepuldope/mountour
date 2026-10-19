@@ -79,7 +79,7 @@ export async function getTownTrips(id: string): Promise<TownTrips | null> {
     carMin,
     walkMin: trip.duration_min,
     kids: trip.family_friendly,
-    photo: (trip.destination.osm && photos[trip.destination.osm]) || null,
+    photo: photos[trip.destination.osm ?? `trip/${trip.slug}`] ?? null,
   });
   const inTown = reach.filter((r) => haversineM(r.trip.start.location, town.location) <= IN_TOWN_M);
   const outside = reach.filter((r) => !inTown.includes(r));

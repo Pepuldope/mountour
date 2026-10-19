@@ -65,18 +65,33 @@ def osm_tags(ids):
 
 
 def wikidata_images(qids):
-    """Main image file name (P18) per Wikidata id."""
-    out = {}
+    """Main image file name (P18) and Commons category (P373) per Wikidata id."""
+    images, cats = {}, {}
     qids = sorted(qids)
     for k in range(0, len(qids), 50):
         body = get_json("https://www.wikidata.org/w/api.php?action=wbgetentities&props=claims&format=json&ids="
                         + "|".join(qids[k : k + 50]))
         for q, e in (body or {}).get("entities", {}).items():
-            for c in e.get("claims", {}).get("P18", []):
-                v = c.get("mainsnak", {}).get("datavalue", {}).get("value")
-                if v:
-                    out[q] = v
-                    break
+            for prop, out in (("P18", images), ("P373", cats)):
+                for c in e.get("claims", {}).get(prop, []):
+                    v = c.get("mainsnak", {}).get("datavalue", {}).get("value")
+                    if v:
+                        out[q] = v
+                        break
+    return images, cats
+
+
+def category_photos(cats):
+    """Up to 3 photo files per Commons category, skipping guideposts, maps and boards."""
+    out = {}
+    for cat in sorted(cats):
+        body = get_json("https://commons.wikimedia.org/w/api.php?action=query&format=json&list=categorymembers"
+                        "&cmnamespace=6&cmtype=file&cmlimit=30&cmtitle=" + urllib.parse.quote("Category:" + cat))
+        files = [m["title"].removeprefix("File:") for m in (body or {}).get("query", {}).get("categorymembers", [])]
+        files = [f for f in files if not NOT_A_VIEW.search(f) and re.search(r"\.(jpe?g|png|webp)$", f, re.I)]
+        if files:
+            out[cat] = files[:3]
+        time.sleep(0.1)
     return out
 
 
@@ -143,7 +158,7 @@ def near_photos(places):
             if NOT_A_VIEW.search(title) or not re.search(r"\.(jpe?g|png|webp)$", title, re.I):
                 continue
             named = any(w[:-1] in plain(title) for w in words)  # "Kamzíka" still names Kamzík
-            if named or g["dist"] <= 200:
+            if named or g["dist"] <= 300:
                 ranked.append((not named, g["dist"], title))
         if ranked:
             out[i] = [t for _, _, t in sorted(ranked)[:3]]
@@ -195,12 +210,13 @@ def commons_info(files):
 
 def main():
     trips = json.loads(INDEX.read_text())["trips"]
-    dest = {t["destination"]["osm"]: t["destination"] for t in trips if t["destination"].get("osm")}
+    # Keyed by the OSM object; hand-made trips without one by "trip/<slug>".
+    dest = {t["destination"].get("osm") or f"trip/{t['slug']}": t["destination"] for t in trips}
     ids = sorted(dest)
     log(f"{len(ids)} places")
-    tags = osm_tags(ids)
+    tags = osm_tags([i for i in ids if not i.startswith("trip/")])
     qid = {i: t["wikidata"].split(";")[0].strip() for i, t in tags.items() if re.fullmatch(r"Q\d+", t.get("wikidata", "").split(";")[0].strip())}
-    p18 = wikidata_images(set(qid.values()))
+    p18, p373 = wikidata_images(set(qid.values()))
     # Candidate files per place, best source first.
     cands = {i: [] for i in ids}
     via = {}
@@ -224,6 +240,9 @@ def main():
     for i, a in article.items():
         if a in lead:
             cands[i].append((lead[a], "wikipedia"))
+    in_cat = category_photos({p373[qid[i]] for i in ids if qid.get(i) in p373})
+    for i in ids:
+        cands[i] += [(f, "category") for f in in_cat.get(p373.get(qid.get(i, ""), ""), [])]
     near = near_photos([(i, dest[i]["name"], dest[i]["location"]["lat"], dest[i]["location"]["lon"]) for i in ids])
     for i, fs in near.items():
         cands[i] += [(f, "near") for f in fs]
@@ -239,7 +258,7 @@ def main():
         source="Wikimedia Commons via Wikidata, Wikipedia and OpenStreetMap",
         photos=dict(sorted(photos.items())),
     ), ensure_ascii=False, separators=(",", ":")) + "\n")
-    counts = {s: sum(p["via"] == s for p in photos.values()) for s in ("wikidata", "wikipedia", "near")}
+    counts = {s: sum(p["via"] == s for p in photos.values()) for s in ("wikidata", "wikipedia", "category", "near")}
     log(f"tags {len(tags)}, wikidata {len(qid)}, articles {len(article)}, free photo {len(photos)} of {len(ids)} places {counts}")
 
 
