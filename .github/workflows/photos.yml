@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
   push:
     branches: ["claude/project-thread-clx903"]
-    paths: ["pipeline/photos.py"]
+    paths: ["pipeline/photos.py", "data/photo-overrides.json"]
 
 permissions:
   contents: write

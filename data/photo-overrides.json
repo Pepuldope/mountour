@@ -1,0 +1,18 @@
+{
+  "_comment": "Hand fixes for pipeline/photos.py. block: Commons file names never to use (not a view of the place). pick: a Commons file to use for a place, by OSM id or trip/<slug>.",
+  "block": [
+    "Sedlo Javorina 01.JPG",
+    "Boží hrob gelnica.jpg",
+    "Pod Krásnou Hôrkou 03.jpg",
+    "Na Revíne 03.jpg",
+    "Bryophyta and Hedera Helix.jpg",
+    "Kassa melletti síközpont. Fortepan 54144.jpg",
+    "Postcard Prešov16Slovakia.jpg",
+    "Holic windmill 01.jpg",
+    "Doľany kalvária 04 01.jpg",
+    "Dukliansky priesmyk veza plastika.jpg",
+    "Cervený Kameň - kašna - panoramio.jpg",
+    "22 podh.JPG"
+  ],
+  "pick": {}
+}

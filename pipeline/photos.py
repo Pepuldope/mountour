@@ -3,8 +3,10 @@
 Sources, best first:
 1. the OSM object's `wikidata` main image (P18) or its `wikimedia_commons` file;
 2. the lead image of its Wikipedia article (OSM `wikipedia` tag or Wikidata sitelink);
-3. a photo taken right at the place, found by location on Commons, preferring one
-   whose title names the place and skipping guideposts, maps and boards.
+3. a photo taken within 1 km whose title names the place, found by location on
+   Commons, skipping guideposts, maps and boards;
+4. a photo from the place's Commons category (Wikidata P373).
+data/photo-overrides.json blocks files that turned out wrong and picks files by hand.
 The thumbnail address, author and licence go to public/data/photos.json, keyed by
 the OSM object ("node/123"), with `via` saying which source matched. Places without
 a free photo are left out; the site draws its own tile for them.
@@ -25,6 +27,7 @@ from pathlib import Path
 UA = "MounTour photos (https://github.com/Pepuldope/mountour)"
 INDEX = Path("public/data/trips/index.json")
 OUT = Path("public/data/photos.json")
+OVERRIDES = Path("data/photo-overrides.json")
 # One of Wikimedia's standard thumbnail steps (others are re-rounded up to 960 px).
 THUMB_W = 500
 # Licences that allow use on the site with a credit line.
@@ -146,7 +149,7 @@ NOT_A_VIEW = re.compile(r"rozcestn|smerovn|guidepost|signpost|\bsign|tabul|tabu�
 
 
 def near_photos(places):
-    """Up to 3 candidate Commons files taken at each place, best first, as {osm id: [file, ...]}."""
+    """Up to 3 Commons files taken within 1 km of each place whose title names it, nearest first."""
     out = {}
     for n, (i, name, lat, lon) in enumerate(places):
         body = get_json("https://commons.wikimedia.org/w/api.php?action=query&format=json&list=geosearch"
@@ -157,11 +160,11 @@ def near_photos(places):
             title = g["title"].removeprefix("File:")
             if NOT_A_VIEW.search(title) or not re.search(r"\.(jpe?g|png|webp)$", title, re.I):
                 continue
-            named = any(w[:-1] in plain(title) for w in words)  # "Kamzíka" still names Kamzík
-            if named or g["dist"] <= 300:
-                ranked.append((not named, g["dist"], title))
+            # Only photos whose title names the place: unnamed ones nearby were often streets or signs.
+            if any(w[:-1] in plain(title) for w in words):  # "Kamzíka" still names Kamzík
+                ranked.append((g["dist"], title))
         if ranked:
-            out[i] = [t for _, _, t in sorted(ranked)[:3]]
+            out[i] = [t for _, t in sorted(ranked)[:3]]
         if n % 200 == 0:
             log(f"near {n}/{len(places)}")
         time.sleep(0.1)
@@ -240,12 +243,20 @@ def main():
     for i, a in article.items():
         if a in lead:
             cands[i].append((lead[a], "wikipedia"))
-    in_cat = category_photos({p373[qid[i]] for i in ids if qid.get(i) in p373})
-    for i in ids:
-        cands[i] += [(f, "category") for f in in_cat.get(p373.get(qid.get(i, ""), ""), [])]
     near = near_photos([(i, dest[i]["name"], dest[i]["location"]["lat"], dest[i]["location"]["lon"]) for i in ids])
     for i, fs in near.items():
         cands[i] += [(f, "near") for f in fs]
+    in_cat = category_photos({p373[qid[i]] for i in ids if qid.get(i) in p373})
+    for i in ids:
+        cands[i] += [(f, "category") for f in in_cat.get(p373.get(qid.get(i, ""), ""), [])]
+    # Hand fixes: a picked file goes first, blocked files are dropped.
+    fix = json.loads(OVERRIDES.read_text()) if OVERRIDES.exists() else {}
+    blocked = {f.replace("_", " ") for f in fix.get("block", [])}
+    for i, f in fix.get("pick", {}).items():
+        if i in cands:
+            cands[i].insert(0, (f, "picked"))
+    for i in cands:
+        cands[i] = [(f, src) for f, src in cands[i] if f.replace("_", " ") not in blocked]
     info = commons_info({f.replace("_", " ") for fs in cands.values() for f, _ in fs})
     photos = {}
     for i, fs in cands.items():
@@ -258,7 +269,7 @@ def main():
         source="Wikimedia Commons via Wikidata, Wikipedia and OpenStreetMap",
         photos=dict(sorted(photos.items())),
     ), ensure_ascii=False, separators=(",", ":")) + "\n")
-    counts = {s: sum(p["via"] == s for p in photos.values()) for s in ("wikidata", "wikipedia", "category", "near")}
+    counts = {s: sum(p["via"] == s for p in photos.values()) for s in ("picked", "wikidata", "wikipedia", "near", "category")}
     log(f"tags {len(tags)}, wikidata {len(qid)}, articles {len(article)}, free photo {len(photos)} of {len(ids)} places {counts}")
 
 
