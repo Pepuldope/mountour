@@ -269,7 +269,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
             <Step label={transit && stop ? "na zastávke" : hasDrive ? "pri aute" : "späť"} time={plan.hikeEnd} />
             {plan.segments[plan.segments.length - 1].kind === "drive-back" && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
-          <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} onPickDay={(iso) => update({ date: iso })} />
+          <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} onPickDay={(iso) => update({ date: iso })} onPickTime={(time) => update({ time })} />
           {transit && <TransitLegs plan={plan} rail={rail} />}
           {transit && hasDrive && rail.status !== "ok" && (
             <p className="text-xs text-[var(--muted)]">

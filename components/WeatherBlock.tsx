@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import type { ReactNode } from "react";
+import { SAFE_MARGIN_MIN } from "@/lib/dayPlan";
 import type { DayPlan } from "@/lib/dayPlan";
+import { formatTime } from "@/lib/format";
 import { useCachedJson } from "@/lib/useDriveRoute";
 import { dayInSentence, isoDate } from "@/lib/days";
-import { FORECAST_DAYS, betterDay, summarize, tripWeatherReport, weatherNotes, weatherWords } from "@/lib/weather";
-import type { BetterDay, WeatherForecast, WeatherSummary } from "@/lib/weather";
+import { FORECAST_DAYS, betterDay, betterTime, summarize, tripWeatherReport, weatherNotes, weatherWords } from "@/lib/weather";
+import type { BetterDay, BetterTime, WeatherForecast, WeatherSummary } from "@/lib/weather";
 import { badSkySvg } from "@/lib/weatherIcons";
 import type { LatLng } from "@/lib/types";
 
@@ -88,6 +90,7 @@ export function WeatherReport({
   goal,
   wholeDay,
   onPickDay,
+  onPickTime,
 }: {
   plan: DayPlan;
   weather: TripWeather;
@@ -95,6 +98,8 @@ export function WeatherReport({
   wholeDay: boolean;
   /** Moves the trip to another day (YYYY-MM-DD), for the drier-day suggestion. */
   onPickDay?: (iso: string) => void;
+  /** Moves the departure (HH:MM) on the same day, for the drier-time suggestion. */
+  onPickTime?: (time: string) => void;
 }) {
   if (weather.loading) return <p className="text-xs text-[var(--muted)]">Načítavam predpoveď počasia...</p>;
   if (!weather.below) return null;
@@ -106,7 +111,17 @@ export function WeatherReport({
   const stormy = notes.some((n) => n.strong);
   const temps = r.tempMin === r.tempMax ? `${r.tempMin} °C` : `${r.tempMin} až ${r.tempMax} °C`;
   // A wet or stormy walk always gets a next step: the nearest dry day in the forecast, same start time.
-  const better = onPickDay ? betterDay(weather.below, weather.above, plan.hikeStart, plan.hikeEnd, new Date()) : null;
+  // First a drier time the same day (Peter: moving a few hours beats moving the day), then a drier day; both when both work.
+  const now = new Date();
+  const better = onPickDay ? betterDay(weather.below, weather.above, plan.hikeStart, plan.hikeEnd, now) : null;
+  const leave = plan.segments[0].start;
+  const lead = plan.hikeStart.getTime() - leave.getTime();
+  const sooner = onPickTime
+    ? betterTime(weather.below, weather.above, plan.hikeStart, plan.hikeEnd, {
+        earliest: new Date(Math.max(plan.sunrise.getTime(), now.getTime() + lead)),
+        latest: new Date(plan.sunset.getTime() - SAFE_MARGIN_MIN * 60000),
+      })
+    : null;
 
   return (
     <section aria-label="Počasie" className="flex flex-col gap-1.5 text-sm">
@@ -128,7 +143,12 @@ export function WeatherReport({
           {n.text}
         </Warning>
       ))}
-      {better && <BetterDayTip better={better} hikeStart={plan.hikeStart} onPickDay={onPickDay!} />}
+      {(sooner || better) && (
+        <div className="flex flex-col gap-3 rounded-xl bg-[var(--accent-soft)] px-3 py-2.5">
+          {sooner && <BetterTimeTip better={sooner} leave={leave} onPickTime={onPickTime!} />}
+          {better && <BetterDayTip better={better} hikeStart={plan.hikeStart} onPickDay={onPickDay!} alsoTime={!!sooner} />}
+        </div>
+      )}
     </section>
   );
 }
@@ -157,23 +177,48 @@ function Warning({ kind, children }: { kind: keyof typeof SIGN; children: ReactN
 }
 
 /** "Lepšie vyzerá v nedeľu: polojasno, 7 až 11 °C, bez zrážok." and a button that moves the plan there. */
-function BetterDayTip({ better, hikeStart, onPickDay }: { better: BetterDay; hikeStart: Date; onPickDay: (iso: string) => void }) {
+function BetterDayTip({ better, hikeStart, onPickDay, alsoTime }: { better: BetterDay; hikeStart: Date; onPickDay: (iso: string) => void; alsoTime: boolean }) {
   const iso = isoDate(new Date(hikeStart.getFullYear(), hikeStart.getMonth(), hikeStart.getDate() + better.offset));
   const when = dayInSentence(iso, new Date());
   const s = better.summary;
   const temps = s.tempMin === s.tempMax ? `${s.tempMin} °C` : `${s.tempMin} až ${s.tempMax} °C`;
   return (
-    <div className="flex flex-col items-start gap-2 rounded-xl bg-[var(--accent-soft)] px-3 py-2.5">
+    <div className="flex flex-col items-start gap-2">
       <p>
-        <span className="font-semibold">Lepšie vyzerá {when}:</span> {weatherWords(s.symbol)}, {temps}, bez zrážok.
+        <span className="font-semibold">{alsoTime ? `Alebo iný deň, ${when}:` : `Lepšie vyzerá ${when}:`}</span> {weatherWords(s.symbol)}, {temps}, bez zrážok.
       </p>
       <button
         type="button"
         onClick={() => onPickDay(iso)}
-        className="rounded-[10px] bg-[var(--accent)] px-3 py-2 text-sm font-bold text-[var(--accent-contrast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
+        className={TIP_BUTTON}
       >
         {/* "v nedeľu 1. 11." -> "Prepnúť na nedeľu" */}
         Prepnúť na {when.replace(/^vo? /, "").replace(/ \d.*$/, "")}
+      </button>
+    </div>
+  );
+}
+
+const TIP_BUTTON =
+  "rounded-[10px] bg-[var(--accent)] px-3 py-2 text-sm font-bold text-[var(--accent-contrast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]";
+
+/** "Suchšie pri odchode o 11:30: polojasno, 7 až 11 °C, bez zrážok." and a button that moves the departure there. */
+function BetterTimeTip({ better, leave, onPickTime }: { better: BetterTime; leave: Date; onPickTime: (time: string) => void }) {
+  const at = new Date(leave.getTime() + better.shiftMin * 60000);
+  // HH:MM for the time box; the shown text uses the site's usual format.
+  const time = `${String(at.getHours()).padStart(2, "0")}:${String(at.getMinutes()).padStart(2, "0")}`;
+  const s = better.summary;
+  const temps = s.tempMin === s.tempMax ? `${s.tempMin} °C` : `${s.tempMin} až ${s.tempMax} °C`;
+  return (
+    <div className="flex flex-col items-start gap-2">
+      <p>
+        <span className="font-semibold">
+          Suchšie pri odchode o <span className="font-data">{formatTime(at)}</span>:
+        </span>{" "}
+        {weatherWords(s.symbol)}, {temps}, bez zrážok.
+      </p>
+      <button type="button" onClick={() => onPickTime(time)} className={TIP_BUTTON}>
+        Vyraziť o <span className="font-data">{formatTime(at)}</span>
       </button>
     </div>
   );
