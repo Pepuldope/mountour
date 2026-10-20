@@ -1,0 +1,26 @@
+# Temporary: fetches a few Commons thumbnails so screenshots can be taken offline. Removed before merge.
+name: Photo preview
+on:
+  push:
+    branches: [claude/project-thread-clx903]
+    paths: [preview/urls.txt]
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p preview/img
+          while read -r u; do
+            f="preview/img/$(printf '%s' "$u" | sha1sum | cut -c1-16).jpg"
+            curl -sfL -A "MounTour/1.0 (https://github.com/Pepuldope/mountour)" -o "$f" "$u" || echo "fail $u"
+            sleep 0.3
+          done < preview/urls.txt
+          ls preview/img | wc -l
+          git config user.name mountour-data-bot
+          git config user.email mountour-data-bot@users.noreply.github.com
+          git add preview/img
+          git commit -m "Photo preview thumbnails (temporary)"
+          git push

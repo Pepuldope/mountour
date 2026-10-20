@@ -85,7 +85,8 @@ export async function getTownTrips(id: string): Promise<TownTrips | null> {
   const outside = reach.filter((r) => !inTown.includes(r));
   const shown = new Set<string>();
   const row = (title: string, list: typeof reach): TownRow => {
-    const tiles = list.slice(0, PER_ROW).map(tile);
+    // Photos first within the row (best known first among each), so a row never opens on a blank tile.
+    const tiles = list.slice(0, PER_ROW).map(tile).sort((a, b) => Number(!a.photo) - Number(!b.photo));
     for (const t of tiles) shown.add(t.slug);
     return { title, count: list.length, tiles };
   };
