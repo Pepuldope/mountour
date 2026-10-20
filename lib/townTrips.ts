@@ -79,13 +79,14 @@ export async function getTownTrips(id: string): Promise<TownTrips | null> {
     carMin,
     walkMin: trip.duration_min,
     kids: trip.family_friendly,
-    photo: (trip.destination.osm && photos[trip.destination.osm]) || null,
+    photo: photos[trip.destination.osm ?? `trip/${trip.slug}`] ?? null,
   });
   const inTown = reach.filter((r) => haversineM(r.trip.start.location, town.location) <= IN_TOWN_M);
   const outside = reach.filter((r) => !inTown.includes(r));
   const shown = new Set<string>();
   const row = (title: string, list: typeof reach): TownRow => {
-    const tiles = list.slice(0, PER_ROW).map(tile);
+    // Photos first within the row (best known first among each), so a row never opens on a blank tile.
+    const tiles = list.slice(0, PER_ROW).map(tile).sort((a, b) => Number(!a.photo) - Number(!b.photo));
     for (const t of tiles) shown.add(t.slug);
     return { title, count: list.length, tiles };
   };
