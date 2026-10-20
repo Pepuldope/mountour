@@ -340,6 +340,44 @@ export function betterDay(below: WeatherForecast, top: WeatherForecast | null, f
   return null;
 }
 
+export interface BetterTime {
+  /** Minutes to move the whole day by (negative: earlier). */
+  shiftMin: number;
+  /** The walk's weather at that time. */
+  summary: WeatherSummary;
+}
+
+/** How far the same-day search looks, each way, in half-hour steps. */
+const TIME_STEP_MIN = 30;
+const TIME_STEPS = 16;
+
+/**
+ * When the walk would be wet, the nearest start on the same day (half an hour
+ * either way, then an hour...) with a dry walk that still fits in the window:
+ * `earliest` is the first allowed walk start (sunrise, and late enough to get
+ * there from now), `latest` the last allowed walk end (before sunset).
+ */
+export function betterTime(
+  below: WeatherForecast,
+  top: WeatherForecast | null,
+  from: Date,
+  to: Date,
+  window: { earliest: Date; latest: Date }
+): BetterTime | null {
+  if (!wetWalk(below, top, from, to)) return null;
+  for (let step = 1; step <= TIME_STEPS; step++) {
+    for (const shiftMin of [step * TIME_STEP_MIN, -step * TIME_STEP_MIN]) {
+      const a = new Date(from.getTime() + shiftMin * 60000);
+      const b = new Date(to.getTime() + shiftMin * 60000);
+      if (a < window.earliest || b > window.latest || a.getDate() !== from.getDate()) continue;
+      if (!tripWeatherReport(below, top, a, b) || wetWalk(below, top, a, b)) continue;
+      const summary = summarize(below, a, b);
+      if (summary) return { shiftMin, summary };
+    }
+  }
+  return null;
+}
+
 /** Weather worth a symbol in the day strip: anything that wets the walk, fog and storms. */
 export type BadSky = "rain" | "sleet" | "snow" | "fog" | "thunder";
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { badDays, baseSymbol, betterDay, skyKind, summarize, tripWeatherReport, weatherAt, weatherNotes, weatherWords } from "@/lib/weather";
+import { badDays, baseSymbol, betterDay, betterTime, skyKind, summarize, tripWeatherReport, weatherAt, weatherNotes, weatherWords } from "@/lib/weather";
 import type { WeatherForecast } from "@/lib/weather";
 
 const hourly = (h: number, temp: number, rain: number, symbol: string) => ({
@@ -179,5 +179,35 @@ describe("bad days", () => {
       "2026-10-24": "snow",
       "2026-10-26": "thunder",
     });
+  });
+});
+
+describe("better time", () => {
+  // Rain 9:00-12:00 local on 24 Oct, dry otherwise.
+  const day: WeatherForecast = {
+    updated: "2026-10-23T12:00:00Z",
+    steps: Array.from({ length: 24 }, (_, h) => {
+      const t = new Date(2026, 9, 24, h);
+      const wet = h >= 9 && h < 12;
+      return { t: t.toISOString(), temp: 6, wind: 3, rain: wet ? 1 : 0, hours: 1, symbol: wet ? "rain" : "partlycloudy_day" };
+    }),
+  };
+  const window = { earliest: new Date(2026, 9, 24, 7), latest: new Date(2026, 9, 24, 17) };
+
+  it("finds the nearest dry start the same day", () => {
+    const r = betterTime(day, null, new Date(2026, 9, 24, 10), new Date(2026, 9, 24, 12), window)!;
+    expect(r.shiftMin).toBe(120);
+    expect(r.summary.rainMm).toBe(0);
+  });
+
+  it("goes earlier when later would end after the window", () => {
+    const late = { ...window, latest: new Date(2026, 9, 24, 13) };
+    expect(betterTime(day, null, new Date(2026, 9, 24, 10), new Date(2026, 9, 24, 12), late)!.shiftMin).toBe(-180);
+  });
+
+  it("says nothing on a dry walk or when no time fits", () => {
+    expect(betterTime(day, null, new Date(2026, 9, 24, 13), new Date(2026, 9, 24, 15), window)).toBeNull();
+    const tight = { earliest: new Date(2026, 9, 24, 8), latest: new Date(2026, 9, 24, 13) };
+    expect(betterTime(day, null, new Date(2026, 9, 24, 9), new Date(2026, 9, 24, 13), tight)).toBeNull();
   });
 });
