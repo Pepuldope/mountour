@@ -48,14 +48,13 @@ export function useTripPlan(
   destination: LatLng | null,
   baseHikeMin: number,
   railStation: LatLng | null = null,
-  /** No car park at the start: plan by bus or train whatever the remembered choice. */
-  noCar = false,
+  /** By bus or train (useTripAccess decides: the remembered choice, unless the start has only one of a car park or a stop). */
+  transit = false,
   /** The trip, to look it up in the start town's weekly drive table while the exact route loads. */
   slug: string | null = null
 ): TripPlan {
   const { start } = useUserLocation();
-  const { withKids, travel } = useTripSettings();
-  const transit = noCar || travel === "transit";
+  const { withKids } = useTripSettings();
   const { date, time } = useTripDay();
   const drive = useDriveRoute(start, destination);
   const hikeMin = hikeMinutes(baseHikeMin, withKids);

@@ -27,6 +27,16 @@ export function NoParkingChip() {
   );
 }
 
+/** A start with no bus or train stop nearby: the same chip, for the greyed bus in the car/bus switch. */
+export function NoStopChip() {
+  return (
+    <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border-[1.5px] border-[var(--warn)] bg-[var(--warn-bg)] px-2 py-px text-[12px] font-extrabold text-[var(--warn)]">
+      {warnTriangle}
+      Bez zastávky
+    </span>
+  );
+}
+
 /** Said next to the no-parking chip, so it is plain the place is still easy to reach. */
 export function BusOk() {
   return (

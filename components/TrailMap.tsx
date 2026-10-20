@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import type { GeoJSONSource, Map as MlMap, Marker, StyleSpecification } from "maplibre-gl";
 import type { BBox, LatLng } from "@/lib/types";
 import { MAP_STYLE_URL, mapPixelRatio } from "@/lib/mapLayers";
+import { onMapFocus } from "@/lib/mapFocus";
+import { setTapOnly } from "@/lib/mapGestures";
 import { keepInSlovakia } from "@/lib/slovakia";
 import { UI_ICON } from "@/lib/uiIcons";
 import { POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
@@ -23,6 +25,8 @@ export interface MapTrack {
   /** Line colour: the trail's KST marking (lib/mapLayers trackColor). */
   color: string;
   state: TrackState;
+  /** Also drawn dashed over the other tracks, so a route sharing a path with the picked one still shows through it. */
+  showThrough?: boolean;
 }
 
 export type MarkerKind = "trailhead" | "parking" | "transit-autobus" | "transit-elektricka" | "transit-vlak" | "poi" | "goal";
@@ -61,6 +65,8 @@ interface Props {
   network?: NetworkMode;
   ariaLabel: string;
   className?: string;
+  /** Phones, map in the page: taps only, a drag scrolls the page (lib/mapGestures.ts). */
+  tapOnly?: boolean;
 }
 
 const MARKER_GLYPH: Record<MarkerKind, string> = {
@@ -180,6 +186,7 @@ export function TrailMap({
   network,
   ariaLabel,
   className,
+  tapOnly = false,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [ctx, setCtx] = useState<{ ml: MapLibre; map: MlMap } | null>(null);
@@ -189,6 +196,7 @@ export function TrailMap({
   const networkRef = useRef(network);
   const boundsRef = useRef<BBox | null>(bounds);
   const markerRefs = useRef<Marker[]>([]);
+  const markerIds = useRef<string[]>([]);
   const userMarkerRefs = useRef<Marker[]>([]);
   const { fix, start } = useUserLocation();
 
@@ -284,6 +292,15 @@ export function TrailMap({
             "line-opacity": ["match", ["get", "state"], "dimmed", 0.35, 1],
           },
         });
+        // Routes that share a path with the picked one would hide under it: their dashes show on top.
+        map.addLayer({
+          id: "track-through",
+          type: "line",
+          source: "tracks",
+          filter: ["==", ["get", "through"], true],
+          layout: { "line-join": "round" },
+          paint: { "line-color": ["get", "color"], "line-width": 2.5, "line-dasharray": [1.2, 1.6], "line-opacity": ["match", ["get", "state"], "dimmed", 0.55, 0.95] },
+        });
         // Parking -> trail start on foot: small dots, on top of the trail's start.
         map.addLayer({
           id: "walk-casing",
@@ -378,7 +395,7 @@ export function TrailMap({
       .sort((a, b) => order[a.state] - order[b.state])
       .map((t) => ({
         type: "Feature",
-        properties: { slug: t.slug, color: t.color, state: t.state, label: t.label ?? "" },
+        properties: { slug: t.slug, color: t.color, state: t.state, label: t.label ?? "", through: !!t.showThrough },
         geometry: { type: "LineString", coordinates: t.points.map(lngLat) },
       }));
     (ctx.map.getSource("tracks") as GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features });
@@ -420,8 +437,9 @@ export function TrailMap({
     const { ml, map } = ctx;
     for (const m of markerRefs.current) m.remove();
     // Active last so it sits on top.
-    markerRefs.current = [...markers]
-      .sort((a, b) => Number(!!a.active) - Number(!!b.active))
+    const sorted = [...markers].sort((a, b) => Number(!!a.active) - Number(!!b.active));
+    markerIds.current = sorted.map((m) => m.id);
+    markerRefs.current = sorted
       .map((m) => {
         const el = pinElement(
           `${MARKER_CLASS[m.kind]}${m.dimmed ? " mt-pin-dimmed" : ""}${m.active ? " is-active" : ""}`,
@@ -451,6 +469,23 @@ export function TrailMap({
         return marker;
       });
   }, [ctx, markers]);
+
+  useEffect(() => {
+    if (ctx) setTapOnly(ctx.map, tapOnly);
+  }, [ctx, tapOnly]);
+
+  // A row in a list below ("Na trase") asks for its place: bring the map into view, glide there, open the pin.
+  useEffect(() => {
+    if (!ctx) return;
+    const { map } = ctx;
+    return onMapFocus(({ id, location }) => {
+      containerRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      map.flyTo({ center: [location.lon, location.lat], zoom: Math.max(map.getZoom(), 15), essential: true });
+      for (const m of markerRefs.current) if (m.getPopup()?.isOpen()) m.togglePopup();
+      const i = markerIds.current.indexOf(id);
+      if (i >= 0) map.once("moveend", () => markerRefs.current[i]?.togglePopup());
+    });
+  }, [ctx]);
 
   // Start pin (typed place) and "you are here" dot (GPS).
   useEffect(() => {

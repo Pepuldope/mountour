@@ -29,6 +29,8 @@ interface Props {
   detail: TrailDetail;
   gpxUrl: string | null;
   others?: OtherRoute[];
+  /** Phones, map in the page: taps only (see TrailMap). */
+  tapOnly?: boolean;
 }
 
 /** Other routes in a muted slate: clearly not the walk you picked (that one keeps its trail colour), still easy to see. */
@@ -50,7 +52,7 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  * With a start, the whole way: the drive (dashed) to the chosen parking, the
  * walk from there to the trail (dotted), then the trail itself.
  */
-export function TripMap({ detail, gpxUrl, others = [] }: Props) {
+export function TripMap({ detail, gpxUrl, others = [], tapOnly = false }: Props) {
   const { trail, trailheads, pois } = detail;
   const router = useRouter();
   const { parkingLots, choice, choose, rideTo: destination, trailJoin, walkFrom, walkLine, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
@@ -103,8 +105,8 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
     () =>
       others.map((o) =>
         o.slug === hovered
-          ? { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_HOVER, state: "selected" }
-          : { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal" }
+          ? { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_HOVER, state: "selected", showThrough: true }
+          : { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal", showThrough: true }
       ),
     [others, hovered]
   );
@@ -243,6 +245,7 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
       }}
       onHoverTrail={others.length ? (slug) => setHoveredRoute(others.some((o) => o.slug === slug) ? slug : null) : undefined}
       ariaLabel="Mapa trasy"
+      tapOnly={tapOnly}
     />
   );
 }
