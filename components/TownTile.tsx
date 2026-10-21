@@ -21,6 +21,10 @@ export function TownTile({ tile }: { tile: Tile }) {
             alt=""
             loading="lazy"
             decoding="async"
+            // No cookies and no referrer to Wikimedia (it would otherwise set its own tracking cookies;
+            // Commons allows any origin, so the image still loads).
+            crossOrigin="anonymous"
+            referrerPolicy="no-referrer"
             width={tile.photo.w}
             height={tile.photo.h}
             className="absolute inset-0 h-full w-full object-cover"
@@ -34,10 +38,16 @@ export function TownTile({ tile }: { tile: Tile }) {
         <span
           className="absolute top-2 left-2 grid h-[30px] w-[30px] place-items-center rounded-[9px] text-white"
           style={{ background: tile.photo ? colour : "rgba(255,255,255,.22)" }}
-          dangerouslySetInnerHTML={{ __html: kindSvg(tile.kind, 20) }}
+          dangerouslySetInnerHTML={{ __html: kindSvg(tile.kind in GOAL_COLOUR ? tile.kind : "ine", 20) }}
         />
         {tile.kids && (
           <span className="absolute top-2.5 right-2 rounded-full bg-white/90 px-2 text-xs font-bold text-[#17663a]">pre deti</span>
+        )}
+        {tile.closedSeason && (
+          // Seasonal park closure (TANAP ridges): visible before anyone picks a closed summit from Google.
+          <span className="absolute right-2 bottom-2 left-2 rounded-lg bg-[var(--danger-bg)] px-2 py-0.5 text-center text-xs font-bold text-[var(--danger)]">
+            zatvorené {tile.closedSeason}
+          </span>
         )}
       </span>
       <span className="text-[15px] leading-tight font-bold">{tile.name}</span>

@@ -30,7 +30,7 @@ export function RouteChoice({ slug, destination, routes, walks }: Props) {
   const rows = <RouteRows routes={routes} at={at} walks={walks} />;
 
   return (
-    <section aria-label={`Cesty na ${destination}`} className="flex flex-col gap-2">
+    <section aria-label={`Cesty k cieľu: ${destination}`} className="flex flex-col gap-2">
       {/* Phones: the map comparison is the main way to choose; the list folds into one row. */}
       <div className="overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] lg:hidden">
         <details className="group">
@@ -64,7 +64,7 @@ export function RouteChoice({ slug, destination, routes, walks }: Props) {
       {/* Wider screens: every route as a card. */}
       <div className="hidden flex-col gap-2 lg:flex">
         <div className="flex items-baseline justify-between gap-3">
-          <h2 className="text-base font-bold">Cesty na {destination}</h2>
+          <h2 className="text-base font-bold">Cesty k cieľu: {destination}</h2>
           <Link href={compare} className="text-sm font-bold text-[var(--accent)]">
             Porovnať na mape ›
           </Link>

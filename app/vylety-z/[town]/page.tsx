@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { SiteFooter } from "@/components/SiteFooter";
 import { TownTile } from "@/components/TownTile";
 import { getTown, getTownTrips } from "@/lib/townTrips";
+import { getTowns } from "@/lib/trips";
+import { tripsCount } from "@/lib/format";
 import { townGenitive } from "@/lib/townNames";
 import { pageMetadata } from "@/lib/seo";
 
@@ -11,11 +13,12 @@ interface Props {
   params: Promise<{ town: string }>;
 }
 
-// Drawn on the first visit and kept (lib/pageCache.ts): prebuilding ~140 more pages
-// would push the deploy past Cloudflare's 20,000-file limit.
+// Built ahead like the trip pages: drawing one reads the whole 2.4 MB trip index,
+// too much for a first visit on the free plan's CPU time. ~140 towns add a few
+// hundred files, well under the 20,000-file limit (scripts/check-page-cache.mjs).
 export const dynamicParams = true;
 export async function generateStaticParams(): Promise<{ town: string }[]> {
-  return [];
+  return getTowns().map((t) => ({ town: t.id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -42,7 +45,7 @@ export default async function TownPage({ params }: Props) {
       </Link>
       <header className="flex flex-col gap-1">
         <h1 className="text-[2.3rem] leading-none font-extrabold tracking-tight">Okolo {townGenitive(town.id, town.name)}</h1>
-        <p className="font-medium text-[var(--muted)]">{total} výletov do hodiny a pol autom</p>
+        <p className="font-medium text-[var(--muted)]">{tripsCount(total)} do hodiny a pol autom</p>
       </header>
       {rows.map((row) => (
         <section key={row.title} className="flex flex-col gap-2.5">
@@ -73,7 +76,7 @@ export default async function TownPage({ params }: Props) {
                 <a href={t.photo!.page} className="underline" rel="noopener">
                   {t.photo!.author}
                 </a>
-                , {t.photo!.license}, Wikimedia Commons
+                , <LicenseName name={t.photo!.license} />, Wikimedia Commons
               </li>
             ))}
           </ul>
@@ -82,4 +85,25 @@ export default async function TownPage({ params }: Props) {
       <SiteFooter />
     </main>
   );
+}
+
+/** "CC BY-SA 4.0" linked to the licence text, as the CC licences ask; CC0 and public domain as plain text. */
+function LicenseName({ name }: { name: string }) {
+  const m = /^CC (BY(?:-SA)?) (\d\.\d)(?: ([a-z]{2}))?$/.exec(name);
+  if (m) {
+    const url = `https://creativecommons.org/licenses/${m[1].toLowerCase()}/${m[2]}/${m[3] ? `${m[3]}/` : ""}`;
+    return (
+      <a href={url} className="underline" rel="noopener license">
+        {name}
+      </a>
+    );
+  }
+  if (name === "CC0") {
+    return (
+      <a href="https://creativecommons.org/publicdomain/zero/1.0/" className="underline" rel="noopener license">
+        CC0
+      </a>
+    );
+  }
+  return <>{name === "Public domain" ? "voľné dielo" : name}</>;
 }

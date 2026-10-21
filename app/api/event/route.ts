@@ -1,5 +1,5 @@
 import { countedDetail, countEvent } from "@/lib/eventCounts";
-import { fromOtherSite } from "@/lib/routeGuard";
+import { fromOtherSite, overCallLimit } from "@/lib/routeGuard";
 import { isBot, localDay } from "@/lib/visitDays";
 
 // Adds one to this month's total of a counted action (lib/eventCounts.ts).
@@ -12,6 +12,8 @@ const MAX_BODY = 200;
 export async function POST(request: Request): Promise<Response> {
   const userAgent = request.headers.get("user-agent") ?? "";
   if (isBot(userAgent) || fromOtherSite(request)) return new Response(null, { status: 204 });
+  // Each count is a database write: one address gets only so many a minute.
+  if (await overCallLimit(request, "event")) return new Response(null, { status: 204 });
 
   try {
     const raw = await request.text();

@@ -11,7 +11,7 @@ export const metadata = pageMetadata({
 
 export default function PrivacyPage() {
   return (
-    <InfoPage title="Súkromie" intro="Krátko: nepoužívame cookies, nemáme účty a nepredávame žiadne údaje. Aktualizované 10. 10. 2026.">
+    <InfoPage title="Súkromie" intro="Krátko: nepoužívame cookies, nemáme účty a nepredávame žiadne údaje. Aktualizované 21. 10. 2026.">
       <h2>Kto sme</h2>
       <p>
         MounTour je študentský projekt Petra Nemčoka a Radoslava Nemca. Pri otázkach o vašich údajoch nám napíšte{" "}
@@ -25,14 +25,15 @@ export default function PrivacyPage() {
 
       <h2>Štatistika návštevnosti</h2>
       <p>
-        Na počítanie návštev používame <a href="https://umami.is">Umami</a>: vidíme napríklad, koľko ľudí otvorilo
-        trasu, uložilo si výlet alebo prišlo z Facebooku. Umami nepoužíva cookies, nič neukladá do vášho zariadenia
-        a nezisťuje, kto ste. Vidíme len súhrnné čísla.
+        Na počítanie návštev používame <a href="https://umami.is">Umami</a> (Umami Cloud): vidíme napríklad, koľko
+        ľudí otvorilo trasu, uložilo si výlet alebo prišlo z Facebooku. Umami nepoužíva cookies, nič neukladá do
+        vášho zariadenia a nezisťuje, kto ste. Jeho server pri tom vidí vašu IP adresu, ako pri každej stránke. Vidíme
+        len súhrnné čísla.
       </p>
       <p>
         Aby sme vedeli, koľko ľudí sa k MounTouru vracia, server si pri návšteve zapíše dátum a jednosmerný
         odtlačok (hash) vytvorený z IP adresy a typu prehliadača s náhodným kľúčom, ktorý sa mení každý mesiac. IP
-        adresu neukladáme a z odtlačku sa nedá spätne zistiť, kto ste. Po skončení mesiaca kľúč aj odtlačky
+        adresu neukladáme. Odtlačok bez kľúča nič nepovie a po skončení mesiaca kľúč aj odtlačky
         zmažeme a ostanú len súhrnné čísla (napríklad „120 ľudí, z toho 15 aspoň 4 dni“).
       </p>
       <p>
@@ -53,7 +54,8 @@ export default function PrivacyPage() {
         Ak povolíte polohu alebo napíšete miesto štartu, použijeme ich len na výpočet cesty autom. Súradnice
         zaokrúhlime asi na 100 m a pošleme službe <a href="https://openrouteservice.org">openrouteservice</a>{" "}
         (výpočet trasy). Napísané miesto vyhľadáme cez{" "}
-        <a href="https://nominatim.openstreetmap.org">Nominatim (OpenStreetMap)</a>. Polohu si neukladáme.
+        <a href="https://nominatim.openstreetmap.org">Nominatim (OpenStreetMap)</a>. Pri povolenej polohe pošleme
+        Nominatimu aj zaokrúhlené súradnice (asi 100 m), aby sme zistili názov obce. Polohu si neukladáme.
       </p>
 
       <h2>Čo ostáva len vo vašom zariadení</h2>
@@ -65,8 +67,10 @@ export default function PrivacyPage() {
 
       <h2>Mapy a hosting</h2>
       <p>
-        Mapové dlaždice sa načítavajú priamo z ich zdrojov (pozri <Link href="/zdroje">Zdroje</Link>), ktoré vidia vašu IP
-        adresu ako pri každej webovej stránke. Stránka beží na Cloudflare, ktorý vedie bežné technické záznamy.
+        Mapové dlaždice sa načítavajú priamo z ich zdrojov (pozri <Link href="/zdroje">Zdroje</Link>) a fotky na
+        stránkach miest z Wikimedia Commons. Tieto servery vidia vašu IP adresu ako pri každej webovej stránke; fotky
+        načítavame bez cookies a bez adresy stránky, z ktorej prichádzate. Stránka beží na Cloudflare, ktorý vedie
+        bežné technické záznamy.
       </p>
 
       <h2>Vaše práva</h2>

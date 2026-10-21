@@ -6,11 +6,14 @@ import { SAFE_MARGIN_MIN } from "@/lib/dayPlan";
 import type { DayPlan } from "@/lib/dayPlan";
 import { formatTime } from "@/lib/format";
 import { useCachedJson } from "@/lib/useDriveRoute";
-import { dayInSentence, isoDate } from "@/lib/days";
+import { addDaysIso, dayInSentence, isoDate } from "@/lib/days";
+import { activeClosures } from "@/lib/closures";
+import { getSunTimes } from "@/lib/sun";
+import { clock } from "@/lib/zoned";
 import { FORECAST_DAYS, betterDay, betterTime, summarize, tripWeatherReport, weatherNotes, weatherWords } from "@/lib/weather";
 import type { BetterDay, BetterTime, WeatherForecast, WeatherSummary } from "@/lib/weather";
 import { badSkySvg } from "@/lib/weatherIcons";
-import type { LatLng } from "@/lib/types";
+import type { Closure, LatLng } from "@/lib/types";
 
 type Goal = (LatLng & { ele: number | null; name: string }) | null;
 
@@ -47,7 +50,7 @@ export function useTripWeather(plan: DayPlan | null, start: LatLng | null, goal:
  * wind and frost an amber one, like the sunset notes.
  */
 export function WeatherNotes({ plan, weather, goal }: { plan: DayPlan; weather: TripWeather; goal: Goal }) {
-  if (weather.loading) return <p className="text-xs text-[var(--muted)]">Načítavam predpoveď počasia...</p>;
+  if (weather.loading) return <p className="text-xs text-[var(--muted)]">Načítavame predpoveď počasia…</p>;
   if (!weather.below) return null;
   const atStart = summarize(weather.below, plan.hikeStart, plan.hikeEnd);
   if (!atStart) return null;
@@ -89,6 +92,8 @@ export function WeatherReport({
   weather,
   goal,
   wholeDay,
+  sunAt,
+  closures = [],
   onPickDay,
   onPickTime,
 }: {
@@ -96,12 +101,16 @@ export function WeatherReport({
   weather: TripWeather;
   goal: Goal;
   wholeDay: boolean;
+  /** Where the plan's sun times are computed: a drier day must fit that day's daylight too. */
+  sunAt: LatLng | null;
+  /** The trail's closure rules: a drier day the trail is closed is no better. */
+  closures?: Closure[];
   /** Moves the trip to another day (YYYY-MM-DD), for the drier-day suggestion. */
   onPickDay?: (iso: string) => void;
   /** Moves the departure (HH:MM) on the same day, for the drier-time suggestion. */
   onPickTime?: (time: string) => void;
 }) {
-  if (weather.loading) return <p className="text-xs text-[var(--muted)]">Načítavam predpoveď počasia...</p>;
+  if (weather.loading) return <p className="text-xs text-[var(--muted)]">Načítavame predpoveď počasia…</p>;
   if (!weather.below) return null;
   const from = wholeDay ? plan.segments[0].start : plan.hikeStart;
   const to = wholeDay ? plan.segments[plan.segments.length - 1].end : plan.hikeEnd;
@@ -113,9 +122,19 @@ export function WeatherReport({
   // A wet or stormy walk always gets a next step: the nearest dry day in the forecast, same start time.
   // First a drier time the same day (Peter: moving a few hours beats moving the day), then a drier day; both when both work.
   const now = new Date();
-  const better = onPickDay ? betterDay(weather.below, weather.above, plan.hikeStart, plan.hikeEnd, now) : null;
   const leave = plan.segments[0].start;
   const lead = plan.hikeStart.getTime() - leave.getTime();
+  // Another day keeps the clock time, so it must be checked again: shorter light in autumn (a whole
+  // hour across the clock change), a closure starting that day, a departure already gone.
+  const fits = (a: Date, b: Date) => {
+    const iso = isoDate(a);
+    if (activeClosures(closures, iso).length > 0) return false;
+    if (!sunAt) return true;
+    const [y, m, d] = iso.split("-").map(Number);
+    const sun = getSunTimes(new Date(Date.UTC(y, m - 1, d)), sunAt.lat, sunAt.lon);
+    return !!sun && b.getTime() <= sun.sunset.getTime() - SAFE_MARGIN_MIN * 60000;
+  };
+  const better = onPickDay ? betterDay(weather.below, weather.above, plan.hikeStart, plan.hikeEnd, now, { leadMin: lead / 60000, fits }) : null;
   const sooner = onPickTime
     ? betterTime(weather.below, weather.above, plan.hikeStart, plan.hikeEnd, {
         earliest: new Date(Math.max(plan.sunrise.getTime(), now.getTime() + lead)),
@@ -178,7 +197,7 @@ function Warning({ kind, children }: { kind: keyof typeof SIGN; children: ReactN
 
 /** "Lepšie vyzerá v nedeľu: polojasno, 7 až 11 °C, bez zrážok." and a button that moves the plan there. */
 function BetterDayTip({ better, hikeStart, onPickDay, alsoTime }: { better: BetterDay; hikeStart: Date; onPickDay: (iso: string) => void; alsoTime: boolean }) {
-  const iso = isoDate(new Date(hikeStart.getFullYear(), hikeStart.getMonth(), hikeStart.getDate() + better.offset));
+  const iso = addDaysIso(isoDate(hikeStart), better.offset);
   const when = dayInSentence(iso, new Date());
   const s = better.summary;
   const temps = s.tempMin === s.tempMax ? `${s.tempMin} °C` : `${s.tempMin} až ${s.tempMax} °C`;
@@ -205,8 +224,8 @@ const TIP_BUTTON =
 /** "Suchšie pri odchode o 11:30: polojasno, 7 až 11 °C, bez zrážok." and a button that moves the departure there. */
 function BetterTimeTip({ better, leave, onPickTime }: { better: BetterTime; leave: Date; onPickTime: (time: string) => void }) {
   const at = new Date(leave.getTime() + better.shiftMin * 60000);
-  // HH:MM for the time box; the shown text uses the site's usual format.
-  const time = `${String(at.getHours()).padStart(2, "0")}:${String(at.getMinutes()).padStart(2, "0")}`;
+  // HH:MM for the time box, Slovak time.
+  const time = clock(at);
   const s = better.summary;
   const temps = s.tempMin === s.tempMax ? `${s.tempMin} °C` : `${s.tempMin} až ${s.tempMax} °C`;
   return (

@@ -5,6 +5,7 @@
 import { SAFE_MARGIN_MIN } from "@/lib/dayPlan";
 import { getSunTimes } from "@/lib/sun";
 import type { LatLng } from "@/lib/types";
+import { wallClock, zonedDate } from "@/lib/zoned";
 
 const MIN = 60000;
 
@@ -12,18 +13,31 @@ function pad(n: number) {
   return String(n).padStart(2, "0");
 }
 
-/** Local calendar date as YYYY-MM-DD. */
+/** The Slovak calendar date of an instant, YYYY-MM-DD. */
 export function isoDate(d: Date): string {
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const w = wallClock(d);
+  return `${w.y}-${pad(w.mo)}-${pad(w.d)}`;
 }
 
+/** A calendar date as UTC midnight: only for its weekday and day numbers (getUTC*), never a clock time. */
 function parseIso(iso: string): Date {
   const [y, m, d] = iso.split("-").map(Number);
-  return new Date(y, m - 1, d);
+  return new Date(Date.UTC(y, m - 1, d));
 }
 
-function addDays(d: Date, n: number): Date {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+function calendarIso(d: Date): string {
+  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`;
+}
+
+/** The calendar date `n` days after `iso`. */
+export function addDaysIso(iso: string, n: number): string {
+  const d = parseIso(iso);
+  return calendarIso(new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + n)));
+}
+
+/** Whole calendar days from `a` to `b`. */
+export function daysBetween(a: string, b: string): number {
+  return Math.round((parseIso(b).getTime() - parseIso(a).getTime()) / 86400000);
 }
 
 const WEEKDAY = ["nedeľa", "pondelok", "utorok", "streda", "štvrtok", "piatok", "sobota"];
@@ -38,14 +52,14 @@ export interface DayChip {
 
 /** Dnes, Zajtra, then the coming Saturday and Sunday unless they are already on the list. */
 export function dayChips(now: Date): DayChip[] {
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const today = isoDate(now);
   const chips: DayChip[] = [
-    { iso: isoDate(today), label: "Dnes" },
-    { iso: isoDate(addDays(today, 1)), label: "Zajtra" },
+    { iso: today, label: "Dnes" },
+    { iso: addDaysIso(today, 1), label: "Zajtra" },
   ];
   for (const weekday of [6, 0]) {
-    const ahead = (weekday - today.getDay() + 7) % 7;
-    const iso = isoDate(addDays(today, ahead));
+    const ahead = (weekday - parseIso(today).getUTCDay() + 7) % 7;
+    const iso = addDaysIso(today, ahead);
     if (!chips.some((c) => c.iso === iso)) chips.push({ iso, label: WEEKDAY_SHORT[weekday] });
   }
   return chips;
@@ -62,42 +76,43 @@ export interface StripDay {
 
 /** The days after tomorrow, for the "iný deň" strip (Dnes and Zajtra have their own buttons). */
 export function dayStrip(now: Date, count = 14): StripDay[] {
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const today = isoDate(now);
   return Array.from({ length: count }, (_, i) => {
-    const d = addDays(today, i + 2);
-    return { iso: isoDate(d), weekday: WEEKDAY_SHORT[d.getDay()], day: d.getDate(), weekend: d.getDay() % 6 === 0 };
+    const iso = addDaysIso(today, i + 2);
+    const d = parseIso(iso);
+    return { iso, weekday: WEEKDAY_SHORT[d.getUTCDay()], day: d.getUTCDate(), weekend: d.getUTCDay() % 6 === 0 };
   });
 }
 
 /** "So 17. 10." */
 export function shortDay(iso: string): string {
-  return `${WEEKDAY_SHORT[parseIso(iso).getDay()]} ${shortDate(iso)}`;
+  return `${WEEKDAY_SHORT[parseIso(iso).getUTCDay()]} ${shortDate(iso)}`;
 }
 
 /** "17. 10." */
 export function shortDate(iso: string): string {
   const d = parseIso(iso);
-  return `${d.getDate()}. ${d.getMonth() + 1}.`;
+  return `${d.getUTCDate()}. ${d.getUTCMonth() + 1}.`;
 }
 
 /** "sobota 17. 10." */
 export function longDay(iso: string): string {
-  return `${WEEKDAY[parseIso(iso).getDay()]} ${shortDate(iso)}`;
+  return `${WEEKDAY[parseIso(iso).getUTCDay()]} ${shortDate(iso)}`;
 }
 
 /** After "na": "nedeľu 18. 10." ("Uložené na nedeľu 18. 10."). */
 export function dayAfterNa(iso: string): string {
-  return `${WEEKDAY_IN[parseIso(iso).getDay()].replace(/^vo? /, "")} ${shortDate(iso)}`;
+  return `${WEEKDAY_IN[parseIso(iso).getUTCDay()].replace(/^vo? /, "")} ${shortDate(iso)}`;
 }
 
 /** For sentences: "dnes", "zajtra", "v sobotu", or "v pondelok 19. 10." further out. */
 export function dayInSentence(iso: string, now: Date): string {
   const today = isoDate(now);
   if (iso === today) return "dnes";
-  if (iso === isoDate(addDays(now, 1))) return "zajtra";
-  const d = parseIso(iso);
-  const days = Math.round((d.getTime() - parseIso(today).getTime()) / 86400000);
-  return days > 0 && days < 7 ? WEEKDAY_IN[d.getDay()] : `${WEEKDAY_IN[d.getDay()]} ${shortDate(iso)}`;
+  if (iso === addDaysIso(today, 1)) return "zajtra";
+  const weekday = WEEKDAY_IN[parseIso(iso).getUTCDay()];
+  const days = daysBetween(today, iso);
+  return days > 0 && days < 7 ? weekday : `${weekday} ${shortDate(iso)}`;
 }
 
 /** Departure times are shown rounded down to 5 min: "14:55", never a later "14:58". */
@@ -145,7 +160,7 @@ export interface DayFitInput {
 export function dayFit({ date, now, driveMin, hikeMin, location }: DayFitInput): DayFit | null {
   const day = parseIso(date);
   if (Number.isNaN(day.getTime())) return null;
-  const sun = getSunTimes(new Date(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate())), location.lat, location.lon);
+  const sun = getSunTimes(day, location.lat, location.lon);
   if (!sun) return null;
   const drive = driveMin ?? 0;
   const latest = floorTo5(new Date(sun.sunset.getTime() - (SAFE_MARGIN_MIN + hikeMin + drive) * MIN));
@@ -153,7 +168,7 @@ export function dayFit({ date, now, driveMin, hikeMin, location }: DayFitInput):
 
   let status: FitStatus = "fits";
   if (latest < earliest) status = "too-long";
-  else if (latest < new Date(day.getFullYear(), day.getMonth(), day.getDate(), EARLIEST_DEPARTURE_HOUR)) status = "too-early";
+  else if (latest < zonedDate(day.getUTCFullYear(), day.getUTCMonth() + 1, day.getUTCDate(), EARLIEST_DEPARTURE_HOUR)) status = "too-early";
   else if (date === isoDate(now) && latest < now) status = "too-late";
   return { status, latest, sunset: sun.sunset };
 }

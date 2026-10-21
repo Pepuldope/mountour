@@ -14,7 +14,8 @@ import type { SharedPlan, WalkRoute } from "@/lib/links";
 import { useTripSettings } from "@/lib/tripSettings";
 import { useTripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
-import type { BBox, LatLng } from "@/lib/types";
+import { hourOf } from "@/lib/zoned";
+import type { BBox, Closure, LatLng } from "@/lib/types";
 import { FilterChips, Switch } from "@/components/FilterChips";
 import { UiIcon } from "@/components/UiIcon";
 import { NavHandoff } from "@/components/NavHandoff";
@@ -37,6 +38,8 @@ interface Props extends ShareInfo {
   profile: TripProfile | null;
   gpxUrl: string | null;
   bbox: BBox | null;
+  /** The trail's closure rules (empty when none is known). */
+  closures?: Closure[];
   /** The trail itself, for the walking hand-off. */
   walk: WalkRoute;
   /** Top of the first card: the trail's facts and route choice. */
@@ -57,7 +60,7 @@ const part =
  * (sun dial, times, weather, a warning only when the start is too late), then getting there
  * (parking, map...) with Uložiť (main), share and navigation hand-offs.
  */
-export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, walk, intro, children, outro, ...trip }: Props) {
+export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, closures = [], walk, intro, children, outro, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
   const { destination, rideTo, approachMin, trailStart, transit, noCar, noBus, parking, stop, skip, walkFrom, trailJoin, walk: onFoot, choose, chooseStop } = useTripAccess();
@@ -136,7 +139,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
   const tooLong =
     plan !== null &&
     latest !== null &&
-    (latest.getTime() < plan.sunrise.getTime() - (driveMin ?? 0) * 60_000 || latest.getHours() < EARLIEST_DEPARTURE_HOUR);
+    (plan.noTrainInLight === true || latest.getTime() < plan.sunrise.getTime() - (driveMin ?? 0) * 60_000 || hourOf(latest) < EARLIEST_DEPARTURE_HOUR);
   const startWord = hasDrive ? "Vyrazte" : transit && stop ? `Buďte na zastávke ${stopLabel(stop.name)}` : "Začnite túru";
 
   // A time picked by hand that is far off a usual day out (back only in the dark, or leaving in the
@@ -146,7 +149,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
   const unusual =
     plan !== null &&
     !tripPlan.loading &&
-    (plan.verdict === "after-dusk" || plan.segments[0].start.getHours() < UNUSUAL_BEFORE_HOUR);
+    (plan.verdict === "after-dusk" || hourOf(plan.segments[0].start) < UNUSUAL_BEFORE_HOUR);
   useEffect(() => {
     if (!asked || asked !== time) return;
     // Wait for the typing (and the route) to settle; the question is about the final time.
@@ -219,10 +222,10 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
               a warning that then vanishes would only confuse. */}
           {plan && !tripPlan.loading && (late || latestPassed) && (
             <p role="status" className="rounded-xl bg-[var(--warn-bg)] px-3.5 py-3 text-base font-semibold text-[var(--warn)]">
-              {lateText(plan.verdict, { latestPassed: !!latestPassed, tooLong, startWord, latest: formatTime(latest!) })}
+              {lateText(plan.verdict, { latestPassed: !!latestPassed, tooLong, noTrain: !!plan.noTrainInLight, startWord, latest: formatTime(latest!) })}
             </p>
           )}
-          {driveStatus === "loading" && <p className="text-xs text-[var(--muted)]">{transit ? "Počítam cestu na zastávku..." : "Počítam cestu autom..."}</p>}
+          {driveStatus === "loading" && <p className="text-xs text-[var(--muted)]">{transit ? "Počítame cestu na zastávku…" : "Počítame cestu autom…"}</p>}
         </section>
       </section>
 
@@ -231,7 +234,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
           time={confirm}
           text={
             late || latestPassed
-              ? lateText(plan.verdict, { latestPassed: !!latestPassed, tooLong, startWord, latest: better ?? "" })
+              ? lateText(plan.verdict, { latestPassed: !!latestPassed, tooLong, noTrain: !!plan.noTrainInLight, startWord, latest: better ?? "" })
               : "To je uprostred noci, cesta by začínala po tme. Nemysleli ste ráno?"
           }
           better={late || latestPassed ? better : NIGHT_FIX}
@@ -269,7 +272,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, wal
             <Step label={transit && stop ? "na zastávke" : hasDrive ? "pri aute" : "späť"} time={plan.hikeEnd} />
             {plan.segments[plan.segments.length - 1].kind === "drive-back" && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
-          <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} onPickDay={(iso) => update({ date: iso })} onPickTime={(time) => update({ time })} />
+          <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} sunAt={sun} closures={closures} onPickDay={(iso) => update({ date: iso })} onPickTime={(time) => update({ time })} />
           {transit && <TransitLegs plan={plan} rail={rail} />}
           {transit && hasDrive && rail.status !== "ok" && (
             <p className="text-xs text-[var(--muted)]">
@@ -353,8 +356,9 @@ function UnusualTime({ time, text, better, onBetter, onKeep }: { time: string; t
 /** One warning, in the words the trip page uses for each case. */
 function lateText(
   verdict: Verdict,
-  o: { latestPassed: boolean; tooLong: boolean; startWord: string; latest: string }
+  o: { latestPassed: boolean; tooLong: boolean; noTrain: boolean; startWord: string; latest: string }
 ): string {
+  if (o.tooLong && o.noTrain) return "Vlakom to v tento deň za svetla nestihnete: žiadny vlak nepríde dosť skoro. Skúste autobus, kratšiu trasu alebo iný deň.";
   if (o.tooLong) return "V tento deň je táto túra na denné svetlo pridlhá. Skúste kratšiu trasu z ponuky nižšie alebo dlhší deň.";
   if (o.latestPassed) return "Na dnes je to už neskoro, späť by ste boli po tme. Skúste zajtra ráno.";
   const leave = `${o.startWord} najneskôr o ${o.latest}.`;

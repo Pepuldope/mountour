@@ -7,7 +7,7 @@ import { driveDestination, nearestStop, primaryTrailhead, routeWalk, sunLocation
 import { formatKm, pickWalk, walkMinutes } from "@/lib/walkFacts";
 import { activeClosures } from "@/lib/closures";
 import { hikeMinutes } from "@/lib/dayPlan";
-import { dayFit, dayInSentence, isoDate } from "@/lib/days";
+import { addDaysIso, dayFit, dayInSentence, isoDate } from "@/lib/days";
 import { TOWN_EXACT_KM, estimateDriveMin, transitMinutes } from "@/lib/drive";
 import { DIFFICULTY_LABEL, GOAL_LABEL, GOAL_PLURAL, formatDurationShort } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
@@ -800,8 +800,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   );
 
   const showTomorrow = () => {
-    const t = new Date();
-    update({ date: isoDate(new Date(t.getFullYear(), t.getMonth(), t.getDate() + 1)) });
+    update({ date: addDaysIso(isoDate(new Date()), 1) });
   };
 
   const list = (
@@ -813,7 +812,9 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
 
       {noneFit && dayWord && (
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[var(--radius-card)] bg-[var(--warn-bg)] p-3 text-sm text-[var(--warn)]">
-          <p className="font-semibold">{dayWord === "dnes" ? "Dnes" : "Vtedy"} už za svetla nič nestihnete. Ukazujeme všetky výlety.</p>
+          <p className="font-semibold">
+            {dayWord === "dnes" || !dayWord ? "Dnes už" : dayWord.charAt(0).toUpperCase() + dayWord.slice(1)} za svetla nestihnete žiadny výlet. Ukazujeme všetky.
+          </p>
           {dayWord === "dnes" && (
             <button type="button" onClick={showTomorrow} className="font-semibold underline">
               Pozrieť zajtra

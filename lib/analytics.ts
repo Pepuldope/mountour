@@ -46,11 +46,14 @@ export function sinceArrival(): string {
 const OPT_OUT_KEY = "umami.disabled";
 
 /**
- * "?nepocitat=1" in any address stops counting this browser (the team's own
- * phones), "?nepocitat=0" undoes it. Kept in this browser only.
+ * "/statistiky?nepocitat=1" stops counting this browser (the team's own
+ * phones), "?nepocitat=0" undoes it. Kept in this browser only. Only on
+ * /statistiky, where the page says so: on any page, a shared link carrying
+ * the flag would quietly stop counting everyone who opened it.
  */
 export function applyOptOut(): void {
   try {
+    if (window.location.pathname.replace(/\/$/, "") !== "/statistiky") return;
     const v = new URLSearchParams(window.location.search).get("nepocitat");
     if (v === "1") localStorage.setItem(OPT_OUT_KEY, "1");
     else if (v === "0") localStorage.removeItem(OPT_OUT_KEY);

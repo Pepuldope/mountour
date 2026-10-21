@@ -56,13 +56,13 @@ const TIGHT_MIN = 90;
 
 const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-type Pill = { tone: "ok" | "tight" | "no"; text: string; time?: string };
+type Pill = { tone: "ok" | "tight" | "no" | "closed"; text: string; time?: string };
 
 function pillFor(item: TripCardItem, dayWord: string | null): Pill | null {
   const { fit, closed, noStop, driveMin, stop } = item;
   const day = capitalize(dayWord ?? "v tento deň");
   if (noStop) return { tone: "no", text: "Pri štarte nie je zastávka" };
-  if (closed) return { tone: "no", text: `${day} je chodník uzavretý` };
+  if (closed) return { tone: "closed", text: `${day} je chodník uzavretý` };
   if (!fit) return null;
   if (fit.status === "too-late") return { tone: "no", text: `${dayWord === "dnes" ? "Dnes" : "Vtedy"} už nestihnete · skúste zajtra` };
   if (fit.status === "too-early") return { tone: "no", text: `${day} by ste museli vyraziť pred ${EARLIEST_DEPARTURE_HOUR}:00` };
@@ -78,6 +78,8 @@ const PILL_CLASS = {
   ok: "bg-[var(--ok-bg)] text-[var(--ok)]",
   tight: "bg-[var(--warn-bg)] text-[var(--warn)]",
   no: "bg-[var(--neutral-bg)] text-[var(--muted)]",
+  // A closure by law, in the closures' red: not the grey of "not today".
+  closed: "bg-[var(--danger-bg)] text-[var(--danger)]",
 };
 
 /** One trip: what it is, how long to get there and walk, and when to leave. */
@@ -88,6 +90,7 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
   const colour = GOAL_COLOUR[goal];
   const approx = driveApprox || transit ? "~" : "";
   const pill = pillFor(item, dayWord);
+  const dim = (pill?.tone === "no" || pill?.tone === "closed") && onClose === undefined;
   const km = formatKm(item.walkM);
   // A stop up the trail counts from where its walk meets the trail, as on the trip page.
   const stopWalkM = nearStop ? (nearStop.join?.walk_m ?? nearStop.distance_m) : 0;
@@ -105,18 +108,19 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
       onFocus={() => onActive(trail.slug)}
       className={`grid grid-cols-[54px_1fr] gap-3 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-3 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
         big ? "border-2 border-[var(--accent)] shadow-[0_10px_28px_rgba(20,35,59,0.22)]" : active ? "trip-card-active border-[var(--accent)]" : "border-[var(--border)]"
-      } ${pill?.tone === "no" && !big ? "opacity-70 grayscale-[75%]" : ""}`}
+      }`}
     >
       <span
         aria-hidden
-        className="grid h-[54px] w-[54px] place-items-center rounded-[14px] text-white"
+        // A trip that doesn't work that day fades its icon and title only: the pill saying why keeps full contrast.
+        className={`grid h-[54px] w-[54px] place-items-center rounded-[14px] text-white ${dim ? "opacity-50 grayscale-[75%]" : ""}`}
         style={{ background: colour }}
         // Constant markup from lib/kindIcons.ts, no user data.
         dangerouslySetInnerHTML={{ __html: kindSvg(goal, 28) }}
       />
       <span className="flex min-w-0 flex-col gap-1">
         <span className="flex items-baseline justify-between gap-2">
-          <span className={`leading-tight font-bold ${big ? "text-xl" : "text-base"}`}>{trail.name}</span>
+          <span className={`leading-tight font-bold ${big ? "text-xl" : "text-base"} ${dim ? "text-[var(--muted)]" : ""}`}>{trail.name}</span>
           {big ? (
             <button
               type="button"

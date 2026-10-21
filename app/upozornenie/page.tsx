@@ -23,7 +23,7 @@ export default function DisclaimerPage() {
           Počasie a výstrahy, napríklad na <a href="https://www.shmu.sk">SHMÚ</a>.
         </li>
         <li>
-          Uzávery chodníkov. Vo Vysokých Tatrách sú vysokohorské chodníky každý rok od 1. 11. do 15. 6. zatvorené (
+          Uzávery chodníkov. Vo Vysokých Tatrách sú vysokohorské chodníky každý rok od 1. 11. do 31. 5. zatvorené (
           <a href="https://www.tanap.sk">TANAP</a>).
         </li>
         <li>

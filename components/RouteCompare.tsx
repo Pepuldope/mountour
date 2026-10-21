@@ -82,7 +82,7 @@ export function RouteCompare({ slug, destination, goal, routes, walks, children 
       <div className="flex w-full flex-col gap-4 lg:w-[460px] lg:shrink-0 lg:overflow-y-auto lg:overscroll-contain">
         <div className="px-4 pt-4">{children}</div>
         <div className="h-[42vh] border-y border-[var(--border)] lg:hidden">
-          <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} onHoverTrail={onHoverTrail} ariaLabel={`Cesty na ${destination} na mape`} />
+          <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} onHoverTrail={onHoverTrail} ariaLabel={`Cesty k cieľu ${destination} na mape`} />
         </div>
         <ul className="flex flex-col gap-2 px-4 pb-6">
           {routes.map((r, i) => (
@@ -143,7 +143,7 @@ export function RouteCompare({ slug, destination, goal, routes, walks, children 
         </ul>
       </div>
       <div className="hidden lg:block lg:h-dvh lg:flex-1 lg:border-l lg:border-[var(--border)]">
-        <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} onHoverTrail={onHoverTrail} ariaLabel={`Cesty na ${destination} na mape`} />
+        <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} onHoverTrail={onHoverTrail} ariaLabel={`Cesty k cieľu ${destination} na mape`} />
       </div>
     </>
   );

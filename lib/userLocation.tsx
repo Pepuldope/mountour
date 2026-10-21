@@ -43,7 +43,7 @@ const STORAGE_KEY = "mountour-user-fix";
 const MANUAL_KEY = "mountour-start";
 
 const MESSAGES: Partial<Record<LocationStatus, string>> = {
-  locating: "Zisťujem vašu polohu...",
+  locating: "Zisťujeme vašu polohu…",
   denied: "Prístup k polohe je zamietnutý. Stačí vybrať mesto.",
   unsupported: "Tento prehliadač nepodporuje polohu. Stačí vybrať mesto.",
   unavailable: "Polohu sa nepodarilo zistiť. Skúste znova alebo vyberte mesto.",

@@ -1,4 +1,5 @@
 import { withEdgeCache } from "@/lib/edgeCache";
+import { OTHER_SITE, TOO_MANY, fromOtherSite, overCallLimit } from "@/lib/routeGuard";
 import type { WeatherForecast, WeatherStep } from "@/lib/weather";
 
 /**
@@ -44,6 +45,8 @@ function trim(s: MetStep): WeatherStep {
 }
 
 export async function GET(req: Request) {
+  // Each new answer is a call to MET in our name: only for our pages, and only so many a minute.
+  if (fromOtherSite(req)) return OTHER_SITE();
   const q = new URL(req.url).searchParams;
   const lat = snap(Number(q.get("lat")));
   const lon = snap(Number(q.get("lon")));
@@ -64,7 +67,7 @@ export async function GET(req: Request) {
     "https://api.met.no/weatherapi/locationforecast/2.0/compact" +
     `?lat=${lat.toFixed(2)}&lon=${lon.toFixed(2)}${alt !== null ? `&altitude=${alt}` : ""}`;
   const cacheKey = { lat: lat.toFixed(2), lon: lon.toFixed(2), alt: alt === null ? "" : String(alt) };
-  return withEdgeCache(req, CACHE_S, () => forecast(url), cacheKey);
+  return withEdgeCache(req, CACHE_S, async () => ((await overCallLimit(req, "weather")) ? TOO_MANY() : forecast(url)), cacheKey);
 }
 
 async function forecast(url: string): Promise<Response> {

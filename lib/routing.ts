@@ -5,6 +5,7 @@
 // servers, which are fine for local development but have no SLA.
 import type { DriveRoute } from "@/lib/drive";
 import { haversineM, nearestOnPath } from "@/lib/geo";
+import { spendOrsCall } from "@/lib/orsBudget";
 
 export type Pt = [number, number];
 type OrsProfile = "driving-car" | "foot-hiking" | "foot-walking";
@@ -23,6 +24,9 @@ export const TAIL_TIMEOUT_MS = 4000;
  * second call on a fallback when the router said "too many requests".
  */
 export class RateLimited extends Error {}
+
+/** The site's daily router budget is spent (lib/orsBudget.ts): answered like the router's own "too many". */
+export class OverBudget extends RateLimited {}
 
 const MEMO_MAX = 500;
 const memo = new Map<string, DriveRoute>();
@@ -47,6 +51,7 @@ export async function viaOrs(
   const memoKey = `${profile}|${from}|${to}|${radiuses}`;
   const known = memo.get(memoKey);
   if (known) return known;
+  if (!(await spendOrsCall())) throw new OverBudget(`ORS ${profile}: daily budget spent`);
   // POST so we can lift the 350 m snapping limit for points off the network.
   const res = await fetch(`https://api.openrouteservice.org/v2/directions/${profile}/geojson`, {
     method: "POST",

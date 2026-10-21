@@ -223,6 +223,7 @@ export default async function TripSheetPage({ params }: Props) {
             profile={profile}
             gpxUrl={gpxUrl}
             bbox={trail.bbox}
+            closures={closures}
             intro={
               <>
                 <div className="flex flex-col gap-2">

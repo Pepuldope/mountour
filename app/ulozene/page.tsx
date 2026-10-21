@@ -16,7 +16,7 @@ export default function SavedTripsPage() {
       </Link>
       <header className="flex flex-col gap-1">
         <h1 className="text-[1.65rem] leading-tight font-extrabold">Moje výlety</h1>
-        <p className="text-sm text-[var(--muted)]">Uložené len v tomto zariadení. Fungujú aj bez signálu.</p>
+        <p className="text-sm text-[var(--muted)]">Uložené len v tomto zariadení. Pri každom výlete vidíte, či funguje aj bez signálu.</p>
       </header>
       <SavedTripsList />
       <SiteFooter />

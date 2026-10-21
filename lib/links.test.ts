@@ -66,6 +66,24 @@ describe("shared plan links", () => {
     );
   });
 
+  it("doesn't make up a time home when no train goes back", () => {
+    const text = shareText({
+      name: "Pajštún z Borinky",
+      dayLabel: "sobota 17. 10.",
+      departure: new Date(2026, 9, 17, 8, 50),
+      back: new Date(2026, 9, 17, 14, 30),
+      hasDrive: true,
+      backHome: false,
+      inDaylight: true,
+      town: "Bratislava",
+      hikeMin: 130,
+      difficulty: "lahka",
+      familyFriendly: true,
+      url: "https://mountour.sk/trasa/pajstun",
+    });
+    expect(text).toContain("odchod 8:50, koniec túry okolo 14:30, ešte za svetla.");
+  });
+
   it("warns instead of promising daylight when the hike ends after sunset", () => {
     const text = shareText({
       name: "Chleb",

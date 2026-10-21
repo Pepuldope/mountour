@@ -1,6 +1,7 @@
 import type { DayPlan, Verdict } from "@/lib/dayPlan";
 import type { DestinationKind } from "@/lib/tripSchema";
 import type { Difficulty, PoiKind, TransitMode } from "@/lib/types";
+import { clock } from "@/lib/zoned";
 
 export const DIFFICULTY_LABEL: Record<Difficulty, string> = {
   lahka: "Ľahká",
@@ -71,8 +72,9 @@ export function formatWalk(meters: number): string {
   return meters < 1000 ? `${meters} m` : formatDistance(meters);
 }
 
+/** "08:05", Slovak time whatever the device's timezone. */
 export function formatTime(date: Date): string {
-  return date.toLocaleTimeString("sk-SK", { hour: "2-digit", minute: "2-digit" });
+  return clock(date);
 }
 
 export function formatDateSk(iso: string): string {

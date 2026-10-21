@@ -12,10 +12,6 @@ const CACHE_PREFIX = "mountour-trip-";
 const STATIC_CACHE = "mountour-static";
 const SHELL_URLS = ["/ulozene"];
 
-function cacheKey(req) {
-  return req.url;
-}
-
 self.addEventListener("install", () => {
   self.skipWaiting();
 });
@@ -51,8 +47,9 @@ self.addEventListener("message", (event) => {
       for (const url of urls) {
         let ok = false;
         try {
-          const res = await fetch(url, { mode: "cors" }).catch(() => fetch(url));
-          if (res && (res.ok || res.type === "opaque")) {
+          // CORS only: an opaque answer can't be drawn by the map anyway, and each one takes ~7 MB of quota.
+          const res = await fetch(url, { mode: "cors" });
+          if (res.ok) {
             const target = new URL(url, self.location.origin).pathname.startsWith("/_next/static/")
               ? shared
               : cache;
@@ -65,6 +62,17 @@ self.addEventListener("message", (event) => {
         if (!ok) failed.push(url);
         done += 1;
         if (port) port.postMessage({ type: "PROGRESS", done, total });
+      }
+      // Saving again ("Uložiť zmeny") replaces the copy: drop what this save didn't ask for
+      // (last week's tiles, old map style). A URL that failed this time keeps its older copy.
+      const bare = (u) => {
+        const x = new URL(u, self.location.origin);
+        x.hash = "";
+        return x.href;
+      };
+      const wanted = new Set(urls.map(bare));
+      for (const req of await cache.keys()) {
+        if (!wanted.has(bare(req.url))) await cache.delete(req);
       }
       if (port) port.postMessage({ type: "DONE", done, total, failed });
     })()
@@ -97,7 +105,7 @@ self.addEventListener("fetch", (event) => {
 
   event.respondWith(
     (async () => {
-      const key = cacheKey(req);
+      const key = req.url;
       // Pages: network first so a saved trip shows fresh data when online;
       // fall back to the saved copy (ignoring ?query) when offline.
       if (req.mode === "navigate") {
@@ -109,7 +117,7 @@ self.addEventListener("fetch", (event) => {
           throw err;
         }
       }
-      const cached = await caches.match(key);
+      const cached = await matchForPage(event, key);
       if (cached && url.origin !== self.location.origin && !isImmutable(url)) {
         // The map style and TileJSON of a saved trip: they name tile URLs by the map's build
         // date, which changes weekly. Online, use the current ones but don't overwrite the
@@ -128,19 +136,15 @@ self.addEventListener("fetch", (event) => {
           fetch(req)
             .then(async (res) => {
               if (res && res.ok) {
-                const cache = await caches.open(await matchingCacheName(key));
-                if (cache) cache.put(key, res.clone());
+                const name = await matchingCacheName(key);
+                if (name) (await caches.open(name)).put(key, res.clone());
               }
             })
             .catch(() => {})
         );
         return cached;
       }
-      try {
-        return await fetch(req);
-      } catch (err) {
-        throw err;
-      }
+      return fetch(req);
     })()
   );
 });
@@ -176,5 +180,26 @@ async function matchingCacheName(req) {
     const cache = await caches.open(name);
     if (await cache.match(req)) return name;
   }
-  return names[0];
+  return null;
+}
+
+/**
+ * A stored answer, from the cache of the trip the asking page shows first. Every saved
+ * trip keeps its own copy of the map style and TileJSON, and those name the tiles by the
+ * map's weekly build: trip B saved a week after trip A must get B's copy, or offline
+ * its map asks for A's week of tiles and stays blank. Other pages take any copy.
+ */
+async function matchForPage(event, key) {
+  try {
+    const client = event.clientId ? await self.clients.get(event.clientId) : null;
+    const m = client && /^\/trasa\/([^/?#]+)/.exec(new URL(client.url).pathname);
+    if (m) {
+      const own = await caches.open(CACHE_PREFIX + decodeURIComponent(m[1]));
+      const hit = await own.match(key);
+      if (hit) return hit;
+    }
+  } catch {
+    // No client to ask: fall back to any copy.
+  }
+  return caches.match(key);
 }

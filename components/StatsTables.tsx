@@ -19,7 +19,7 @@ export function StatsTables() {
       .catch(() => setData("error"));
   }, []);
 
-  if (data === "loading") return <p>Načítavam…</p>;
+  if (data === "loading") return <p>Načítavame…</p>;
   if (data === "error") return <p>Čísla sa nepodarilo načítať. Skúste stránku obnoviť.</p>;
   const { months: rows, events } = data;
 
@@ -90,7 +90,7 @@ export function StatsTables() {
       )}
       <p className="text-xs opacity-70">
         Človek, ktorému sa medzi dňami zmení IP adresa (napr. mobil na inej sieti), sa počíta ako dvaja ľudia, takže
-        čísla sú skôr nižšie ako skutočnosť.
+        ľudí môže byť o niečo menej a ľudí s 2+ a 4+ dňami o niečo viac, ako ukazujú čísla.
       </p>
     </>
   );

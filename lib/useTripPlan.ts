@@ -84,8 +84,10 @@ export function useTripPlan(
       // By train, the latest departure is a real train: the last one that still gets you off the trail in time.
       if (p && fixed && rail.day.length) {
         const ok = rail.day.filter((j) => atDayMinute(date!, j.arr + hikeMin + SAFE_MARGIN_MIN) <= p.sunset);
+        // No train makes it: the first train is no "leave by" time, the page says no train fits instead.
         const last = ok[ok.length - 1] ?? rail.day[0];
         p.latestStart = atDayMinute(date!, last.leave);
+        p.noTrainInLight = ok.length === 0;
       }
       return p;
     },
