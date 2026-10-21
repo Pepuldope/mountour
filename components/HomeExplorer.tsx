@@ -642,7 +642,6 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
           setPreview({ kind: "trail", ...t });
         }}
         bottomInset={isDesktop ? 0 : SHEET_INSET}
-        tapOnly={!isDesktop && !fullMap}
         ariaLabel="Mapa všetkých výletov"
       />
       <div
@@ -880,7 +879,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
 
   return (
     <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
-      <div ref={columnRef} className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 lg:mx-0 lg:w-[440px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
+      <div ref={columnRef} className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 md:max-w-[760px] lg:mx-0 lg:w-[440px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
         <PullSky season={season} />
         <header className="relative -mx-4 -mt-4 flex shrink-0 flex-col sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
           <SeasonScene season={season} width={440} height={250} seed={11} sunX={0.64} sunY={0.17} drop={0.2} noSun className="absolute inset-0 h-full w-full" />
@@ -914,17 +913,16 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
         <div className="sticky top-0 z-20 -mx-4 bg-[var(--background)] px-4 py-2 lg:static lg:mx-0 lg:bg-transparent lg:p-0">{tools}</div>
 
         {!isDesktop && (
-          // A card with gutters; in the page the map only takes taps, so a thumb anywhere on it scrolls past (experimental).
+          // A card with gutters: a thumb beside it still scrolls the page past the map.
           <div
             ref={mapCardRef}
             className={
               fullMap
                 ? "fixed inset-0 z-50 bg-[var(--background)] pt-[env(safe-area-inset-top)]"
-                : "relative h-[58vh] max-h-[560px] min-h-[340px] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)]"
+                : "relative h-[58vh] max-h-[560px] min-h-[340px] md:max-h-[720px] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)]"
             }
           >
             {map}
-            {/* Bigger now that the map in the page only takes taps (experimental): this is the way to move it. */}
             <MapExpandButton full={fullMap} onClick={() => setFullMap((v) => !v)} />
           </div>
         )}

@@ -12,9 +12,8 @@ import { POI_COLOUR } from "@/lib/palette";
 import type { TrailDetail } from "@/lib/types";
 
 /**
- * The trip map on phones (Peter, 2026-10-19, experimental): in the page it only takes taps, so the
- * page scrolls past it; "Celá mapa" opens it full screen, where it moves and zooms, with a small
- * "Na trase" tab listing the places on the way (a tap glides the map there).
+ * The trip map on phones: "Celá mapa" opens it full screen, with a small "Na trase" tab
+ * listing the places on the way (a tap glides the map there).
  */
 export function PhoneTripMap({ detail, gpxUrl, others }: { detail: TrailDetail; gpxUrl: string | null; others: OtherRoute[] }) {
   const [full, setFull] = useState(false);
@@ -40,7 +39,7 @@ export function PhoneTripMap({ detail, gpxUrl, others }: { detail: TrailDetail; 
           : "relative h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)]"
       }
     >
-      <TripMap detail={detail} gpxUrl={gpxUrl} others={others} tapOnly={!full} />
+      <TripMap detail={detail} gpxUrl={gpxUrl} others={others} />
       {/* Top left: the map's zoom buttons sit top right. */}
       <MapExpandButton
         side="left"

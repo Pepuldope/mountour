@@ -10,7 +10,6 @@ import { GOAL_COLOUR, POPULARITY_DASH, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE, 
 import { lineFeeder } from "@/lib/mapFeed";
 import { fetchLines } from "@/lib/packedLines";
 import { attachTrailNetwork, cellsInView, LINE_TILE_MAX } from "@/lib/trailNetwork";
-import { setTapOnly } from "@/lib/mapGestures";
 import { useUserLocation } from "@/lib/userLocation";
 import { FALLBACK_STYLE, SLOVAKIA, hideBasePois } from "@/components/TrailMap";
 
@@ -75,8 +74,6 @@ interface Props {
   onTrailTap: (tap: { nearby: { slug: string; km: number }[]; x: number; y: number }) => void;
   /** Phones keep the bottom of the map free for the preview. */
   bottomInset: number;
-  /** Phones, map in the page: taps only, a drag scrolls the page (lib/mapGestures.ts). */
-  tapOnly?: boolean;
   ariaLabel: string;
 }
 
@@ -95,6 +92,10 @@ const SQUARE_MIN = AREA_ZOOM;
 const SQUARE_MAX = 12;
 /** Pixels between squares at the zoom where they first show. */
 const SPACING = 54;
+/** How far past the area zoom a new start zooms in: its surroundings, about an hour's drive across. */
+const START_ZOOM_IN = 0.6;
+/** Up to this many trips (a filter on), every one gets a square even zoomed out, a little bigger. */
+const FEW_TRIPS = 300;
 const SUN = "#ffb81c";
 const AREA_LINE = "#1769d1";
 const NIGHT = "#14233b";
@@ -197,6 +198,10 @@ function squareLevels(trips: BrowseTrip[], shift: number): Map<string, number> {
   return out;
 }
 
+function showDots(els: HTMLElement[], on: boolean) {
+  for (const el of els) el.style.display = on ? "" : "none";
+}
+
 const viewOf = (map: MlMap, shift: number): MapView => {
   const b = map.getBounds();
   const c = map.getCenter();
@@ -246,7 +251,6 @@ export function BrowseMap({
   onHover,
   onTrailTap,
   bottomInset,
-  tapOnly = false,
   ariaLabel,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -255,13 +259,13 @@ export function BrowseMap({
   const lines = useRef(new Map<string, { coords: number[][]; detailed: boolean }>());
   const [linesVersion, setLinesVersion] = useState(0);
   const handlers = useRef({ onView, onPick, onHover, onTrailTap });
-  useEffect(() => {
-    if (ctx) setTapOnly(ctx.map, tapOnly);
-  }, [ctx, tapOnly]);
   const tripsRef = useRef(trips);
   const areasRef = useRef(areas);
   const areaEls = useRef<HTMLElement[]>([]);
+  const fewRef = useRef(false);
   const userMarkers = useRef<Marker[]>([]);
+  // The start the map last moved to; undefined until the first one is seen.
+  const startKey = useRef<string | null | undefined>(undefined);
   const { fix, start } = useUserLocation();
   const initialRef = useRef(initialView);
   const insetRef = useRef(bottomInset);
@@ -398,6 +402,16 @@ export function BrowseMap({
             paint: { "icon-opacity": fade },
           });
         }
+        // A filtered handful: every square from the overview on, until the levels take over.
+        for (const [kind, colour] of Object.entries(GOAL_COLOUR)) m.addImage(`sq-big-${kind}`, squareImage(colour, "#ffffff", 20), { pixelRatio: 2 });
+        m.addLayer({
+          id: "sq-few",
+          type: "symbol",
+          source: "squares",
+          maxzoom: SQUARE_MIN - shift,
+          filter: ["==", ["get", "f"], true],
+          layout: { "icon-image": ["concat", "sq-big-", ["get", "g"]], "icon-allow-overlap": true, "icon-ignore-placement": true, "symbol-sort-key": ["-", 0, ["get", "r"]] },
+        });
         m.addLayer({
           id: "sq-active",
           type: "symbol",
@@ -571,6 +585,11 @@ export function BrowseMap({
         const r = fine ? 6 : 14;
         // Zoomed out: a tap on any line zooms in there, so nothing is a dead end.
         if (m.getZoom() < areaZoom) {
+          // A filtered handful shows squares even here: a tap on one picks that trip.
+          const few = m.getLayer("sq-few")
+            ? m.queryRenderedFeatures([[e.point.x - r, e.point.y - r], [e.point.x + r, e.point.y + r]], { layers: ["sq-few"] }).map((f) => f.properties?.s as string)
+            : [];
+          if (few.length) return handlers.current.onPick({ slug: few[0], also: few.slice(1, 4), x: e.point.x, y: e.point.y });
           // Inside an area: show all of it.
           const id = areaAt(m, e);
           const area = id ? areasRef.current.find((a) => a.id === id) : undefined;
@@ -605,7 +624,7 @@ export function BrowseMap({
     // ---- areas: HTML dots made once, shown or hidden by zoom (never rebuilt, so they don't blink)
     let declutterSoon: ReturnType<typeof setTimeout> | undefined;
     function showAreas(z: number) {
-      for (const el of areaEls.current) el.style.display = z < areaZoom ? "" : "none";
+      for (const el of areaEls.current) el.style.display = z < areaZoom && !fewRef.current ? "" : "none";
       // Measuring the names makes the browser lay out the page, too slow for
       // every frame of a pinch: a few times a second is enough, and the last
       // check always comes after the zoom stops.
@@ -659,7 +678,7 @@ export function BrowseMap({
       el.setAttribute("aria-label", `${a.name}: priblížiť`);
       el.innerHTML = `<span aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M2.5 19.5 9.5 7l3.4 5.6 2.1-3.1 6.5 10z" fill="currentColor"/></svg></span><span></span>`;
       (el.lastChild as HTMLElement).textContent = a.short;
-      el.style.display = map.getZoom() < AREA_ZOOM - ctx.shift ? "" : "none";
+      el.style.display = map.getZoom() < AREA_ZOOM - ctx.shift && !fewRef.current ? "" : "none";
       el.addEventListener("click", (ev) => {
         ev.stopPropagation();
         zoomToAreaRef.current(a);
@@ -701,11 +720,15 @@ export function BrowseMap({
       map.setLayoutProperty(`${src}-line`, "line-sort-key", ["case", dim, -1, ["get", "r"]]);
     }
     const level = squareLevels(trips, ctx.shift);
+    const few = trips.filter((t) => !t.dim).length <= FEW_TRIPS;
+    fewRef.current = few;
+    // With every square showing, the area dots would only cover them.
+    showDots(areaEls.current, !few && map.getZoom() < AREA_ZOOM - ctx.shift);
     (map.getSource("squares") as GeoJSONSource | undefined)?.setData({
       type: "FeatureCollection",
       features: trips.map((t) => ({
         type: "Feature",
-        properties: { s: t.slug, g: t.goal, r: t.rank, z: level.get(t.slug), d: !!t.dim },
+        properties: { s: t.slug, g: t.goal, r: t.rank, z: level.get(t.slug), d: !!t.dim, f: few && !t.dim },
         geometry: { type: "Point", coordinates: [t.location.lon, t.location.lat] },
       })),
     });
@@ -768,8 +791,23 @@ export function BrowseMap({
       return el;
     };
     if (start?.source === "manual") {
-      userMarkers.current.push(new ml.Marker({ element: pin("mt-pin-start", "S", start.label) }).setLngLat([start.lon, start.lat]).addTo(map));
+      const el = document.createElement("div");
+      el.className = "mt-start";
+      const dot = pin("mt-pin-start", "", start.label);
+      dot.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M3.5 11 12 4l8.5 7v9h-6v-5.5h-5V20h-6z" fill="currentColor"/></svg>';
+      const name = document.createElement("span");
+      name.className = "mt-start-name";
+      name.textContent = start.label;
+      el.append(dot, name);
+      // Anchored on the house, with the name hanging below it.
+      userMarkers.current.push(new ml.Marker({ element: el, anchor: "top", offset: [0, -18] }).setLngLat([start.lon, start.lat]).addTo(map));
     }
+    // A new start (or the first one with no remembered view): show its surroundings, where the nearest trips are.
+    const key = start ? `${start.lat.toFixed(4)},${start.lon.toFixed(4)}` : null;
+    if (key && key !== startKey.current && (startKey.current !== undefined || !initialRef.current)) {
+      map.easeTo({ center: [start!.lon, start!.lat], zoom: AREA_ZOOM - ctx.shift + START_ZOOM_IN, duration: startKey.current === undefined ? 0 : 900 });
+    }
+    startKey.current = key;
     if (fix) userMarkers.current.push(new ml.Marker({ element: pin("mt-pin-me", "", "Vaša poloha") }).setLngLat([fix.lon, fix.lat]).addTo(map));
   }, [ctx, fix, start]);
 

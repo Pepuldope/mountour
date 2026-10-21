@@ -5,7 +5,6 @@ import type { GeoJSONSource, Map as MlMap, Marker, StyleSpecification } from "ma
 import type { BBox, LatLng } from "@/lib/types";
 import { MAP_STYLE_URL, mapPixelRatio } from "@/lib/mapLayers";
 import { onMapFocus } from "@/lib/mapFocus";
-import { setTapOnly } from "@/lib/mapGestures";
 import { keepInSlovakia } from "@/lib/slovakia";
 import { UI_ICON } from "@/lib/uiIcons";
 import { POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
@@ -65,8 +64,6 @@ interface Props {
   network?: NetworkMode;
   ariaLabel: string;
   className?: string;
-  /** Phones, map in the page: taps only, a drag scrolls the page (lib/mapGestures.ts). */
-  tapOnly?: boolean;
 }
 
 const MARKER_GLYPH: Record<MarkerKind, string> = {
@@ -186,7 +183,6 @@ export function TrailMap({
   network,
   ariaLabel,
   className,
-  tapOnly = false,
 }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [ctx, setCtx] = useState<{ ml: MapLibre; map: MlMap } | null>(null);
@@ -470,9 +466,6 @@ export function TrailMap({
       });
   }, [ctx, markers]);
 
-  useEffect(() => {
-    if (ctx) setTapOnly(ctx.map, tapOnly);
-  }, [ctx, tapOnly]);
 
   // A row in a list below ("Na trase") asks for its place: bring the map into view, glide there, open the pin.
   useEffect(() => {

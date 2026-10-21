@@ -281,18 +281,27 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
   const inCar = hasDrive && ((t >= first && t < hs) || (t > he && t < home));
   let walker: [number, number] = [sx, HOR];
   let climbed = 0;
+  let height: number | null = null;
   if (onTrail) {
     const w = scene.walk;
     const i = Math.max(1, w.findIndex((p) => p.t >= t));
     const f = (t - w[i - 1].t) / (w[i].t - w[i - 1].t || 1);
     walker = [w[i - 1].x + (w[i].x - w[i - 1].x) * f, w[i - 1].y + (w[i].y - w[i - 1].y) * f];
-    if (profile) climbed = w[i - 1].ele + (w[i].ele - w[i - 1].ele) * f - w[0].ele;
+    if (profile) {
+      const ele = w[i - 1].ele + (w[i].ele - w[i - 1].ele) * f;
+      climbed = ele - w[0].ele;
+      height = ele > 0 ? Math.round(ele) : null;
+    }
   }
   // On the trail it is colder the higher you are.
   // With the walker right in front of the sun, its glow and white ring would sit round the head like a halo.
   const behindWalker = onTrail && Math.hypot(sx - walker[0], sy - (walker[1] - 18)) < sunR + 18;
   const temp = now ? Math.round(now.temp - climbed * LAPSE_PER_M) : null;
   const tempW = temp === null ? 0 : 20 + `${temp}`.length * 7;
+  // Height on the trail at that moment (Peter: see how it changes along the route); "1 234 m n. m.".
+  const heightText = height === null ? null : `${height.toLocaleString("sk-SK")} m n. m.`;
+  const heightW = heightText ? 16 + heightText.length * 6.4 : 0;
+  const heightY = temp !== null ? 45 : 25;
 
   const marker = onTrail ? "walker" : inCar ? (byBus ? (byTrain ? "train" : "bus") : "car") : "dot";
   const goalWords = profile ? GOAL_WORDS[profile.goalKind] : null;
@@ -611,6 +620,14 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
               <rect x={-tempW} y={25} width={tempW} height={16} rx={8} fill="#fff" opacity={0.92} />
               <text x={-tempW / 2} y={37} textAnchor="middle" fontSize={12} fontWeight={700} fill="#14233b" className="font-data">
                 {temp} °C
+              </text>
+            </>
+          )}
+          {heightText && (
+            <>
+              <rect x={-heightW} y={heightY} width={heightW} height={16} rx={8} fill="#fff" opacity={0.92} />
+              <text x={-heightW / 2} y={heightY + 12} textAnchor="middle" fontSize={12} fontWeight={700} fill="#14233b" className="font-data">
+                {heightText}
               </text>
             </>
           )}
