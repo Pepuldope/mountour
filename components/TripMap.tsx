@@ -29,8 +29,6 @@ interface Props {
   detail: TrailDetail;
   gpxUrl: string | null;
   others?: OtherRoute[];
-  /** Phones, map in the page: taps only (see TrailMap). */
-  tapOnly?: boolean;
 }
 
 /** Other routes in a muted slate: clearly not the walk you picked (that one keeps its trail colour), still easy to see. */
@@ -52,7 +50,7 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  * With a start, the whole way: the drive (dashed) to the chosen parking, the
  * walk from there to the trail (dotted), then the trail itself.
  */
-export function TripMap({ detail, gpxUrl, others = [], tapOnly = false }: Props) {
+export function TripMap({ detail, gpxUrl, others = [] }: Props) {
   const { trail, trailheads, pois } = detail;
   const router = useRouter();
   const { parkingLots, choice, choose, rideTo: destination, trailJoin, walkFrom, walkLine, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
@@ -245,7 +243,6 @@ export function TripMap({ detail, gpxUrl, others = [], tapOnly = false }: Props)
       }}
       onHoverTrail={others.length ? (slug) => setHoveredRoute(others.some((o) => o.slug === slug) ? slug : null) : undefined}
       ariaLabel="Mapa trasy"
-      tapOnly={tapOnly}
     />
   );
 }
