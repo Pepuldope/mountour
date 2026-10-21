@@ -43,3 +43,9 @@ def test_build_days_services_and_stops(tmp_path):
     assert os_stops[-1] == 24 * 60 + 5
     path = rail.write(tmp_path, data)
     assert json.loads(path.read_text())["trips"] == data["trips"]
+
+
+def test_days_stop_at_the_end_of_the_feed():
+    # The calendar ends on 12 Dec (the timetable change): later days aren't "no trains", they're unknown.
+    data = rail.build(gtfs(), dt.date(2026, 12, 10), 5)
+    assert data["days"] == ["20261210", "20261211", "20261212"]

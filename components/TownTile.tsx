@@ -45,7 +45,7 @@ export function TownTile({ tile }: { tile: Tile }) {
         )}
         {tile.closedSeason && (
           // Seasonal park closure (TANAP ridges): visible before anyone picks a closed summit from Google.
-          <span className="absolute right-2 bottom-2 left-2 rounded-lg bg-[var(--danger-bg)] px-2 py-0.5 text-center text-xs font-bold text-[var(--danger)]">
+          <span className="absolute right-1.5 bottom-1.5 left-1.5 rounded-lg bg-[var(--danger-bg)] px-1 py-0.5 text-center text-[11px] font-bold whitespace-nowrap text-[var(--danger)]">
             zatvorené {tile.closedSeason}
           </span>
         )}

@@ -76,7 +76,7 @@ export default async function TownPage({ params }: Props) {
                 <a href={t.photo!.page} className="underline" rel="noopener">
                   {t.photo!.author}
                 </a>
-                , <LicenseName name={t.photo!.license} />, Wikimedia Commons
+                , <LicenseName name={t.photo!.license} url={t.photo!.license_url} />, Wikimedia Commons
               </li>
             ))}
           </ul>
@@ -88,10 +88,10 @@ export default async function TownPage({ params }: Props) {
 }
 
 /** "CC BY-SA 4.0" linked to the licence text, as the CC licences ask; CC0 and public domain as plain text. */
-function LicenseName({ name }: { name: string }) {
+function LicenseName({ name, url: given }: { name: string; url?: string | null }) {
   const m = /^CC (BY(?:-SA)?) (\d\.\d)(?: ([a-z]{2}))?$/.exec(name);
-  if (m) {
-    const url = `https://creativecommons.org/licenses/${m[1].toLowerCase()}/${m[2]}/${m[3] ? `${m[3]}/` : ""}`;
+  if (given?.startsWith("https://") || m) {
+    const url = given?.startsWith("https://") ? given : `https://creativecommons.org/licenses/${m![1].toLowerCase()}/${m![2]}/${m![3] ? `${m![3]}/` : ""}`;
     return (
       <a href={url} className="underline" rel="noopener license">
         {name}

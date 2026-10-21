@@ -107,8 +107,11 @@ class RuleMatcher:
         if graph is None:
             return f"{label}: no trail graph"
         w, s, e, n = bbox
-        refs = set(_names(sec["ref"]))
-        want = {i for i, r in enumerate(graph.routes) if r.get("ref") in refs}
+        refs = set(_names(sec.get("ref")))
+        # A trail with no number (a "náučný chodník" running with a marked route) by its name instead.
+        named_as = [plain(n) for n in _names(sec.get("route_name"))]
+        want = {i for i, r in enumerate(graph.routes)
+                if r.get("ref") in refs or (named_as and any(n in plain(r.get("name") or "") for n in named_as))}
         on_route = np.array([bool(want.intersection(way.routes)) for way in graph.ways], bool)
         src, dst = graph.edge_key // graph.n, graph.edge_key % graph.n
         keep = on_route[graph.edge_way] if len(on_route) else np.zeros(0, bool)
@@ -177,4 +180,5 @@ class RuleMatcher:
 
 
 def _label(sec):
-    return f"{'/'.join(_names(sec['ref']))} {' / '.join(_names(sec.get('from')))} – {' / '.join(_names(sec.get('to')))}"
+    route = "/".join(_names(sec.get("ref")) + [f"„{n}“" for n in _names(sec.get("route_name"))])
+    return f"{route} {' / '.join(_names(sec.get('from')))} – {' / '.join(_names(sec.get('to')))}"

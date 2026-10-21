@@ -45,7 +45,7 @@ const dayMonth = (iso: string) => `${Number(iso.slice(8, 10))}.\u00a0${Number(is
 
 function closedSeason(trip: TripSummary): string | null {
   const rule = closureRulesFor(trip).find((r) => r.kind === "rocna");
-  return rule ? `${dayMonth(rule.starts_on)} – ${dayMonth(rule.ends_on)}` : null;
+  return rule ? `${dayMonth(rule.starts_on)}–${dayMonth(rule.ends_on)}` : null;
 }
 
 export interface TownRow {

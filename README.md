@@ -31,8 +31,9 @@ features, multi-day trips.
   Cloudflare D1 (`pipeline/db.py`)
 - Maps: MapLibre GL with OpenFreeMap tiles and the site's own trail layer
 - A hand-written service worker (`public/sw.js`) for offline trip caching
-- Drives: OpenRouteService (`/api/drive`, `/api/drive-town` reads the weekly
-  drive table), with the public OSRM demo as a keyless fallback in development
+- Drives: OpenRouteService (`/api/drive`; the home list reads the weekly drive
+  tables in `public/data/drive/`), with the public OSRM demo as a keyless
+  fallback in development
 - Weather: MET Norway (`/api/weather`); sunrise and sunset computed locally
 - No auth, no user accounts
 
@@ -120,7 +121,7 @@ Nothing is precached at install — this is cache-on-plan, not cache-everything.
 Saving a trip (`components/SaveTripButton.tsx`) stores a snapshot (trail, date,
 departure, start, drive time) in localStorage and asks the service worker
 (`public/sw.js`) to cache the trip page, its GPX file, the map tiles covering
-the trail at zoom 13-15 (`lib/tiles.ts`), and the build assets the page runs on.
+the trail at zoom 10-14 (`lib/tiles.ts`), and the build assets the page runs on.
 Build assets are served cache-first; pages network-first with the saved copy
 as the offline fallback. Removing a saved trip also drops its cache.
 

@@ -57,13 +57,22 @@ def osm_tags(ids):
     for i in ids:
         t, n = i.split("/")
         by_type.setdefault(t, []).append(n)
+    def fetch(t, batch):
+        body = get_json(f"https://api.openstreetmap.org/api/0.6/{t}s.json?{t}s={','.join(batch)}")
+        time.sleep(1)
+        if body is None and len(batch) > 1:
+            # The API refuses the whole batch when one object was deleted since the trip data was
+            # built: split it, so one gone node doesn't cost 149 places their wikidata tag.
+            half = len(batch) // 2
+            fetch(t, batch[:half])
+            fetch(t, batch[half:])
+            return
+        for e in (body or {}).get("elements", []):
+            out[f"{e['type']}/{e['id']}"] = e.get("tags", {})
+
     for t, nums in by_type.items():
         for k in range(0, len(nums), 150):
-            batch = nums[k : k + 150]
-            body = get_json(f"https://api.openstreetmap.org/api/0.6/{t}s.json?{t}s={','.join(batch)}")
-            for e in (body or {}).get("elements", []):
-                out[f"{e['type']}/{e['id']}"] = e.get("tags", {})
-            time.sleep(1)
+            fetch(t, nums[k : k + 150])
     return out
 
 
@@ -142,10 +151,28 @@ def plain(s):
 # Words that say what a place is, not which one; a title sharing only these doesn't name it.
 GENERIC = set("hrad hradu zrucanina zrucaniny vrch vrchol kopec jaskyna jaskyne pleso plesa vodopad vodopady chata chaty "
               "rozhladna vyhliadka vyhlad skala skaly dolina nad pod velky velka velke maly mala male stary stara nova novy "
-              "sedlo vrchy hora".split())
+              "sedlo vrchy hora hore hory horou".split())
 # Photos at the place that aren't of it.
 NOT_A_VIEW = re.compile(r"rozcestn|smerovn|guidepost|signpost|\bsign|tabul|tabuľ|\bmap|mapa|plan |plán|informa|"
                         r"\bdoska|plaque|\berb\b|coat of arms|logo|\binterior|toilet|parkovisk|parking|\.svg|\.pdf|\.tif", re.I)
+
+
+def names_place(words, title):
+    """Whether a file title names the place: each word of the name (4+ letters, not generic) starts a
+    word of the title ("Kamzíka" still names Kamzík; words under 6 letters must match whole, so "hoľa"
+    doesn't match "Holíč" nor "hol" "catholic"), and not as the spot a view is taken from ("Sitno z
+    Tatárskej lúky" is a photo of Sitno)."""
+    tokens = re.findall(r"[a-z0-9]+", plain(title))
+    if not words or not tokens:
+        return False
+    for w in words:
+        stem = w[:-2] if len(w) >= 6 else w  # Slovak endings: "Tlstej hore" / "Tlstá hora"
+        at = [k for k, t in enumerate(tokens) if (t.startswith(stem) if len(w) >= 6 else t == w)]
+        if not at:
+            return False
+        if all(k > 0 and tokens[k - 1] in ("z", "zo", "from", "od", "pohlad", "vyhlad") for k in at):
+            return False
+    return True
 
 
 def near_photos(places):
@@ -161,7 +188,7 @@ def near_photos(places):
             if NOT_A_VIEW.search(title) or not re.search(r"\.(jpe?g|png|webp)$", title, re.I):
                 continue
             # Only photos whose title names the place: unnamed ones nearby were often streets or signs.
-            if any(w[:-1] in plain(title) for w in words):  # "Kamzíka" still names Kamzík
+            if names_place(words, title):
                 ranked.append((g["dist"], title))
         if ranked:
             out[i] = [t for _, t in sorted(ranked)[:3]]
@@ -200,15 +227,38 @@ def commons_info(files):
             ratio = ii["width"] / max(ii["height"], 1)
             if not 0.6 <= ratio <= 2.2:
                 continue
+            author = credit(meta)
+            # CC BY and BY-SA need the author's name: a file without one can't be shown.
+            if not author and not re.match(r"cc0|public domain|pd", lic, re.I):
+                continue
             out[name] = dict(
                 url=(ii.get("thumburl") or ii["url"]).split("?")[0],
                 w=ii.get("thumbwidth") or ii["width"],
                 h=ii.get("thumbheight") or ii["height"],
-                author=strip_html(meta.get("Artist", {}).get("value"))[:80] or "Wikimedia Commons",
+                author=author or "neznámy autor",
                 license=lic,
+                license_url=strip_html(meta.get("LicenseUrl", {}).get("value")) or None,
                 page=ii.get("descriptionurl"),
             )
     return out
+
+
+# Text some authors put in the Artist field instead of a name.
+NOT_A_NAME = re.compile(r"^(i would|please|this (image|file|photo)|when reusing|if you use|own work|unknown|anonym)", re.I)
+
+
+def credit(meta):
+    """The author line a CC licence asks for: the file's own attribution text, else the author,
+    cut at a word (never mid-word) when long; "" when there is no usable name."""
+    for key in ("Attribution", "Artist"):
+        text = strip_html(meta.get(key, {}).get("value"))
+        # "This image is a work by Mercy. When reusing, please credit me as: Mercy from Wikimedia" -> what they asked for.
+        asked = re.search(r"credit (?:me|the author) as:?\s*(.+)$", text, re.I)
+        if asked:
+            text = asked.group(1).strip()
+        if text and not NOT_A_NAME.match(text):
+            return text if len(text) <= 100 else text[:100].rsplit(" ", 1)[0] + "…"
+    return ""
 
 
 def main():
@@ -264,6 +314,11 @@ def main():
             if f.replace("_", " ") in info:
                 photos[i] = dict(info[f.replace("_", " ")], via=src)
                 break
+    # A bad hour at Commons or Wikidata returns little: keep last week's file rather than blank tiles.
+    before = len(json.loads(OUT.read_text()).get("photos", {})) if OUT.exists() else 0
+    if len(photos) < 0.7 * before:
+        log(f"only {len(photos)} photos against {before} last time: keeping the old file")
+        return 1
     OUT.write_text(json.dumps(dict(
         generated_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         source="Wikimedia Commons via Wikidata, Wikipedia and OpenStreetMap",
@@ -271,7 +326,8 @@ def main():
     ), ensure_ascii=False, separators=(",", ":")) + "\n")
     counts = {s: sum(p["via"] == s for p in photos.values()) for s in ("picked", "wikidata", "wikipedia", "near", "category")}
     log(f"tags {len(tags)}, wikidata {len(qid)}, articles {len(article)}, free photo {len(photos)} of {len(ids)} places {counts}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

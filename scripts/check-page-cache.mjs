@@ -8,10 +8,8 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-/** Pages that may draw on every visit, and why. */
-const ALLOWED_PER_VISIT = {
-  "/statistiky": "noindex report page, opened by the team only",
-};
+/** Pages that may draw on every visit, and why (none since /statistiky is prebuilt, #121). */
+const ALLOWED_PER_VISIT = {};
 
 const routes = JSON.parse(readFileSync(".next/app-path-routes-manifest.json", "utf8"));
 const prerender = JSON.parse(readFileSync(".next/prerender-manifest.json", "utf8"));

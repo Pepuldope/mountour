@@ -6,7 +6,7 @@
  *
  * Reference values used for testing (Bratislava, lat 48.1486, lon 17.1077):
  *   21 Dec sunset ~ 16:01 local (CET, UTC+1)
- *   21 Jun sunset ~ 21:00 local (CEST, UTC+2)
+ *   21 Jun sunset ~ 20:55 local (CEST, UTC+2; NOAA table in sun.test.ts)
  */
 
 const DEG2RAD = Math.PI / 180;

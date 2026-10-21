@@ -33,6 +33,15 @@ describe("files the Worker reads stay small enough for its CPU limit", () => {
     expect(largest(join(DATA, "drive")).size).toBeLessThan(PER_REQUEST_MAX);
   });
 
+  it("place photos: small, and every host allowed by the page's img-src", () => {
+    const file = join(DATA, "photos.json");
+    expect(statSync(file).size).toBeLessThan(600 * 1024);
+    const { photos } = JSON.parse(readFileSync(file, "utf8")) as { photos: Record<string, { url: string }> };
+    const imgSrc = /"img-src ([^"]+)"/.exec(readFileSync(join(process.cwd(), "next.config.ts"), "utf8"))![1];
+    const hosts = new Set(Object.values(photos).map((p) => new URL(p.url).origin));
+    for (const host of hosts) expect(imgSrc.split(" ")).toContain(host);
+  });
+
   it("the trip page never loads the whole index", () => {
     const page = readFileSync(join(process.cwd(), "app", "trasa", "[slug]", "page.tsx"), "utf8");
     expect(page).not.toMatch(/getTripIndex|getAllTrips|getAllTrails/);

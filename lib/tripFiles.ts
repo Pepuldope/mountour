@@ -85,6 +85,8 @@ export interface PlacePhoto {
   h: number;
   author: string;
   license: string;
+  /** Link to the licence text, from Commons (older files: none, the page links known CC licences itself). */
+  license_url?: string | null;
   page: string;
 }
 

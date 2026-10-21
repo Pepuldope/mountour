@@ -16,6 +16,7 @@ dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
 - Trail lines drawn on the map, not just a parking link.
 - Marked-trail overlay (turistické značky), which Google/Apple don't render.
 - **Decided 2026-10-07:** Leaflet + OpenTopoMap base + Waymarked Trails hiking overlay. No API key.
+- **Replaced 2026-10-13:** MapLibre GL + OpenFreeMap tiles + the site's own trail layer from `pipeline/` (README).
 
 ## 3. User location  `[x]`
 - Browser geolocation → "you are here" on the map, used as the trip's start.
@@ -53,7 +54,7 @@ dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
   start location, departure time) updates the results, map and timeline instantly.
 - **Built 2026-10-10:** `lib/tripSettings.tsx` holds date / departure / hours / kids for
   the whole app (sessionStorage, survives home <-> trip navigation). Home list gets drive
-  times for every trail in one call (`/api/drive-matrix`, ORS matrix), sorts by drive
+  times for every trail in one call (`/api/drive-matrix`, ORS matrix; since replaced by the weekly drive tables), sorts by drive
   time, and the budget counts the whole day (drive there + hike + drive back). Each item
   shows a compact timeline + verdict; trails ending after sunset stay listed, flagged.
   Default departure: now (rounded to 15 min), or tomorrow 08:00 after 15:00.
@@ -78,7 +79,7 @@ dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
   fallback. Verified offline in headless Chromium: trip page + map tiles + /ulozene load.
 
 ## Data sources (decided 2026-10-07)
-- Trails, parking, transit stops, POIs: OpenStreetMap via `scripts/build_trails.py`;
+- Trails, parking, transit stops, POIs: OpenStreetMap via `scripts/build_trails.py` (since replaced by `pipeline/`, docs/TRIP-DATA.md);
   on-foot track: BRouter. Parking is searched along the whole route (out-and-back
   trails can start from either end).
 - **Rejected:** Google Places (results must be shown on a Google Map), Mapy.com API

@@ -34,16 +34,16 @@ describe("getSunTimes", () => {
     expect(sun).not.toBeNull();
     const localMinutes = utcToLocalMinutes(sun!.sunset, 1);
     const expected = minutesFromHHMM(16, 1);
-    expect(Math.abs(localMinutes - expected)).toBeLessThanOrEqual(10);
+    expect(Math.abs(localMinutes - expected)).toBeLessThanOrEqual(2);
   });
 
-  it("matches known Bratislava sunset on 21 Jun (~21:00 CEST, UTC+2)", () => {
+  it("matches known Bratislava sunset on 21 Jun (~20:55 CEST, UTC+2)", () => {
     const date = new Date(Date.UTC(2026, 5, 21));
     const sun = getSunTimes(date, LAT, LON);
     expect(sun).not.toBeNull();
     const localMinutes = utcToLocalMinutes(sun!.sunset, 2);
-    const expected = minutesFromHHMM(21, 0);
-    expect(Math.abs(localMinutes - expected)).toBeLessThanOrEqual(10);
+    const expected = minutesFromHHMM(20, 55);
+    expect(Math.abs(localMinutes - expected)).toBeLessThanOrEqual(2);
   });
 
   it("sunrise is before sunset on the same day", () => {
