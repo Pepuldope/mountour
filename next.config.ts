@@ -1,11 +1,13 @@
 import type { NextConfig } from "next";
 
 // Which outside servers a page may talk to. Anything not listed here is
-// blocked by the browser, so an injected script can't load code or send data
-// elsewhere. Map: OpenFreeMap (style, tiles, fonts, icons), and MapLibre draws
-// in a blob: worker. Place search: Nominatim. Visits: Umami Cloud. Next.js
-// puts its page data in inline scripts, hence 'unsafe-inline' (nonces would
-// stop pages from being prebuilt). Adding a new outside service? Add it here.
+// blocked by the browser: no scripts from other hosts and no fetch() to them.
+// It doesn't stop an injected inline script from running (Next.js puts its page
+// data in inline scripts, hence 'unsafe-inline'; nonces would stop pages from
+// being prebuilt). Map: OpenFreeMap (style, tiles, fonts, icons), and MapLibre
+// draws in a blob: worker. Place search: Nominatim. Visits: Umami Cloud. Town
+// photos: Wikimedia (lib/assetBudget.test.ts checks photos.json against img-src).
+// Adding a new outside service? Add it here.
 const CSP = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' https://cloud.umami.is${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,

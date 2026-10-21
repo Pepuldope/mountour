@@ -2,7 +2,8 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
-import { isoDate } from "@/lib/days";
+import { addDaysIso, isoDate } from "@/lib/days";
+import { wallClock } from "@/lib/zoned";
 
 /** The trip inputs, shared by the home list and every trip page so nothing resets on navigation. */
 export interface TripSettings {
@@ -40,13 +41,12 @@ function pad(n: number) {
 
 /** Now rounded up to the next quarter hour; 08:00 when it's still night; tomorrow 08:00 when it's already late. */
 export function defaultDeparture(now = new Date()): { date: string; time: string } {
+  // Slovak clock, whatever the device's timezone.
   const d = new Date(Math.ceil(now.getTime() / (15 * 60000)) * 15 * 60000);
-  if (d.getHours() >= LATE_HOUR || d.getDate() !== now.getDate()) {
-    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-    return { date: isoDate(tomorrow), time: MORNING };
-  }
-  if (d.getHours() < EARLY_HOUR) return { date: isoDate(d), time: MORNING };
-  return { date: isoDate(d), time: `${pad(d.getHours())}:${pad(d.getMinutes())}` };
+  const at = wallClock(d);
+  if (at.h >= LATE_HOUR || isoDate(d) !== isoDate(now)) return { date: addDaysIso(isoDate(now), 1), time: MORNING };
+  if (at.h < EARLY_HOUR) return { date: isoDate(d), time: MORNING };
+  return { date: isoDate(d), time: `${pad(at.h)}:${pad(at.mi)}` };
 }
 
 /** Default departure on a given day: soon if it's today, else 08:00. */
@@ -57,7 +57,7 @@ export function defaultTimeFor(date: string, now = new Date()): string {
 
 /** The day a visit starts on: tomorrow, so the whole day's trips show; today is one tap away. */
 export function defaultDay(now = new Date()): string {
-  return isoDate(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1));
+  return addDaysIso(isoDate(now), 1);
 }
 
 const DEFAULTS: TripSettings = { date: null, time: null, withKids: false, easier: false, travel: "car" };

@@ -13,8 +13,9 @@ on:
   pull_request:
     paths: ["pipeline/**", "data/closure-rules.json", "data/fee-rules.json", ".github/workflows/trips.yml"]
 
+# Read-only by default: the pull-request check doesn't need to push. Only the weekly build commits.
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: trips-${{ github.ref }}
@@ -44,6 +45,8 @@ jobs:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 120
+    permissions:
+      contents: write
     env:
       OSRM_IMAGE: ghcr.io/project-osrm/osrm-backend:v5.27.1
     steps:

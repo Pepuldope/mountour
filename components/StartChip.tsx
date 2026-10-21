@@ -97,7 +97,7 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
             className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] text-base font-bold text-[var(--accent-contrast)] disabled:opacity-70"
           >
             <UiIcon name="pin" size={18} />
-            {status === "locating" ? "Hľadám vašu polohu..." : "Použiť moju polohu"}
+            {status === "locating" ? "Hľadáme vašu polohu…" : "Použiť moju polohu"}
           </button>
           <div className="grid grid-cols-2 gap-2">
             {TOWNS.slice(0, 6).map((t) => (
@@ -141,7 +141,7 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
               </button>
             )}
           </form>
-      {search === "searching" && <p className={`${note} text-[var(--muted)]`}>Hľadám miesto...</p>}
+      {search === "searching" && <p className={`${note} text-[var(--muted)]`}>Hľadáme miesto…</p>}
           {search === "empty" && <p className={`${note} text-[var(--warn)]`}>Také miesto sme nenašli.</p>}
           {search === "error" && <p className={`${note} text-[var(--warn)]`}>Toto sa nenačítalo. Skúste to znova.</p>}
           {search === "results" && (

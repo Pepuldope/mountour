@@ -1,4 +1,6 @@
+import { addDaysIso, daysBetween } from "@/lib/days";
 import { withEdgeCache } from "@/lib/edgeCache";
+import { OTHER_SITE, TOO_MANY, fromOtherSite, overCallLimit } from "@/lib/routeGuard";
 import { listTrips } from "@/lib/tripDb";
 import { getTowns } from "@/lib/trips";
 
@@ -8,10 +10,19 @@ import { getTowns } from "@/lib/trips";
  * The trip list from the database (static files when it is not loaded):
  * with a start town (an id from data/towns.json, e.g. "zilina") nearest
  * first by drive there and back plus the walk, else best known first. `closed`
- * marks trips a closure rule covers on `den` (default today).
+ * marks trips a closure rule covers on `den` (default today, at most
+ * MAX_DAYS_AHEAD ahead).
+ *
+ * Every new answer reads the whole trip table (about 10,000 database rows,
+ * whatever the limit), and the free plan has 5 million reads a day shared
+ * with the trip pages and the counters. So: only real days near today, a few
+ * fixed list lengths, our own pages, and a per-address limit on new answers.
  */
 
 const MAX_LIMIT = 500;
+/** Lists are computed at one of these lengths and cut to the asked one, so other lengths share the cache. */
+const LIMIT_STEPS = [10, 50, 100, MAX_LIMIT];
+const MAX_DAYS_AHEAD = 30;
 const HOUR_S = 3600;
 
 function todayInSlovakia(): string {
@@ -19,6 +30,7 @@ function todayInSlovakia(): string {
 }
 
 export async function GET(req: Request) {
+  if (fromOtherSite(req)) return OTHER_SITE();
   const params = new URL(req.url).searchParams;
   const town = params.get("z");
   const date = params.get("den") ?? todayInSlovakia();
@@ -27,16 +39,27 @@ export async function GET(req: Request) {
   if (town !== null && !getTowns().some((t) => t.id === town)) {
     return Response.json({ error: "z: neznáme mesto, napr. z=bratislava" }, { status: 400 });
   }
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return Response.json({ error: "den: YYYY-MM-DD" }, { status: 400 });
+  const ahead = /^\d{4}-\d{2}-\d{2}$/.test(date) && addDaysIso(date, 0) === date ? daysBetween(todayInSlovakia(), date) : NaN;
+  if (!(ahead >= -1 && ahead <= MAX_DAYS_AHEAD)) {
+    return Response.json({ error: `den: YYYY-MM-DD, dnes až o ${MAX_DAYS_AHEAD} dní` }, { status: 400 });
+  }
   if (!Number.isInteger(limit) || limit < 1) return Response.json({ error: "limit: kladné celé číslo" }, { status: 400 });
 
-  // Each answer reads up to 500 database rows: Cloudflare keeps it an hour.
+  // Cloudflare keeps each answer an hour; the asked length is cut from the cached one.
   const capped = Math.min(limit, MAX_LIMIT);
-  return withEdgeCache(req, HOUR_S, async () => {
-    const { trips, source, generated_at } = await listTrips({ town, date, limit: capped });
+  const step = LIMIT_STEPS.find((n) => n >= capped) ?? MAX_LIMIT;
+  const res = await withEdgeCache(req, HOUR_S, async () => {
+    if (await overCallLimit(req, "vylety")) return TOO_MANY();
+    const { trips, source, generated_at } = await listTrips({ town, date, limit: step });
     return Response.json(
       { zdroj: source, generated_at, count: trips.length, trips },
       { headers: { "Cache-Control": `public, s-maxage=${HOUR_S}, stale-while-revalidate=${HOUR_S}`, "X-Zdroj": source } }
     );
-  }, { z: town ?? "", den: date, limit: String(capped) });
+  }, { z: town ?? "", den: date, limit: String(step) });
+  if (!res.ok || step === capped) return res;
+  const body = (await res.json()) as { trips: unknown[]; count: number };
+  const trips = body.trips.slice(0, capped);
+  const headers = new Headers(res.headers);
+  headers.delete("Content-Length");
+  return Response.json({ ...body, count: trips.length, trips }, { headers });
 }

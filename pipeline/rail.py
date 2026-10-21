@@ -76,8 +76,23 @@ def service_days(z, days):
     return on
 
 
+def feed_end(z):
+    """Last day the feed has timetables for: feed_info's end date, else the last calendar day."""
+    names = z.namelist()
+    if "feed_info.txt" in names:
+        end = next(_rows(z, "feed_info.txt"), {}).get("feed_end_date")
+        if end:
+            return _date(end)
+    ends = [_date(r["end_date"]) for r in _rows(z, "calendar.txt")] if "calendar.txt" in names else []
+    ends += [_date(r["date"]) for r in _rows(z, "calendar_dates.txt") if r["exception_type"] == "1"] if "calendar_dates.txt" in names else []
+    return max(ends) if ends else None
+
+
 def build(z, today, n_days):
-    days = [today + dt.timedelta(days=i) for i in range(n_days)]
+    # Days past the feed's end (the yearly timetable change in December) have no trains in it yet:
+    # leave them out, so the site says "no timetable for this day yet" instead of "no train".
+    end = feed_end(z)
+    days = [d for d in (today + dt.timedelta(days=i) for i in range(n_days)) if end is None or d <= end]
     runs = service_days(z, days)
 
     agencies, agency_ix = [], {}
@@ -178,6 +193,9 @@ def main(argv=None):
     if not data["trips"]:
         log("no trains in the feed for the coming days; keeping the old file")
         return 1
+    if len(data["days"]) < 14:
+        # Not an error: the site shows estimates for the days after. A newer feed is usually out by then.
+        print(f"::warning::The train timetable ends on {data['days'][-1]}: look for the new yearly feed on data.slovensko.sk.")
     path = write(a.root, data)
     log(f"{len(data['trips'])} trains, {len(data['stations'])} stations, feed {data['feed_version']}, {path.stat().st_size // 1024} KB")
     return 0

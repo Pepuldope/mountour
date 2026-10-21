@@ -154,6 +154,9 @@ def to_first_touch(walk, path):
         geo.append(total)
     for k, (lon, lat) in enumerate(line):
         if _nearest_on_path(path, lat, lon)[3] <= TOUCH_M:
+            # Touching at the very first point would leave a one-point "walk" of 0 m (the site
+            # can't draw it): keep at least the first stretch.
+            k = max(k, 1)
             share = geo[k] / total if total > 0 else 0.0
             return {"line": line[: k + 1], "m": int(round(walk["m"] * share)),
                     "min": max(1, int(round(walk["min"] * share)))}

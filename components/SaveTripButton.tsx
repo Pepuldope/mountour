@@ -125,8 +125,10 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
     const required = [`/trasa/${slug}`, ...(gpxUrl ? [gpxUrl] : [])];
     const mapUrls = bbox ? await offlineMapUrls(bbox) : [];
     const urls = [...required, ...loadedAssetUrls(), ...mapUrls];
+    // The map style and its TileJSON (the URLs without a file extension): without them there is no offline map at all.
+    const mapCore = mapUrls.filter((u) => !/\.[a-z0-9]+$/i.test(new URL(u, window.location.origin).pathname));
     try {
-      await cacheTrip(slug, urls, required, (d, t) => setProgress({ done: d, total: t }));
+      await cacheTrip(slug, urls, [...required, ...mapCore], (d, t) => setProgress({ done: d, total: t }));
       // The map's style couldn't be read (no signal, map service down): the page and GPX are kept, but no map.
       if (bbox && mapUrls.length === 0) throw new Error("no map");
       patch(slug, { offline: "ok" });

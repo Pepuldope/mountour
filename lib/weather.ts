@@ -3,6 +3,8 @@
  * (api.met.no, CC BY 4.0; fetched and cached by /api/weather). Pure, so the
  * summary is unit tested.
  */
+import { daysBetween, isoDate } from "@/lib/days";
+import { clockShort, wallClock, zonedDate } from "@/lib/zoned";
 
 /** One forecast step, trimmed to what we show. */
 export interface WeatherStep {
@@ -191,10 +193,7 @@ export interface WeatherNote {
   strong: boolean;
 }
 
-function hhmm(ms: number): string {
-  const d = new Date(ms);
-  return `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`;
-}
+const hhmm = clockShort;
 
 /**
  * Short warnings for the hours of the walk, worst first, the way the sunset
@@ -302,9 +301,10 @@ export function tripWeatherReport(
   };
 }
 
-/** The same clock time `n` calendar days later (a plain +24 h would slip an hour across a clock change). */
-function shiftDays(d: Date, n: number): Date {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate() + n, d.getHours(), d.getMinutes());
+/** The same Slovak clock time `n` calendar days later (a plain +24 h would slip an hour across a clock change). */
+export function shiftDays(d: Date, n: number): Date {
+  const w = wallClock(d);
+  return zonedDate(w.y, w.mo, w.d + n, w.h, w.mi);
 }
 
 /** Rain, sleet or snow during the walk, or a storm/heavy-weather warning: the day the trip page warns about. */
@@ -320,18 +320,36 @@ export interface BetterDay {
   summary: WeatherSummary;
 }
 
+export interface BetterDayCheck {
+  /** Minutes from leaving to the start of the walk: the departure, not the walk, must still be ahead of `now`. */
+  leadMin?: number;
+  /** The walk [from, to] moved to another day still works there: daylight, no closure. */
+  fits?: (from: Date, to: Date) => boolean;
+}
+
 /**
  * When the walk would be wet, the nearest day in the forecast with a dry walk at
- * the same clock time: one day later, one earlier (if still ahead of `now`), two
- * later... Null when the planned day is fine or no day in range is better.
+ * the same clock time: one day later, one earlier (if the departure is still
+ * ahead of `now`), two later... Days `check.fits` turns down (too dark by
+ * then, trail closed) are skipped. Null when the planned day is fine or no day
+ * in range is better.
  */
-export function betterDay(below: WeatherForecast, top: WeatherForecast | null, from: Date, to: Date, now: Date): BetterDay | null {
+export function betterDay(
+  below: WeatherForecast,
+  top: WeatherForecast | null,
+  from: Date,
+  to: Date,
+  now: Date,
+  check: BetterDayCheck = {}
+): BetterDay | null {
   if (!wetWalk(below, top, from, to)) return null;
+  const lead = (check.leadMin ?? 0) * 60000;
   for (let step = 1; step < FORECAST_DAYS; step++) {
     for (const offset of [step, -step]) {
       const a = shiftDays(from, offset);
       const b = shiftDays(to, offset);
-      if (a < now || !tripWeatherReport(below, top, a, b)) continue;
+      if (a.getTime() - lead < now.getTime() || !tripWeatherReport(below, top, a, b)) continue;
+      if (check.fits && !check.fits(a, b)) continue;
       if (wetWalk(below, top, a, b)) continue;
       const summary = summarize(below, a, b);
       if (summary) return { offset, summary };
@@ -369,7 +387,7 @@ export function betterTime(
     for (const shiftMin of [step * TIME_STEP_MIN, -step * TIME_STEP_MIN]) {
       const a = new Date(from.getTime() + shiftMin * 60000);
       const b = new Date(to.getTime() + shiftMin * 60000);
-      if (a < window.earliest || b > window.latest || a.getDate() !== from.getDate()) continue;
+      if (a < window.earliest || b > window.latest || wallClock(a).d !== wallClock(from).d) continue;
       if (!tripWeatherReport(below, top, a, b) || wetWalk(below, top, a, b)) continue;
       const summary = summarize(below, a, b);
       if (summary) return { shiftMin, summary };
@@ -400,11 +418,10 @@ const BAD_SKY: Partial<Record<SkyKind, BadSky>> = {
  * only marks the days to think twice about.
  */
 export function badDays(forecast: WeatherForecast, from: Date, to: Date, days: string[]): Record<string, BadSky> {
-  const base = new Date(from.getFullYear(), from.getMonth(), from.getDate()).getTime();
+  const base = isoDate(from);
   const out: Record<string, BadSky> = {};
   for (const iso of days) {
-    const [y, m, d] = iso.split("-").map(Number);
-    const offset = Math.round((new Date(y, m - 1, d).getTime() - base) / (24 * HOUR));
+    const offset = daysBetween(base, iso);
     const s = summarize(forecast, shiftDays(from, offset), shiftDays(to, offset));
     const bad = s && BAD_SKY[skyKind(s.symbol)!];
     if (bad) out[iso] = bad;

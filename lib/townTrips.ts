@@ -1,7 +1,7 @@
 import { getAllTrips, getPhotos, getTownDrives } from "@/lib/tripFiles";
 import type { PlacePhoto } from "@/lib/tripFiles";
 import { haversineM } from "@/lib/geo";
-import { getTowns } from "@/lib/trips";
+import { closureRulesFor, getTowns } from "@/lib/trips";
 import type { DestinationKind, Town, TripSummary } from "@/lib/tripSchema";
 
 /** How far a town page reaches by car. */
@@ -37,6 +37,15 @@ export interface TownTile {
   walkMin: number;
   kids: boolean;
   photo: PlacePhoto | null;
+  /** A yearly closure covers the trip: "1. 11. – 31. 5." (the page is built once, so the season, not today's state). */
+  closedSeason: string | null;
+}
+
+const dayMonth = (iso: string) => `${Number(iso.slice(8, 10))}.\u00a0${Number(iso.slice(5, 7))}.`;
+
+function closedSeason(trip: TripSummary): string | null {
+  const rule = closureRulesFor(trip).find((r) => r.kind === "rocna");
+  return rule ? `${dayMonth(rule.starts_on)}–${dayMonth(rule.ends_on)}` : null;
 }
 
 export interface TownRow {
@@ -80,6 +89,7 @@ export async function getTownTrips(id: string): Promise<TownTrips | null> {
     walkMin: trip.duration_min,
     kids: trip.family_friendly,
     photo: photos[trip.destination.osm ?? `trip/${trip.slug}`] ?? null,
+    closedSeason: closedSeason(trip),
   });
   const inTown = reach.filter((r) => haversineM(r.trip.start.location, town.location) <= IN_TOWN_M);
   const outside = reach.filter((r) => !inTown.includes(r));

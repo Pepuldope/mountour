@@ -47,15 +47,25 @@ Databases** → **D1** → **Create** → name `mountour-visits`, then in the Wo
 
 | Event | When | Data |
 |---|---|---|
-| `trip_open` | a trip page is opened | `trail` (slug) |
-| `trip_saved` | "Uložiť výlet" tapped | `trail` |
-| `share` | plan shared with the group (call `track("share", { trail })` from the share button) | `trail` |
-| `nav_open` | Google Maps / map-app link tapped | `app`: google or geo |
-| `transit_open` | cp.sk link tapped | none |
-| `tester_signup_open` | "Chcem testovať" footer link tapped | none |
+The list lives in `lib/analytics.ts` (`AnalyticsEvent`). Events marked D1 are also added to
+the site's own monthly totals (`/api/event`, `lib/eventCounts.ts`), which /statistiky and
+`scripts/monthly_report.py` read; they must go through `track()`, not a `data-umami-event`
+attribute, or the D1 total stays 0.
 
-Links can also be tracked with no code: add `data-umami-event="nav_open"` to the `<a>`. Never
-send coordinates, typed places or anything personal.
+| Event | When | Data | D1 |
+|---|---|---|---|
+| `start_set` | a start is known: GPS, a typed place, or one remembered | `how` | yes |
+| `trip_open` | a trip page is opened | `trail` (slug) | |
+| `trip_saved` | "Uložiť výlet" tapped | `trail` | yes |
+| `share` | "Poslať partii" tapped | `trail`, `took` | |
+| `share_sent` | the share sheet sent it, or the text was copied | `trail`, `how`, `took` | yes |
+| `shared_open` | a friend opened a shared plan link | `trail`, `expired` | yes |
+| `gpx_download` | "Stiahnuť GPX trasu" tapped | `trail` | |
+| `nav_open` | "Na parkovisko" / "Po trase" hand-off tapped | `app`: google, mapy, google-walk, mapy-walk | yes |
+| `transit_open` | a timetable or transit-map link tapped (`data-umami-event`, Umami only) | `app` | |
+| `tester_signup_open` | "Chcem testovať" footer link tapped (`data-umami-event`, Umami only) | none | |
+
+Never send coordinates, typed places or anything personal.
 
 ---
 

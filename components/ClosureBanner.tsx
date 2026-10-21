@@ -21,7 +21,7 @@ export function ClosureBanner({ closures }: Props) {
       <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
         <p className="font-semibold">Stav chodníka neoverený</p>
         <p className="text-sm opacity-70">
-          Pre túto trasu nemáme žiadne údaje o uzávierkach. Pred výletom si stav overte na inom zdroji.
+          Pre túto trasu nemáme žiadne údaje o uzáverách. Pred výletom si stav overte na inom zdroji.
         </p>
       </div>
     );
@@ -32,7 +32,7 @@ export function ClosureBanner({ closures }: Props) {
   if (!date) {
     return (
       <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-        <p className="font-semibold">Overujem uzávierky…</p>
+        <p className="font-semibold">Overujeme uzávery…</p>
       </div>
     );
   }
@@ -44,9 +44,14 @@ export function ClosureBanner({ closures }: Props) {
 
   if (active.length > 0) {
     return (
-      <div className="flex flex-col gap-2 rounded-xl border-2 border-[var(--warn)] bg-[var(--warn-bg)] p-4">
-        <p className="font-bold text-[var(--warn)]">
-          Chodník je v deň výletu ({formatDateSk(checkDate)}) uzavretý
+      // Red with the warning sign, like a storm: a closure by law outranks the weather (the --danger token is "closures").
+      <div role="alert" className="flex flex-col gap-2 rounded-xl border-2 border-[var(--danger)] bg-[var(--danger-bg)] p-4">
+        <p className="flex items-start gap-2 font-bold text-[var(--danger)]">
+          <svg viewBox="0 0 24 24" className="mt-px h-6 w-6 shrink-0" aria-hidden="true">
+            <path d="M12 3 22 20H2z" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+            <path d="M12 9.5v4.5M12 16.8v.4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+          </svg>
+          <span>Chodník je v deň výletu ({formatDateSk(checkDate)}) uzavretý</span>
         </p>
         {active.map((c) => (
           <div key={c.id} className="flex flex-col gap-1 text-sm">
@@ -71,9 +76,9 @@ export function ClosureBanner({ closures }: Props) {
     // Neutral, not green: the date is when the rules were checked, and only seasonal
     // park closures are tracked, so this is not "verified open".
     <div className="rounded-xl border border-[var(--border)] bg-[var(--neutral-bg)] p-4">
-      <p className="font-semibold">V deň výletu ({formatDateSk(checkDate)}) nepoznáme uzávierku tohto chodníka</p>
+      <p className="font-semibold">V deň výletu ({formatDateSk(checkDate)}) nepoznáme uzáveru tohto chodníka</p>
       <p className="text-sm opacity-70">
-        Sledujeme sezónne uzávierky národných parkov, iné (ťažba, opravy) nie. Pravidlá overené{" "}
+        Sledujeme sezónne uzávery národných parkov, iné (ťažba, opravy) nie. Pravidlá overené{" "}
         {formatDateSk(mostRecentlyVerified.verified_on)}.
       </p>
     </div>

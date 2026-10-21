@@ -3,11 +3,18 @@
 import { useMemo, useRef, useState } from "react";
 import { BAD_SKY_LABEL, badSkySvg } from "@/lib/weatherIcons";
 import type { BadSky } from "@/lib/weather";
-import { dayStrip, isoDate, shortDay } from "@/lib/days";
+import { addDaysIso, dayStrip, isoDate, shortDay } from "@/lib/days";
 import { useTripSettings } from "@/lib/tripSettings";
 import { UiIcon } from "@/components/UiIcon";
 
 const MONTHS = ["január", "február", "marec", "apríl", "máj", "jún", "júl", "august", "september", "október", "november", "december"];
+
+/** "október", or "október – november" when the strip runs into the next month. */
+function stripMonths(first: string, last: string): string {
+  const a = MONTHS[Number(first.slice(5, 7)) - 1];
+  const b = MONTHS[Number(last.slice(5, 7)) - 1];
+  return a === b ? a : `${a} – ${b}`;
+}
 
 interface Props {
   /** Trip pages always plan a day, so the choice there can't be cleared. */
@@ -35,7 +42,7 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
     const now = new Date();
     return {
       today: isoDate(now),
-      tomorrow: isoDate(new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1)),
+      tomorrow: addDaysIso(isoDate(now), 1),
       strip: dayStrip(now),
     };
   }, [today]);
@@ -99,7 +106,7 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
       {showStrip && days && (
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between text-[12.5px] font-bold text-[var(--muted)]">
-            <span className="capitalize">{MONTHS[new Date(`${days.strip[0].iso}T12:00`).getMonth()]}</span>
+            <span className="capitalize">{stripMonths(days.strip[0].iso, days.strip[days.strip.length - 1].iso)}</span>
             <span className="relative">
               <button type="button" onClick={openCalendar} className="inline-flex items-center gap-0.5 font-bold text-[var(--accent)]">
                 Celý kalendár <UiIcon name="chev" size={13} />

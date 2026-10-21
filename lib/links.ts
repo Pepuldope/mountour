@@ -7,6 +7,7 @@ import { DIFFICULTY_LABEL, formatDuration } from "@/lib/format";
 import { haversineM } from "@/lib/geo";
 import type { LatLng } from "@/lib/types";
 import type { StartPoint } from "@/lib/userLocation";
+import { clockShort } from "@/lib/zoned";
 
 /** The start as a town name for sharing; null for an unnamed GPS fix (we never share coordinates). */
 export function startTown(start: Pick<StartPoint, "label" | "source"> | null, gpsTown?: string | null): string | null {
@@ -15,8 +16,7 @@ export function startTown(start: Pick<StartPoint, "label" | "source"> | null, gp
   return start.label.split(",")[0].trim() || null;
 }
 
-const pad = (n: number) => String(n).padStart(2, "0");
-const hhmm = (d: Date) => `${d.getHours()}:${pad(d.getMinutes())}`;
+const hhmm = clockShort;
 
 /**
  * Query keys of a shared plan: /trasa/pajstun?den=2026-10-17&odchod=08:50&z=Bratislava&cesta=bus&deti=1&p=1
@@ -81,6 +81,8 @@ export interface ShareTextInput {
   /** Back at the start (with a drive) or off the trail (without). */
   back: Date;
   hasDrive: boolean;
+  /** With a drive: `back` is the time home. False when no train goes back that day: `back` is then the end of the walk. */
+  backHome?: boolean;
   /** The hike ends before sunset. Otherwise the message warns instead of promising daylight. */
   inDaylight: boolean;
   town: string | null;
@@ -94,7 +96,7 @@ export interface ShareTextInput {
 export function shareText(i: ShareTextInput): string {
   const light = i.inDaylight ? ", ešte za svetla." : ". Pozor, z túry zídete až po západe slnka.";
   const leave = i.hasDrive
-    ? `${i.town ? `Štart ${i.town}, odchod` : "Odchod"} ${hhmm(i.departure)}, doma okolo ${hhmm(i.back)}${light}`
+    ? `${i.town ? `Štart ${i.town}, odchod` : "Odchod"} ${hhmm(i.departure)}, ${i.backHome === false ? "koniec túry" : "doma"} okolo ${hhmm(i.back)}${light}`
     : `Začiatok túry ${hhmm(i.departure)}, koniec túry okolo ${hhmm(i.back)}${light}`;
   const facts = [
     `${formatDuration(i.hikeMin).replaceAll("\u00a0", " ")} chôdze`,

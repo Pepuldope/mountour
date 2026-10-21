@@ -23,7 +23,7 @@ const loadTrip = cache((slug: string) => getTrip(slug));
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const trip = await loadTrip((await params).slug);
   return {
-    title: trip ? `Cesty na ${trip.destination.name}` : "Trasa sa nenašla",
+    title: trip ? `Cesty k cieľu: ${trip.destination.name}` : "Trasa sa nenašla",
     // The same routes as the trip pages: those are the ones to find in search.
     robots: { index: false },
   };
@@ -49,7 +49,7 @@ export default async function RoutesComparePage({ params }: Props) {
             <UiIcon name="back" size={15} />
             Späť
           </Link>
-          <h1 className="text-xl font-extrabold tracking-tight">Cesty na {trip.destination.name}</h1>
+          <h1 className="text-xl font-extrabold tracking-tight">Cesty k cieľu: {trip.destination.name}</h1>
         </nav>
       </RouteCompare>
     </main>

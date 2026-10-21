@@ -2,11 +2,13 @@
 // strategy/12-feel/): fresh green and flowers in spring, a bigger sun in
 // summer, autumn trees, snow in winter.
 
+import { wallClock } from "@/lib/zoned";
+
 export type Season = "jar" | "leto" | "jesen" | "zima";
 
 /** Meteorological seasons: winter = December to February. */
 export function seasonOf(d: Date): Season {
-  const m = d.getMonth() + 1;
+  const m = wallClock(d).mo;
   if (m === 12 || m <= 2) return "zima";
   if (m <= 5) return "jar";
   if (m <= 8) return "leto";

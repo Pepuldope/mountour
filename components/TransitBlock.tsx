@@ -12,11 +12,12 @@ import { useTripDay } from "@/lib/tripSettings";
 import { useHomeStop } from "@/lib/useHomeStop";
 import { useUserLocation } from "@/lib/userLocation";
 import type { TransitStop } from "@/lib/types";
+import { clock } from "@/lib/zoned";
 import { useTripAccess } from "@/components/TripAccess";
 import { UiIcon } from "@/components/UiIcon";
 
 const pad = (n: number) => String(n).padStart(2, "0");
-const hhmm = (d: Date) => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+const hhmm = clock;
 const link = "w-fit text-sm font-semibold text-[var(--accent)] underline";
 
 /** How many stops to offer; the rest are far or duplicates. */
@@ -149,11 +150,11 @@ function Legs({ journey, before, after }: { journey: RailJourney; before?: strin
         <li key={i} className="flex flex-col">
           {i > 0 && (
             <span className="font-semibold text-[var(--warn)]">
-              Prestup v {l.from}, {l.dep - journey.legs[i - 1].arr} min
+              Prestup: {l.from}, {l.dep - journey.legs[i - 1].arr} min
             </span>
           )}
           <span>
-            <span className="font-data text-base leading-none font-semibold text-[var(--time)]">{fromMidnight(l.dep)}</span> {l.train} z {l.from}
+            <span className="font-data text-base leading-none font-semibold text-[var(--time)]">{fromMidnight(l.dep)}</span> {l.train} · {l.from}
           </span>
           <span>
             <span className="font-data text-base leading-none font-semibold text-[var(--time)]">{fromMidnight(l.arr)}</span> {l.to}
@@ -267,7 +268,7 @@ export function TransitLegs({ plan, rail }: { plan: DayPlan; rail: RailTrip }) {
           )}
           <p className="text-xs text-[var(--muted)]">
             {rail.status === "loading"
-              ? "Hľadám vlaky..."
+              ? "Hľadáme vlaky…"
               : rail.status === "no-day"
                 ? "Cestovný poriadok vlakov na tento deň ešte nemáme. Čas je odhad podľa cesty autom."
                 : "Čas je odhad podľa cesty autom s rezervou na zastávky a čakanie. Presný spoj a prestupy ukážu tlačidlá nižšie."}

@@ -14,8 +14,14 @@ interface AssetsBinding {
   fetch(req: Request): Promise<Response>;
 }
 
+// While `next build` prebuilds pages there is no Worker: asking for its bindings
+// starts a local stand-in (workerd) per call, and with the town pages built ahead
+// those collided on its SQLite files (SQLITE_BUSY, the 21 Oct branch builds).
+const building = process.env.NEXT_PHASE === "phase-production-build";
+
 async function readPublicJson<T>(path: string): Promise<T | null> {
   try {
+    if (building) throw new Error("build");
     const { env } = await getCloudflareContext({ async: true });
     const assets = (env as unknown as Record<string, unknown>).ASSETS as AssetsBinding | undefined;
     if (assets) {
@@ -85,6 +91,8 @@ export interface PlacePhoto {
   h: number;
   author: string;
   license: string;
+  /** Link to the licence text, from Commons (older files: none, the page links known CC licences itself). */
+  license_url?: string | null;
   page: string;
 }
 

@@ -1,4 +1,4 @@
-import { fromOtherSite } from "@/lib/routeGuard";
+import { fromOtherSite, overCallLimit } from "@/lib/routeGuard";
 import { clientIp, isBot, localDay, visitorHash } from "@/lib/visitDays";
 import { monthSalt, recordVisitDay } from "@/lib/visitStore";
 
@@ -9,8 +9,9 @@ import { monthSalt, recordVisitDay } from "@/lib/visitStore";
 //
 // Each count is a database write, and the free plan has 100,000 a day shared
 // with the trip data. Calls from other sites' pages and made-up browser names
-// are dropped. (No per-address limit: a whole class behind one school address
-// would go uncounted, and a repeat visit the same day writes nothing.)
+// are dropped, and one address gets 60 a minute (lib/routeGuard.ts): enough
+// for a whole class behind one school address (a repeat visit the same day
+// writes nothing), not enough for a script to spend the day's writes.
 
 /** Longer browser names are made up; real ones are a few hundred characters. */
 const MAX_UA = 512;
@@ -18,7 +19,7 @@ const MAX_UA = 512;
 export async function POST(request: Request): Promise<Response> {
   const ip = clientIp(request.headers);
   const userAgent = request.headers.get("user-agent") ?? "";
-  if (!ip || isBot(userAgent) || userAgent.length > MAX_UA || fromOtherSite(request)) {
+  if (!ip || isBot(userAgent) || userAgent.length > MAX_UA || fromOtherSite(request) || (await overCallLimit(request, "visit"))) {
     return new Response(null, { status: 204 });
   }
 

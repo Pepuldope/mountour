@@ -48,13 +48,17 @@ export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Posl
       sharePath(trip.slug, { date, time, town, transit, withKids, pick: transit ? stopChoice : choice }),
       window.location.origin
     ).toString();
-    const back = hasDrive ? plan.segments[plan.segments.length - 1].end : plan.hikeEnd;
+    // No train back that day: the plan ends with the walk, and the message says so instead of a "doma" time.
+    const last = plan.segments[plan.segments.length - 1];
+    const backHome = hasDrive && last.kind === "drive-back";
+    const back = backHome ? last.end : plan.hikeEnd;
     const text = shareText({
       name: trip.name,
       dayLabel: longDay(date),
       departure: plan.segments[0].start,
       back,
       hasDrive,
+      backHome,
       inDaylight: plan.verdict === "ok" || plan.verdict === "close" || plan.verdict === "tight",
       town,
       hikeMin,

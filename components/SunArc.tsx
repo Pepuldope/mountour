@@ -14,6 +14,7 @@ import type { WeatherForecast } from "@/lib/weather";
 import { SKY_GREY, SUN_SHOWS, weatherIconSvg, weatherSkySvg } from "@/lib/weatherSky";
 import type { TripProfile } from "@/lib/tripProfile";
 import type { LatLng } from "@/lib/types";
+import { hourOf } from "@/lib/zoned";
 
 const MIN = 60000;
 const HOUR = 60 * MIN;
@@ -575,7 +576,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         <line x1={PAD} x2={W - PAD} y1={RULER} y2={RULER} stroke="var(--muted)" strokeWidth={0.8} opacity={0.6} />
         {scene.hours.map((h) => {
           const x = scene.x(h);
-          const hour = new Date(h).getHours();
+          const hour = hourOf(h);
           const major = hour % 3 === 0;
           return (
             <g key={h}>

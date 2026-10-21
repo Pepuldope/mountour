@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { track } from "@/lib/analytics";
 import { googleMapsUrl, googleWalkUrl, mapyUrl, mapyWalkUrl } from "@/lib/links";
 import type { WalkRoute } from "@/lib/links";
 import type { LatLng } from "@/lib/types";
@@ -83,8 +84,8 @@ export function NavHandoff({
         {drive && (
           <a
             href={google ? googleMapsUrl(drive) : mapyUrl(drive, start)}
-            data-umami-event="nav_open"
-            data-umami-event-app={app}
+            // Through track(), so our own counter (/statistiky, the monthly report) gets it too, not only Umami.
+            onClick={() => track("nav_open", { app })}
             target="_blank"
             rel="noopener noreferrer"
             className={navButton}
@@ -95,8 +96,7 @@ export function NavHandoff({
         {canWalk && (
           <a
             href={google ? googleWalkUrl(walkFrom, walk, join) : mapyWalkUrl(walkFrom, walk, join)}
-            data-umami-event="nav_open"
-            data-umami-event-app={`${app}-walk`}
+            onClick={() => track("nav_open", { app: `${app}-walk` })}
             target="_blank"
             rel="noopener noreferrer"
             className={navButton}

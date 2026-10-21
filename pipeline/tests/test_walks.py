@@ -131,3 +131,10 @@ def test_trips_sharing_a_stop_each_get_a_way_in_to_their_own_trail(monkeypatch):
     walks.add("http://osrm", [north, other], log=lambda *_: None)
     assert north["transit"]["walk"]["line"][-1] != [19.0, 48.0]
     assert other["transit"]["walk"]["line"][-1] == [19.0, 48.0]
+
+
+def test_a_walk_starting_on_the_trail_keeps_two_points():
+    # The first point already touches the trail: the cut must not leave a one-point walk of 0 m.
+    walk = {"line": [[19.0001, 48.010], [19.002, 48.011], [19.0, 48.012]], "m": 300, "min": 5}
+    cut = walks.to_first_touch(walk, PATH)
+    assert len(cut["line"]) == 2 and cut["m"] > 0

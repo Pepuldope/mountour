@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { planDay } from "@/lib/dayPlan";
+import { isoDate } from "@/lib/days";
 import { VERDICT_SHORT, formatDateSk, formatDuration, formatTime } from "@/lib/format";
 import { useSavedTrips } from "@/lib/savedTrips";
 import type { SavedTrip } from "@/lib/savedTrips";
@@ -10,8 +11,7 @@ import { useUserLocation } from "@/lib/userLocation";
 import { SunArc } from "@/components/SunArc";
 
 function todayIso(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  return isoDate(new Date());
 }
 
 /** Saved trips on this device. Renders from the saved snapshots alone, so it works offline. */
@@ -75,7 +75,7 @@ export function SavedTripsList() {
               {trip.start ? `Štart: ${trip.start.label}` : "Bez miesta štartu"}
               {trip.driveMin !== null && ` · ${byTrain ? "vlakom" : transit ? "autobusom" : "autom"} ${formatDuration(trip.driveMin)}`}
               {" · "}
-              {trip.offline === "ok" ? "dostupné offline" : "len online"}
+              {trip.offline === "ok" ? "funguje bez signálu" : "len so signálom"}
             </p>
             {plan && (
               <>

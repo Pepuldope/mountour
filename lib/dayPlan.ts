@@ -8,6 +8,7 @@
  */
 import { CIVIL_TWILIGHT_DEG, getSunTimes } from "@/lib/sun";
 import type { LatLng } from "@/lib/types";
+import { zonedDate } from "@/lib/zoned";
 
 export type SegmentKind = "drive-there" | "hike" | "drive-back";
 
@@ -43,6 +44,8 @@ export interface DayPlan {
   startsInDark: boolean;
   /** Latest departure (or hike start, without a drive) that still ends the hike SAFE_MARGIN_MIN before sunset. */
   latestStart: Date;
+  /** By train: no train of the day gets the walk done SAFE_MARGIN_MIN before sunset (latestStart is then no advice). */
+  noTrainInLight?: boolean;
   /** How the "drive" segments travel: by car, or by bus/train. */
   travelMode: TravelMode;
   /** The travel times are an estimate (a bus guessed from the road time, a drive from the distance). */
@@ -104,13 +107,14 @@ function addMin(d: Date, minutes: number): Date {
 }
 
 /**
- * Wall-clock time `minutes` after midnight on the given day (train times are
- * minutes after midnight). Not midnight + elapsed minutes: on the day the
- * clocks change that lands an hour off.
+ * Slovak wall-clock time `minutes` after midnight on the given day (train
+ * times are minutes after midnight). Not midnight + elapsed minutes: on the
+ * day the clocks change that lands an hour off. The missing and doubled 02:xx
+ * of those nights follow `zonedDate`.
  */
 export function atDayMinute(date: string, minutes: number): Date {
   const [y, mo, d] = date.split("-").map(Number);
-  return new Date(y, mo - 1, d, 0, minutes);
+  return zonedDate(y, mo, d, 0, minutes);
 }
 
 /** Returns null for unparseable input or a date with no sunset (polar regions). */
@@ -119,10 +123,10 @@ export function planDay(input: DayPlanInput): DayPlan | null {
   const [h, mi] = input.start.split(":").map(Number);
   if ([y, mo, d, h, mi].some((n) => !Number.isFinite(n))) return null;
 
-  // Local wall-clock time in the visitor's timezone; sun times are absolute
-  // instants, so the two compare correctly whatever the timezone.
+  // Slovak wall-clock time, whatever the device's timezone: the trip is in
+  // Slovakia. Sun times are absolute instants, so the two compare correctly.
   const fixed = input.fixed ?? null;
-  const dayStart = fixed ? atDayMinute(input.date, fixed.there.leave) : new Date(y, mo - 1, d, h, mi);
+  const dayStart = fixed ? atDayMinute(input.date, fixed.there.leave) : zonedDate(y, mo, d, h, mi);
   const utcDay = new Date(Date.UTC(y, mo - 1, d));
   const sun = getSunTimes(utcDay, input.location.lat, input.location.lon);
   const twilight = getSunTimes(utcDay, input.location.lat, input.location.lon, CIVIL_TWILIGHT_DEG);

@@ -1,10 +1,14 @@
 name: Place photos
 
 # Free photos for the places trips lead to (pipeline/photos.py), from Wikimedia
-# Commons. Runs after the Monday trip data and commits public/data/photos.json.
+# Commons. Runs when the weekly trip data is done (so new places get photos the
+# same day, however late GitHub starts that run) and commits public/data/photos.json.
+# pipeline/photos.py keeps the old file when far fewer photos come back (a bad
+# hour at Commons), and the site's tests run before the commit.
 on:
-  schedule:
-    - cron: "17 7 * * 1"
+  workflow_run:
+    workflows: ["Weekly trip data"]
+    types: [completed]
   workflow_dispatch:
 
 permissions:
@@ -16,13 +20,21 @@ concurrency:
 
 jobs:
   photos:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
       - run: python -m pipeline.photos
+      # The site reads photos.json on the server: check it (size budget, shape) before it ships.
+      - run: npm ci --ignore-scripts
+      - run: npx vitest run lib/assetBudget.test.ts
       - name: Commit the photo list
         run: |
           git config user.name "mountour-data-bot"

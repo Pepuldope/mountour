@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "note": "Hand-kept. Every rule needs an official source_url and the date a person last checked it (verified_on). No source, no rule: trips without a rule show 'Stav chodníka neoverený', never 'otvorené'. 'selector' is read only by the pipeline (pipeline/rules.py): a trip gets the rule when it lies in bbox [w,s,e,n] and walks at least 400 m (or half the stretch) of a 'sections' stretch (marked route 'ref' between the named places 'from' and 'to', names matched loosely, without diacritics; 'usek' is the number in the source), passes within 150 m of a named place in 'probes', or uses a hiking route whose ref is in 'route_refs'. The weekly run stops when a stretch or probe isn't found, or a rule covers no trip (unless its selector says why with 'may_cover_no_trip'). Check the TANAP visitor rules (návštevný poriadok) every autumn.",
+  "note": "Hand-kept. Every rule needs an official source_url and the date a person last checked it (verified_on). No source, no rule: trips without a rule show 'Stav chodníka neoverený', never 'otvorené'. 'selector' is read only by the pipeline (pipeline/rules.py): a trip gets the rule when it lies in bbox [w,s,e,n] and walks at least 400 m (or half the stretch) of a 'sections' stretch (marked route 'ref', or a route whose name contains 'route_name', between the named places 'from' and 'to', names matched loosely, without diacritics; 'usek' is the number in the source), passes within 150 m of a named place in 'probes', or uses a hiking route whose ref is in 'route_refs'. The weekly run stops when a stretch or probe isn't found, or a rule covers no trip (unless its selector says why with 'may_cover_no_trip'). Check the TANAP visitor rules (návštevný poriadok) every autumn.",
   "rules": [
     {
       "id": "tanap-sezonna-uzavera",
@@ -177,6 +177,19 @@
               "Popradské pleso"
             ],
             "usek": 14
+          },
+          {
+            "route_name": [
+              "Cesta lesom",
+              "medzi Plesom a plesom"
+            ],
+            "from": "Trigan",
+            "to": [
+              "nad Popradským plesom",
+              "Popradské pleso"
+            ],
+            "usek": 14,
+            "note": "The decree closes the red 'v súbehu so zeleno značeným náučným chodníkom Cesta lesom medzi Plesom a plesom'; in OSM the main route to Popradské pleso takes the green from Trigan, so the green is listed too."
           },
           {
             "ref": "8853",
