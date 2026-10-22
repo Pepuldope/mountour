@@ -21,30 +21,41 @@ const OPTIONS: { value: Travel; label: string; icon: UiIconName }[] = [
  * and the bus is the only choice, without changing what is remembered; tapping the
  * greyed car says why. With no stop near the start (`noBus`) it is the same the other way round.
  */
+/** Three options (Pešo offered): label and minutes stacked so they fit a phone. */
+const stack = (three: boolean) => (three ? "flex-col gap-0 py-1.5 leading-tight" : "gap-1.5 py-2.5");
+
 export function TravelSwitch({
   roadMin = null,
   trainMin = null,
   noCar = false,
   noBus = false,
+  walkMin = null,
+  walking = false,
+  onWalk,
 }: {
   roadMin?: number | null;
   trainMin?: number | null;
   noCar?: boolean;
   noBus?: boolean;
+  /** Minutes on foot from the start to the trail when it's close enough to offer Pešo (not remembered: depends on the start). */
+  walkMin?: number | null;
+  walking?: boolean;
+  onWalk?: (on: boolean) => void;
 }) {
   const settings = useTripSettings();
   const { update } = settings;
   const travel: Travel = noCar ? "transit" : noBus ? "car" : settings.travel;
   const [why, setWhy] = useState(false);
+  const three = walkMin !== null;
   return (
     <div className="flex flex-col gap-2">
       <div
         role="radiogroup"
         aria-label="Ako sa dopravíte"
-        className="grid grid-cols-2 gap-[3px] rounded-xl bg-[var(--segment-bg)] p-[3px]"
+        className={`grid ${walkMin !== null ? "grid-cols-3" : "grid-cols-2"} gap-[3px] rounded-xl bg-[var(--segment-bg)] p-[3px]`}
       >
         {OPTIONS.map((o) => {
-          const on = travel === o.value;
+          const on = !walking && travel === o.value;
           if ((noCar && o.value === "car") || (noBus && o.value === "transit"))
             return (
               <button
@@ -67,8 +78,11 @@ export function TravelSwitch({
               type="button"
               role="radio"
               aria-checked={on}
-              onClick={() => update({ travel: o.value })}
-              className={`inline-flex items-center justify-center gap-1.5 rounded-[10px] px-2 py-2.5 text-sm font-semibold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
+              onClick={() => {
+                onWalk?.(false);
+                update({ travel: o.value });
+              }}
+              className={`inline-flex items-center justify-center ${stack(three)} rounded-[10px] px-2 text-sm font-semibold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
                 on
                   ? "bg-[var(--card-bg)] text-[var(--foreground)] shadow-sm"
                   : "text-[var(--muted)] hover:text-[var(--foreground)]"
@@ -90,6 +104,23 @@ export function TravelSwitch({
             </button>
           );
         })}
+        {walkMin !== null && (
+          <button
+            type="button"
+            role="radio"
+            aria-checked={walking}
+            onClick={() => onWalk?.(true)}
+            className={`inline-flex items-center justify-center ${stack(three)} rounded-[10px] px-2 text-sm font-semibold whitespace-nowrap transition-colors focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
+              walking ? "bg-[var(--card-bg)] text-[var(--foreground)] shadow-sm" : "text-[var(--muted)] hover:text-[var(--foreground)]"
+            }`}
+          >
+            <span className={walking ? "text-[var(--accent)]" : ""}>
+              <UiIcon name="walker" size={18} />
+            </span>
+            Pešo
+            <span className="font-data text-[13px] font-semibold text-[var(--muted)]">{formatDurationShort(walkMin)}</span>
+          </button>
+        )}
       </div>
       {noBus && why && (
         <p

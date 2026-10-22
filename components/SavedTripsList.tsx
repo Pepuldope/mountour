@@ -134,7 +134,7 @@ function TripList({
         return (
           <li
             key={trip.slug}
-            className={`flex flex-col gap-2 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4 ${past ? "opacity-60" : ""}`}
+            className={`flex flex-col gap-2 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4`}
           >
             <div className="flex flex-wrap items-baseline justify-between gap-x-3">
               <h2 className="text-lg font-semibold">{trip.name}</h2>
