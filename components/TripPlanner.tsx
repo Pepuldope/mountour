@@ -18,8 +18,7 @@ import { useTripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
 import { hourOf } from "@/lib/zoned";
 import type { BBox, Closure, LatLng } from "@/lib/types";
-import { FilterChips, Switch } from "@/components/FilterChips";
-import { UiIcon } from "@/components/UiIcon";
+import { FilterChips, KidsRow } from "@/components/FilterChips";
 import { NavHandoff } from "@/components/NavHandoff";
 import { SaveTripButton } from "@/components/SaveTripButton";
 import type { ShareInfo } from "@/components/ShareButton";
@@ -171,11 +170,9 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
 
   return (
     <div className="flex flex-col gap-5">
-      {/* First thing under the header: where the day is planned from, changeable without scrolling,
-          and kids along or not (Peter: top right, opposite the start). */}
-      <div className="flex items-center justify-between gap-2">
+      {/* First thing under the header: where the day is planned from, changeable without scrolling. */}
+      <div className="flex items-center gap-2">
         <StartPill />
-        <KidsToggle />
       </div>
       {/* Three cards, so the eye takes one step at a time:
           plan the trip, see the day, then get there. */}
@@ -208,6 +205,9 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
 
         <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} noCar={noCar} noBus={noBus} walkMin={walkThere} walking={walking} onWalk={setOnFoot} />
         {transit && <TransitHandoff />}
+
+        {/* Kids along, in the plan itself (Peter 2026-10-22: the pill above the card went unnoticed on a phone). */}
+        <KidsRow />
 
         <section aria-label="Deň a odchod" className="flex flex-col gap-3">
           <FilterChips variant="trip" activeDate={date} dayWeather={dayWeather} />
@@ -283,11 +283,6 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
           </ol>
           <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} sunAt={sun} closures={closures} onPickDay={(iso) => update({ date: iso })} onPickTime={(time) => update({ time })} />
           {transit && <TransitLegs plan={plan} rail={rail} />}
-          {transit && hasDrive && rail.status !== "ok" && (
-            <p className="text-xs text-[var(--muted)]">
-              Cestu autobusom odhadujeme podľa cesty autom (~{formatDuration(driveMin!)}). Presné spoje nájdete nižšie.
-            </p>
-          )}
           {transit && rail.status === "ok" && <p className="text-xs text-[var(--muted)]">Podľa cestovného poriadku vlakov, spoj si vyberiete nižšie.</p>}
           {driveApprox && !transit && (
             <p className="text-xs text-[var(--muted)]">Cestu autom teraz odhadujeme podľa vzdialenosti (~{formatDuration(driveMin!)}).</p>
@@ -395,16 +390,3 @@ function goalTime(plan: DayPlan, profile: TripProfile): Date {
   return new Date(plan.hikeStart.getTime() + at * (plan.hikeEnd.getTime() - plan.hikeStart.getTime()));
 }
 
-/** "S deťmi" on the trip page: the pace changes the times here at once. */
-function KidsToggle() {
-  const { withKids, update } = useTripSettings();
-  return (
-    <label className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card-bg)] py-1.5 pr-2 pl-2.5 text-sm font-semibold shadow-[var(--shadow-float)]">
-      <span className="text-[var(--accent)]">
-        <UiIcon name="kid" size={18} />
-      </span>
-      S deťmi
-      <Switch small on={withKids} label="Idete s deťmi" onChange={(on) => update({ withKids: on })} />
-    </label>
-  );
-}

@@ -203,6 +203,10 @@ def near_photos(places):
 # Not the place itself: streets, buildings' insides, people, graves (the "area" source takes any title).
 NOT_THE_PLACE = re.compile(r"ulica|street|námestie|namestie|square|interi|cintor|cemeter|hrob|grave|portrait|selfie|"
                            r"\bbus\b|autobus|vlak|train|stanica|station|kostol|church|pamätn|memorial", re.I)
+# Close-ups and odd shots a 300 m search also finds (Peter 2026-10-22: a zoo lynx for a hill): animals,
+# insects, plants seen up close, space photos, trains, people and events.
+NOT_A_LANDSCAPE = re.compile(r"\bzoo\b|lynx|\brys\b|insect|hmyz|inaturalist|observation|beetle|butterfl|motýľ|\bbird|crystal|"
+                             r"\bISS\d|view of earth|\bZSSK|\bfriends|turn[ée]|concert|koncert|portrét|\.png$", re.I)
 # Kinds out in nature, where a photo taken right there almost always shows the place or its view.
 AREA_KINDS = {"vrchol", "vyhliadka", "vodopad", "roklina", "pleso", "jaskyna", "chata"}
 AREA_M = 300
@@ -218,7 +222,7 @@ def area_photos(places):
         ranked = []
         for g in (body or {}).get("query", {}).get("geosearch", []):
             title = g["title"].removeprefix("File:")
-            if NOT_A_VIEW.search(title) or NOT_THE_PLACE.search(title) or not re.search(r"\.(jpe?g|png|webp)$", title, re.I):
+            if NOT_A_VIEW.search(title) or NOT_THE_PLACE.search(title) or NOT_A_LANDSCAPE.search(title) or not re.search(r"\.(jpe?g|png|webp)$", title, re.I):
                 continue
             ranked.append((g["dist"], title))
         if ranked:
