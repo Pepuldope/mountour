@@ -56,6 +56,10 @@ jobs:
             GROUP BY month" > build/visits.json
           npx wrangler d1 execute "$DB" --remote --json \
             --command "SELECT month, name, detail, n FROM event_month" > build/events.json
+          # Review totals per trip (no notes, no reviewer ids: reports/ is public). The table appears with the first review.
+          npx wrangler d1 execute "$DB" --remote --json --command "
+            SELECT slug, COUNT(*) AS n, ROUND(AVG(stars), 2) AS stars, SUM(fit = 'popis') AS popis, SUM(fit = 'tazsie') AS tazsie,
+                   SUM(fit = 'lahsie') AS lahsie, SUM(crowded = 1) AS crowded FROM review GROUP BY slug" > build/reviews.json || echo '[]' > build/reviews.json
 
       - name: Make the report
         env:
@@ -69,6 +73,7 @@ jobs:
         run: |
           mkdir -p reports
           cp build/report/*.json reports/
+          cp build/reviews.json reports/reviews.json
           git config user.name "mountour-data-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add reports
