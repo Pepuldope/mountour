@@ -6,7 +6,7 @@ import type { LatLng } from "@/lib/types";
 import type { DestinationKind } from "@/lib/tripSchema";
 import { MAP_STYLE_URL, mapPixelRatio } from "@/lib/mapLayers";
 import { keepInSlovakia } from "@/lib/slovakia";
-import { GOAL_COLOUR, POPULARITY_DASH, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE, desaturate } from "@/lib/palette";
+import { GOAL_COLOUR, POPULARITY_DASH, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE, QUIET_THREAD, desaturate } from "@/lib/palette";
 import { lineFeeder } from "@/lib/mapFeed";
 import { fetchLines } from "@/lib/packedLines";
 import { attachTrailNetwork, cellsInView, LINE_TILE_MAX } from "@/lib/trailNetwork";
@@ -352,8 +352,10 @@ export function BrowseMap({
         const width = (a: number, b: number, c: number, extra = 0) =>
           [
             "interpolate", ["linear"], ["zoom"],
+            // Zoomed out every trip still shows as a thin line, not only the busiest ones (Peter, 2026-10-22).
+            6, ["+", 1 + extra, ["*", 0.3, ["get", "p"]]],
+            9, ["+", 1.2 + extra, ["*", 0.4, ["get", "p"]]],
             // The quietest level gets a little extra so it stays visible, still thinner than orange.
-            7, ["+", a + extra, ["*", 0.35, ["get", "p"]], ["case", ["==", ["get", "p"], 0], 0.25, 0]],
             12, ["+", b + extra, ["*", 0.6, ["get", "p"]], ["case", ["==", ["get", "p"], 0], 0.35, 0]],
             15, ["+", c + extra, ["*", 0.8, ["get", "p"]], ["case", ["==", ["get", "p"], 0], 0.4, 0]],
           ] as unknown as ExpressionSpecification;
@@ -369,7 +371,9 @@ export function BrowseMap({
           m.addSource(src, { type: "geojson", data: EMPTY, maxzoom: tileMax });
           // The best known trips get a thin white edge, like on the trail network before.
           m.addLayer({ id: `${src}-top`, type: "line", source: src, ...range, filter: ["==", ["get", "p"], 4], layout, paint: { "line-color": POPULARITY_TOP_OUTLINE, "line-width": width(0.6, 1.4, 2.5, 1), "line-opacity": 0.9 } });
-          m.addLayer({ id: `${src}-line`, type: "line", source: src, ...range, layout, paint: { "line-color": RAMP, "line-width": width(0.6, 1.4, 2.5), "line-opacity": ["case", ["==", ["get", "p"], 0], 1, 0.95], "line-dasharray": POPULARITY_DASH as unknown as ExpressionSpecification } });
+          // A thin dark thread under the two quietest (yellow) levels: on a white or pale road the yellow alone washes out.
+          m.addLayer({ id: `${src}-thread`, type: "line", source: src, ...range, filter: ["<=", ["get", "p"], 1], layout, paint: { "line-color": QUIET_THREAD, "line-width": width(0.6, 1.4, 2.5, 1.2), "line-opacity": 0.4 } });
+          m.addLayer({ id: `${src}-line`, type: "line", source: src, ...range, layout, paint: { "line-color": RAMP, "line-width": width(0.6, 1.4, 2.5), "line-opacity": ["case", ["==", ["get", "p"], 0], 1, 0.95], "line-dasharray": ["step", ["zoom"], ["literal", [1, 0]], 10, POPULARITY_DASH] as unknown as ExpressionSpecification } });
           // Wide and invisible, so a thin line is easy to hit.
           m.addLayer({ id: `${src}-hit`, type: "line", source: src, ...range, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0 } });
         }
@@ -714,6 +718,7 @@ export function BrowseMap({
       map.setFilter(`${src}-line`, only);
       map.setFilter(`${src}-hit`, only);
       map.setFilter(`${src}-top`, ["all", ["==", ["get", "p"], 4], only, ["!", dim]] as unknown as ExpressionSpecification);
+      map.setFilter(`${src}-thread`, ["all", ["<=", ["get", "p"], 1], only, ["!", dim]] as unknown as ExpressionSpecification);
       map.setPaintProperty(`${src}-line`, "line-color", ["case", dim, DIM_RAMP, RAMP]);
       map.setPaintProperty(`${src}-line`, "line-opacity", ["case", dim, 0.8, ["==", ["get", "p"], 0], 1, 0.95]);
       // Washed-out lines go under the coloured ones.
