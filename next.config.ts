@@ -38,9 +38,31 @@ const SECURITY_HEADERS = [
   { key: "Permissions-Policy", value: "geolocation=(self), camera=(), microphone=(), payment=(), usb=()" },
 ];
 
+// Pages and their client-side navigation data: the browser asks again on every
+// visit (a quick check, cheap thanks to the ETag). Next.js's default lets the
+// browser show a page up to 30 days old while it fetches the new one, so the
+// first visit after a deploy ran the old page's code against new data and
+// deleted code files: trails missing, first click failing. The Worker's own page
+// cache (lib/pageCache.ts) is not affected. API answers set their own caching.
+const PAGE_CACHE_CONTROL = { key: "Cache-Control", value: "no-cache" };
+
+// One id per deploy (Workers Builds gives every build its commit). Next.js tags
+// code files with it, and a tab still open from before a deploy reloads the page
+// on its next click instead of mixing old and new code. OpenNext also uses it to
+// key the page cache, so a deploy still starts that cache fresh. Unset locally.
+const DEPLOYMENT_ID = process.env.WORKERS_CI_COMMIT_SHA?.slice(0, 12) || undefined;
+// The browser compares this answer header with its own id on every click. Pages
+// served from the Worker's page cache come without it, which made every click a
+// full reload, so send it with every page here.
+const DEPLOYMENT_HEADERS = DEPLOYMENT_ID ? [{ key: "x-nextjs-deployment-id", value: DEPLOYMENT_ID }] : [];
+
 const nextConfig: NextConfig = {
+  deploymentId: DEPLOYMENT_ID,
   async headers() {
-    return [{ source: "/:path*", headers: SECURITY_HEADERS }];
+    return [
+      { source: "/:path*", headers: SECURITY_HEADERS },
+      { source: "/((?!api/|_next/).*)", headers: [PAGE_CACHE_CONTROL, ...DEPLOYMENT_HEADERS] },
+    ];
   },
 };
 
