@@ -6,7 +6,7 @@ import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
 import { GpxDownload } from "@/components/GpxDownload";
 import { getTripLive } from "@/lib/tripDb";
-import { getAllTripSlugs, getAllTrips, getPhotos, getRouteWalks, getTrip } from "@/lib/tripFiles";
+import { getAllTripSlugs, getRouteWalks, getTrip, getTripPhoto } from "@/lib/tripFiles";
 import { buildProfile } from "@/lib/tripProfile";
 import { GOAL_LABEL, POI_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
@@ -163,9 +163,7 @@ export default async function TripSheetPage({ params }: Props) {
     trip.routes ?? (trip.variant_of || trip.route_count ? ((await getTrip(trail.slug))?.routes ?? []) : []);
   const walks = routes.length > 1 ? await getRouteWalks(routes.map((r) => r.slug)) : {};
   // The place's photo from Wikimedia Commons, when there is one (Peter, 2026-10-22: photos on the planner).
-  // The trip's own file may not carry the OSM id; the index does.
-  const osm = trip.destination.osm ?? (await getAllTrips()).find((t) => t.slug === trail.slug)?.destination.osm;
-  const photo = (await getPhotos())[osm ?? `trip/${trail.slug}`] ?? null;
+  const photo = await getTripPhoto(trail.slug, trip.destination.osm);
   const others: OtherRoute[] = routes
     .filter((r) => r.slug !== trail.slug)
     .map((r) => ({ slug: r.slug, label: r.route_label ?? r.start_name, points: r.up.map(([lon, lat]) => [lat, lon]) }));

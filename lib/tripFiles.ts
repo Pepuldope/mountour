@@ -104,6 +104,15 @@ export function getPhotos(): Promise<Record<string, PlacePhoto>> {
   return photos;
 }
 
+let photoKeys: Promise<Record<string, string>> | null = null;
+
+/** The photo of a trip's place, by slug (via public/data/photo-keys.json, made before each build); null when none. */
+export async function getTripPhoto(slug: string, osm?: string | null): Promise<PlacePhoto | null> {
+  photoKeys ??= readPublicJson<Record<string, string>>("data/photo-keys.json").then((f) => f ?? {});
+  const all = await getPhotos();
+  return all[osm ?? (await photoKeys)[slug] ?? `trip/${slug}`] ?? null;
+}
+
 /** Car minutes from one precomputed town to every trip, by slug; empty for an unknown town. */
 export async function getTownDrives(townId: string): Promise<TownDriveFile["minutes"]> {
   if (!SLUG.test(townId)) return {};
