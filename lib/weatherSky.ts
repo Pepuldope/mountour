@@ -57,13 +57,30 @@ export const SUN_SHOWS: Partial<Record<SkyKind, number>> = {
 
 const r1 = (n: number) => n.toFixed(1);
 
+/**
+ * A darker underside for each cloud colour, drawn a little below it: without it a
+ * white or grey cloud melts into a pale or greyed sky (Peter, 2026-10-22).
+ */
+const UNDERSIDE: Record<string, string> = {
+  "#ffffff": "#93a5bd",
+  "#d3dae6": "#7f8ea7",
+  "#c4ccd8": "#76849c",
+  "#a3afc0": "#5f6c82",
+  "#6f7a8f": "#434c5f",
+  "#56627f": "#2a3247",
+  "#3b4664": "#20273a",
+};
+
 function cloud(cx: number, cy: number, s: number, fill: string, opacity: number): string {
+  const shape = (dy: number) =>
+    `<circle cx="${r1(cx - 9 * s)}" cy="${r1(cy + dy)}" r="${r1(6.5 * s)}"/>` +
+    `<circle cx="${r1(cx)}" cy="${r1(cy - 4.5 * s + dy)}" r="${r1(9 * s)}"/>` +
+    `<circle cx="${r1(cx + 9.5 * s)}" cy="${r1(cy - 0.5 * s + dy)}" r="${r1(6.5 * s)}"/>` +
+    `<rect x="${r1(cx - 15 * s)}" y="${r1(cy + dy)}" width="${r1(30 * s)}" height="${r1(6.5 * s)}" rx="${r1(3.2 * s)}"/>`;
+  const under = UNDERSIDE[fill];
   return (
-    `<g fill="${fill}" opacity="${opacity}">` +
-    `<circle cx="${r1(cx - 9 * s)}" cy="${r1(cy)}" r="${r1(6.5 * s)}"/>` +
-    `<circle cx="${r1(cx)}" cy="${r1(cy - 4.5 * s)}" r="${r1(9 * s)}"/>` +
-    `<circle cx="${r1(cx + 9.5 * s)}" cy="${r1(cy - 0.5 * s)}" r="${r1(6.5 * s)}"/>` +
-    `<rect x="${r1(cx - 15 * s)}" y="${r1(cy)}" width="${r1(30 * s)}" height="${r1(6.5 * s)}" rx="${r1(3.2 * s)}"/></g>`
+    (under ? `<g fill="${under}" opacity="${opacity * 0.85}">${shape(2.2 * s)}</g>` : "") +
+    `<g fill="${fill}" opacity="${opacity}">${shape(0)}</g>`
   );
 }
 
@@ -111,7 +128,7 @@ export function weatherSkySvg(
             ? "#a3afc0"
             : /snow/.test(kind)
               ? "#c4ccd8"
-              : "#dfe5ee";
+              : "#d3dae6";
     const op = dark ? 0.75 : cover === 3 ? 0.96 : 0.9;
     const jy = () => (r() - 0.5) * 10;
 
