@@ -61,9 +61,8 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 type Pill = { tone: "ok" | "tight" | "no" | "closed"; text: string; time?: string };
 
 function pillFor(item: TripCardItem, dayWord: string | null): Pill | null {
-  const { fit, closed, noStop, driveMin, stop } = item;
+  const { fit, closed, driveMin, stop } = item;
   const day = capitalize(dayWord ?? "v tento deň");
-  if (noStop) return { tone: "no", text: "Pri štarte nie je zastávka" };
   if (closed) return { tone: "closed", text: `${day} je chodník uzavretý` };
   if (!fit) return null;
   if (fit.status === "too-late") return { tone: "no", text: `${dayWord === "dnes" ? "Dnes" : "Vtedy"} už nestihnete · skúste zajtra` };
@@ -113,7 +112,9 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
   const { trail } = detail;
   const goal = trail.goal ?? "ine";
   const colour = GOAL_COLOUR[goal];
-  const approx = driveApprox || transit ? "~" : "";
+  // No stop near this one: shown by car even when planning by bus (its trip page plans it so too).
+  const byBus = transit && !item.noStop;
+  const approx = driveApprox || byBus ? "~" : "";
   const pill = pillFor(item, dayWord);
   const dim = (pill?.tone === "no" || pill?.tone === "closed") && onClose === undefined;
   const km = formatKm(item.walkM);
@@ -187,13 +188,13 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
           {trail.family_friendly && <span className="on-card-ok font-semibold text-[var(--ok)]">· pre deti</span>}
         </span>
         <span className="font-data flex flex-wrap items-center gap-x-3 text-[15px]">
-          <span className={leg(!transit)}>
+          <span className={leg(!byBus)}>
             <UiIcon name="car" size={15} />
             {carMin !== null ? `${driveApprox ? "~" : ""}${formatDurationShort(carMin)}` : driveLoading ? "…" : distanceM !== null ? formatFromUser(distanceM) : "–"}
           </span>
-          <span className={leg(transit)} title={nearStop ? `Zastávka ${stopLabel(nearStop.name)}, ${formatFromUser(stopWalkM)} k trase` : "Bez zastávky pri štarte"}>
+          <span className={leg(byBus)} title={nearStop ? `Zastávka ${stopLabel(nearStop.name)}, ${formatFromUser(stopWalkM)} k trase` : "Bez zastávky pri štarte"}>
             <UiIcon name="bus" size={15} />
-            {transit && driveMin !== null ? `~${formatDurationShort(driveMin)}` : nearStop ? formatFromUser(stopWalkM) : "–"}
+            {byBus && driveMin !== null ? `~${formatDurationShort(driveMin)}` : nearStop ? formatFromUser(stopWalkM) : "–"}
           </span>
           <span className="inline-flex items-center gap-1 text-[var(--foreground)]">
             <UiIcon name="boot" size={15} />
