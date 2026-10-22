@@ -7,6 +7,8 @@ import { EARLIEST_DEPARTURE_HOUR, dayAfterNa, dayStrip, floorTo5, longDay } from
 import { badDays } from "@/lib/weather";
 import { formatDuration, formatTime, stopLabel } from "@/lib/format";
 import { searchPlaces } from "@/lib/geocode";
+import { haversineM } from "@/lib/geo";
+import { walkThereMinutes } from "@/lib/walkThere";
 import { readSharedPlan } from "@/lib/links";
 import { track } from "@/lib/analytics";
 import { findTown } from "@/lib/towns";
@@ -63,7 +65,7 @@ const part =
 export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, closures = [], walk, intro, children, outro, ...trip }: Props) {
   const { start, ready, setManualStart } = useUserLocation();
   const { today, update } = useTripSettings();
-  const { destination, rideTo, approachMin, trailStart, transit, noCar, noBus, parking, stop, skip, walkFrom, trailJoin, walk: onFoot, choose, chooseStop } = useTripAccess();
+  const { destination, rideTo, approachMin, trailStart, transit: transitAccess, noCar, noBus, parking, stop, skip, walkFrom, trailJoin, walk: onFoot, choose, chooseStop } = useTripAccess();
   // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day,
   // with or without a start: the walk back to the car must fit the light too. Parked up the trail, the
   // stretch below is skipped both ways.
@@ -74,7 +76,13 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
     return trail && withApproach(trail, approachMin / Math.max(1, baseHikeMin));
   }, [fullProfile, skip, approachMin, baseHikeMin]);
   // One plan for the whole page: saving and sharing use the same train times the sun dial shows.
-  const tripPlan = useTripPlan(sun, rideTo, baseHikeMin, transit && stop?.mode === "vlak" ? stop.location : null, transit, trip.slug);
+  // A start this close to the trail can go on foot (Peter, 2026-10-22): Pešo next to Autom and Bus/vlak.
+  const walkThere = start && trailStart ? walkThereMinutes(haversineM(start, trailStart)) : null;
+  const [onFootChoice, setOnFoot] = useState(false);
+  const walking = onFootChoice && walkThere !== null;
+  // On foot there is no bus either: everything below reads `transit` as the ride actually taken.
+  const transit = transitAccess && !walking;
+  const tripPlan = useTripPlan(sun, rideTo, baseHikeMin, transitAccess && stop?.mode === "vlak" ? stop.location : null, transitAccess, trip.slug, walking ? walkThere : null);
   const { plan, date, time, driveMin, roadMin, driveApprox, driveStatus, rail } = tripPlan;
   const [shared, setShared] = useState<SharedPlan | null>(null);
   const weather = useTripWeather(plan, trailStart, goal, profile?.points[0]?.ele ?? null);
@@ -140,7 +148,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
     plan !== null &&
     latest !== null &&
     (plan.noTrainInLight === true || latest.getTime() < plan.sunrise.getTime() - (driveMin ?? 0) * 60_000 || hourOf(latest) < EARLIEST_DEPARTURE_HOUR);
-  const startWord = hasDrive ? "Vyrazte" : transit && stop ? `Buďte na zastávke ${stopLabel(stop.name)}` : "Začnite túru";
+  const startWord = hasDrive || walking ? "Vyrazte" : transit && stop ? `Buďte na zastávke ${stopLabel(stop.name)}` : "Začnite túru";
 
   // A time picked by hand that is far off a usual day out (back only in the dark, or leaving in the
   // middle of the night) is asked about once: change it to the latest good start, or keep it.
@@ -198,13 +206,13 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
         {/* In the order of the day: where from, how, which day and time. */}
         <StartChip />
 
-        <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} noCar={noCar} noBus={noBus} />
+        <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} noCar={noCar} noBus={noBus} walkMin={walkThere} walking={walking} onWalk={setOnFoot} />
 
         <section aria-label="Deň a odchod" className="flex flex-col gap-3">
           <FilterChips variant="trip" activeDate={date} dayWeather={dayWeather} />
           <div className="flex flex-wrap items-center gap-3">
             <label className="flex items-center gap-2 text-sm font-semibold">
-              {hasDrive ? "Odchod" : transit && stop ? "Na zastávke" : "Začiatok túry"}
+              {hasDrive || walking ? "Odchod" : transit && stop ? "Na zastávke" : "Začiatok túry"}
               <input
                 type="time"
                 step={300}
@@ -225,7 +233,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
               {lateText(plan.verdict, { latestPassed: !!latestPassed, tooLong, noTrain: !!plan.noTrainInLight, startWord, latest: formatTime(latest!) })}
             </p>
           )}
-          {driveStatus === "loading" && <p className="text-xs text-[var(--muted)]">{transit ? "Počítame cestu na zastávku…" : "Počítame cestu autom…"}</p>}
+          {driveStatus === "loading" && !walking && <p className="text-xs text-[var(--muted)]">{transit ? "Počítame cestu na zastávku…" : "Počítame cestu autom…"}</p>}
         </section>
       </section>
 
