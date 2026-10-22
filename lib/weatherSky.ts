@@ -63,9 +63,9 @@ const r1 = (n: number) => n.toFixed(1);
  */
 const UNDERSIDE: Record<string, string> = {
   "#ffffff": "#93a5bd",
-  "#d3dae6": "#7f8ea7",
-  "#c4ccd8": "#76849c",
-  "#a3afc0": "#5f6c82",
+  "#f1f4f8": "#7f8ea7",
+  "#e8ecf2": "#76849c",
+  "#d3dae3": "#5f6c82",
   "#6f7a8f": "#434c5f",
   "#56627f": "#2a3247",
   "#3b4664": "#20273a",
@@ -126,10 +126,10 @@ export function weatherSkySvg(
         : kind === "thunder"
           ? "#6f7a8f"
           : /heavy|rain|sleet/.test(kind)
-            ? "#a3afc0"
+            ? "#d3dae3"
             : /snow/.test(kind)
-              ? "#c4ccd8"
-              : "#d3dae6";
+              ? "#e8ecf2"
+              : "#f1f4f8";
     const op = dark ? 0.75 : cover === 3 ? 0.96 : 0.9;
     const jy = () => (r() - 0.5) * 10;
 
@@ -193,7 +193,7 @@ export function weatherIconSvg(kind: SkyKind): string {
   if (kind === "fog") return '<path d="M3 6h16M5 10h14M3 14h16" stroke="#8796ad" stroke-width="2" stroke-linecap="round"/>';
   if (kind === "cloudy") return c("#dfe5ee");
   if (kind === "thunder") {
-    return c("#a3afc0") + '<path d="M12 15l-2 4h2.4l-1.4 3 4-5h-2.4l1.4-2z" fill="#ffd23f" stroke="#7a4b00" stroke-width=".5"/>';
+    return c("#d3dae3") + '<path d="M12 15l-2 4h2.4l-1.4 3 4-5h-2.4l1.4-2z" fill="#ffd23f" stroke="#7a4b00" stroke-width=".5"/>';
   }
   if (/snow/.test(kind)) {
     return c("#dfe5ee") + '<circle cx="8" cy="17.5" r="1.2" fill="#8ea3bf"/><circle cx="12.5" cy="18" r="1.2" fill="#8ea3bf"/><circle cx="16.5" cy="17.3" r="1.2" fill="#8ea3bf"/>';

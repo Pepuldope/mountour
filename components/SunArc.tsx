@@ -277,8 +277,8 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
   let [skyTop, skyBottom] = skyAt(alt);
   const grey = kind ? SKY_GREY[kind] ?? 0 : 0;
   if (grey && alt > -4) {
-    skyTop = mix(skyTop, kind === "thunder" ? "#7c8698" : "#b8c2cf", grey);
-    skyBottom = mix(skyBottom, "#d5dbe3", grey);
+    skyTop = mix(skyTop, kind === "thunder" ? "#7c8698" : "#8f9bb0", grey);
+    skyBottom = mix(skyBottom, "#aab4c3", grey);
   }
   const sunShows = kind ? SUN_SHOWS[kind] ?? 1 : 1;
   const sx = scene.x(t);
