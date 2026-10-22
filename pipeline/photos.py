@@ -274,8 +274,31 @@ def commons_info(files):
                 license=lic,
                 license_url=strip_html(meta.get("LicenseUrl", {}).get("value")) or None,
                 page=ii.get("descriptionurl"),
+                cats=strip_html(meta.get("Categories", {}).get("value")),
             )
     return out
+
+
+# A photo of something else that happens to be filed or taken at the place: animals, plants, people,
+# vehicles, events, or pictures from space. Checked against the file's title and its Commons categories.
+OFF_TOPIC = re.compile(r"animal|mammal|\bbirds?\b|insect|beetle|butterfl|moth|spider|reptile|amphibian|\bfish|felidae|lynx|puma|"
+                       r"cougar|\bzoos?\b|fauna|fungi|mushroom|flower|plantae|\bplants?\b|taxon|inaturalist|observation \d|"
+                       r"\biss\d|iss expedition|from space|view of earth|astronaut|\bpeople\b|\bmen\b|\bwomen\b|portrait|"
+                       r"selfie|musician|concert|festival|locomotive|railway vehicle|\btrains?\b|\bbus(es)?\b|\bcars?\b|aircraft|"
+                       r"kultúrny dom|friends", re.I)
+# For photos matched by place rather than chosen for it (near, category, area): buildings and town
+# scenes are usually not the trip's goal either.
+NOT_OUTDOORS = re.compile(r"church|chapel|chrám|\bkostol(a|e)?\b|\bkl[aá][sš]tor(a|e)?\b|monaster|interior|cemeter|calvar|kalvári|"
+                          r"\bhouses?\b|street|windmill|veterný mlyn", re.I)
+
+
+def off_topic(info, src):
+    """Whether a Commons file shows something other than the place (title and categories)."""
+    text = info.get("page", "") + " " + info.get("cats", "")
+    text = urllib.parse.unquote(text).replace("_", " ")
+    if OFF_TOPIC.search(text):
+        return True
+    return src in ("near", "category", "area") and bool(NOT_OUTDOORS.search(text))
 
 
 # Text some authors put in the Artist field instead of a name.
@@ -350,8 +373,9 @@ def main():
     photos = {}
     for i, fs in cands.items():
         for f, src in fs:
-            if f.replace("_", " ") in info:
-                photos[i] = dict(info[f.replace("_", " ")], via=src)
+            meta = info.get(f.replace("_", " "))
+            if meta and (src == "picked" or not off_topic(meta, src)):
+                photos[i] = {k: v for k, v in meta.items() if k != "cats"} | {"via": src}
                 break
     # A bad hour at Commons or Wikidata returns little: keep last week's file rather than blank tiles.
     before = len(json.loads(OUT.read_text()).get("photos", {})) if OUT.exists() else 0
