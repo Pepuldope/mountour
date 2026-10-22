@@ -166,30 +166,41 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
 
 /** Two questions (Peter, 2026-10-19): kids along (more time on the trail, said as time, not pace: Peter 2026-10-22) and easier trips only (the list). */
 export function KidsSwitch() {
-  const { withKids, easier, update } = useTripSettings();
+  const { easier, update } = useTripSettings();
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2.5">
-        <span className="inline-flex text-[var(--accent)]">
-          <UiIcon name="kid" size={22} />
-        </span>
-        <span className="flex min-w-0 flex-1 flex-col">
-          <span className="text-[14.5px] font-bold">Idete s deťmi?</span>
-          <span className="text-[12.5px] text-[var(--muted)]">{withKids ? "Časy na trase sú o 30 % dlhšie." : "Prispôsobíme čas na trase."}</span>
-        </span>
-        {/* Kids along usually means easier trips too: one tap turns both on, the second can be undone below. */}
-        <Switch on={withKids} label="Idete s deťmi" onChange={(on) => update({ withKids: on, easier: on })} />
-      </div>
+      {/* Kids along usually means easier trips too: one tap turns both on, the second can be undone below. */}
+      <KidsRow alsoEasier />
       <div className="flex items-center gap-2.5">
         <span className="inline-flex w-[22px] justify-center text-[var(--accent)]">
           <UiIcon name="walker" size={20} />
         </span>
         <span className="flex min-w-0 flex-1 flex-col">
           <span className="text-[14.5px] font-bold">Ukázať ľahšie trasy?</span>
-          <span className="text-[12.5px] text-[var(--muted)]">{easier ? "Len trasy vhodné pre deti a začiatočníkov." : "Ukážeme všetky trasy."}</span>
+          <span className="text-[12.5px] text-[var(--muted)]">Len trasy vhodné pre deti a začiatočníkov.</span>
         </span>
         <Switch on={easier} label="Ukázať ľahšie trasy" onChange={(on) => update({ easier: on })} />
       </div>
+    </div>
+  );
+}
+
+/**
+ * "Idete s deťmi?" with what turning it on does (Peter: the line says what the switch does, not its state).
+ * On home, `alsoEasier` turns on the easier-trips filter with it.
+ */
+export function KidsRow({ alsoEasier = false }: { alsoEasier?: boolean }) {
+  const { withKids, update } = useTripSettings();
+  return (
+    <div className="flex items-center gap-2.5">
+      <span className="inline-flex text-[var(--accent)]">
+        <UiIcon name="kid" size={22} />
+      </span>
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span className="text-[14.5px] font-bold">Idete s deťmi?</span>
+        <span className="text-[12.5px] text-[var(--muted)]">Prispôsobíme čas trasy.</span>
+      </span>
+      <Switch on={withKids} label="Idete s deťmi" onChange={(on) => update(alsoEasier ? { withKids: on, easier: on } : { withKids: on })} />
     </div>
   );
 }

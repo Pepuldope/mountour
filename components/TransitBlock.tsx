@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import type { DayPlan } from "@/lib/dayPlan";
 import { approachMin } from "@/lib/dayPlan";
 import { formatDuration, formatFromUser, formatWalk, formatTime, stopLabel, TRANSIT_LABEL } from "@/lib/format";
 import { appleTransitUrl, cpSkBackUrl, cpSkUrl, googleTransitUrl, startTown } from "@/lib/links";
 import type { RailJourney } from "@/lib/rail";
-import { linesAt } from "@/lib/stops";
 import type { RailTrip } from "@/lib/useRailTrip";
 import { useTripDay } from "@/lib/tripSettings";
 import { useHomeStop } from "@/lib/useHomeStop";
@@ -100,24 +98,7 @@ const pill = (on: boolean) =>
   `flex w-full items-center gap-3 rounded-xl border px-3 py-2 text-left text-sm ${
     on ? "border-[var(--accent)] bg-[var(--accent-soft)]" : "border-[var(--border)] hover:border-[var(--accent)]"
   }`;
-const navButton =
-  "flex-1 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-3 py-2.5 text-center text-sm font-semibold hover:border-[var(--accent)]";
 const fromMidnight = (m: number) => `${pad(Math.floor(m / 60) % 24)}:${pad(m % 60)}`;
-
-/** Bus and tram lines that stop at the trail's stop (OSM, no times). */
-function useStopLines(stop: TransitStop | null): string[] {
-  const key = stop && stop.mode !== "vlak" ? `${stop.name}|${stop.location.lat}|${stop.location.lon}` : null;
-  const [found, setFound] = useState<{ key: string; lines: string[] } | null>(null);
-  useEffect(() => {
-    if (!key || !stop) return;
-    let cancelled = false;
-    linesAt(stop.name, stop.location).then((lines) => !cancelled && setFound({ key, lines }));
-    return () => {
-      cancelled = true;
-    };
-  }, [key, stop]);
-  return found && found.key === key ? found.lines : [];
-}
 
 /** A list of connections to pick from: departure, the trains, arrival. */
 function Connections({ list, choice, choose, label }: { list: RailJourney[]; choice: number; choose: (i: number) => void; label: string }) {
@@ -169,16 +150,12 @@ function Legs({ journey, before, after }: { journey: RailJourney; before?: strin
 /**
  * Right under the travel switch when going by bus or train: one big button that opens Google Maps
  * with the start and the stop filled in and set to public transport (Mapy.com's links can't do
- * public transport), and the same search on cp.sk.
+ * public transport). cp.sk stays in the bus section below, once.
  */
 export function TransitHandoff() {
   const { stop } = useTripAccess();
-  const { start, fix } = useUserLocation();
-  const { date, time } = useTripDay();
-  const homeStop = useHomeStop(start);
+  const { start } = useUserLocation();
   if (!stop) return null;
-  const town = startTown(start, fix?.town);
-  const home = homeStop && (homeStop.mode === "vlak" || homeStop.name.includes(",") || !town) ? homeStop.name : (town ?? homeStop?.name ?? null);
   const to = stop.join?.location ?? stop.location;
   return (
     <div className="flex flex-col items-center gap-1.5">
@@ -191,9 +168,6 @@ export function TransitHandoff() {
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-3 text-[15px] font-bold whitespace-nowrap text-[var(--accent-contrast)] no-underline"
       >
         <StopIcon mode={stop.mode} /> Nájsť spoj v Google Mapách ↗
-      </a>
-      <a href={cpSkUrl(stop.name, home, date, time, !start)} data-umami-event="transit_open" data-umami-event-leg="cp-top" target="_blank" rel="noopener noreferrer" className={link}>
-        alebo na cp.sk ↗
       </a>
     </div>
   );
@@ -211,7 +185,6 @@ export function TransitLegs({ plan, rail }: { plan: DayPlan; rail: RailTrip }) {
   const { start, fix } = useUserLocation();
   const { date } = useTripDay();
   const homeStop = useHomeStop(start);
-  const lines = useStopLines(stop);
   const town = startTown(start, fix?.town);
   // cp.sk finds connections between stops; the start's own stop beats the town name, unless it is a
   // city-bus stop named without its town ("Hodžovo nám."), which cp.sk can't place: then the town.
@@ -270,8 +243,8 @@ export function TransitLegs({ plan, rail }: { plan: DayPlan; rail: RailTrip }) {
       ) : (
         <div className="flex flex-col gap-1.5">
           <p className="flex items-center gap-2 text-base font-bold">
-            <StopIcon mode={stop.mode} /> Tam {stop.mode === "vlak" ? "vlakom" : "autobusom"}
-            {rideMin !== null && <span className="font-data text-xl leading-none">~{formatDuration(rideMin)}</span>}
+            <StopIcon mode={stop.mode} /> {stop.mode === "vlak" ? "Vlakom" : "Autobusom"}
+            {rideMin !== null && <span className="font-data text-lg leading-none">~{formatDuration(rideMin)}</span>}
           </p>
           <p>
             {homeStop ? (
@@ -289,22 +262,12 @@ export function TransitLegs({ plan, rail }: { plan: DayPlan; rail: RailTrip }) {
             na zastávku <strong>{stopLabel(stop.name)}</strong>, buďte tam okolo <span className="font-data text-base leading-none">{formatTime(plan.hikeStart)}</span>.
             Odtiaľ {walk}.
           </p>
-          {lines.length > 0 && (
-            <p className="flex flex-wrap items-center gap-1">
-              <span className="text-[var(--muted)]">Zastavujú tu linky</span>
-              {lines.map((l) => (
-                <span key={l} className="font-data rounded border border-[var(--border)] px-1.5 text-[13px] leading-5 font-semibold">
-                  {l}
-                </span>
-              ))}
-            </p>
-          )}
           <p className="text-xs text-[var(--muted)]">
             {rail.status === "loading"
               ? "Hľadáme vlaky…"
               : rail.status === "no-day"
                 ? "Cestovný poriadok vlakov na tento deň ešte nemáme. Čas je odhad podľa cesty autom."
-                : "Čas je odhad podľa cesty autom s rezervou na zastávky a čakanie. Presný spoj a prestupy ukážu tlačidlá nižšie."}
+                : "Čas je odhad podľa cesty autom s rezervou na zastávky a čakanie. Presný spoj nájdete v Google Mapách vyššie."}
           </p>
           <p className="pt-1">
             <span className="font-semibold">Späť:</span> na zastávke budete okolo <span className="font-data text-base leading-none">{formatTime(plan.hikeEnd)}</span>
@@ -327,12 +290,7 @@ export function TransitLegs({ plan, rail }: { plan: DayPlan; rail: RailTrip }) {
           <a href={cpSkBackUrl(stop.name, home, date, back)} data-umami-event="transit_open" data-umami-event-leg="back" target="_blank" rel="noopener noreferrer" className={link}>
             Spoje späť na cp.sk ↗
           </a>
-        </div>
-        <div className="flex gap-2">
-          <a href={googleTransitUrl(to, start)} data-umami-event="transit_open" data-umami-event-leg="google" target="_blank" rel="noopener noreferrer" className={navButton}>
-            Google Mapy ↗
-          </a>
-          <a href={appleTransitUrl(to, start)} data-umami-event="transit_open" data-umami-event-leg="apple" target="_blank" rel="noopener noreferrer" className={navButton}>
+          <a href={appleTransitUrl(to, start)} data-umami-event="transit_open" data-umami-event-leg="apple" target="_blank" rel="noopener noreferrer" className={link}>
             Apple Mapy ↗
           </a>
         </div>
