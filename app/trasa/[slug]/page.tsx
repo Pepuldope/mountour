@@ -6,7 +6,7 @@ import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
 import { GpxDownload } from "@/components/GpxDownload";
 import { getTripLive } from "@/lib/tripDb";
-import { getAllTripSlugs, getRouteWalks, getTrip } from "@/lib/tripFiles";
+import { getAllTripSlugs, getAllTrips, getPhotos, getRouteWalks, getTrip } from "@/lib/tripFiles";
 import { buildProfile } from "@/lib/tripProfile";
 import { GOAL_LABEL, POI_LABEL, formatDistance, formatDuration } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
@@ -162,6 +162,10 @@ export default async function TripSheetPage({ params }: Props) {
   const routes =
     trip.routes ?? (trip.variant_of || trip.route_count ? ((await getTrip(trail.slug))?.routes ?? []) : []);
   const walks = routes.length > 1 ? await getRouteWalks(routes.map((r) => r.slug)) : {};
+  // The place's photo from Wikimedia Commons, when there is one (Peter, 2026-10-22: photos on the planner).
+  // The trip's own file may not carry the OSM id; the index does.
+  const osm = trip.destination.osm ?? (await getAllTrips()).find((t) => t.slug === trail.slug)?.destination.osm;
+  const photo = (await getPhotos())[osm ?? `trip/${trail.slug}`] ?? null;
   const others: OtherRoute[] = routes
     .filter((r) => r.slug !== trail.slug)
     .map((r) => ({ slug: r.slug, label: r.route_label ?? r.start_name, points: r.up.map(([lon, lat]) => [lat, lon]) }));
@@ -177,7 +181,33 @@ export default async function TripSheetPage({ params }: Props) {
         <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
         <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 md:max-w-[760px] lg:mx-0 lg:w-[460px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
           <header className="relative -mx-4 -mt-4 flex h-[220px] shrink-0 flex-col justify-between sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
-            <SeasonScene season={seasonOf(new Date())} width={460} height={220} seed={3} sunX={0.2} sunY={0.28} shade className="absolute inset-0 h-full w-full" />
+            {photo ? (
+              <>
+                {/* Plain img, no cookies or referrer to Wikimedia (as on town tiles). */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={photo.url}
+                  alt=""
+                  decoding="async"
+                  crossOrigin="anonymous"
+                  referrerPolicy="no-referrer"
+                  width={photo.w}
+                  height={photo.h}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+                <span aria-hidden className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,.25)_0%,rgba(0,0,0,0)_35%,rgba(0,0,0,.55)_100%)]" />
+                <a
+                  href={photo.page}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute right-2 bottom-1 z-10 max-w-[60%] truncate text-[10px] text-white/80 no-underline [text-shadow:0_1px_2px_rgba(0,0,0,.7)]"
+                >
+                  Foto: {photo.author}, {photo.license}
+                </a>
+              </>
+            ) : (
+              <SeasonScene season={seasonOf(new Date())} width={460} height={220} seed={3} sunX={0.2} sunY={0.28} shade className="absolute inset-0 h-full w-full" />
+            )}
             <nav aria-label="Navigácia" className="relative flex items-center justify-between gap-2 px-4 pt-4">
               <Link
                 href="/"

@@ -164,7 +164,7 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
   );
 }
 
-/** Two questions (Peter, 2026-10-19): kids along (slower pace) and easier trips only (the list). */
+/** Two questions (Peter, 2026-10-19): kids along (more time on the trail, said as time, not pace: Peter 2026-10-22) and easier trips only (the list). */
 export function KidsSwitch() {
   const { withKids, easier, update } = useTripSettings();
   return (
@@ -175,7 +175,7 @@ export function KidsSwitch() {
         </span>
         <span className="flex min-w-0 flex-1 flex-col">
           <span className="text-[14.5px] font-bold">Idete s deťmi?</span>
-          <span className="text-[12.5px] text-[var(--muted)]">{withKids ? "Rátame pomalšie tempo." : "Prispôsobíme tempo chôdze."}</span>
+          <span className="text-[12.5px] text-[var(--muted)]">{withKids ? "Časy na trase sú o 30 % dlhšie." : "Prispôsobíme čas na trase."}</span>
         </span>
         {/* Kids along usually means easier trips too: one tap turns both on, the second can be undone below. */}
         <Switch on={withKids} label="Idete s deťmi" onChange={(on) => update({ withKids: on, easier: on })} />

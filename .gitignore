@@ -59,3 +59,6 @@ __pycache__/
 *.osm.pbf
 rail-gtfs.zip
 .proto/
+
+# Made by scripts/photo-thumbs.mjs before each build
+public/data/photo-thumbs.json
