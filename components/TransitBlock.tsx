@@ -167,6 +167,39 @@ function Legs({ journey, before, after }: { journey: RailJourney; before?: strin
 }
 
 /**
+ * Right under the travel switch when going by bus or train: one big button that opens Google Maps
+ * with the start and the stop filled in and set to public transport (Mapy.com's links can't do
+ * public transport), and the same search on cp.sk.
+ */
+export function TransitHandoff() {
+  const { stop } = useTripAccess();
+  const { start, fix } = useUserLocation();
+  const { date, time } = useTripDay();
+  const homeStop = useHomeStop(start);
+  if (!stop) return null;
+  const town = startTown(start, fix?.town);
+  const home = homeStop && (homeStop.mode === "vlak" || homeStop.name.includes(",") || !town) ? homeStop.name : (town ?? homeStop?.name ?? null);
+  const to = stop.join?.location ?? stop.location;
+  return (
+    <div className="flex flex-col items-center gap-1.5">
+      <a
+        href={googleTransitUrl(to, start)}
+        data-umami-event="transit_open"
+        data-umami-event-leg="google-top"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-3 text-[15px] font-bold whitespace-nowrap text-[var(--accent-contrast)] no-underline"
+      >
+        <StopIcon mode={stop.mode} /> Nájsť spoj v Google Mapách ↗
+      </a>
+      <a href={cpSkUrl(stop.name, home, date, time, !start)} data-umami-event="transit_open" data-umami-event-leg="cp-top" target="_blank" rel="noopener noreferrer" className={link}>
+        alebo na cp.sk ↗
+      </a>
+    </div>
+  );
+}
+
+/**
  * The trip by train or bus. By train (the stop is a station and trains make
  * the trip that day): real connections there and back from the national
  * timetable. By bus: there is no free bus timetable, so the plan uses an

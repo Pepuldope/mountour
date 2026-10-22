@@ -28,7 +28,7 @@ import { StartPill } from "@/components/StartPill";
 import { SunArc } from "@/components/SunArc";
 import { useTripAccess } from "@/components/TripAccess";
 import { WeatherReport, useTripWeather } from "@/components/WeatherBlock";
-import { TransitLegs } from "@/components/TransitBlock";
+import { TransitHandoff, TransitLegs } from "@/components/TransitBlock";
 import { TravelSwitch } from "@/components/TravelSwitch";
 import { GOAL_WORDS, trimProfile, withApproach } from "@/lib/tripProfile";
 import type { TripProfile } from "@/lib/tripProfile";
@@ -207,6 +207,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
         <StartChip />
 
         <TravelSwitch roadMin={roadMin} trainMin={rail.status === "ok" ? driveMin : null} noCar={noCar} noBus={noBus} walkMin={walkThere} walking={walking} onWalk={setOnFoot} />
+        {transit && <TransitHandoff />}
 
         <section aria-label="Deň a odchod" className="flex flex-col gap-3">
           <FilterChips variant="trip" activeDate={date} dayWeather={dayWeather} />
