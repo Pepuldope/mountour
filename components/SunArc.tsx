@@ -199,10 +199,26 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
     const snow = season === "zima" ? snowSvg(W, HOR, 9, 20) : "";
     const topY = Math.min(...walk.map((p) => p.y));
     const capY = topY + (HOR - topY) * 0.28;
+    // The snow line: tongues of snow reaching down the gullies and rock showing between them,
+    // softly rounded (Peter, 2026-10-22: a straight cut looked unlike a mountain).
+    const cr = seeded(9);
+    let capEdge = `M0,0 H${W} V${capY.toFixed(1)}`;
+    let px = W;
+    let py = capY;
+    for (let cx = W; cx > 0; ) {
+      const step = 9 + cr() * 9;
+      const nx = Math.max(0, cx - step);
+      const ny = capY + (cr() < 0.5 ? 1 : -1) * (2 + cr() * 6) + (cr() < 0.25 ? 5 : 0);
+      capEdge += ` Q${((px + nx) / 2).toFixed(1)},${(py + (ny - py) * 0.1 + (cr() - 0.5) * 3).toFixed(1)} ${nx.toFixed(1)},${ny.toFixed(1)}`;
+      px = nx;
+      py = ny;
+      cx = nx;
+    }
+    capEdge += " Z";
 
     const sky = weather ? weatherSkySvg(weather, lo, hi, x, HOR, (at) => sunAltitude(new Date(at), sun.lat, sun.lon) < -3) : null;
 
-    return { lo, hi, x, y, walk, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, dash, ridge, hill, hours, season, deco, snow, capY };
+    return { lo, hi, x, y, walk, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, dash, ridge, hill, hours, season, deco, snow, capY, capEdge };
   }, [first, home, hs, he, sunrise, sunset, dusk, plan.dawn, profile, sun.lat, sun.lon, weather]);
   const land = LAND[scene.season];
   const sunR = 8.5 * land.sunScale;
@@ -450,7 +466,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         {scene.sky && <g dangerouslySetInnerHTML={{ __html: scene.sky.back }} />}
         <path d={scene.ridge} fill="#6d7fa6" opacity={0.18} />
         <clipPath id={capId}>
-          <rect x={0} y={0} width={W} height={scene.capY} />
+          <path d={scene.capEdge} />
         </clipPath>
         <path d={scene.hill} fill={land.hill} />
         {(scene.season === "zima" || scene.season === "jar") && <path d={scene.hill} fill="#fff" clipPath={`url(#${capId})`} />}

@@ -78,8 +78,9 @@ function cloud(cx: number, cy: number, s: number, fill: string, opacity: number)
     `<circle cx="${r1(cx + 9.5 * s)}" cy="${r1(cy - 0.5 * s + dy)}" r="${r1(6.5 * s)}"/>` +
     `<rect x="${r1(cx - 15 * s)}" y="${r1(cy + dy)}" width="${r1(30 * s)}" height="${r1(6.5 * s)}" rx="${r1(3.2 * s)}"/>`;
   const under = UNDERSIDE[fill];
+  // Two faint layers, the lower one fainter: a soft shade under the cloud rather than a hard copy.
   return (
-    (under ? `<g fill="${under}" opacity="${opacity * 0.85}">${shape(2.2 * s)}</g>` : "") +
+    (under ? `<g fill="${under}" opacity="${(opacity * 0.22).toFixed(2)}">${shape(2.6 * s)}</g><g fill="${under}" opacity="${(opacity * 0.4).toFixed(2)}">${shape(1.3 * s)}</g>` : "") +
     `<g fill="${fill}" opacity="${opacity}">${shape(0)}</g>`
   );
 }
