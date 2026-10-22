@@ -54,9 +54,9 @@ export function RouteChoice({ slug, destination, routes, walks }: Props) {
         <div className="border-t border-[var(--border)] p-2.5">
           <Link
             href={compare}
-            className="flex w-full items-center justify-center rounded-xl bg-[var(--accent)] px-4 py-3 text-[15px] font-bold text-[var(--accent-contrast)]"
+            className="flex w-full items-center justify-center rounded-xl bg-[var(--accent)] px-4 py-3 text-[15px] font-bold whitespace-nowrap text-[var(--accent-contrast)]"
           >
-            Porovnať {plural(routes.length)} na mape ›
+            Porovnať na mape ›
           </Link>
         </div>
       </div>

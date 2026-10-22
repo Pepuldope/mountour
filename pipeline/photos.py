@@ -5,7 +5,9 @@ Sources, best first:
 2. the lead image of its Wikipedia article (OSM `wikipedia` tag or Wikidata sitelink);
 3. a photo taken within 1 km whose title names the place, found by location on
    Commons, skipping guideposts, maps and boards;
-4. a photo from the place's Commons category (Wikidata P373).
+4. a photo from the place's Commons category (Wikidata P373);
+5. for outdoor places still without one, any photo taken within 300 m ("area"),
+   skipping signs, maps, streets and buildings.
 data/photo-overrides.json blocks files that turned out wrong and picks files by hand.
 The thumbnail address, author and licence go to public/data/photos.json, keyed by
 the OSM object ("node/123"), with `via` saying which source matched. Places without
@@ -198,6 +200,35 @@ def near_photos(places):
     return out
 
 
+# Not the place itself: streets, buildings' insides, people, graves (the "area" source takes any title).
+NOT_THE_PLACE = re.compile(r"ulica|street|námestie|namestie|square|interi|cintor|cemeter|hrob|grave|portrait|selfie|"
+                           r"\bbus\b|autobus|vlak|train|stanica|station|kostol|church|pamätn|memorial", re.I)
+# Kinds out in nature, where a photo taken right there almost always shows the place or its view.
+AREA_KINDS = {"vrchol", "vyhliadka", "vodopad", "roklina", "pleso", "jaskyna", "chata"}
+AREA_M = 300
+
+
+def area_photos(places):
+    """For places nothing else found: up to 3 Commons photos taken within 300 m, whatever their title
+    (outdoor kinds only, signs, maps, streets and buildings left out), nearest first."""
+    out = {}
+    for n, (i, lat, lon) in enumerate(places):
+        body = get_json("https://commons.wikimedia.org/w/api.php?action=query&format=json&list=geosearch"
+                        f"&gsnamespace=6&gslimit=30&gsradius={AREA_M}&gscoord={lat}|{lon}")
+        ranked = []
+        for g in (body or {}).get("query", {}).get("geosearch", []):
+            title = g["title"].removeprefix("File:")
+            if NOT_A_VIEW.search(title) or NOT_THE_PLACE.search(title) or not re.search(r"\.(jpe?g|png|webp)$", title, re.I):
+                continue
+            ranked.append((g["dist"], title))
+        if ranked:
+            out[i] = [t for _, t in sorted(ranked)[:3]]
+        if n % 200 == 0:
+            log(f"area {n}/{len(places)}")
+        time.sleep(0.1)
+    return out
+
+
 def strip_html(s):
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", s or ""))).strip()
 
@@ -299,6 +330,10 @@ def main():
     in_cat = category_photos({p373[qid[i]] for i in ids if qid.get(i) in p373})
     for i in ids:
         cands[i] += [(f, "category") for f in in_cat.get(p373.get(qid.get(i, ""), ""), [])]
+    # Still nothing (most small peaks): a photo taken right at the place (Peter, 2026-10-22: every trip a photo).
+    bare = [(i, dest[i]["location"]["lat"], dest[i]["location"]["lon"]) for i in ids if not cands[i] and dest[i].get("kind") in AREA_KINDS]
+    for i, fs in area_photos(bare).items():
+        cands[i] += [(f, "area") for f in fs]
     # Hand fixes: a picked file goes first, blocked files are dropped.
     fix = json.loads(OVERRIDES.read_text()) if OVERRIDES.exists() else {}
     blocked = {f.replace("_", " ") for f in fix.get("block", [])}
@@ -324,7 +359,7 @@ def main():
         source="Wikimedia Commons via Wikidata, Wikipedia and OpenStreetMap",
         photos=dict(sorted(photos.items())),
     ), ensure_ascii=False, separators=(",", ":")) + "\n")
-    counts = {s: sum(p["via"] == s for p in photos.values()) for s in ("picked", "wikidata", "wikipedia", "near", "category")}
+    counts = {s: sum(p["via"] == s for p in photos.values()) for s in ("picked", "wikidata", "wikipedia", "near", "category", "area")}
     log(f"tags {len(tags)}, wikidata {len(qid)}, articles {len(article)}, free photo {len(photos)} of {len(ids)} places {counts}")
     return 0
 

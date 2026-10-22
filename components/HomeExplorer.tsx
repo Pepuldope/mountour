@@ -49,6 +49,17 @@ const DESKTOP_QUERY = "(min-width: 1024px)";
 
 /** Goal filters, most common first. */
 const GOAL_FILTERS: DestinationKind[] = ["vrchol", "vodopad", "pleso", "hrad", "jaskyna", "roklina", "vyhliadka", "chata"];
+
+/** Time on the trail (walking minutes at the group's pace), in buckets (Peter, 2026-10-22). */
+const TIME_FILTERS: { key: string; label: string; min: number; max: number }[] = [
+  { key: "2", label: "do 2 h", min: 0, max: 120 },
+  { key: "4", label: "2 – 4 h", min: 121, max: 240 },
+  { key: "6", label: "4 – 6 h", min: 241, max: 360 },
+  { key: "x", label: "nad 6 h", min: 361, max: Infinity },
+];
+
+/** How far from the start, in minutes of travel there (Peter, 2026-10-22: "miesta okolo"). */
+const FAR_FILTERS = [30, 60, 90, 120] as const;
 const DIFFICULTIES: Difficulty[] = ["lahka", "stredna", "tazka"];
 
 /**
@@ -208,6 +219,8 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   // Several kinds at once (testers): empty = every kind.
   const [goalFilter, setGoalFilter] = useState<DestinationKind[]>([]);
   const [diffFilter, setDiffFilter] = useState<Difficulty[]>([]);
+  const [timeFilter, setTimeFilter] = useState<string[]>([]);
+  const [farFilter, setFarFilter] = useState<number | null>(null);
   const [query, setQuery] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
   const [placeIndex, setPlaceIndex] = useState<PlaceSearch | null>(null);
@@ -309,6 +322,8 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
       // The walk the trip page counts: from the parking (by car) or the stop (by train/bus), the walk to the trail and back included.
       const walk = pickWalk(routeWalk(detail), transit, detail.parkingLots.length > 0);
       const hikeMin = walk ? walkMinutes(walk, withKids) : hikeMinutes(detail.trail.duration_min, withKids);
+      if (timeFilter.length > 0 && !TIME_FILTERS.some((f) => timeFilter.includes(f.key) && hikeMin >= f.min && hikeMin <= f.max)) return [];
+      if (farFilter !== null && start && driveMin !== null && driveMin > farFilter) return [];
       const th = primaryTrailhead(detail);
       const sun = sunLocation(detail);
       return [
@@ -342,7 +357,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
     const late = open.filter((i) => !fitsDay(i));
     const noneFit = fitting.length === 0 && open.length > 0;
     return { listedAll: [...fitting, ...late, ...all.filter(out)], noneFit };
-  }, [trails, destinations, drives, driveStatus, withKids, easier, goalFilter, diffFilter, date, today, start, transit]);
+  }, [trails, destinations, drives, driveStatus, withKids, easier, goalFilter, diffFilter, timeFilter, farFilter, date, today, start, transit]);
 
   const bySlug = useMemo(() => new Map(listedAll.map((i) => [i.detail.trail.slug, i])), [listedAll]);
 
@@ -399,7 +414,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   }, [listedAll, words, matches, nameMatches, mapView]);
 
   // Cards come in pages; a new filter or another part of the map starts again from the first page.
-  const filterKey = [goalFilter.join(), diffFilter.join(), withKids, easier, date, travel, query].join("|");
+  const filterKey = [goalFilter.join(), diffFilter.join(), timeFilter.join(), farFilter, withKids, easier, date, travel, query].join("|");
   const [paging, setPaging] = useState({ key: filterKey, n: PAGE });
   const limit = paging.key === filterKey ? paging.n : PAGE;
   const visible = useMemo(() => {
@@ -507,7 +522,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
     moveMap(focusTo);
   };
 
-  const filterCount = goalFilter.length + diffFilter.length;
+  const filterCount = goalFilter.length + diffFilter.length + timeFilter.length + (farFilter !== null && start ? 1 : 0);
 
   const zoomedIn = !!mapView && mapView.zoom >= mapView.areaZoom - 1;
   const heading = words.length > 0
@@ -779,12 +794,41 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
               </label>
             ))}
           </div>
+          <MenuTitle>Čas na trase</MenuTitle>
+          <div className="grid grid-cols-2">
+            {TIME_FILTERS.map((f) => (
+              <label key={f.key} className="flex cursor-pointer items-center gap-2.5 rounded-lg p-2 text-[15px] hover:bg-[var(--segment-bg)]">
+                <input
+                  type="checkbox"
+                  checked={timeFilter.includes(f.key)}
+                  onChange={(e) => setTimeFilter((prev) => (e.target.checked ? [...prev, f.key] : prev.filter((x) => x !== f.key)))}
+                  className="h-[18px] w-[18px] accent-[var(--accent)]"
+                />
+                {f.label}
+              </label>
+            ))}
+          </div>
+          <MenuTitle>{transit ? "Cesta autobusom či vlakom" : "Cesta autom"}</MenuTitle>
+          {start ? (
+            <div className="grid grid-cols-2">
+              {[null, ...FAR_FILTERS].map((m) => (
+                <label key={m ?? "all"} className="flex cursor-pointer items-center gap-2.5 rounded-lg p-2 text-[15px] hover:bg-[var(--segment-bg)]">
+                  <input type="radio" name="far" checked={farFilter === m} onChange={() => setFarFilter(m)} className="h-[18px] w-[18px] accent-[var(--accent)]" />
+                  {m === null ? "Hocijako ďaleko" : m < 60 ? `do ${m} min` : `do ${m / 60} h`.replace(".5", ",5")}
+                </label>
+              ))}
+            </div>
+          ) : (
+            <p className="p-2 text-sm text-[var(--muted)]">Najprv vyberte, odkiaľ vyrážate.</p>
+          )}
           <div className="sticky -bottom-2 mt-1 -mb-2 flex justify-between gap-2 border-t border-[var(--border)] bg-[var(--card-bg)] p-2">
             <button
               type="button"
               onClick={() => {
                 setGoalFilter([]);
                 setDiffFilter([]);
+                setTimeFilter([]);
+                setFarFilter(null);
               }}
               className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
             >

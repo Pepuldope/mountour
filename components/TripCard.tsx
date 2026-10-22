@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { EARLIEST_DEPARTURE_HOUR } from "@/lib/days";
 import type { DayFit } from "@/lib/days";
 import { DIFFICULTY_LABEL, GOAL_LABEL, formatDurationShort, formatFromUser, formatTime, stopLabel } from "@/lib/format";
@@ -8,6 +9,7 @@ import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
 import { formatKm } from "@/lib/walkFacts";
 import type { ParkingLot, TrailDetail, TransitStop } from "@/lib/types";
+import { useTripSettings } from "@/lib/tripSettings";
 import { UiIcon } from "@/components/UiIcon";
 
 export interface TripCardItem {
@@ -82,9 +84,32 @@ const PILL_CLASS = {
   closed: "bg-[var(--danger-bg)] text-[var(--danger)]",
 };
 
+let thumbsP: Promise<Record<string, string>> | null = null;
+
+/** Card photos by trip slug (scripts/photo-thumbs.mjs), loaded once for every card. */
+function useThumb(slug: string): string | null {
+  const [thumbs, setThumbs] = useState<Record<string, string> | null>(null);
+  useEffect(() => {
+    let live = true;
+    thumbsP ??= fetch("/data/photo-thumbs.json")
+      .then((r) => (r.ok ? r.json() : {}))
+      .catch(() => {
+        thumbsP = null;
+        return {};
+      });
+    thumbsP.then((t) => live && setThumbs(t));
+    return () => {
+      live = false;
+    };
+  }, []);
+  return thumbs?.[slug] ?? null;
+}
+
 /** One trip: what it is, how long to get there and walk, and when to leave. */
 export function TripCard({ item, dayWord, transit, active, onClose, onActive, registerItem }: Props) {
   const { detail, hikeMin, carMin, driveMin, driveApprox, driveLoading, distanceM, nearStop } = item;
+  const { withKids } = useTripSettings();
+  const thumb = useThumb(item.detail.trail.slug);
   const { trail } = detail;
   const goal = trail.goal ?? "ine";
   const colour = GOAL_COLOUR[goal];
@@ -106,18 +131,31 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
       href={`/trasa/${trail.slug}`}
       onMouseEnter={() => onActive(trail.slug)}
       onFocus={() => onActive(trail.slug)}
-      className={`grid grid-cols-[54px_1fr] gap-3 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-3 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
+      className={`grid grid-cols-[64px_1fr] gap-3 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-3 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
         big ? "border-2 border-[var(--accent)] shadow-[0_10px_28px_rgba(20,35,59,0.22)]" : active ? "trip-card-active border-[var(--accent)]" : "border-[var(--border)]"
       }`}
     >
-      <span
-        aria-hidden
-        // A trip that doesn't work that day fades its icon and title only: the pill saying why keeps full contrast.
-        className={`grid h-[54px] w-[54px] place-items-center rounded-[14px] text-white ${dim ? "opacity-50 grayscale-[75%]" : ""}`}
-        style={{ background: colour }}
-        // Constant markup from lib/kindIcons.ts, no user data.
-        dangerouslySetInnerHTML={{ __html: kindSvg(goal, 28) }}
-      />
+      {thumb ? (
+        // A photo of the place in place of the kind icon (Peter, 2026-10-22); the kind sits on it as a small badge.
+        <span aria-hidden className={`relative h-[64px] w-[64px] overflow-hidden rounded-[14px] ${dim ? "opacity-50 grayscale-[75%]" : ""}`} style={{ background: colour }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={thumb} alt="" loading="lazy" decoding="async" crossOrigin="anonymous" referrerPolicy="no-referrer" className="h-full w-full object-cover" />
+          <span
+            className="absolute bottom-1 left-1 grid h-[22px] w-[22px] place-items-center rounded-[7px] text-white shadow-[0_0_0_1.5px_#fff]"
+            style={{ background: colour }}
+            dangerouslySetInnerHTML={{ __html: kindSvg(goal, 15) }}
+          />
+        </span>
+      ) : (
+        <span
+          aria-hidden
+          // A trip that doesn't work that day fades its icon and title only: the pill saying why keeps full contrast.
+          className={`grid h-[64px] w-[64px] place-items-center rounded-[14px] text-white ${dim ? "opacity-50 grayscale-[75%]" : ""}`}
+          style={{ background: colour }}
+          // Constant markup from lib/kindIcons.ts, no user data.
+          dangerouslySetInnerHTML={{ __html: kindSvg(goal, 30) }}
+        />
+      )}
       <span className="flex min-w-0 flex-col gap-1">
         <span className="flex items-baseline justify-between gap-2">
           <span className={`leading-tight font-bold ${big ? "text-xl" : "text-base"} ${dim ? "text-[var(--muted)]" : ""}`}>{trail.name}</span>
@@ -139,7 +177,9 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
           )}
         </span>
         <span className="flex flex-wrap items-center gap-x-1.5 text-[12.5px] text-[var(--muted)]">
-          <span className="kind-ink font-bold" style={{ "--kind": colour } as React.CSSProperties}>
+          {/* The kind as a filled chip: with a photo in place of the icon it must read on its own (Peter, 2026-10-22). */}
+          <span className="inline-flex items-center gap-1 rounded-full px-1.5 py-px text-[11.5px] font-bold text-white" style={{ background: colour }}>
+            <span aria-hidden className="inline-flex" dangerouslySetInnerHTML={{ __html: kindSvg(goal, 12) }} />
             {GOAL_LABEL[goal]}
           </span>
           {trail.region_name && <span>· {trail.region_name}</span>}
@@ -158,6 +198,11 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
           <span className="inline-flex items-center gap-1 text-[var(--foreground)]">
             <UiIcon name="boot" size={15} />
             {formatDurationShort(hikeMin)}
+            {withKids && (
+              <span className="text-[var(--warn)]" title="S deťmi: čas na trase o 30 % dlhší">
+                <UiIcon name="kid" size={14} />
+              </span>
+            )}
           </span>
           {total !== null && (
             <span className="text-[var(--muted)]">

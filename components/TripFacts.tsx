@@ -1,5 +1,6 @@
 "use client";
 
+import { KIDS_PACE } from "@/lib/dayPlan";
 import { DIFFICULTY_LABEL, formatDuration } from "@/lib/format";
 import type { Difficulty } from "@/lib/types";
 import { useTripSettings } from "@/lib/tripSettings";
@@ -31,7 +32,10 @@ export function TripFacts({ loop, difficulty, familyFriendly }: Props) {
       <span className="inline-flex items-center gap-1">
         <UiIcon name="clock" size={16} />
         {formatDuration(walkMinutes(walk, withKids))}
-        {withKids && <small className={small}>s deťmi</small>}
+        {withKids && (
+          // Plain to see that kids make the day longer (Peter, 2026-10-22).
+          <span className="ml-0.5 rounded-full bg-[var(--warn-bg)] px-2 py-0.5 font-sans text-[12px] font-bold text-[var(--warn)]">+{Math.round((KIDS_PACE - 1) * 100)} % s deťmi</span>
+        )}
       </span>
       <span className="font-sans text-[13px] font-medium text-[var(--muted)]">{DIFFICULTY_LABEL[difficulty].toLowerCase()}</span>
       {familyFriendly && <span className="font-sans text-[13px] font-semibold text-[var(--ok)]">vhodné pre deti</span>}
