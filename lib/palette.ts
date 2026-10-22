@@ -26,6 +26,12 @@ export const POPULARITY_DASH = [
   ["literal", [1, 0]],
 ] as const;
 
+/**
+ * Thin dark thread drawn under the two quietest levels, so yellow stays readable
+ * on white and pale roads (Peter, 2026-10-22).
+ */
+export const QUIET_THREAD = "#5c4500";
+
 /** Outline around the busiest level only, about 0.8 px each side. */
 export const POPULARITY_TOP_OUTLINE = "#ffffff";
 
