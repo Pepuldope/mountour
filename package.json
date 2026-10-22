@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/season-icon.mjs && node scripts/photo-thumbs.mjs",
+    "prebuild": "node scripts/season-icon.mjs && node scripts/photo-thumbs.mjs && node scripts/pack-list.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

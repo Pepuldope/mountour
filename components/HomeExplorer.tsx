@@ -13,7 +13,9 @@ import { DIFFICULTY_LABEL, GOAL_LABEL, GOAL_PLURAL, formatDurationShort } from "
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR, POPULARITY_RAMP } from "@/lib/palette";
 import { seasonOf } from "@/lib/season";
-import type { DestinationKind, TripList } from "@/lib/tripSchema";
+import type { DestinationKind } from "@/lib/tripSchema";
+import { unpackList } from "@/lib/packedList";
+import type { PackedList } from "@/lib/packedList";
 import { getTowns, summaryFromList } from "@/lib/trips";
 import { haversineM } from "@/lib/geo";
 import { plain, preparePlaces, searchPlaces } from "@/lib/placeSearch";
@@ -97,16 +99,19 @@ function useIsDesktop(): boolean {
 }
 
 /**
- * The whole list (1.7 MB) is fetched and built once per visit, not on every
- * return to the home page; a failed fetch (offline) is tried again next time.
+ * The whole list is fetched and built once per visit, not on every return to
+ * the home page; a failed fetch (offline) is tried again next time. It comes
+ * packed (public/data/home-list.json, a third of list.json's 1.7 MB; see
+ * scripts/pack-list.mjs), which matters most on a slow phone.
  */
 let allTrailsP: Promise<TrailDetail[] | null> | null = null;
 let allTrailsDone: TrailDetail[] | null = null;
 function loadAllTrails(): Promise<TrailDetail[] | null> {
-  allTrailsP ??= fetch("/data/trips/list.json")
-    .then((r) => (r.ok ? (r.json() as Promise<TripList>) : null))
-    .then((list) => {
-      if (!list) return null;
+  allTrailsP ??= fetch("/data/home-list.json")
+    .then((r) => (r.ok ? (r.json() as Promise<PackedList>) : null))
+    .then((packed) => {
+      if (!packed) return null;
+      const list = unpackList(packed);
       const trips = list.trips.map(summaryFromList).sort((a, b) => b.rank - a.rank);
       return (allTrailsDone = trips.map(trailDetailFrom));
     })
@@ -118,7 +123,7 @@ function loadAllTrails(): Promise<TrailDetail[] | null> {
   return allTrailsP;
 }
 
-/** Every trip from public/data/trips/list.json, best known first; `initial` until it has loaded. */
+/** Every trip from public/data/trips/list.json (via its packed copy), best known first; `initial` until it has loaded. */
 function useAllTrails(initial: TrailDetail[]): TrailDetail[] {
   const [all, setAll] = useState<TrailDetail[] | null>(allTrailsDone);
   useEffect(() => {

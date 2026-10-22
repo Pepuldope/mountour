@@ -63,3 +63,4 @@ rail-gtfs.zip
 # Made by scripts/photo-thumbs.mjs before each build
 public/data/photo-thumbs.json
 public/data/photo-keys.json
+public/data/home-list.json
