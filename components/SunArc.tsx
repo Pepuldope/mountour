@@ -47,9 +47,9 @@ const SKY: [number, string, string][] = [
   [-6, "#1d2b55", "#4b4677"],
   [-2, "#38497f", "#e9977a"],
   [2, "#8ea6d4", "#f8c48c"],
-  [8, "#c3d7ec", "#fcdcab"],
-  [20, "#d4e6f3", "#fbebd0"],
-  [50, "#cfe4f5", "#fdf3e1"],
+  [8, "#b0cdee", "#fcdcab"],
+  [20, "#a9cbef", "#f3eedf"],
+  [50, "#a2c7f0", "#e9f0f2"],
 ];
 
 function mix(a: string, b: string, f: number): string {
@@ -199,10 +199,28 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
     const snow = season === "zima" ? snowSvg(W, HOR, 9, 20) : "";
     const topY = Math.min(...walk.map((p) => p.y));
     const capY = topY + (HOR - topY) * 0.28;
+    // The snow line: tongues of snow reaching down the gullies and rock showing between them,
+    // softly rounded (Peter, 2026-10-22: a straight cut looked unlike a mountain).
+    const cr = seeded(9);
+    const pts: [number, number][] = [];
+    for (let cx = W; cx > 0; ) {
+      pts.push([cx, capY + (cr() < 0.5 ? 1 : -1) * (2 + cr() * 6) + (cr() < 0.25 ? 5 : 0)]);
+      cx -= 9 + cr() * 9;
+    }
+    pts.push([0, capY]);
+    // A smooth curve through the points (Catmull-Rom), so the edge has no sharp corners.
+    let capEdge = `M0,0 H${W} V${pts[0][1].toFixed(1)}`;
+    for (let i = 0; i < pts.length - 1; i++) {
+      const [a, b, c, d] = [pts[Math.max(0, i - 1)], pts[i], pts[i + 1], pts[Math.min(pts.length - 1, i + 2)]];
+      const c1 = [b[0] + (c[0] - a[0]) / 6, b[1] + (c[1] - a[1]) / 6];
+      const c2 = [c[0] - (d[0] - b[0]) / 6, c[1] - (d[1] - b[1]) / 6];
+      capEdge += ` C${c1.map((v) => v.toFixed(1)).join(",")} ${c2.map((v) => v.toFixed(1)).join(",")} ${c[0].toFixed(1)},${c[1].toFixed(1)}`;
+    }
+    capEdge += " Z";
 
     const sky = weather ? weatherSkySvg(weather, lo, hi, x, HOR, (at) => sunAltitude(new Date(at), sun.lat, sun.lon) < -3) : null;
 
-    return { lo, hi, x, y, walk, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, dash, ridge, hill, hours, season, deco, snow, capY };
+    return { lo, hi, x, y, walk, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, dash, ridge, hill, hours, season, deco, snow, capY, capEdge };
   }, [first, home, hs, he, sunrise, sunset, dusk, plan.dawn, profile, sun.lat, sun.lon, weather]);
   const land = LAND[scene.season];
   const sunR = 8.5 * land.sunScale;
@@ -259,7 +277,8 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
   const now = weather ? weatherAt(weather, t) : null;
   const kind = skyKind(now?.symbol ?? null);
   let [skyTop, skyBottom] = skyAt(alt);
-  const grey = kind ? SKY_GREY[kind] ?? 0 : 0;
+  // Only a light tint: the sky keeps its blue so the neutral grey clouds stand out against it.
+  const grey = (kind ? SKY_GREY[kind] ?? 0 : 0) * 0.3;
   if (grey && alt > -4) {
     skyTop = mix(skyTop, kind === "thunder" ? "#7c8698" : "#b8c2cf", grey);
     skyBottom = mix(skyBottom, "#d5dbe3", grey);
@@ -450,7 +469,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         {scene.sky && <g dangerouslySetInnerHTML={{ __html: scene.sky.back }} />}
         <path d={scene.ridge} fill="#6d7fa6" opacity={0.18} />
         <clipPath id={capId}>
-          <rect x={0} y={0} width={W} height={scene.capY} />
+          <path d={scene.capEdge} />
         </clipPath>
         <path d={scene.hill} fill={land.hill} />
         {(scene.season === "zima" || scene.season === "jar") && <path d={scene.hill} fill="#fff" clipPath={`url(#${capId})`} />}
