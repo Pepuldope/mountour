@@ -6,17 +6,15 @@ import type { DayPlan, Verdict } from "@/lib/dayPlan";
 import { EARLIEST_DEPARTURE_HOUR, dayAfterNa, dayStrip, floorTo5, longDay } from "@/lib/days";
 import { badDays } from "@/lib/weather";
 import { formatDuration, formatTime, stopLabel } from "@/lib/format";
-import { searchPlaces } from "@/lib/geocode";
 import { haversineM } from "@/lib/geo";
 import { walkThereMinutes } from "@/lib/walkThere";
-import { readSharedPlan } from "@/lib/links";
+import { parkingPlace, readSharedPlan } from "@/lib/links";
 import { track } from "@/lib/analytics";
-import { findTown } from "@/lib/towns";
 import type { SharedPlan, WalkRoute } from "@/lib/links";
 import { useTripSettings } from "@/lib/tripSettings";
 import { useTripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
-import { hourOf } from "@/lib/zoned";
+import { clock, hourOf, zonedDate } from "@/lib/zoned";
 import type { BBox, Closure, LatLng } from "@/lib/types";
 import { FilterChips, KidsRow } from "@/components/FilterChips";
 import { NavHandoff } from "@/components/NavHandoff";
@@ -61,8 +59,15 @@ const part =
  * (sun dial, times, weather, a warning only when the start is too late), then getting there
  * (parking, map...) with Uložiť (main), share and navigation hand-offs.
  */
+/** The meeting time on the shared day, as a moment. */
+function meetingAt(date: string, hhmm: string): Date {
+  const [y, mo, d] = date.split("-").map(Number);
+  const [h, mi] = hhmm.split(":").map(Number);
+  return zonedDate(y, mo, d, h, mi);
+}
+
 export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, closures = [], walk, intro, children, outro, ...trip }: Props) {
-  const { start, ready, setManualStart } = useUserLocation();
+  const { start } = useUserLocation();
   const { today, update } = useTripSettings();
   const { destination, rideTo, approachMin, trailStart, transit: transitAccess, noCar, noBus, parking, stop, skip, walkFrom, trailJoin, walk: onFoot, choose, chooseStop } = useTripAccess();
   // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day,
@@ -91,8 +96,9 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
     [plan, weather.below]
   );
 
-  // A shared link opens the sender's day, departure, bus or car, kids pace and parking or stop
-  // (once, then it's ours to change). A link for a day already gone only says so.
+  // A shared link opens the sender's day, kids pace and parking or stop (once, then it's ours to change).
+  // Friends leave from different places, so it brings a meeting time where the walk starts and this
+  // page works out the departure from our own start. A link for a day already gone only says so.
   const [expired, setExpired] = useState<SharedPlan | null>(null);
   useEffect(() => {
     const fromLink = readSharedPlan(window.location.search);
@@ -105,34 +111,31 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
       return;
     }
     setShared(fromLink);
-    update({ date: fromLink.date, time: fromLink.time, withKids: fromLink.withKids, ...(noCar ? {} : { travel: fromLink.transit ? "transit" : "car" }) });
+    // Until the ride is known, the meeting time itself: the walk starts then.
+    update({ date: fromLink.date, time: fromLink.meet ?? fromLink.time, withKids: fromLink.withKids });
     if (fromLink.transit) chooseStop(fromLink.pick);
     else choose(fromLink.pick);
     // Once per link: the trip's own setters and slug don't change while the page is open.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [today, update]);
 
-  // No start of our own yet: plan from the sender's town, so the times match theirs.
-  const sharedTown = shared?.town ?? null;
+  // Leave so the walk starts at the meeting time: the meeting time minus our own ride, to the 5 minutes
+  // before. Kept in step while the ride loads; a time picked by hand ends it.
+  const meet = useMemo(() => (shared?.meet && date === shared.date ? meetingAt(shared.date, shared.meet) : null), [shared, date]);
+  const [anchored, setAnchored] = useState<string | null>(null);
+  // By train the ride depends on the departure (another train), so a few rounds at most, never a loop.
+  const [rounds, setRounds] = useState(0);
+  const following = meet !== null && (anchored === null || anchored === time) && rounds < 4;
   useEffect(() => {
-    if (!ready || start || !sharedTown) return;
-    const known = findTown(sharedTown);
-    if (known) {
-      setManualStart(known);
-      return;
-    }
-    const ctrl = new AbortController();
-    searchPlaces(sharedTown, ctrl.signal)
-      .then(([place]) => {
-        if (!place) return;
-        setManualStart({ ...place, label: sharedTown });
-      })
-      .catch(() => {});
-    return () => ctrl.abort();
-    // Once per link: `start` is checked when the town arrives, not watched.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ready, sharedTown, setManualStart]);
-  const adopted = sharedTown !== null && start?.label === (findTown(sharedTown)?.label ?? sharedTown);
+    if (!following || !plan || tripPlan.loading) return;
+    const ride = plan.hikeStart.getTime() - plan.segments[0].start.getTime();
+    const leave = clock(floorTo5(new Date(meet.getTime() - ride)));
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setAnchored(leave);
+    if (leave === time) return;
+    setRounds((n) => n + 1);
+    update({ time: leave });
+  }, [following, plan, tripPlan.loading, meet, time, update]);
 
   const hasDrive = driveMin !== null;
   // The walk starts where the ride ends: the parking (or the trail start, with no parking) or the stop.
@@ -180,17 +183,28 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
         {intro}
 
         {shared && (
-          <div className="rounded-[var(--radius-card)] bg-[var(--accent-soft)] p-4 text-sm">
+          <div className="flex flex-col gap-2 rounded-[var(--radius-card)] bg-[var(--accent-soft)] p-4 text-sm">
             <p>
-              Plán od kamaráta: <strong>{longDay(shared.date)}</strong>, odchod{" "}
-              <strong className="font-data text-base">{shared.time}</strong>
-              {shared.town ? `, štart ${shared.town}` : ""}
-              {shared.transit ? ", autobusom alebo vlakom" : ""}
-              {shared.withKids ? ", s deťmi" : ""}.
+              <strong>Plán od kamaráta</strong> · {longDay(shared.date)}
+              {shared.withKids ? ", s deťmi" : ""}
             </p>
-            <p className="text-[var(--muted)]">
-              {adopted ? `Nižšie je prepočítaný zo štartu ${start?.label}. Zmeniť ho môžete hneď nižšie.` : "Nižšie je prepočítaný z vášho miesta."}
-            </p>
+            {shared.meet ? (
+              <>
+                <p>
+                  <strong className="font-data text-base">{shared.meet.replace(/^0/, "")}</strong> stretnutie{" "}
+                  {shared.transit && stop ? `na zastávke ${stopLabel(stop.name)}` : !transit && parking ? parkingPlace(parking.name) : "na začiatku trasy"}
+                </p>
+                <p className="text-[var(--muted)]">
+                  {!start
+                    ? "Zadajte hore, odkiaľ vyrážate, a ukážeme, kedy vyraziť."
+                    : following
+                      ? `Odchod nižšie je zo štartu ${start.label.split(",")[0]}, aby ste tam boli o ${shared.meet.replace(/^0/, "")}.`
+                      : "Čas odchodu ste zmenili, nižšie je podľa vás."}
+                </p>
+              </>
+            ) : (
+              <p className="text-[var(--muted)]">Odchod {shared.time} z miesta kamaráta, nižšie je prepočítaný z vášho.</p>
+            )}
           </div>
         )}
 
