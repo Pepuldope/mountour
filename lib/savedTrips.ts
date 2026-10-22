@@ -32,6 +32,12 @@ export interface SavedTrip {
   /** Height profile for the sun-arc picture; missing on trips saved before it existed. */
   profile?: TripProfile | null;
   savedAt: string;
+  /** When the group said they went (Bol som tu); missing while still planned. */
+  doneAt?: string;
+  /** "Ešte nie" on the trip page: don't ask "Boli ste na výlete?" again for this day. */
+  skipAsk?: boolean;
+  /** A quick review was sent for this trip from this browser. */
+  reviewed?: boolean;
   /** Offline copy state: the page, GPX and map tiles. */
   offline: "ok" | "failed" | "pending";
 }

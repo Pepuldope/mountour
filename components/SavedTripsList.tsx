@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { planDay } from "@/lib/dayPlan";
 import { isoDate } from "@/lib/days";
@@ -8,6 +9,7 @@ import { useSavedTrips } from "@/lib/savedTrips";
 import type { SavedTrip } from "@/lib/savedTrips";
 import { useTripSettings } from "@/lib/tripSettings";
 import { useUserLocation } from "@/lib/userLocation";
+import { ReviewSheet } from "@/components/ReviewSheet";
 import { SunArc } from "@/components/SunArc";
 
 function todayIso(): string {
@@ -16,7 +18,8 @@ function todayIso(): string {
 
 /** Saved trips on this device. Renders from the saved snapshots alone, so it works offline. */
 export function SavedTripsList() {
-  const { trips, remove } = useSavedTrips();
+  const { trips, remove, patch } = useSavedTrips();
+  const [reviewing, setReviewing] = useState<SavedTrip | null>(null);
   const { update } = useTripSettings();
   const { setManualStart } = useUserLocation();
   const router = useRouter();
@@ -42,6 +45,75 @@ export function SavedTripsList() {
     );
   }
 
+  // Bol som tu (Peter, 2026-10-22): planned trips first, the ones the group went on below, then a quick review.
+  const planned = trips.filter((t) => !t.doneAt);
+  const done = trips.filter((t) => t.doneAt);
+  const went = (trip: SavedTrip) => {
+    patch(trip.slug, { doneAt: new Date().toISOString() });
+    if (!trip.reviewed) setReviewing(trip);
+  };
+
+  return (
+    <>
+      {reviewing && (
+        <ReviewSheet
+          slug={reviewing.slug}
+          name={reviewing.name}
+          onDone={(sent) => {
+            if (sent) patch(reviewing.slug, { reviewed: true });
+            setReviewing(null);
+          }}
+        />
+      )}
+      {planned.length > 0 && done.length > 0 && <h2 className="text-base font-bold">Plánované</h2>}
+      {planned.length > 0 && <TripList trips={planned} today={today} open={open} remove={remove} went={went} />}
+      {done.length > 0 && (
+        <>
+          <h2 className="pt-2 text-base font-bold">
+            Absolvované <span className="font-semibold text-[var(--muted)]">· {done.length}</span>
+          </h2>
+          <ul className="flex flex-col gap-2">
+            {done.map((trip) => (
+              <li key={trip.slug} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] px-4 py-3">
+                <span className="text-[var(--ok)]" aria-hidden>
+                  ✓
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="font-semibold">{trip.name}</span>
+                  <span className="text-[13px] text-[var(--muted)]">{formatDateSk(trip.date)}</span>
+                </span>
+                {trip.reviewed ? (
+                  <span className="text-[13px] font-semibold text-[var(--muted)]">ohodnotené</span>
+                ) : (
+                  <button type="button" onClick={() => setReviewing(trip)} className="rounded-full border border-[var(--accent)] px-3 py-1.5 text-[13px] font-bold text-[var(--accent)]">
+                    Ohodnotiť
+                  </button>
+                )}
+                <button type="button" onClick={() => patch(trip.slug, { doneAt: undefined })} className="text-[13px] font-semibold text-[var(--muted)] underline">
+                  Ešte nie
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </>
+  );
+}
+
+function TripList({
+  trips,
+  today,
+  open,
+  remove,
+  went,
+}: {
+  trips: SavedTrip[];
+  today: string;
+  open: (trip: SavedTrip) => void;
+  remove: (slug: string) => void;
+  went: (trip: SavedTrip) => void;
+}) {
   return (
     <ul className="flex flex-col gap-3">
       {trips.map((trip) => {
@@ -97,6 +169,13 @@ export function SavedTripsList() {
                 className="rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-bold text-[var(--accent-contrast)]"
               >
                 Otvoriť
+              </button>
+              <button
+                type="button"
+                onClick={() => went(trip)}
+                className={`rounded-xl px-4 py-2.5 text-sm font-bold ${past ? "bg-[var(--ok)] text-white" : "border border-[var(--border)] bg-[var(--card-bg)] hover:border-[var(--accent)]"}`}
+              >
+                Bol som tu ✓
               </button>
               <button
                 type="button"

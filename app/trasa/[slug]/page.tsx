@@ -21,6 +21,7 @@ import { PoiList } from "@/components/PoiList";
 import { StopsBlock } from "@/components/TransitBlock";
 import { ClosureBanner } from "@/components/ClosureBanner";
 import { TripPlanner } from "@/components/TripPlanner";
+import { TripReviews } from "@/components/TripReviews";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { SiteFooter } from "@/components/SiteFooter";
 import { TripFacts } from "@/components/TripFacts";
@@ -261,6 +262,7 @@ export default async function TripSheetPage({ params }: Props) {
                     familyFriendly={trail.family_friendly}
                   />
                   {trail.description && <p className="text-sm text-[var(--muted)]">{trail.description}</p>}
+                  <TripReviews slug={trail.slug} name={trail.name} />
                 </div>
                 <RouteChoice slug={trail.slug} destination={trip.destination.name} routes={routes} walks={walks} />
                 {/* A real closure stays up top; "no data" is a quiet note under the map. */}
