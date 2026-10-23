@@ -63,7 +63,10 @@ export function PhoneTripMap({ detail, gpxUrl, others }: { detail: TrailDetail; 
                     <KindIcon kind={p.kind} colour={POI_COLOUR[p.kind]} />
                     <span className="flex min-w-0 flex-col">
                       <span className="truncate text-sm font-semibold">{p.name}</span>
-                      <span className="text-xs text-[var(--muted)]">{POI_LABEL[p.kind]}</span>
+                      <span className="text-xs text-[var(--muted)]">
+                        {POI_LABEL[p.kind]}
+                        {p.detour_min !== null ? ` · odbočka +${p.detour_min} min` : ""}
+                      </span>
                     </span>
                   </button>
                 </li>

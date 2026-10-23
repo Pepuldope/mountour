@@ -5,6 +5,7 @@ import re
 from dataclasses import dataclass, field
 
 import numpy as np
+from scipy.sparse.csgraph import dijkstra
 from scipy.spatial import cKDTree
 
 from . import names
@@ -27,6 +28,7 @@ GORGE_VALLEY_FAME = 3
 GORGE_TOP_MAX_ELE = 1300  # m; a valley reaching higher is a mountain valley  # a plain "dolina" counts as a gorge when this many Wikipedias have it
 SHORT_LABEL = "Krátko od auta"  # a car park by the goal: look round the castle, no hike
 SHORT_KINDS = {"hrad", "jaskyna", "vodopad", "vyhliadka", "pleso", "ine"}
+DETOUR_KINDS = {"vyhliadka", "hrad", "chata", "obcerstvenie"}  # worth a side trip; springs and playgrounds are not
 VERY_FAMOUS = 12  # every Tatra peak has a few (Polish, German); this many is a household name
 
 
@@ -434,7 +436,51 @@ class TripBuilder:
         start = lambda t: t["start"]["osm"] or t["start"]["name"]
         self.report["alternatives"] = sum(len(rs) + 1 - len({start(t) for t in rs + [by_slug[s]]}) for s, rs in by_place.items())
         self.report["variants"] = len(variants)
+        self.report["detours"] = sum(self.add_detours(t) for t in trips + variants)
         return trips + variants
+
+    def add_detours(self, trip):
+        """Sights worth a short side trip: a viewpoint, castle, hut or food off the walk but within
+        detour_max_min there and back. They join `pois` with `detour_min`; returns how many."""
+        full = trip.pop("_full", None)
+        lim = self.t.get("detour_max_min", 30)
+        if self.poi_tree is None or full is None or lim <= 0:
+            return 0
+        g = self.g
+        on = {p["osm"] for p in trip["pois"]} | {trip["destination"]["osm"]}
+        reach = lim / 60 * 4000 / 2  # metres one way at 4 km/h on the flat: the most a detour can be
+        xy = g.proj.xy(g.lat[full], g.lon[full])
+        hits = set()
+        for lst in self.poi_tree.query_ball_point(xy, reach):
+            hits.update(lst)
+        cands = []
+        for i in sorted(hits):
+            f, kind = self.poi_feats[i], self.poi_kinds[i]
+            if kind in DETOUR_KINDS and f.osm not in on and f.name:
+                node = g.snap(f.lat, f.lon, 80)
+                if node is not None:
+                    cands.append((f, kind, node))
+        if not cands:
+            return 0
+        dist, _, src = dijkstra(g.L, directed=True, indices=np.unique(np.asarray(full, np.int64)), limit=reach,
+                                min_only=True, return_predecessors=True)
+        found = []
+        for f, kind, node in cands:
+            d = dist[node]
+            if not np.isfinite(d) or d < self.t["poi_max_m"]:
+                continue
+            d += haversine(f.lat, f.lon, g.lat[node], g.lon[node])
+            climb = 0.0
+            if self.dem:
+                e = self.dem.sample(np.array([f.lat, g.lat[src[node]]]), np.array([f.lon, g.lon[src[node]]]))
+                climb = abs(float(e[0] - e[1])) if np.isfinite(e).all() else 0.0
+            minutes = din33466_minutes(2 * d, climb, climb)
+            if minutes <= lim:
+                found.append((minutes, dict(kind=kind, name=f.name, location=_loc(f.lat, f.lon), osm=f.osm,
+                                            detour_min=max(5, int(round(minutes / 5)) * 5))))
+        found.sort(key=lambda x: x[0])
+        trip["pois"] = trip["pois"] + [p for _, p in found[: self.t.get("detour_max", 6)]]
+        return len(found[: self.t.get("detour_max", 6)])
 
     def _reject(self, why):
         self.report["rejected"][why] = self.report["rejected"].get(why, 0) + 1
@@ -1015,6 +1061,7 @@ class TripBuilder:
             _gpx=(lat, lon, ele if have_dem else None, rt, turn, bool(back_path)),
             _st=st,
             _path=out_path,
+            _full=full,
         )
         return trip
 

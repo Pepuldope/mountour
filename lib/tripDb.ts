@@ -94,9 +94,10 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
       .bind(t.id)
       .all<{ name: string; mode: TransitStop["mode"]; lat: number; lon: number; osm_ref: string | null; walk_m: number; is_primary: number; walk_json: string | null }>(),
     db
-      .prepare("SELECT kind, name, lat, lon, osm_ref FROM poi WHERE trip_id = ?1 ORDER BY position")
+      // "*": detour_min arrives with the next full load; until then the column is simply absent.
+      .prepare("SELECT * FROM poi WHERE trip_id = ?1 ORDER BY position")
       .bind(t.id)
-      .all<{ kind: Poi["kind"]; name: string; lat: number; lon: number; osm_ref: string | null }>(),
+      .all<{ kind: Poi["kind"]; name: string; lat: number; lon: number; osm_ref: string | null; detour_min?: number | null }>(),
     db.prepare("SELECT rule_id FROM trip_closure WHERE trip_id = ?1 ORDER BY rule_id").bind(t.id).all<{ rule_id: string }>(),
     db
       .prepare(
@@ -167,7 +168,13 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
     marking_runs: t.marking_runs_json ? JSON.parse(t.marking_runs_json) : [],
     parking_alternatives: parking.results.filter((p) => p.is_primary !== 1).map(toParking),
     transit_alternatives: stops.results.filter((s) => s.is_primary !== 1).map(toStop),
-    pois: pois.results.map((p) => ({ kind: p.kind, name: p.name, location: { lat: p.lat, lon: p.lon }, osm: p.osm_ref })),
+    pois: pois.results.map((p) => ({
+      kind: p.kind,
+      name: p.name,
+      location: { lat: p.lat, lon: p.lon },
+      osm: p.osm_ref,
+      ...(p.detour_min ? { detour_min: p.detour_min } : {}),
+    })),
   };
 }
 

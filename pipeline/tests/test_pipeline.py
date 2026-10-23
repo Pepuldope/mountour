@@ -35,6 +35,10 @@ def osm_xml(two_routes=False):
     node(5, 48.1860, 17.0875, tourism="viewpoint", name="Vyhliadka")
     node(6, 48.1855, 17.0880, natural="spring", name="Studnička pod vrchom")
     node(7, 48.15, 17.11, place="town", name="Testovo", population="5000")
+    # a buffet ~400 m off the trail, up a side path from its 6th node
+    node(150, 48.1855, 17.0908)
+    node(8, 48.1855, 17.0935, amenity="restaurant", name="Bufet Test")
+    ways.append('<way id="1001" version="1"><nd ref="105"/><nd ref="150"/><nd ref="8"/><tag k="highway" v="path"/></way>')
     # gorge loop in the Slovenský raj box: start guidepost -> one-way gorge up -> waterfall, back by a forest track
     for k in range(6):
         node(200 + k, 48.930 + 0.002 * k, 20.300)
@@ -139,6 +143,10 @@ def test_end_to_end(tmp_path):
     assert pin["transit"]["name"] == "Studnička" and pin["transit"]["mode"] == "autobus"
     assert pin["marking"] == ["red"] and pin["route"] == "tam-a-spat"
     assert 2000 < pin["distance_m"] < 3000
+    # on the walk: no detour; the buffet up the side path: a short side trip there and back
+    pois = {p["name"]: p for p in json.loads((tmp_path / "public" / "data" / "trips" / "testovaci-pin.json").read_text())["pois"]}
+    assert "detour_min" not in pois["Vyhliadka"]
+    assert pois["Bufet Test"]["kind"] == "obcerstvenie" and 10 <= pois["Bufet Test"]["detour_min"] <= 15
 
     # the gorge is one-way, so the waterfall trip is a loop with the ladder fee rule
     falls = next(t for t in index["trips"] if t["destination"]["name"] == "Závojový vodopád")

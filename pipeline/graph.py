@@ -62,6 +62,8 @@ class Graph:
         self.G = csr_matrix((cost[sel], (src[sel], dst[sel])), shape=(n, n))
         self.G.sort_indices()  # data_pos() searches each row
         self.GT = self.G.T.tocsr()
+        # Plain metres, for how far a side trip really is (G weighs marked trails cheaper).
+        self.L = csr_matrix((np.maximum(self.edge_len, 0.01), (key // n, key % n)), shape=(n, n)) if n else self.G
         self.ways = ways
 
         self.proj = LocalProjection()

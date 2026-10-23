@@ -147,6 +147,9 @@ trips:
   # guideposts never used as a start (by exact name): hotel-only roads OSRM still treats as public
   exclude_starts: ["Sliezsky dom"]
   poi_max_m: 150
+  # viewpoints, castles, huts and food off the walk, at most this many minutes there and back (Peter 2026-10-23)
+  detour_max_min: 30
+  detour_max: 6
 
 # Well-known places people expect to find. Every weekly report says what became of each one
 # (a trip, merged, or why it was left out), so a missing favourite is noticed and fixed.
