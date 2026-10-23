@@ -436,27 +436,8 @@
     <trkpt lat="48.931688" lon="21.344567"><ele>461</ele></trkpt>
   </trkseg></trk>
   <trk><name>Hrad Bodoň</name><desc>bodon-ruska-nova-ves</desc><trkseg>
-    <trkpt lat="48.977835" lon="21.324503"><ele>416</ele></trkpt>
-    <trkpt lat="48.977940" lon="21.324758"><ele>418</ele></trkpt>
-    <trkpt lat="48.978206" lon="21.324849"><ele>421</ele></trkpt>
-    <trkpt lat="48.978655" lon="21.325189"><ele>426</ele></trkpt>
-    <trkpt lat="48.978886" lon="21.325461"><ele>429</ele></trkpt>
-    <trkpt lat="48.978989" lon="21.325698"><ele>430</ele></trkpt>
-    <trkpt lat="48.979031" lon="21.325872"><ele>430</ele></trkpt>
-    <trkpt lat="48.979032" lon="21.326989"><ele>426</ele></trkpt>
-    <trkpt lat="48.979056" lon="21.327222"><ele>426</ele></trkpt>
-    <trkpt lat="48.979113" lon="21.327442"><ele>425</ele></trkpt>
-    <trkpt lat="48.979330" lon="21.327844"><ele>426</ele></trkpt>
-    <trkpt lat="48.979379" lon="21.328058"><ele>426</ele></trkpt>
-    <trkpt lat="48.979418" lon="21.328778"><ele>430</ele></trkpt>
-    <trkpt lat="48.979327" lon="21.329382"><ele>434</ele></trkpt>
-    <trkpt lat="48.979224" lon="21.329690"><ele>437</ele></trkpt>
-    <trkpt lat="48.978739" lon="21.330459"><ele>444</ele></trkpt>
-    <trkpt lat="48.978558" lon="21.331691"><ele>453</ele></trkpt>
-    <trkpt lat="48.978107" lon="21.333490"><ele>464</ele></trkpt>
-    <trkpt lat="48.978069" lon="21.334487"><ele>467</ele></trkpt>
-    <trkpt lat="48.978012" lon="21.334894"><ele>471</ele></trkpt>
-    <trkpt lat="48.977924" lon="21.335153"><ele>471</ele></trkpt>
+    <trkpt lat="48.977856" lon="21.335166"><ele>471</ele></trkpt>
+    <trkpt lat="48.977874" lon="21.335226"><ele>471</ele></trkpt>
     <trkpt lat="48.977820" lon="21.335305"><ele>471</ele></trkpt>
     <trkpt lat="48.977758" lon="21.335545"><ele>473</ele></trkpt>
     <trkpt lat="48.977652" lon="21.335712"><ele>474</ele></trkpt>
@@ -860,26 +841,7 @@
     <trkpt lat="48.977652" lon="21.335712"><ele>474</ele></trkpt>
     <trkpt lat="48.977758" lon="21.335545"><ele>473</ele></trkpt>
     <trkpt lat="48.977820" lon="21.335305"><ele>471</ele></trkpt>
-    <trkpt lat="48.977924" lon="21.335153"><ele>471</ele></trkpt>
-    <trkpt lat="48.978012" lon="21.334894"><ele>471</ele></trkpt>
-    <trkpt lat="48.978069" lon="21.334487"><ele>467</ele></trkpt>
-    <trkpt lat="48.978107" lon="21.333490"><ele>464</ele></trkpt>
-    <trkpt lat="48.978558" lon="21.331691"><ele>453</ele></trkpt>
-    <trkpt lat="48.978739" lon="21.330459"><ele>444</ele></trkpt>
-    <trkpt lat="48.979224" lon="21.329690"><ele>437</ele></trkpt>
-    <trkpt lat="48.979327" lon="21.329382"><ele>434</ele></trkpt>
-    <trkpt lat="48.979418" lon="21.328778"><ele>430</ele></trkpt>
-    <trkpt lat="48.979379" lon="21.328058"><ele>426</ele></trkpt>
-    <trkpt lat="48.979330" lon="21.327844"><ele>426</ele></trkpt>
-    <trkpt lat="48.979113" lon="21.327442"><ele>425</ele></trkpt>
-    <trkpt lat="48.979056" lon="21.327222"><ele>426</ele></trkpt>
-    <trkpt lat="48.979032" lon="21.326989"><ele>426</ele></trkpt>
-    <trkpt lat="48.979031" lon="21.325872"><ele>430</ele></trkpt>
-    <trkpt lat="48.978989" lon="21.325698"><ele>430</ele></trkpt>
-    <trkpt lat="48.978886" lon="21.325461"><ele>429</ele></trkpt>
-    <trkpt lat="48.978655" lon="21.325189"><ele>426</ele></trkpt>
-    <trkpt lat="48.978206" lon="21.324849"><ele>421</ele></trkpt>
-    <trkpt lat="48.977940" lon="21.324758"><ele>418</ele></trkpt>
-    <trkpt lat="48.977835" lon="21.324503"><ele>416</ele></trkpt>
+    <trkpt lat="48.977874" lon="21.335226"><ele>471</ele></trkpt>
+    <trkpt lat="48.977856" lon="21.335166"><ele>471</ele></trkpt>
   </trkseg></trk>
 </gpx>

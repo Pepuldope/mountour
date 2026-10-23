@@ -598,7 +598,8 @@
     <trkpt lat="48.858243" lon="19.150726"><ele>587</ele></trkpt>
   </trkseg></trk>
   <trk><name>Šturec</name><desc>sturec-zahorovo</desc><trkseg>
-    <trkpt lat="48.937094" lon="19.225347"><ele>641</ele></trkpt>
+    <trkpt lat="48.937170" lon="19.225280"><ele>641</ele></trkpt>
+    <trkpt lat="48.937128" lon="19.225420"><ele>640</ele></trkpt>
     <trkpt lat="48.935900" lon="19.223157"><ele>645</ele></trkpt>
     <trkpt lat="48.935474" lon="19.221885"><ele>653</ele></trkpt>
     <trkpt lat="48.934960" lon="19.220540"><ele>654</ele></trkpt>
@@ -940,6 +941,7 @@
     <trkpt lat="48.934960" lon="19.220540"><ele>654</ele></trkpt>
     <trkpt lat="48.935474" lon="19.221885"><ele>653</ele></trkpt>
     <trkpt lat="48.935900" lon="19.223157"><ele>645</ele></trkpt>
-    <trkpt lat="48.937094" lon="19.225347"><ele>641</ele></trkpt>
+    <trkpt lat="48.937128" lon="19.225420"><ele>640</ele></trkpt>
+    <trkpt lat="48.937170" lon="19.225280"><ele>641</ele></trkpt>
   </trkseg></trk>
 </gpx>

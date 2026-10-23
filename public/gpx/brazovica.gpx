@@ -246,9 +246,9 @@
     <trkpt lat="49.144892" lon="20.851431"><ele>455</ele></trkpt>
     <trkpt lat="49.144749" lon="20.850545"><ele>454</ele></trkpt>
     <trkpt lat="49.144777" lon="20.850118"><ele>455</ele></trkpt>
-    <trkpt lat="49.144894" lon="20.849775"><ele>455</ele></trkpt>
+    <trkpt lat="49.144881" lon="20.849807"><ele>455</ele></trkpt>
     <trkpt lat="49.145173" lon="20.849146"><ele>456</ele></trkpt>
-    <trkpt lat="49.144894" lon="20.849775"><ele>455</ele></trkpt>
+    <trkpt lat="49.144881" lon="20.849807"><ele>455</ele></trkpt>
     <trkpt lat="49.144777" lon="20.850118"><ele>455</ele></trkpt>
     <trkpt lat="49.144749" lon="20.850545"><ele>454</ele></trkpt>
     <trkpt lat="49.144892" lon="20.851431"><ele>455</ele></trkpt>
@@ -495,8 +495,10 @@
     <trkpt lat="49.070294" lon="20.920883"><ele>825</ele></trkpt>
   </trkseg></trk>
   <trk><name>Hrad Brazovica</name><desc>brazovica-od-auta</desc><trkseg>
-    <trkpt lat="49.145250" lon="20.847261"><ele>458</ele></trkpt>
+    <trkpt lat="49.145209" lon="20.847219"><ele>458</ele></trkpt>
+    <trkpt lat="49.145198" lon="20.848918"><ele>456</ele></trkpt>
     <trkpt lat="49.145173" lon="20.849146"><ele>456</ele></trkpt>
-    <trkpt lat="49.145250" lon="20.847261"><ele>458</ele></trkpt>
+    <trkpt lat="49.145198" lon="20.848918"><ele>456</ele></trkpt>
+    <trkpt lat="49.145209" lon="20.847219"><ele>458</ele></trkpt>
   </trkseg></trk>
 </gpx>

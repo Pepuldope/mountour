@@ -462,11 +462,11 @@
     <trkpt lat="48.873251" lon="20.984545"><ele>332</ele></trkpt>
   </trkseg></trk>
   <trk><name>Dúbrava (Žakarovce)</name><desc>dubrava-bacov-vrch-pod-zamciskom</desc><trkseg>
+    <trkpt lat="48.851720" lon="20.929986"><ele>402</ele></trkpt>
     <trkpt lat="48.851872" lon="20.929767"><ele>403</ele></trkpt>
     <trkpt lat="48.851756" lon="20.930034"><ele>402</ele></trkpt>
     <trkpt lat="48.851645" lon="20.930462"><ele>400</ele></trkpt>
-    <trkpt lat="48.851636" lon="20.931002"><ele>393</ele></trkpt>
-    <trkpt lat="48.851586" lon="20.931651"><ele>387</ele></trkpt>
+    <trkpt lat="48.851587" lon="20.931796"><ele>385</ele></trkpt>
     <trkpt lat="48.851626" lon="20.932211"><ele>380</ele></trkpt>
     <trkpt lat="48.851841" lon="20.933247"><ele>371</ele></trkpt>
     <trkpt lat="48.852385" lon="20.932671"><ele>369</ele></trkpt>
@@ -758,14 +758,15 @@
     <trkpt lat="48.852385" lon="20.932671"><ele>369</ele></trkpt>
     <trkpt lat="48.851841" lon="20.933247"><ele>371</ele></trkpt>
     <trkpt lat="48.851626" lon="20.932211"><ele>380</ele></trkpt>
-    <trkpt lat="48.851586" lon="20.931651"><ele>387</ele></trkpt>
-    <trkpt lat="48.851636" lon="20.931002"><ele>393</ele></trkpt>
+    <trkpt lat="48.851587" lon="20.931796"><ele>385</ele></trkpt>
     <trkpt lat="48.851645" lon="20.930462"><ele>400</ele></trkpt>
     <trkpt lat="48.851756" lon="20.930034"><ele>402</ele></trkpt>
     <trkpt lat="48.851872" lon="20.929767"><ele>403</ele></trkpt>
+    <trkpt lat="48.851720" lon="20.929986"><ele>402</ele></trkpt>
   </trkseg></trk>
   <trk><name>Dúbrava (Žakarovce)</name><desc>dubrava-bacov-vrch-pod-zamciskom-ina-cesta</desc><trkseg>
-    <trkpt lat="48.851872" lon="20.929767"><ele>403</ele></trkpt>
+    <trkpt lat="48.851720" lon="20.929986"><ele>402</ele></trkpt>
+    <trkpt lat="48.851815" lon="20.929827"><ele>402</ele></trkpt>
     <trkpt lat="48.852198" lon="20.929462"><ele>405</ele></trkpt>
     <trkpt lat="48.852975" lon="20.928100"><ele>403</ele></trkpt>
     <trkpt lat="48.853133" lon="20.927689"><ele>402</ele></trkpt>
@@ -1130,6 +1131,7 @@
     <trkpt lat="48.853133" lon="20.927689"><ele>402</ele></trkpt>
     <trkpt lat="48.852975" lon="20.928100"><ele>403</ele></trkpt>
     <trkpt lat="48.852198" lon="20.929462"><ele>405</ele></trkpt>
-    <trkpt lat="48.851872" lon="20.929767"><ele>403</ele></trkpt>
+    <trkpt lat="48.851815" lon="20.929827"><ele>402</ele></trkpt>
+    <trkpt lat="48.851720" lon="20.929986"><ele>402</ele></trkpt>
   </trkseg></trk>
 </gpx>

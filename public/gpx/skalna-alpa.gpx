@@ -84,11 +84,12 @@
     <trkpt lat="48.998479" lon="19.202854"><ele>1354</ele></trkpt>
     <trkpt lat="48.998627" lon="19.203346"><ele>1351</ele></trkpt>
   </trkseg></trk>
-  <trk><name>Skalná Alpa</name><desc>skalna-alpa-hajovna-pred-teplou</desc><trkseg>
-    <trkpt lat="48.942670" lon="19.234254"><ele>637</ele></trkpt>
+  <trk><name>Skalná Alpa</name><desc>skalna-alpa-hajovna-pred-teplou-2</desc><trkseg>
+    <trkpt lat="48.942658" lon="19.234180"><ele>638</ele></trkpt>
+    <trkpt lat="48.942673" lon="19.234255"><ele>637</ele></trkpt>
     <trkpt lat="48.943211" lon="19.234094"><ele>647</ele></trkpt>
-    <trkpt lat="48.943483" lon="19.233965"><ele>648</ele></trkpt>
-    <trkpt lat="48.943891" lon="19.233660"><ele>648</ele></trkpt>
+    <trkpt lat="48.943612" lon="19.233895"><ele>646</ele></trkpt>
+    <trkpt lat="48.943897" lon="19.233653"><ele>648</ele></trkpt>
     <trkpt lat="48.944122" lon="19.233262"><ele>655</ele></trkpt>
     <trkpt lat="48.944229" lon="19.232887"><ele>662</ele></trkpt>
     <trkpt lat="48.944687" lon="19.230816"><ele>662</ele></trkpt>
@@ -110,9 +111,9 @@
     <trkpt lat="48.949473" lon="19.221715"><ele>739</ele></trkpt>
     <trkpt lat="48.949576" lon="19.221620"><ele>741</ele></trkpt>
     <trkpt lat="48.949890" lon="19.221471"><ele>747</ele></trkpt>
-    <trkpt lat="48.951500" lon="19.219996"><ele>735</ele></trkpt>
+    <trkpt lat="48.951705" lon="19.219803"><ele>727</ele></trkpt>
     <trkpt lat="48.951803" lon="19.219669"><ele>727</ele></trkpt>
-    <trkpt lat="48.952134" lon="19.218948"><ele>736</ele></trkpt>
+    <trkpt lat="48.952040" lon="19.219154"><ele>734</ele></trkpt>
     <trkpt lat="48.952291" lon="19.218527"><ele>736</ele></trkpt>
     <trkpt lat="48.952878" lon="19.215710"><ele>758</ele></trkpt>
     <trkpt lat="48.953138" lon="19.213916"><ele>769</ele></trkpt>
@@ -183,8 +184,11 @@
     <trkpt lat="48.955326" lon="19.192278"><ele>1159</ele></trkpt>
     <trkpt lat="48.955234" lon="19.192144"><ele>1163</ele></trkpt>
     <trkpt lat="48.955243" lon="19.191965"><ele>1167</ele></trkpt>
-    <trkpt lat="48.955428" lon="19.191200"><ele>1173</ele></trkpt>
+    <trkpt lat="48.955389" lon="19.191323"><ele>1173</ele></trkpt>
+    <trkpt lat="48.955513" lon="19.191023"><ele>1174</ele></trkpt>
     <trkpt lat="48.955569" lon="19.190940"><ele>1175</ele></trkpt>
+    <trkpt lat="48.955625" lon="19.190921"><ele>1176</ele></trkpt>
+    <trkpt lat="48.955714" lon="19.190964"><ele>1176</ele></trkpt>
     <trkpt lat="48.955921" lon="19.190955"><ele>1178</ele></trkpt>
     <trkpt lat="48.956131" lon="19.191036"><ele>1181</ele></trkpt>
     <trkpt lat="48.956374" lon="19.191275"><ele>1185</ele></trkpt>
@@ -388,8 +392,11 @@
     <trkpt lat="48.956374" lon="19.191275"><ele>1185</ele></trkpt>
     <trkpt lat="48.956131" lon="19.191036"><ele>1181</ele></trkpt>
     <trkpt lat="48.955921" lon="19.190955"><ele>1178</ele></trkpt>
+    <trkpt lat="48.955714" lon="19.190964"><ele>1176</ele></trkpt>
+    <trkpt lat="48.955625" lon="19.190921"><ele>1176</ele></trkpt>
     <trkpt lat="48.955569" lon="19.190940"><ele>1175</ele></trkpt>
-    <trkpt lat="48.955428" lon="19.191200"><ele>1173</ele></trkpt>
+    <trkpt lat="48.955513" lon="19.191023"><ele>1174</ele></trkpt>
+    <trkpt lat="48.955389" lon="19.191323"><ele>1173</ele></trkpt>
     <trkpt lat="48.955243" lon="19.191965"><ele>1167</ele></trkpt>
     <trkpt lat="48.955234" lon="19.192144"><ele>1163</ele></trkpt>
     <trkpt lat="48.955326" lon="19.192278"><ele>1159</ele></trkpt>
@@ -460,9 +467,9 @@
     <trkpt lat="48.953138" lon="19.213916"><ele>769</ele></trkpt>
     <trkpt lat="48.952878" lon="19.215710"><ele>758</ele></trkpt>
     <trkpt lat="48.952291" lon="19.218527"><ele>736</ele></trkpt>
-    <trkpt lat="48.952134" lon="19.218948"><ele>736</ele></trkpt>
+    <trkpt lat="48.952040" lon="19.219154"><ele>734</ele></trkpt>
     <trkpt lat="48.951803" lon="19.219669"><ele>727</ele></trkpt>
-    <trkpt lat="48.951500" lon="19.219996"><ele>735</ele></trkpt>
+    <trkpt lat="48.951705" lon="19.219803"><ele>727</ele></trkpt>
     <trkpt lat="48.949890" lon="19.221471"><ele>747</ele></trkpt>
     <trkpt lat="48.949576" lon="19.221620"><ele>741</ele></trkpt>
     <trkpt lat="48.949473" lon="19.221715"><ele>739</ele></trkpt>
@@ -484,10 +491,11 @@
     <trkpt lat="48.944687" lon="19.230816"><ele>662</ele></trkpt>
     <trkpt lat="48.944229" lon="19.232887"><ele>662</ele></trkpt>
     <trkpt lat="48.944122" lon="19.233262"><ele>655</ele></trkpt>
-    <trkpt lat="48.943891" lon="19.233660"><ele>648</ele></trkpt>
-    <trkpt lat="48.943483" lon="19.233965"><ele>648</ele></trkpt>
+    <trkpt lat="48.943897" lon="19.233653"><ele>648</ele></trkpt>
+    <trkpt lat="48.943612" lon="19.233895"><ele>646</ele></trkpt>
     <trkpt lat="48.943211" lon="19.234094"><ele>647</ele></trkpt>
-    <trkpt lat="48.942670" lon="19.234254"><ele>637</ele></trkpt>
+    <trkpt lat="48.942673" lon="19.234255"><ele>637</ele></trkpt>
+    <trkpt lat="48.942658" lon="19.234180"><ele>638</ele></trkpt>
   </trkseg></trk>
   <trk><name>Skalná Alpa</name><desc>skalna-alpa-vysne-matejkovo-pod</desc><trkseg>
     <trkpt lat="48.994847" lon="19.207082"><ele>1269</ele></trkpt>

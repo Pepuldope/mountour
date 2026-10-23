@@ -73,6 +73,7 @@
     <trkpt lat="48.850254" lon="20.932834"><ele>367</ele></trkpt>
   </trkseg></trk>
   <trk><name>Klimo</name><desc>klimo-gelnica-dolinka</desc><trkseg>
+    <trkpt lat="48.854742" lon="20.919168"><ele>402</ele></trkpt>
     <trkpt lat="48.854733" lon="20.919325"><ele>402</ele></trkpt>
     <trkpt lat="48.854788" lon="20.919390"><ele>404</ele></trkpt>
     <trkpt lat="48.854875" lon="20.919618"><ele>409</ele></trkpt>
@@ -156,6 +157,7 @@
     <trkpt lat="48.854875" lon="20.919618"><ele>409</ele></trkpt>
     <trkpt lat="48.854788" lon="20.919390"><ele>404</ele></trkpt>
     <trkpt lat="48.854733" lon="20.919325"><ele>402</ele></trkpt>
+    <trkpt lat="48.854742" lon="20.919168"><ele>402</ele></trkpt>
   </trkseg></trk>
   <trk><name>Klimo</name><desc>klimo-slovinky-kaplnka</desc><trkseg>
     <trkpt lat="48.881931" lon="20.835142"><ele>450</ele></trkpt>
