@@ -220,7 +220,15 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
 
     const sky = weather ? weatherSkySvg(weather, lo, hi, x, HOR, (at) => sunAltitude(new Date(at), sun.lat, sun.lon) < -3) : null;
 
-    return { lo, hi, x, y, walk, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, dash, ridge, hill, hours, season, deco, snow, capY, capEdge };
+    // The added stops: where on the hill the walk stands still, and when.
+    const pauses = (profile?.pauses ?? []).map((pa) => {
+      const t0 = hs + pa.from * (he - hs);
+      const t1 = hs + pa.to * (he - hs);
+      const i = Math.max(0, walk.findIndex((p) => p.t >= t0));
+      return { t0, t1, name: pa.name, x: x((t0 + t1) / 2), y: walk[i].y };
+    });
+
+    return { lo, hi, x, y, walk, pauses, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, dash, ridge, hill, hours, season, deco, snow, capY, capEdge };
   }, [first, home, hs, he, sunrise, sunset, dusk, plan.dawn, profile, sun.lat, sun.lon, weather]);
   const land = LAND[scene.season];
   const sunR = 8.5 * land.sunScale;
@@ -336,7 +344,9 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
           : "Cesta autom"
         : t > he
           ? "Cesta domov"
-          : Math.abs(t - scene.goalT) < 6 * MIN && goalWords
+          : scene.pauses.some((pa) => t >= pa.t0 && t <= pa.t1)
+            ? `Zastávka: ${scene.pauses.find((pa) => t >= pa.t0 && t <= pa.t1)!.name}`
+            : Math.abs(t - scene.goalT) < 6 * MIN && goalWords
             ? `${goalWords.at}: ${profile!.goalName}`
             : t < scene.goalT
               ? "Cesta tam"
@@ -528,6 +538,11 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
             />
           );
         })}
+
+        {/* Added stops: a ring in the site blue where the walk stands still (as their pins on the map). */}
+        {scene.pauses.map((pa) => (
+          <circle key={pa.t0} cx={pa.x} cy={pa.y} r={3.6} fill="#fff" stroke={WALKER} strokeWidth={2} />
+        ))}
 
         {/* The moment shown: a slim line from the sky down to the hour ruler. */}
         <line x1={sx} x2={sx} y1={4} y2={RULER} stroke={INK} strokeWidth={1} opacity={0.45} />

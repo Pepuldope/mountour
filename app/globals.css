@@ -208,6 +208,14 @@ h2,
   background: var(--warn);
 }
 
+/* A finger-sized tap area round the small round pin, so the route line beside it doesn't catch the tap. */
+.mt-pin-poi::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 999px;
+}
+
 /* Pictograms are drawn in currentColor with white details; on a coloured pin, all white. */
 .mt-pin-poi svg {
   color: #fff;

@@ -62,6 +62,8 @@ interface Props {
   driveLeg?: [number, number][];
   /** On foot from where the car stops to the trail start, drawn dotted. */
   walkLeg?: [number, number][];
+  /** Side trips off the trail to the stops the group added, drawn dashed in the site blue. */
+  sideLegs?: [number, number][][];
   /** Every marked trail in Slovakia under ours: "full" coloured by popularity, "context" faint. */
   network?: NetworkMode;
   ariaLabel: string;
@@ -182,6 +184,9 @@ const EMPTY: GeoJSON.FeatureCollection = { type: "FeatureCollection", features: 
  * MapLibre map on OpenFreeMap vector tiles. Trails are our own lines in their
  * KST colour with a white casing (like the painted marks); drive leg dashed.
  */
+/** A tap this close to a pin's middle (px) goes to the pin, not the route line under it. */
+const PIN_REACH_PX = 26;
+
 export function TrailMap({
   tracks,
   markers,
@@ -190,6 +195,7 @@ export function TrailMap({
   onHoverTrail,
   driveLeg,
   walkLeg,
+  sideLegs,
   network,
   ariaLabel,
   className,
@@ -261,6 +267,7 @@ export function TrailMap({
         map.addSource("drive", { type: "geojson", data: EMPTY });
         map.addSource("tracks", { type: "geojson", data: EMPTY });
         map.addSource("walk", { type: "geojson", data: EMPTY });
+        map.addSource("side", { type: "geojson", data: EMPTY });
         map.addLayer({
           id: "drive-casing",
           type: "line",
@@ -322,6 +329,21 @@ export function TrailMap({
           layout: { "line-cap": "round", "line-join": "round" },
           paint: { "line-color": "#17213a", "line-width": 3, "line-dasharray": [0.1, 1.8] },
         });
+        // Off the trail to an added stop and back: blue dashes, as the stop's ring.
+        map.addLayer({
+          id: "side-casing",
+          type: "line",
+          source: "side",
+          layout: { "line-cap": "round", "line-join": "round" },
+          paint: { "line-color": "#ffffff", "line-width": 6, "line-opacity": 0.85 },
+        });
+        map.addLayer({
+          id: "side-line",
+          type: "line",
+          source: "side",
+          layout: { "line-join": "round" },
+          paint: { "line-color": "#1769d1", "line-width": 3, "line-dasharray": [1.4, 1.1] },
+        });
         // Wide invisible line so thin tracks are easy to tap.
         map.addLayer({
           id: "track-hit",
@@ -329,7 +351,28 @@ export function TrailMap({
           source: "tracks",
           paint: { "line-color": "#000000", "line-width": 18, "line-opacity": 0 },
         });
+        // The pin closest to a tap, if the tap landed within a finger's width of it.
+        const nearestMarker = (at: { x: number; y: number }): Marker | null => {
+          let best: Marker | null = null;
+          let bestD = PIN_REACH_PX;
+          for (const m of markerRefs.current) {
+            const p = map!.project(m.getLngLat());
+            const d = Math.hypot(p.x - at.x, p.y - at.y);
+            if (d < bestD) [best, bestD] = [m, d];
+          }
+          return best;
+        };
         map.on("click", "track-hit", (e) => {
+          // A tap on a pin, or right beside one, is for the pin (its popup, "Pridať zastávku"), not the route under it.
+          const target = e.originalEvent.target as Element | null;
+          if (target?.closest?.(".maplibregl-marker, .maplibregl-popup")) return;
+          const near = nearestMarker(e.point);
+          if (near) {
+            // Its own tap actions (pick the parking...) and its popup, as if the pin itself was hit.
+            near.getElement().dispatchEvent(new MouseEvent("click"));
+            if (!near.getPopup()?.isOpen()) near.togglePopup();
+            return;
+          }
           const slug = e.features?.[0]?.properties?.slug as string | undefined;
           if (slug) onSelectRef.current?.(slug);
         });
@@ -436,6 +479,19 @@ export function TrailMap({
         : EMPTY;
     (ctx.map.getSource("walk") as GeoJSONSource | undefined)?.setData(data);
   }, [ctx, walkLeg]);
+
+  // Side trips to the added stops.
+  useEffect(() => {
+    if (!ctx) return;
+    const legs = (sideLegs ?? []).filter((l) => l.length >= 2);
+    const data: GeoJSON.FeatureCollection = legs.length
+      ? {
+          type: "FeatureCollection",
+          features: legs.map((l) => ({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: l.map(lngLat) } })),
+        }
+      : EMPTY;
+    (ctx.map.getSource("side") as GeoJSONSource | undefined)?.setData(data);
+  }, [ctx, sideLegs]);
 
   // Markers: HTML elements so they can use the brand's square trail marks.
   useEffect(() => {
