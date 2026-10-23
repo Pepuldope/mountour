@@ -29,6 +29,8 @@ export interface OtherRoute {
 interface Props {
   detail: TrailDetail;
   gpxUrl: string | null;
+  /** The line itself as [lat, lon], in place of the GPX file (a loop of two routes has no file). */
+  path?: [number, number][];
   others?: OtherRoute[];
   /** A loop passes each place once; a there-and-back walk twice (stops pick the way there, back or both). */
   loop?: boolean;
@@ -55,11 +57,12 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  * With a start, the whole way: the drive (dashed) to the chosen parking, the
  * walk from there to the trail (dotted), then the trail itself.
  */
-export function TripMap({ detail, gpxUrl, others = [], loop = false }: Props) {
+export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Props) {
   const { trail, trailheads, pois } = detail;
   const router = useRouter();
   const { parkingLots, choice, choose, rideTo: destination, trailJoin, walkFrom, walkLine, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
-  const [points, setPoints] = useState<[number, number][]>([]);
+  const [gpxPoints, setGpxPoints] = useState<[number, number][]>([]);
+  const points = path ?? gpxPoints;
   const { start } = useUserLocation();
   // Places the group added as stops: their pins stand out and the popup offers to remove them.
   const { stops: addedStops, toggle: toggleStop } = useTripStops(trail.slug);
@@ -93,15 +96,15 @@ export function TripMap({ detail, gpxUrl, others = [], loop = false }: Props) {
 
   useEffect(() => {
     let cancelled = false;
-    if (gpxUrl) {
+    if (gpxUrl && !path) {
       fetchTrack(gpxUrl).then((track) => {
-        if (!cancelled) setPoints(track.map((p) => [p.lat, p.lon]));
+        if (!cancelled) setGpxPoints(track.map((p) => [p.lat, p.lon]));
       });
     }
     return () => {
       cancelled = true;
     };
-  }, [gpxUrl]);
+  }, [gpxUrl, path]);
 
   // Side trips to the stops the group added: from where they leave the trail, along the paths.
   const sideStops = useMemo(
