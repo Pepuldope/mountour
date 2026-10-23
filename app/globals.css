@@ -213,6 +213,31 @@ h2,
   color: #fff;
 }
 
+/* A place added as a stop: bigger, with a ring in the site blue. */
+.mt-pin-poi.is-active {
+  width: 30px;
+  height: 30px;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 5px #1769d1;
+}
+
+/* "Pridať zastávku" in a place's popup (the popup stays light in both themes). */
+.mt-popup-action {
+  display: block;
+  margin-top: 6px;
+  width: 100%;
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: #1769d1;
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+.mt-popup-action:focus-visible {
+  outline: 2px solid #1769d1;
+  outline-offset: 2px;
+}
+
 /* The trip's goal: a bigger square in its kind's colour, as on the home map. */
 .mt-pin-goal {
   width: 28px;

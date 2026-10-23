@@ -46,6 +46,8 @@ export interface MapMarker {
   /** Pin colour and pictogram (places on the way), instead of the kind's default look. */
   colour?: string;
   icon?: string;
+  /** A button in the popup (a place on the way: add it as a stop). */
+  action?: { label: string; onClick: () => void };
 }
 
 interface Props {
@@ -120,7 +122,7 @@ const FIT_PADDING = 32;
 /** [lat, lon] (our data) -> [lon, lat] (GeoJSON / MapLibre). */
 const lngLat = (p: [number, number]): [number, number] => [p[1], p[0]];
 
-function popupContent(title: string, lines: string[] = []): HTMLElement {
+function popupContent(title: string, lines: string[] = [], action?: MapMarker["action"]): HTMLElement {
   const el = document.createElement("div");
   const h = document.createElement("strong");
   h.textContent = title;
@@ -129,6 +131,14 @@ function popupContent(title: string, lines: string[] = []): HTMLElement {
     const p = document.createElement("div");
     p.textContent = line;
     el.appendChild(p);
+  }
+  if (action) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "mt-popup-action";
+    b.textContent = action.label;
+    b.addEventListener("click", action.onClick);
+    el.appendChild(b);
   }
   return el;
 }
@@ -448,7 +458,7 @@ export function TrailMap({
         if (icon) el.innerHTML = icon;
         const marker = new ml.Marker({ element: el })
           .setLngLat([m.location.lon, m.location.lat])
-          .setPopup(new ml.Popup({ offset: 14, closeButton: false }).setDOMContent(popupContent(m.title, m.lines)))
+          .setPopup(new ml.Popup({ offset: 14, closeButton: false }).setDOMContent(popupContent(m.title, m.lines, m.action)))
           .addTo(map);
         const slug = m.trailSlug;
         const onPick = m.onClick;
