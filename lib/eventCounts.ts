@@ -12,6 +12,8 @@ export const COUNTED: Record<string, readonly string[]> = {
   share_sent: ["0-2 min", "2-5 min", "5-15 min", "15+ min"],
   shared_open: [""],
   nav_open: [""],
+  plus_want: [""],
+  plus_no: [""],
 };
 
 /** The detail stored for this action, or null when the pair isn't one we count. */
@@ -54,6 +56,9 @@ export interface MonthEvents {
   sentFast: number;
   friendOpens: number;
   navigations: number;
+  /** /plus price test: "Chcel by som to" and "Za túto cenu nie" taps. */
+  plusWant: number;
+  plusNo: number;
 }
 
 /** Totals per month, newest first; null without the database. */
@@ -72,7 +77,7 @@ export async function monthlyEvents(): Promise<MonthEvents[] | null> {
   for (const r of rows) {
     const m =
       months.get(r.month) ??
-      { month: r.month, starts: 0, saved: 0, sent: 0, sentFast: 0, friendOpens: 0, navigations: 0 };
+      { month: r.month, starts: 0, saved: 0, sent: 0, sentFast: 0, friendOpens: 0, navigations: 0, plusWant: 0, plusNo: 0 };
     months.set(r.month, m);
     if (r.name === "start_set") m.starts += r.n;
     else if (r.name === "trip_saved") m.saved += r.n;
@@ -81,6 +86,8 @@ export async function monthlyEvents(): Promise<MonthEvents[] | null> {
       if (r.detail === "0-2 min") m.sentFast += r.n;
     } else if (r.name === "shared_open") m.friendOpens += r.n;
     else if (r.name === "nav_open") m.navigations += r.n;
+    else if (r.name === "plus_want") m.plusWant += r.n;
+    else if (r.name === "plus_no") m.plusNo += r.n;
   }
   return [...months.values()];
 }
