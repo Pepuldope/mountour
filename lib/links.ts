@@ -19,26 +19,29 @@ export function startTown(start: Pick<StartPoint, "label" | "source"> | null, gp
 const hhmm = clockShort;
 
 /**
- * Query keys of a shared plan: /trasa/pajstun?den=2026-10-17&odchod=08:50&z=Bratislava&cesta=bus&deti=1&p=1
- * Beyond day, time and town the link carries what changes the sender's times: bus or train instead of the
- * car, the kids pace and which parking or stop they picked (an index, 0 = ours, left out when 0).
+ * Query keys of a shared plan: /trasa/pajstun?den=2026-10-17&stretnutie=09:40&deti=1&p=1
+ * Friends leave from different places, so the link carries the meeting time where the walk starts
+ * (the parking, the stop, or the trail itself) and each friend's page works out their own departure.
+ * Also the kids pace and the parking or stop picked (an index, 0 = ours, left out when 0; `cesta=bus`
+ * says it is a stop). Links from before 2026-10-22 carry the sender's departure (`odchod`) and town (`z`).
  */
-export const SHARE_PARAMS = { date: "den", time: "odchod", from: "z", travel: "cesta", kids: "deti", parking: "p", stop: "s" } as const;
+export const SHARE_PARAMS = { date: "den", meet: "stretnutie", time: "odchod", from: "z", travel: "cesta", kids: "deti", parking: "p", stop: "s" } as const;
 
 export interface SharedPlan {
   date: string;
-  time: string;
-  town: string | null;
-  /** By train or bus; false = by car. */
+  /** When the walk starts, HH:MM: the meeting time at the parking or stop. */
+  meet: string | null;
+  /** An older link's departure from the sender's town (`meet` is then null). */
+  time: string | null;
+  /** The sender met at a stop (bus or train), not at a parking. */
   transit: boolean;
   withKids: boolean;
   /** Picked parking (by car) or stop (by bus or train); 0 = our default. */
   pick: number;
 }
 
-export function sharePath(slug: string, plan: SharedPlan): string {
-  const q = new URLSearchParams({ [SHARE_PARAMS.date]: plan.date, [SHARE_PARAMS.time]: plan.time });
-  if (plan.town) q.set(SHARE_PARAMS.from, plan.town);
+export function sharePath(slug: string, plan: Pick<SharedPlan, "date" | "transit" | "withKids" | "pick"> & { meet: string }): string {
+  const q = new URLSearchParams({ [SHARE_PARAMS.date]: plan.date, [SHARE_PARAMS.meet]: plan.meet });
   if (plan.transit) q.set(SHARE_PARAMS.travel, "bus");
   if (plan.withKids) q.set(SHARE_PARAMS.kids, "1");
   if (plan.pick > 0) q.set(plan.transit ? SHARE_PARAMS.stop : SHARE_PARAMS.parking, String(plan.pick));
@@ -60,50 +63,69 @@ function realTime(time: string): boolean {
   return !!m && Number(m[1]) < 24 && Number(m[2]) < 60;
 }
 
-/** Reads a shared plan from a query string; null unless both day and time are valid. Links from before the extra keys read as car, no kids, our parking. */
+/** Reads a shared plan from a query string; null unless the day and a meeting time (or an older link's departure) are valid. */
 export function readSharedPlan(search: string): SharedPlan | null {
   const q = new URLSearchParams(search);
   const date = q.get(SHARE_PARAMS.date) ?? "";
+  const meet = q.get(SHARE_PARAMS.meet) ?? "";
   const time = q.get(SHARE_PARAMS.time) ?? "";
-  if (!realDate(date) || !realTime(time)) return null;
-  const town = q.get(SHARE_PARAMS.from)?.slice(0, 60).trim() || null;
+  if (!realDate(date)) return null;
+  if (!realTime(meet) && !realTime(time)) return null;
   const transit = q.get(SHARE_PARAMS.travel) === "bus";
   const raw = Number(q.get(transit ? SHARE_PARAMS.stop : SHARE_PARAMS.parking) ?? 0);
   const pick = Number.isInteger(raw) && raw > 0 && raw < 100 ? raw : 0;
-  return { date, time, town, transit, withKids: q.get(SHARE_PARAMS.kids) === "1", pick };
+  return {
+    date,
+    meet: realTime(meet) ? meet : null,
+    time: realTime(meet) ? null : time,
+    transit,
+    withKids: q.get(SHARE_PARAMS.kids) === "1",
+    pick,
+  };
 }
 
 export interface ShareTextInput {
   name: string;
   /** "sobota 17. 10." */
   dayLabel: string;
-  departure: Date;
-  /** Back at the start (with a drive) or off the trail (without). */
-  back: Date;
-  hasDrive: boolean;
-  /** With a drive: `back` is the time home. False when no train goes back that day: `back` is then the end of the walk. */
-  backHome?: boolean;
+  withKids: boolean;
+  /** When the walk starts: the meeting time. */
+  meet: Date;
+  /** Where: "na parkovisku", "na zastávke Píla"; null = at the trail (no ride, nothing to meet at). */
+  place: string | null;
+  /** Back where the walk started. */
+  end: Date;
+  /** Where the walk ends, matching `place`: by car "pri aute", by bus "na zastávke". */
+  endPlace: "car" | "stop" | null;
   /** The hike ends before sunset. Otherwise the message warns instead of promising daylight. */
   inDaylight: boolean;
-  town: string | null;
   hikeMin: number;
   difficulty: keyof typeof DIFFICULTY_LABEL;
-  familyFriendly: boolean;
   url: string;
 }
 
-/** Chat-ready plan in the voice guide's style: facts first, one line each. */
+/**
+ * Chat-ready plan, one fact a line. Only times that hold for everyone: friends leave from
+ * different places, so the message has the meeting time, not the sender's departure or home time.
+ */
 export function shareText(i: ShareTextInput): string {
-  const light = i.inDaylight ? ", ešte za svetla." : ". Pozor, z túry zídete až po západe slnka.";
-  const leave = i.hasDrive
-    ? `${i.town ? `Štart ${i.town}, odchod` : "Odchod"} ${hhmm(i.departure)}, ${i.backHome === false ? "koniec túry" : "doma"} okolo ${hhmm(i.back)}${light}`
-    : `Začiatok túry ${hhmm(i.departure)}, koniec túry okolo ${hhmm(i.back)}${light}`;
-  const facts = [
-    `${formatDuration(i.hikeMin).replaceAll("\u00a0", " ")} chôdze`,
-    DIFFICULTY_LABEL[i.difficulty].toLowerCase(),
-    ...(i.familyFriendly ? ["vhodné pre deti"] : []),
-  ].join(", ");
-  return `${i.name}, ${i.dayLabel}\n${leave}\n${facts}.\n${i.url}`;
+  const meet = i.place ? `${hhmm(i.meet)} stretnutie ${i.place}` : `${hhmm(i.meet)} začiatok túry`;
+  const endWord = i.endPlace === "car" ? "späť pri aute" : i.endPlace === "stop" ? "späť na zastávke" : "koniec túry";
+  const walk = `${formatDuration(i.hikeMin).replaceAll("\u00a0", " ")} chôdze, ${DIFFICULTY_LABEL[i.difficulty].toLowerCase()}`;
+  return [
+    `${i.name}, ${i.dayLabel}${i.withKids ? " (s deťmi)" : ""}`,
+    meet,
+    `${hhmm(i.end)} ${endWord}, ${walk}`,
+    ...(i.inDaylight ? [] : ["Pozor, z túry zídete až po západe slnka."]),
+    "Kedy vyraziť z tvojho miesta, ukáže odkaz:",
+    i.url,
+  ].join("\n");
+}
+
+/** "na parkovisku", or with its name when the parking has one ("na parkovisku Pod Kriváňom"). */
+export function parkingPlace(name: string | null): string {
+  const own = name && name.trim() !== "Parkovisko" ? name.replace(/^parkovisko\s+/i, "").trim() : "";
+  return own ? `na parkovisku ${own}` : "na parkovisku";
 }
 
 export function googleMapsUrl(to: LatLng): string {

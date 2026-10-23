@@ -1,41 +1,50 @@
 import { describe, expect, it } from "vitest";
-import { cpSkUrl, googleWalkUrl, mapyUrl, mapyWalkUrl, readSharedPlan, sharePath, shareText, startTown, walkStops } from "./links";
+import { cpSkUrl, googleWalkUrl, mapyUrl, mapyWalkUrl, parkingPlace, readSharedPlan, sharePath, shareText, startTown, walkStops } from "./links";
 import { dayAfterNa, dayChips, dayFit, dayInSentence, longDay } from "./days";
 
 const BRATISLAVA = { lat: 48.1486, lon: 17.1077 };
 
 describe("shared plan links", () => {
-  const car = { date: "2026-10-17", time: "08:50", town: "Bratislava", transit: false, withKids: false, pick: 0 };
+  const car = { date: "2026-10-17", meet: "09:40", transit: false, withKids: false, pick: 0 };
 
-  it("round-trips day, time and town, never coordinates", () => {
+  it("carries the meeting time, never the sender's start", () => {
     const path = sharePath("pajstun", car);
-    expect(path).toBe("/trasa/pajstun?den=2026-10-17&odchod=08%3A50&z=Bratislava");
-    expect(readSharedPlan(path.split("?")[1])).toEqual(car);
+    expect(path).toBe("/trasa/pajstun?den=2026-10-17&stretnutie=09%3A40");
+    expect(readSharedPlan(path.split("?")[1])).toEqual({ ...car, time: null });
   });
 
-  it("carries bus or car, kids pace and the picked parking or stop", () => {
+  it("carries the kids pace and the picked parking or stop", () => {
     const bus = { ...car, transit: true, withKids: true, pick: 2 };
     const path = sharePath("pajstun", bus);
-    expect(path).toBe("/trasa/pajstun?den=2026-10-17&odchod=08%3A50&z=Bratislava&cesta=bus&deti=1&s=2");
-    expect(readSharedPlan(path.split("?")[1])).toEqual(bus);
-    const parked = { ...car, pick: 1 };
-    expect(readSharedPlan(sharePath("pajstun", parked).split("?")[1])).toEqual(parked);
+    expect(path).toBe("/trasa/pajstun?den=2026-10-17&stretnutie=09%3A40&cesta=bus&deti=1&s=2");
+    expect(readSharedPlan(path.split("?")[1])).toEqual({ ...bus, time: null });
+    expect(readSharedPlan(sharePath("pajstun", { ...car, pick: 1 }).split("?")[1])?.pick).toBe(1);
+  });
+
+  it("still reads older links with the sender's departure", () => {
+    expect(readSharedPlan("den=2026-10-17&odchod=08:50&z=Bratislava")).toEqual({
+      date: "2026-10-17",
+      meet: null,
+      time: "08:50",
+      transit: false,
+      withKids: false,
+      pick: 0,
+    });
   });
 
   it("reads odd picks as our default", () => {
-    expect(readSharedPlan("den=2026-10-17&odchod=08:50&p=-1")?.pick).toBe(0);
-    expect(readSharedPlan("den=2026-10-17&odchod=08:50&p=1.5")?.pick).toBe(0);
-    expect(readSharedPlan("den=2026-10-17&odchod=08:50&p=x")?.pick).toBe(0);
-    // A parking pick doesn't count for a bus plan.
-    expect(readSharedPlan("den=2026-10-17&odchod=08:50&cesta=bus&p=2")?.pick).toBe(0);
+    expect(readSharedPlan("den=2026-10-17&stretnutie=08:50&p=-1")?.pick).toBe(0);
+    expect(readSharedPlan("den=2026-10-17&stretnutie=08:50&p=1.5")?.pick).toBe(0);
+    // A parking pick doesn't count for a plan met at a stop.
+    expect(readSharedPlan("den=2026-10-17&stretnutie=08:50&cesta=bus&p=2")?.pick).toBe(0);
   });
 
   it("ignores broken shared links", () => {
-    expect(readSharedPlan("den=zajtra&odchod=08:50")).toBeNull();
+    expect(readSharedPlan("den=zajtra&stretnutie=08:50")).toBeNull();
     expect(readSharedPlan("den=2026-10-17")).toBeNull();
-    expect(readSharedPlan("den=2026-02-30&odchod=08:50")).toBeNull();
-    expect(readSharedPlan("den=2026-10-17&odchod=25:99")).toBeNull();
-    expect(readSharedPlan("den=2028-02-29&odchod=23:59")).not.toBeNull();
+    expect(readSharedPlan("den=2026-02-30&stretnutie=08:50")).toBeNull();
+    expect(readSharedPlan("den=2026-10-17&stretnutie=25:99")).toBeNull();
+    expect(readSharedPlan("den=2028-02-29&stretnutie=23:59")).not.toBeNull();
   });
 
   it("shares a GPS start only as its town name", () => {
@@ -44,62 +53,50 @@ describe("shared plan links", () => {
     expect(startTown({ label: "Pezinok, okres Pezinok", source: "manual" })).toBe("Pezinok");
   });
 
-  it("writes a chat-ready message", () => {
+  it("writes a chat-ready message with times that hold for every friend", () => {
     const text = shareText({
-      name: "Pajštún z Borinky",
-      dayLabel: "sobota 17. 10.",
-      departure: new Date(2026, 9, 17, 8, 50),
-      back: new Date(2026, 9, 17, 12, 10),
-      hasDrive: true,
+      name: "Vodopád Hučák",
+      dayLabel: "sobota 24. 10.",
+      withKids: true,
+      meet: new Date(2026, 9, 24, 8, 56),
+      place: parkingPlace(null),
+      end: new Date(2026, 9, 24, 9, 41),
+      endPlace: "car",
       inDaylight: true,
-      town: "Bratislava",
-      hikeMin: 130,
+      hikeMin: 45,
       difficulty: "lahka",
-      familyFriendly: true,
-      url: "https://mountour.sk/trasa/pajstun",
+      url: "https://mountour.sk/trasa/hucak",
     });
     expect(text).toBe(
-      "Pajštún z Borinky, sobota 17. 10.\n" +
-        "Štart Bratislava, odchod 8:50, doma okolo 12:10, ešte za svetla.\n" +
-        "2 h 10 min chôdze, ľahká, vhodné pre deti.\n" +
-        "https://mountour.sk/trasa/pajstun"
+      "Vodopád Hučák, sobota 24. 10. (s deťmi)\n" +
+        "8:56 stretnutie na parkovisku\n" +
+        "9:41 späť pri aute, 45 min chôdze, ľahká\n" +
+        "Kedy vyraziť z tvojho miesta, ukáže odkaz:\n" +
+        "https://mountour.sk/trasa/hucak"
     );
   });
 
-  it("doesn't make up a time home when no train goes back", () => {
-    const text = shareText({
-      name: "Pajštún z Borinky",
-      dayLabel: "sobota 17. 10.",
-      departure: new Date(2026, 9, 17, 8, 50),
-      back: new Date(2026, 9, 17, 14, 30),
-      hasDrive: true,
-      backHome: false,
-      inDaylight: true,
-      town: "Bratislava",
-      hikeMin: 130,
-      difficulty: "lahka",
-      familyFriendly: true,
-      url: "https://mountour.sk/trasa/pajstun",
-    });
-    expect(text).toContain("odchod 8:50, koniec túry okolo 14:30, ešte za svetla.");
-  });
-
-  it("warns instead of promising daylight when the hike ends after sunset", () => {
+  it("warns after sunset and starts at the trail without a ride", () => {
     const text = shareText({
       name: "Chleb",
       dayLabel: "sobota 10. 10.",
-      departure: new Date(2026, 9, 10, 8, 0),
-      back: new Date(2026, 9, 10, 21, 10),
-      hasDrive: true,
+      withKids: false,
+      meet: new Date(2026, 9, 10, 10, 0),
+      place: null,
+      end: new Date(2026, 9, 10, 19, 10),
+      endPlace: null,
       inDaylight: false,
-      town: "Bratislava",
       hikeMin: 360,
       difficulty: "tazka",
-      familyFriendly: false,
       url: "https://mountour.sk/trasa/chleb",
     });
-    expect(text).toContain("doma okolo 21:10. Pozor, z túry zídete až po západe slnka.");
-    expect(text).not.toContain("za svetla");
+    expect(text).toContain("10:00 začiatok túry\n19:10 koniec túry, 6 h chôdze");
+    expect(text).toContain("Pozor, z túry zídete až po západe slnka.");
+  });
+
+  it("names a parking only when it has its own name", () => {
+    expect(parkingPlace("Parkovisko")).toBe("na parkovisku");
+    expect(parkingPlace("Parkovisko Pod Kriváňom")).toBe("na parkovisku Pod Kriváňom");
   });
 });
 
