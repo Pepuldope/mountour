@@ -2,19 +2,19 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Vodopád na Teplom potoku</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Vodopád na Teplom potoku</name><desc>vodopad-na-teplom-potoku</desc><trkseg>
-    <trkpt lat="48.937094" lon="19.225347"><ele>641</ele></trkpt>
-    <trkpt lat="48.938258" lon="19.227449"><ele>639</ele></trkpt>
-    <trkpt lat="48.938505" lon="19.227860"><ele>642</ele></trkpt>
-    <trkpt lat="48.938769" lon="19.228207"><ele>649</ele></trkpt>
-    <trkpt lat="48.938897" lon="19.228448"><ele>649</ele></trkpt>
-    <trkpt lat="48.939252" lon="19.229340"><ele>652</ele></trkpt>
-    <trkpt lat="48.939520" lon="19.229753"><ele>649</ele></trkpt>
-    <trkpt lat="48.942454" lon="19.233606"><ele>643</ele></trkpt>
-    <trkpt lat="48.942595" lon="19.233965"><ele>641</ele></trkpt>
-    <trkpt lat="48.942670" lon="19.234254"><ele>637</ele></trkpt>
+    <trkpt lat="48.937170" lon="19.225280"><ele>641</ele></trkpt>
+    <trkpt lat="48.937128" lon="19.225420"><ele>640</ele></trkpt>
+    <trkpt lat="48.938327" lon="19.227578"><ele>639</ele></trkpt>
+    <trkpt lat="48.938823" lon="19.228276"><ele>650</ele></trkpt>
+    <trkpt lat="48.939269" lon="19.229338"><ele>653</ele></trkpt>
+    <trkpt lat="48.939765" lon="19.230047"><ele>652</ele></trkpt>
+    <trkpt lat="48.942391" lon="19.233500"><ele>644</ele></trkpt>
+    <trkpt lat="48.942545" lon="19.233780"><ele>643</ele></trkpt>
+    <trkpt lat="48.942673" lon="19.234255"><ele>637</ele></trkpt>
     <trkpt lat="48.943211" lon="19.234094"><ele>647</ele></trkpt>
-    <trkpt lat="48.943483" lon="19.233965"><ele>648</ele></trkpt>
-    <trkpt lat="48.943891" lon="19.233660"><ele>648</ele></trkpt>
+    <trkpt lat="48.943547" lon="19.233934"><ele>647</ele></trkpt>
+    <trkpt lat="48.943838" lon="19.233716"><ele>648</ele></trkpt>
+    <trkpt lat="48.944027" lon="19.233460"><ele>652</ele></trkpt>
     <trkpt lat="48.944122" lon="19.233262"><ele>655</ele></trkpt>
     <trkpt lat="48.944229" lon="19.232887"><ele>662</ele></trkpt>
     <trkpt lat="48.944687" lon="19.230816"><ele>662</ele></trkpt>
@@ -36,19 +36,19 @@
     <trkpt lat="48.944687" lon="19.230816"><ele>662</ele></trkpt>
     <trkpt lat="48.944229" lon="19.232887"><ele>662</ele></trkpt>
     <trkpt lat="48.944122" lon="19.233262"><ele>655</ele></trkpt>
-    <trkpt lat="48.943891" lon="19.233660"><ele>648</ele></trkpt>
-    <trkpt lat="48.943483" lon="19.233965"><ele>648</ele></trkpt>
+    <trkpt lat="48.944027" lon="19.233460"><ele>652</ele></trkpt>
+    <trkpt lat="48.943838" lon="19.233716"><ele>648</ele></trkpt>
+    <trkpt lat="48.943547" lon="19.233934"><ele>647</ele></trkpt>
     <trkpt lat="48.943211" lon="19.234094"><ele>647</ele></trkpt>
-    <trkpt lat="48.942670" lon="19.234254"><ele>637</ele></trkpt>
-    <trkpt lat="48.942595" lon="19.233965"><ele>641</ele></trkpt>
-    <trkpt lat="48.942454" lon="19.233606"><ele>643</ele></trkpt>
-    <trkpt lat="48.939520" lon="19.229753"><ele>649</ele></trkpt>
-    <trkpt lat="48.939252" lon="19.229340"><ele>652</ele></trkpt>
-    <trkpt lat="48.938897" lon="19.228448"><ele>649</ele></trkpt>
-    <trkpt lat="48.938769" lon="19.228207"><ele>649</ele></trkpt>
-    <trkpt lat="48.938505" lon="19.227860"><ele>642</ele></trkpt>
-    <trkpt lat="48.938258" lon="19.227449"><ele>639</ele></trkpt>
-    <trkpt lat="48.937094" lon="19.225347"><ele>641</ele></trkpt>
+    <trkpt lat="48.942673" lon="19.234255"><ele>637</ele></trkpt>
+    <trkpt lat="48.942545" lon="19.233780"><ele>643</ele></trkpt>
+    <trkpt lat="48.942391" lon="19.233500"><ele>644</ele></trkpt>
+    <trkpt lat="48.939765" lon="19.230047"><ele>652</ele></trkpt>
+    <trkpt lat="48.939269" lon="19.229338"><ele>653</ele></trkpt>
+    <trkpt lat="48.938823" lon="19.228276"><ele>650</ele></trkpt>
+    <trkpt lat="48.938327" lon="19.227578"><ele>639</ele></trkpt>
+    <trkpt lat="48.937128" lon="19.225420"><ele>640</ele></trkpt>
+    <trkpt lat="48.937170" lon="19.225280"><ele>641</ele></trkpt>
   </trkseg></trk>
   <trk><name>Vodopád na Teplom potoku</name><desc>vodopad-na-teplom-potoku-mocidlo-hotel-smrekovica</desc><trkseg>
     <trkpt lat="48.990078" lon="19.200998"><ele>1337</ele></trkpt>

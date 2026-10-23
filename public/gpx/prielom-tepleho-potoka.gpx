@@ -2,19 +2,18 @@
 <gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Prielom Teplého potoka</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Prielom Teplého potoka</name><desc>prielom-tepleho-potoka</desc><trkseg>
-    <trkpt lat="48.937094" lon="19.225347"><ele>641</ele></trkpt>
-    <trkpt lat="48.938258" lon="19.227449"><ele>639</ele></trkpt>
-    <trkpt lat="48.938505" lon="19.227860"><ele>642</ele></trkpt>
-    <trkpt lat="48.938769" lon="19.228207"><ele>649</ele></trkpt>
-    <trkpt lat="48.938897" lon="19.228448"><ele>649</ele></trkpt>
-    <trkpt lat="48.939252" lon="19.229340"><ele>652</ele></trkpt>
-    <trkpt lat="48.939520" lon="19.229753"><ele>649</ele></trkpt>
-    <trkpt lat="48.942454" lon="19.233606"><ele>643</ele></trkpt>
-    <trkpt lat="48.942595" lon="19.233965"><ele>641</ele></trkpt>
-    <trkpt lat="48.942670" lon="19.234254"><ele>637</ele></trkpt>
+    <trkpt lat="48.937170" lon="19.225280"><ele>641</ele></trkpt>
+    <trkpt lat="48.937128" lon="19.225420"><ele>640</ele></trkpt>
+    <trkpt lat="48.938327" lon="19.227578"><ele>639</ele></trkpt>
+    <trkpt lat="48.938823" lon="19.228276"><ele>650</ele></trkpt>
+    <trkpt lat="48.939269" lon="19.229338"><ele>653</ele></trkpt>
+    <trkpt lat="48.939765" lon="19.230047"><ele>652</ele></trkpt>
+    <trkpt lat="48.942391" lon="19.233500"><ele>644</ele></trkpt>
+    <trkpt lat="48.942545" lon="19.233780"><ele>643</ele></trkpt>
+    <trkpt lat="48.942673" lon="19.234255"><ele>637</ele></trkpt>
     <trkpt lat="48.943211" lon="19.234094"><ele>647</ele></trkpt>
-    <trkpt lat="48.943483" lon="19.233965"><ele>648</ele></trkpt>
-    <trkpt lat="48.943891" lon="19.233660"><ele>648</ele></trkpt>
+    <trkpt lat="48.943612" lon="19.233895"><ele>646</ele></trkpt>
+    <trkpt lat="48.943897" lon="19.233653"><ele>648</ele></trkpt>
     <trkpt lat="48.944122" lon="19.233262"><ele>655</ele></trkpt>
     <trkpt lat="48.944229" lon="19.232887"><ele>662</ele></trkpt>
     <trkpt lat="48.944687" lon="19.230816"><ele>662</ele></trkpt>
@@ -34,19 +33,18 @@
     <trkpt lat="48.944687" lon="19.230816"><ele>662</ele></trkpt>
     <trkpt lat="48.944229" lon="19.232887"><ele>662</ele></trkpt>
     <trkpt lat="48.944122" lon="19.233262"><ele>655</ele></trkpt>
-    <trkpt lat="48.943891" lon="19.233660"><ele>648</ele></trkpt>
-    <trkpt lat="48.943483" lon="19.233965"><ele>648</ele></trkpt>
+    <trkpt lat="48.943897" lon="19.233653"><ele>648</ele></trkpt>
+    <trkpt lat="48.943612" lon="19.233895"><ele>646</ele></trkpt>
     <trkpt lat="48.943211" lon="19.234094"><ele>647</ele></trkpt>
-    <trkpt lat="48.942670" lon="19.234254"><ele>637</ele></trkpt>
-    <trkpt lat="48.942595" lon="19.233965"><ele>641</ele></trkpt>
-    <trkpt lat="48.942454" lon="19.233606"><ele>643</ele></trkpt>
-    <trkpt lat="48.939520" lon="19.229753"><ele>649</ele></trkpt>
-    <trkpt lat="48.939252" lon="19.229340"><ele>652</ele></trkpt>
-    <trkpt lat="48.938897" lon="19.228448"><ele>649</ele></trkpt>
-    <trkpt lat="48.938769" lon="19.228207"><ele>649</ele></trkpt>
-    <trkpt lat="48.938505" lon="19.227860"><ele>642</ele></trkpt>
-    <trkpt lat="48.938258" lon="19.227449"><ele>639</ele></trkpt>
-    <trkpt lat="48.937094" lon="19.225347"><ele>641</ele></trkpt>
+    <trkpt lat="48.942673" lon="19.234255"><ele>637</ele></trkpt>
+    <trkpt lat="48.942545" lon="19.233780"><ele>643</ele></trkpt>
+    <trkpt lat="48.942391" lon="19.233500"><ele>644</ele></trkpt>
+    <trkpt lat="48.939765" lon="19.230047"><ele>652</ele></trkpt>
+    <trkpt lat="48.939269" lon="19.229338"><ele>653</ele></trkpt>
+    <trkpt lat="48.938823" lon="19.228276"><ele>650</ele></trkpt>
+    <trkpt lat="48.938327" lon="19.227578"><ele>639</ele></trkpt>
+    <trkpt lat="48.937128" lon="19.225420"><ele>640</ele></trkpt>
+    <trkpt lat="48.937170" lon="19.225280"><ele>641</ele></trkpt>
   </trkseg></trk>
   <trk><name>Prielom Teplého potoka</name><desc>prielom-tepleho-potoka-liptovska-osada</desc><trkseg>
     <trkpt lat="48.950125" lon="19.260438"><ele>607</ele></trkpt>
@@ -86,15 +84,15 @@
     <trkpt lat="48.946328" lon="19.242496"><ele>628</ele></trkpt>
     <trkpt lat="48.946228" lon="19.242278"><ele>628</ele></trkpt>
     <trkpt lat="48.944747" lon="19.239837"><ele>636</ele></trkpt>
-    <trkpt lat="48.944434" lon="19.239035"><ele>640</ele></trkpt>
-    <trkpt lat="48.943506" lon="19.237781"><ele>634</ele></trkpt>
-    <trkpt lat="48.943347" lon="19.237441"><ele>634</ele></trkpt>
-    <trkpt lat="48.942980" lon="19.236148"><ele>633</ele></trkpt>
-    <trkpt lat="48.942771" lon="19.234751"><ele>633</ele></trkpt>
-    <trkpt lat="48.942670" lon="19.234254"><ele>637</ele></trkpt>
+    <trkpt lat="48.944513" lon="19.239171"><ele>640</ele></trkpt>
+    <trkpt lat="48.944404" lon="19.238950"><ele>641</ele></trkpt>
+    <trkpt lat="48.943506" lon="19.237720"><ele>635</ele></trkpt>
+    <trkpt lat="48.943371" lon="19.237466"><ele>635</ele></trkpt>
+    <trkpt lat="48.943011" lon="19.236204"><ele>634</ele></trkpt>
+    <trkpt lat="48.942673" lon="19.234255"><ele>637</ele></trkpt>
     <trkpt lat="48.943211" lon="19.234094"><ele>647</ele></trkpt>
-    <trkpt lat="48.943483" lon="19.233965"><ele>648</ele></trkpt>
-    <trkpt lat="48.943891" lon="19.233660"><ele>648</ele></trkpt>
+    <trkpt lat="48.943612" lon="19.233895"><ele>646</ele></trkpt>
+    <trkpt lat="48.943897" lon="19.233653"><ele>648</ele></trkpt>
     <trkpt lat="48.944122" lon="19.233262"><ele>655</ele></trkpt>
     <trkpt lat="48.944229" lon="19.232887"><ele>662</ele></trkpt>
     <trkpt lat="48.944687" lon="19.230816"><ele>662</ele></trkpt>
@@ -114,15 +112,15 @@
     <trkpt lat="48.944687" lon="19.230816"><ele>662</ele></trkpt>
     <trkpt lat="48.944229" lon="19.232887"><ele>662</ele></trkpt>
     <trkpt lat="48.944122" lon="19.233262"><ele>655</ele></trkpt>
-    <trkpt lat="48.943891" lon="19.233660"><ele>648</ele></trkpt>
-    <trkpt lat="48.943483" lon="19.233965"><ele>648</ele></trkpt>
+    <trkpt lat="48.943897" lon="19.233653"><ele>648</ele></trkpt>
+    <trkpt lat="48.943612" lon="19.233895"><ele>646</ele></trkpt>
     <trkpt lat="48.943211" lon="19.234094"><ele>647</ele></trkpt>
-    <trkpt lat="48.942670" lon="19.234254"><ele>637</ele></trkpt>
-    <trkpt lat="48.942771" lon="19.234751"><ele>633</ele></trkpt>
-    <trkpt lat="48.942980" lon="19.236148"><ele>633</ele></trkpt>
-    <trkpt lat="48.943347" lon="19.237441"><ele>634</ele></trkpt>
-    <trkpt lat="48.943506" lon="19.237781"><ele>634</ele></trkpt>
-    <trkpt lat="48.944434" lon="19.239035"><ele>640</ele></trkpt>
+    <trkpt lat="48.942673" lon="19.234255"><ele>637</ele></trkpt>
+    <trkpt lat="48.943011" lon="19.236204"><ele>634</ele></trkpt>
+    <trkpt lat="48.943371" lon="19.237466"><ele>635</ele></trkpt>
+    <trkpt lat="48.943506" lon="19.237720"><ele>635</ele></trkpt>
+    <trkpt lat="48.944404" lon="19.238950"><ele>641</ele></trkpt>
+    <trkpt lat="48.944513" lon="19.239171"><ele>640</ele></trkpt>
     <trkpt lat="48.944747" lon="19.239837"><ele>636</ele></trkpt>
     <trkpt lat="48.946228" lon="19.242278"><ele>628</ele></trkpt>
     <trkpt lat="48.946328" lon="19.242496"><ele>628</ele></trkpt>

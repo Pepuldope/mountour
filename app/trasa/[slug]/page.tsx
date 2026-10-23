@@ -103,7 +103,7 @@ function trailJsonLd(detail: TrailDetail) {
 /** A second reason to go, from what the walk passes: a hut, a castle or a viewpoint. */
 function secondGoal(detail: TrailDetail): "chata" | "hrad" | "vyhliadka" | null {
   const goal = detail.trail.goal;
-  const kinds = new Set(detail.pois.map((p) => p.kind));
+  const kinds = new Set(detail.pois.filter((p) => p.detour_min === null).map((p) => p.kind));
   for (const k of ["chata", "hrad", "vyhliadka"] as const) if (k !== goal && kinds.has(k)) return k;
   return null;
 }

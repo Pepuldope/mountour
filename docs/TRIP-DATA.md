@@ -49,6 +49,9 @@ Key fields of `TripSummary` (see `lib/tripSchema.ts` for all):
 `TripDetail` adds `path` (`[lon, lat, ele]`, ~10 m), `turnaround_index`, `marking_runs`
 (index ranges of `path` with a KST colour, for drawing the route in trail colours),
 `parking_alternatives`, `transit_alternatives`, `pois`.
+`pois` lists huts, springs, viewpoints, castles, food and playgrounds within 150 m of the walk, then
+up to 6 side trips (since 2026-10-23): a viewpoint, castle, hut or food off the walk that is at most
+`detour_max_min` (30) minutes there and back by path, with `detour_min` (rounded to 5).
 In the trip's own file (not in `index.json`), each parking and stop may carry `walk`:
 `{line: [[lon, lat], ...], m, min}`, the walk on paths to where the site joins the trail
 (lib/trailJoin.ts), worked out weekly by pipeline/walks.py on a local OSRM (foot profile). The

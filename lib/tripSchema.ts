@@ -206,6 +206,8 @@ export interface Poi {
   name: string;
   location: GeoPoint;
   osm: OsmRef | null;
+  /** Off the walk: minutes there and back (at most ~30). Absent for places on the walk. */
+  detour_min?: number;
 }
 
 export interface TripDetail extends TripSummary {
@@ -222,7 +224,7 @@ export interface TripDetail extends TripSummary {
   parking_alternatives: Parking[];
   /** Other stops near the start, nearest first (excludes `transit`). */
   transit_alternatives: TransitStop[];
-  /** Huts, springs, viewpoints, castles within ~150 m of the path. */
+  /** Huts, springs, viewpoints, castles within ~150 m of the path, then side trips (detour_min). */
   pois: Poi[];
   /** Every route to this place, main first, when there is more than one (absent otherwise). */
   routes?: RouteBrief[];

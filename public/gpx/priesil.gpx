@@ -601,11 +601,7 @@
   </trkseg></trk>
   <trk><name>Priesil</name><desc>priesil-pukanec</desc><trkseg>
     <trkpt lat="48.352705" lon="18.720945"><ele>360</ele></trkpt>
-    <trkpt lat="48.352607" lon="18.720848"><ele>360</ele></trkpt>
-    <trkpt lat="48.352517" lon="18.720687"><ele>361</ele></trkpt>
-    <trkpt lat="48.352576" lon="18.720500"><ele>363</ele></trkpt>
-    <trkpt lat="48.352873" lon="18.719941"><ele>368</ele></trkpt>
-    <trkpt lat="48.353082" lon="18.720112"><ele>367</ele></trkpt>
+    <trkpt lat="48.352777" lon="18.721022"><ele>360</ele></trkpt>
     <trkpt lat="48.353582" lon="18.718521"><ele>378</ele></trkpt>
     <trkpt lat="48.353362" lon="18.718107"><ele>380</ele></trkpt>
     <trkpt lat="48.352908" lon="18.717728"><ele>383</ele></trkpt>
@@ -1007,11 +1003,7 @@
     <trkpt lat="48.352908" lon="18.717728"><ele>383</ele></trkpt>
     <trkpt lat="48.353362" lon="18.718107"><ele>380</ele></trkpt>
     <trkpt lat="48.353582" lon="18.718521"><ele>378</ele></trkpt>
-    <trkpt lat="48.353082" lon="18.720112"><ele>367</ele></trkpt>
-    <trkpt lat="48.352873" lon="18.719941"><ele>368</ele></trkpt>
-    <trkpt lat="48.352576" lon="18.720500"><ele>363</ele></trkpt>
-    <trkpt lat="48.352517" lon="18.720687"><ele>361</ele></trkpt>
-    <trkpt lat="48.352607" lon="18.720848"><ele>360</ele></trkpt>
+    <trkpt lat="48.352777" lon="18.721022"><ele>360</ele></trkpt>
     <trkpt lat="48.352705" lon="18.720945"><ele>360</ele></trkpt>
   </trkseg></trk>
 </gpx>

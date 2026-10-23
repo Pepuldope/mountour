@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { RateLimited, dropDeadEnd, finishDrive, knownTail, simplifyLine, walkRoute } from "./routing";
+import { RateLimited, driveRoute, dropDeadEnd, finishDrive, knownTail, simplifyLine, walkRoute } from "./routing";
 import type { KnownTail, Pt } from "./routing";
 
 const road = { durationMin: 30, distanceM: 30000, points: [[48.0, 19.0], [49.0, 19.0]] as [number, number][] };
@@ -152,5 +152,26 @@ describe("knownTail", () => {
   it("still answers when the store fails", async () => {
     const store = { get: () => Promise.reject(new Error("down")), put: () => Promise.reject(new Error("down")) };
     expect(await knownTail([47.5, 17.5], [47.505, 17.5], async () => tail, store)).toBe(tail);
+  });
+});
+
+describe("driveRoute when the router can't answer", () => {
+  const osrm = { code: "Ok", routes: [{ duration: 1800, distance: 30000, geometry: { coordinates: [[19, 48], [19.5, 48.5]] } }] };
+
+  it("still draws the road from the public OSRM server", async () => {
+    const fetchMock = vi.fn(async (url: string) =>
+      url.includes("openrouteservice") ? new Response("{}", { status: 429 }) : new Response(JSON.stringify(osrm))
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const r = await driveRoute("key", [48.3, 19.3], [48.31, 19.31], 1000);
+    expect(r.durationMin).toBe(30);
+    expect(r.points[0]).toEqual([48, 19]);
+    vi.unstubAllGlobals();
+  });
+
+  it("keeps the router's own error when the fallback fails too", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (url: string) => new Response("{}", { status: url.includes("openrouteservice") ? 429 : 500 })));
+    await expect(driveRoute("key", [48.4, 19.4], [48.41, 19.41], 1000)).rejects.toBeInstanceOf(RateLimited);
+    vi.unstubAllGlobals();
   });
 });

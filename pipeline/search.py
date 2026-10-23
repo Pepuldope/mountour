@@ -36,7 +36,7 @@ def _points(t):
         p = t.get(key) or {}
         if p.get("location"):
             yield p.get("name"), p["location"]["lat"], p["location"]["lon"], kind
-    for p in t.get("pois") or []:
+    for p in [p for p in t.get("pois") or [] if not p.get("detour_min")]:  # side trips are not at the trip
         if p.get("location"):
             yield p.get("name"), p["location"]["lat"], p["location"]["lon"], p.get("kind") or "ine"
 

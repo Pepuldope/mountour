@@ -475,6 +475,27 @@
     <trkpt lat="48.974668" lon="21.268715"><ele>271</ele></trkpt>
   </trkseg></trk>
   <trk><name>Castrum Salis - Soľný hrad</name><desc>castrum-salis-solny-hrad-ruska-nova-ves</desc><trkseg>
+    <trkpt lat="48.977856" lon="21.335166"><ele>471</ele></trkpt>
+    <trkpt lat="48.977874" lon="21.335226"><ele>471</ele></trkpt>
+    <trkpt lat="48.977924" lon="21.335153"><ele>471</ele></trkpt>
+    <trkpt lat="48.978041" lon="21.334744"><ele>469</ele></trkpt>
+    <trkpt lat="48.978107" lon="21.333490"><ele>464</ele></trkpt>
+    <trkpt lat="48.978558" lon="21.331691"><ele>453</ele></trkpt>
+    <trkpt lat="48.978739" lon="21.330459"><ele>444</ele></trkpt>
+    <trkpt lat="48.979224" lon="21.329690"><ele>437</ele></trkpt>
+    <trkpt lat="48.979327" lon="21.329382"><ele>434</ele></trkpt>
+    <trkpt lat="48.979418" lon="21.328778"><ele>430</ele></trkpt>
+    <trkpt lat="48.979379" lon="21.328058"><ele>426</ele></trkpt>
+    <trkpt lat="48.979330" lon="21.327844"><ele>426</ele></trkpt>
+    <trkpt lat="48.979113" lon="21.327442"><ele>425</ele></trkpt>
+    <trkpt lat="48.979056" lon="21.327222"><ele>426</ele></trkpt>
+    <trkpt lat="48.979032" lon="21.326989"><ele>426</ele></trkpt>
+    <trkpt lat="48.979031" lon="21.325872"><ele>430</ele></trkpt>
+    <trkpt lat="48.978989" lon="21.325698"><ele>430</ele></trkpt>
+    <trkpt lat="48.978886" lon="21.325461"><ele>429</ele></trkpt>
+    <trkpt lat="48.978519" lon="21.325065"><ele>425</ele></trkpt>
+    <trkpt lat="48.978206" lon="21.324849"><ele>421</ele></trkpt>
+    <trkpt lat="48.977940" lon="21.324758"><ele>418</ele></trkpt>
     <trkpt lat="48.977835" lon="21.324503"><ele>416</ele></trkpt>
     <trkpt lat="48.977813" lon="21.324312"><ele>414</ele></trkpt>
     <trkpt lat="48.977839" lon="21.322282"><ele>405</ele></trkpt>
@@ -590,6 +611,27 @@
     <trkpt lat="48.977839" lon="21.322282"><ele>405</ele></trkpt>
     <trkpt lat="48.977813" lon="21.324312"><ele>414</ele></trkpt>
     <trkpt lat="48.977835" lon="21.324503"><ele>416</ele></trkpt>
+    <trkpt lat="48.977940" lon="21.324758"><ele>418</ele></trkpt>
+    <trkpt lat="48.978206" lon="21.324849"><ele>421</ele></trkpt>
+    <trkpt lat="48.978519" lon="21.325065"><ele>425</ele></trkpt>
+    <trkpt lat="48.978886" lon="21.325461"><ele>429</ele></trkpt>
+    <trkpt lat="48.978989" lon="21.325698"><ele>430</ele></trkpt>
+    <trkpt lat="48.979031" lon="21.325872"><ele>430</ele></trkpt>
+    <trkpt lat="48.979032" lon="21.326989"><ele>426</ele></trkpt>
+    <trkpt lat="48.979056" lon="21.327222"><ele>426</ele></trkpt>
+    <trkpt lat="48.979113" lon="21.327442"><ele>425</ele></trkpt>
+    <trkpt lat="48.979330" lon="21.327844"><ele>426</ele></trkpt>
+    <trkpt lat="48.979379" lon="21.328058"><ele>426</ele></trkpt>
+    <trkpt lat="48.979418" lon="21.328778"><ele>430</ele></trkpt>
+    <trkpt lat="48.979327" lon="21.329382"><ele>434</ele></trkpt>
+    <trkpt lat="48.979224" lon="21.329690"><ele>437</ele></trkpt>
+    <trkpt lat="48.978739" lon="21.330459"><ele>444</ele></trkpt>
+    <trkpt lat="48.978558" lon="21.331691"><ele>453</ele></trkpt>
+    <trkpt lat="48.978107" lon="21.333490"><ele>464</ele></trkpt>
+    <trkpt lat="48.978041" lon="21.334744"><ele>469</ele></trkpt>
+    <trkpt lat="48.977924" lon="21.335153"><ele>471</ele></trkpt>
+    <trkpt lat="48.977874" lon="21.335226"><ele>471</ele></trkpt>
+    <trkpt lat="48.977856" lon="21.335166"><ele>471</ele></trkpt>
   </trkseg></trk>
   <trk><name>Castrum Salis - Soľný hrad</name><desc>castrum-salis-solny-hrad-vyslap</desc><trkseg>
     <trkpt lat="48.984035" lon="21.220581"><ele>317</ele></trkpt>

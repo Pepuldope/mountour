@@ -93,8 +93,15 @@ export async function viaOsrm(base: string, from: Pt, to: Pt): Promise<DriveRout
 const OSRM_CAR = "https://router.project-osrm.org";
 const FOSSGIS_FOOT = "https://routing.openstreetmap.de/routed-foot";
 
-export function driveRoute(key: string | undefined, from: Pt, to: Pt, snapM: number): Promise<DriveRoute> {
-  return key ? viaOrs(key, "driving-car", from, to, [snapM, snapM]) : viaOsrm(OSRM_CAR, from, to);
+export async function driveRoute(key: string | undefined, from: Pt, to: Pt, snapM: number): Promise<DriveRoute> {
+  if (!key) return viaOsrm(OSRM_CAR, from, to);
+  try {
+    return await viaOrs(key, "driving-car", from, to, [snapM, snapM]);
+  } catch (err) {
+    // Day's budget spent, busy or down: the public OSRM server still draws the road (no SLA, so
+    // only as a fallback). If it fails too, the router's own error stands.
+    return viaOsrm(OSRM_CAR, from, to).catch(() => Promise.reject(err));
+  }
 }
 
 /**

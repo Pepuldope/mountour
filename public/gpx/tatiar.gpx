@@ -3,9 +3,6 @@
   <metadata><name>Ťatiar</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Ťatiar</name><desc>tatiar</desc><trkseg>
     <trkpt lat="48.352705" lon="18.720945"><ele>360</ele></trkpt>
-    <trkpt lat="48.352607" lon="18.720848"><ele>360</ele></trkpt>
-    <trkpt lat="48.352517" lon="18.720687"><ele>361</ele></trkpt>
-    <trkpt lat="48.352483" lon="18.720831"><ele>360</ele></trkpt>
     <trkpt lat="48.352777" lon="18.721022"><ele>360</ele></trkpt>
     <trkpt lat="48.352752" lon="18.721124"><ele>359</ele></trkpt>
     <trkpt lat="48.352903" lon="18.721173"><ele>358</ele></trkpt>
@@ -149,9 +146,6 @@
     <trkpt lat="48.352903" lon="18.721173"><ele>358</ele></trkpt>
     <trkpt lat="48.352752" lon="18.721124"><ele>359</ele></trkpt>
     <trkpt lat="48.352777" lon="18.721022"><ele>360</ele></trkpt>
-    <trkpt lat="48.352483" lon="18.720831"><ele>360</ele></trkpt>
-    <trkpt lat="48.352517" lon="18.720687"><ele>361</ele></trkpt>
-    <trkpt lat="48.352607" lon="18.720848"><ele>360</ele></trkpt>
     <trkpt lat="48.352705" lon="18.720945"><ele>360</ele></trkpt>
   </trkseg></trk>
   <trk><name>Ťatiar</name><desc>tatiar-brehy</desc><trkseg>

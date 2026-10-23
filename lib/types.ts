@@ -118,6 +118,8 @@ export interface Poi {
   note: string | null;
   /** Metres from the trail start along the walk, when the path is known. */
   along_m: number | null;
+  /** A side trip off the walk: minutes there and back. Null = on the walk. */
+  detour_min: number | null;
 }
 
 /** Everything the trip sheet needs for one trail, assembled in one place. */

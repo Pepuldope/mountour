@@ -13,9 +13,12 @@ function km(m: number): string {
     : `${(m / 1000).toLocaleString("sk-SK", { maximumFractionDigits: 1, minimumFractionDigits: 1 })} km`;
 }
 
-/** "Na trase": huts, springs, viewpoints... in the order the walk reaches them. A tap shows the place on the map. */
+/** "Na trase": huts, springs, viewpoints... in the order the walk reaches them, then "Kúsok bokom":
+ *  side trips up to ~30 min there and back. A tap shows the place on the map. */
 export function PoiList({ pois }: { pois: Poi[] }) {
   if (pois.length === 0) return null;
+  const on = pois.filter((p) => p.detour_min === null);
+  const off = pois.filter((p) => p.detour_min !== null);
   const word =
     pois.length === 1 ? "miesto" : pois.length < 5 ? "miesta" : "miest";
   return (
@@ -24,7 +27,11 @@ export function PoiList({ pois }: { pois: Poi[] }) {
       className="group rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)]"
     >
       <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-base font-bold [&::-webkit-details-marker]:hidden">
-        Na trase
+        {on.length === 0
+          ? "Kúsok bokom"
+          : off.length > 0
+            ? "Na trase a okolo"
+            : "Na trase"}
         <span className="ml-auto text-sm font-medium text-[var(--muted)]">
           {pois.length} {word}
         </span>
@@ -33,37 +40,51 @@ export function PoiList({ pois }: { pois: Poi[] }) {
         </span>
       </summary>
       <ul className="flex flex-col gap-0.5 px-4 pb-3">
-        {pois.map((p) => (
-          <li key={p.id}>
-            <button
-              type="button"
-              onClick={() =>
-                focusOnMap({ id: `poi-${p.id}`, location: p.location })
-              }
-              className="-mx-2 flex w-[calc(100%+1rem)] items-center gap-2.5 rounded-lg px-2 py-1 text-left hover:bg-[var(--segment-bg)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
-            >
-              <KindIcon kind={p.kind} colour={POI_COLOUR[p.kind]} />
-              <span className="flex min-w-0 flex-1 flex-col">
-                <span className="truncate text-sm font-semibold">{p.name}</span>
-                <span className="text-xs text-[var(--muted)]">
-                  <span
-                    className="kind-ink font-bold"
-                    style={
-                      { "--kind": POI_COLOUR[p.kind] } as React.CSSProperties
-                    }
-                  >
-                    {POI_LABEL[p.kind]}
-                  </span>
-                  {p.along_m !== null ? ` · ${km(p.along_m)}` : ""}
-                </span>
-              </span>
-              <span className="shrink-0 text-[var(--muted)]" aria-hidden="true">
-                <UiIcon name="pin" size={16} />
-              </span>
-            </button>
+        {on.map((p) => (
+          <PoiRow key={p.id} p={p} />
+        ))}
+        {on.length > 0 && off.length > 0 && (
+          <li className="pt-2 pb-0.5 text-xs font-bold tracking-wide text-[var(--muted)] uppercase">
+            Kúsok bokom
           </li>
+        )}
+        {off.map((p) => (
+          <PoiRow key={p.id} p={p} />
         ))}
       </ul>
     </details>
+  );
+}
+
+function PoiRow({ p }: { p: Poi }) {
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={() => focusOnMap({ id: `poi-${p.id}`, location: p.location })}
+        className="-mx-2 flex w-[calc(100%+1rem)] items-center gap-2.5 rounded-lg px-2 py-1 text-left hover:bg-[var(--segment-bg)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+      >
+        <KindIcon kind={p.kind} colour={POI_COLOUR[p.kind]} />
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="truncate text-sm font-semibold">{p.name}</span>
+          <span className="text-xs text-[var(--muted)]">
+            <span
+              className="kind-ink font-bold"
+              style={{ "--kind": POI_COLOUR[p.kind] } as React.CSSProperties}
+            >
+              {POI_LABEL[p.kind]}
+            </span>
+            {p.detour_min !== null
+              ? ` · odbočka +${p.detour_min} min tam aj späť`
+              : p.along_m !== null
+                ? ` · ${km(p.along_m)}`
+                : ""}
+          </span>
+        </span>
+        <span className="shrink-0 text-[var(--muted)]" aria-hidden="true">
+          <UiIcon name="pin" size={16} />
+        </span>
+      </button>
+    </li>
   );
 }
