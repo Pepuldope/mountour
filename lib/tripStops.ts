@@ -43,54 +43,31 @@ export function stopFor(p: Poi): TripStop {
   };
 }
 
-const KEY = "mountour-stops";
+// Kept only while the trip page is open (Peter 2026-10-23: a saved trip keeps them, nothing else does).
 const EVENT = "mountour-stops";
 type All = Record<string, TripStop[]>;
 const NONE: TripStop[] = [];
 
-let cachedRaw: string | null = null;
-let cachedAll: All = {};
+let all: All = {};
 
 function readAll(): All {
-  let raw: string | null = null;
-  try {
-    raw = localStorage.getItem(KEY);
-  } catch {
-    return cachedAll;
-  }
-  // Same string -> same object, so useSyncExternalStore doesn't loop.
-  if (raw === cachedRaw) return cachedAll;
-  cachedRaw = raw;
-  try {
-    const parsed = raw ? JSON.parse(raw) : {};
-    cachedAll =
-      parsed && typeof parsed === "object" && !Array.isArray(parsed)
-        ? (parsed as All)
-        : {};
-  } catch {
-    cachedAll = {};
-  }
-  return cachedAll;
+  return all;
 }
 
-function write(all: All) {
-  try {
-    localStorage.setItem(KEY, JSON.stringify(all));
-  } catch {
-    // Storage blocked: the stops last until the page closes.
-    cachedRaw = null;
-    cachedAll = all;
-  }
+function write(next: All) {
+  all = next;
   window.dispatchEvent(new Event(EVENT));
 }
 
 function subscribe(cb: () => void) {
   window.addEventListener(EVENT, cb);
-  window.addEventListener("storage", cb);
-  return () => {
-    window.removeEventListener(EVENT, cb);
-    window.removeEventListener("storage", cb);
-  };
+  return () => window.removeEventListener(EVENT, cb);
+}
+
+/** Puts a trip's stops in place: a saved trip's on Otvoriť, none when the trip page closes. */
+export function setTripStops(slug: string, stops: TripStop[]) {
+  const { [slug]: _, ...rest } = readAll(); // eslint-disable-line @typescript-eslint/no-unused-vars
+  write(stops.length ? { ...rest, [slug]: stops } : rest);
 }
 
 export const stopsMinutes = (stops: TripStop[]) =>

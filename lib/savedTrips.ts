@@ -1,5 +1,6 @@
 "use client";
 
+import type { TripStop } from "@/lib/tripStops";
 import { useCallback, useSyncExternalStore } from "react";
 import type { LatLng } from "@/lib/types";
 import type { TripProfile } from "@/lib/tripProfile";
@@ -31,6 +32,8 @@ export interface SavedTrip {
   sun: LatLng;
   /** Height profile for the sun-arc picture; missing on trips saved before it existed. */
   profile?: TripProfile | null;
+  /** The stops the group added (only a saved trip keeps them); put back on Otvoriť. */
+  stops?: TripStop[];
   savedAt: string;
   /** When the group said they went (Bol som tu); missing while still planned. */
   doneAt?: string;

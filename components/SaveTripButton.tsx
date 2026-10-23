@@ -1,5 +1,6 @@
 "use client";
 
+import { useTripStops } from "@/lib/tripStops";
 import { useState } from "react";
 import Link from "next/link";
 import type { BBox, LatLng } from "@/lib/types";
@@ -79,6 +80,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
   const { start } = useUserLocation();
   const { travel } = useTripSettings();
   const { plan, date, time, hikeMin, driveMin, route, transit, fixed, withKids, loading } = tripPlan;
+  const { stops } = useTripStops(slug);
   const [status, setStatus] = useState<Status>("idle");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [askShare, setAskShare] = useState(false);
@@ -112,6 +114,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
       fixed,
       sun,
       profile,
+      stops,
       savedAt: new Date().toISOString(),
       offline: "pending",
     });
