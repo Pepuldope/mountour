@@ -39,6 +39,8 @@ def osm_xml(two_routes=False):
     node(150, 48.1855, 17.0908)
     node(8, 48.1855, 17.0935, amenity="restaurant", name="Bufet Test")
     ways.append('<way id="1001" version="1"><nd ref="105"/><nd ref="150"/><nd ref="8"/><tag k="highway" v="path"/></way>')
+    # a café 170 m off the trail on no way at all (just over the 150 m of "on the walk")
+    node(9, 48.18832, 17.08734, amenity="cafe", name="Kaviareň na skale")
     # gorge loop in the Slovenský raj box: start guidepost -> one-way gorge up -> waterfall, back by a forest track
     for k in range(6):
         node(200 + k, 48.930 + 0.002 * k, 20.300)
@@ -147,6 +149,7 @@ def test_end_to_end(tmp_path):
     pois = {p["name"]: p for p in json.loads((tmp_path / "public" / "data" / "trips" / "testovaci-pin.json").read_text())["pois"]}
     assert "detour_min" not in pois["Vyhliadka"]
     assert pois["Bufet Test"]["kind"] == "obcerstvenie" and 10 <= pois["Bufet Test"]["detour_min"] <= 15
+    assert 5 <= pois["Kaviareň na skale"]["detour_min"] <= 10
 
     # the gorge is one-way, so the waterfall trip is a loop with the ladder fee rule
     falls = next(t for t in index["trips"] if t["destination"]["name"] == "Závojový vodopád")

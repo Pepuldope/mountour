@@ -29,6 +29,8 @@ GORGE_TOP_MAX_ELE = 1300  # m; a valley reaching higher is a mountain valley  # 
 SHORT_LABEL = "Krátko od auta"  # a car park by the goal: look round the castle, no hike
 SHORT_KINDS = {"hrad", "jaskyna", "vodopad", "vyhliadka", "pleso", "ine"}
 DETOUR_KINDS = {"vyhliadka", "hrad", "chata", "obcerstvenie"}  # worth a side trip; springs and playgrounds are not
+DETOUR_SNAP_M = 300  # a side-trip sight this far from any way still counts, walked cross-country
+OFF_PATH = 1.5  # cross-country metres count this much more than a path
 VERY_FAMOUS = 12  # every Tatra peak has a few (Polish, German); this many is a household name
 
 
@@ -457,7 +459,8 @@ class TripBuilder:
         for i in sorted(hits):
             f, kind = self.poi_feats[i], self.poi_kinds[i]
             if kind in DETOUR_KINDS and f.osm not in on and f.name:
-                node = g.snap(f.lat, f.lon, 80)
+                # Viewpoints are often a rock off the path: snap to the nearest way and walk the rest.
+                node = g.snap(f.lat, f.lon, DETOUR_SNAP_M)
                 if node is not None:
                     cands.append((f, kind, node))
         if not cands:
@@ -467,9 +470,9 @@ class TripBuilder:
         found = []
         for f, kind, node in cands:
             d = dist[node]
-            if not np.isfinite(d) or d < self.t["poi_max_m"]:
+            if not np.isfinite(d):
                 continue
-            d += haversine(f.lat, f.lon, g.lat[node], g.lon[node])
+            d += OFF_PATH * haversine(f.lat, f.lon, g.lat[node], g.lon[node])
             climb = 0.0
             if self.dem:
                 e = self.dem.sample(np.array([f.lat, g.lat[src[node]]]), np.array([f.lon, g.lon[src[node]]]))
