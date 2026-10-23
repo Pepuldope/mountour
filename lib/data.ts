@@ -1,7 +1,7 @@
 import { distanceAlongM } from "@/lib/geo";
 import { formatWalk } from "@/lib/format";
 import { trailJoin } from "@/lib/trailJoin";
-import { stopsByWalk, walkFacts } from "@/lib/walkFacts";
+import { pickWalk, stopsByWalk, walkFacts } from "@/lib/walkFacts";
 import type { RouteWalk } from "@/lib/walkFacts";
 import type { TrailJoin } from "@/lib/trailJoin";
 import { closureRulesFor } from "@/lib/trips";
@@ -167,4 +167,10 @@ export function driveDestination(detail: TrailDetail): LatLng | null {
 /** Where sunrise/sunset are computed for a trail. */
 export function sunLocation(detail: TrailDetail): LatLng | null {
   return detail.parkingLots[0]?.location ?? trailCenter(detail.trail);
+}
+
+/** The walk the trip page and the home list count by car (lib/walkFacts.ts), without the kids pace. */
+export function walkFromCar(trip: TripSummary | TripDetail): number {
+  const detail = trailDetailFrom(trip);
+  return pickWalk(routeWalk(detail), false, detail.parkingLots.length > 0)?.min ?? trip.duration_min;
 }

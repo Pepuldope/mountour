@@ -1,6 +1,7 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { routeWalk, trailDetailFrom } from "@/lib/data";
-import type { TownDriveFile, TripDetail, TripIndex, TripSummary } from "@/lib/tripSchema";
+import { routeWalk, trailDetailFrom, walkFromCar } from "@/lib/data";
+import { summaryFromList } from "@/lib/trips";
+import type { TownDriveFile, TripDetail, TripIndex, TripList, TripSummary } from "@/lib/tripSchema";
 import type { TrailDetail } from "@/lib/types";
 import type { RouteWalk } from "@/lib/walkFacts";
 
@@ -52,6 +53,21 @@ export function getTripIndex(): Promise<TripIndex> {
     return i ?? EMPTY_INDEX;
   });
   return index;
+}
+
+let walks: Promise<Map<string, number>> | null = null;
+
+/**
+ * Each trip's walk by car as the trip page counts it (lib/walkFacts.ts, kids pace aside). Built from
+ * list.json, which carries where the parking joins the trail; index.json doesn't, and its bare
+ * trail times differed from the trip pages (Velká Javorina 1 h 45 vs 35 min).
+ */
+export function getCarWalks(): Promise<Map<string, number>> {
+  walks ??= readPublicJson<TripList>("data/trips/list.json").then((list) => {
+    if (!list) walks = null;
+    return new Map((list?.trips ?? []).map((t) => [t.slug, walkFromCar(summaryFromList(t))]));
+  });
+  return walks;
 }
 
 export async function getAllTrips(): Promise<TripSummary[]> {

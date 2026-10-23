@@ -8,7 +8,7 @@ import { formatKm, pickWalk, walkMinutes } from "@/lib/walkFacts";
 import { activeClosures } from "@/lib/closures";
 import { hikeMinutes } from "@/lib/dayPlan";
 import { addDaysIso, dayFit, dayInSentence, isoDate } from "@/lib/days";
-import { TOWN_EXACT_KM, estimateDriveMin, transitMinutes } from "@/lib/drive";
+import { TOWN_EXACT_KM, quickDriveMin, transitMinutes } from "@/lib/drive";
 import { DIFFICULTY_LABEL, GOAL_LABEL, GOAL_PLURAL, formatDurationShort } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR, POPULARITY_RAMP } from "@/lib/palette";
@@ -21,7 +21,7 @@ import { haversineM } from "@/lib/geo";
 import { plain, preparePlaces, searchPlaces } from "@/lib/placeSearch";
 import type { PlaceSearch, SearchIndexFile } from "@/lib/placeSearch";
 import { useTripSettings } from "@/lib/tripSettings";
-import { useTownDrives } from "@/lib/useDriveRoute";
+import { knownDriveMin, useTownDrives } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { FilterChips, KidsSwitch } from "@/components/FilterChips";
 import { MapExpandButton } from "@/components/MapExpandButton";
@@ -305,25 +305,23 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
 
   const { listedAll, noneFit } = useMemo(() => {
     const now = new Date();
-    // Getting from the start to its table town: added on top, and "~" when that is a long way.
+    // Far from its table town the time is a rougher guess: shown with "~".
     const town: LatLng | null = drives ? { lat: drives.town.lat, lon: drives.town.lon } : null;
     const toTownKm = start && town ? haversineM(start, town) / 1000 : null;
-    const accessMin = start && town && toTownKm! > 2 ? estimateDriveMin(start, town) : 0;
     const all = trails.flatMap((detail, i): TripCardItem[] => {
       const dest = destinations[i];
       const stop = nearestStop(detail);
-      const table = drives?.minutes[detail.trail.slug] ?? null;
       if (easier && !detail.trail.family_friendly) return [];
       if (goalFilter.length > 0 && !goalFilter.includes(detail.trail.goal ?? "ine")) return [];
       if (diffFilter.length > 0 && !diffFilter.includes(detail.trail.difficulty)) return [];
-      // Table missing (offline, or a trip newer than the table): a straight-line estimate beats a blank, marked with "~".
-      const estimate = table === null && driveStatus !== "loading" && start !== null && dest !== null;
-      const viaTown = table !== null ? table + accessMin : null;
-      // Far from the table town (e.g. Ždiar -> Belianska jaskyňa), the straight-line guess can be much closer.
-      const direct = viaTown !== null && toTownKm! > TOWN_EXACT_KM && dest ? estimateDriveMin(start!, dest) : null;
+      // The trip page's own route once it was opened from this start (the same number on both pages),
+      // else the trip page's first guess: the weekly table from the nearest town, or a straight-line estimate.
+      const exact = start && dest ? knownDriveMin(start, dest) : null;
+      const table = drives?.minutes[detail.trail.slug] ?? null;
+      const estimate = exact === null && table === null && driveStatus !== "loading" && start !== null && dest !== null;
       const carMin =
-        viaTown !== null ? Math.min(viaTown, direct ?? Infinity) : estimate ? estimateDriveMin(start!, dest!) : null;
-      const approx = estimate || (viaTown !== null && toTownKm! > TOWN_EXACT_KM);
+        exact ?? (start && dest && (table !== null || estimate) ? quickDriveMin(start, dest, table !== null ? drives : null, table) : null);
+      const approx = exact === null && (estimate || (table !== null && toTownKm! > TOWN_EXACT_KM));
       // By bus or train: an estimate from the road time (no timetables yet), so the day still counts the ride.
       // No stop near the trail: by car after all, like the trip page.
       const byBus = transit && stop !== null;
