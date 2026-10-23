@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { NOTE_MAX } from "@/lib/reviewLimits";
-import type { Fit } from "@/lib/reviewLimits";
+import type { Fit, Timing } from "@/lib/reviewLimits";
 
 const REVIEWER_KEY = "mountour-reviewer";
 
@@ -26,18 +25,25 @@ const FIT_LABEL: [Fit, string][] = [
   ["lahsie", "Ľahšie, ako sme čakali"],
 ];
 
+const TIMING_LABEL: [Timing, string][] = [
+  ["sedeli", "Sedeli"],
+  ["dlhsie", "Trvalo nám to dlhšie"],
+  ["kratsie", "Boli sme rýchlejší"],
+];
+
 const chip = (on: boolean) =>
   `rounded-full border px-3 py-1.5 text-[14px] font-semibold ${on ? "border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-contrast)]" : "border-[var(--border)] bg-[var(--card-bg)]"}`;
 
 /**
- * The quick review after a trip (Peter, 2026-10-22: under a minute): stars, did it match
- * the description, was it crowded, an optional note. A centred sheet over the page.
+ * The quick review after a trip (Peter, 2026-10-22: under a minute; 2026-10-23: four questions
+ * at most, only stars and choices, no typing): stars, did it match the description, did the
+ * plan's times hold, was it crowded. A centred sheet over the page.
  */
 export function ReviewSheet({ slug, name, onDone }: { slug: string; name: string; onDone: (sent: boolean) => void }) {
   const [stars, setStars] = useState(0);
   const [fit, setFit] = useState<Fit | null>(null);
   const [crowded, setCrowded] = useState<boolean | null>(null);
-  const [note, setNote] = useState("");
+  const [timing, setTiming] = useState<Timing | null>(null);
   const [state, setState] = useState<"idle" | "sending" | "error">("idle");
 
   async function send() {
@@ -46,7 +52,7 @@ export function ReviewSheet({ slug, name, onDone }: { slug: string; name: string
       const r = await fetch("/api/review", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug, reviewer: reviewerId(), stars, fit, crowded, note }),
+        body: JSON.stringify({ slug, reviewer: reviewerId(), stars, fit, crowded, timing }),
       });
       if (!r.ok) throw new Error(String(r.status));
       onDone(true);
@@ -88,6 +94,16 @@ export function ReviewSheet({ slug, name, onDone }: { slug: string; name: string
           </div>
         </div>
         <div className="flex flex-col gap-1.5">
+          <span className="text-[13px] font-bold text-[var(--muted)]">Časy z nášho plánu</span>
+          <div className="flex flex-wrap gap-1.5">
+            {TIMING_LABEL.map(([t, label]) => (
+              <button key={t} type="button" aria-pressed={timing === t} onClick={() => setTiming(timing === t ? null : t)} className={chip(timing === t)}>
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col gap-1.5">
           <span className="text-[13px] font-bold text-[var(--muted)]">Bolo tam veľa ľudí?</span>
           <div className="flex gap-1.5">
             {([true, false] as const).map((v) => (
@@ -97,17 +113,6 @@ export function ReviewSheet({ slug, name, onDone }: { slug: string; name: string
             ))}
           </div>
         </div>
-        <label className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-bold text-[var(--muted)]">Poznámka pre nás (nepovinné)</span>
-          <textarea
-            value={note}
-            maxLength={NOTE_MAX}
-            rows={2}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder="Napr. zatvorená chata, rozbitý chodník…"
-            className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-2.5 text-[15px]"
-          />
-        </label>
         {state === "error" && <p className="text-sm text-[var(--danger)]">Nepodarilo sa odoslať. Skúste to o chvíľu.</p>}
         <div className="flex justify-between gap-2">
           <button type="button" onClick={() => onDone(false)} className="rounded-full border border-[var(--border)] px-4 py-2.5 text-sm font-semibold">

@@ -44,10 +44,10 @@ export default function PrivacyPage() {
 
       <h2>Hodnotenia výletov</h2>
       <p>
-        Keď po výlete pošlete krátke hodnotenie (hviezdičky, či trasa sedela s popisom, či tam bolo veľa ľudí a
-        nepovinná poznámka), uložíme ho do našej databázy spolu s názvom výletu, dátumom a náhodným číslom, ktoré si
+        Keď po výlete pošlete krátke hodnotenie (hviezdičky, či trasa sedela s popisom, či sedeli časy z plánu a
+        či tam bolo veľa ľudí), uložíme ho do našej databázy spolu s názvom výletu, dátumom a náhodným číslom, ktoré si
         drží váš prehliadač, aby druhé hodnotenie toho istého výletu nahradilo prvé. Meno, e-mail ani IP adresu
-        neukladáme. Na stránke výletu ukazujeme len súčty, poznámky čítame iba my.
+        neukladáme. Na stránke výletu ukazujeme len súčty.
       </p>
 
       <h2>Prihláška na testovanie a spätná väzba</h2>
