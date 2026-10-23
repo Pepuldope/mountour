@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Barlow_Condensed, Bricolage_Grotesque, Figtree } from "next/font/google";
 import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/ServiceWorkerRegister";
+import { StaleCodeReload } from "@/components/StaleCodeReload";
 import { UserLocationProvider } from "@/lib/userLocation";
 import { TripSettingsProvider } from "@/lib/tripSettings";
 import { Analytics } from "@/components/Analytics";
@@ -62,6 +63,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <ServiceWorkerRegister />
+        <StaleCodeReload />
         <UserLocationProvider>
           <TripSettingsProvider>{children}</TripSettingsProvider>
         </UserLocationProvider>

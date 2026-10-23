@@ -212,10 +212,12 @@ let lastView: MapView | null = null;
  * Home, map first: every trip on one map (coloured lines over the
  * grey trail network), with search, a filter menu, and a list that follows the
  * map, nearest first. Picking a day adds "Vyrazte najneskôr"; trips that don't
- * fit that day (too late, closed, no stop by bus) are washed out after the rest.
+ * fit that day (too late or closed) are washed out after the rest. A trip with
+ * no stop near it is never washed out for that (Peter 2026-10-22): by bus, it is
+ * planned by car, as its trip page does.
  */
 function fitsDay(i: TripCardItem): boolean {
-  return !i.closed && !i.noStop && (!i.fit || i.fit.status === "fits");
+  return !i.closed && (!i.fit || i.fit.status === "fits");
 }
 
 export function HomeExplorer({ trails: initial, knownTowns }: Props) {
@@ -323,9 +325,11 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
         viaTown !== null ? Math.min(viaTown, direct ?? Infinity) : estimate ? estimateDriveMin(start!, dest!) : null;
       const approx = estimate || (viaTown !== null && toTownKm! > TOWN_EXACT_KM);
       // By bus or train: an estimate from the road time (no timetables yet), so the day still counts the ride.
-      const driveMin = transit ? (carMin !== null && stop ? transitMinutes(carMin) : null) : carMin;
+      // No stop near the trail: by car after all, like the trip page.
+      const byBus = transit && stop !== null;
+      const driveMin = byBus ? (carMin !== null ? transitMinutes(carMin) : null) : carMin;
       // The walk the trip page counts: from the parking (by car) or the stop (by train/bus), the walk to the trail and back included.
-      const walk = pickWalk(routeWalk(detail), transit, detail.parkingLots.length > 0);
+      const walk = pickWalk(routeWalk(detail), byBus, detail.parkingLots.length > 0);
       const hikeMin = walk ? walkMinutes(walk, withKids) : hikeMinutes(detail.trail.duration_min, withKids);
       if (timeFilter.length > 0 && !TIME_FILTERS.some((f) => timeFilter.includes(f.key) && hikeMin >= f.min && hikeMin <= f.max)) return [];
       if (farFilter !== null && start && driveMin !== null && driveMin > farFilter) return [];
@@ -344,7 +348,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
           distanceM: start && th ? haversineM(start, th.location) : null,
           fit: date && today && sun ? dayFit({ date, now, driveMin, hikeMin, location: sun }) : null,
           closed: date !== null && activeClosures(detail.closures, date).length > 0,
-          stop: transit ? stop : null,
+          stop: byBus ? stop : null,
           nearStop: stop,
           noStop: transit && !stop,
         },
@@ -354,10 +358,10 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
       const key = (i: TripCardItem) => i.carMin ?? (i.distanceM ?? Infinity) / 1000;
       all.sort((a, b) => key(a) - key(b));
     }
-    const out = (i: TripCardItem) => i.closed || i.noStop;
+    const out = (i: TripCardItem) => i.closed;
     const open = all.filter((i) => !out(i));
     const fitting = open.filter(fitsDay);
-    // Trips the day is too short for, then closed ones and ones with no stop, stay on the map and in
+    // Trips the day is too short for, then closed ones, stay on the map and in
     // the list, washed out, after the ones that fit; so a search for Rysy in winter still finds it.
     const late = open.filter((i) => !fitsDay(i));
     const noneFit = fitting.length === 0 && open.length > 0;

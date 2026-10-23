@@ -37,11 +37,10 @@ export function TripFacts({ loop, difficulty, familyFriendly }: Props) {
           <span className="ml-0.5 rounded-full bg-[var(--warn-bg)] px-2 py-0.5 font-sans text-[12px] font-bold text-[var(--warn)]">+{Math.round((KIDS_PACE - 1) * 100)} % s deťmi</span>
         )}
       </span>
-      <span className="font-sans text-[13px] font-medium text-[var(--muted)]">{DIFFICULTY_LABEL[difficulty].toLowerCase()}</span>
+      <span className="font-sans text-[13px] font-medium text-[var(--muted)]">{DIFFICULTY_LABEL[difficulty].toLowerCase()} obtiažnosť</span>
       {familyFriendly && <span className="font-sans text-[13px] font-semibold text-[var(--ok)]">vhodné pre deti</span>}
-      {(walk.skipped || walk.approachMin > 0) && (
-        <span className="w-full font-sans text-[13px] text-[var(--muted)]">{factsNote(walk.skipped, transit)}</span>
-      )}
+      {/* Only when the walk is shorter than the route's own start; "Aj s chôdzou…" said nothing (Peter, 2026-10-22). */}
+      {walk.skipped && <span className="w-full font-sans text-[13px] text-[var(--muted)]">{skippedNote(transit)}</span>}
     </p>
   );
 }
@@ -49,8 +48,7 @@ export function TripFacts({ loop, difficulty, familyFriendly }: Props) {
 /** Words next to a number: what it counts. */
 const small = "font-sans text-[12px] font-semibold text-[var(--muted)]";
 
-/** Why the walk differs from the route from its official start, in one line. */
-function factsNote(skipped: boolean, transit: boolean): string {
-  if (skipped) return transit ? "Zastávka je priamo pri trase, kúsok pod ňou nejdete." : "Parkovisko je priamo pri trase, kúsok pod ním nejdete.";
-  return `Aj s chôdzou ${transit ? "od zastávky" : "od parkoviska"} k trase a späť.`;
+/** The stop or parking sits on the trail, so the walk skips the bit below it. */
+function skippedNote(transit: boolean): string {
+  return transit ? "Zastávka je priamo pri trase, kúsok pod ňou nejdete." : "Parkovisko je priamo pri trase, kúsok pod ním nejdete.";
 }

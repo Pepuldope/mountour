@@ -11,6 +11,10 @@ const CACHE_PREFIX = "mountour-trip-";
 // the saved-trips page. Shared by every trip, so deleting one trip keeps them.
 const STATIC_CACHE = "mountour-static";
 const SHELL_URLS = ["/ulozene"];
+// Build assets met while browsing (not saved with a trip). Each deploy brings new
+// ones, so keep only the newest MAX_SEEN: a few builds' worth (one is ~40 files).
+const SEEN_CACHE = "mountour-seen";
+const MAX_SEEN = 200;
 
 self.addEventListener("install", () => {
   self.skipWaiting();
@@ -85,8 +89,8 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(req.url);
 
-  // Build assets are content-hashed: cache-first, and keep every one we see so a
-  // saved trip page can still hydrate offline.
+  // Build assets are content-hashed: cache-first, and keep the recent ones we see
+  // so a saved trip page can still hydrate offline (its own are saved with it).
   if (url.origin === self.location.origin && url.pathname.startsWith("/_next/static/")) {
     event.respondWith(
       (async () => {
@@ -94,8 +98,14 @@ self.addEventListener("fetch", (event) => {
         if (hit) return hit;
         const res = await fetch(req);
         if (res.ok) {
-          const cache = await caches.open(STATIC_CACHE);
-          cache.put(req, res.clone());
+          const copy = res.clone();
+          event.waitUntil(
+            (async () => {
+              const cache = await caches.open(SEEN_CACHE);
+              await cache.put(req, copy);
+              await trim(cache, MAX_SEEN);
+            })().catch(() => {})
+          );
         }
         return res;
       })()
@@ -148,6 +158,12 @@ self.addEventListener("fetch", (event) => {
     })()
   );
 });
+
+/** Drop the oldest entries (keys() lists them in the order they were stored). */
+async function trim(cache, max) {
+  const keys = await cache.keys();
+  for (let i = 0; i < keys.length - max; i++) await cache.delete(keys[i]);
+}
 
 /** Map pieces at fixed URLs (tiles, fonts, sprites): a saved copy never goes stale. */
 function isImmutable(url) {
