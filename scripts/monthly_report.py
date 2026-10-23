@@ -44,7 +44,7 @@ def rows_of(path: str | None) -> tuple[list, str | None]:
 
 
 def event_totals(rows: list, month: str) -> dict:
-    t = {"starts": 0, "saved": 0, "sent": 0, "sent_fast": 0, "friend_opens": 0, "navigations": 0}
+    t = {"starts": 0, "saved": 0, "sent": 0, "sent_fast": 0, "friend_opens": 0, "navigations": 0, "plus_want": 0, "plus_no": 0}
     for r in rows:
         if r.get("month") != month:
             continue
@@ -61,6 +61,8 @@ def event_totals(rows: list, month: str) -> dict:
             t["friend_opens"] += n
         elif name == "nav_open":
             t["navigations"] += n
+        elif name in ("plus_want", "plus_no"):
+            t[name] += n
     return t
 
 

@@ -15,12 +15,14 @@ export type AnalyticsEvent =
   | "gpx_download" // "Stiahnuť GPX trasu" tapped
   | "nav_open" // hand-off to Google Maps / a map app
   | "transit_open" // cp.sk link opened
-  | "tester_signup_open"; // "Chcem testovať" footer link tapped
+  | "tester_signup_open" // "Chcem testovať" footer link tapped
+  | "plus_want" // "Chcel by som to" on /plus (MounTour+ price test)
+  | "plus_no"; // "Za túto cenu nie" on /plus
 
 type EventData = Record<string, string | number | boolean>;
 
 /** Also added to our own monthly totals (app/api/event, lib/eventCounts.ts), since Umami's free plan has no export. */
-const KEPT: ReadonlySet<AnalyticsEvent> = new Set(["start_set", "trip_saved", "share_sent", "shared_open", "nav_open"]);
+const KEPT: ReadonlySet<AnalyticsEvent> = new Set(["start_set", "trip_saved", "share_sent", "shared_open", "nav_open", "plus_want", "plus_no"]);
 
 declare global {
   interface Window {
