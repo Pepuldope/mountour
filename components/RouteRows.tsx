@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { formatDuration } from "@/lib/format";
 import type { RouteBrief } from "@/lib/tripSchema";
 import { useTripSettings } from "@/lib/tripSettings";
-import { formatKm, pickWalk, walkMinutes } from "@/lib/walkFacts";
+import { formatKm, isClearlyShorter, pickWalk, walkMinutes } from "@/lib/walkFacts";
 import type { RouteWalk } from "@/lib/walkFacts";
 import { useTripAccess } from "@/components/TripAccess";
 import { setHoveredRoute, useHoveredRoute } from "@/lib/routeHover";
@@ -74,4 +74,39 @@ export function RouteRows({ routes, at, walks }: { routes: RouteBrief[]; at: num
       </Link>
     </li>
   ));
+}
+
+/**
+ * A clearly shorter way to the same place, said out loud above the (folded) route list: a 4 h main
+ * route scared people off places with a short way up (Peter, 2026-10-23). By car, only routes with parking.
+ */
+export function ShorterRouteHint({ routes, at, walks }: { routes: RouteBrief[]; at: number; walks: Record<string, RouteWalk> }) {
+  const { travel } = useTripSettings();
+  const numbers = useRouteNumbers(routes, walks, routes[at]?.slug ?? null);
+  const mine = numbers[at]?.min;
+  let best = -1;
+  routes.forEach((r, i) => {
+    if (i === at || mine === undefined || (travel !== "transit" && !r.parking) || (travel === "transit" && !r.transit)) return;
+    if (isClearlyShorter(numbers[i].min, mine) && (best < 0 || numbers[i].min < numbers[best].min)) best = i;
+  });
+  if (best < 0) return null;
+  const r = routes[best];
+  return (
+    <Link
+      href={`/trasa/${r.slug}`}
+      scroll={false}
+      className="flex items-center gap-3 rounded-[var(--radius-card)] border border-[var(--ok)] bg-[var(--ok-bg)] px-3.5 py-2.5 text-[var(--ok)]"
+    >
+      <Dot i={best} />
+      <span className="flex min-w-0 flex-col">
+        <span className="text-[15px] font-bold">Dá sa aj kratšie: {formatDuration(numbers[best].min)}</span>
+        <span className="text-[13px]">
+          {routeLabel(r)} · štart {r.start_name}
+        </span>
+      </span>
+      <span aria-hidden className="ml-auto shrink-0 text-lg font-bold">
+        ›
+      </span>
+    </Link>
+  );
 }

@@ -190,6 +190,18 @@ export interface TripSummary {
   route_label?: string;
   /** Main trips: how many routes lead to the place, this one included. */
   route_count?: number;
+  /**
+   * Home list only: a clearly shorter route to the same place, by car and by bus, as its own trip
+   * page counts the walk (scripts/list-joins.ts, shorterRoute in lib/walkFacts.ts). A 4 h card
+   * scared people off places with a 1 h way up (Peter, 2026-10-23).
+   */
+  shorter?: { car?: ShorterRoute; bus?: ShorterRoute };
+}
+
+/** Another route to the same place and its walk in minutes (from its parking or stop, there and back). */
+export interface ShorterRoute {
+  slug: string;
+  min: number;
 }
 
 export interface MarkingRun {

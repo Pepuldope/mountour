@@ -77,6 +77,8 @@ describe("trip data", () => {
       start: { ...trips[0].start, osm: null },
       parking: trips[0].parking && { ...trips[0].parking, osm: null },
       transit: trips[0].transit && { ...trips[0].transit, osm: null },
+      // Home list only (scripts/list-joins.ts).
+      shorter: full.shorter,
     });
   });
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { RouteBrief } from "@/lib/tripSchema";
 import type { RouteWalk } from "@/lib/walkFacts";
-import { RouteRows } from "@/components/RouteRows";
+import { RouteRows, ShorterRouteHint } from "@/components/RouteRows";
 import { Dot, routeLabel } from "@/components/routeBits";
 
 const plural = (n: number) => (n >= 5 ? `${n} ciest` : `${n} cesty`);
@@ -31,6 +31,7 @@ export function RouteChoice({ slug, destination, routes, walks }: Props) {
 
   return (
     <section aria-label={`Cesty k cieľu: ${destination}`} className="flex flex-col gap-2">
+      <ShorterRouteHint routes={routes} at={at} walks={walks} />
       {/* Phones: the map comparison is the main way to choose; the list folds into one row. */}
       <div className="overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] lg:hidden">
         <details className="group">

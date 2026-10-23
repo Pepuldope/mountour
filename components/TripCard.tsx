@@ -17,6 +17,8 @@ export interface TripCardItem {
   detail: TrailDetail;
   /** Walking time for this group (kids pace applied), from the parking or stop as the trip page counts it (lib/walkFacts.ts). */
   hikeMin: number;
+  /** The walk of a clearly shorter route to the same place (kids pace applied); null when there is none. */
+  shortMin: number | null;
   /** ...its length and climb. */
   walkM: number;
   ascentM: number;
@@ -210,6 +212,12 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
             {withKids && (
               <span className="text-[var(--warn)]" title="S deťmi: čas na trase o 30 % dlhší">
                 <UiIcon name="kid" size={14} />
+              </span>
+            )}
+            {/* A long main route hid a short way up (Peter, 2026-10-23: "4 hours scares people"). */}
+            {item.shortMin !== null && (
+              <span className="on-card-ok font-semibold text-[var(--ok)]" title="Kratšia cesta k tomu istému cieľu, na stránke výletu">
+                alebo {formatDurationShort(item.shortMin)}
               </span>
             )}
           </span>

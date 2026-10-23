@@ -273,14 +273,16 @@ export function TrailMap({
           type: "line",
           source: "drive",
           layout: { "line-cap": "round", "line-join": "round" },
-          paint: { "line-color": "#ffffff", "line-width": 7, "line-opacity": 0.8 },
+          paint: { "line-color": "#ffffff", "line-width": 6, "line-opacity": 0.7 },
         });
+        // The drive is how you get there, not the trip: one quiet grey line, so the walk stands out
+        // (Peter, 2026-10-23: drive, walk, trail and stop lines in four looks were too much).
         map.addLayer({
           id: "drive-line",
           type: "line",
           source: "drive",
-          layout: { "line-join": "round" },
-          paint: { "line-color": "#17213a", "line-width": 3.5, "line-dasharray": [2, 2] },
+          layout: { "line-cap": "round", "line-join": "round" },
+          paint: { "line-color": "#7b8496", "line-width": 3 },
         });
         // White band under the colour, like the painted KST mark.
         map.addLayer({
@@ -329,7 +331,7 @@ export function TrailMap({
           layout: { "line-cap": "round", "line-join": "round" },
           paint: { "line-color": "#17213a", "line-width": 3, "line-dasharray": [0.1, 1.8] },
         });
-        // Off the trail to an added stop and back: blue dashes, as the stop's ring.
+        // Off the trail to an added stop and back: on foot off the trail, so the same dots as the walk from the car.
         map.addLayer({
           id: "side-casing",
           type: "line",
@@ -341,8 +343,8 @@ export function TrailMap({
           id: "side-line",
           type: "line",
           source: "side",
-          layout: { "line-join": "round" },
-          paint: { "line-color": "#1769d1", "line-width": 3, "line-dasharray": [1.4, 1.1] },
+          layout: { "line-cap": "round", "line-join": "round" },
+          paint: { "line-color": "#17213a", "line-width": 3, "line-dasharray": [0.1, 1.8] },
         });
         // Wide invisible line so thin tracks are easy to tap.
         map.addLayer({

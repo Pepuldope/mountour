@@ -4,7 +4,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { routeWalk, trailDetailFrom } from "@/lib/data";
+import { routeWalk, shorterRoutes, trailDetailFrom } from "@/lib/data";
 import { summaryFromList } from "@/lib/trips";
 import type { TripDetail, TripList } from "@/lib/tripSchema";
 
@@ -19,6 +19,18 @@ describe("home list walks", () => {
       const home = routeWalk(trailDetailFrom(summaryFromList(item)));
       const page = routeWalk(trailDetailFrom(trip));
       if (JSON.stringify(home) !== JSON.stringify(page)) off.push(item.slug);
+    }
+    expect(off.slice(0, 10), `${off.length} trips`).toEqual([]);
+  });
+
+  it("offer the shorter route its own trip page counts (run npm run list-joins after a pipeline build)", () => {
+    const list = JSON.parse(readFileSync(join(DIR, "list.json"), "utf8")) as TripList;
+    const read = (slug: string) => JSON.parse(readFileSync(join(DIR, `${slug}.json`), "utf8")) as TripDetail;
+    const off: string[] = [];
+    for (const item of list.trips) {
+      const trip = read(item.slug);
+      const others = (trip.routes ?? []).filter((r) => r.slug !== item.slug).map((r) => trailDetailFrom(read(r.slug)));
+      if (JSON.stringify(item.shorter) !== JSON.stringify(shorterRoutes(trailDetailFrom(trip), others))) off.push(item.slug);
     }
     expect(off.slice(0, 10), `${off.length} trips`).toEqual([]);
   });
