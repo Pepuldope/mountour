@@ -1,11 +1,11 @@
 import { distanceAlongM } from "@/lib/geo";
 import { formatWalk } from "@/lib/format";
 import { trailJoin } from "@/lib/trailJoin";
-import { pickWalk, stopsByWalk, walkFacts } from "@/lib/walkFacts";
+import { isClearlyShorter, pickWalk, stopsByWalk, walkFacts } from "@/lib/walkFacts";
 import type { RouteWalk } from "@/lib/walkFacts";
 import type { TrailJoin } from "@/lib/trailJoin";
 import { closureRulesFor } from "@/lib/trips";
-import type { Parking, TransitStop as TripStop, TripDetail, TripSummary, WalkLine } from "@/lib/tripSchema";
+import type { Parking, ShorterRoute, TransitStop as TripStop, TripDetail, TripSummary, WalkLine } from "@/lib/tripSchema";
 import type { Closure, ParkingLot, TrailDetail, Trail, LatLng, TransitStop } from "@/lib/types";
 
 // The pages still speak the older TrailDetail shape; this adapts the static
@@ -69,6 +69,7 @@ function toTrail(t: TripSummary): Trail {
     goal_location: t.destination.location,
     goal_name: t.destination.name,
     rank: t.rank,
+    ...(t.shorter ? { shorter: t.shorter } : {}),
     bbox: { sw: { lat: s, lon: w }, ne: { lat: n, lon: e } },
     created_at: "",
   };
@@ -173,4 +174,25 @@ export function sunLocation(detail: TrailDetail): LatLng | null {
 export function walkFromCar(trip: TripSummary | TripDetail): number {
   const detail = trailDetailFrom(trip);
   return pickWalk(routeWalk(detail), false, detail.parkingLots.length > 0)?.min ?? trip.duration_min;
+}
+
+/**
+ * The quickest other route to the same place, by car (routes with parking) and by bus, when it is
+ * clearly shorter than this one's walk as the trip pages count both (home list: scripts/list-joins.ts).
+ */
+export function shorterRoutes(main: TrailDetail, others: TrailDetail[]): TripSummary["shorter"] {
+  const pick = (bus: boolean): ShorterRoute | undefined => {
+    const mine = pickWalk(routeWalk(main), bus, main.parkingLots.length > 0)?.min;
+    if (mine === undefined) return undefined;
+    let best: ShorterRoute | undefined;
+    for (const o of others) {
+      const w = routeWalk(o);
+      const f = bus ? w.bus : o.parkingLots.length > 0 ? w.car : null;
+      if (f && isClearlyShorter(f.min, mine) && (!best || f.min < best.min)) best = { slug: o.trail.slug, min: f.min };
+    }
+    return best;
+  };
+  const car = pick(false);
+  const bus = pick(true);
+  return car || bus ? { ...(car ? { car } : {}), ...(bus ? { bus } : {}) } : undefined;
 }

@@ -329,7 +329,11 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
       // The walk the trip page counts: from the parking (by car) or the stop (by train/bus), the walk to the trail and back included.
       const walk = pickWalk(routeWalk(detail), byBus, detail.parkingLots.length > 0);
       const hikeMin = walk ? walkMinutes(walk, withKids) : hikeMinutes(detail.trail.duration_min, withKids);
-      if (timeFilter.length > 0 && !TIME_FILTERS.some((f) => timeFilter.includes(f.key) && hikeMin >= f.min && hikeMin <= f.max)) return [];
+      // A clearly shorter route to the same place (its own trip page): the place fits a short-walk filter through it.
+      const short = detail.trail.shorter?.[byBus ? "bus" : "car"];
+      const shortMin = short ? hikeMinutes(short.min, withKids) : null;
+      const fitsTime = (m: number | null) => m !== null && TIME_FILTERS.some((f) => timeFilter.includes(f.key) && m >= f.min && m <= f.max);
+      if (timeFilter.length > 0 && !fitsTime(hikeMin) && !fitsTime(shortMin)) return [];
       if (farFilter !== null && start && driveMin !== null && driveMin > farFilter) return [];
       const th = primaryTrailhead(detail);
       const sun = sunLocation(detail);
@@ -337,6 +341,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
         {
           detail,
           hikeMin,
+          shortMin,
           walkM: walk?.m ?? detail.trail.distance_m,
           ascentM: walk?.ascentM ?? detail.trail.ascent_m,
           driveMin,

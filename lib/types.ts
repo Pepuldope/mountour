@@ -53,6 +53,8 @@ export interface Trail {
   /** Main waymark colour; optional until the OSM pipeline fills it. */
   marking?: TrailMarking | null;
   gpx_path: string | null;
+  /** A clearly shorter route to the same place (home list only, lib/tripSchema.ts). */
+  shorter?: { car?: { slug: string; min: number }; bus?: { slug: string; min: number } };
   bbox: BBox | null;
   created_at: string;
 }

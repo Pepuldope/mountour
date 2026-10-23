@@ -75,3 +75,12 @@ export function pickWalk(w: RouteWalk | undefined, transit: boolean, parking: bo
   if (!w) return null;
   return (transit || !parking ? w.bus : w.car) ?? w.car ?? w.bus;
 }
+
+/** Only a route at least this much shorter counts as "shorter" (minutes and share of the walk). */
+const SHORTER_MIN = 20;
+const SHORTER_SHARE = 0.75;
+
+/** Whether a walk of `alt` minutes is worth offering instead of `main`. */
+export function isClearlyShorter(alt: number, main: number): boolean {
+  return alt <= main - SHORTER_MIN && alt <= main * SHORTER_SHARE;
+}

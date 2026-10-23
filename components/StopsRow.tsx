@@ -70,7 +70,7 @@ export function StopsRow({
 /** Stop on the way there, back, or both times (a there-and-back walk passes each place twice). */
 export function WaySwitch({ name, way, onPick }: { name: string; way: StopWay | undefined; onPick: (way: StopWay) => void }) {
   return (
-    <span role="group" aria-label={`Kedy sa zastavíte: ${name}`} className="inline-flex rounded-full bg-[var(--segment-bg)] p-0.5 text-[12px] font-semibold">
+    <span role="group" aria-label={`Kedy sa zastavíte: ${name}`} className="inline-flex rounded-full bg-[var(--segment-bg)] p-1 text-[14px] font-semibold">
       {WAYS.map(([w, label]) => {
         const on = (way ?? "tam") === w;
         return (
@@ -79,7 +79,7 @@ export function WaySwitch({ name, way, onPick }: { name: string; way: StopWay | 
             type="button"
             aria-pressed={on}
             onClick={() => onPick(w)}
-            className={`rounded-full px-2.5 py-0.5 focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${on ? "bg-[var(--card-bg)] text-[var(--foreground)] shadow-sm" : "text-[var(--muted)]"}`}
+            className={`min-h-9 min-w-14 rounded-full px-3.5 py-1.5 focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${on ? "bg-[var(--card-bg)] text-[var(--foreground)] shadow-sm" : "text-[var(--muted)]"}`}
           >
             {label}
           </button>
