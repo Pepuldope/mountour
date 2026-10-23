@@ -4,8 +4,8 @@ import { getDb } from "@/lib/d1";
 // trip and browser: the browser sends a random id it keeps, so a second review
 // replaces the first. Nothing about the person: no name, no address, no IP.
 
-import { FITS, NOTE_MAX } from "@/lib/reviewLimits";
-import type { Fit } from "@/lib/reviewLimits";
+import { FITS, NOTE_MAX, TIMINGS } from "@/lib/reviewLimits";
+import type { Fit, Timing } from "@/lib/reviewLimits";
 
 export interface ReviewIn {
   slug: string;
@@ -13,6 +13,9 @@ export interface ReviewIn {
   stars: number;
   fit: Fit | null;
   crowded: boolean | null;
+  /** How the plan's times held up; older reviews have none. */
+  timing: Timing | null;
+  /** No longer asked (Peter 2026-10-23: choices only); still accepted from older pages. */
   note: string;
 }
 
@@ -32,12 +35,13 @@ const REVIEWER = /^[a-z0-9-]{8,64}$/;
 export function parseReview(body: unknown): ReviewIn | null {
   if (!body || typeof body !== "object") return null;
   const b = body as Record<string, unknown>;
-  const { slug, reviewer, stars, fit, crowded, note } = b;
+  const { slug, reviewer, stars, fit, crowded, timing, note } = b;
   if (typeof slug !== "string" || !SLUG.test(slug)) return null;
   if (typeof reviewer !== "string" || !REVIEWER.test(reviewer)) return null;
   if (typeof stars !== "number" || !Number.isInteger(stars) || stars < 1 || stars > 5) return null;
   if (fit !== null && fit !== undefined && !FITS.includes(fit as Fit)) return null;
   if (crowded !== null && crowded !== undefined && typeof crowded !== "boolean") return null;
+  if (timing !== null && timing !== undefined && !TIMINGS.includes(timing as Timing)) return null;
   if (note !== undefined && typeof note !== "string") return null;
   return {
     slug,
@@ -45,11 +49,14 @@ export function parseReview(body: unknown): ReviewIn | null {
     stars,
     fit: (fit as Fit | undefined) ?? null,
     crowded: (crowded as boolean | undefined) ?? null,
+    timing: (timing as Timing | undefined) ?? null,
     note: (note ?? "").trim().slice(0, NOTE_MAX),
   };
 }
 
-const SCHEMA = `CREATE TABLE IF NOT EXISTS review (slug TEXT NOT NULL, reviewer TEXT NOT NULL, stars INTEGER NOT NULL, fit TEXT, crowded INTEGER, note TEXT NOT NULL, at TEXT NOT NULL, PRIMARY KEY (slug, reviewer)) WITHOUT ROWID`;
+const SCHEMA = `CREATE TABLE IF NOT EXISTS review (slug TEXT NOT NULL, reviewer TEXT NOT NULL, stars INTEGER NOT NULL, fit TEXT, crowded INTEGER, note TEXT NOT NULL, at TEXT NOT NULL, timing TEXT, PRIMARY KEY (slug, reviewer)) WITHOUT ROWID`;
+// Tables made before the timing question get the column once; "duplicate column" afterwards is fine.
+const ADD_TIMING = `ALTER TABLE review ADD COLUMN timing TEXT`;
 let ready: Promise<unknown> | null = null;
 
 async function db() {
@@ -58,6 +65,7 @@ async function db() {
   ready ??= d
     .prepare(SCHEMA)
     .run()
+    .then(() => d.prepare(ADD_TIMING).run().catch(() => undefined))
     .catch((err) => {
       ready = null;
       throw err;
@@ -72,10 +80,10 @@ export async function saveReview(r: ReviewIn, at: Date): Promise<boolean> {
   if (!d) return false;
   await d
     .prepare(
-      `INSERT INTO review (slug, reviewer, stars, fit, crowded, note, at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
-       ON CONFLICT (slug, reviewer) DO UPDATE SET stars = ?3, fit = ?4, crowded = ?5, note = ?6, at = ?7`
+      `INSERT INTO review (slug, reviewer, stars, fit, crowded, note, at, timing) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)
+       ON CONFLICT (slug, reviewer) DO UPDATE SET stars = ?3, fit = ?4, crowded = ?5, note = ?6, at = ?7, timing = ?8`
     )
-    .bind(r.slug, r.reviewer, r.stars, r.fit, r.crowded === null ? null : Number(r.crowded), r.note, at.toISOString())
+    .bind(r.slug, r.reviewer, r.stars, r.fit, r.crowded === null ? null : Number(r.crowded), r.note, at.toISOString(), r.timing)
     .run();
   return true;
 }

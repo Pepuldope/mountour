@@ -59,7 +59,8 @@ jobs:
           # Review totals per trip (no notes, no reviewer ids: reports/ is public). The table appears with the first review.
           npx wrangler d1 execute "$DB" --remote --json --command "
             SELECT slug, COUNT(*) AS n, ROUND(AVG(stars), 2) AS stars, SUM(fit = 'popis') AS popis, SUM(fit = 'tazsie') AS tazsie,
-                   SUM(fit = 'lahsie') AS lahsie, SUM(crowded = 1) AS crowded FROM review GROUP BY slug" > build/reviews.json || echo '[]' > build/reviews.json
+                   SUM(fit = 'lahsie') AS lahsie, SUM(crowded = 1) AS crowded, SUM(timing = 'sedeli') AS times_held,
+                   SUM(timing = 'dlhsie') AS took_longer, SUM(timing = 'kratsie') AS took_shorter FROM review GROUP BY slug" > build/reviews.json || echo '[]' > build/reviews.json
 
       - name: Make the report
         env:
