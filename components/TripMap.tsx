@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
 import { haversineM, nearestOnPath } from "@/lib/geo";
-import { useDriveRoute, useWalkRoute } from "@/lib/useDriveRoute";
+import { useDriveRoute, useWalkRoute, useWalkRoutes } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { useHomeStop } from "@/lib/useHomeStop";
 import { fetchTrack } from "@/lib/gpx";
@@ -132,6 +132,22 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
     ];
   }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks]);
 
+  // Side trips to the stops the group added: from where they leave the trail, along the paths.
+  const sidePairs = useMemo<[LatLng, LatLng][]>(() => {
+    if (points.length < 2) return [];
+    const ll = points.map(([lat, lon]) => ({ lat, lon }));
+    return pois.flatMap((p) => {
+      if (p.detour_min === null || !addedStops.some((s) => s.id === p.id)) return [];
+      const hit = nearestOnPath(ll, p.location);
+      return hit ? [[hit.point, p.location] as [LatLng, LatLng]] : [];
+    });
+  }, [points, pois, addedStops]);
+  const sideRoutes = useWalkRoutes(sidePairs);
+  const sideLegs = useMemo(
+    () => sidePairs.map(([from, to], i) => [pair(from), ...(sideRoutes[i]?.points ?? []), pair(to)]),
+    [sidePairs, sideRoutes]
+  );
+
   const goal = trail.goal_location;
   const goalKind = trail.goal ?? "ine";
   const markers = useMemo<MapMarker[]>(
@@ -245,6 +261,7 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
       bounds={bounds}
       driveLeg={driveLeg}
       walkLeg={walkLeg}
+      sideLegs={sideLegs}
       network={NETWORK_ON ? "context" : undefined}
       onSelectTrail={(slug) => {
         if (others.some((o) => o.slug === slug)) router.push(`/trasa/${slug}`, { scroll: false });

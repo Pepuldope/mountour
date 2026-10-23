@@ -22,6 +22,20 @@ export interface TripProfile {
   goalName: string;
   goalKind: DestinationKind;
   loop: boolean;
+  /**
+   * Where the walk passes each place on the trip page (its Poi id), as a share of the walking time:
+   * on the way there, and on the way back for "tam-a-spat" (null on a loop). Missing on old saved trips.
+   */
+  places?: { id: string; out: number; back: number | null }[];
+  /** Stops the group added, as stretches of the day spent standing (filled by withStops). */
+  pauses?: { from: number; to: number; name: string }[];
+}
+
+/** A stop laid on the walk: where it is (share of the walking time) and how long it takes. */
+export interface PauseAt {
+  at: number;
+  min: number;
+  name: string;
 }
 
 /** About this many points is plenty for a 360 px wide picture. */
@@ -84,12 +98,26 @@ export function buildProfile(trip: TripDetail): TripProfile | null {
   // A point carries the colour of the stretch just walked to reach it (the first one, of the first stretch).
   const colourOf = (k: number) => segColour[k === 0 ? 0 : Math.min(order[k], order[k - 1])];
 
+  // Each place by the path vertex nearest to it (side trips leave the walk about there).
+  const last2 = order.length - 1;
+  const places = (trip.pois ?? []).map((poi, i) => {
+    let best = 0;
+    let bestM = Infinity;
+    for (let j = 0; j < path.length; j++) {
+      const m = metres(path[j], [poi.location.lon, poi.location.lat, null]);
+      if (m < bestM) [best, bestM] = [j, m];
+    }
+    // The ids lib/data.ts gives the trip page's places.
+    return { id: `${trip.slug}:poi:${i}`, out: cost[best] / total, back: loop ? null : cost[last2 - best] / total };
+  });
+
   return {
     points: kept.map((k) => ({ ele: ele[order[k]], at: cost[k] / total, colour: colourOf(k) })),
     goalIndex: kept.indexOf(goalAt),
     goalName: trip.destination.name,
     goalKind: trip.destination.kind,
     loop,
+    places,
   };
 }
 
@@ -130,7 +158,9 @@ export function trimProfile(profile: TripProfile, out: number, back: number): Tr
   );
   const goalAt = (goal.at - from) / (to - from);
   const goalIndex = Math.max(0, points.findIndex((p) => p.at >= goalAt - 1e-9));
-  return { ...profile, points, goalIndex };
+  const keep = (at: number) => Math.min(1, Math.max(0, (at - from) / (to - from)));
+  const places = profile.places?.map((p) => ({ ...p, out: keep(p.out), back: p.back === null ? null : keep(p.back) }));
+  return { ...profile, points, goalIndex, places };
 }
 
 /**
@@ -143,5 +173,50 @@ export function withApproach(profile: TripProfile, share: number): TripProfile {
   const scaled = pts.map((p) => ({ ...p, at: share + p.at * (1 - 2 * share) }));
   const first = { ele: pts[0].ele, at: 0, colour: null };
   const last = { ele: pts[pts.length - 1].ele, at: 1, colour: null };
-  return { ...profile, points: [first, ...scaled, last], goalIndex: profile.goalIndex + 1 };
+  const move = (at: number) => share + at * (1 - 2 * share);
+  const places = profile.places?.map((p) => ({ ...p, out: move(p.out), back: p.back === null ? null : move(p.back) }));
+  return { ...profile, points: [first, ...scaled, last], goalIndex: profile.goalIndex + 1, places };
+}
+
+/**
+ * The profile with the added stops as level stretches where the walk stands still: `hikeMin` is the
+ * whole day on foot with the stops in, so the walking itself gets the rest of it.
+ */
+export function withStops(profile: TripProfile, stops: PauseAt[], hikeMin: number): TripProfile {
+  const sorted = stops.filter((s) => s.min > 0).sort((a, b) => a.at - b.at);
+  const stopShare = sorted.reduce((sum, s) => sum + s.min, 0) / Math.max(1, hikeMin);
+  if (!sorted.length || stopShare >= 0.95) return profile;
+  const walkShare = 1 - stopShare;
+  const pts = profile.points;
+  const eleAt = (at: number) => {
+    const i = pts.findIndex((p) => p.at >= at);
+    if (i <= 0) return pts[Math.max(0, i)].ele;
+    const a = pts[i - 1];
+    const b = pts[i];
+    return a.ele + ((b.ele - a.ele) * (at - a.at)) / (b.at - a.at || 1);
+  };
+  const points: ProfilePoint[] = [];
+  const pauses: NonNullable<TripProfile["pauses"]> = [];
+  let goalIndex = 0;
+  let next = 0;
+  // Share of the day already spent standing at earlier stops.
+  let stood = 0;
+  const standUntil = (reached: (at: number) => boolean, colour: ProfilePoint["colour"]) => {
+    for (; next < sorted.length && reached(sorted[next].at); next++) {
+      const s = sorted[next];
+      const from = s.at * walkShare + stood;
+      stood += s.min / Math.max(1, hikeMin);
+      const ele = eleAt(s.at);
+      points.push({ ele, at: from, colour }, { ele, at: s.at * walkShare + stood, colour: null });
+      pauses.push({ from, to: s.at * walkShare + stood, name: s.name });
+    }
+  };
+  pts.forEach((p, i) => {
+    standUntil((at) => at < p.at, p.colour);
+    if (i === profile.goalIndex) goalIndex = points.length;
+    points.push({ ...p, at: p.at * walkShare + stood });
+    // A stop right at this point (lunch at the goal): arrive first, then stand.
+    standUntil((at) => at <= p.at, null);
+  });
+  return { ...profile, points, goalIndex, pauses };
 }

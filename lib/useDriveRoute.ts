@@ -105,3 +105,26 @@ export function useWalkRoute(
   const { status, data } = useCachedJson<DriveRoute>(url);
   return { status, route: data };
 }
+
+/**
+ * Several short walks at once (the side trips to added stops): each pair's route, or null while it
+ * loads or when the router fails (the map then draws a straight line).
+ */
+export function useWalkRoutes(pairs: [LatLng, LatLng][]): (DriveRoute | null)[] {
+  const urls = pairs.map(([from, to]) => `/api/walk?from=${place(from)}&to=${place(to)}`);
+  const key = urls.join("|");
+  const [done, setDone] = useState<Record<string, DriveRoute | null>>({});
+  useEffect(() => {
+    let cancelled = false;
+    for (const url of key ? key.split("|") : []) {
+      load<DriveRoute>(url).then(
+        (route) => !cancelled && setDone((d) => ({ ...d, [url]: route })),
+        () => !cancelled && setDone((d) => ({ ...d, [url]: null }))
+      );
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [key]);
+  return useMemo(() => (key ? key.split("|") : []).map((u) => done[u] ?? null), [key, done]);
+}

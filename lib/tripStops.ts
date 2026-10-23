@@ -13,7 +13,14 @@ export interface TripStop {
   name: string;
   /** Side trip there and back plus the time spent there. */
   min: number;
+  /** On a there-and-back walk: stop on the way there, on the way back, or both times. Unset = there. */
+  way?: StopWay;
 }
+
+export type StopWay = "tam" | "spat" | "oboje";
+
+/** How many times the walk passes the stop. */
+export const visits = (s: TripStop) => (s.way === "oboje" ? 2 : 1);
 
 export const LUNCH: TripStop = { id: "obed", name: "Obed", min: 30 };
 
@@ -87,7 +94,7 @@ function subscribe(cb: () => void) {
 }
 
 export const stopsMinutes = (stops: TripStop[]) =>
-  stops.reduce((sum, s) => sum + s.min, 0);
+  stops.reduce((sum, s) => sum + s.min * visits(s), 0);
 
 export function useTripStops(slug: string | null) {
   const stops = useSyncExternalStore(
@@ -110,9 +117,18 @@ export function useTripStops(slug: string | null) {
     [slug],
   );
 
+  const setWay = useCallback(
+    (id: string, way: StopWay) => {
+      if (!slug) return;
+      const all = readAll();
+      write({ ...all, [slug]: (all[slug] ?? []).map((s) => (s.id === id ? { ...s, way } : s)) });
+    },
+    [slug],
+  );
+
   const has = useCallback(
     (id: string) => stops.some((s) => s.id === id),
     [stops],
   );
-  return { stops, toggle, has, minutes: stopsMinutes(stops) };
+  return { stops, toggle, setWay, has, minutes: stopsMinutes(stops) };
 }

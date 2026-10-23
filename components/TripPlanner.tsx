@@ -28,7 +28,8 @@ import { useTripAccess } from "@/components/TripAccess";
 import { WeatherReport, useTripWeather } from "@/components/WeatherBlock";
 import { TransitHandoff, TransitLegs } from "@/components/TransitBlock";
 import { TravelSwitch } from "@/components/TravelSwitch";
-import { GOAL_WORDS, trimProfile, withApproach } from "@/lib/tripProfile";
+import { GOAL_WORDS, trimProfile, withApproach, withStops } from "@/lib/tripProfile";
+import { LUNCH, useTripStops } from "@/lib/tripStops";
 import type { TripProfile } from "@/lib/tripProfile";
 
 interface Props extends ShareInfo {
@@ -78,7 +79,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
   // stretch below is skipped both ways.
   const baseHikeMin = onFoot.min;
   // The walk to the trail comes first and last, so the goal time counts it too.
-  const profile = useMemo(() => {
+  const walkProfile = useMemo(() => {
     const trail = fullProfile && skip ? trimProfile(fullProfile, skip.skip_out, skip.skip_back) : fullProfile;
     return trail && withApproach(trail, approachMin / Math.max(1, baseHikeMin));
   }, [fullProfile, skip, approachMin, baseHikeMin]);
@@ -91,8 +92,25 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
   const transit = transitAccess && !walking;
   const tripPlan = useTripPlan(sun, rideTo, baseHikeMin, transitAccess && stop?.mode === "vlak" ? stop.location : null, transitAccess, trip.slug, walking ? walkThere : null);
   const { plan, date, time, driveMin, roadMin, driveApprox, driveStatus, rail } = tripPlan;
+  // The stops the group added stand on the walk where it passes them (lunch at the goal).
+  const { stops } = useTripStops(trip.slug);
+  const profile = useMemo(() => {
+    if (!walkProfile || !stops.length) return walkProfile;
+    const goalAt = walkProfile.points[walkProfile.goalIndex].at;
+    const pauses = stops.flatMap((s) => {
+      if (s.id === LUNCH.id) return [{ at: goalAt, min: s.min, name: s.name }];
+      const place = walkProfile.places?.find((p) => p.id === s.id);
+      if (!place) return [];
+      const way = place.back === null ? "tam" : (s.way ?? "tam");
+      return [
+        ...(way !== "spat" ? [{ at: place.out, min: s.min, name: s.name }] : []),
+        ...(way !== "tam" && place.back !== null ? [{ at: place.back, min: s.min, name: s.name }] : []),
+      ];
+    });
+    return withStops(walkProfile, pauses, tripPlan.hikeMin);
+  }, [walkProfile, stops, tripPlan.hikeMin]);
   const [shared, setShared] = useState<SharedPlan | null>(null);
-  const weather = useTripWeather(plan, trailStart, goal, profile?.points[0]?.ele ?? null);
+  const weather = useTripWeather(plan, trailStart, goal, walkProfile?.points[0]?.ele ?? null);
   // The day strip marks the days in the forecast whose walk (same start time) gets rain, snow, fog or storms.
   const dayWeather = useMemo(
     () => (plan && weather.below ? badDays(weather.below, plan.hikeStart, plan.hikeEnd, dayStrip(new Date()).map((d) => d.iso)) : undefined),
@@ -298,7 +316,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
             <Step label={transit && stop ? "na zastávke" : hasDrive ? "pri aute" : "späť"} time={plan.hikeEnd} />
             {plan.segments[plan.segments.length - 1].kind === "drive-back" && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
-          <StopsRow slug={trip.slug} hasPlaces={hasPlaces} />
+          <StopsRow slug={trip.slug} hasPlaces={hasPlaces} loop={!!walkProfile?.loop} />
           <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} sunAt={sun} closures={closures} onPickDay={(iso) => update({ date: iso })} onPickTime={(time) => update({ time })} />
           {transit && <TransitLegs plan={plan} rail={rail} />}
           {transit && rail.status === "ok" && <p className="text-xs text-[var(--muted)]">Podľa cestovného poriadku vlakov, spoj si vyberiete nižšie.</p>}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildProfile, stepHours, trimProfile } from "./tripProfile";
+import { buildProfile, stepHours, trimProfile, withStops } from "./tripProfile";
 import type { TripDetail } from "./tripSchema";
 
 // Three points due north, ~111 m apart, climbing 100 m then flat.
@@ -59,5 +59,42 @@ describe("trimProfile", () => {
     expect(t.points[0].ele).toBeGreaterThan(500);
     expect(t.points[t.goalIndex].ele).toBe(600);
     expect(trimProfile(p, 0, 0)).toBe(p);
+  });
+});
+
+describe("places and stops", () => {
+  const trip = {
+    ...base,
+    slug: "vrch",
+    route: "tam-a-spat",
+    pois: [{ kind: "obcerstvenie", name: "Bufet", location: { lat: 49.001, lon: 19 }, osm: null }],
+  } as unknown as TripDetail;
+
+  it("finds where the walk passes a place, there and back", () => {
+    const p = buildProfile(trip)!;
+    expect(p.places).toHaveLength(1);
+    expect(p.places![0].id).toBe("vrch:poi:0");
+    expect(p.places![0].out).toBeCloseTo(p.points[1].at);
+    expect(p.places![0].back).toBeCloseTo(p.points[3].at);
+  });
+
+  it("stands still at a stop and moves the rest of the walk later", () => {
+    const p = buildProfile(trip)!;
+    // 60 min on foot, 30 of them at the buffet on the way back.
+    const s = withStops(p, [{ at: p.places![0].back!, min: 30, name: "Bufet" }], 60);
+    expect(s.pauses).toHaveLength(1);
+    expect(s.pauses![0].to - s.pauses![0].from).toBeCloseTo(0.5);
+    // Before the stop, the walk is squeezed into the walking half; the end is still the end.
+    expect(s.points[s.goalIndex].at).toBeCloseTo(p.points[p.goalIndex].at * 0.5);
+    expect(s.points[s.points.length - 1].at).toBeCloseTo(1);
+    const flat = s.points.filter((x) => x.at >= s.pauses![0].from - 1e-9 && x.at <= s.pauses![0].to + 1e-9);
+    expect(new Set(flat.map((x) => x.ele)).size).toBe(1);
+  });
+
+  it("puts a stop at the goal after arriving there", () => {
+    const p = buildProfile(trip)!;
+    const goalAt = p.points[p.goalIndex].at;
+    const s = withStops(p, [{ at: goalAt, min: 30, name: "Obed" }], 60);
+    expect(s.points[s.goalIndex].at).toBeCloseTo(s.pauses![0].from);
   });
 });
