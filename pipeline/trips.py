@@ -29,6 +29,7 @@ GORGE_TOP_MAX_ELE = 1300  # m; a valley reaching higher is a mountain valley  # 
 SHORT_LABEL = "Krátko od auta"  # a car park by the goal: look round the castle, no hike
 SHORT_KINDS = {"hrad", "jaskyna", "vodopad", "vyhliadka", "pleso", "ine"}
 DETOUR_KINDS = {"vyhliadka", "hrad", "chata", "obcerstvenie"}  # worth a side trip; springs and playgrounds are not
+VIEW_KINDS = {"vyhliadka", "hrad"}
 DETOUR_SNAP_M = 300  # a side-trip sight this far from any way still counts, walked cross-country
 OFF_PATH = 1.5  # cross-country metres count this much more than a path
 VERY_FAMOUS = 12  # every Tatra peak has a few (Polish, German); this many is a household name
@@ -446,6 +447,9 @@ class TripBuilder:
         detour_max_min there and back. They join `pois` with `detour_min`; returns how many."""
         full = trip.pop("_full", None)
         lim = self.t.get("detour_max_min", 30)
+        # A view or a castle is worth a steeper side trip than a buffet (Peter 2026-10-23).
+        lims = {k: self.t.get("detour_view_max_min", lim) if k in VIEW_KINDS else lim for k in DETOUR_KINDS}
+        lim = max(lims.values())
         if self.poi_tree is None or full is None or lim <= 0:
             return 0
         g = self.g
@@ -482,7 +486,7 @@ class TripBuilder:
                 e = self.dem.sample(np.array([f.lat, g.lat[start]]), np.array([f.lon, g.lon[start]]))
                 climb = abs(float(e[0] - e[1])) if np.isfinite(e).all() else 0.0
             minutes = din33466_minutes(2 * d, climb, climb)
-            if minutes <= lim:
+            if minutes <= lims[kind]:
                 found.append((minutes, dict(kind=kind, name=f.name, location=_loc(f.lat, f.lon), osm=f.osm,
                                             detour_min=max(5, int(round(minutes / 5)) * 5))))
         found.sort(key=lambda x: x[0])

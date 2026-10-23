@@ -149,6 +149,7 @@ trips:
   poi_max_m: 150
   # viewpoints, castles, huts and food off the walk, at most this many minutes there and back (Peter 2026-10-23)
   detour_max_min: 30
+  detour_view_max_min: 40  # viewpoints and castles
   detour_max: 6
 
 # Well-known places people expect to find. Every weekly report says what became of each one
