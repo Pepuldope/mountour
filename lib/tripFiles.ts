@@ -1,5 +1,5 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
-import { routeWalk, trailDetailFrom, walkFromCar } from "@/lib/data";
+import { driveDestination, routeWalk, trailDetailFrom, walkFromCar } from "@/lib/data";
 import { summaryFromList } from "@/lib/trips";
 import type { TownDriveFile, TripDetail, TripIndex, TripList, TripSummary } from "@/lib/tripSchema";
 import type { TrailDetail } from "@/lib/types";
@@ -55,6 +55,36 @@ export function getTripIndex(): Promise<TripIndex> {
   return index;
 }
 
+let list: Promise<TripList | null> | null = null;
+
+/** The home list (main routes only), read once per server instance. */
+function getList(): Promise<TripList | null> {
+  list ??= readPublicJson<TripList>("data/trips/list.json").then((l) => {
+    if (!l) list = null; // try again next time
+    return l;
+  });
+  return list;
+}
+
+let targets: Promise<{ slugs: string[]; points: [number, number][] }> | null = null;
+
+/** Where each home-list trip's drive ends (its parking, else its start), as the home list measures to it. */
+export function getDriveTargets(): Promise<{ slugs: string[]; points: [number, number][] }> {
+  targets ??= getList().then((l) => {
+    if (!l) targets = null;
+    const slugs: string[] = [];
+    const points: [number, number][] = [];
+    for (const t of l?.trips ?? []) {
+      const at = driveDestination(trailDetailFrom(summaryFromList(t)));
+      if (!at) continue;
+      slugs.push(t.slug);
+      points.push([at.lat, at.lon]);
+    }
+    return { slugs, points };
+  });
+  return targets;
+}
+
 let walks: Promise<Map<string, number>> | null = null;
 
 /**
@@ -63,9 +93,9 @@ let walks: Promise<Map<string, number>> | null = null;
  * trail times differed from the trip pages (Velká Javorina 1 h 45 vs 35 min).
  */
 export function getCarWalks(): Promise<Map<string, number>> {
-  walks ??= readPublicJson<TripList>("data/trips/list.json").then((list) => {
-    if (!list) walks = null;
-    return new Map((list?.trips ?? []).map((t) => [t.slug, walkFromCar(summaryFromList(t))]));
+  walks ??= getList().then((l) => {
+    if (!l) walks = null;
+    return new Map((l?.trips ?? []).map((t) => [t.slug, walkFromCar(summaryFromList(t))]));
   });
   return walks;
 }

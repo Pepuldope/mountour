@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { RateLimited, driveRoute, dropDeadEnd, finishDrive, knownTail, simplifyLine, walkRoute } from "./routing";
+import { RateLimited, driveMatrix, driveRoute, dropDeadEnd, finishDrive, knownTail, simplifyLine, walkRoute } from "./routing";
 import type { KnownTail, Pt } from "./routing";
 
 const road = { durationMin: 30, distanceM: 30000, points: [[48.0, 19.0], [49.0, 19.0]] as [number, number][] };
@@ -172,6 +172,30 @@ describe("driveRoute when the router can't answer", () => {
   it("keeps the router's own error when the fallback fails too", async () => {
     vi.stubGlobal("fetch", vi.fn(async (url: string) => new Response("{}", { status: url.includes("openrouteservice") ? 429 : 500 })));
     await expect(driveRoute("key", [48.4, 19.4], [48.41, 19.41], 1000)).rejects.toBeInstanceOf(RateLimited);
+    vi.unstubAllGlobals();
+  });
+});
+
+describe("driveMatrix", () => {
+  it("asks for one start to every place and gives minutes, null where no road reaches", async () => {
+    const fetchMock = vi.fn<typeof fetch>(async () => new Response(JSON.stringify({ durations: [[1830, null, 89.4]] })));
+    vi.stubGlobal("fetch", fetchMock);
+    const mins = await driveMatrix("key", [48.15, 17.11], [
+      [49.0, 19.0],
+      [48.5, 18.5],
+      [48.16, 17.12],
+    ]);
+    expect(mins).toEqual([31, null, 1]);
+    const body = JSON.parse(String(fetchMock.mock.calls[0][1]?.body));
+    expect(body.locations[0]).toEqual([17.11, 48.15]);
+    expect(body.sources).toEqual([0]);
+    expect(body.destinations).toEqual([1, 2, 3]);
+    vi.unstubAllGlobals();
+  });
+
+  it("fails rather than guess when the answer doesn't fit the places", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ durations: [[60]] }))));
+    await expect(driveMatrix("key", [48.15, 17.11], [[49, 19], [48, 18]])).rejects.toThrow();
     vi.unstubAllGlobals();
   });
 });
