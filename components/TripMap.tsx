@@ -112,14 +112,24 @@ export function TripMap({ detail, gpxUrl, others = [], loop = false }: Props) {
       }),
     [pois, addedStops, loop]
   );
-  const sidePairs = useMemo<[LatLng, LatLng][]>(() => {
+  // A place nearer the walk from the car (or the stop) than the trail leaves from that walk (Peter
+  // 2026-10-23: a buffet by the car park was reached via the trail start and back).
+  const sideFrom = useMemo(() => {
     if (points.length < 2) return [];
     const ll = points.map(([lat, lon]) => ({ lat, lon }));
-    return sideStops.flatMap(({ poi }) => {
-      const hit = nearestOnPath(ll, poi.location);
-      return hit ? [[hit.point, poi.location] as [LatLng, LatLng]] : [];
+    const walk = walkLeg?.map(([lat, lon]) => ({ lat, lon })) ?? [];
+    return sideStops.map(({ poi }) => {
+      const onTrail = nearestOnPath(ll, poi.location);
+      const onWalk = walk.length >= 2 ? nearestOnPath(walk, poi.location) : null;
+      return onWalk && (!onTrail || onWalk.distanceM < onTrail.distanceM)
+        ? { from: onWalk.point, offTrail: true }
+        : { from: onTrail?.point ?? ll[0], offTrail: false };
     });
-  }, [points, sideStops]);
+  }, [points, walkLeg, sideStops]);
+  const sidePairs = useMemo<[LatLng, LatLng][]>(
+    () => sideFrom.map(({ from }, k) => [from, sideStops[k].poi.location] as [LatLng, LatLng]),
+    [sideFrom, sideStops]
+  );
   const sideRoutes = useWalkRoutes(sidePairs);
   const sideLegs = useMemo(
     () => sidePairs.map(([from, to], i) => [pair(from), ...(sideRoutes[i]?.points ?? []), pair(to)]),
@@ -148,7 +158,8 @@ export function TripMap({ detail, gpxUrl, others = [], loop = false }: Props) {
       const cuts: { i: number; leg: [number, number][] }[] = [];
       sideStops.forEach(({ way }, k) => {
         const leg = sideLegs[k];
-        if (!leg) return;
+        // Off the walk to the trail: drawn from there, the trail itself doesn't change.
+        if (!leg || sideFrom[k]?.offTrail) return;
         const legTo = leg.slice(1);
         const halves: [number, number][] = loop ? [[0, pts.length]] : [...(way !== "spat" ? [[0, mid + 1] as [number, number]] : []), ...(way !== "tam" ? [[mid, pts.length] as [number, number]] : [])];
         for (const [from, to] of halves) {
@@ -165,7 +176,7 @@ export function TripMap({ detail, gpxUrl, others = [], loop = false }: Props) {
       });
       return out;
     },
-    [sideStops, sideLegs, loop]
+    [sideStops, sideLegs, sideFrom, loop]
   );
   const tracks = useMemo<MapTrack[]>(() => {
     const color = trackColor(trail.marking);

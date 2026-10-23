@@ -1,4 +1,4 @@
-import { getAllTrips, getPhotos, getTownDrives } from "@/lib/tripFiles";
+import { getAllTrips, getCarWalks, getPhotos, getTownDrives } from "@/lib/tripFiles";
 import type { PlacePhoto } from "@/lib/tripFiles";
 import { haversineM } from "@/lib/geo";
 import { closureRulesFor, getTowns } from "@/lib/trips";
@@ -80,13 +80,14 @@ async function reachable(id: string): Promise<{ trip: TripSummary; carMin: numbe
 export async function getTownTrips(id: string): Promise<TownTrips | null> {
   const town = getTown(id);
   if (!town) return null;
-  const [reach, photos] = await Promise.all([reachable(id), getPhotos()]);
+  const [reach, photos, walks] = await Promise.all([reachable(id), getPhotos(), getCarWalks()]);
   const tile = ({ trip, carMin }: { trip: TripSummary; carMin: number }): TownTile => ({
     slug: trip.slug,
     name: trip.name,
     kind: trip.destination.kind,
     carMin,
-    walkMin: trip.duration_min,
+    // The trip page's walk from its default parking (approach and joins included), not the bare trail.
+    walkMin: walks.get(trip.slug) ?? trip.duration_min,
     kids: trip.family_friendly,
     photo: photos[trip.destination.osm ?? `trip/${trip.slug}`] ?? null,
     closedSeason: closedSeason(trip),

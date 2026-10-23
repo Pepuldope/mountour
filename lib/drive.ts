@@ -60,15 +60,21 @@ export function estimateDriveMin(from: LatLng, to: LatLng): number {
 /** Starts further than this from the nearest precomputed town get "~" on their drive times. */
 export const TOWN_EXACT_KM = 10;
 
+/** Minutes per straight-line km nearer to or further from the trip than the table town (fitted on the town tables). */
+const MIN_PER_KM = 1.2;
+
 /**
- * A drive time with no router call, as the home list shows it: the weekly table from the town
- * nearest the start (plus getting to that town), else the straight-line estimate. Far from the
- * table town the straight-line guess can be closer (Ždiar -> Belianska jaskyňa), so the shorter wins.
+ * A drive time with no router call, as the home list and the trip page (while its route loads) show it:
+ * the weekly table from the town nearest the start, corrected by how much nearer or further the start
+ * is from the trip than that town (straight line), else the straight-line estimate.
+ *
+ * Adding the drive to the town instead counted it even when the start lay on the way, and came out
+ * 16 min too long on average (Peter 2026-10-23: 45 min on the list, 35 on the trip page). Checked on
+ * the 141 town tables (one town as the start, its nearest as the table): median error ~3 min, no bias.
  */
 export function quickDriveMin(start: LatLng, to: LatLng, drives: TownDrives | null, tableMin: number | null): number {
   if (!drives || tableMin === null) return estimateDriveMin(start, to);
   const town = { lat: drives.town.lat, lon: drives.town.lon };
-  const toTownKm = haversineM(start, town) / 1000;
-  const viaTown = tableMin + (toTownKm > 2 ? estimateDriveMin(start, town) : 0);
-  return toTownKm > TOWN_EXACT_KM ? Math.min(viaTown, estimateDriveMin(start, to)) : viaTown;
+  const nearerKm = (haversineM(town, to) - haversineM(start, to)) / 1000;
+  return Math.max(3, Math.round(tableMin - nearerKm * MIN_PER_KM));
 }

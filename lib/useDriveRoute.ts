@@ -79,7 +79,48 @@ export function useDriveRoute(
 ): { status: DriveStatus; route: DriveRoute | null } {
   const url = from && to ? `/api/drive?from=${pt(from)}&to=${place(to)}` : null;
   const { status, data } = useCachedJson<DriveRoute>(url);
+  useEffect(() => {
+    if (from && to && data) rememberDrive(from, to, data.durationMin);
+  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
   return { status, route: data };
+}
+
+// Drives the trip page worked out, so the home list shows the same minutes for trips already opened
+// (its own numbers are estimates from the weekly town tables). Rounded start, so no exact home address.
+const KNOWN_KEY = "mountour-drives";
+const KNOWN_MAX = 300;
+
+function readKnown(): Record<string, number> {
+  try {
+    const v = JSON.parse(localStorage.getItem(KNOWN_KEY) ?? "{}");
+    return v && typeof v === "object" && !Array.isArray(v) ? v : {};
+  } catch {
+    return {};
+  }
+}
+
+let known: Record<string, number> | null = null;
+
+function rememberDrive(from: LatLng, to: LatLng, min: number) {
+  known ??= readKnown();
+  const key = `${pt(from)}|${place(to)}`;
+  if (known[key] === min) return;
+  delete known[key];
+  known[key] = min;
+  const keys = Object.keys(known);
+  for (const k of keys.slice(0, Math.max(0, keys.length - KNOWN_MAX))) delete known[k];
+  try {
+    localStorage.setItem(KNOWN_KEY, JSON.stringify(known));
+  } catch {
+    // Storage blocked: the home list keeps its estimates.
+  }
+}
+
+/** The trip page's drive for this start and parking, if it was opened from here. */
+export function knownDriveMin(from: LatLng, to: LatLng): number | null {
+  if (typeof window === "undefined") return null;
+  known ??= readKnown();
+  return known[`${pt(from)}|${place(to)}`] ?? null;
 }
 
 /**

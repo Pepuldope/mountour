@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { cache } from "react";
-import { primaryTrailhead, sunLocation, trailDetailFrom } from "@/lib/data";
+import { primaryTrailhead, routeWalk, sunLocation, trailDetailFrom } from "@/lib/data";
+import { pickWalk } from "@/lib/walkFacts";
 import { gpxUrlFor } from "@/lib/gpx";
 import { GpxDownload } from "@/components/GpxDownload";
 import { getTripLive } from "@/lib/tripDb";
@@ -59,7 +60,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const detail = (await loadTrip(slug))?.detail;
   if (!detail) return { title: "Trasa sa nenašla", robots: { index: false } };
   const { trail } = detail;
-  const facts = `${formatDistance(trail.distance_m)}, +${trail.ascent_m} m, ${formatDuration(trail.duration_min)} chôdze`;
+  // The same walk as the page's facts (from the default parking), so search results don't show another number.
+  const w = pickWalk(routeWalk(detail), false, detail.parkingLots.length > 0);
+  const facts = `${formatDistance(w?.m ?? trail.distance_m)}, +${w?.ascentM ?? trail.ascent_m} m, ${formatDuration(w?.min ?? trail.duration_min)} chôdze`;
   return pageMetadata({
     title: `${trail.name} – túra, parkovanie a čas návratu`,
     description: `${trail.name}: ${facts}. Kde zaparkovať, kedy najneskôr vyraziť a stihnúť návrat za svetla.`,
