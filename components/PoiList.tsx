@@ -6,7 +6,10 @@ import { focusOnMap } from "@/lib/mapFocus";
 import { POI_COLOUR } from "@/lib/palette";
 import type { Poi } from "@/lib/types";
 import { UiIcon } from "@/components/UiIcon";
-import { stopFor, useTripStops } from "@/lib/tripStops";
+import { stopFor, useTripStops, visits } from "@/lib/tripStops";
+import type { TripStop } from "@/lib/tripStops";
+import { WaySwitch } from "@/components/StopsRow";
+import { formatDurationShort } from "@/lib/format";
 
 function km(m: number): string {
   return m < 150
@@ -16,7 +19,15 @@ function km(m: number): string {
 
 /** "Na trase": huts, springs, viewpoints... in the order the walk reaches them, then "Kúsok bokom":
  *  side trips up to ~30 min there and back. A tap shows the place on the map. */
-export function PoiList({ pois, slug }: { pois: Poi[]; slug: string }) {
+export function PoiList({
+  pois,
+  slug,
+  loop,
+}: {
+  pois: Poi[];
+  slug: string;
+  loop: boolean;
+}) {
   const stops = useTripStops(slug);
   if (pois.length === 0) return null;
   const on = pois.filter((p) => p.detour_min === null);
@@ -46,8 +57,10 @@ export function PoiList({ pois, slug }: { pois: Poi[]; slug: string }) {
           <PoiRow
             key={p.id}
             p={p}
-            added={stops.has(p.id)}
+            stop={stops.stops.find((s) => s.id === p.id) ?? null}
+            loop={loop}
             onToggle={() => stops.toggle(stopFor(p))}
+            onWay={(way) => stops.setWay(p.id, way)}
           />
         ))}
         {on.length > 0 && off.length > 0 && (
@@ -59,8 +72,10 @@ export function PoiList({ pois, slug }: { pois: Poi[]; slug: string }) {
           <PoiRow
             key={p.id}
             p={p}
-            added={stops.has(p.id)}
+            stop={stops.stops.find((s) => s.id === p.id) ?? null}
+            loop={loop}
             onToggle={() => stops.toggle(stopFor(p))}
+            onWay={(way) => stops.setWay(p.id, way)}
           />
         ))}
       </ul>
@@ -70,57 +85,86 @@ export function PoiList({ pois, slug }: { pois: Poi[]; slug: string }) {
 
 function PoiRow({
   p,
-  added,
+  stop,
+  loop,
   onToggle,
+  onWay,
 }: {
   p: Poi;
-  added: boolean;
+  stop: TripStop | null;
+  loop: boolean;
   onToggle: () => void;
+  onWay: (way: NonNullable<TripStop["way"]>) => void;
 }) {
+  const added = stop !== null;
   return (
-    <li className="flex items-center gap-1">
-      <button
-        type="button"
-        onClick={() => focusOnMap({ id: `poi-${p.id}`, location: p.location })}
-        className="-ml-2 flex min-w-0 flex-1 items-center gap-2.5 rounded-lg px-2 py-1 text-left hover:bg-[var(--segment-bg)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
-      >
-        <KindIcon kind={p.kind} colour={POI_COLOUR[p.kind]} />
-        <span className="flex min-w-0 flex-1 flex-col">
-          <span className="truncate text-sm font-semibold">{p.name}</span>
-          <span className="text-xs text-[var(--muted)]">
-            <span
-              className="kind-ink font-bold"
-              style={{ "--kind": POI_COLOUR[p.kind] } as React.CSSProperties}
-            >
-              {POI_LABEL[p.kind]}
+    <li className="flex flex-col">
+      <div className="flex items-center gap-1">
+        <button
+          type="button"
+          onClick={() =>
+            focusOnMap({ id: `poi-${p.id}`, location: p.location })
+          }
+          className="-ml-2 flex min-w-0 flex-1 items-center gap-2.5 rounded-lg px-2 py-1 text-left hover:bg-[var(--segment-bg)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+        >
+          <KindIcon kind={p.kind} colour={POI_COLOUR[p.kind]} />
+          <span className="flex min-w-0 flex-1 flex-col">
+            <span className="truncate text-sm font-semibold">{p.name}</span>
+            <span className="text-xs text-[var(--muted)]">
+              <span
+                className="kind-ink font-bold"
+                style={{ "--kind": POI_COLOUR[p.kind] } as React.CSSProperties}
+              >
+                {POI_LABEL[p.kind]}
+              </span>
+              {p.detour_min !== null
+                ? ` · odbočka +${p.detour_min} min tam aj späť`
+                : p.along_m !== null
+                  ? ` · ${km(p.along_m)}`
+                  : ""}
             </span>
-            {p.detour_min !== null
-              ? ` · odbočka +${p.detour_min} min tam aj späť`
-              : p.along_m !== null
-                ? ` · ${km(p.along_m)}`
-                : ""}
           </span>
-        </span>
-        <span className="shrink-0 text-[var(--muted)]" aria-hidden="true">
-          <UiIcon name="pin" size={16} />
-        </span>
-      </button>
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-pressed={added}
-        aria-label={
-          added ? `Odobrať zastávku ${p.name}` : `Pridať zastávku ${p.name}`
-        }
-        title={added ? "Odobrať zo zastávok" : "Pridať ako zastávku"}
-        className={`grid h-9 w-9 shrink-0 place-items-center rounded-full text-lg leading-none font-extrabold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
-          added
-            ? "bg-[var(--accent)] text-[var(--accent-contrast)]"
-            : "bg-[var(--accent-soft)] text-[var(--accent)]"
-        }`}
-      >
-        {added ? "✓" : "+"}
-      </button>
+          <span className="shrink-0 text-[var(--muted)]" aria-hidden="true">
+            <UiIcon name="pin" size={16} />
+          </span>
+        </button>
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-pressed={added}
+          aria-label={
+            added ? `Odobrať zastávku ${p.name}` : `Pridať zastávku ${p.name}`
+          }
+          title={added ? "Odobrať zo zastávok" : "Pridať ako zastávku"}
+          className={`grid h-9 w-9 shrink-0 place-items-center rounded-full text-lg leading-none font-extrabold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
+            added
+              ? "bg-[var(--accent)] text-[var(--accent-contrast)]"
+              : "bg-[var(--accent-soft)] text-[var(--accent)]"
+          }`}
+        >
+          {added ? "✓" : "+"}
+        </button>
+      </div>
+      {/* Right where it was added: when to stop, and that the plan's times above now count it. */}
+      {stop && (
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 pb-1.5 pl-9 text-xs text-[var(--muted)]">
+          {!loop && <WaySwitch name={p.name} way={stop.way} onPick={onWay} />}
+          <span>
+            Zastávka +{formatDurationShort(stop.min * visits(stop))} ·{" "}
+            <button
+              type="button"
+              onClick={() =>
+                document
+                  .getElementById("zastavky")
+                  ?.scrollIntoView({ behavior: "smooth", block: "center" })
+              }
+              className="font-semibold text-[var(--accent)] underline-offset-2 hover:underline"
+            >
+              v pláne dňa
+            </button>
+          </span>
+        </div>
+      )}
     </li>
   );
 }

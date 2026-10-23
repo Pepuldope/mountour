@@ -25,7 +25,7 @@ export function StopsRow({
 }) {
   const { stops, toggle, setWay, has, minutes } = useTripStops(slug);
   return (
-    <div className="flex flex-col gap-1.5">
+    <div id="zastavky" className="flex flex-col gap-1.5 scroll-mt-24">
       {stops.length > 0 && (
         <ul className="flex flex-col gap-1.5" aria-label="Zastávky">
           {stops.map((s) => (
@@ -42,24 +42,7 @@ export function StopsRow({
                   ×
                 </button>
               </span>
-              {!loop && s.id !== LUNCH.id && (
-                <span role="group" aria-label={`Kedy sa zastavíte: ${s.name}`} className="inline-flex rounded-full bg-[var(--segment-bg)] p-0.5 text-[12px] font-semibold">
-                  {WAYS.map(([way, label]) => {
-                    const on = (s.way ?? "tam") === way;
-                    return (
-                      <button
-                        key={way}
-                        type="button"
-                        aria-pressed={on}
-                        onClick={() => setWay(s.id, way)}
-                        className={`rounded-full px-2.5 py-0.5 focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${on ? "bg-[var(--card-bg)] text-[var(--foreground)] shadow-sm" : "text-[var(--muted)]"}`}
-                      >
-                        {label}
-                      </button>
-                    );
-                  })}
-                </span>
-              )}
+              {!loop && s.id !== LUNCH.id && <WaySwitch name={s.name} way={s.way} onPick={(way) => setWay(s.id, way)} />}
             </li>
           ))}
         </ul>
@@ -81,5 +64,27 @@ export function StopsRow({
             : "Pridajte prestávku, časy sa posunú."}
       </p>
     </div>
+  );
+}
+
+/** Stop on the way there, back, or both times (a there-and-back walk passes each place twice). */
+export function WaySwitch({ name, way, onPick }: { name: string; way: StopWay | undefined; onPick: (way: StopWay) => void }) {
+  return (
+    <span role="group" aria-label={`Kedy sa zastavíte: ${name}`} className="inline-flex rounded-full bg-[var(--segment-bg)] p-0.5 text-[12px] font-semibold">
+      {WAYS.map(([w, label]) => {
+        const on = (way ?? "tam") === w;
+        return (
+          <button
+            key={w}
+            type="button"
+            aria-pressed={on}
+            onClick={() => onPick(w)}
+            className={`rounded-full px-2.5 py-0.5 focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${on ? "bg-[var(--card-bg)] text-[var(--foreground)] shadow-sm" : "text-[var(--muted)]"}`}
+          >
+            {label}
+          </button>
+        );
+      })}
+    </span>
   );
 }

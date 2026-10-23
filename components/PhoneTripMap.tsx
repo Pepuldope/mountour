@@ -15,7 +15,7 @@ import type { TrailDetail } from "@/lib/types";
  * The trip map on phones: "Celá mapa" opens it full screen, with a small "Na trase" tab
  * listing the places on the way (a tap glides the map there).
  */
-export function PhoneTripMap({ detail, gpxUrl, others }: { detail: TrailDetail; gpxUrl: string | null; others: OtherRoute[] }) {
+export function PhoneTripMap({ detail, gpxUrl, others, loop = false }: { detail: TrailDetail; gpxUrl: string | null; others: OtherRoute[]; loop?: boolean }) {
   const [full, setFull] = useState(false);
   const [tab, setTab] = useState(false);
   const pois = detail.pois;
@@ -39,7 +39,7 @@ export function PhoneTripMap({ detail, gpxUrl, others }: { detail: TrailDetail; 
           : "relative h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)]"
       }
     >
-      <TripMap detail={detail} gpxUrl={gpxUrl} others={others} />
+      <TripMap detail={detail} gpxUrl={gpxUrl} others={others} loop={loop} />
       {/* Top left: the map's zoom buttons sit top right. */}
       <MapExpandButton
         side="left"

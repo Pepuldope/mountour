@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
 import { haversineM, nearestOnPath } from "@/lib/geo";
@@ -30,6 +30,8 @@ interface Props {
   detail: TrailDetail;
   gpxUrl: string | null;
   others?: OtherRoute[];
+  /** A loop passes each place once; a there-and-back walk twice (stops pick the way there, back or both). */
+  loop?: boolean;
 }
 
 /** Other routes in a muted slate: clearly not the walk you picked (that one keeps its trail colour), still easy to see. */
@@ -44,6 +46,8 @@ const STORED_END_M = 40;
 /** A place on the way this close to the goal is the goal itself: one pin, not two. */
 const SAME_PLACE_M = 60;
 
+const WAY_WORDS = { tam: "cestou tam", spat: "cestou späť", oboje: "cestou tam aj späť" } as const;
+
 const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
 
 /**
@@ -51,7 +55,7 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  * With a start, the whole way: the drive (dashed) to the chosen parking, the
  * walk from there to the trail (dotted), then the trail itself.
  */
-export function TripMap({ detail, gpxUrl, others = [] }: Props) {
+export function TripMap({ detail, gpxUrl, others = [], loop = false }: Props) {
   const { trail, trailheads, pois } = detail;
   const router = useRouter();
   const { parkingLots, choice, choose, rideTo: destination, trailJoin, walkFrom, walkLine, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
@@ -99,6 +103,29 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
     };
   }, [gpxUrl]);
 
+  // Side trips to the stops the group added: from where they leave the trail, along the paths.
+  const sideStops = useMemo(
+    () =>
+      pois.flatMap((poi) => {
+        const stop = addedStops.find((s) => s.id === poi.id);
+        return poi.detour_min !== null && stop ? [{ poi, way: loop ? "tam" : (stop.way ?? "tam") }] : [];
+      }),
+    [pois, addedStops, loop]
+  );
+  const sidePairs = useMemo<[LatLng, LatLng][]>(() => {
+    if (points.length < 2) return [];
+    const ll = points.map(([lat, lon]) => ({ lat, lon }));
+    return sideStops.flatMap(({ poi }) => {
+      const hit = nearestOnPath(ll, poi.location);
+      return hit ? [[hit.point, poi.location] as [LatLng, LatLng]] : [];
+    });
+  }, [points, sideStops]);
+  const sideRoutes = useWalkRoutes(sidePairs);
+  const sideLegs = useMemo(
+    () => sidePairs.map(([from, to], i) => [pair(from), ...(sideRoutes[i]?.points ?? []), pair(to)]),
+    [sidePairs, sideRoutes]
+  );
+
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
   // There-and-back tracks run out and back, so that stretch is cut at both ends.
   const hovered = useHoveredRoute();
@@ -111,10 +138,39 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
       ),
     [others, hovered]
   );
+  // The walk goes out to each added side stop and back to the trail: on the way there (first half
+  // of a there-and-back track), back (second half), both, or wherever a loop passes it.
+  const detour = useCallback(
+    (pts: [number, number][]) => {
+      if (!sideStops.length || pts.length < 3) return pts;
+      const ll = pts.map(([lat, lon]) => ({ lat, lon }));
+      const mid = Math.floor((pts.length - 1) / 2);
+      const cuts: { i: number; leg: [number, number][] }[] = [];
+      sideStops.forEach(({ way }, k) => {
+        const leg = sideLegs[k];
+        if (!leg) return;
+        const legTo = leg.slice(1);
+        const halves: [number, number][] = loop ? [[0, pts.length]] : [...(way !== "spat" ? [[0, mid + 1] as [number, number]] : []), ...(way !== "tam" ? [[mid, pts.length] as [number, number]] : [])];
+        for (const [from, to] of halves) {
+          const hit = nearestOnPath(ll.slice(from, to), { lat: leg[0][0], lon: leg[0][1] });
+          if (hit) cuts.push({ i: from + hit.i, leg: [...legTo, ...[...legTo].reverse().slice(1), leg[0]] });
+        }
+      });
+      cuts.sort((a, b) => a.i - b.i);
+      const out: [number, number][] = [];
+      let c = 0;
+      pts.forEach((p, i) => {
+        out.push(p);
+        for (; c < cuts.length && cuts[c].i === i; c++) out.push(...cuts[c].leg);
+      });
+      return out;
+    },
+    [sideStops, sideLegs, loop]
+  );
   const tracks = useMemo<MapTrack[]>(() => {
     const color = trackColor(trail.marking);
     // Other routes first, so the one you picked draws on top where they share a trail.
-    const whole: MapTrack[] = [...otherTracks, { slug: trail.slug, points, color, state: "selected" }];
+    const whole: MapTrack[] = [...otherTracks, { slug: trail.slug, points: detour(points), color, state: "selected" }];
     if (!skip || !trailJoin || points.length < 3) return whole;
     const ll = points.map(([lat, lon]) => ({ lat, lon }));
     const mid = Math.floor((points.length - 1) / 2);
@@ -128,25 +184,9 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
       ...otherTracks,
       { slug: `${trail.slug}-skipped-out`, points: [...points.slice(0, out.i + 1), a], color, state: "dimmed" },
       { slug: `${trail.slug}-skipped-back`, points: [b, ...points.slice(bi + 1)], color, state: "dimmed" },
-      { slug: trail.slug, points: [a, ...points.slice(out.i + 1, bi + 1), b], color, state: "selected" },
+      { slug: trail.slug, points: detour([a, ...points.slice(out.i + 1, bi + 1), b]), color, state: "selected" },
     ];
-  }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks]);
-
-  // Side trips to the stops the group added: from where they leave the trail, along the paths.
-  const sidePairs = useMemo<[LatLng, LatLng][]>(() => {
-    if (points.length < 2) return [];
-    const ll = points.map(([lat, lon]) => ({ lat, lon }));
-    return pois.flatMap((p) => {
-      if (p.detour_min === null || !addedStops.some((s) => s.id === p.id)) return [];
-      const hit = nearestOnPath(ll, p.location);
-      return hit ? [[hit.point, p.location] as [LatLng, LatLng]] : [];
-    });
-  }, [points, pois, addedStops]);
-  const sideRoutes = useWalkRoutes(sidePairs);
-  const sideLegs = useMemo(
-    () => sidePairs.map(([from, to], i) => [pair(from), ...(sideRoutes[i]?.points ?? []), pair(to)]),
-    [sidePairs, sideRoutes]
-  );
+  }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks, detour]);
 
   const goal = trail.goal_location;
   const goalKind = trail.goal ?? "ine";
@@ -205,7 +245,10 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
         kind: "poi" as const,
         location: p.location,
         title: p.name,
-        lines: [p.detour_min !== null ? `${POI_LABEL[p.kind]} · odbočka +${p.detour_min} min tam aj späť` : POI_LABEL[p.kind]],
+        lines: [
+          p.detour_min !== null ? `${POI_LABEL[p.kind]} · odbočka +${p.detour_min} min tam aj späť` : POI_LABEL[p.kind],
+          ...addedStops.filter((s) => s.id === p.id).map((s) => (loop ? "Vaša zastávka" : `Vaša zastávka ${WAY_WORDS[s.way ?? "tam"]}`)),
+        ],
         colour: POI_COLOUR[p.kind],
         icon: kindSvg(p.kind, 14),
         active: addedStops.some((s) => s.id === p.id),
@@ -230,7 +273,7 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
           ]
         : []),
     ],
-    [trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name, addedStops, toggleStop]
+    [trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name, addedStops, toggleStop, loop]
   );
 
   // Opens on the trail and where the car stops. The drive is drawn too, but a long drive would

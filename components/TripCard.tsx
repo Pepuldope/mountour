@@ -1,5 +1,6 @@
 "use client";
 
+import { transitMinutes } from "@/lib/drive";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { EARLIEST_DEPARTURE_HOUR } from "@/lib/days";
@@ -194,7 +195,14 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
           </span>
           <span className={leg(byBus)} title={nearStop ? `Zastávka ${stopLabel(nearStop.name)}, ${formatFromUser(stopWalkM)} k trase` : "Bez zastávky pri štarte"}>
             <UiIcon name="bus" size={15} />
-            {byBus && driveMin !== null ? `~${formatDurationShort(driveMin)}` : nearStop ? formatFromUser(stopWalkM) : "–"}
+            {/* By car too, the bus as a time (muted), never the walk from the stop: "350 m" read as minutes next to the car's time (Peter, 2026-10-23). */}
+            {byBus && driveMin !== null
+              ? `~${formatDurationShort(driveMin)}`
+              : nearStop && carMin !== null
+                ? `~${formatDurationShort(transitMinutes(carMin))}`
+                : nearStop
+                  ? formatFromUser(stopWalkM)
+                  : "–"}
           </span>
           <span className="inline-flex items-center gap-1 text-[var(--foreground)]">
             <UiIcon name="boot" size={15} />
