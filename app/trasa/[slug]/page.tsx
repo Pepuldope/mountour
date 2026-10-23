@@ -285,21 +285,21 @@ export default async function TripSheetPage({ params }: Props) {
             <StopsBlock />
 
             <div className="lg:hidden">
-              <PhoneTripMap detail={detail} gpxUrl={gpxUrl} others={others} />
+              <PhoneTripMap detail={detail} gpxUrl={gpxUrl} others={others} loop={trip.route === "okruh"} />
             </div>
 
             {closures.length === 0 && <ClosureBanner closures={closures} />}
 
             {fees.length > 0 && <FeeBlock fees={fees} />}
 
-            <PoiList pois={detail.pois} slug={trail.slug} />
+            <PoiList pois={detail.pois} slug={trail.slug} loop={trip.route === "okruh"} />
           </TripPlanner>
 
           <SiteFooter />
         </div>
 
         <div className="hidden lg:sticky lg:top-0 lg:block lg:h-dvh lg:flex-1 lg:border-l lg:border-[var(--border)]">
-          <TripMap detail={detail} gpxUrl={gpxUrl} others={others} />
+          <TripMap detail={detail} gpxUrl={gpxUrl} others={others} loop={trip.route === "okruh"} />
         </div>
       </main>
     </TripAccessProvider>
