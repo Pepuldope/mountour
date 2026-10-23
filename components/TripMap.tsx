@@ -15,6 +15,7 @@ import { trackColor } from "@/lib/mapLayers";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
 import { useTripAccess } from "@/components/TripAccess";
+import { stopFor, useTripStops } from "@/lib/tripStops";
 import { setHoveredRoute, useHoveredRoute } from "@/lib/routeHover";
 import { NETWORK_ON } from "@/lib/trailNetwork";
 
@@ -56,6 +57,8 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
   const { parkingLots, choice, choose, rideTo: destination, trailJoin, walkFrom, walkLine, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
   const [points, setPoints] = useState<[number, number][]>([]);
   const { start } = useUserLocation();
+  // Places the group added as stops: their pins stand out and the popup offers to remove them.
+  const { stops: addedStops, toggle: toggleStop } = useTripStops(trail.slug);
   const homeStop = useHomeStop(transit ? start : null);
   // By bus or train the line runs along the roads to the stop: roughly the bus's way, no timetable yet.
   const drive = useDriveRoute(start, destination);
@@ -186,9 +189,14 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
         kind: "poi" as const,
         location: p.location,
         title: p.name,
-        lines: [POI_LABEL[p.kind]],
+        lines: [p.detour_min !== null ? `${POI_LABEL[p.kind]} · odbočka +${p.detour_min} min tam aj späť` : POI_LABEL[p.kind]],
         colour: POI_COLOUR[p.kind],
         icon: kindSvg(p.kind, 14),
+        active: addedStops.some((s) => s.id === p.id),
+        action: {
+          label: addedStops.some((s) => s.id === p.id) ? "✓ Zastávka · odobrať" : "+ Pridať zastávku",
+          onClick: () => toggleStop(stopFor(p)),
+        },
       })),
       // What you came to see (the tower, cave, castle...): its kind's colour and icon, as on the home map.
       ...(goal
@@ -206,7 +214,7 @@ export function TripMap({ detail, gpxUrl, others = [] }: Props) {
           ]
         : []),
     ],
-    [trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name]
+    [trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name, addedStops, toggleStop]
   );
 
   // Opens on the trail and where the car stops. The drive is drawn too, but a long drive would

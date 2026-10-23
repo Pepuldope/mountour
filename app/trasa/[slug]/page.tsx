@@ -253,6 +253,7 @@ export default async function TripSheetPage({ params }: Props) {
             gpxUrl={gpxUrl}
             bbox={trail.bbox}
             closures={closures}
+            hasPlaces={detail.pois.length > 0}
             intro={
               <>
                 <div className="flex flex-col gap-2">
@@ -291,7 +292,7 @@ export default async function TripSheetPage({ params }: Props) {
 
             {fees.length > 0 && <FeeBlock fees={fees} />}
 
-            <PoiList pois={detail.pois} />
+            <PoiList pois={detail.pois} slug={trail.slug} />
           </TripPlanner>
 
           <SiteFooter />

@@ -6,6 +6,7 @@ import { focusOnMap } from "@/lib/mapFocus";
 import { POI_COLOUR } from "@/lib/palette";
 import type { Poi } from "@/lib/types";
 import { UiIcon } from "@/components/UiIcon";
+import { stopFor, useTripStops } from "@/lib/tripStops";
 
 function km(m: number): string {
   return m < 150
@@ -15,7 +16,8 @@ function km(m: number): string {
 
 /** "Na trase": huts, springs, viewpoints... in the order the walk reaches them, then "Kúsok bokom":
  *  side trips up to ~30 min there and back. A tap shows the place on the map. */
-export function PoiList({ pois }: { pois: Poi[] }) {
+export function PoiList({ pois, slug }: { pois: Poi[]; slug: string }) {
+  const stops = useTripStops(slug);
   if (pois.length === 0) return null;
   const on = pois.filter((p) => p.detour_min === null);
   const off = pois.filter((p) => p.detour_min !== null);
@@ -41,7 +43,12 @@ export function PoiList({ pois }: { pois: Poi[] }) {
       </summary>
       <ul className="flex flex-col gap-0.5 px-4 pb-3">
         {on.map((p) => (
-          <PoiRow key={p.id} p={p} />
+          <PoiRow
+            key={p.id}
+            p={p}
+            added={stops.has(p.id)}
+            onToggle={() => stops.toggle(stopFor(p))}
+          />
         ))}
         {on.length > 0 && off.length > 0 && (
           <li className="pt-2 pb-0.5 text-xs font-bold tracking-wide text-[var(--muted)] uppercase">
@@ -49,20 +56,33 @@ export function PoiList({ pois }: { pois: Poi[] }) {
           </li>
         )}
         {off.map((p) => (
-          <PoiRow key={p.id} p={p} />
+          <PoiRow
+            key={p.id}
+            p={p}
+            added={stops.has(p.id)}
+            onToggle={() => stops.toggle(stopFor(p))}
+          />
         ))}
       </ul>
     </details>
   );
 }
 
-function PoiRow({ p }: { p: Poi }) {
+function PoiRow({
+  p,
+  added,
+  onToggle,
+}: {
+  p: Poi;
+  added: boolean;
+  onToggle: () => void;
+}) {
   return (
-    <li>
+    <li className="flex items-center gap-1">
       <button
         type="button"
         onClick={() => focusOnMap({ id: `poi-${p.id}`, location: p.location })}
-        className="-mx-2 flex w-[calc(100%+1rem)] items-center gap-2.5 rounded-lg px-2 py-1 text-left hover:bg-[var(--segment-bg)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+        className="-ml-2 flex min-w-0 flex-1 items-center gap-2.5 rounded-lg px-2 py-1 text-left hover:bg-[var(--segment-bg)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
       >
         <KindIcon kind={p.kind} colour={POI_COLOUR[p.kind]} />
         <span className="flex min-w-0 flex-1 flex-col">
@@ -84,6 +104,22 @@ function PoiRow({ p }: { p: Poi }) {
         <span className="shrink-0 text-[var(--muted)]" aria-hidden="true">
           <UiIcon name="pin" size={16} />
         </span>
+      </button>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-pressed={added}
+        aria-label={
+          added ? `Odobrať zastávku ${p.name}` : `Pridať zastávku ${p.name}`
+        }
+        title={added ? "Odobrať zo zastávok" : "Pridať ako zastávku"}
+        className={`grid h-9 w-9 shrink-0 place-items-center rounded-full text-lg leading-none font-extrabold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
+          added
+            ? "bg-[var(--accent)] text-[var(--accent-contrast)]"
+            : "bg-[var(--accent-soft)] text-[var(--accent)]"
+        }`}
+      >
+        {added ? "✓" : "+"}
       </button>
     </li>
   );

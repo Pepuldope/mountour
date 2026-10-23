@@ -6,6 +6,7 @@ import type { DayPlan, FixedRide } from "@/lib/dayPlan";
 import { estimateDriveMin, quickDriveMin, transitMinutes } from "@/lib/drive";
 import type { DriveRoute } from "@/lib/drive";
 import { useDriveRoute, useTownDrives } from "@/lib/useDriveRoute";
+import { useTripStops } from "@/lib/tripStops";
 import { useRailTrip } from "@/lib/useRailTrip";
 import type { RailTrip } from "@/lib/useRailTrip";
 import type { DriveStatus } from "@/lib/useDriveRoute";
@@ -60,7 +61,9 @@ export function useTripPlan(
   const { withKids } = useTripSettings();
   const { date, time } = useTripDay();
   const drive = useDriveRoute(start, destination);
-  const hikeMin = hikeMinutes(baseHikeMin + (walkThereMin ?? 0) * 2, withKids);
+  const { minutes: stopMin } = useTripStops(slug);
+  // Stops the group added (a buffet, a side trip, lunch) lengthen the day at their own pace, not the kids'.
+  const hikeMin = hikeMinutes(baseHikeMin + (walkThereMin ?? 0) * 2, withKids) + stopMin;
   const driveApprox = drive.status === "error" && start !== null && destination !== null;
   // While the exact route loads, the day is drawn from a distance estimate ("~"), not left waiting.
   const driveGuess = (driveApprox || drive.status === "loading") && start !== null && destination !== null;

@@ -22,6 +22,7 @@ import { SaveTripButton } from "@/components/SaveTripButton";
 import type { ShareInfo } from "@/components/ShareButton";
 import { StartChip } from "@/components/StartChip";
 import { StartPill } from "@/components/StartPill";
+import { StopsRow } from "@/components/StopsRow";
 import { SunArc } from "@/components/SunArc";
 import { useTripAccess } from "@/components/TripAccess";
 import { WeatherReport, useTripWeather } from "@/components/WeatherBlock";
@@ -47,6 +48,8 @@ interface Props extends ShareInfo {
   children?: ReactNode;
   /** Under Uložiť and navigation, in the last card. */
   outro?: ReactNode;
+  /** The trip has places on or near the walk that can be added as stops. */
+  hasPlaces?: boolean;
 }
 
 /** One of the page's three cards, set off from the darker page so each step reads on its own. */
@@ -66,7 +69,7 @@ function meetingAt(date: string, hhmm: string): Date {
   return zonedDate(y, mo, d, h, mi);
 }
 
-export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, closures = [], walk, intro, children, outro, ...trip }: Props) {
+export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, closures = [], walk, intro, children, outro, hasPlaces = false, ...trip }: Props) {
   const { start } = useUserLocation();
   const { today, update } = useTripSettings();
   const { destination, rideTo, approachMin, trailStart, transit: transitAccess, noCar, noBus, parking, stop, skip, walkFrom, trailJoin, walk: onFoot, choose, chooseStop } = useTripAccess();
@@ -295,6 +298,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
             <Step label={transit && stop ? "na zastávke" : hasDrive ? "pri aute" : "späť"} time={plan.hikeEnd} />
             {plan.segments[plan.segments.length - 1].kind === "drive-back" && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
+          <StopsRow slug={trip.slug} hasPlaces={hasPlaces} />
           <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} sunAt={sun} closures={closures} onPickDay={(iso) => update({ date: iso })} onPickTime={(time) => update({ time })} />
           {transit && <TransitLegs plan={plan} rail={rail} />}
           {transit && rail.status === "ok" && <p className="text-xs text-[var(--muted)]">Podľa cestovného poriadku vlakov, spoj si vyberiete nižšie.</p>}
