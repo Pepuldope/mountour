@@ -21,7 +21,7 @@ import { haversineM } from "@/lib/geo";
 import { plain, preparePlaces, searchPlaces } from "@/lib/placeSearch";
 import type { PlaceSearch, SearchIndexFile } from "@/lib/placeSearch";
 import { useTripSettings } from "@/lib/tripSettings";
-import { knownDriveMin, useTownDrives } from "@/lib/useDriveRoute";
+import { knownDriveMin, useStartDrives, useTownDrives } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { FilterChips, KidsSwitch } from "@/components/FilterChips";
 import { MapExpandButton } from "@/components/MapExpandButton";
@@ -137,6 +137,9 @@ function useAllTrails(initial: TrailDetail[]): TrailDetail[] {
   }, []);
   return all ?? initial;
 }
+
+/** A start this far from its table town gets the real drives from /api/drives (a town button sits on the town). */
+const OFF_TOWN_M = 1000;
 
 const goalOf = (d: TrailDetail): LatLng | null => d.trail.goal_location ?? primaryTrailhead(d)?.location ?? null;
 
@@ -302,6 +305,9 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   const destinations = useMemo(() => trails.map((t) => driveDestination(t)), [trails]);
   // Drive times are shown by train/bus too (muted), so the two can be compared.
   const { drives, status: driveStatus } = useTownDrives(start);
+  // Away from the table town (my location, a typed place): the real drives, all in one router call.
+  const offTown = start !== null && drives !== null && haversineM(start, { lat: drives.town.lat, lon: drives.town.lon }) > OFF_TOWN_M;
+  const startDrives = useStartDrives(start, offTown);
 
   const { listedAll, noneFit } = useMemo(() => {
     const now = new Date();
@@ -315,8 +321,9 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
       if (goalFilter.length > 0 && !goalFilter.includes(detail.trail.goal ?? "ine")) return [];
       if (diffFilter.length > 0 && !diffFilter.includes(detail.trail.difficulty)) return [];
       // The trip page's own route once it was opened from this start (the same number on both pages),
+      // else the real drive from this start (/api/drives, away from the table towns),
       // else the trip page's first guess: the weekly table from the nearest town, or a straight-line estimate.
-      const exact = start && dest ? knownDriveMin(start, dest) : null;
+      const exact = start && dest ? (knownDriveMin(start, dest) ?? startDrives?.[detail.trail.slug] ?? null) : null;
       const table = drives?.minutes[detail.trail.slug] ?? null;
       const estimate = exact === null && table === null && driveStatus !== "loading" && start !== null && dest !== null;
       const carMin =
@@ -369,7 +376,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
     const late = open.filter((i) => !fitsDay(i));
     const noneFit = fitting.length === 0 && open.length > 0;
     return { listedAll: [...fitting, ...late, ...all.filter(out)], noneFit };
-  }, [trails, destinations, drives, driveStatus, withKids, easier, goalFilter, diffFilter, timeFilter, farFilter, date, today, start, transit]);
+  }, [trails, destinations, drives, startDrives, driveStatus, withKids, easier, goalFilter, diffFilter, timeFilter, farFilter, date, today, start, transit]);
 
   const bySlug = useMemo(() => new Map(listedAll.map((i) => [i.detail.trail.slug, i])), [listedAll]);
 

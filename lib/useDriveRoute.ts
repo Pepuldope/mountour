@@ -137,6 +137,16 @@ export function useTownDrives(from: LatLng | null): { status: DriveStatus; drive
   return { status, drives };
 }
 
+/**
+ * The real drive from the start to every home-list trip, in one router call (/api/drives), for a
+ * start away from the table towns; null while it loads, when it fails or when not `wanted`.
+ */
+export function useStartDrives(from: LatLng | null, wanted: boolean): Record<string, number | null> | null {
+  // ~1 km, as the server rounds it: nearby starts share one answer.
+  const url = from && wanted ? `/api/drives?from=${from.lat.toFixed(2)},${from.lon.toFixed(2)}` : null;
+  return useCachedJson<{ minutes: Record<string, number | null> }>(url).data?.minutes ?? null;
+}
+
 /** The walk from where the car stops to the trail start (both public places). */
 export function useWalkRoute(
   from: LatLng | null,

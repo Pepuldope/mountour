@@ -11,18 +11,22 @@ import { getDb } from "@/lib/d1";
 
 /** A little under the key's 2,000, so a few calls in flight can't go over. */
 export const DAILY_BUDGET = 1800;
+/** The matrix (one start to every trip, the home list) has its own 500 a day on the free key. */
+export const MATRIX_BUDGET = 450;
 
 const SCHEMA = `CREATE TABLE IF NOT EXISTS ors_day (day TEXT PRIMARY KEY, n INTEGER NOT NULL) WITHOUT ROWID`;
 let ready: Promise<unknown> | null = null;
 /** Once a day is spent, this server stops asking the database until the day changes. */
-let spentDay = "";
+const spentDay = { route: "", matrix: "" };
 
 const utcDay = () => new Date().toISOString().slice(0, 10);
 
 /** Counts one router call; false when today's budget is gone (the call must not be made). */
-export async function spendOrsCall(): Promise<boolean> {
-  const day = utcDay();
-  if (spentDay === day) return false;
+export async function spendOrsCall(kind: "route" | "matrix" = "route"): Promise<boolean> {
+  const today = utcDay();
+  if (spentDay[kind] === today) return false;
+  // Counted on a row of its own ("2026-10-23:matrix", still before the next day for the clean-up below).
+  const day = kind === "route" ? today : `${today}:${kind}`;
   try {
     const db = await getDb();
     if (!db) return true;
@@ -38,12 +42,12 @@ export async function spendOrsCall(): Promise<boolean> {
       .prepare(`INSERT INTO ors_day (day, n) VALUES (?1, 1) ON CONFLICT (day) DO UPDATE SET n = n + 1 RETURNING n`)
       .bind(day)
       .first<{ n: number }>();
-    if (row && row.n > DAILY_BUDGET) {
-      spentDay = day;
+    if (row && row.n > (kind === "route" ? DAILY_BUDGET : MATRIX_BUDGET)) {
+      spentDay[kind] = today;
       return false;
     }
     // Yesterday's rows are never read again.
-    if (row?.n === 1) await db.prepare(`DELETE FROM ors_day WHERE day < ?1`).bind(day).run();
+    if (row?.n === 1) await db.prepare(`DELETE FROM ors_day WHERE day < ?1`).bind(today).run();
     return true;
   } catch (err) {
     // The counter being down must not cost the route.

@@ -76,6 +76,33 @@ export async function viaOrs(
   });
 }
 
+/** The matrix answers ~2,000 drives at once: give it longer than one route. */
+const MATRIX_TIMEOUT_MS = 15000;
+
+/**
+ * Drive minutes from one start to many places in one call (OpenRouteService matrix: up to 3,500
+ * pairs a request, 500 requests a day on the free key). null where a place has no road near it.
+ */
+export async function driveMatrix(key: string, from: Pt, to: Pt[]): Promise<(number | null)[]> {
+  if (!(await spendOrsCall("matrix"))) throw new OverBudget("ORS matrix: daily budget spent");
+  const res = await fetch("https://api.openrouteservice.org/v2/matrix/driving-car", {
+    method: "POST",
+    headers: { Authorization: key, Accept: "application/json", "Content-Type": "application/json" },
+    body: JSON.stringify({
+      locations: [from, ...to].map(([lat, lon]) => [lon, lat]),
+      sources: [0],
+      destinations: to.map((_, i) => i + 1),
+      metrics: ["duration"],
+    }),
+    signal: AbortSignal.timeout(MATRIX_TIMEOUT_MS),
+  });
+  if (res.status === 429) throw new RateLimited("ORS matrix 429");
+  if (!res.ok) throw new Error(`ORS matrix ${res.status}: ${(await res.text()).slice(0, 200)}`);
+  const row: unknown = (await res.json()).durations?.[0];
+  if (!Array.isArray(row) || row.length !== to.length) throw new Error("ORS matrix: no durations");
+  return row.map((s) => (typeof s === "number" && Number.isFinite(s) ? Math.round(s / 60) : null));
+}
+
 export async function viaOsrm(base: string, from: Pt, to: Pt): Promise<DriveRoute> {
   const url = `${base}/route/v1/driving/${from[1]},${from[0]};${to[1]},${to[0]}?overview=full&geometries=geojson`;
   const res = await fetch(url, { next: { revalidate: DAY_S }, signal: AbortSignal.timeout(ROUTER_TIMEOUT_MS) } as RequestInit);
