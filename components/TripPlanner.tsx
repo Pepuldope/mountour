@@ -363,7 +363,7 @@ function lateText(
   o: { latestPassed: boolean; tooLong: boolean; noTrain: boolean; startWord: string; latest: string }
 ): string {
   if (o.tooLong && o.noTrain) return "Vlakom to v tento deň za svetla nestihnete: žiadny vlak nepríde dosť skoro. Skúste autobus, kratšiu trasu alebo iný deň.";
-  if (o.tooLong) return "V tento deň je táto túra na denné svetlo pridlhá. Skúste kratšiu trasu z ponuky nižšie alebo dlhší deň.";
+  if (o.tooLong) return "V tento deň je táto túra na denné svetlo pridlhá. Skúste deň s dlhším svetlom alebo si vyberte kratšiu trasu.";
   if (o.latestPassed) return "Na dnes je to už neskoro, späť by ste boli po tme. Skúste zajtra ráno.";
   const leave = `${o.startWord} najneskôr o ${o.latest}.`;
   if (verdict === "tight") return `Stihnete to tesne pred západom slnka. Pre rezervu ${o.startWord.charAt(0).toLowerCase()}${o.startWord.slice(1)} najneskôr o ${o.latest}.`;
