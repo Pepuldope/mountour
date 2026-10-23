@@ -65,7 +65,7 @@ export function RouteChoice({ slug, destination, routes, walks }: Props) {
       <div className="hidden flex-col gap-2 lg:flex">
         <div className="flex items-baseline justify-between gap-3">
           <h2 className="text-base font-bold">Cesty k cieľu: {destination}</h2>
-          <Link href={compare} className="text-sm font-bold text-[var(--accent)]">
+          <Link href={compare} className="shrink-0 text-sm font-bold whitespace-nowrap text-[var(--accent)]">
             Porovnať na mape ›
           </Link>
         </div>
