@@ -455,27 +455,31 @@ class TripBuilder:
         hits = set()
         for lst in self.poi_tree.query_ball_point(xy, reach):
             hits.update(lst)
-        cands = []
-        for i in sorted(hits):
-            f, kind = self.poi_feats[i], self.poi_kinds[i]
-            if kind in DETOUR_KINDS and f.osm not in on and f.name:
-                # Viewpoints are often a rock off the path: snap to the nearest way and walk the rest.
-                node = g.snap(f.lat, f.lon, DETOUR_SNAP_M)
-                if node is not None:
-                    cands.append((f, kind, node))
+        cands = [i for i in sorted(hits)
+                 if self.poi_kinds[i] in DETOUR_KINDS and self.poi_feats[i].osm not in on and self.poi_feats[i].name]
         if not cands:
             return 0
         dist, _, src = dijkstra(g.L, directed=True, indices=np.unique(np.asarray(full, np.int64)), limit=reach,
                                 min_only=True, return_predecessors=True)
+        path_tree = cKDTree(xy)
         found = []
-        for f, kind, node in cands:
-            d = dist[node]
+        for i in cands:
+            f, kind = self.poi_feats[i], self.poi_kinds[i]
+            # Straight off the walk (a rock just off the path, a way the graph doesn't join up)...
+            off, j = path_tree.query(self.proj.xy([f.lat], [f.lon])[0])
+            best = (OFF_PATH * off, full[j]) if off <= DETOUR_SNAP_M else (np.inf, None)
+            # ...or along the paths to the way nearest it, and the last bit cross-country.
+            node = g.snap(f.lat, f.lon, DETOUR_SNAP_M)
+            if node is not None and np.isfinite(dist[node]):
+                d = dist[node] + OFF_PATH * haversine(f.lat, f.lon, g.lat[node], g.lon[node])
+                if d < best[0]:
+                    best = (d, src[node])
+            d, start = best
             if not np.isfinite(d):
                 continue
-            d += OFF_PATH * haversine(f.lat, f.lon, g.lat[node], g.lon[node])
             climb = 0.0
             if self.dem:
-                e = self.dem.sample(np.array([f.lat, g.lat[src[node]]]), np.array([f.lon, g.lon[src[node]]]))
+                e = self.dem.sample(np.array([f.lat, g.lat[start]]), np.array([f.lon, g.lon[start]]))
                 climb = abs(float(e[0] - e[1])) if np.isfinite(e).all() else 0.0
             minutes = din33466_minutes(2 * d, climb, climb)
             if minutes <= lim:
