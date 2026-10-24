@@ -563,13 +563,17 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
             <g key={pa.t0}>
               {pa.kind && (
                 <g transform={`translate(${pa.x} ${pa.y - 17})`}>
-                  <line y1={7} y2={13} stroke={c} strokeWidth={1.6} />
-                  <circle r={8} fill={c} stroke="#fff" strokeWidth={1.5} />
+                  <line y1={7} y2={12} stroke={c} strokeWidth={2.2} />
+                  {/* A faint dark rim keeps the white edge visible on a pale sky or snow. */}
+                  <circle r={9.6} fill={INK} opacity={0.3} />
+                  <circle r={8.4} fill={c} stroke="#fff" strokeWidth={1.6} />
                   {/* Constant markup from lib/kindIcons.ts, no user data. */}
                   <g transform="translate(-5.5 -5.5) scale(0.46)" color="#fff" dangerouslySetInnerHTML={{ __html: KIND_ICON[pa.icon ?? pa.kind] }} />
                 </g>
               )}
-              <circle cx={pa.x} cy={pa.y} r={3.6} fill="#fff" stroke={c} strokeWidth={2} />
+              {/* A solid dot in the place's colour with a white edge: strong on the hill and in the dark. */}
+              <circle cx={pa.x} cy={pa.y} r={5.4} fill={INK} opacity={0.3} />
+              <circle cx={pa.x} cy={pa.y} r={4.6} fill={c} stroke="#fff" strokeWidth={1.6} />
             </g>
           );
         })}

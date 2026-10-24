@@ -51,8 +51,8 @@ export function RouteCompare({ slug, destination, goal, routes, walks, children 
         points: r.up.map(([lon, lat]) => [lat, lon] as [number, number]),
         color: colour(i),
         state: i === sel || i === hover ? "selected" : "dimmed",
-        // A route sharing a path with the picked one shows through it, dashed.
-        showThrough: i !== sel,
+        // A route sharing a path with the picked one runs just beside it.
+        sideBy: i !== sel,
       })),
     [routes, sel, hover]
   );
