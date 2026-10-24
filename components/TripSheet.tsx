@@ -6,7 +6,7 @@ import { getRouteWalks, getTrip, getTripPhoto, withLoopRoutes } from "@/lib/trip
 import { buildProfile } from "@/lib/tripProfile";
 import { GOAL_LABEL, POI_LABEL } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
-import { GOAL_COLOUR, POI_COLOUR } from "@/lib/palette";
+import { GOAL_COLOUR, POI_COLOUR, ROUTE_COLOURS } from "@/lib/palette";
 import { seasonOf } from "@/lib/season";
 import { SeasonScene } from "@/components/SeasonScene";
 import { UiIcon } from "@/components/UiIcon";
@@ -125,9 +125,15 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
   // A loop has no GPX file: its maps draw the line from the trip itself.
   const loopLine = loopBack ? trip.path.map(([lon, lat]) => [lat, lon] as [number, number]) : undefined;
   const others: OtherRoute[] = routes
-    // Loops would draw their routes twice; the way back of this loop is part of its line.
-    .filter((r) => r.slug !== trail.slug && r.slug !== loopBack?.slug && !r.slug.endsWith(LOOP_SUFFIX))
-    .map((r) => ({ slug: r.slug, label: r.route_label ?? r.start_name, points: r.up.map(([lon, lat]) => [lat, lon]) }));
+    .map((r, i) => ({
+      slug: r.slug,
+      label: r.route_label ?? r.start_name,
+      points: r.up.map(([lon, lat]) => [lat, lon] as [number, number]),
+      colour: ROUTE_COLOURS[i % ROUTE_COLOURS.length],
+      // Loops, and the routes this loop is made of, would draw their lines twice: only on hover.
+      hoverOnly: r.slug.endsWith(LOOP_SUFFIX) || r.slug === trail.slug || r.slug === loopBack?.slug,
+    }))
+    .filter((r) => r.slug !== current);
 
   // Named for the route, as the route list calls it, when the place has several.
   const ownLabel = routes.length > 1 ? routes.find((r) => r.slug === trail.slug)?.route_label : null;

@@ -27,6 +27,10 @@ const RULER = HOR + 26;
 const PAD = 8;
 /** Knob size of the phone slider, px (.time-slider in globals.css). */
 const SLIDER_KNOB = 36;
+/** Zoomed in on a short trip, the dial still shows at least this many hours. */
+const ZOOM_MIN_H = 6;
+/** A trip window wider than this share of the whole day shows the whole day. */
+const ZOOM_UNDER = 0.7;
 /** How long "Play" takes to run through the whole day, ms. */
 const PLAY_MS = 10000;
 // The picture is a sky, so it keeps its own day colours in dark mode too.
@@ -128,8 +132,19 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
   const dusk = plan.dusk.getTime();
 
   const scene = useMemo(() => {
-    const lo = Math.floor((Math.min(first, plan.dawn.getTime()) - 30 * MIN) / HOUR) * HOUR;
-    const hi = Math.ceil((Math.max(home, dusk) + 30 * MIN) / HOUR) * HOUR;
+    const dayLo = Math.floor((Math.min(first, plan.dawn.getTime()) - 30 * MIN) / HOUR) * HOUR;
+    const dayHi = Math.ceil((Math.max(home, dusk) + 30 * MIN) / HOUR) * HOUR;
+    // A short trip was a sliver of the whole day: the dial then zooms in on the trip's hours
+    // (Peter, 2026-10-24), at least ZOOM_MIN_H wide and never past dawn or dark.
+    let lo = Math.floor((first - 45 * MIN) / HOUR) * HOUR;
+    let hi = Math.ceil((home + 45 * MIN) / HOUR) * HOUR;
+    while (hi - lo < ZOOM_MIN_H * HOUR && (lo > dayLo || hi < dayHi)) {
+      if (lo > dayLo) lo -= HOUR;
+      if (hi - lo < ZOOM_MIN_H * HOUR && hi < dayHi) hi += HOUR;
+    }
+    if (hi - lo > ZOOM_UNDER * (dayHi - dayLo)) [lo, hi] = [dayLo, dayHi];
+    lo = Math.max(lo, dayLo);
+    hi = Math.min(hi, dayHi);
     const x = (t: number) => PAD + ((t - lo) / (hi - lo)) * (W - 2 * PAD);
 
     const points = profile?.points ?? [
@@ -601,7 +616,10 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         {[
           [sunrise, "východ"],
           [sunset, "západ"],
-        ].map(([at, word]) => (
+        ]
+          // Zoomed in on a short trip, sunrise or sunset can lie outside the picture.
+          .filter(([at]) => +at >= scene.lo && +at <= scene.hi)
+          .map(([at, word]) => (
           <g key={word}>
             <circle cx={scene.x(+at)} cy={HOR} r={2.6} fill="#f4a51c" stroke="#fff" />
             <text
@@ -626,7 +644,8 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         {scene.hours.map((h) => {
           const x = scene.x(h);
           const hour = hourOf(h);
-          const major = hour % 3 === 0;
+          // Every hour is labelled when the dial is zoomed in on a short trip.
+          const major = hour % (scene.hi - scene.lo <= 9 * HOUR ? 1 : 3) === 0;
           return (
             <g key={h}>
               <line x1={x} x2={x} y1={RULER} y2={RULER + (major ? 5 : 3)} stroke="var(--muted)" />

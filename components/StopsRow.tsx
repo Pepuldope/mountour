@@ -7,7 +7,7 @@ import type { StopWay } from "@/lib/tripStops";
 const WAYS: [StopWay, string][] = [
   ["tam", "Tam"],
   ["spat", "Späť"],
-  ["oboje", "Oboje"],
+  ["oboje", "Tam aj späť"],
 ];
 
 /**
@@ -29,10 +29,12 @@ export function StopsRow({
       {stops.length > 0 && (
         <ul className="flex flex-col gap-1.5" aria-label="Zastávky">
           {stops.map((s) => (
-            <li key={s.id} className="flex flex-wrap items-center gap-1.5">
-              <span className="inline-flex min-w-0 items-center gap-1 rounded-full border border-[var(--accent)] bg-[var(--accent-soft)] py-1 pr-1 pl-3 text-[13px] font-semibold text-[var(--accent)]">
+            <li key={s.id} className="flex min-w-0">
+              {/* One chip per stop, the way picker inside it: a separate switch wrapped onto its own line (Peter, 2026-10-24). */}
+              <span className="inline-flex max-w-full min-w-0 items-center gap-1 rounded-full border border-[var(--accent)] bg-[var(--accent-soft)] py-1 pr-1 pl-3 text-[13px] font-semibold text-[var(--accent)]">
                 <span className="truncate">{s.name}</span>
                 <span className="font-data shrink-0">+{formatDurationShort(s.min * visits(s))}</span>
+                {!loop && s.id !== LUNCH.id && <WaySwitch name={s.name} way={s.way} onPick={(way) => setWay(s.id, way)} />}
                 <button
                   type="button"
                   onClick={() => toggle(s)}
@@ -42,7 +44,6 @@ export function StopsRow({
                   ×
                 </button>
               </span>
-              {!loop && s.id !== LUNCH.id && <WaySwitch name={s.name} way={s.way} onPick={(way) => setWay(s.id, way)} />}
             </li>
           ))}
         </ul>
@@ -67,24 +68,28 @@ export function StopsRow({
   );
 }
 
-/** Stop on the way there, back, or both times (a there-and-back walk passes each place twice). */
+/**
+ * Stop on the way there, back, or both times (a there-and-back walk passes each place twice): a small
+ * dropdown, the phone's own picker, so it fits beside the stop instead of a three-button switch.
+ */
 export function WaySwitch({ name, way, onPick }: { name: string; way: StopWay | undefined; onPick: (way: StopWay) => void }) {
   return (
-    <span role="group" aria-label={`Kedy sa zastavíte: ${name}`} className="inline-flex rounded-full bg-[var(--segment-bg)] p-1 text-[14px] font-semibold">
-      {WAYS.map(([w, label]) => {
-        const on = (way ?? "tam") === w;
-        return (
-          <button
-            key={w}
-            type="button"
-            aria-pressed={on}
-            onClick={() => onPick(w)}
-            className={`min-h-9 min-w-14 rounded-full px-3.5 py-1.5 focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${on ? "bg-[var(--card-bg)] text-[var(--foreground)] shadow-sm" : "text-[var(--muted)]"}`}
-          >
+    <span className="relative inline-flex shrink-0 items-center">
+      <select
+        value={way ?? "tam"}
+        onChange={(e) => onPick(e.target.value as StopWay)}
+        aria-label={`Kedy sa zastavíte: ${name}`}
+        className="h-7 cursor-pointer appearance-none rounded-full border border-[var(--border)] bg-[var(--card-bg)] py-0 pr-6 pl-2.5 text-[13px] font-semibold text-[var(--foreground)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+      >
+        {WAYS.map(([w, label]) => (
+          <option key={w} value={w}>
             {label}
-          </button>
-        );
-      })}
+          </option>
+        ))}
+      </select>
+      <span aria-hidden className="pointer-events-none absolute right-2 text-[10px] text-[var(--muted)]">
+        ▼
+      </span>
     </span>
   );
 }
