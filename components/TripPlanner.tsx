@@ -29,7 +29,7 @@ import { WeatherReport, useTripWeather } from "@/components/WeatherBlock";
 import { TransitHandoff, TransitLegs } from "@/components/TransitBlock";
 import { TravelSwitch } from "@/components/TravelSwitch";
 import { GOAL_WORDS, trimProfile, withApproach, withStops } from "@/lib/tripProfile";
-import { LUNCH, setTripStops, useTripStops } from "@/lib/tripStops";
+import { LUNCH, keepStopsOf, useTripStops } from "@/lib/tripStops";
 import type { TripProfile } from "@/lib/tripProfile";
 
 interface Props extends ShareInfo {
@@ -94,8 +94,9 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
   const { plan, date, time, driveMin, roadMin, driveApprox, driveStatus, rail } = tripPlan;
   // The stops the group added stand on the walk where it passes them (lunch at the goal).
   const { stops } = useTripStops(trip.slug);
-  // Stops belong to this visit: leaving the trip forgets them (a saved trip keeps its own copy).
-  useEffect(() => () => setTripStops(trip.slug, []), [trip.slug]);
+  // Stops belong to this visit: opening another trip or the list forgets them (a saved trip keeps
+  // its own copy); the route comparison and the loop of this trip keep them.
+  useEffect(() => keepStopsOf(trip.slug), [trip.slug]);
   const profile = useMemo(() => {
     if (!walkProfile || !stops.length) return walkProfile;
     const goalAt = walkProfile.points[walkProfile.goalIndex].at;
@@ -105,8 +106,8 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
       if (!place) return [];
       const way = place.back === null ? "tam" : (s.way ?? "tam");
       return [
-        ...(way !== "spat" ? [{ at: place.out, min: s.min, name: s.name }] : []),
-        ...(way !== "tam" && place.back !== null ? [{ at: place.back, min: s.min, name: s.name }] : []),
+        ...(way !== "spat" ? [{ at: place.out, min: s.min, name: s.name, kind: place.kind }] : []),
+        ...(way !== "tam" && place.back !== null ? [{ at: place.back, min: s.min, name: s.name, kind: place.kind }] : []),
       ];
     });
     return withStops(walkProfile, pauses, tripPlan.hikeMin);

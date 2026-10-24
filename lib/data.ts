@@ -1,4 +1,4 @@
-import { distanceAlongM } from "@/lib/geo";
+import { distanceAlongM, nearestOnPath } from "@/lib/geo";
 import { formatWalk } from "@/lib/format";
 import { trailJoin } from "@/lib/trailJoin";
 import { isClearlyShorter, pickWalk, stopsByWalk, walkFacts } from "@/lib/walkFacts";
@@ -75,6 +75,24 @@ function toTrail(t: TripSummary): Trail {
   };
 }
 
+/** A place this far from the line itself is off the walk: you step aside to it and back. */
+const OFF_TRAIL_M = 30;
+/** Small paths wind: the way there is about this much longer than the straight line. */
+const PATH_FACTOR = 1.3;
+/** 4 km/h, as the walking times count flat ground. */
+const WALK_M_PER_MIN = 4000 / 60;
+
+/**
+ * Minutes there and back to a place the build lists as on the walk but that stands a little off it
+ * (a spring down a short path: Peter, 2026-10-24), or null when it is right by the line. Such places
+ * then get a side trip like the ones further away (lib/tripStops.ts, components/TripMap.tsx).
+ */
+function offTrailDetour(path: TripDetail["path"], at: LatLng): number | null {
+  const hit = nearestOnPath(path.map(([lon, lat]) => ({ lat, lon })), at);
+  if (!hit || hit.distanceM <= OFF_TRAIL_M) return null;
+  return Math.max(1, Math.ceil((2 * hit.distanceM * PATH_FACTOR) / WALK_M_PER_MIN));
+}
+
 /** A trip from the files or the database, in the shape the pages use. */
 export function trailDetailFrom(t: TripSummary | TripDetail): TrailDetail {
   const d = "path" in t ? t : null;
@@ -112,7 +130,7 @@ export function trailDetailFrom(t: TripSummary | TripDetail): TrailDetail {
         note: null,
         // Out-and-back paths stop at the goal, so this is the way up.
         along_m: Math.round(distanceAlongM(d!.path, p.location)),
-        detour_min: p.detour_min ?? null,
+        detour_min: p.detour_min ?? (d ? offTrailDetour(d.path, p.location) : null),
       }))
       // On the walk in walking order, then side trips, shortest first.
       .sort((a, b) => (a.detour_min ?? 0) - (b.detour_min ?? 0) || a.along_m - b.along_m),

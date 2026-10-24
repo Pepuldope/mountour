@@ -2,7 +2,7 @@ import Link from "next/link";
 import { primaryTrailhead, sunLocation } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
 import { GpxDownload } from "@/components/GpxDownload";
-import { getRouteWalks, getTrip, getTripPhoto } from "@/lib/tripFiles";
+import { getRouteWalks, getTrip, getTripPhoto, withLoopRoutes } from "@/lib/tripFiles";
 import { buildProfile } from "@/lib/tripProfile";
 import { GOAL_LABEL, POI_LABEL } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
@@ -30,8 +30,7 @@ import { TrackEvent } from "@/components/TrackEvent";
 import { absoluteUrl } from "@/lib/site";
 import type { RouteBrief, TripDetail } from "@/lib/tripSchema";
 import type { TrailDetail } from "@/lib/types";
-import { loopPartner } from "@/lib/loopRoute";
-import { LoopChoice } from "@/components/LoopChoice";
+import { LOOP_SUFFIX } from "@/lib/loopRoute";
 
 /** schema.org data: the trail as a place to visit + breadcrumbs. */
 function trailJsonLd(detail: TrailDetail) {
@@ -95,8 +94,8 @@ function Badge({ colour, icon, children }: { colour: string; icon: string; child
 }
 
 /**
- * The trip page itself, for a route as it is (/trasa/<slug>) or walked as a loop, back by another
- * route (/trasa/<slug>/okruh, lib/loopRoute.ts).
+ * The trip page itself, for a route as it is (/trasa/<slug>) or walked as a loop, back down another
+ * route from the same start (/trasa/<slug>/okruh, lib/loopRoute.ts).
  */
 export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; detail: TrailDetail; loopBack?: RouteBrief }) {
 
@@ -111,21 +110,23 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
   const trailNumbers = { distance_m: trail.distance_m, ascent_m: trail.ascent_m, duration_min: trail.duration_min };
   // Other routes to the same place: listed under the facts, drawn faint on the map. They come
   // with the trip's own file (the database row doesn't carry them), never from the whole index.
-  const routes =
+  const baseRoutes =
     trip.routes ?? (trip.variant_of || trip.route_count ? ((await getTrip(trail.slug))?.routes ?? []) : []);
+  // Loops (up one route, down another from the same start) are routes of their own in the list
+  // and on the comparison map (lib/loopRoute.ts, Peter 2026-10-24).
+  const routes = baseRoutes.length > 1 ? await withLoopRoutes(baseRoutes) : baseRoutes;
+  const current = loopBack ? `${trail.slug}${LOOP_SUFFIX}` : trail.slug;
   const walks = routes.length > 1 ? await getRouteWalks(routes.map((r) => r.slug)) : {};
   // The place's photo from Wikimedia Commons, when there is one (Peter, 2026-10-22: photos on the planner).
   const photo = await getTripPhoto(trail.slug, trip.destination.osm);
-  // Up this route and back by another from the same start, when the place has one (lib/loopRoute.ts).
-  const back = loopBack ?? (trip.route === "okruh" ? null : loopPartner(trail.slug, routes));
   const description = loopBack
     ? `Okruh zo štartu ${trip.start.name}: hore po trase ${routeName(routes.find((r) => r.slug === trail.slug))}, dole po trase ${routeName(loopBack)}.`
     : trail.description;
   // A loop has no GPX file: its maps draw the line from the trip itself.
   const loopLine = loopBack ? trip.path.map(([lon, lat]) => [lat, lon] as [number, number]) : undefined;
   const others: OtherRoute[] = routes
-    // The way back of a loop is drawn as part of it.
-    .filter((r) => r.slug !== trail.slug && r.slug !== loopBack?.slug)
+    // Loops would draw their routes twice; the way back of this loop is part of its line.
+    .filter((r) => r.slug !== trail.slug && r.slug !== loopBack?.slug && !r.slug.endsWith(LOOP_SUFFIX))
     .map((r) => ({ slug: r.slug, label: r.route_label ?? r.start_name, points: r.up.map(([lon, lat]) => [lat, lon]) }));
 
   // Named for the route, as the route list calls it, when the place has several.
@@ -224,8 +225,7 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
                   {description && <p className="text-sm text-[var(--muted)]">{description}</p>}
                   <TripReviews slug={trail.slug} name={trail.name} />
                 </div>
-                <RouteChoice slug={trail.slug} destination={trip.destination.name} routes={routes} walks={walks} />
-                {back && <LoopChoice slug={trail.slug} loop={loopBack !== undefined} back={routeName(back)} />}
+                <RouteChoice slug={current} destination={trip.destination.name} routes={routes} walks={walks} />
                 {/* A real closure stays up top; "no data" is a quiet note under the map. */}
                 {closures.length > 0 && <ClosureBanner closures={closures} />}
               </>

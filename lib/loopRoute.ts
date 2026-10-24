@@ -5,6 +5,9 @@ import type { MarkingRun, RouteBrief, TripDetail } from "@/lib/tripSchema";
 // loop needs no new map data, only two routes put together (Peter, 2026-10-23: the round routes
 // people like). The trip page offers it as "Späť: inou cestou" (/trasa/<slug>/okruh).
 
+/** A loop's own address under its route: /trasa/<slug>/okruh, and its key among the place's routes. */
+export const LOOP_SUFFIX = "/okruh";
+
 /** Both routes start this close to each other: the same car park or stop. */
 const SAME_START_M = 300;
 /** More of either way than this on the other, and it isn't a different way back. */
@@ -37,7 +40,7 @@ export function loopPartner(slug: string, routes: readonly RouteBrief[]): RouteB
   if (!own || own.up.length < 2) return null;
   let best: { r: RouteBrief; shared: number } | null = null;
   for (const r of routes) {
-    if (r === own || r.up.length < 2) continue;
+    if (r === own || r.up.length < 2 || r.slug.endsWith(LOOP_SUFFIX)) continue;
     if (metres(own.up[0], r.up[0]) > SAME_START_M) continue;
     if (r.duration_min > own.duration_min * MAX_LONGER) continue;
     const s = Math.max(shared(own.up, r.up), shared(r.up, own.up));

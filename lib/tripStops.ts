@@ -43,7 +43,7 @@ export function stopFor(p: Poi): TripStop {
   };
 }
 
-// Kept only while the trip page is open (Peter 2026-10-23: a saved trip keeps them, nothing else does).
+// Kept only while the group stays with one trip (Peter 2026-10-23: a saved trip keeps them, nothing else does).
 const EVENT = "mountour-stops";
 type All = Record<string, TripStop[]>;
 const NONE: TripStop[] = [];
@@ -68,6 +68,20 @@ function subscribe(cb: () => void) {
 export function setTripStops(slug: string, stops: TripStop[]) {
   const { [slug]: _, ...rest } = readAll(); // eslint-disable-line @typescript-eslint/no-unused-vars
   write(stops.length ? { ...rest, [slug]: stops } : rest);
+}
+
+/**
+ * A trip page opened: stops of other trips go, this trip's stay. So stepping over to the route
+ * comparison and back keeps them (Peter, 2026-10-24), while the next trip starts empty.
+ */
+export function keepStopsOf(slug: string) {
+  const mine = readAll()[slug];
+  if (Object.keys(readAll()).some((k) => k !== slug)) write(mine ? { [slug]: mine } : {});
+}
+
+/** Back on the trip list: every trip starts again without stops. */
+export function clearAllStops() {
+  if (Object.keys(readAll()).length) write({});
 }
 
 export const stopsMinutes = (stops: TripStop[]) =>

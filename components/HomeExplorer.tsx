@@ -22,6 +22,7 @@ import { plain, preparePlaces, searchPlaces } from "@/lib/placeSearch";
 import type { PlaceSearch, SearchIndexFile } from "@/lib/placeSearch";
 import { useTripSettings } from "@/lib/tripSettings";
 import { knownDriveMin, useStartDrives, useTownDrives } from "@/lib/useDriveRoute";
+import { clearAllStops } from "@/lib/tripStops";
 import { useUserLocation } from "@/lib/userLocation";
 import { FilterChips, KidsSwitch } from "@/components/FilterChips";
 import { MapExpandButton } from "@/components/MapExpandButton";
@@ -225,6 +226,8 @@ function fitsDay(i: TripCardItem): boolean {
 
 export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   const trails = useAllTrails(initial);
+  // Back on the list: stops added on a trip page don't follow into the next one.
+  useEffect(() => clearAllStops(), []);
   const { date, today, withKids, easier, travel, update } = useTripSettings();
   // Several kinds at once (testers): empty = every kind.
   const [goalFilter, setGoalFilter] = useState<DestinationKind[]>([]);

@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
 import { trailDetailFrom } from "@/lib/data";
-import { loopPartner, loopTrip } from "@/lib/loopRoute";
-import { getTrip } from "@/lib/tripFiles";
+import { getLoop, getTrip } from "@/lib/tripFiles";
 import { TripSheet } from "@/components/TripSheet";
 
 interface Props {
@@ -19,14 +18,8 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
 }
 
 const loadLoop = cache(async (slug: string) => {
-  const own = await getTrip(slug);
-  if (!own || own.route === "okruh") return null;
-  const routes = own.routes ?? (own.variant_of ? ((await getTrip(own.variant_of))?.routes ?? []) : []);
-  const back = loopPartner(slug, routes);
-  const other = back ? await getTrip(back.slug) : null;
-  if (!back || !other) return null;
-  const trip = { ...loopTrip(own, other), routes };
-  return { trip, detail: trailDetailFrom(trip), back };
+  const loop = await getLoop(slug);
+  return loop ? { ...loop, detail: trailDetailFrom(loop.trip) } : null;
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

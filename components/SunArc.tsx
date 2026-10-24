@@ -7,6 +7,8 @@ import { formatDuration, formatDurationShort, formatTime } from "@/lib/format";
 import { LAND, seasonDetails, seasonOf, seeded, snowSvg } from "@/lib/season";
 import { UI_ICON, iconEdge } from "@/lib/uiIcons";
 import { MARKING_COLOR } from "@/lib/mapLayers";
+import { KIND_ICON } from "@/lib/kindIcons";
+import { POI_COLOUR } from "@/lib/palette";
 import { sunAltitude } from "@/lib/sun";
 import { GOAL_WORDS } from "@/lib/tripProfile";
 import { LAPSE_PER_M, baseSymbol, skyKind, weatherAt, weatherWords } from "@/lib/weather";
@@ -225,7 +227,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
       const t0 = hs + pa.from * (he - hs);
       const t1 = hs + pa.to * (he - hs);
       const i = Math.max(0, walk.findIndex((p) => p.t >= t0));
-      return { t0, t1, name: pa.name, x: x((t0 + t1) / 2), y: walk[i].y };
+      return { t0, t1, name: pa.name, kind: pa.kind, x: x((t0 + t1) / 2), y: walk[i].y };
     });
 
     return { lo, hi, x, y, walk, pauses, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, dash, ridge, hill, hours, season, deco, snow, capY, capEdge };
@@ -539,10 +541,23 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
           );
         })}
 
-        {/* Added stops: a ring in the site blue where the walk stands still (as their pins on the map). */}
-        {scene.pauses.map((pa) => (
-          <circle key={pa.t0} cx={pa.x} cy={pa.y} r={3.6} fill="#fff" stroke={WALKER} strokeWidth={2} />
-        ))}
+        {/* Added stops: a ring where the walk stands still and the place's map pin above it, in its colour (Peter, 2026-10-24). */}
+        {scene.pauses.map((pa) => {
+          const c = pa.kind ? POI_COLOUR[pa.kind] : WALKER;
+          return (
+            <g key={pa.t0}>
+              {pa.kind && (
+                <g transform={`translate(${pa.x} ${pa.y - 17})`}>
+                  <line y1={7} y2={13} stroke={c} strokeWidth={1.6} />
+                  <circle r={8} fill={c} stroke="#fff" strokeWidth={1.5} />
+                  {/* Constant markup from lib/kindIcons.ts, no user data. */}
+                  <g transform="translate(-5.5 -5.5) scale(0.46)" color="#fff" dangerouslySetInnerHTML={{ __html: KIND_ICON[pa.kind] }} />
+                </g>
+              )}
+              <circle cx={pa.x} cy={pa.y} r={3.6} fill="#fff" stroke={c} strokeWidth={2} />
+            </g>
+          );
+        })}
 
         {/* The moment shown: a slim line from the sky down to the hour ruler. */}
         <line x1={sx} x2={sx} y1={4} y2={RULER} stroke={INK} strokeWidth={1} opacity={0.45} />
