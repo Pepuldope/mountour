@@ -8,6 +8,8 @@ import { getTowns } from "@/lib/trips";
 import { tripsCount } from "@/lib/format";
 import { townGenitive } from "@/lib/townNames";
 import { pageMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/JsonLd";
+import { absoluteUrl } from "@/lib/site";
 
 interface Props {
   params: Promise<{ town: string }>;
@@ -36,10 +38,40 @@ export default async function TownPage({ params }: Props) {
   const data = await getTownTrips((await params).town);
   if (!data) notFound();
   const { town, total, rows } = data;
+  const url = absoluteUrl(`/vylety-z/${town.id}`);
+  const listed = rows.flatMap((r) => r.tiles).filter((t, i, all) => all.findIndex((x) => x.slug === t.slug) === i);
   const credits = rows.flatMap((r) => r.tiles).filter((t, i, all) => t.photo && all.findIndex((x) => x.slug === t.slug) === i);
 
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-6">
+      {/* schema.org data: breadcrumbs and the trips the page lists, so search engines see the page as a list of places. */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Výlety", item: absoluteUrl("/") },
+                { "@type": "ListItem", position: 2, name: "Výlety z miest", item: absoluteUrl("/vylety-z") },
+                { "@type": "ListItem", position: 3, name: `Okolo ${townGenitive(town.id, town.name)}`, item: url },
+              ],
+            },
+            {
+              "@type": "ItemList",
+              "@id": `${url}#vylety`,
+              name: `Výlety okolo ${townGenitive(town.id, town.name)}`,
+              numberOfItems: listed.length,
+              itemListElement: listed.map((t, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                name: t.name,
+                url: absoluteUrl(`/trasa/${t.slug}`),
+              })),
+            },
+          ],
+        }}
+      />
       <Link href="/" className="w-fit text-sm font-semibold text-[var(--accent)]">
         ← Všetky výlety
       </Link>

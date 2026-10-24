@@ -28,12 +28,14 @@ import { TripAccessProvider } from "@/components/TripAccess";
 import { JsonLd } from "@/components/JsonLd";
 import { TrackEvent } from "@/components/TrackEvent";
 import { absoluteUrl } from "@/lib/site";
-import type { RouteBrief, TripDetail } from "@/lib/tripSchema";
+import type { RouteBrief, Town, TripDetail } from "@/lib/tripSchema";
 import type { TrailDetail } from "@/lib/types";
 import { LOOP_SUFFIX } from "@/lib/loopRoute";
+import { nearestTown } from "@/lib/trips";
+import { townGenitive } from "@/lib/townNames";
 
-/** schema.org data: the trail as a place to visit + breadcrumbs. */
-function trailJsonLd(detail: TrailDetail) {
+/** schema.org data: the trail as a place to visit + breadcrumbs (all trips > the nearest town's page > this one). */
+function trailJsonLd(detail: TrailDetail, photoUrl: string | null, town: Town | null) {
   const { trail } = detail;
   const url = absoluteUrl(`/trasa/${trail.slug}`);
   const start = primaryTrailhead(detail)?.location;
@@ -46,7 +48,7 @@ function trailJsonLd(detail: TrailDetail) {
         name: trail.name,
         url,
         ...(trail.description ? { description: trail.description } : {}),
-        image: absoluteUrl("/og-image.png"),
+        image: photoUrl ?? absoluteUrl("/og-image.png"),
         // Only when an entry fee is known; no known fee doesn't mean free.
         ...(detail.fees.some((f) => f.kind === "vstupne") ? { isAccessibleForFree: false } : {}),
         publicAccess: true,
@@ -58,7 +60,10 @@ function trailJsonLd(detail: TrailDetail) {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Výlety", item: absoluteUrl("/") },
-          { "@type": "ListItem", position: 2, name: trail.name, item: url },
+          ...(town
+            ? [{ "@type": "ListItem", position: 2, name: `Okolo ${townGenitive(town.id, town.name)}`, item: absoluteUrl(`/vylety-z/${town.id}`) }]
+            : []),
+          { "@type": "ListItem", position: town ? 3 : 2, name: trail.name, item: url },
         ],
       },
     ],
@@ -119,6 +124,8 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
   const walks = routes.length > 1 ? await getRouteWalks(routes.map((r) => r.slug)) : {};
   // The place's photo from Wikimedia Commons, when there is one (Peter, 2026-10-22: photos on the planner).
   const photo = await getTripPhoto(trail.slug, trip.destination.osm);
+  // The town page this trip belongs to: a link for people and search engines to more trips nearby.
+  const town = nearestTown(trip.start.location);
   const description = loopBack
     ? `Okruh zo štartu ${trip.start.name}: hore po trase ${routeName(routes.find((r) => r.slug === trail.slug))}, dole po trase ${routeName(loopBack)}.`
     : trail.description;
@@ -142,7 +149,7 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
   return (
     <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} transitStops={transitStops} trailStart={trailStart} trail={trailNumbers}>
       <main className="flex flex-1 flex-col bg-[var(--page-sunk)] lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
-        <JsonLd data={trailJsonLd(detail)} />
+        <JsonLd data={trailJsonLd(detail, photo?.url ?? null, town)} />
         <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
         <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 md:max-w-[760px] lg:mx-0 lg:w-[460px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
           <header className="relative -mx-4 -mt-4 flex h-[220px] shrink-0 flex-col justify-between sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
@@ -260,6 +267,12 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
 
             <PoiList pois={detail.pois} slug={trail.slug} loop={trip.route === "okruh"} />
           </TripPlanner>
+
+          {town && (
+            <Link href={`/vylety-z/${town.id}`} className="w-fit text-sm font-semibold text-[var(--accent)]">
+              Ďalšie výlety okolo {townGenitive(town.id, town.name)} →
+            </Link>
+          )}
 
           <SiteFooter />
         </div>

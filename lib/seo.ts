@@ -11,12 +11,15 @@ export function pageMetadata({
   description,
   path,
   absoluteTitle = false,
+  image = OG_IMAGE,
 }: {
   title: string;
   description: string;
   path: string;
   /** true = use the title as is, without the " | MounTour" suffix. */
   absoluteTitle?: boolean;
+  /** Link-preview picture; the brand image unless the page has its own (a trip's place photo). */
+  image?: { url: string; width: number; height: number; alt: string };
 }): Metadata {
   const fullTitle = absoluteTitle ? title : `${title} | ${SITE_NAME}`;
   return {
@@ -30,8 +33,8 @@ export function pageMetadata({
       title: fullTitle,
       description,
       url: path,
-      images: [OG_IMAGE],
+      images: [image],
     },
-    twitter: { card: "summary_large_image", title: fullTitle, description, images: [OG_IMAGE.url] },
+    twitter: { card: "summary_large_image", title: fullTitle, description, images: [image.url] },
   };
 }
