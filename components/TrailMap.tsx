@@ -24,9 +24,18 @@ export interface MapTrack {
   /** Line colour: the trail's KST marking (lib/mapLayers trackColor). */
   color: string;
   state: TrackState;
-  /** Also drawn dashed over the other tracks, so a route sharing a path with the picked one still shows through it. */
-  showThrough?: boolean;
+  /** Drawn just beside the picked line, so where routes share a path both stay visible instead of one hiding the other. */
+  sideBy?: boolean;
 }
+
+/** The way off the trail to an added stop and back, in the place's own colour. */
+export interface SideLeg {
+  points: [number, number][];
+  colour: string;
+}
+
+/** How far beside the picked line other routes run, px: clear of its white edge. */
+const SIDE_BY_PX = 6;
 
 export type MarkerKind = "trailhead" | "parking" | "transit-autobus" | "transit-elektricka" | "transit-vlak" | "poi" | "goal";
 
@@ -63,7 +72,7 @@ interface Props {
   /** On foot from where the car stops to the trail start, drawn dotted. */
   walkLeg?: [number, number][];
   /** Side trips off the trail to the stops the group added, drawn dashed in the site blue. */
-  sideLegs?: [number, number][][];
+  sideLegs?: SideLeg[];
   /** Every marked trail in Slovakia under ours: "full" coloured by popularity, "context" faint. */
   network?: NetworkMode;
   ariaLabel: string;
@@ -298,6 +307,7 @@ export function TrailMap({
             "line-color": "#ffffff",
             "line-width": ["match", ["get", "state"], "selected", 10, "dimmed", 5, 7],
             "line-opacity": ["match", ["get", "state"], "dimmed", 0.4, 1],
+            "line-offset": ["get", "offset"],
           },
         });
         map.addLayer({
@@ -309,16 +319,8 @@ export function TrailMap({
             "line-color": ["get", "color"],
             "line-width": ["match", ["get", "state"], "selected", 5, "dimmed", 2.5, 3.5],
             "line-opacity": ["match", ["get", "state"], "dimmed", 0.35, 1],
+            "line-offset": ["get", "offset"],
           },
-        });
-        // Routes that share a path with the picked one would hide under it: their dashes show on top.
-        map.addLayer({
-          id: "track-through",
-          type: "line",
-          source: "tracks",
-          filter: ["==", ["get", "through"], true],
-          layout: { "line-join": "round" },
-          paint: { "line-color": ["get", "color"], "line-width": 2.5, "line-dasharray": [1.2, 1.6], "line-opacity": ["match", ["get", "state"], "dimmed", 0.55, 0.95] },
         });
         // Parking -> trail start on foot: small dots, on top of the trail's start.
         map.addLayer({
@@ -335,20 +337,21 @@ export function TrailMap({
           layout: { "line-cap": "round", "line-join": "round" },
           paint: { "line-color": "#17213a", "line-width": 3, "line-dasharray": [0.1, 1.8] },
         });
-        // Off the trail to an added stop and back: on foot off the trail, so the same dots as the walk from the car.
+        // Off the trail to an added stop and back: solid in the place's own colour on a white edge, over
+        // everything else, so it is never lost under the trail (Peter, 2026-10-24).
         map.addLayer({
           id: "side-casing",
           type: "line",
           source: "side",
           layout: { "line-cap": "round", "line-join": "round" },
-          paint: { "line-color": "#ffffff", "line-width": 6, "line-opacity": 0.85 },
+          paint: { "line-color": "#ffffff", "line-width": 9 },
         });
         map.addLayer({
           id: "side-line",
           type: "line",
           source: "side",
           layout: { "line-cap": "round", "line-join": "round" },
-          paint: { "line-color": "#17213a", "line-width": 3, "line-dasharray": [0.1, 1.8] },
+          paint: { "line-color": ["get", "colour"], "line-width": 5 },
         });
         // Wide invisible line so thin tracks are easy to tap.
         map.addLayer({
@@ -445,12 +448,20 @@ export function TrailMap({
   useEffect(() => {
     if (!ctx) return;
     const order: Record<TrackState, number> = { dimmed: 0, normal: 1, selected: 2 };
+    // Routes drawn beside the picked one take turns left and right of it.
+    let side = 0;
     const features: GeoJSON.Feature[] = [...tracks]
       .filter((t) => t.points.length >= 2)
       .sort((a, b) => order[a.state] - order[b.state])
       .map((t) => ({
         type: "Feature",
-        properties: { slug: t.slug, color: t.color, state: t.state, label: t.label ?? "", through: !!t.showThrough },
+        properties: {
+          slug: t.slug,
+          color: t.color,
+          state: t.state,
+          label: t.label ?? "",
+          offset: t.sideBy ? (side++ % 2 ? -SIDE_BY_PX : SIDE_BY_PX) : 0,
+        },
         geometry: { type: "LineString", coordinates: t.points.map(lngLat) },
       }));
     (ctx.map.getSource("tracks") as GeoJSONSource | undefined)?.setData({ type: "FeatureCollection", features });
@@ -489,11 +500,15 @@ export function TrailMap({
   // Side trips to the added stops.
   useEffect(() => {
     if (!ctx) return;
-    const legs = (sideLegs ?? []).filter((l) => l.length >= 2);
+    const legs = (sideLegs ?? []).filter((l) => l.points.length >= 2);
     const data: GeoJSON.FeatureCollection = legs.length
       ? {
           type: "FeatureCollection",
-          features: legs.map((l) => ({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates: l.map(lngLat) } })),
+          features: legs.map((l) => ({
+            type: "Feature",
+            properties: { colour: l.colour },
+            geometry: { type: "LineString", coordinates: l.points.map(lngLat) },
+          })),
         }
       : EMPTY;
     (ctx.map.getSource("side") as GeoJSONSource | undefined)?.setData(data);

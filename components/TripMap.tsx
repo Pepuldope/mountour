@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
 import { haversineM, nearestOnPath } from "@/lib/geo";
@@ -14,7 +14,7 @@ import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR, POI_COLOUR } from "@/lib/palette";
 import { trackColor } from "@/lib/mapLayers";
 import { TrailMap } from "@/components/TrailMapClient";
-import type { MapMarker, MapTrack } from "@/components/TrailMap";
+import type { MapMarker, MapTrack, SideLeg } from "@/components/TrailMap";
 import { useTripAccess } from "@/components/TripAccess";
 import { stopFor, useTripStops } from "@/lib/tripStops";
 import { setHoveredRoute, useHoveredRoute } from "@/lib/routeHover";
@@ -114,9 +114,9 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
     () =>
       pois.flatMap((poi) => {
         const stop = addedStops.find((s) => s.id === poi.id);
-        return poi.detour_min !== null && stop ? [{ poi, way: loop ? "tam" : (stop.way ?? "tam") }] : [];
+        return poi.detour_min !== null && stop ? [{ poi }] : [];
       }),
-    [pois, addedStops, loop]
+    [pois, addedStops]
   );
   // A place nearer the walk from the car (or the stop) than the trail leaves from that walk (Peter
   // 2026-10-23: a buffet by the car park was reached via the trail start and back).
@@ -137,9 +137,14 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
     [sideFrom, sideStops]
   );
   const sideRoutes = useWalkRoutes(sidePairs);
-  const sideLegs = useMemo(
-    () => sidePairs.map(([from, to], i) => [pair(from), ...(sideRoutes[i]?.points ?? []), pair(to)]),
-    [sidePairs, sideRoutes]
+  // Each in its place's own colour, so the way to a stop stands out from the trail and the walk from the car.
+  const sideLegs = useMemo<SideLeg[]>(
+    () =>
+      sidePairs.map(([from, to], i) => ({
+        points: [pair(from), ...(sideRoutes[i]?.points ?? []), pair(to)],
+        colour: POI_COLOUR[sideStops[i].poi.kind],
+      })),
+    [sidePairs, sideRoutes, sideStops]
   );
 
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
@@ -150,47 +155,17 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
       // An other route under the pointer (on the map or in the route list) lights up in its list colour.
       others.flatMap((o): MapTrack[] =>
         o.slug === hovered
-          ? [{ slug: o.slug, label: o.label, points: o.points, color: o.colour, state: "selected", showThrough: true }]
+          ? [{ slug: o.slug, label: o.label, points: o.points, color: o.colour, state: "selected", sideBy: true }]
           : o.hoverOnly
             ? []
-            : [{ slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal", showThrough: true }]
+            : [{ slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal", sideBy: true }]
       ),
     [others, hovered]
-  );
-  // The walk goes out to each added side stop and back to the trail: on the way there (first half
-  // of a there-and-back track), back (second half), both, or wherever a loop passes it.
-  const detour = useCallback(
-    (pts: [number, number][]) => {
-      if (!sideStops.length || pts.length < 3) return pts;
-      const ll = pts.map(([lat, lon]) => ({ lat, lon }));
-      const mid = Math.floor((pts.length - 1) / 2);
-      const cuts: { i: number; leg: [number, number][] }[] = [];
-      sideStops.forEach(({ way }, k) => {
-        const leg = sideLegs[k];
-        // Off the walk to the trail: drawn from there, the trail itself doesn't change.
-        if (!leg || sideFrom[k]?.offTrail) return;
-        const legTo = leg.slice(1);
-        const halves: [number, number][] = loop ? [[0, pts.length]] : [...(way !== "spat" ? [[0, mid + 1] as [number, number]] : []), ...(way !== "tam" ? [[mid, pts.length] as [number, number]] : [])];
-        for (const [from, to] of halves) {
-          const hit = nearestOnPath(ll.slice(from, to), { lat: leg[0][0], lon: leg[0][1] });
-          if (hit) cuts.push({ i: from + hit.i, leg: [...legTo, ...[...legTo].reverse().slice(1), leg[0]] });
-        }
-      });
-      cuts.sort((a, b) => a.i - b.i);
-      const out: [number, number][] = [];
-      let c = 0;
-      pts.forEach((p, i) => {
-        out.push(p);
-        for (; c < cuts.length && cuts[c].i === i; c++) out.push(...cuts[c].leg);
-      });
-      return out;
-    },
-    [sideStops, sideLegs, sideFrom, loop]
   );
   const tracks = useMemo<MapTrack[]>(() => {
     const color = trackColor(trail.marking);
     // Other routes first, so the one you picked draws on top where they share a trail.
-    const whole: MapTrack[] = [...otherTracks, { slug: trail.slug, points: detour(points), color, state: "selected" }];
+    const whole: MapTrack[] = [...otherTracks, { slug: trail.slug, points, color, state: "selected" }];
     if (!skip || !trailJoin || points.length < 3) return whole;
     const ll = points.map(([lat, lon]) => ({ lat, lon }));
     const mid = Math.floor((points.length - 1) / 2);
@@ -204,9 +179,9 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
       ...otherTracks,
       { slug: `${trail.slug}-skipped-out`, points: [...points.slice(0, out.i + 1), a], color, state: "dimmed" },
       { slug: `${trail.slug}-skipped-back`, points: [b, ...points.slice(bi + 1)], color, state: "dimmed" },
-      { slug: trail.slug, points: detour([a, ...points.slice(out.i + 1, bi + 1), b]), color, state: "selected" },
+      { slug: trail.slug, points: [a, ...points.slice(out.i + 1, bi + 1), b], color, state: "selected" },
     ];
-  }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks, detour]);
+  }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks]);
 
   const goal = trail.goal_location;
   const goalKind = trail.goal ?? "ine";
