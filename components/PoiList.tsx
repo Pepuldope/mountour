@@ -1,7 +1,7 @@
 "use client";
 
 import { KindIcon } from "@/components/KindIcon";
-import { POI_LABEL } from "@/lib/format";
+import { poiIcon, poiLabel } from "@/lib/food";
 import { focusOnMap } from "@/lib/mapFocus";
 import { POI_COLOUR } from "@/lib/palette";
 import type { Poi } from "@/lib/types";
@@ -107,7 +107,7 @@ function PoiRow({
           }
           className="-ml-2 flex min-w-0 flex-1 items-center gap-2.5 rounded-lg px-2 py-1 text-left hover:bg-[var(--segment-bg)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
         >
-          <KindIcon kind={p.kind} colour={POI_COLOUR[p.kind]} />
+          <KindIcon kind={poiIcon(p)} colour={POI_COLOUR[p.kind]} />
           <span className="flex min-w-0 flex-1 flex-col">
             <span className="truncate text-sm font-semibold">{p.name}</span>
             <span className="text-xs text-[var(--muted)]">
@@ -115,7 +115,7 @@ function PoiRow({
                 className="kind-ink font-bold"
                 style={{ "--kind": POI_COLOUR[p.kind] } as React.CSSProperties}
               >
-                {POI_LABEL[p.kind]}
+                {poiLabel(p)}
               </span>
               {p.detour_min !== null
                 ? ` · odbočka +${p.detour_min} min tam aj späť`
