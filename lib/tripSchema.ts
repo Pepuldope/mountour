@@ -65,6 +65,8 @@ export type RegionId =
 export type TransitMode = "autobus" | "elektricka" | "vlak";
 
 export type PoiKind = "vyhliadka" | "chata" | "obcerstvenie" | "pramen" | "hrad" | "ihrisko" | "utulna";
+/** What kind of food place an "obcerstvenie" is (pipeline/osm.py food_kind). */
+export type FoodKind = "restauracia" | "kaviaren" | "bufet";
 
 export interface GeoPoint {
   lat: number;
@@ -220,6 +222,8 @@ export interface Poi {
   osm: OsmRef | null;
   /** Off the walk: minutes there and back (at most ~30). Absent for places on the walk. */
   detour_min?: number;
+  /** Food places: a restaurant, a café or bar, or a buffet. Absent on trips built before 2026-10-24. */
+  food?: FoodKind;
 }
 
 export interface TripDetail extends TripSummary {

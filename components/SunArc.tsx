@@ -242,7 +242,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
       const t0 = hs + pa.from * (he - hs);
       const t1 = hs + pa.to * (he - hs);
       const i = Math.max(0, walk.findIndex((p) => p.t >= t0));
-      return { t0, t1, name: pa.name, kind: pa.kind, x: x((t0 + t1) / 2), y: walk[i].y };
+      return { t0, t1, name: pa.name, kind: pa.kind, icon: pa.icon, x: x((t0 + t1) / 2), y: walk[i].y };
     });
 
     return { lo, hi, x, y, walk, pauses, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, dash, ridge, hill, hours, season, deco, snow, capY, capEdge };
@@ -566,7 +566,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
                   <line y1={7} y2={13} stroke={c} strokeWidth={1.6} />
                   <circle r={8} fill={c} stroke="#fff" strokeWidth={1.5} />
                   {/* Constant markup from lib/kindIcons.ts, no user data. */}
-                  <g transform="translate(-5.5 -5.5) scale(0.46)" color="#fff" dangerouslySetInnerHTML={{ __html: KIND_ICON[pa.kind] }} />
+                  <g transform="translate(-5.5 -5.5) scale(0.46)" color="#fff" dangerouslySetInnerHTML={{ __html: KIND_ICON[pa.icon ?? pa.kind] }} />
                 </g>
               )}
               <circle cx={pa.x} cy={pa.y} r={3.6} fill="#fff" stroke={c} strokeWidth={2} />

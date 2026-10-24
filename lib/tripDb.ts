@@ -94,10 +94,10 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
       .bind(t.id)
       .all<{ name: string; mode: TransitStop["mode"]; lat: number; lon: number; osm_ref: string | null; walk_m: number; is_primary: number; walk_json: string | null }>(),
     db
-      // "*": detour_min arrives with the next full load; until then the column is simply absent.
+      // "*": detour_min and food arrive with the next full load; until then the columns are simply absent.
       .prepare("SELECT * FROM poi WHERE trip_id = ?1 ORDER BY position")
       .bind(t.id)
-      .all<{ kind: Poi["kind"]; name: string; lat: number; lon: number; osm_ref: string | null; detour_min?: number | null }>(),
+      .all<{ kind: Poi["kind"]; name: string; lat: number; lon: number; osm_ref: string | null; detour_min?: number | null; food?: Poi["food"] | null }>(),
     db.prepare("SELECT rule_id FROM trip_closure WHERE trip_id = ?1 ORDER BY rule_id").bind(t.id).all<{ rule_id: string }>(),
     db
       .prepare(
@@ -174,6 +174,7 @@ export async function tripFromDb(db: D1Like, slug: string): Promise<TripDetail |
       location: { lat: p.lat, lon: p.lon },
       osm: p.osm_ref,
       ...(p.detour_min ? { detour_min: p.detour_min } : {}),
+      ...(p.food ? { food: p.food } : {}),
     })),
   };
 }

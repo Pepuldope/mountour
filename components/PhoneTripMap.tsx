@@ -6,7 +6,7 @@ import { MapExpandButton } from "@/components/MapExpandButton";
 import { TripMap } from "@/components/TripMap";
 import type { OtherRoute } from "@/components/TripMap";
 import { UiIcon } from "@/components/UiIcon";
-import { POI_LABEL } from "@/lib/format";
+import { poiIcon, poiLabel } from "@/lib/food";
 import { focusOnMap } from "@/lib/mapFocus";
 import { POI_COLOUR } from "@/lib/palette";
 import type { TrailDetail } from "@/lib/types";
@@ -72,11 +72,11 @@ export function PhoneTripMap({
                     onClick={() => focusOnMap({ id: `poi-${p.id}`, location: p.location })}
                     className="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left hover:bg-[var(--segment-bg)]"
                   >
-                    <KindIcon kind={p.kind} colour={POI_COLOUR[p.kind]} />
+                    <KindIcon kind={poiIcon(p)} colour={POI_COLOUR[p.kind]} />
                     <span className="flex min-w-0 flex-col">
                       <span className="truncate text-sm font-semibold">{p.name}</span>
                       <span className="text-xs text-[var(--muted)]">
-                        {POI_LABEL[p.kind]}
+                        {poiLabel(p)}
                         {p.detour_min !== null ? ` · odbočka +${p.detour_min} min` : ""}
                       </span>
                     </span>

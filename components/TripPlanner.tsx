@@ -106,8 +106,8 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
       if (!place) return [];
       const way = place.back === null ? "tam" : (s.way ?? "tam");
       return [
-        ...(way !== "spat" ? [{ at: place.out, min: s.min, name: s.name, kind: place.kind }] : []),
-        ...(way !== "tam" && place.back !== null ? [{ at: place.back, min: s.min, name: s.name, kind: place.kind }] : []),
+        ...(way !== "spat" ? [{ at: place.out, min: s.min, name: s.name, kind: place.kind, icon: place.icon }] : []),
+        ...(way !== "tam" && place.back !== null ? [{ at: place.back, min: s.min, name: s.name, kind: place.kind, icon: place.icon }] : []),
       ];
     });
     return withStops(walkProfile, pauses, tripPlan.hikeMin);

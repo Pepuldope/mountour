@@ -125,6 +125,7 @@ CREATE TABLE poi (
   lon       REAL NOT NULL,
   osm_ref   TEXT,
   detour_min INTEGER,  -- minutes there and back off the walk; NULL = on the walk
+  food      TEXT CHECK (food IN ('restauracia','kaviaren','bufet')),  -- food places only
   PRIMARY KEY (trip_id, position)
 ) WITHOUT ROWID;
 CREATE TABLE closure_rule (
@@ -239,7 +240,7 @@ COLUMNS = {
         "path_json", "turnaround_index", "marking_runs_json", "variant_of", "route_label", "route_count", "content_hash"],
     "parking": ["trip_id", "id", "name", "lat", "lon", "walk_m", "fee_paid", "is_primary", "osm_ref", "walk_json"],
     "trip_transit_stop": ["trip_id", "stop_id", "walk_m", "is_primary", "position", "walk_json"],
-    "poi": ["trip_id", "position", "kind", "name", "lat", "lon", "osm_ref", "detour_min"],
+    "poi": ["trip_id", "position", "kind", "name", "lat", "lon", "osm_ref", "detour_min", "food"],
     "trip_closure": ["trip_id", "rule_id"],
     "trip_fee": ["trip_id", "fee_id"],
     "town_drive": ["town_id", "minutes_json", "km_json"],
@@ -344,7 +345,7 @@ def build_rows(root=ROOT):
             own["trip_transit_stop"].append((tid, sid, s["walk_m"], i == 0, i, s.get("walk")))
         for i, p in enumerate(detail.get("pois", [])):
             own["poi"].append((tid, i, p["kind"], p["name"], p["location"]["lat"], p["location"]["lon"], p.get("osm"),
-                               p.get("detour_min")))
+                               p.get("detour_min"), p.get("food")))
         for rule in summary["closure_rule_ids"]:
             if rule in rule_ids:
                 own["trip_closure"].append((tid, rule))

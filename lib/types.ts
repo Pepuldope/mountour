@@ -1,5 +1,5 @@
 import type { TrailJoin } from "@/lib/trailJoin";
-import type { DestinationKind, Fee, WalkLine } from "@/lib/tripSchema";
+import type { DestinationKind, Fee, FoodKind, WalkLine } from "@/lib/tripSchema";
 
 // Shared domain types for MounTour (the shape the pages use; trip data is lib/tripSchema.ts).
 
@@ -122,6 +122,8 @@ export interface Poi {
   along_m: number | null;
   /** A side trip off the walk: minutes there and back. Null = on the walk. */
   detour_min: number | null;
+  /** Food places, as the build stored it (lib/food.ts reads the rest from the name). */
+  food?: FoodKind | null;
 }
 
 /** Everything the trip sheet needs for one trail, assembled in one place. */

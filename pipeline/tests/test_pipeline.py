@@ -150,6 +150,9 @@ def test_end_to_end(tmp_path):
     assert "detour_min" not in pois["Vyhliadka"]
     assert pois["Bufet Test"]["kind"] == "obcerstvenie" and 10 <= pois["Bufet Test"]["detour_min"] <= 15
     assert 5 <= pois["Kaviareň na skale"]["detour_min"] <= 10
+    # Food places carry their pictogram: a "bufet" by name even when tagged a restaurant.
+    assert pois["Bufet Test"]["food"] == "bufet" and pois["Kaviareň na skale"]["food"] == "kaviaren"
+    assert "food" not in pois["Vyhliadka"]
 
     # the gorge is one-way, so the waterfall trip is a loop with the ladder fee rule
     falls = next(t for t in index["trips"] if t["destination"]["name"] == "Závojový vodopád")

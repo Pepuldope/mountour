@@ -1,10 +1,10 @@
 // Pictograms for goal and place kinds (24x24, drawn in currentColor), from the
 // "Feel Lab" prototype. Plain SVG markup so both React and map pins can use it.
-import type { DestinationKind, PoiKind } from "@/lib/tripSchema";
+import type { DestinationKind, FoodKind, PoiKind } from "@/lib/tripSchema";
 
 const W = 'fill="#fff" opacity=".85"';
 
-export const KIND_ICON: Record<DestinationKind | PoiKind, string> = {
+export const KIND_ICON: Record<DestinationKind | PoiKind | FoodKind, string> = {
   vrchol: `<path d="M2.5 19.5 9.5 7l3.4 5.6 2.1-3.1 6.5 10z" fill="currentColor"/><path d="m8 9.6 1.5-2.6 1.6 2.6-1.6.9z" ${W}/>`,
   vodopad:
     '<path d="M4 4h16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M8 6v9M12 6v11M16 6v9" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M4 19c2.5 1.6 13.5 1.6 16 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>',
@@ -25,8 +25,15 @@ export const KIND_ICON: Record<DestinationKind | PoiKind, string> = {
   utulna: `<path d="M2.5 20 12 4.5 21.5 20z" fill="currentColor"/><path d="M12 11 9 20h6z" ${W}/>`,
   ihrisko:
     '<path d="M5 20V7M19 20V7M5 7h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M9 7v7M15 7v7" stroke="currentColor" stroke-width="1.6"/><rect x="7.5" y="14" width="9" height="2.4" rx="1" fill="currentColor"/>',
+  // Food places by kind (Peter, 2026-10-24): fork and knife, a cup, a sandwich.
+  restauracia:
+    '<path d="M5.5 3v5.2a2.5 2.5 0 0 0 5 0V3M8 3v18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 21V3c-2.4 1.4-3.6 4.6-3.6 9H18" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>',
+  kaviaren:
+    '<path d="M4.5 8h11v5a5.5 5.5 0 0 1-11 0z" fill="currentColor"/><path d="M15.5 9.5h1.5a2.3 2.3 0 0 1 0 4.6h-1.8" stroke="currentColor" stroke-width="2" fill="none"/><path d="M8 3.5c-.8 1 .8 1.7 0 2.8M11.5 3.5c-.8 1 .8 1.7 0 2.8" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>',
+  bufet:
+    '<path d="M2.5 11.5C2.5 8 6.8 6 12 6s9.5 2 9.5 5.5z" fill="currentColor"/><circle cx="8.5" cy="8.6" r=".8" fill="#fff" opacity=".85"/><circle cx="12" cy="7.9" r=".8" fill="#fff" opacity=".85"/><circle cx="15.5" cy="8.6" r=".8" fill="#fff" opacity=".85"/><path d="M3 14c1.5-1.2 3-1.2 4.5 0s3 1.2 4.5 0 3-1.2 4.5 0 3 1.2 4.5 0" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/><rect x="2.5" y="16" width="19" height="3.6" rx="1.8" fill="currentColor"/>',
 };
 
-export function kindSvg(kind: DestinationKind | PoiKind, size = 24): string {
+export function kindSvg(kind: DestinationKind | PoiKind | FoodKind, size = 24): string {
   return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" aria-hidden="true">${KIND_ICON[kind]}</svg>`;
 }

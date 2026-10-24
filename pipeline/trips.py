@@ -488,7 +488,7 @@ class TripBuilder:
             minutes = din33466_minutes(2 * d, climb, climb)
             if minutes <= lims[kind]:
                 found.append((minutes, dict(kind=kind, name=f.name, location=_loc(f.lat, f.lon), osm=f.osm,
-                                            detour_min=max(5, int(round(minutes / 5)) * 5))))
+                                            detour_min=max(5, int(round(minutes / 5)) * 5), **_food(kind, f))))
         found.sort(key=lambda x: x[0])
         trip["pois"] = trip["pois"] + [p for _, p in found[: self.t.get("detour_max", 6)]]
         return len(found[: self.t.get("detour_max", 6)])
@@ -1023,7 +1023,8 @@ class TripBuilder:
                 f = self.poi_feats[i]
                 if f.osm == dest["osm"]:
                     continue
-                pois.append(dict(kind=self.poi_kinds[i], name=f.name, location=_loc(f.lat, f.lon), osm=f.osm))
+                pois.append(dict(kind=self.poi_kinds[i], name=f.name, location=_loc(f.lat, f.lon), osm=f.osm,
+                                 **_food(self.poi_kinds[i], f)))
             pois = pois[:20]
 
         parking = [_parking(d, f) for d, f in st.parking[:4]]
@@ -1192,6 +1193,11 @@ def _population(tags):
 
 def _int(v):
     return None if v is None or (isinstance(v, float) and math.isnan(v)) else int(round(v))
+
+
+def _food(kind, f):
+    """A food place's kind of food place (restaurant, café or bar, buffet) for its pictogram."""
+    return {"food": osm_mod.food_kind(f.tags)} if kind == "obcerstvenie" else {}
 
 
 def _loc(lat, lon):

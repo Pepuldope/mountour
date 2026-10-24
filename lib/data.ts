@@ -131,6 +131,7 @@ export function trailDetailFrom(t: TripSummary | TripDetail): TrailDetail {
         // Out-and-back paths stop at the goal, so this is the way up.
         along_m: Math.round(distanceAlongM(d!.path, p.location)),
         detour_min: p.detour_min ?? (d ? offTrailDetour(d.path, p.location) : null),
+        food: p.food ?? null,
       }))
       // On the walk in walking order, then side trips, shortest first.
       .sort((a, b) => (a.detour_min ?? 0) - (b.detour_min ?? 0) || a.along_m - b.along_m),

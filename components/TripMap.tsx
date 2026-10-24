@@ -8,7 +8,8 @@ import { useDriveRoute, useWalkRoute, useWalkRoutes } from "@/lib/useDriveRoute"
 import { useUserLocation } from "@/lib/userLocation";
 import { useHomeStop } from "@/lib/useHomeStop";
 import { fetchTrack } from "@/lib/gpx";
-import { GOAL_LABEL, POI_LABEL, TRANSIT_LABEL, formatWalk } from "@/lib/format";
+import { GOAL_LABEL, TRANSIT_LABEL, formatWalk } from "@/lib/format";
+import { poiIcon, poiLabel } from "@/lib/food";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR, POI_COLOUR } from "@/lib/palette";
 import { trackColor } from "@/lib/mapLayers";
@@ -265,11 +266,11 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
         location: p.location,
         title: p.name,
         lines: [
-          p.detour_min !== null ? `${POI_LABEL[p.kind]} · odbočka +${p.detour_min} min tam aj späť` : POI_LABEL[p.kind],
+          p.detour_min !== null ? `${poiLabel(p)} · odbočka +${p.detour_min} min tam aj späť` : poiLabel(p),
           ...addedStops.filter((s) => s.id === p.id).map((s) => (loop ? "Vaša zastávka" : `Vaša zastávka ${WAY_WORDS[s.way ?? "tam"]}`)),
         ],
         colour: POI_COLOUR[p.kind],
-        icon: kindSvg(p.kind, 14),
+        icon: kindSvg(poiIcon(p), 14),
         active: addedStops.some((s) => s.id === p.id),
         action: {
           label: addedStops.some((s) => s.id === p.id) ? "✓ Zastávka · odobrať" : "+ Pridať zastávku",

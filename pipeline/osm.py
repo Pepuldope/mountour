@@ -168,6 +168,16 @@ def poi_kind(t):
     return None
 
 
+def food_kind(t):
+    """Which pictogram a food place gets on the site (lib/food.ts): restaurant, café or bar, or buffet.
+    Mountain buffets are often tagged as restaurants, so the name decides those."""
+    if t.get("amenity") == "fast_food" or "bufet" in (t.get("name") or "").lower():
+        return "bufet"
+    if t.get("amenity") in ("cafe", "pub", "bar"):
+        return "kaviaren"
+    return "restauracia"
+
+
 def stop_mode(t):
     if t.get("railway") in ("station", "halt") and t.get("station") not in ("subway", "funicular"):
         return "vlak"
