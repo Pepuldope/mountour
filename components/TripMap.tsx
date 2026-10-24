@@ -24,6 +24,10 @@ export interface OtherRoute {
   slug: string;
   label: string;
   points: [number, number][];
+  /** Its colour in the route list (the dot by its name), shown when it is hovered. */
+  colour: string;
+  /** Drawn only while hovered: loops run along routes already drawn. */
+  hoverOnly?: boolean;
 }
 
 interface Props {
@@ -38,8 +42,6 @@ interface Props {
 
 /** Other routes in a muted slate: clearly not the walk you picked (that one keeps its trail colour), still easy to see. */
 const OTHER_ROUTE_COLOUR = "#6b7a93";
-/** An other route under the pointer (on the map or in the route list) lights up. */
-const OTHER_ROUTE_HOVER = "#1769d1";
 
 /** Closer than this, the car is at the trail: no walking link. */
 const AT_TRAIL_M = 60;
@@ -144,10 +146,13 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
   const hovered = useHoveredRoute();
   const otherTracks = useMemo<MapTrack[]>(
     () =>
-      others.map((o) =>
+      // An other route under the pointer (on the map or in the route list) lights up in its list colour.
+      others.flatMap((o): MapTrack[] =>
         o.slug === hovered
-          ? { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_HOVER, state: "selected", showThrough: true }
-          : { slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal", showThrough: true }
+          ? [{ slug: o.slug, label: o.label, points: o.points, color: o.colour, state: "selected", showThrough: true }]
+          : o.hoverOnly
+            ? []
+            : [{ slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal", showThrough: true }]
       ),
     [others, hovered]
   );

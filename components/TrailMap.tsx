@@ -239,6 +239,9 @@ export function TrailMap({
         cooperativeGestures: false,
         dragRotate: false,
         pitchWithRotate: false,
+        // Flat only: a two-finger drag on phones tilted the map into 3D by accident (Peter, 2026-10-24).
+        touchPitch: false,
+        maxPitch: 0,
         pixelRatio: mapPixelRatio(),
       });
       map.touchZoomRotate.disableRotation();

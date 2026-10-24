@@ -302,6 +302,9 @@ export function BrowseMap({
         attributionControl: { compact: true },
         dragRotate: false,
         pitchWithRotate: false,
+        // Flat only: a two-finger drag on phones tilted the map into 3D by accident (Peter, 2026-10-24).
+        touchPitch: false,
+        maxPitch: 0,
         fadeDuration: 0,
         minZoom: 5,
         pixelRatio: mapPixelRatio(),
