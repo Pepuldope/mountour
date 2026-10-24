@@ -273,16 +273,17 @@ export function TrailMap({
           type: "line",
           source: "drive",
           layout: { "line-cap": "round", "line-join": "round" },
-          paint: { "line-color": "#ffffff", "line-width": 6, "line-opacity": 0.7 },
+          paint: { "line-color": "#ffffff", "line-width": 7.5, "line-opacity": 0.9 },
         });
-        // The drive is how you get there, not the trip: one quiet grey line, so the walk stands out
-        // (Peter, 2026-10-23: drive, walk, trail and stop lines in four looks were too much).
+        // Getting there in one dark ink: the drive solid, the walks on foot dotted, the trail in its
+        // marking colours (Peter, 2026-10-23: four looks were too much; 2026-10-24: a grey drive
+        // blended into the map and the other routes).
         map.addLayer({
           id: "drive-line",
           type: "line",
           source: "drive",
           layout: { "line-cap": "round", "line-join": "round" },
-          paint: { "line-color": "#7b8496", "line-width": 3 },
+          paint: { "line-color": "#17213a", "line-width": 3.5 },
         });
         // White band under the colour, like the painted KST mark.
         map.addLayer({

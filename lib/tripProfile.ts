@@ -3,7 +3,7 @@
  * trip page. Pure: built on the server from TripDetail.path, then laid on the
  * day's clock in the browser.
  */
-import type { DestinationKind, MarkColour, TripDetail } from "@/lib/tripSchema";
+import type { DestinationKind, MarkColour, PoiKind, TripDetail } from "@/lib/tripSchema";
 
 export interface ProfilePoint {
   /** Height, metres. */
@@ -26,9 +26,9 @@ export interface TripProfile {
    * Where the walk passes each place on the trip page (its Poi id), as a share of the walking time:
    * on the way there, and on the way back for "tam-a-spat" (null on a loop). Missing on old saved trips.
    */
-  places?: { id: string; out: number; back: number | null }[];
+  places?: { id: string; kind: PoiKind; out: number; back: number | null }[];
   /** Stops the group added, as stretches of the day spent standing (filled by withStops). */
-  pauses?: { from: number; to: number; name: string }[];
+  pauses?: { from: number; to: number; name: string; kind?: PoiKind }[];
 }
 
 /** A stop laid on the walk: where it is (share of the walking time) and how long it takes. */
@@ -36,6 +36,8 @@ export interface PauseAt {
   at: number;
   min: number;
   name: string;
+  /** The place's kind, for its colour and icon (none for the lunch break). */
+  kind?: PoiKind;
 }
 
 /** About this many points is plenty for a 360 px wide picture. */
@@ -108,7 +110,7 @@ export function buildProfile(trip: TripDetail): TripProfile | null {
       if (m < bestM) [best, bestM] = [j, m];
     }
     // The ids lib/data.ts gives the trip page's places.
-    return { id: `${trip.slug}:poi:${i}`, out: cost[best] / total, back: loop ? null : cost[last2 - best] / total };
+    return { id: `${trip.slug}:poi:${i}`, kind: poi.kind, out: cost[best] / total, back: loop ? null : cost[last2 - best] / total };
   });
 
   return {
@@ -208,7 +210,7 @@ export function withStops(profile: TripProfile, stops: PauseAt[], hikeMin: numbe
       stood += s.min / Math.max(1, hikeMin);
       const ele = eleAt(s.at);
       points.push({ ele, at: from, colour }, { ele, at: s.at * walkShare + stood, colour: null });
-      pauses.push({ from, to: s.at * walkShare + stood, name: s.name });
+      pauses.push({ from, to: s.at * walkShare + stood, name: s.name, kind: s.kind });
     }
   };
   pts.forEach((p, i) => {

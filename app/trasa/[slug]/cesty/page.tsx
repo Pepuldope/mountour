@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { cache } from "react";
-import { getRouteWalks, getTrip } from "@/lib/tripFiles";
+import { getRouteWalks, getTrip, withLoopRoutes } from "@/lib/tripFiles";
 import { UiIcon } from "@/components/UiIcon";
 import { RouteCompare } from "@/components/RouteCompare";
 
@@ -34,8 +34,10 @@ export default async function RoutesComparePage({ params }: Props) {
   const { slug } = await params;
   const trip = await loadTrip(slug);
   if (!trip) notFound();
-  const routes = trip.routes ?? [];
-  if (routes.length < 2) redirect(`/trasa/${slug}`);
+  const base = trip.routes ?? [];
+  if (base.length < 2) redirect(`/trasa/${slug}`);
+  // Loops are compared with the rest, each as its own route (Peter, 2026-10-24).
+  const routes = await withLoopRoutes(base);
   const walks = await getRouteWalks(routes.map((r) => r.slug));
 
   return (

@@ -1,7 +1,8 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import { driveDestination, routeWalk, trailDetailFrom, walkFromCar } from "@/lib/data";
 import { summaryFromList } from "@/lib/trips";
-import type { TownDriveFile, TripDetail, TripIndex, TripList, TripSummary } from "@/lib/tripSchema";
+import { LOOP_SUFFIX, loopPartner, loopTrip } from "@/lib/loopRoute";
+import type { RouteBrief, TownDriveFile, TripDetail, TripIndex, TripList, TripSummary } from "@/lib/tripSchema";
 import type { TrailDetail } from "@/lib/types";
 import type { RouteWalk } from "@/lib/walkFacts";
 
@@ -170,9 +171,58 @@ export async function getRouteWalks(slugs: string[]): Promise<Record<string, Rou
   const out: Record<string, RouteWalk> = {};
   await Promise.all(
     slugs.map(async (slug) => {
-      const trip = await getTrip(slug);
+      const trip = slug.endsWith(LOOP_SUFFIX) ? (await getLoop(slug.slice(0, -LOOP_SUFFIX.length)))?.trip : await getTrip(slug);
       if (trip) out[slug] = routeWalk(trailDetailFrom(trip));
     })
   );
   return out;
+}
+
+/** The routes to a trip's place, from its own file or its main route's. */
+export async function getPlaceRoutes(trip: TripDetail): Promise<RouteBrief[]> {
+  return trip.routes ?? (trip.variant_of ? ((await getTrip(trip.variant_of))?.routes ?? []) : []);
+}
+
+/** A route walked as a loop, up it and back down another from the same start (lib/loopRoute.ts); null when it has none. */
+export async function getLoop(slug: string): Promise<{ trip: TripDetail; back: RouteBrief } | null> {
+  const own = await getTrip(slug);
+  if (!own || own.route === "okruh") return null;
+  const routes = await getPlaceRoutes(own);
+  const back = loopPartner(slug, routes);
+  const other = back ? await getTrip(back.slug) : null;
+  if (!back || !other) return null;
+  return { trip: { ...loopTrip(own, other), routes }, back };
+}
+
+/**
+ * The place's routes, then each loop as a route of its own ("<slug>/okruh"): up one route, back
+ * down another from the same start, listed and compared with the rest (Peter, 2026-10-24: loops
+ * are new routes from the same spot, not a different way down tucked under the list).
+ */
+export async function withLoopRoutes(routes: RouteBrief[]): Promise<RouteBrief[]> {
+  const pairs = new Set<string>();
+  const loops: RouteBrief[] = [];
+  for (const r of routes) {
+    const back = loopPartner(r.slug, routes);
+    if (!back) continue;
+    const pair = [r.slug, back.slug].sort().join("|");
+    if (pairs.has(pair)) continue;
+    pairs.add(pair);
+    const loop = await getLoop(r.slug);
+    if (!loop) continue;
+    const t = loop.trip;
+    loops.push({
+      slug: `${r.slug}${LOOP_SUFFIX}`,
+      route_label: loops.length ? `Okruh ${loops.length + 1}` : "Okruh",
+      variant_of: r.variant_of ?? r.slug,
+      start_name: r.start_name,
+      parking: r.parking,
+      transit: r.transit,
+      duration_min: t.duration_min,
+      distance_m: t.distance_m,
+      ascent_m: t.ascent_m,
+      up: t.path.map(([lon, lat]) => [lon, lat] as [number, number]),
+    });
+  }
+  return [...routes, ...loops];
 }
