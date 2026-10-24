@@ -56,8 +56,21 @@ const DEPLOYMENT_ID = process.env.WORKERS_CI_COMMIT_SHA?.slice(0, 12) || undefin
 // full reload, so send it with every page here.
 const DEPLOYMENT_HEADERS = DEPLOYMENT_ID ? [{ key: "x-nextjs-deployment-id", value: DEPLOYMENT_ID }] : [];
 
+const OLD_HOSTS = ["mountour.nemcok-peter123.workers.dev", "www.turuj.sk"];
+
 const nextConfig: NextConfig = {
   deploymentId: DEPLOYMENT_ID,
+  // One address for people and search engines: the old workers.dev address and www move to
+  // turuj.sk for good (301/308), so shared links keep working and Google moves its index over.
+  // Not /api/: an open tab or the service worker on the old address still reaches it there.
+  async redirects() {
+    return OLD_HOSTS.map((host) => ({
+      source: "/:path((?!api/).*)",
+      has: [{ type: "host" as const, value: host }],
+      destination: "https://turuj.sk/:path",
+      permanent: true,
+    }));
+  },
   async headers() {
     return [
       { source: "/:path*", headers: SECURITY_HEADERS },
