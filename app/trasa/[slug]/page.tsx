@@ -4,7 +4,7 @@ import { cache } from "react";
 import { routeWalk, trailDetailFrom } from "@/lib/data";
 import { pickWalk } from "@/lib/walkFacts";
 import { getTripLive } from "@/lib/tripDb";
-import { getAllTripSlugs } from "@/lib/tripFiles";
+import { getAllTripSlugs, getTripPhoto } from "@/lib/tripFiles";
 import { formatDistance, formatDuration } from "@/lib/format";
 import { TripSheet } from "@/components/TripSheet";
 import { pageMetadata } from "@/lib/seo";
@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const detail = (await loadTrip(slug))?.detail;
   if (!detail) return { title: "Trasa sa nenašla", robots: { index: false } };
   const { trail } = detail;
+  const photo = await getTripPhoto(trail.slug, (await loadTrip(slug))?.trip.destination.osm);
   // The same walk as the page's facts (from the default parking), so search results don't show another number.
   const w = pickWalk(routeWalk(detail), false, detail.parkingLots.length > 0);
   const facts = `${formatDistance(w?.m ?? trail.distance_m)}, +${w?.ascentM ?? trail.ascent_m} m, ${formatDuration(w?.min ?? trail.duration_min)} chôdze`;
@@ -40,6 +41,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${trail.name} – túra, parkovanie a čas návratu`,
     description: `${trail.name}: ${facts}. Kde zaparkovať, kedy najneskôr vyraziť a stihnúť návrat za svetla.`,
     path: `/trasa/${trail.slug}`,
+    // Shared links and search results show the place itself when Commons has a photo of it.
+    ...(photo ? { image: { url: photo.url, width: photo.w, height: photo.h, alt: trail.name } } : {}),
   });
 }
 
