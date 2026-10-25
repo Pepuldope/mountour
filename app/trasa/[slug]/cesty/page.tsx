@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { RoutesCompareView, compareMetadata } from "@/components/RoutesCompareView";
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
+import { cache } from "react";
+import { getRouteWalks, getTrip, withLoopRoutes } from "@/lib/tripFiles";
+import { UiIcon } from "@/components/UiIcon";
+import { RouteCompare } from "@/components/RouteCompare";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -13,11 +18,42 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   return [];
 }
 
+const loadTrip = cache((slug: string) => getTrip(slug));
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  return compareMetadata((await params).slug, "sk");
+  const trip = await loadTrip((await params).slug);
+  return {
+    title: trip ? `Cesty k cieľu: ${trip.destination.name}` : "Trasa sa nenašla",
+    // The same routes as the trip pages: those are the ones to find in search.
+    robots: { index: false },
+  };
 }
 
 /** Every route to one place on one map, side by side, to pick from. */
 export default async function RoutesComparePage({ params }: Props) {
-  return <RoutesCompareView slug={(await params).slug} lang="sk" />;
+  const { slug } = await params;
+  const trip = await loadTrip(slug);
+  if (!trip) notFound();
+  const base = trip.routes ?? [];
+  if (base.length < 2) redirect(`/trasa/${slug}`);
+  // Loops are compared with the rest, each as its own route (Peter, 2026-10-24).
+  const routes = await withLoopRoutes(base);
+  const walks = await getRouteWalks(routes.map((r) => r.slug));
+
+  return (
+    <main className="flex flex-1 flex-col lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
+      <RouteCompare slug={slug} destination={trip.destination.name} goal={trip.destination.location} routes={routes} walks={walks}>
+        <nav aria-label="Navigácia" className="flex items-center gap-3">
+          <Link
+            href={`/trasa/${slug}`}
+            className="inline-flex items-center gap-0.5 rounded-full border border-[var(--border)] bg-[var(--card-bg)] px-3 py-1.5 text-sm font-semibold"
+          >
+            <UiIcon name="back" size={15} />
+            Späť
+          </Link>
+          <h1 className="text-xl font-extrabold tracking-tight">Cesty k cieľu: {trip.destination.name}</h1>
+        </nav>
+      </RouteCompare>
+    </main>
+  );
 }

@@ -12,12 +12,6 @@ export const SITE_URL = (
 
 export const SITE_NAME = "Túruj";
 
-/**
- * English trip pages built ahead (best known first). Each built page is a file, and the free plan
- * deploys at most 20,000 (scripts/check-page-cache.mjs); the rest are drawn on the first visit.
- */
-export const EN_TRIPS_AHEAD = 1500;
-
 export const SITE_TITLE = "Kam dnes na výlet do hôr – plánovač jednodňových túr";
 
 export const SITE_DESCRIPTION =

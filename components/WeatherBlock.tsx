@@ -11,12 +11,9 @@ import { activeClosures } from "@/lib/closures";
 import { getSunTimes } from "@/lib/sun";
 import { clock } from "@/lib/zoned";
 import { FORECAST_DAYS, betterDay, betterTime, summarize, tripWeatherReport, weatherNotes, weatherWords } from "@/lib/weather";
-import type { BetterDay, BetterTime, WeatherForecast } from "@/lib/weather";
+import type { BetterDay, BetterTime, WeatherForecast, WeatherSummary } from "@/lib/weather";
 import { badSkySvg } from "@/lib/weatherIcons";
 import type { Closure, LatLng } from "@/lib/types";
-import { useLang, useT } from "@/lib/i18n";
-import { decimal, tr } from "@/lib/lang";
-import type { Lang } from "@/lib/lang";
 
 type Goal = (LatLng & { ele: number | null; name: string }) | null;
 
@@ -26,8 +23,8 @@ function url(p: LatLng, alt?: number | null): string {
   return `/api/weather?lat=${p.lat.toFixed(4)}&lon=${p.lon.toFixed(4)}${alt ? `&alt=${Math.round(alt)}` : ""}`;
 }
 
-function temps(s: { tempMin: number; tempMax: number }, lang: Lang): string {
-  return s.tempMin === s.tempMax ? `${s.tempMin} °C` : tr(lang, "{a} až {b} °C", { a: s.tempMin, b: s.tempMax });
+function temps(s: WeatherSummary): string {
+  return s.tempMin === s.tempMax ? `${s.tempMin} °C` : `${s.tempMin} až ${s.tempMax} °C`;
 }
 
 export interface TripWeather {
@@ -53,21 +50,19 @@ export function useTripWeather(plan: DayPlan | null, start: LatLng | null, goal:
  * wind and frost an amber one, like the sunset notes.
  */
 export function WeatherNotes({ plan, weather, goal }: { plan: DayPlan; weather: TripWeather; goal: Goal }) {
-  const t = useT();
-  const lang = useLang();
-  if (weather.loading) return <p className="text-xs text-[var(--muted)]">{t("Načítavame predpoveď počasia…")}</p>;
+  if (weather.loading) return <p className="text-xs text-[var(--muted)]">Načítavame predpoveď počasia…</p>;
   if (!weather.below) return null;
   const atStart = summarize(weather.below, plan.hikeStart, plan.hikeEnd);
   if (!atStart) return null;
   const atGoal = weather.above ? summarize(weather.above, plan.hikeStart, plan.hikeEnd) : null;
-  const notes = weatherNotes(weather.below, weather.above, plan.hikeStart, plan.hikeEnd, lang);
+  const notes = weatherNotes(weather.below, weather.above, plan.hikeStart, plan.hikeEnd);
 
   return (
-    <section aria-label={t("Počasie počas túry")} className="flex flex-col gap-1.5 text-sm">
+    <section aria-label="Počasie počas túry" className="flex flex-col gap-1.5 text-sm">
       <p className="text-[var(--muted)]">
-        {t("Počas túry")} {weatherWords(atStart.symbol, lang)}, {temps(atStart, lang)}
-        {atGoal && goal && atGoal.tempMin < atStart.tempMin - 1 ? `, ${goal.name} ${temps(atGoal, lang)}` : ""}
-        {atStart.rainMm >= 0.2 ? t(", zrážky {mm} mm", { mm: decimal(lang, atStart.rainMm) }) : ""}.
+        Počas túry {weatherWords(atStart.symbol)}, {temps(atStart)}
+        {atGoal && goal && atGoal.tempMin < atStart.tempMin - 1 ? `, ${goal.name} ${temps(atGoal)}` : ""}
+        {atStart.rainMm >= 0.2 ? `, zrážky ${String(atStart.rainMm).replace(".", ",")} mm` : ""}.
       </p>
       {notes.map((n) =>
         n.strong ? (
@@ -84,6 +79,7 @@ export function WeatherNotes({ plan, weather, goal }: { plan: DayPlan; weather: 
   );
 }
 
+const mm = (n: number) => String(n).replace(".", ",");
 
 /**
  * Everything the forecast says about the trip, under the day: the whole
@@ -114,17 +110,15 @@ export function WeatherReport({
   /** Moves the departure (HH:MM) on the same day, for the drier-time suggestion. */
   onPickTime?: (time: string) => void;
 }) {
-  const t = useT();
-  const lang = useLang();
-  if (weather.loading) return <p className="text-xs text-[var(--muted)]">{t("Načítavame predpoveď počasia…")}</p>;
+  if (weather.loading) return <p className="text-xs text-[var(--muted)]">Načítavame predpoveď počasia…</p>;
   if (!weather.below) return null;
   const from = wholeDay ? plan.segments[0].start : plan.hikeStart;
   const to = wholeDay ? plan.segments[plan.segments.length - 1].end : plan.hikeEnd;
-  const r = tripWeatherReport(weather.below, weather.above, from, to, { from: plan.hikeStart, to: plan.hikeEnd }, lang);
+  const r = tripWeatherReport(weather.below, weather.above, from, to, { from: plan.hikeStart, to: plan.hikeEnd });
   if (!r) return null;
-  const notes = weatherNotes(weather.below, weather.above, plan.hikeStart, plan.hikeEnd, lang);
+  const notes = weatherNotes(weather.below, weather.above, plan.hikeStart, plan.hikeEnd);
   const stormy = notes.some((n) => n.strong);
-  const range = temps(r, lang);
+  const temps = r.tempMin === r.tempMax ? `${r.tempMin} °C` : `${r.tempMin} až ${r.tempMax} °C`;
   // A wet or stormy walk always gets a next step: the nearest dry day in the forecast, same start time.
   // First a drier time the same day (Peter: moving a few hours beats moving the day), then a drier day; both when both work.
   const now = new Date();
@@ -149,18 +143,18 @@ export function WeatherReport({
     : null;
 
   return (
-    <section aria-label={t("Počasie")} className="flex flex-col gap-1.5 text-sm">
+    <section aria-label="Počasie" className="flex flex-col gap-1.5 text-sm">
       <p>
-        <span className="font-semibold">{t(wholeDay ? "Počasie počas výletu:" : "Počasie počas túry:")}</span> {range}
-        {r.topMin !== null && goal ? t(", {goal} až {t} °C", { goal: goal.name, t: r.topMin }) : ""}
+        <span className="font-semibold">Počasie {wholeDay ? "počas výletu" : "počas túry"}:</span> {temps}
+        {r.topMin !== null && goal ? `, ${goal.name} až ${r.topMin} °C` : ""}
         {/* Rain, snow and storms get their own warning lines below. */}
-        {r.wet ? "." : r.worstWhen ? t(", najhoršie {what} {when}.", { what: r.worst, when: r.worstWhen }) : `, ${r.worst}.`}
+        {r.wet ? "." : r.worstWhen ? `, najhoršie ${r.worst} ${r.worstWhen}.` : `, ${r.worst}.`}
       </p>
       {/* Warnings in a box with a sign (Peter: plain coloured text was easy to overlook). */}
       {r.wet && !stormy && (
         <Warning kind={r.wet.snow ? "snow" : "rain"}>
-          {t(r.wet.snow ? "Môže snežiť" : "Môže pršať")} {r.wet.when}
-          {r.wet.mmPerHour >= 0.1 ? t(" ({how}, do {mm} mm/h)", { how: t(r.wet.mmPerHour < 0.5 ? "slabo" : r.wet.mmPerHour < 2 ? "mierne" : "výdatne"), mm: decimal(lang, r.wet.mmPerHour) }) : ""}. {t("Vezmite si nepremokavú bundu.")}
+          {r.wet.snow ? "Môže snežiť" : "Môže pršať"} {r.wet.when}
+          {r.wet.mmPerHour >= 0.1 ? ` (${r.wet.mmPerHour < 0.5 ? "slabo" : r.wet.mmPerHour < 2 ? "mierne" : "výdatne"}, do ${mm(r.wet.mmPerHour)} mm/h)` : ""}. Vezmite si nepremokavú bundu.
         </Warning>
       )}
       {notes.map((n) => (
@@ -203,15 +197,14 @@ function Warning({ kind, children }: { kind: keyof typeof SIGN; children: ReactN
 
 /** "Lepšie vyzerá v nedeľu: polojasno, 7 až 11 °C, bez zrážok." and a button that moves the plan there. */
 function BetterDayTip({ better, hikeStart, onPickDay, alsoTime }: { better: BetterDay; hikeStart: Date; onPickDay: (iso: string) => void; alsoTime: boolean }) {
-  const t = useT();
-  const lang = useLang();
   const iso = addDaysIso(isoDate(hikeStart), better.offset);
-  const when = dayInSentence(iso, new Date(), lang);
+  const when = dayInSentence(iso, new Date());
   const s = better.summary;
+  const temps = s.tempMin === s.tempMax ? `${s.tempMin} °C` : `${s.tempMin} až ${s.tempMax} °C`;
   return (
     <div className="flex flex-col items-start gap-2">
       <p>
-        <span className="font-semibold">{alsoTime ? t("Alebo iný deň, {when}:", { when }) : t("Lepšie vyzerá {when}:", { when })}</span> {weatherWords(s.symbol, lang)}, {temps(s, lang)}, {t("bez zrážok.")}
+        <span className="font-semibold">{alsoTime ? `Alebo iný deň, ${when}:` : `Lepšie vyzerá ${when}:`}</span> {weatherWords(s.symbol)}, {temps}, bez zrážok.
       </p>
       <button
         type="button"
@@ -219,7 +212,7 @@ function BetterDayTip({ better, hikeStart, onPickDay, alsoTime }: { better: Bett
         className={TIP_BUTTON}
       >
         {/* "v nedeľu 1. 11." -> "Prepnúť na nedeľu" */}
-        {t("Prepnúť na {day}", { day: when.replace(/^(vo?|on) /, "").replace(/ \d.*$/, "") })}
+        Prepnúť na {when.replace(/^vo? /, "").replace(/ \d.*$/, "")}
       </button>
     </div>
   );
@@ -234,18 +227,17 @@ function BetterTimeTip({ better, leave, onPickTime }: { better: BetterTime; leav
   // HH:MM for the time box, Slovak time.
   const time = clock(at);
   const s = better.summary;
-  const t = useT();
-  const lang = useLang();
+  const temps = s.tempMin === s.tempMax ? `${s.tempMin} °C` : `${s.tempMin} až ${s.tempMax} °C`;
   return (
     <div className="flex flex-col items-start gap-2">
       <p>
         <span className="font-semibold">
-          {t("Suchšie pri odchode o")} <span className="font-data">{formatTime(at)}</span>:
+          Suchšie pri odchode o <span className="font-data">{formatTime(at)}</span>:
         </span>{" "}
-        {weatherWords(s.symbol, lang)}, {temps(s, lang)}, {t("bez zrážok.")}
+        {weatherWords(s.symbol)}, {temps}, bez zrážok.
       </p>
       <button type="button" onClick={() => onPickTime(time)} className={TIP_BUTTON}>
-        {t("Vyraziť o")} <span className="font-data">{formatTime(at)}</span>
+        Vyraziť o <span className="font-data">{formatTime(at)}</span>
       </button>
     </div>
   );

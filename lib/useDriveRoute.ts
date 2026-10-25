@@ -5,6 +5,7 @@ import type { DriveRoute, TownDrives } from "@/lib/drive";
 import { roundCoord } from "@/lib/drive";
 import { nearestTown } from "@/lib/trips";
 import type { LatLng } from "@/lib/types";
+import "@/lib/legacyStorage";
 
 export type DriveStatus = "idle" | "loading" | "ok" | "error";
 
@@ -87,7 +88,7 @@ export function useDriveRoute(
 
 // Drives the trip page worked out, so the home list shows the same minutes for trips already opened
 // (its own numbers are estimates from the weekly town tables). Rounded start, so no exact home address.
-const KNOWN_KEY = "mountour-drives";
+const KNOWN_KEY = "turuj-drives";
 const KNOWN_MAX = 300;
 
 function readKnown(): Record<string, number> {

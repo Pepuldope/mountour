@@ -6,6 +6,7 @@ import type { LatLng } from "@/lib/types";
 import type { TripProfile } from "@/lib/tripProfile";
 import type { FixedRide } from "@/lib/dayPlan";
 import type { Travel } from "@/lib/tripSettings";
+import "@/lib/legacyStorage";
 
 /**
  * A saved trip: one trail + the day it's planned for, kept on this device only
@@ -45,8 +46,8 @@ export interface SavedTrip {
   offline: "ok" | "failed" | "pending";
 }
 
-const KEY = "mountour-saved-trips";
-const EVENT = "mountour-saved-trips";
+const KEY = "turuj-saved-trips";
+const EVENT = "turuj-saved-trips";
 const EMPTY: SavedTrip[] = [];
 
 let cachedRaw: string | null = null;
@@ -89,7 +90,7 @@ function subscribe(cb: () => void) {
   };
 }
 
-export const tripCacheName = (slug: string) => `mountour-trip-${slug}`;
+export const tripCacheName = (slug: string) => `turuj-trip-${slug}`;
 
 export function useSavedTrips() {
   const trips = useSyncExternalStore(subscribe, read, () => EMPTY);

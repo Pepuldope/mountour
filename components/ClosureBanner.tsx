@@ -4,7 +4,6 @@ import type { Closure } from "@/lib/types";
 import { activeClosures } from "@/lib/closures";
 import { formatDateSk } from "@/lib/format";
 import { useTripDay } from "@/lib/tripSettings";
-import { useLang, useT } from "@/lib/i18n";
 
 interface Props {
   closures: Closure[];
@@ -13,8 +12,6 @@ interface Props {
 export function ClosureBanner({ closures }: Props) {
   // The day the trip page plans for (picked day, else today or tomorrow).
   const { date } = useTripDay();
-  const t = useT();
-  const lang = useLang();
 
   // CRITICAL: missing data must never read as good news. If we have no
   // closure rows at all for this trail, say so plainly instead of implying
@@ -22,9 +19,9 @@ export function ClosureBanner({ closures }: Props) {
   if (closures.length === 0) {
     return (
       <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-        <p className="font-semibold">{t("Stav chodníka neoverený")}</p>
+        <p className="font-semibold">Stav chodníka neoverený</p>
         <p className="text-sm opacity-70">
-          {t("Pre túto trasu nemáme žiadne údaje o uzáverách. Pred výletom si stav overte na inom zdroji.")}
+          Pre túto trasu nemáme žiadne údaje o uzáverách. Pred výletom si stav overte na inom zdroji.
         </p>
       </div>
     );
@@ -35,7 +32,7 @@ export function ClosureBanner({ closures }: Props) {
   if (!date) {
     return (
       <div className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-4">
-        <p className="font-semibold">{t("Overujeme uzávery…")}</p>
+        <p className="font-semibold">Overujeme uzávery…</p>
       </div>
     );
   }
@@ -54,17 +51,17 @@ export function ClosureBanner({ closures }: Props) {
             <path d="M12 3 22 20H2z" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
             <path d="M12 9.5v4.5M12 16.8v.4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
           </svg>
-          <span>{t("Chodník je v deň výletu ({date}) uzavretý", { date: formatDateSk(checkDate, lang) })}</span>
+          <span>Chodník je v deň výletu ({formatDateSk(checkDate)}) uzavretý</span>
         </p>
         {active.map((c) => (
           <div key={c.id} className="flex flex-col gap-1 text-sm">
-            <p>{t(c.reason)}</p>
+            <p>{c.reason}</p>
             <p>
               <a href={c.source_url} target="_blank" rel="noopener noreferrer" className="underline">
-                {t("Zdroj informácie")}
+                Zdroj informácie
               </a>
             </p>
-            <p className="opacity-70">{t("Overené: {date}", { date: formatDateSk(c.verified_on, lang) })}</p>
+            <p className="opacity-70">Overené: {formatDateSk(c.verified_on)}</p>
           </div>
         ))}
       </div>
@@ -79,9 +76,10 @@ export function ClosureBanner({ closures }: Props) {
     // Neutral, not green: the date is when the rules were checked, and only seasonal
     // park closures are tracked, so this is not "verified open".
     <div className="rounded-xl border border-[var(--border)] bg-[var(--neutral-bg)] p-4">
-      <p className="font-semibold">{t("V deň výletu ({date}) nepoznáme uzáveru tohto chodníka", { date: formatDateSk(checkDate, lang) })}</p>
+      <p className="font-semibold">V deň výletu ({formatDateSk(checkDate)}) nepoznáme uzáveru tohto chodníka</p>
       <p className="text-sm opacity-70">
-        {t("Sledujeme sezónne uzávery národných parkov, iné (ťažba, opravy) nie. Pravidlá overené {date}.", { date: formatDateSk(mostRecentlyVerified.verified_on, lang) })}
+        Sledujeme sezónne uzávery národných parkov, iné (ťažba, opravy) nie. Pravidlá overené{" "}
+        {formatDateSk(mostRecentlyVerified.verified_on)}.
       </p>
     </div>
   );

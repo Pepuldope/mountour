@@ -2,8 +2,6 @@ import type { DayPlan, Verdict } from "@/lib/dayPlan";
 import type { DestinationKind } from "@/lib/tripSchema";
 import type { Difficulty, PoiKind, TransitMode } from "@/lib/types";
 import { clock } from "@/lib/zoned";
-import { decimal, tr } from "@/lib/lang";
-import type { Lang } from "@/lib/lang";
 
 export const DIFFICULTY_LABEL: Record<Difficulty, string> = {
   lahka: "Ľahká",
@@ -64,14 +62,14 @@ export function formatDuration(minutes: number): string {
   return `${h}${NB}h${NB}${m}${NB}min`;
 }
 
-/** "18,4 km": Slovak decimal comma ("18.4 km" in English). */
-export function formatDistance(meters: number, lang: Lang = "sk"): string {
-  return `${decimal(lang, meters / 1000)} km`;
+/** "18,4 km": Slovak decimal comma. */
+export function formatDistance(meters: number): string {
+  return `${(meters / 1000).toFixed(1).replace(".", ",")} km`;
 }
 
 /** A walk to the trail or a stop: "350 m" under a kilometre, "2,4 km" from there. */
-export function formatWalk(meters: number, lang: Lang = "sk"): string {
-  return meters < 1000 ? `${meters} m` : formatDistance(meters, lang);
+export function formatWalk(meters: number): string {
+  return meters < 1000 ? `${meters} m` : formatDistance(meters);
 }
 
 /** "08:05", Slovak time whatever the device's timezone. */
@@ -79,19 +77,16 @@ export function formatTime(date: Date): string {
   return clock(date);
 }
 
-export function formatDateSk(iso: string, lang: Lang = "sk"): string {
+export function formatDateSk(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);
-  if (lang === "en") return `${d}\u00a0${EN_MONTHS[m - 1]}\u00a0${y}`;
   // Non-breaking spaces: "12. 10. 2026" never splits across two lines.
   return `${d}.\u00a0${m}.\u00a0${y}`;
 }
 
-const EN_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
 /** Straight-line distance for "X od teba": "850 m", "4,2 km", "12 km". */
-export function formatFromUser(meters: number, lang: Lang = "sk"): string {
+export function formatFromUser(meters: number): string {
   if (meters < 1000) return `${Math.round(meters / 10) * 10} m`;
-  if (meters < 10000) return `${decimal(lang, meters / 1000)} km`;
+  if (meters < 10000) return `${(meters / 1000).toFixed(1).replace(".", ",")} km`;
   return `${Math.round(meters / 1000)} km`;
 }
 
@@ -116,26 +111,25 @@ export const VERDICT_SHORT: Record<Verdict, string> = {
 };
 
 /** Full verdict sentence for the plan card. */
-export function verdictText(plan: DayPlan, lang: Lang = "sk"): string {
-  const m = { m: formatDuration(Math.abs(plan.marginMin)) };
+export function verdictText(plan: DayPlan): string {
+  const m = Math.abs(plan.marginMin);
   switch (plan.verdict) {
     case "ok":
       // Hours of light to spare: how many exactly doesn't matter.
-      return Math.abs(plan.marginMin) > 150 ? tr(lang, "Stihnete to za svetla.") : tr(lang, "Stihnete to za svetla. Z túry budete späť {m} pred západom slnka.", m);
+      return m > 150 ? "Stihnete to za svetla." : `Stihnete to za svetla. Z túry budete späť ${formatDuration(m)} pred západom slnka.`;
     case "close":
-      return tr(lang, "Stihnete to za svetla, späť {m} pred západom slnka. Rezerva je menej ako hodina.", m);
+      return `Stihnete to za svetla, späť ${formatDuration(m)} pred západom slnka. Rezerva je menej ako hodina.`;
     case "tight":
-      return tr(lang, "Tesné: späť len {m} pred západom slnka. Vyrazte skôr.", m);
+      return `Tesné: späť len ${formatDuration(m)} pred západom slnka. Vyrazte skôr.`;
     case "after-sunset":
-      return tr(lang, "Koniec túry vychádza {m} po západe slnka, v šere. Vyrazte skôr.", m);
+      return `Koniec túry vychádza ${formatDuration(m)} po západe slnka, v šere. Vyrazte skôr.`;
     case "after-dusk":
-      return tr(lang, "Posledná časť túry by bola potme. Vyrazte skôr alebo vyberte kratšiu trasu.");
+      return "Posledná časť túry by bola potme. Vyrazte skôr alebo vyberte kratšiu trasu.";
   }
 }
 
 /** "1 výlet", "3 výlety", "12 výletov". */
-export function tripsCount(n: number, lang: Lang = "sk"): string {
-  if (lang === "en") return n === 1 ? "1 trip" : `${n.toLocaleString("en-GB")} trips`;
+export function tripsCount(n: number): string {
   if (n === 1) return "1 výlet";
   if (n >= 2 && n <= 4) return `${n} výlety`;
   // Thousands get a space, as Slovak writes them: "1 460 výletov".

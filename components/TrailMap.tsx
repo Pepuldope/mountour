@@ -11,7 +11,6 @@ import { POPULARITY_RAMP, POPULARITY_TOP_OUTLINE } from "@/lib/palette";
 import { attachTrailNetwork } from "@/lib/trailNetwork";
 import type { NetworkMode } from "@/lib/trailNetwork";
 import { useUserLocation } from "@/lib/userLocation";
-import { pageLang, tr } from "@/lib/lang";
 
 type MapLibre = typeof import("maplibre-gl");
 
@@ -578,13 +577,13 @@ export function TrailMap({
       userMarkerRefs.current.push(
         new ml.Marker({ element: pinElement("mt-pin-start", "S", start.label) })
           .setLngLat([start.lon, start.lat])
-          .setPopup(new ml.Popup({ offset: 14, closeButton: false }).setDOMContent(popupContent(tr(pageLang(), "Štart"), [tr(pageLang(), start.label)])))
+          .setPopup(new ml.Popup({ offset: 14, closeButton: false }).setDOMContent(popupContent("Štart", [start.label])))
           .addTo(map)
       );
     }
     if (fix) {
       userMarkerRefs.current.push(
-        new ml.Marker({ element: pinElement("mt-pin-me", "", tr(pageLang(), "Vaša poloha")) }).setLngLat([fix.lon, fix.lat]).addTo(map)
+        new ml.Marker({ element: pinElement("mt-pin-me", "", "Vaša poloha") }).setLngLat([fix.lon, fix.lat]).addTo(map)
       );
     }
   }, [ctx, fix, start]);

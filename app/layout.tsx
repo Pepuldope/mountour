@@ -7,7 +7,6 @@ import { UserLocationProvider } from "@/lib/userLocation";
 import { TripSettingsProvider } from "@/lib/tripSettings";
 import { Analytics } from "@/components/Analytics";
 import { VisitBeacon } from "@/components/VisitBeacon";
-import { LangProvider } from "@/lib/i18n";
 import { OG_IMAGE, SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL } from "@/lib/site";
 
 // Brand fonts (strategy/06-identity): latin-ext covers every Slovak letter.
@@ -58,20 +57,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    // English pages (app/en) set lang="en" before the page shows.
     <html
       lang="sk"
-      suppressHydrationWarning
       className={`${figtree.variable} ${bricolage.variable} ${barlowCondensed.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ServiceWorkerRegister />
         <StaleCodeReload />
-        <LangProvider>
-          <UserLocationProvider>
-            <TripSettingsProvider>{children}</TripSettingsProvider>
-          </UserLocationProvider>
-        </LangProvider>
+        <UserLocationProvider>
+          <TripSettingsProvider>{children}</TripSettingsProvider>
+        </UserLocationProvider>
         <VisitBeacon />
         <Analytics />
       </body>
