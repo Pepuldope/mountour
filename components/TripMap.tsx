@@ -19,6 +19,7 @@ import { useTripAccess } from "@/components/TripAccess";
 import { stopFor, useTripStops } from "@/lib/tripStops";
 import { setHoveredRoute, useHoveredRoute } from "@/lib/routeHover";
 import { NETWORK_ON } from "@/lib/trailNetwork";
+import { useLang, useT } from "@/lib/i18n";
 
 /** Another route to the same place: drawn faint, a tap opens it. */
 export interface OtherRoute {
@@ -61,6 +62,8 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  * walk from there to the trail (dotted), then the trail itself.
  */
 export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Props) {
+  const t = useT();
+  const lang = useLang();
   const { trail, trailheads, pois } = detail;
   const router = useRouter();
   const { parkingLots, choice, choose, rideTo: destination, trailJoin, walkFrom, walkLine, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
@@ -187,12 +190,12 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
   const goalKind = trail.goal ?? "ine";
   const markers = useMemo<MapMarker[]>(
     () => [
-      ...trailheads.map((t) => ({
-        id: `th-${t.id}`,
+      ...trailheads.map((th) => ({
+        id: `th-${th.id}`,
         kind: "trailhead" as const,
-        location: t.location,
-        title: t.name,
-        lines: ["Začiatok trasy"],
+        location: th.location,
+        title: th.name,
+        lines: [t("Začiatok trasy")],
       })),
       // By car only parking, by train or bus only the stops: never both.
       ...(transit
@@ -201,8 +204,12 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
             id: `pk-${p.id}`,
             kind: "parking" as const,
             location: p.location,
-            title: p.name,
-            lines: [...(p.note ? [p.note] : []), ...(i === choice ? ["Vybraté parkovisko"] : [])],
+            title: t(p.name),
+            lines: [
+              // lib/data.ts writes the same note in Slovak (p.note); here it follows the page's language.
+              `${t(p.join ? "{m} od trasy" : "{m} od začiatku trasy", { m: formatWalk(p.join?.walk_m ?? p.walk_m, lang) })}${p.fee === true ? t(", spoplatnené") : p.fee === false ? t(", bezplatné") : ""}. ${t("Zdroj: OpenStreetMap")}.`,
+              ...(i === choice ? [t("Vybraté parkovisko")] : []),
+            ],
             active: i === choice,
             dimmed: i !== choice,
             // Tapping another parking picks it (the plan and both routes follow).
@@ -215,9 +222,9 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
             location: s.location,
             title: s.name,
             lines: [
-              TRANSIT_LABEL[s.mode],
-              s.join ? `${formatWalk(s.join.walk_m)} od trasy` : `${formatWalk(s.distance_m)} od začiatku trasy`,
-              ...(i === stopChoice ? ["Tu vystúpite"] : []),
+              t(TRANSIT_LABEL[s.mode]),
+              s.join ? t("{m} od trasy", { m: formatWalk(s.join.walk_m, lang) }) : t("{m} od začiatku trasy", { m: formatWalk(s.distance_m, lang) }),
+              ...(i === stopChoice ? [t("Tu vystúpite")] : []),
             ],
             active: i === stopChoice,
             dimmed: i !== stopChoice,
@@ -231,7 +238,7 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
               kind: `transit-${homeStop.mode}` as const,
               location: homeStop.location,
               title: homeStop.name,
-              lines: [`Tu nastúpite, ${formatWalk(homeStop.distance_m)} od štartu`],
+              lines: [t("Tu nastúpite, {m} od štartu", { m: formatWalk(homeStop.distance_m, lang) })],
             },
           ]
         : []),
@@ -239,16 +246,16 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
         id: `poi-${p.id}`,
         kind: "poi" as const,
         location: p.location,
-        title: p.name,
+        title: t(p.name),
         lines: [
-          p.detour_min !== null ? `${poiLabel(p)} · odbočka +${p.detour_min} min tam aj späť` : poiLabel(p),
-          ...addedStops.filter((s) => s.id === p.id).map((s) => (loop ? "Vaša zastávka" : `Vaša zastávka ${WAY_WORDS[s.way ?? "tam"]}`)),
+          p.detour_min !== null ? `${t(poiLabel(p))} · ${t("odbočka +{n} min tam aj späť", { n: p.detour_min })}` : t(poiLabel(p)),
+          ...addedStops.filter((s) => s.id === p.id).map((s) => (loop ? t("Vaša zastávka") : `${t("Vaša zastávka")} ${t(WAY_WORDS[s.way ?? "tam"])}`)),
         ],
         colour: POI_COLOUR[p.kind],
         icon: kindSvg(poiIcon(p), 14),
         active: addedStops.some((s) => s.id === p.id),
         action: {
-          label: addedStops.some((s) => s.id === p.id) ? "✓ Zastávka · odobrať" : "+ Pridať zastávku",
+          label: addedStops.some((s) => s.id === p.id) ? `✓ ${t("Zastávka · odobrať")}` : `+ ${t("Pridať zastávku")}`,
           onClick: () => toggleStop(stopFor(p)),
         },
       })),
@@ -260,7 +267,7 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
               kind: "goal" as const,
               location: goal,
               title: trail.goal_name ?? trail.name,
-              lines: [`Cieľ výletu · ${GOAL_LABEL[goalKind]}`],
+              lines: [`${t("Cieľ výletu")} · ${t(GOAL_LABEL[goalKind])}`],
               colour: GOAL_COLOUR[goalKind],
               icon: kindSvg(goalKind, 16),
               active: true,
@@ -268,7 +275,7 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
           ]
         : []),
     ],
-    [trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name, addedStops, toggleStop, loop]
+    [trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name, addedStops, toggleStop, loop, t, lang]
   );
 
   // Opens on the trail and where the car stops. The drive is drawn too, but a long drive would
@@ -305,7 +312,7 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
         if (others.some((o) => o.slug === slug)) router.push(`/trasa/${slug}`, { scroll: false });
       }}
       onHoverTrail={others.length ? (slug) => setHoveredRoute(others.some((o) => o.slug === slug) ? slug : null) : undefined}
-      ariaLabel="Mapa trasy"
+      ariaLabel={t("Mapa trasy")}
     />
   );
 }

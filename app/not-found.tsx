@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { InfoPage } from "@/components/InfoPage";
+import { LangLink, T } from "@/lib/i18n";
 
 export const metadata: Metadata = { title: "Stránka sa nenašla", robots: { index: false } };
 
 export default function NotFound() {
   return (
     <InfoPage title="Túto stránku sme nenašli" intro="Možno sa trasa premenovala alebo odkaz nie je celý. Všetky výlety nájdete v zozname.">
-      <Link
+      <LangLink
         href="/"
         className="w-fit rounded-xl bg-[var(--accent)] px-4 py-3 font-semibold text-[var(--accent-contrast)]! no-underline!"
       >
-        Späť na výlety
-      </Link>
+        <T>Späť na výlety</T>
+      </LangLink>
     </InfoPage>
   );
 }

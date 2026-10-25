@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { StartChip } from "@/components/StartChip";
 import { UiIcon } from "@/components/UiIcon";
 import { useUserLocation } from "@/lib/userLocation";
+import { useT } from "@/lib/i18n";
 
 /**
  * The trip page's first line under the header (Peter, 2026-10-19, option B): where the day is
@@ -12,6 +13,7 @@ import { useUserLocation } from "@/lib/userLocation";
 export function StartPill() {
   const { start, ready } = useUserLocation();
   const [open, setOpen] = useState(false);
+  const t = useT();
 
   useEffect(() => {
     if (!open) return;
@@ -32,12 +34,12 @@ export function StartPill() {
           <UiIcon name="pin" size={16} />
         </span>
         <span className="min-w-0 truncate">
-          <span className="font-medium text-[var(--muted)]">Štart:</span> {ready && start ? start.label.split(",")[0] : ready ? "nevybraný" : "…"}
+          <span className="font-medium text-[var(--muted)]">{t("Štart:")}</span> {ready && start ? t(start.label.split(",")[0]) : ready ? t("nevybraný") : "…"}
         </span>
-        <span className="shrink-0 pl-1 font-bold text-[var(--accent)]">{ready && !start ? "Vybrať štart" : "Zmeniť štart"}</span>
+        <span className="shrink-0 pl-1 font-bold text-[var(--accent)]">{ready && !start ? t("Vybrať štart") : t("Zmeniť štart")}</span>
       </button>
       {open && (
-        <div className="fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-label="Odkiaľ vyrážate">
+        <div className="fixed inset-0 z-[60]" role="dialog" aria-modal="true" aria-label={t("Odkiaľ vyrážate")}>
           <div className="absolute inset-0 bg-black/45" onClick={() => setOpen(false)} />
           <div className="absolute inset-x-0 bottom-0 max-h-[85dvh] overflow-y-auto rounded-t-[20px] bg-[var(--card-bg)] px-4 pt-[18px] pb-[max(28px,env(safe-area-inset-bottom))] shadow-[var(--shadow-float)] lg:w-[460px]">
             <StartChip onDone={() => setOpen(false)} />

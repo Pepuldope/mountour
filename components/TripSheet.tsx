@@ -32,12 +32,16 @@ import type { RouteBrief, Town, TripDetail } from "@/lib/tripSchema";
 import type { TrailDetail } from "@/lib/types";
 import { LOOP_SUFFIX } from "@/lib/loopRoute";
 import { nearestTown } from "@/lib/trips";
-import { townGenitive } from "@/lib/townNames";
+import { townOf } from "@/lib/townNames";
+import { langPath, tr } from "@/lib/lang";
+import type { Lang } from "@/lib/lang";
+import { LangSwitch } from "@/lib/i18n";
+import { describeEn } from "@/lib/describeEn";
 
 /** schema.org data: the trail as a place to visit + breadcrumbs (all trips > the nearest town's page > this one). */
-function trailJsonLd(detail: TrailDetail, photoUrl: string | null, town: Town | null) {
+function trailJsonLd(detail: TrailDetail, photoUrl: string | null, town: Town | null, lang: Lang) {
   const { trail } = detail;
-  const url = absoluteUrl(`/trasa/${trail.slug}`);
+  const url = absoluteUrl(langPath(lang, `/trasa/${trail.slug}`));
   const start = primaryTrailhead(detail)?.location;
   return {
     "@context": "https://schema.org",
@@ -52,16 +56,16 @@ function trailJsonLd(detail: TrailDetail, photoUrl: string | null, town: Town | 
         // Only when an entry fee is known; no known fee doesn't mean free.
         ...(detail.fees.some((f) => f.kind === "vstupne") ? { isAccessibleForFree: false } : {}),
         publicAccess: true,
-        touristType: trail.family_friendly ? ["Rodiny s deťmi", "Turisti"] : ["Turisti"],
+        touristType: trail.family_friendly ? [tr(lang, "Rodiny s deťmi"), tr(lang, "Turisti")] : [tr(lang, "Turisti")],
         ...(start ? { geo: { "@type": "GeoCoordinates", latitude: start.lat, longitude: start.lon } } : {}),
-        containedInPlace: { "@type": "Country", name: "Slovensko" },
+        containedInPlace: { "@type": "Country", name: tr(lang, "Slovensko") },
       },
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Výlety", item: absoluteUrl("/") },
+          { "@type": "ListItem", position: 1, name: tr(lang, "Výlety"), item: absoluteUrl(langPath(lang, "/")) },
           ...(town
-            ? [{ "@type": "ListItem", position: 2, name: `Okolo ${townGenitive(town.id, town.name)}`, item: absoluteUrl(`/vylety-z/${town.id}`) }]
+            ? [{ "@type": "ListItem", position: 2, name: tr(lang, "Okolo {town}", { town: townOf(lang, town.id, town.name) }), item: absoluteUrl(langPath(lang, `/vylety-z/${town.id}`)) }]
             : []),
           { "@type": "ListItem", position: town ? 3 : 2, name: trail.name, item: url },
         ],
@@ -71,8 +75,8 @@ function trailJsonLd(detail: TrailDetail, photoUrl: string | null, town: Town | 
 }
 
 /** A route as the route list names it, quoted inside a sentence: „Iným chodníkom“. */
-function routeName(r: RouteBrief | undefined): string {
-  return `„${r?.route_label ?? "Hlavná cesta"}“`;
+function routeName(r: RouteBrief | undefined, lang: Lang): string {
+  return lang === "en" ? `“${r?.route_label ?? tr(lang, "Hlavná cesta")}”` : `„${r?.route_label ?? "Hlavná cesta"}“`;
 }
 
 /** A second reason to go, from what the walk passes: a hut, a castle or a viewpoint. */
@@ -102,7 +106,7 @@ function Badge({ colour, icon, children }: { colour: string; icon: string; child
  * The trip page itself, for a route as it is (/trasa/<slug>) or walked as a loop, back down another
  * route from the same start (/trasa/<slug>/okruh, lib/loopRoute.ts).
  */
-export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; detail: TrailDetail; loopBack?: RouteBrief }) {
+export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip: TripDetail; detail: TrailDetail; loopBack?: RouteBrief; lang?: Lang }) {
 
   const { trail, parkingLots, transitStops, closures, fees } = detail;
   const trailStart = primaryTrailhead(detail)?.location ?? null;
@@ -127,8 +131,10 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
   // The town page this trip belongs to: a link for people and search engines to more trips nearby.
   const town = nearestTown(trip.start.location);
   const description = loopBack
-    ? `Okruh zo štartu ${trip.start.name}: hore po trase ${routeName(routes.find((r) => r.slug === trail.slug))}, dole po trase ${routeName(loopBack)}.`
-    : trail.description;
+    ? tr(lang, "Okruh zo štartu {start}: hore po trase {up}, dole po trase {down}.", { start: trip.start.name, up: routeName(routes.find((r) => r.slug === trail.slug), lang), down: routeName(loopBack, lang) })
+    : lang === "en"
+      ? describeEn(trail.description) // Generated from the map data; a hand-written one stays out.
+      : trail.description;
   // A loop has no GPX file: its maps draw the line from the trip itself.
   const loopLine = loopBack ? trip.path.map(([lon, lat]) => [lat, lon] as [number, number]) : undefined;
   const others: OtherRoute[] = routes
@@ -149,7 +155,7 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
   return (
     <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} transitStops={transitStops} trailStart={trailStart} trail={trailNumbers}>
       <main className="flex flex-1 flex-col bg-[var(--page-sunk)] lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
-        <JsonLd data={trailJsonLd(detail, photo?.url ?? null, town)} />
+        <JsonLd data={trailJsonLd(detail, photo?.url ?? null, town, lang)} />
         <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
         <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 md:max-w-[760px] lg:mx-0 lg:w-[460px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
           <header className="relative -mx-4 -mt-4 flex h-[220px] shrink-0 flex-col justify-between sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
@@ -174,38 +180,41 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
                   rel="noopener noreferrer"
                   className="absolute right-2 bottom-1 z-10 max-w-[60%] truncate text-[10px] text-white/80 no-underline [text-shadow:0_1px_2px_rgba(0,0,0,.7)]"
                 >
-                  Foto: {photo.author}, {photo.license}, {photoSource(photo)}
+                  {tr(lang, "Foto")}: {photo.author}, {photo.license}, {photoSource(photo)}
                 </a>
               </>
             ) : (
               <SeasonScene season={seasonOf(new Date())} width={460} height={220} seed={3} sunX={0.2} sunY={0.28} shade className="absolute inset-0 h-full w-full" />
             )}
-            <nav aria-label="Navigácia" className="relative flex items-center justify-between gap-2 px-4 pt-4">
+            <nav aria-label={tr(lang, "Navigácia")} className="relative flex items-center justify-between gap-2 px-4 pt-4">
               <Link
-                href="/"
+                href={langPath(lang, "/")}
                 className="inline-flex items-center gap-0.5 rounded-full border border-[var(--border)] bg-[var(--card-bg)]/90 px-3 py-1.5 text-sm font-semibold"
               >
                 <UiIcon name="back" size={15} />
-                Všetky výlety
+                {tr(lang, "Všetky výlety")}
               </Link>
-              <SavedTripsLink />
+              <span className="flex items-center gap-2">
+                <LangSwitch className="border border-[var(--border)] bg-[var(--card-bg)]/90" />
+                <SavedTripsLink />
+              </span>
             </nav>
             <div className="relative flex flex-col gap-1.5 px-4 pb-3.5 text-white">
               <div className="flex flex-wrap gap-1.5">
                 <Badge colour={GOAL_COLOUR[goal]} icon={kindSvg(goal, 16)}>
-                  {GOAL_LABEL[goal]}
+                  {tr(lang, GOAL_LABEL[goal])}
                   {/* Peter: always the height, said as height ("277 m" alone read like a distance). */}
-                  {goalEle ? ` · ${goalEle} m n. m.` : ""}
+                  {goalEle ? ` · ${tr(lang, "{m} m n. m.", { m: goalEle })}` : ""}
                 </Badge>
                 {also && (
                   <Badge colour={POI_COLOUR[also]} icon={kindSvg(also, 16)}>
-                    {POI_LABEL[also]} na trase
+                    {tr(lang, "{kind} na trase", { kind: tr(lang, POI_LABEL[also]) })}
                   </Badge>
                 )}
               </div>
               <h1 className="text-[2.4rem] leading-none font-extrabold tracking-tight [text-shadow:0_1px_3px_rgba(0,0,0,.45),0_1px_14px_rgba(0,0,0,.3)]">{trail.name}</h1>
               <p className="text-[13.5px] font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,.6),0_0_10px_rgba(0,0,0,.45)]">
-                {[trail.region_name, trip ? `štart ${trip.start.name}` : null].filter(Boolean).join(" · ")}
+                {[trail.region_name, trip ? tr(lang, "štart {name}", { name: trip.start.name }) : null].filter(Boolean).join(" · ")}
               </p>
             </div>
           </header>
@@ -246,7 +255,7 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
             outro={
               gpxUrl && (
                 <section className="flex flex-col gap-1 text-sm">
-                  <h2 className="text-base font-bold">Na túru</h2>
+                  <h2 className="text-base font-bold">{tr(lang, "Na túru")}</h2>
                   <GpxDownload gpxUrl={gpxUrl} slug={trail.slug} name={gpxName} />
                 </section>
               )
@@ -269,8 +278,8 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
           </TripPlanner>
 
           {town && (
-            <Link href={`/vylety-z/${town.id}`} className="w-fit text-sm font-semibold text-[var(--accent)]">
-              Ďalšie výlety okolo {townGenitive(town.id, town.name)} →
+            <Link href={langPath(lang, `/vylety-z/${town.id}`)} className="w-fit text-sm font-semibold text-[var(--accent)]">
+              {tr(lang, "Ďalšie výlety okolo {town}", { town: townOf(lang, town.id, town.name) })} →
             </Link>
           )}
 

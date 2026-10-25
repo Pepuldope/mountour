@@ -5,16 +5,16 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "O nás",
-  description: "Kto robí MounTour, prečo a ako počítame časy chôdze, cesty autom a návratu za svetla.",
+  description: "Kto robí Túruj, prečo a ako počítame časy chôdze, cesty autom a návratu za svetla.",
   path: "/o-nas",
 });
 
 export default function AboutPage() {
   return (
-    <InfoPage title="O nás" intro="MounTour vám povie, kam dnes na výlet, aby ste stihli cestu, túru aj návrat za svetla.">
+    <InfoPage title="O nás" intro="Túruj vám povie, kam dnes na výlet, aby ste stihli cestu, túru aj návrat za svetla.">
       <p>
         Robia ho Peter Nemčok (trasy, výpočty, web) a Radoslav Nemec (testovanie, propagácia). Začali sme ako maturitný
-        projekt v roku 2026 a chceme, aby vydržal. MounTour je zadarmo a poradie výletov si nikto nemôže kúpiť.
+        projekt v roku 2026 a chceme, aby vydržal. Túruj je zadarmo a poradie výletov si nikto nemôže kúpiť.
       </p>
 
       <h2>Ako počítame časy</h2>

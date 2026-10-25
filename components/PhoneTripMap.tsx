@@ -10,6 +10,7 @@ import { poiIcon, poiLabel } from "@/lib/food";
 import { focusOnMap } from "@/lib/mapFocus";
 import { POI_COLOUR } from "@/lib/palette";
 import type { TrailDetail } from "@/lib/types";
+import { useT } from "@/lib/i18n";
 
 /**
  * The trip map on phones: "Celá mapa" opens it full screen, with a small "Na trase" tab
@@ -29,6 +30,7 @@ export function PhoneTripMap({
   loop?: boolean;
 }) {
   const [full, setFull] = useState(false);
+  const t = useT();
   const [tab, setTab] = useState(false);
   const pois = detail.pois;
 
@@ -74,10 +76,10 @@ export function PhoneTripMap({
                   >
                     <KindIcon kind={poiIcon(p)} colour={POI_COLOUR[p.kind]} />
                     <span className="flex min-w-0 flex-col">
-                      <span className="truncate text-sm font-semibold">{p.name}</span>
+                      <span className="truncate text-sm font-semibold">{t(p.name)}</span>
                       <span className="text-xs text-[var(--muted)]">
-                        {poiLabel(p)}
-                        {p.detour_min !== null ? ` · odbočka +${p.detour_min} min` : ""}
+                        {t(poiLabel(p))}
+                        {p.detour_min !== null ? ` · ${t("odbočka +{n} min", { n: p.detour_min })}` : ""}
                       </span>
                     </span>
                   </button>

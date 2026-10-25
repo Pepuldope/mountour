@@ -58,7 +58,7 @@ export function StatsTables() {
           <h2>Plány</h2>
           <p className="text-sm">
             Koľkokrát v mesiaci bol zadaný štart, výlet uložený, plán poslaný (z toho do 2 minút od príchodu), plán
-            otvorený kamarátom a spustená navigácia. MounTour+: kliknutia „Chcel by som to“ / „Za túto cenu nie“ na
+            otvorený kamarátom a spustená navigácia. Túruj+: kliknutia „Chcel by som to“ / „Za túto cenu nie“ na
             stránke /plus.
           </p>
           <table className="w-full text-left text-sm">
@@ -71,7 +71,7 @@ export function StatsTables() {
                 <th>Do 2 min</th>
                 <th>Otvorené</th>
                 <th>Navigácia</th>
-                <th>MounTour+</th>
+                <th>Túruj+</th>
               </tr>
             </thead>
             <tbody>

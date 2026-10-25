@@ -3,12 +3,14 @@ import { formatDurationShort } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
 import type { TownTile as Tile } from "@/lib/townTrips";
+import { langPath, tr } from "@/lib/lang";
+import type { Lang } from "@/lib/lang";
 
 /** A town page tile: the place's photo (or its kind's colour and a hill), name, drive and walk. */
-export function TownTile({ tile }: { tile: Tile }) {
+export function TownTile({ tile, lang = "sk" }: { tile: Tile; lang?: Lang }) {
   const colour = GOAL_COLOUR[tile.kind] ?? GOAL_COLOUR.ine;
   return (
-    <Link href={`/trasa/${tile.slug}`} className="flex w-[150px] flex-none snap-start flex-col gap-1.5 text-inherit no-underline">
+    <Link href={langPath(lang, `/trasa/${tile.slug}`)} className="flex w-[150px] flex-none snap-start flex-col gap-1.5 text-inherit no-underline">
       <span
         className="relative block aspect-square overflow-hidden rounded-2xl"
         style={{ background: `linear-gradient(170deg, ${colour}, ${colour}dd)` }}
@@ -41,19 +43,19 @@ export function TownTile({ tile }: { tile: Tile }) {
           dangerouslySetInnerHTML={{ __html: kindSvg(tile.kind in GOAL_COLOUR ? tile.kind : "ine", 20) }}
         />
         {tile.kids && (
-          <span className="absolute top-2.5 right-2 rounded-full bg-white/90 px-2 text-xs font-bold text-[#17663a]">pre deti</span>
+          <span className="absolute top-2.5 right-2 rounded-full bg-white/90 px-2 text-xs font-bold text-[#17663a]">{tr(lang, "pre deti")}</span>
         )}
         {tile.closedSeason && (
           // Seasonal park closure (TANAP ridges): visible before anyone picks a closed summit from Google.
           <span className="absolute right-1.5 bottom-1.5 left-1.5 rounded-lg bg-[var(--danger-bg)] px-1 py-0.5 text-center text-[11px] font-bold whitespace-nowrap text-[var(--danger)]">
-            zatvorené {tile.closedSeason}
+            {tr(lang, "zatvorené {when}", { when: tile.closedSeason })}
           </span>
         )}
       </span>
       <span className="text-[15px] leading-tight font-bold">{tile.name}</span>
       <span className="flex flex-wrap gap-x-2 text-[13px] text-[var(--muted)]">
-        <span>{formatDurationShort(tile.carMin)} autom</span>
-        <span>{formatDurationShort(tile.walkMin)} pešo</span>
+        <span>{tr(lang, "{t} autom", { t: formatDurationShort(tile.carMin) })}</span>
+        <span>{tr(lang, "{t} pešo", { t: formatDurationShort(tile.walkMin) })}</span>
       </span>
     </Link>
   );

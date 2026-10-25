@@ -139,7 +139,7 @@ def _gpx(name, tracks, dem):
     """GPX with one track per (slug, name, line) in tracks; the slug goes in the track's <desc>."""
     n = escape(name)
     out = ['<?xml version="1.0" encoding="UTF-8"?>',
-           '<gpx version="1.1" creator="MounTour (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">',
+           '<gpx version="1.1" creator="Túruj (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">',
            f'  <metadata><name>{n}</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>']
     for slug, tname, g in tracks:
         lat, lon, _ele, _rt, turn, loop = g

@@ -10,7 +10,13 @@ export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://turuj.sk"
 ).replace(/\/+$/, "");
 
-export const SITE_NAME = "MounTour";
+export const SITE_NAME = "Túruj";
+
+/**
+ * English trip pages built ahead (best known first). Each built page is a file, and the free plan
+ * deploys at most 20,000 (scripts/check-page-cache.mjs); the rest are drawn on the first visit.
+ */
+export const EN_TRIPS_AHEAD = 1500;
 
 export const SITE_TITLE = "Kam dnes na výlet do hôr – plánovač jednodňových túr";
 
@@ -32,6 +38,7 @@ export const COUNTED_HOSTS = [
   "turuj.sk",
   "www.turuj.sk",
   "mountour.nemcok-peter123.workers.dev",
+  "turuj.nemcok-peter123.workers.dev",
   "mountour.vercel.app",
   "mountour.sk",
   "www.mountour.sk",
@@ -45,10 +52,10 @@ export const OG_IMAGE = {
   url: "/og-image.png",
   width: 1200,
   height: 630,
-  alt: "MounTour – kam dnes na výlet, aby ste boli späť za svetla",
+  alt: "Túruj – kam dnes na výlet, aby ste boli späť za svetla",
 };
 
-export const REPO_URL = "https://github.com/Pepuldope/mountour";
+export const REPO_URL = "https://github.com/Pepuldope/turuj";
 
 /** Google Form for tester sign-up, linked from the footer ("Chcem testovať"). */
 export const TESTER_FORM_URL =

@@ -3,13 +3,13 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Upozornenie",
-  description: "MounTour pomáha s plánovaním. Časy sú odhady, za bezpečnosť na túre zodpovedá každý sám.",
+  description: "Túruj pomáha s plánovaním. Časy sú odhady, za bezpečnosť na túre zodpovedá každý sám.",
   path: "/upozornenie",
 });
 
 export default function DisclaimerPage() {
   return (
-    <InfoPage title="Upozornenie" intro="MounTour vám pomôže výlet naplánovať. Na horách však rozhodujete vy.">
+    <InfoPage title="Upozornenie" intro="Túruj vám pomôže výlet naplánovať. Na horách však rozhodujete vy.">
       <h2>Časy sú odhady</h2>
       <p>
         Čas cesty, chôdze aj „vyraziť najneskôr“ sú výpočty z mapových údajov a priemerného tempa. Skutočnosť závisí

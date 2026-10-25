@@ -47,7 +47,7 @@ jobs:
 
       - name: Commit the new data
         run: |
-          git config user.name "mountour-data-bot"
+          git config user.name "turuj-data-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for attempt in 1 2 3; do
             rm -rf "$RUNNER_TEMP/rail" && cp -r public/data/rail "$RUNNER_TEMP/rail"

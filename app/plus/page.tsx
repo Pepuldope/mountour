@@ -1,10 +1,11 @@
 import { InfoPage } from "@/components/InfoPage";
 import { PlusWant } from "@/components/PlusWant";
 import { pageMetadata } from "@/lib/seo";
+import { T } from "@/lib/i18n";
 
 export const metadata = pageMetadata({
-  title: "MounTour+",
-  description: "MounTour+ pre tých, čo chodia von často: víkendový tip, strážca výletu a neobmedzené offline výlety za 9,99 € ročne.",
+  title: "Túruj+",
+  description: "Túruj+ pre tých, čo chodia von často: víkendový tip, strážca výletu a neobmedzené offline výlety za 9,99 € ročne.",
   path: "/plus",
 });
 
@@ -28,9 +29,9 @@ export default function PlusPage() {
     <InfoPage
       title={
         <>
-          MounTour+{" "}
+          Túruj+{" "}
           <span className="ml-1 rounded-full bg-[var(--warn-bg)] px-2.5 py-1 align-middle text-xs font-semibold text-[var(--warn)]">
-            Pripravujeme
+            <T>Pripravujeme</T>
           </span>
         </>
       }
@@ -39,22 +40,22 @@ export default function PlusPage() {
       <ul className="!list-none !pl-0 flex flex-col gap-3">
         {FEATURES.map((f) => (
           <li key={f.title} className="!mt-0 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] p-3">
-            <p className="font-semibold">{f.title}</p>
-            <p className="text-[var(--muted)]">{f.text}</p>
+            <p className="font-semibold"><T>{f.title}</T></p>
+            <p className="text-[var(--muted)]"><T>{f.text}</T></p>
           </li>
         ))}
       </ul>
 
       <section className="flex flex-col gap-3 rounded-xl bg-[var(--sun-soft)] p-4">
         <p className="text-center">
-          <span className="text-3xl font-extrabold">9,99 €</span> <span className="font-semibold">ročne</span>
+          <span className="text-3xl font-extrabold"><T>9,99 €</T></span> <span className="font-semibold"><T>ročne</T></span>
         </p>
-        <p className="text-center text-[var(--muted)]">Menej ako jeden deň parkovania v Tatrách.</p>
+        <p className="text-center text-[var(--muted)]"><T>Menej ako jeden deň parkovania v Tatrách.</T></p>
         <PlusWant />
       </section>
 
       <p className="text-xs text-[var(--muted)]">
-        MounTour+ zatiaľ len pripravujeme. Poradie výletov sa nedá kúpiť, ani s MounTour+.
+        <T>Túruj+ zatiaľ len pripravujeme. Poradie výletov sa nedá kúpiť, ani s Túruj+.</T>
       </p>
     </InfoPage>
   );

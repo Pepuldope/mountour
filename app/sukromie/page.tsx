@@ -5,7 +5,7 @@ import { CONTACT_EMAIL, REPO_URL } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Súkromie",
-  description: "Aké údaje MounTour používa: bez cookies, bez účtov, uložené výlety ostávajú vo vašom zariadení.",
+  description: "Aké údaje Túruj používa: bez cookies, bez účtov, uložené výlety ostávajú vo vašom zariadení.",
   path: "/sukromie",
 });
 
@@ -14,7 +14,7 @@ export default function PrivacyPage() {
     <InfoPage title="Súkromie" intro="Krátko: nepoužívame cookies, nemáme účty a nepredávame žiadne údaje. Aktualizované 21. 10. 2026.">
       <h2>Kto sme</h2>
       <p>
-        MounTour je študentský projekt Petra Nemčoka a Radoslava Nemca. Pri otázkach o vašich údajoch nám napíšte{" "}
+        Túruj je študentský projekt Petra Nemčoka a Radoslava Nemca. Pri otázkach o vašich údajoch nám napíšte{" "}
         {CONTACT_EMAIL ? (
           <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
         ) : (
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
         len súhrnné čísla.
       </p>
       <p>
-        Aby sme vedeli, koľko ľudí sa k MounTouru vracia, server si pri návšteve zapíše dátum a jednosmerný
+        Aby sme vedeli, koľko ľudí sa k Túruju vracia, server si pri návšteve zapíše dátum a jednosmerný
         odtlačok (hash) vytvorený z IP adresy a typu prehliadača s náhodným kľúčom, ktorý sa mení každý mesiac. IP
         adresu neukladáme. Odtlačok bez kľúča nič nepovie a po skončení mesiaca kľúč aj odtlačky
         zmažeme a ostanú len súhrnné čísla (napríklad „120 ľudí, z toho 15 aspoň 4 dni“).

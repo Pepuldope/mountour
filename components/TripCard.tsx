@@ -1,7 +1,6 @@
 "use client";
 
 import { transitMinutes } from "@/lib/drive";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { EARLIEST_DEPARTURE_HOUR } from "@/lib/days";
 import type { DayFit } from "@/lib/days";
@@ -12,6 +11,9 @@ import { formatKm } from "@/lib/walkFacts";
 import type { ParkingLot, TrailDetail, TransitStop } from "@/lib/types";
 import { useTripSettings } from "@/lib/tripSettings";
 import { UiIcon } from "@/components/UiIcon";
+import { LangLink, useLang } from "@/lib/i18n";
+import { tr } from "@/lib/lang";
+import type { Lang } from "@/lib/lang";
 
 export interface TripCardItem {
   detail: TrailDetail;
@@ -63,18 +65,20 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 type Pill = { tone: "ok" | "tight" | "no" | "closed"; text: string; time?: string };
 
-function pillFor(item: TripCardItem, dayWord: string | null): Pill | null {
+function pillFor(item: TripCardItem, dayWord: string | null, lang: Lang): Pill | null {
   const { fit, closed, driveMin, stop } = item;
-  const day = capitalize(dayWord ?? "v tento deň");
-  if (closed) return { tone: "closed", text: `${day} je chodník uzavretý` };
+  const t = (sk: string, vars?: Record<string, string | number>) => tr(lang, sk, vars);
+  const day = capitalize(dayWord ?? t("v tento deň"));
+  const isToday = dayWord === "dnes" || dayWord === "today";
+  if (closed) return { tone: "closed", text: t("{Day} je chodník uzavretý", { Day: day }) };
   if (!fit) return null;
-  if (fit.status === "too-late") return { tone: "no", text: `${dayWord === "dnes" ? "Dnes" : "Vtedy"} už nestihnete · skúste zajtra` };
-  if (fit.status === "too-early") return { tone: "no", text: `${day} by ste museli vyraziť pred ${EARLIEST_DEPARTURE_HOUR}:00` };
-  if (fit.status === "too-long") return { tone: "no", text: `${day} je na to málo svetla` };
-  const verb = driveMin !== null ? "vyrazte do" : stop ? "na zastávke do" : "začnite do";
-  const tight = dayWord === "dnes" && fit.latest.getTime() - Date.now() < TIGHT_MIN * 60000;
+  if (fit.status === "too-late") return { tone: "no", text: isToday ? t("Dnes už nestihnete · skúste zajtra") : t("Vtedy už nestihnete · skúste zajtra") };
+  if (fit.status === "too-early") return { tone: "no", text: t("{Day} by ste museli vyraziť pred {h}:00", { Day: day, h: EARLIEST_DEPARTURE_HOUR }) };
+  if (fit.status === "too-long") return { tone: "no", text: t("{Day} je na to málo svetla", { Day: day }) };
+  const verb = t(driveMin !== null ? "vyrazte do" : stop ? "na zastávke do" : "začnite do");
+  const tight = isToday && fit.latest.getTime() - Date.now() < TIGHT_MIN * 60000;
   return tight
-    ? { tone: "tight", text: `Tesne · ${verb}`, time: formatTime(fit.latest) }
+    ? { tone: "tight", text: `${t("Tesne")} · ${verb}`, time: formatTime(fit.latest) }
     : { tone: "ok", text: capitalize(verb), time: formatTime(fit.latest) };
 }
 
@@ -111,6 +115,8 @@ function useThumb(slug: string): string | null {
 export function TripCard({ item, dayWord, transit, active, onClose, onActive, registerItem }: Props) {
   const { detail, hikeMin, carMin, driveMin, driveApprox, driveLoading, distanceM, nearStop } = item;
   const { withKids } = useTripSettings();
+  const lang = useLang();
+  const t = (sk: string, vars?: Record<string, string | number>) => tr(lang, sk, vars);
   const thumb = useThumb(item.detail.trail.slug);
   const { trail } = detail;
   const goal = trail.goal ?? "ine";
@@ -118,9 +124,9 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
   // No stop near this one: shown by car even when planning by bus (its trip page plans it so too).
   const byBus = transit && !item.noStop;
   const approx = driveApprox || byBus ? "~" : "";
-  const pill = pillFor(item, dayWord);
+  const pill = pillFor(item, dayWord, lang);
   const dim = (pill?.tone === "no" || pill?.tone === "closed") && onClose === undefined;
-  const km = formatKm(item.walkM);
+  const km = formatKm(item.walkM, lang);
   // A stop up the trail counts from where its walk meets the trail, as on the trip page.
   const stopWalkM = nearStop ? (nearStop.join?.walk_m ?? nearStop.distance_m) : 0;
   const total = driveMin !== null && !item.fit ? hikeMin + 2 * driveMin : null;
@@ -130,7 +136,7 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
   const leg = (on: boolean) => `inline-flex items-center gap-1 ${on ? "text-[var(--foreground)]" : "text-[var(--muted)]"}`;
 
   return (
-    <Link
+    <LangLink
       ref={(el) => registerItem(trail.slug, el)}
       href={`/trasa/${trail.slug}`}
       onMouseEnter={() => onActive(trail.slug)}
@@ -166,7 +172,7 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
           {big ? (
             <button
               type="button"
-              aria-label="Zavrieť"
+              aria-label={t("Zavrieť")}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -177,25 +183,25 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
               <UiIcon name="close" size={12} />
             </button>
           ) : (
-            <span className="shrink-0 text-xs font-semibold text-[var(--muted)]">{DIFFICULTY_LABEL[trail.difficulty].toLowerCase()}</span>
+            <span className="shrink-0 text-xs font-semibold text-[var(--muted)]">{t(DIFFICULTY_LABEL[trail.difficulty]).toLowerCase()}</span>
           )}
         </span>
         <span className="flex flex-wrap items-center gap-x-1.5 text-[12.5px] text-[var(--muted)]">
           {/* The kind as a filled chip: with a photo in place of the icon it must read on its own (Peter, 2026-10-22). */}
           <span className="inline-flex items-center gap-1 rounded-full px-1.5 py-px text-[11.5px] font-bold text-white" style={{ background: colour }}>
             <span aria-hidden className="inline-flex" dangerouslySetInnerHTML={{ __html: kindSvg(goal, 12) }} />
-            {GOAL_LABEL[goal]}
+            {t(GOAL_LABEL[goal])}
           </span>
           {trail.region_name && <span>· {trail.region_name}</span>}
           <span>· {km}</span>
-          {trail.family_friendly && <span className="on-card-ok font-semibold text-[var(--ok)]">· pre deti</span>}
+          {trail.family_friendly && <span className="on-card-ok font-semibold text-[var(--ok)]">· {t("pre deti")}</span>}
         </span>
         <span className="font-data flex flex-wrap items-center gap-x-3 text-[15px]">
           <span className={leg(!byBus)}>
             <UiIcon name="car" size={15} />
-            {carMin !== null ? `${driveApprox ? "~" : ""}${formatDurationShort(carMin)}` : driveLoading ? "…" : distanceM !== null ? formatFromUser(distanceM) : "–"}
+            {carMin !== null ? `${driveApprox ? "~" : ""}${formatDurationShort(carMin)}` : driveLoading ? "…" : distanceM !== null ? formatFromUser(distanceM, lang) : "–"}
           </span>
-          <span className={leg(byBus)} title={nearStop ? `Zastávka ${stopLabel(nearStop.name)}, ${formatFromUser(stopWalkM)} k trase` : "Bez zastávky pri štarte"}>
+          <span className={leg(byBus)} title={nearStop ? t("Zastávka {stop}, {m} k trase", { stop: stopLabel(nearStop.name), m: formatFromUser(stopWalkM, lang) }) : t("Bez zastávky pri štarte")}>
             <UiIcon name="bus" size={15} />
             {/* By car too, the bus as a time (muted), never the walk from the stop: "350 m" read as minutes next to the car's time (Peter, 2026-10-23). */}
             {byBus && driveMin !== null
@@ -203,27 +209,27 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
               : nearStop && carMin !== null
                 ? `~${formatDurationShort(transitMinutes(carMin))}`
                 : nearStop
-                  ? formatFromUser(stopWalkM)
+                  ? formatFromUser(stopWalkM, lang)
                   : "–"}
           </span>
           <span className="inline-flex items-center gap-1 text-[var(--foreground)]">
             <UiIcon name="boot" size={15} />
             {formatDurationShort(hikeMin)}
             {withKids && (
-              <span className="text-[var(--warn)]" title="S deťmi: čas na trase o 30 % dlhší">
+              <span className="text-[var(--warn)]" title={t("S deťmi: čas na trase o 30 % dlhší")}>
                 <UiIcon name="kid" size={14} />
               </span>
             )}
             {/* A long main route hid a short way up (Peter, 2026-10-23: "4 hours scares people"). */}
             {item.shortMin !== null && (
-              <span className="on-card-ok font-semibold text-[var(--ok)]" title="Kratšia cesta k tomu istému cieľu, na stránke výletu">
-                alebo {formatDurationShort(item.shortMin)}
+              <span className="on-card-ok font-semibold text-[var(--ok)]" title={t("Kratšia cesta k tomu istému cieľu, na stránke výletu")}>
+                {t("alebo {t}", { t: formatDurationShort(item.shortMin) })}
               </span>
             )}
           </span>
           {total !== null && (
             <span className="text-[var(--muted)]">
-              spolu {approx}
+              {t("spolu")} {approx}
               {formatDurationShort(total)}
             </span>
           )}
@@ -235,18 +241,18 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
                 ["chôdza", formatDurationShort(hikeMin)],
                 ["dĺžka", km],
                 ["stúpanie", `${item.ascentM} m`],
-                ["náročnosť", DIFFICULTY_LABEL[trail.difficulty].toLowerCase()],
+                ["náročnosť", t(DIFFICULTY_LABEL[trail.difficulty]).toLowerCase()],
               ].map(([label, value]) => (
                 <span key={label} className="flex flex-col">
-                  <span className="text-[11.5px] text-[var(--muted)]">{label}</span>
+                  <span className="text-[11.5px] text-[var(--muted)]">{t(label)}</span>
                   <span className={label === "náročnosť" ? "text-[15px] font-bold" : "font-data text-[17px] leading-tight font-bold"}>{value}</span>
                 </span>
               ))}
             </span>
             <span className="flex flex-col gap-0.5 text-[13.5px]">
-              {th && <span>Štart: {th.name}</span>}
-              {parking && <span>Parkovanie {parkingWhere(parking)}</span>}
-              {nearStop && <span>Zastávka {stopLabel(nearStop.name)}, {formatFromUser(stopWalkM)} pešo k trase</span>}
+              {th && <span>{t("Štart: {name}", { name: th.name })}</span>}
+              {parking && <span>{t("Parkovanie {where}", { where: parkingWhere(parking, lang) })}</span>}
+              {nearStop && <span>{t("Zastávka {stop}, {m} pešo k trase", { stop: stopLabel(nearStop.name), m: formatFromUser(stopWalkM, lang) })}</span>}
             </span>
           </>
         )}
@@ -257,16 +263,16 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
           </span>
         )}
         {big && (
-          <span className="mt-1.5 flex h-11 items-center justify-center rounded-xl bg-[var(--accent)] font-bold text-[var(--accent-contrast)]">Otvoriť výlet</span>
+          <span className="mt-1.5 flex h-11 items-center justify-center rounded-xl bg-[var(--accent)] font-bold text-[var(--accent-contrast)]">{t("Otvoriť výlet")}</span>
         )}
       </span>
-    </Link>
+    </LangLink>
   );
 }
 
 /** Where the parking is, as the trip page counts the walk: a parking up the trail is beside it. */
-function parkingWhere(p: ParkingLot): string {
+function parkingWhere(p: ParkingLot, lang: Lang): string {
   const m = p.join?.walk_m ?? p.walk_m;
-  if (m < 150) return p.join ? "pri trase" : "pri štarte";
-  return `${formatFromUser(m)} ${p.join ? "k trase" : "od štartu"}`;
+  if (m < 150) return tr(lang, p.join ? "pri trase" : "pri štarte");
+  return tr(lang, p.join ? "{m} k trase" : "{m} od štartu", { m: formatFromUser(m, lang) });
 }

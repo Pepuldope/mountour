@@ -6,7 +6,7 @@ import { StatsTables } from "@/components/StatsTables";
 export const metadata: Metadata = { title: "Štatistika návštev", robots: { index: false, follow: false } };
 
 /**
- * The monthly report for the proposal KPI "people who used MounTour on 4+
+ * The monthly report for the proposal KPI "people who used Túruj on 4+
  * different days in a month". Only totals, nothing about any one visitor.
  * Sources, pages and events are in Umami. The page is prebuilt; the numbers
  * come fresh from /api/statistiky in the browser.

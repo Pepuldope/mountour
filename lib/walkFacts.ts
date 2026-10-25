@@ -5,6 +5,8 @@
  * to the trail and back counts, and a parking or stop up the trail skips the stretch below it.
  */
 import { approachMin, hikeMinutes } from "@/lib/dayPlan";
+import { decimal } from "@/lib/lang";
+import type { Lang } from "@/lib/lang";
 import { joinedMinutes } from "@/lib/trailJoin";
 import type { TrailJoin } from "@/lib/trailJoin";
 
@@ -55,8 +57,8 @@ export function walkMinutes(facts: WalkFacts, withKids: boolean): number {
   return hikeMinutes(facts.min, withKids);
 }
 
-export function formatKm(m: number): string {
-  return `${(m / 1000).toFixed(1).replace(".", ",")} km`;
+export function formatKm(m: number, lang: Lang = "sk"): string {
+  return `${decimal(lang, m / 1000)} km`;
 }
 
 /** The stop a trip starts from by bus or train: the shortest walk to the trail (a stop up the trail counts from where it joins). */

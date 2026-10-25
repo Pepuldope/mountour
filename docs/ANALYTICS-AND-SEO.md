@@ -18,8 +18,8 @@ Cloudflare dashboard, never into the repo (it is public).
 | Google Search Console | outside the code | **Step 2**, after the domain |
 | Tester sign-up and post-test feedback (Google Forms) | `TESTER_FORM_URL`, `FEEDBACK_FORM_URL` in `lib/site.ts`; footer link "Chcem testovať" | No. Radoslav sends the feedback link after each test |
 
-The real address is `SITE_URL` in `lib/site.ts`. When mountour.sk is live, change that one line
-to `https://mountour.sk` and add `mountour.sk` to Search Console; all canonical URLs, the sitemap
+The real address is `SITE_URL` in `lib/site.ts`. When turuj.sk is live, change that one line
+to `https://turuj.sk` and add `turuj.sk` to Search Console; all canonical URLs, the sitemap
 and link previews follow.
 
 ## Why two counters
@@ -27,7 +27,7 @@ and link previews follow.
 Umami Cloud's free Hobby plan (100k events/month, 1 website, 6 months of history) gives the
 dashboard: visitors, where they came from, which trips they opened, saves, shares and navigation
 opens. It has **no API on the free plan**, so a script cannot read its numbers. The proposal KPI
-"people who used MounTour on 4+ different days in a month" is therefore counted by our own small
+"people who used Túruj on 4+ different days in a month" is therefore counted by our own small
 Cloudflare D1 database (free, bound as `VISITS_DB` in `wrangler.jsonc`; the first deploy creates
 it, no account, key or secret needed), with the same method Umami uses: a one-way hash of
 IP + browser with a random key that changes every month. Nothing is stored on the visitor's
@@ -38,7 +38,7 @@ counted as two people with fewer days each.
 **The monthly report:** open `/statistiky` on the live site (not linked, not indexed). One row
 per month: people, people with 2+ days, people with **4+ days** (the KPI), average days. The
 current month updates live. If the page says the counter only runs on the published site after a
-deploy, check Cloudflare → **Workers & Pages** → **mountour** → **Bindings**: `VISITS_DB` should
+deploy, check Cloudflare → **Workers & Pages** → **turuj** → **Bindings**: `VISITS_DB` should
 be listed. If it is missing, the build had no permission to create the database: **Storage &
 Databases** → **D1** → **Create** → name `mountour-visits`, then in the Worker → **Bindings** →
 **Add binding** → **D1 database**, variable name `VISITS_DB`, database `mountour-visits` → **Save**.
@@ -74,22 +74,22 @@ Never send coordinates, typed places or anything personal.
 1. Open https://cloud.umami.is/signup and create an account (Hobby plan, free, no card).
 2. After logging in you are asked to add a website. If not: left menu **Settings** → **Websites** →
    **Add website**.
-   - Name: `MounTour`
+   - Name: `Túruj`
    - Domain: `mountour.nemcok-peter123.workers.dev`
    - Click **Save**.
-3. In the website list click **Edit** next to MounTour. Copy the **Website ID** (a long code like
+3. In the website list click **Edit** next to Túruj. Copy the **Website ID** (a long code like
    `a1b2c3d4-...`).
 4. Send that ID to Claude in the project thread, or put it in `lib/site.ts` yourself:
    on GitHub open `lib/site.ts` → pencil icon (**Edit this file**) → change
    `?? ""` on the `UMAMI_WEBSITE_ID` line to `?? "your-id"` → **Commit changes**.
 5. Optional: Settings → Team → add Radoslav, so he sees the dashboard without your login.
 
-After the next deploy, open the site, then Umami → **Websites** → MounTour: your visit shows up
+After the next deploy, open the site, then Umami → **Websites** → Túruj: your visit shows up
 within a minute.
 
-## Step 2. Google Search Console (after mountour.sk is live)
+## Step 2. Google Search Console (after turuj.sk is live)
 
-1. https://search.google.com/search-console → **Add property** → **Domain** → `mountour.sk` →
+1. https://search.google.com/search-console → **Add property** → **Domain** → `turuj.sk` →
    **Continue**.
 2. Copy the TXT record Google shows. At the DNS provider (Cloudflare, if the domain is moved
    there) → **DNS** → **Add record** → Type `TXT`, Name `@`, Content = the copied text → **Save**.

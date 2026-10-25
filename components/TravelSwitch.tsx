@@ -8,6 +8,7 @@ import type { Travel } from "@/lib/tripSettings";
 import type { UiIconName } from "@/lib/uiIcons";
 import { UiIcon } from "@/components/UiIcon";
 import { NoParkingChip, NoStopChip } from "@/components/routeBits";
+import { useT } from "@/lib/i18n";
 
 const OPTIONS: { value: Travel; label: string; icon: UiIconName }[] = [
   { value: "car", label: "Autom", icon: "car" },
@@ -43,6 +44,7 @@ export function TravelSwitch({
   onWalk?: (on: boolean) => void;
 }) {
   const settings = useTripSettings();
+  const t = useT();
   const { update } = settings;
   const travel: Travel = noCar ? "transit" : noBus ? "car" : settings.travel;
   const [why, setWhy] = useState(false);
@@ -51,7 +53,7 @@ export function TravelSwitch({
     <div className="flex flex-col gap-2">
       <div
         role="radiogroup"
-        aria-label="Ako sa dopravíte"
+        aria-label={t("Ako sa dopravíte")}
         className={`grid ${walkMin !== null ? "grid-cols-3" : "grid-cols-2"} gap-[3px] rounded-xl bg-[var(--segment-bg)] p-[3px]`}
       >
         {OPTIONS.map((o) => {
@@ -68,7 +70,7 @@ export function TravelSwitch({
                 className="inline-flex cursor-help flex-wrap items-center justify-center gap-x-1.5 gap-y-1 rounded-[10px] bg-[var(--off-bg)] px-2 py-2 text-sm font-semibold text-[var(--off-fg)]"
               >
                 <UiIcon name={o.icon} size={18} />
-                <span className="line-through">{o.label}</span>
+                <span className="line-through">{t(o.label)}</span>
                 {o.value === "car" ? <NoParkingChip /> : <NoStopChip />}
               </button>
             );
@@ -91,7 +93,7 @@ export function TravelSwitch({
               <span className={on ? "text-[var(--accent)]" : ""}>
                 <UiIcon name={o.icon} size={18} />
               </span>
-              {o.label}
+              {t(o.label)}
               {roadMin !== null && (
                 <span className="font-data text-[13px] font-semibold text-[var(--muted)]">
                   {o.value === "car"
@@ -117,7 +119,7 @@ export function TravelSwitch({
             <span className={walking ? "text-[var(--accent)]" : ""}>
               <UiIcon name="walker" size={18} />
             </span>
-            Pešo
+            {t("Pešo")}
             <span className="font-data text-[13px] font-semibold text-[var(--muted)]">{formatDurationShort(walkMin)}</span>
           </button>
         )}
@@ -127,9 +129,8 @@ export function TravelSwitch({
           role="status"
           className="rounded-xl border-2 border-[var(--warn)] bg-[var(--warn-bg)] px-3 py-2 text-sm text-[var(--warn)]"
         >
-          <b>Autobusom ani vlakom sa sem nedá.</b> Pri štarte tejto cesty
-          nepoznáme zastávku, preto plánujeme cestu autom. Ak chcete ísť
-          autobusom, vyberte inú cestu so zastávkou.
+          <b>{t("Autobusom ani vlakom sa sem nedá.")}</b>{" "}
+          {t("Pri štarte tejto cesty nepoznáme zastávku, preto plánujeme cestu autom. Ak chcete ísť autobusom, vyberte inú cestu so zastávkou.")}
         </p>
       )}
       {noCar && why && (
@@ -137,9 +138,8 @@ export function TravelSwitch({
           role="status"
           className="rounded-xl border-2 border-[var(--warn)] bg-[var(--warn-bg)] px-3 py-2 text-sm text-[var(--warn)]"
         >
-          <b>Autom sa sem nedá.</b> Pri štarte tejto cesty nie je kde nechať
-          auto, preto plánujeme cestu autobusom alebo vlakom. Ak chcete ísť
-          autom, vyberte inú cestu s parkoviskom.
+          <b>{t("Autom sa sem nedá.")}</b>{" "}
+          {t("Pri štarte tejto cesty nie je kde nechať auto, preto plánujeme cestu autobusom alebo vlakom. Ak chcete ísť autom, vyberte inú cestu s parkoviskom.")}
         </p>
       )}
     </div>

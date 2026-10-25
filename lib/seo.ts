@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { OG_IMAGE, SITE_NAME } from "@/lib/site";
+import { langPath } from "@/lib/lang";
+import type { Lang } from "@/lib/lang";
 
 /**
  * Title, description, canonical URL and link-preview text for one page.
@@ -12,27 +14,32 @@ export function pageMetadata({
   path,
   absoluteTitle = false,
   image = OG_IMAGE,
+  lang = "sk",
 }: {
   title: string;
   description: string;
   path: string;
-  /** true = use the title as is, without the " | MounTour" suffix. */
+  /** true = use the title as is, without the " | Túruj" suffix. */
   absoluteTitle?: boolean;
   /** Link-preview picture; the brand image unless the page has its own (a trip's place photo). */
   image?: { url: string; width: number; height: number; alt: string };
+  /** The page's language; `path` is always the Slovak address ("/o-nas"), the English one is under /en. */
+  lang?: Lang;
 }): Metadata {
   const fullTitle = absoluteTitle ? title : `${title} | ${SITE_NAME}`;
   return {
     title: absoluteTitle ? { absolute: title } : title,
     description,
-    alternates: { canonical: path },
+    // Each language is its own page; hreflang tells search engines which one to show whom.
+    alternates: { canonical: langPath(lang, path), languages: { sk: path, en: langPath("en", path), "x-default": path } },
     openGraph: {
       type: "website",
-      locale: "sk_SK",
+      locale: lang === "en" ? "en_GB" : "sk_SK",
+      alternateLocale: lang === "en" ? "sk_SK" : "en_GB",
       siteName: SITE_NAME,
       title: fullTitle,
       description,
-      url: path,
+      url: langPath(lang, path),
       images: [image],
     },
     twitter: { card: "summary_large_image", title: fullTitle, description, images: [image.url] },

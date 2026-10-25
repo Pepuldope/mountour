@@ -65,14 +65,14 @@ describe("shared plan links", () => {
       inDaylight: true,
       hikeMin: 45,
       difficulty: "lahka",
-      url: "https://mountour.sk/trasa/hucak",
+      url: "https://turuj.sk/trasa/hucak",
     });
     expect(text).toBe(
       "Vodopád Hučák, sobota 24. 10. (s deťmi)\n" +
         "8:56 stretnutie na parkovisku\n" +
         "9:41 späť pri aute, 45 min chôdze, ľahká\n" +
         "Kedy vyraziť z tvojho miesta, ukáže odkaz:\n" +
-        "https://mountour.sk/trasa/hucak"
+        "https://turuj.sk/trasa/hucak"
     );
   });
 
@@ -88,7 +88,7 @@ describe("shared plan links", () => {
       inDaylight: false,
       hikeMin: 360,
       difficulty: "tazka",
-      url: "https://mountour.sk/trasa/chleb",
+      url: "https://turuj.sk/trasa/chleb",
     });
     expect(text).toContain("10:00 začiatok túry\n19:10 koniec túry, 6 h chôdze");
     expect(text).toContain("Pozor, z túry zídete až po západe slnka.");

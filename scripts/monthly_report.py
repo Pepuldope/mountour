@@ -94,7 +94,7 @@ def markdown(report: dict) -> str:
         return "n/a" if v is None else f"{round(v * 100)} %"
 
     lines = [
-        f"# MounTour usage, {report['month']}",
+        f"# Túruj usage, {report['month']}",
         "",
         "| Goal | This month | Target |",
         "| --- | --- | --- |",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { SavedTripsList } from "@/components/SavedTripsList";
 import { SiteFooter } from "@/components/SiteFooter";
+import { LangLink, LangSwitch, T } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Moje výlety",
@@ -11,12 +11,15 @@ export const metadata: Metadata = {
 export default function SavedTripsPage() {
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-5 px-4 py-6">
-      <Link href="/" className="w-fit text-sm font-semibold text-[var(--accent)]">
-        ← Všetky výlety
-      </Link>
+      <div className="flex items-center justify-between gap-3">
+        <LangLink href="/" className="w-fit text-sm font-semibold text-[var(--accent)]">
+          ← <T>Všetky výlety</T>
+        </LangLink>
+        <LangSwitch className="text-[var(--muted)]" />
+      </div>
       <header className="flex flex-col gap-1">
-        <h1 className="text-[1.65rem] leading-tight font-extrabold">Moje výlety</h1>
-        <p className="text-sm text-[var(--muted)]">Uložené len v tomto zariadení. Pri každom výlete vidíte, či funguje aj bez signálu.</p>
+        <h1 className="text-[1.65rem] leading-tight font-extrabold"><T>Moje výlety</T></h1>
+        <p className="text-sm text-[var(--muted)]"><T>Uložené len v tomto zariadení. Pri každom výlete vidíte, či funguje aj bez signálu.</T></p>
       </header>
       <SavedTripsList />
       <SiteFooter />
