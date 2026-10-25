@@ -39,7 +39,9 @@ jobs:
       - run: pip install Pillow
       - run: python -m pipeline.photos
         env:
-          MAPILLARY_TOKEN: ${{ secrets.MAPILLARY_TOKEN }}
+          # Mapillary only on a manual "only: mapillary" run until its results have been looked over:
+          # on 2026-10-25 its search answered empty everywhere, even for central Bratislava.
+          MAPILLARY_TOKEN: ${{ github.event.inputs.only == 'mapillary' && secrets.MAPILLARY_TOKEN || '' }}
           PHOTOS_ONLY: ${{ github.event.inputs.only }}
       # The site reads photos.json on the server: check it (size budget, shape) before it ships.
       - run: npm ci --ignore-scripts

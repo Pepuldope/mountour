@@ -258,14 +258,6 @@ def mapillary_photos(places, token):
 
     MLY_DIR.mkdir(parents=True, exist_ok=True)
     auth = {"Authorization": f"OAuth {token}"}  # in a header, so the token never shows in a logged URL
-    # Self-check on a busy square (Bratislava, Hlavné námestie): an empty answer here means the request is wrong.
-    probe = "https://graph.mapillary.com/images?fields=id&bbox=17.1070,48.1430,17.1090,48.1445&limit=5"
-    log(f"mapillary probe, header: {json.dumps(get_json(probe, auth))[:200]}")
-    log(f"mapillary probe, param: {json.dumps(get_json(probe + '&access_token=' + urllib.parse.quote(token)))[:200]}")
-    parts = token.split("|")
-    log(f"mapillary token shape: starts MLY| {token.startswith('MLY|')}, {len(parts)} parts, lengths {[len(x) for x in parts]}")
-    wide = "https://graph.mapillary.com/images?fields=id&bbox=17.100,48.140,17.120,48.150&limit=5"
-    log(f"mapillary probe, wide: {json.dumps(get_json(wide, auth))[:200]}")
     out = {}
     seen = kept = 0
     for n, (i, lat, lon) in enumerate(places):
@@ -274,8 +266,6 @@ def mapillary_photos(places, token):
         body = get_json("https://graph.mapillary.com/images?fields=id,geometry,computed_geometry,compass_angle,captured_at,creator,is_pano"
                         f"&bbox={lon - dlon},{lat - dlat},{lon + dlon},{lat + dlat}&limit=100", auth)
         ranked = []
-        if n < 3:
-            log(f"mapillary sample answer: {json.dumps(body)[:300]}")
         for im in (body or {}).get("data", []):
             seen += 1
             g = (im.get("computed_geometry") or im.get("geometry") or {}).get("coordinates")
@@ -497,6 +487,9 @@ def mapillary_only(trips):
     dest = {t["destination"].get("osm") or f"trip/{t['slug']}": t["destination"] for t in trips}
     fix = json.loads(OVERRIDES.read_text()) if OVERRIDES.exists() else {}
     rest = [(i, d["location"]["lat"], d["location"]["lon"]) for i, d in sorted(dest.items()) if i not in photos and i not in fix.get("no_mapillary", [])]
+    if not os.environ.get("MAPILLARY_TOKEN"):
+        log("no MAPILLARY_TOKEN: nothing to do")
+        return 0
     for i, p in mapillary_photos(rest, os.environ["MAPILLARY_TOKEN"]).items():
         photos[i] = p | {"via": "mapillary"}
     used = {p["url"].rsplit("/", 1)[1] for p in photos.values() if p["via"] == "mapillary"}
