@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import type { ReactNode } from "react";
 import { track } from "@/lib/analytics";
 import { reverseTown } from "@/lib/geocode";
+import "@/lib/legacyStorage";
 
 export interface UserFix {
   lat: number;
@@ -38,9 +39,9 @@ interface UserLocationState {
   locate: () => void;
 }
 
-const STORAGE_KEY = "mountour-user-fix";
+const STORAGE_KEY = "turuj-user-fix";
 // A typed start (usually home) is worth remembering across visits; a GPS fix is not.
-const MANUAL_KEY = "mountour-start";
+const MANUAL_KEY = "turuj-start";
 
 const MESSAGES: Partial<Record<LocationStatus, string>> = {
   locating: "Zisťujeme vašu polohu…",

@@ -37,6 +37,7 @@ import { TripCard } from "@/components/TripCard";
 import type { TripCardItem } from "@/components/TripCard";
 import { BrowseMap } from "@/components/BrowseMap";
 import type { BrowseArea, BrowseTrip, MapFocus, MapView } from "@/components/BrowseMap";
+import "@/lib/legacyStorage";
 
 interface Props {
   /** The best known trips, rendered with the page; every trip loads after it. */
@@ -77,7 +78,7 @@ const OTHER_REGION = "Ďalšie";
 
 /** Phones: room kept free at the bottom of the map for the trip preview. */
 const SHEET_INSET = 230;
-const MAP_HINT_KEY = "mountour-map-hint";
+const MAP_HINT_KEY = "turuj-map-hint";
 
 type Box = [number, number, number, number];
 type Preview =

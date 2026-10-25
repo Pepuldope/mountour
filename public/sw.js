@@ -6,14 +6,14 @@
 // URLs to store (the trip page itself, its GPX file, and the OpenFreeMap style,
 // vector tiles, sprites and glyphs for the trail's bbox; see lib/tiles.ts).
 
-const CACHE_PREFIX = "mountour-trip-";
+const CACHE_PREFIX = "turuj-trip-";
 // The app's own build assets (/_next/static/, content-hashed, never change) and
 // the saved-trips page. Shared by every trip, so deleting one trip keeps them.
-const STATIC_CACHE = "mountour-static";
+const STATIC_CACHE = "turuj-static";
 const SHELL_URLS = ["/ulozene"];
 // Build assets met while browsing (not saved with a trip). Each deploy brings new
 // ones, so keep only the newest MAX_SEEN: a few builds' worth (one is ~40 files).
-const SEEN_CACHE = "mountour-seen";
+const SEEN_CACHE = "turuj-seen";
 const MAX_SEEN = 200;
 
 self.addEventListener("install", () => {
@@ -21,8 +21,28 @@ self.addEventListener("install", () => {
 });
 
 self.addEventListener("activate", (event) => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(Promise.all([self.clients.claim(), moveOldCaches()]));
 });
+
+// Until 2026-10-25 the site was MounTour and its caches were "mountour-…".
+// Move them to the "turuj-…" names once, so saved trips stay offline and can still be deleted.
+const OLD_PREFIX = "mount" + "our-";
+async function moveOldCaches() {
+  for (const name of await caches.keys()) {
+    if (!name.startsWith(OLD_PREFIX)) continue;
+    try {
+      const from = await caches.open(name);
+      const to = await caches.open("turuj-" + name.slice(OLD_PREFIX.length));
+      for (const req of await from.keys()) {
+        const res = await from.match(req);
+        if (res) await to.put(req, res);
+      }
+      await caches.delete(name);
+    } catch {
+      // Storage full or blocked: the old cache stays and caches.match() still finds it.
+    }
+  }
+}
 
 self.addEventListener("message", (event) => {
   const msg = event.data;

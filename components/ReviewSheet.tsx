@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import type { Fit, Timing } from "@/lib/reviewLimits";
+import "@/lib/legacyStorage";
 
-const REVIEWER_KEY = "mountour-reviewer";
+const REVIEWER_KEY = "turuj-reviewer";
 
 /** A random id this browser keeps, so a second review of a trip replaces the first (nothing about the person). */
 function reviewerId(): string {

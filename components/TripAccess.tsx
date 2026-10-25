@@ -9,6 +9,7 @@ import type { WalkLine } from "@/lib/tripSchema";
 import { stopsByWalk, walkFacts } from "@/lib/walkFacts";
 import type { WalkFacts } from "@/lib/walkFacts";
 import type { LatLng, ParkingLot, TransitStop } from "@/lib/types";
+import "@/lib/legacyStorage";
 
 /**
  * How the car reaches the trail on the trip page: which parking the visitor
@@ -82,9 +83,9 @@ const Ctx = createContext<TripAccess>({
 });
 
 // Picks are remembered per trip for this browser session (back and forth between pages).
-const PARKING_KEY = "mountour-parking";
-const STOP_KEY = "mountour-stop";
-const EVENT = "mountour-parking";
+const PARKING_KEY = "turuj-parking";
+const STOP_KEY = "turuj-stop";
+const EVENT = "turuj-parking";
 
 function readAll(key: string): Record<string, number> {
   try {
