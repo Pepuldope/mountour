@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo } from "react";
 import { formatDuration } from "@/lib/format";
 import type { RouteBrief } from "@/lib/tripSchema";
@@ -10,6 +9,8 @@ import type { RouteWalk } from "@/lib/walkFacts";
 import { useTripAccess } from "@/components/TripAccess";
 import { setHoveredRoute, useHoveredRoute } from "@/lib/routeHover";
 import { BusOk, Dot, NoParkingChip, routeAccess, routeLabel } from "@/components/routeBits";
+import { LangLink, useLang, useT } from "@/lib/i18n";
+import { routeNameIn } from "@/lib/lang";
 
 export interface RouteNumbers {
   min: number;
@@ -25,16 +26,17 @@ export interface RouteNumbers {
 export function useRouteNumbers(routes: RouteBrief[], walks: Record<string, RouteWalk>, current: string | null): RouteNumbers[] {
   const { travel, withKids } = useTripSettings();
   const { walk } = useTripAccess();
+  const lang = useLang();
   // Memoised: the comparison map re-adds its pins when their lines change.
   return useMemo(
     () =>
       routes.map((r) => {
         const w = r.slug === current ? walk : pickWalk(walks[r.slug], travel === "transit", r.parking);
         return w
-          ? { min: walkMinutes(w, withKids), km: formatKm(w.m), ascentM: w.ascentM }
-          : { min: r.duration_min, km: formatKm(r.distance_m), ascentM: r.ascent_m };
+          ? { min: walkMinutes(w, withKids), km: formatKm(w.m, lang), ascentM: w.ascentM }
+          : { min: r.duration_min, km: formatKm(r.distance_m, lang), ascentM: r.ascent_m };
       }),
-    [routes, walks, current, walk, travel, withKids]
+    [routes, walks, current, walk, travel, withKids, lang]
   );
 }
 
@@ -42,9 +44,11 @@ export function useRouteNumbers(routes: RouteBrief[], walks: Record<string, Rout
 export function RouteRows({ routes, at, walks }: { routes: RouteBrief[]; at: number; walks: Record<string, RouteWalk> }) {
   const hovered = useHoveredRoute();
   const numbers = useRouteNumbers(routes, walks, routes[at]?.slug ?? null);
+  const t = useT();
+  const lang = useLang();
   return routes.map((r, i) => (
     <li key={r.slug}>
-      <Link
+      <LangLink
         href={`/trasa/${r.slug}`}
         aria-current={i === at ? "page" : undefined}
         scroll={false}
@@ -58,11 +62,11 @@ export function RouteRows({ routes, at, walks }: { routes: RouteBrief[]; at: num
         <Dot i={i} />
         <span className="flex min-w-0 flex-col">
           <span className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[15px] font-bold">
-            {routeLabel(r)}
+            {routeNameIn(lang, routeLabel(r))}
             {!r.parking && <NoParkingChip />}
           </span>
           <span className="text-[13px] text-[var(--muted)]">
-            štart {r.start_name} · {r.parking ? routeAccess(r) : <BusOk />}
+            {t("štart {name}", { name: r.start_name })} · {r.parking ? t(routeAccess(r)) : <BusOk />}
           </span>
         </span>
         <span className="font-data ml-auto shrink-0 text-right text-[16px] leading-tight">
@@ -71,7 +75,7 @@ export function RouteRows({ routes, at, walks }: { routes: RouteBrief[]; at: num
             {numbers[i].km} · +{numbers[i].ascentM} m
           </span>
         </span>
-      </Link>
+      </LangLink>
     </li>
   ));
 }
@@ -82,6 +86,8 @@ export function RouteRows({ routes, at, walks }: { routes: RouteBrief[]; at: num
  */
 export function ShorterRouteHint({ routes, at, walks }: { routes: RouteBrief[]; at: number; walks: Record<string, RouteWalk> }) {
   const { travel } = useTripSettings();
+  const t = useT();
+  const lang = useLang();
   const numbers = useRouteNumbers(routes, walks, routes[at]?.slug ?? null);
   const mine = numbers[at]?.min;
   let best = -1;
@@ -92,21 +98,21 @@ export function ShorterRouteHint({ routes, at, walks }: { routes: RouteBrief[]; 
   if (best < 0) return null;
   const r = routes[best];
   return (
-    <Link
+    <LangLink
       href={`/trasa/${r.slug}`}
       scroll={false}
       className="flex items-center gap-3 rounded-[var(--radius-card)] border border-[var(--ok)] bg-[var(--ok-bg)] px-3.5 py-2.5 text-[var(--ok)]"
     >
       <Dot i={best} />
       <span className="flex min-w-0 flex-col">
-        <span className="text-[15px] font-bold">Dá sa aj kratšie: {formatDuration(numbers[best].min)}</span>
+        <span className="text-[15px] font-bold">{t("Dá sa aj kratšie: {t}", { t: formatDuration(numbers[best].min) })}</span>
         <span className="text-[13px]">
-          {routeLabel(r)} · štart {r.start_name}
+          {routeNameIn(lang, routeLabel(r))} · {t("štart {name}", { name: r.start_name })}
         </span>
       </span>
       <span aria-hidden className="ml-auto shrink-0 text-lg font-bold">
         ›
       </span>
-    </Link>
+    </LangLink>
   );
 }
