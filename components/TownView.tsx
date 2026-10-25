@@ -11,6 +11,7 @@ import { absoluteUrl } from "@/lib/site";
 import { langPath, tr } from "@/lib/lang";
 import type { Lang } from "@/lib/lang";
 import { LangSwitch } from "@/lib/i18n";
+import { photoSource } from "@/lib/tripFiles";
 
 export function townMetadata(id: string, lang: Lang) {
   const town = getTown(id);
@@ -102,7 +103,7 @@ export async function TownView({ id, lang }: { id: string; lang: Lang }) {
                 <a href={t.photo!.page} className="underline" rel="noopener">
                   {t.photo!.author}
                 </a>
-                , <LicenseName name={t.photo!.license} url={t.photo!.license_url} lang={lang} />, Wikimedia Commons
+                , <LicenseName name={t.photo!.license} url={t.photo!.license_url} lang={lang} />, {photoSource(t.photo!)}
               </li>
             ))}
           </ul>

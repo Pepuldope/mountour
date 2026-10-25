@@ -38,7 +38,8 @@ describe("files the Worker reads stay small enough for its CPU limit", () => {
     expect(statSync(file).size).toBeLessThan(600 * 1024);
     const { photos } = JSON.parse(readFileSync(file, "utf8")) as { photos: Record<string, { url: string }> };
     const imgSrc = /"img-src ([^"]+)"/.exec(readFileSync(join(process.cwd(), "next.config.ts"), "utf8"))![1];
-    const hosts = new Set(Object.values(photos).map((p) => new URL(p.url).origin));
+    // Mapillary photos are our own files ("/photos/m/…"), covered by 'self'.
+    const hosts = new Set(Object.values(photos).filter((p) => !p.url.startsWith("/")).map((p) => new URL(p.url).origin));
     for (const host of hosts) expect(imgSrc.split(" ")).toContain(host);
   });
 
