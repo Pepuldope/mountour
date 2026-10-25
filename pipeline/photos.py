@@ -262,6 +262,10 @@ def mapillary_photos(places, token):
     probe = "https://graph.mapillary.com/images?fields=id&bbox=17.1070,48.1430,17.1090,48.1445&limit=5"
     log(f"mapillary probe, header: {json.dumps(get_json(probe, auth))[:200]}")
     log(f"mapillary probe, param: {json.dumps(get_json(probe + '&access_token=' + urllib.parse.quote(token)))[:200]}")
+    parts = token.split("|")
+    log(f"mapillary token shape: starts MLY| {token.startswith('MLY|')}, {len(parts)} parts, lengths {[len(x) for x in parts]}")
+    wide = "https://graph.mapillary.com/images?fields=id&bbox=17.100,48.140,17.120,48.150&limit=5"
+    log(f"mapillary probe, wide: {json.dumps(get_json(wide, auth))[:200]}")
     out = {}
     seen = kept = 0
     for n, (i, lat, lon) in enumerate(places):
