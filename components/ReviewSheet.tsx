@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Fit, Timing } from "@/lib/reviewLimits";
 import "@/lib/legacyStorage";
+import { useT } from "@/lib/i18n";
 
 const REVIEWER_KEY = "turuj-reviewer";
 
@@ -46,6 +47,7 @@ export function ReviewSheet({ slug, name, onDone }: { slug: string; name: string
   const [crowded, setCrowded] = useState<boolean | null>(null);
   const [timing, setTiming] = useState<Timing | null>(null);
   const [state, setState] = useState<"idle" | "sending" | "error">("idle");
+  const tx = useT();
 
   async function send() {
     setState("sending");
@@ -63,20 +65,20 @@ export function ReviewSheet({ slug, name, onDone }: { slug: string; name: string
   }
 
   return (
-    <div role="dialog" aria-modal="true" aria-label={`Hodnotenie: ${name}`} className="fixed inset-0 z-50 grid place-items-center bg-black/45 p-4">
+    <div role="dialog" aria-modal="true" aria-label={tx("Hodnotenie: {name}", { name })} className="fixed inset-0 z-50 grid place-items-center bg-black/45 p-4">
       <div className="flex w-full max-w-[420px] flex-col gap-4 rounded-[var(--radius-card)] bg-[var(--card-bg)] p-5 shadow-[var(--shadow-float)]">
         <div>
-          <h2 className="text-lg font-extrabold">Aký bol výlet?</h2>
-          <p className="text-sm text-[var(--muted)]">{name} · zaberie to pár sekúnd</p>
+          <h2 className="text-lg font-extrabold">{tx("Aký bol výlet?")}</h2>
+          <p className="text-sm text-[var(--muted)]">{name} · {tx("zaberie to pár sekúnd")}</p>
         </div>
-        <div className="flex justify-center gap-1.5" role="radiogroup" aria-label="Hviezdičky">
+        <div className="flex justify-center gap-1.5" role="radiogroup" aria-label={tx("Hviezdičky")}>
           {[1, 2, 3, 4, 5].map((n) => (
             <button
               key={n}
               type="button"
               role="radio"
               aria-checked={stars === n}
-              aria-label={`${n} z 5`}
+              aria-label={tx("{n} z 5", { n })}
               onClick={() => setStars(n)}
               className={`text-[38px] leading-none transition-transform active:scale-90 ${n <= stars ? "text-[#f5b301]" : "text-[var(--border)]"}`}
             >
@@ -85,39 +87,39 @@ export function ReviewSheet({ slug, name, onDone }: { slug: string; name: string
           ))}
         </div>
         <div className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-bold text-[var(--muted)]">Trasa bola</span>
+          <span className="text-[13px] font-bold text-[var(--muted)]">{tx("Trasa bola")}</span>
           <div className="flex flex-wrap gap-1.5">
             {FIT_LABEL.map(([f, label]) => (
               <button key={f} type="button" aria-pressed={fit === f} onClick={() => setFit(fit === f ? null : f)} className={chip(fit === f)}>
-                {label}
+                {tx(label)}
               </button>
             ))}
           </div>
         </div>
         <div className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-bold text-[var(--muted)]">Časy z nášho plánu</span>
+          <span className="text-[13px] font-bold text-[var(--muted)]">{tx("Časy z nášho plánu")}</span>
           <div className="flex flex-wrap gap-1.5">
             {TIMING_LABEL.map(([t, label]) => (
               <button key={t} type="button" aria-pressed={timing === t} onClick={() => setTiming(timing === t ? null : t)} className={chip(timing === t)}>
-                {label}
+                {tx(label)}
               </button>
             ))}
           </div>
         </div>
         <div className="flex flex-col gap-1.5">
-          <span className="text-[13px] font-bold text-[var(--muted)]">Bolo tam veľa ľudí?</span>
+          <span className="text-[13px] font-bold text-[var(--muted)]">{tx("Bolo tam veľa ľudí?")}</span>
           <div className="flex gap-1.5">
             {([true, false] as const).map((v) => (
               <button key={String(v)} type="button" aria-pressed={crowded === v} onClick={() => setCrowded(crowded === v ? null : v)} className={chip(crowded === v)}>
-                {v ? "Áno" : "Nie"}
+                {v ? tx("Áno") : tx("Nie")}
               </button>
             ))}
           </div>
         </div>
-        {state === "error" && <p className="text-sm text-[var(--danger)]">Nepodarilo sa odoslať. Skúste to o chvíľu.</p>}
+        {state === "error" && <p className="text-sm text-[var(--danger)]">{tx("Nepodarilo sa odoslať. Skúste to o chvíľu.")}</p>}
         <div className="flex justify-between gap-2">
           <button type="button" onClick={() => onDone(false)} className="rounded-full border border-[var(--border)] px-4 py-2.5 text-sm font-semibold">
-            Teraz nie
+            {tx("Teraz nie")}
           </button>
           <button
             type="button"
@@ -125,7 +127,7 @@ export function ReviewSheet({ slug, name, onDone }: { slug: string; name: string
             onClick={send}
             className="rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-bold text-[var(--accent-contrast)] disabled:opacity-40"
           >
-            {state === "sending" ? "Odosielam…" : "Odoslať"}
+            {state === "sending" ? tx("Odosielam…") : tx("Odoslať")}
           </button>
         </div>
       </div>
