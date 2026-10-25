@@ -12,6 +12,7 @@ import { fetchLines } from "@/lib/packedLines";
 import { attachTrailNetwork, cellsInView, LINE_TILE_MAX } from "@/lib/trailNetwork";
 import { useUserLocation } from "@/lib/userLocation";
 import { FALLBACK_STYLE, SLOVAKIA, hideBasePois } from "@/components/TrailMap";
+import { pageLang, tr } from "@/lib/lang";
 
 type MapLibre = typeof import("maplibre-gl");
 type Box = [number, number, number, number];
@@ -682,7 +683,7 @@ export function BrowseMap({
       const el = document.createElement("button");
       el.type = "button";
       el.className = "mt-area";
-      el.setAttribute("aria-label", `${a.name}: priblížiť`);
+      el.setAttribute("aria-label", tr(pageLang(), "{name}: priblížiť", { name: a.name }));
       el.innerHTML = `<span aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M2.5 19.5 9.5 7l3.4 5.6 2.1-3.1 6.5 10z" fill="currentColor"/></svg></span><span></span>`;
       (el.lastChild as HTMLElement).textContent = a.short;
       el.style.display = map.getZoom() < AREA_ZOOM - ctx.shift && !fewRef.current ? "" : "none";
@@ -816,7 +817,7 @@ export function BrowseMap({
       map.easeTo({ center: [start!.lon, start!.lat], zoom: AREA_ZOOM - ctx.shift + START_ZOOM_IN, duration: startKey.current === undefined ? 0 : 900 });
     }
     startKey.current = key;
-    if (fix) userMarkers.current.push(new ml.Marker({ element: pin("mt-pin-me", "", "Vaša poloha") }).setLngLat([fix.lon, fix.lat]).addTo(map));
+    if (fix) userMarkers.current.push(new ml.Marker({ element: pin("mt-pin-me", "", tr(pageLang(), "Vaša poloha")) }).setLngLat([fix.lon, fix.lat]).addTo(map));
   }, [ctx, fix, start]);
 
   // `isolate`: area dots stack among themselves only, never above the legend and buttons laid over the map.
