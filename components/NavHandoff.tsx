@@ -6,12 +6,13 @@ import { googleMapsUrl, googleWalkUrl, mapyUrl, mapyWalkUrl } from "@/lib/links"
 import type { WalkRoute } from "@/lib/links";
 import type { LatLng } from "@/lib/types";
 import { useTripAccess } from "@/components/TripAccess";
+import "@/lib/legacyStorage";
 
 type App = "google" | "mapy";
 
 // The visitor's maps app, remembered in this browser for every trip.
-const KEY = "mountour-maps-app";
-const EVENT = "mountour-maps-app";
+const KEY = "turuj-maps-app";
+const EVENT = "turuj-maps-app";
 
 function readApp(): App {
   try {

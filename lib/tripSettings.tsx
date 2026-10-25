@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import type { ReactNode } from "react";
 import { addDaysIso, isoDate } from "@/lib/days";
 import { wallClock } from "@/lib/zoned";
+import "@/lib/legacyStorage";
 
 /** The trip inputs, shared by the home list and every trip page so nothing resets on navigation. */
 export interface TripSettings {
@@ -28,7 +29,7 @@ interface TripSettingsState extends TripSettings {
 }
 
 // v3: earlier versions stored "today" as the default day; starting fresh makes Zajtra the default for them too.
-const STORAGE_KEY = "mountour-trip-v3";
+const STORAGE_KEY = "turuj-trip-v3";
 /** After this hour "now" makes a poor default departure: plan tomorrow morning instead. */
 const LATE_HOUR = 15;
 const MORNING = "08:00";
@@ -80,7 +81,7 @@ function store(s: TripSettings) {
 }
 
 // Car or not is a fact about the visitor, not about one visit: remembered across visits.
-const TRAVEL_KEY = "mountour-travel";
+const TRAVEL_KEY = "turuj-travel";
 
 function readTravel(): Travel | null {
   try {

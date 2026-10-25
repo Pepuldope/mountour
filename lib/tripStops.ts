@@ -44,7 +44,7 @@ export function stopFor(p: Poi): TripStop {
 }
 
 // Kept only while the group stays with one trip (Peter 2026-10-23: a saved trip keeps them, nothing else does).
-const EVENT = "mountour-stops";
+const EVENT = "turuj-stops";
 type All = Record<string, TripStop[]>;
 const NONE: TripStop[] = [];
 

@@ -3,7 +3,7 @@
 
 /** At most one automatic reload per tab in this long. */
 export const RELOAD_GUARD_MS = 60_000;
-const KEY = "mountour-stale-reload";
+const KEY = "turuj-stale-reload";
 
 /** A code file the page asked for is gone: webpack/Turbopack chunk errors and failed dynamic imports. */
 export function isStaleCodeError(err: unknown): boolean {
