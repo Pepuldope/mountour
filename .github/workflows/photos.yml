@@ -10,6 +10,11 @@ on:
     workflows: ["Weekly trip data"]
     types: [completed]
   workflow_dispatch:
+    inputs:
+      only:
+        description: "mapillary = only redo the Mapillary step (quick)"
+        required: false
+        default: ""
 
 permissions:
   contents: write
@@ -35,6 +40,7 @@ jobs:
       - run: python -m pipeline.photos
         env:
           MAPILLARY_TOKEN: ${{ secrets.MAPILLARY_TOKEN }}
+          PHOTOS_ONLY: ${{ github.event.inputs.only }}
       # The site reads photos.json on the server: check it (size budget, shape) before it ships.
       - run: npm ci --ignore-scripts
       - run: npx vitest run lib/assetBudget.test.ts

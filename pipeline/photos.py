@@ -259,14 +259,18 @@ def mapillary_photos(places, token):
     MLY_DIR.mkdir(parents=True, exist_ok=True)
     auth = {"Authorization": f"OAuth {token}"}  # in a header, so the token never shows in a logged URL
     out = {}
+    seen = kept = 0
     for n, (i, lat, lon) in enumerate(places):
         dlat = MLY_M / 111_320
         dlon = MLY_M / (111_320 * math.cos(math.radians(lat)))
-        body = get_json("https://graph.mapillary.com/images?fields=id,computed_geometry,compass_angle,captured_at,creator,is_pano"
+        body = get_json("https://graph.mapillary.com/images?fields=id,geometry,computed_geometry,compass_angle,captured_at,creator,is_pano"
                         f"&bbox={lon - dlon},{lat - dlat},{lon + dlon},{lat + dlat}&limit=100", auth)
         ranked = []
+        if n < 3:
+            log(f"mapillary sample answer: {json.dumps(body)[:300]}")
         for im in (body or {}).get("data", []):
-            g = (im.get("computed_geometry") or {}).get("coordinates")
+            seen += 1
+            g = (im.get("computed_geometry") or im.get("geometry") or {}).get("coordinates")
             if not g or im.get("is_pano"):
                 continue
             dy = (g[1] - lat) * 111_320
@@ -278,6 +282,7 @@ def mapillary_photos(places, token):
             off = abs((im.get("compass_angle", 0) - bearing(g[1], g[0], lat, lon) + 180) % 360 - 180)
             if dist > 25 and off > 60:
                 continue
+            kept += 1
             ranked.append((dist > 25 and off > 30, round(dist / 25), -(im.get("captured_at") or 0), im))
         for *_, im in sorted(ranked, key=lambda r: r[:3])[:1]:
             f = MLY_DIR / f"{im['id']}.jpg"
@@ -299,7 +304,7 @@ def mapillary_photos(places, token):
                           license_url="https://creativecommons.org/licenses/by-sa/4.0/",
                           page=f"https://www.mapillary.com/app/?pKey={im['id']}")
         if n % 200 == 0:
-            log(f"mapillary {n}/{len(places)}")
+            log(f"mapillary {n}/{len(places)}: {seen} images seen, {kept} usable, {len(out)} places")
     return out
 
 
@@ -391,6 +396,8 @@ def credit(meta):
 
 def main():
     trips = json.loads(INDEX.read_text())["trips"]
+    if os.environ.get("PHOTOS_ONLY") == "mapillary":
+        return mapillary_only(trips)
     # Keyed by the OSM object; hand-made trips without one by "trip/<slug>".
     dest = {t["destination"].get("osm") or f"trip/{t['slug']}": t["destination"] for t in trips}
     ids = sorted(dest)
@@ -472,6 +479,25 @@ def main():
     ), ensure_ascii=False, separators=(",", ":")) + "\n")
     counts = {s: sum(p["via"] == s for p in photos.values()) for s in ("picked", "wikidata", "wikipedia", "near", "category", "area", "mapillary")}
     log(f"tags {len(tags)}, wikidata {len(qid)}, articles {len(article)}, free photo {len(photos)} of {len(ids)} places {counts}")
+    return 0
+
+
+def mapillary_only(trips):
+    """Only the Mapillary step, on top of the current photos.json (a quick rerun after changing it)."""
+    data = json.loads(OUT.read_text())
+    photos = {i: p for i, p in data["photos"].items() if p.get("via") != "mapillary"}
+    dest = {t["destination"].get("osm") or f"trip/{t['slug']}": t["destination"] for t in trips}
+    fix = json.loads(OVERRIDES.read_text()) if OVERRIDES.exists() else {}
+    rest = [(i, d["location"]["lat"], d["location"]["lon"]) for i, d in sorted(dest.items()) if i not in photos and i not in fix.get("no_mapillary", [])]
+    for i, p in mapillary_photos(rest, os.environ["MAPILLARY_TOKEN"]).items():
+        photos[i] = p | {"via": "mapillary"}
+    used = {p["url"].rsplit("/", 1)[1] for p in photos.values() if p["via"] == "mapillary"}
+    for f in MLY_DIR.glob("*.jpg"):
+        if f.name not in used:
+            f.unlink()
+    data["photos"] = dict(sorted(photos.items()))
+    OUT.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n")
+    log(f"mapillary: {len(used)} places")
     return 0
 
 
