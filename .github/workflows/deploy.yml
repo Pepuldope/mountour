@@ -9,6 +9,12 @@ name: Deploy
 on:
   push:
     branches: [main]
+  # The data workflows push to main with GITHUB_TOKEN, which starts no push event,
+  # so deploy after each of them instead.
+  workflow_run:
+    workflows: [Place photos, Weekly trip data, Weekly trail map, Weekly train timetable, Monthly report]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -17,6 +23,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     env:
       CF_READY: ${{ secrets.CLOUDFLARE_DEPLOY_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
@@ -38,8 +45,9 @@ jobs:
         run: npx opennextjs-cloudflare build
         env:
           WORKERS_CI_COMMIT_SHA: ${{ github.sha }}
+      # Cloudflare's asset upload sometimes answers "unknown error [code: 10013]"; a second try passes.
       - if: env.CF_READY == 'true'
-        run: npx opennextjs-cloudflare deploy
+        run: npx opennextjs-cloudflare deploy || (sleep 60 && npx opennextjs-cloudflare deploy)
         env:
           WORKERS_CI_COMMIT_SHA: ${{ github.sha }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_DEPLOY_TOKEN }}
