@@ -2,7 +2,7 @@ import Link from "next/link";
 import { primaryTrailhead, sunLocation } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
 import { GpxDownload } from "@/components/GpxDownload";
-import { getRouteWalks, getTrip, getTripPhoto, withLoopRoutes } from "@/lib/tripFiles";
+import { getRouteWalks, getTrip, getTripPhoto, photoSource, withLoopRoutes } from "@/lib/tripFiles";
 import { buildProfile } from "@/lib/tripProfile";
 import { GOAL_LABEL, POI_LABEL } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
@@ -174,7 +174,7 @@ export async function TripSheet({ trip, detail, loopBack }: { trip: TripDetail; 
                   rel="noopener noreferrer"
                   className="absolute right-2 bottom-1 z-10 max-w-[60%] truncate text-[10px] text-white/80 no-underline [text-shadow:0_1px_2px_rgba(0,0,0,.7)]"
                 >
-                  Foto: {photo.author}, {photo.license}
+                  Foto: {photo.author}, {photo.license}, {photoSource(photo)}
                 </a>
               </>
             ) : (

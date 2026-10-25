@@ -49,7 +49,8 @@ export default function SourcesPage() {
         <li>
           Fotky miest: <a href="https://commons.wikimedia.org">Wikimedia Commons</a> cez{" "}
           <a href="https://www.wikidata.org">Wikidata</a>, len voľné licencie (CC0, CC BY, CC BY-SA, voľné dielo). Autor a licencia
-          každej fotky sú pod zoznamom na stránke mesta.
+          každej fotky sú pod zoznamom na stránke mesta. Kde fotka z Commons chýba, fotka z ulice z{" "}
+          <a href="https://www.mapillary.com">Mapillary</a> (CC BY-SA 4.0, autor pri fotke).
         </li>
         <li>
           Presné spoje autobusov a vlakov: odkaz na <a href="https://cp.sk">cp.sk</a>, Google Mapy a Apple Mapy.

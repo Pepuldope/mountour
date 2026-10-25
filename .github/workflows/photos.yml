@@ -1,7 +1,7 @@
 name: Place photos
 
 # Free photos for the places trips lead to (pipeline/photos.py), from Wikimedia
-# Commons. Runs when the weekly trip data is done (so new places get photos the
+# Commons, then Mapillary (downloaded into public/photos/m/). Runs when the weekly trip data is done (so new places get photos the
 # same day, however late GitHub starts that run) and commits public/data/photos.json.
 # pipeline/photos.py keeps the old file when far fewer photos come back (a bad
 # hour at Commons), and the site's tests run before the commit.
@@ -31,7 +31,10 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - run: pip install Pillow
       - run: python -m pipeline.photos
+        env:
+          MAPILLARY_TOKEN: ${{ secrets.MAPILLARY_TOKEN }}
       # The site reads photos.json on the server: check it (size budget, shape) before it ships.
       - run: npm ci --ignore-scripts
       - run: npx vitest run lib/assetBudget.test.ts
@@ -40,11 +43,13 @@ jobs:
           git config user.name "mountour-data-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           cp public/data/photos.json "$RUNNER_TEMP/photos.json"
+          mkdir -p public/photos/m && cp -r public/photos/m "$RUNNER_TEMP/mly"
           for attempt in 1 2 3; do
             git fetch origin "${GITHUB_REF_NAME}"
             git checkout -f --detach "origin/${GITHUB_REF_NAME}"
             cp "$RUNNER_TEMP/photos.json" public/data/photos.json
-            git add public/data/photos.json
+            rm -rf public/photos/m && mkdir -p public/photos && cp -r "$RUNNER_TEMP/mly" public/photos/m
+            git add public/data/photos.json public/photos/m
             if git diff --cached --quiet; then echo "No changes."; exit 0; fi
             git commit -m "Place photos from Wikimedia Commons"
             git push origin "HEAD:${GITHUB_REF_NAME}" && exit 0

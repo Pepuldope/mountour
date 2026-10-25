@@ -8,6 +8,7 @@ import { getTowns } from "@/lib/trips";
 import { tripsCount } from "@/lib/format";
 import { townGenitive } from "@/lib/townNames";
 import { pageMetadata } from "@/lib/seo";
+import { photoSource } from "@/lib/tripFiles";
 import { JsonLd } from "@/components/JsonLd";
 import { absoluteUrl } from "@/lib/site";
 
@@ -108,7 +109,7 @@ export default async function TownPage({ params }: Props) {
                 <a href={t.photo!.page} className="underline" rel="noopener">
                   {t.photo!.author}
                 </a>
-                , <LicenseName name={t.photo!.license} url={t.photo!.license_url} />, Wikimedia Commons
+                , <LicenseName name={t.photo!.license} url={t.photo!.license_url} />, {photoSource(t.photo!)}
               </li>
             ))}
           </ul>

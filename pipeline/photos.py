@@ -7,7 +7,10 @@ Sources, best first:
    Commons, skipping guideposts, maps and boards;
 4. a photo from the place's Commons category (Wikidata P373);
 5. for outdoor places still without one, any photo taken within 300 m ("area"),
-   skipping signs, maps, streets and buildings.
+   skipping signs, maps, streets and buildings;
+6. last, a Mapillary street-level photo taken within 150 m and facing the place
+   ("mapillary", CC BY-SA 4.0; needs MAPILLARY_TOKEN). Mapillary's image links
+   expire, so these are downloaded once into public/photos/m/<id>.jpg (500 px).
 data/photo-overrides.json blocks files that turned out wrong and picks files by hand.
 The thumbnail address, author and licence go to public/data/photos.json, keyed by
 the OSM object ("node/123"), with `via` saying which source matched. Places without
@@ -17,7 +20,10 @@ a free photo are left out; the site draws its own tile for them.
 """
 
 import html
+import io
 import json
+import math
+import os
 import re
 import sys
 import time
@@ -40,11 +46,11 @@ def log(msg):
     print(msg, file=sys.stderr, flush=True)
 
 
-def get_json(url):
+def get_json(url, headers=None):
     for wait in (0, 3, 10, 30):
         time.sleep(wait)
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": UA})
+            req = urllib.request.Request(url, headers={"User-Agent": UA} | (headers or {}))
             with urllib.request.urlopen(req, timeout=60) as r:
                 return json.loads(r.read())
         except Exception as e:  # one failed batch must not stop the rest
@@ -233,6 +239,70 @@ def area_photos(places):
     return out
 
 
+MLY_DIR = Path("public/photos/m")
+MLY_M = 150
+
+
+def bearing(lat1, lon1, lat2, lon2):
+    """Compass bearing in degrees from point 1 to point 2."""
+    p1, p2, dl = math.radians(lat1), math.radians(lat2), math.radians(lon2 - lon1)
+    y = math.sin(dl) * math.cos(p2)
+    x = math.cos(p1) * math.sin(p2) - math.sin(p1) * math.cos(p2) * math.cos(dl)
+    return (math.degrees(math.atan2(y, x)) + 360) % 360
+
+
+def mapillary_photos(places, token):
+    """For places still without a photo: the best Mapillary image within 150 m, downloaded and
+    shrunk to 500 px. Best = facing the place (when not standing right on it), then nearest, then newest."""
+    from PIL import Image  # only this source needs it (pip install Pillow in .github/workflows/photos.yml)
+
+    MLY_DIR.mkdir(parents=True, exist_ok=True)
+    auth = {"Authorization": f"OAuth {token}"}  # in a header, so the token never shows in a logged URL
+    out = {}
+    for n, (i, lat, lon) in enumerate(places):
+        dlat = MLY_M / 111_320
+        dlon = MLY_M / (111_320 * math.cos(math.radians(lat)))
+        body = get_json("https://graph.mapillary.com/images?fields=id,computed_geometry,compass_angle,captured_at,creator,is_pano"
+                        f"&bbox={lon - dlon},{lat - dlat},{lon + dlon},{lat + dlat}&limit=100", auth)
+        ranked = []
+        for im in (body or {}).get("data", []):
+            g = (im.get("computed_geometry") or {}).get("coordinates")
+            if not g or im.get("is_pano"):
+                continue
+            dy = (g[1] - lat) * 111_320
+            dx = (g[0] - lon) * 111_320 * math.cos(math.radians(lat))
+            dist = math.hypot(dx, dy)
+            if dist > MLY_M:
+                continue
+            # Off by more than 60 degrees from the place = looking elsewhere (a road, a car park).
+            off = abs((im.get("compass_angle", 0) - bearing(g[1], g[0], lat, lon) + 180) % 360 - 180)
+            if dist > 25 and off > 60:
+                continue
+            ranked.append((dist > 25 and off > 30, round(dist / 25), -(im.get("captured_at") or 0), im))
+        for *_, im in sorted(ranked, key=lambda r: r[:3])[:1]:
+            f = MLY_DIR / f"{im['id']}.jpg"
+            if not f.exists():
+                meta = get_json(f"https://graph.mapillary.com/{im['id']}?fields=thumb_1024_url", auth)
+                if not meta or not meta.get("thumb_1024_url"):
+                    continue
+                try:
+                    with urllib.request.urlopen(urllib.request.Request(meta["thumb_1024_url"], headers={"User-Agent": UA}), timeout=60) as r:
+                        img = Image.open(io.BytesIO(r.read())).convert("RGB")
+                except Exception as e:
+                    log(f"mapillary {im['id']}: {e}")
+                    continue
+                img.thumbnail((THUMB_W, THUMB_W * 2))
+                img.save(f, "JPEG", quality=78, optimize=True, progressive=True)
+            w, h = Image.open(f).size
+            user = (im.get("creator") or {}).get("username") or "Mapillary"
+            out[i] = dict(url=f"/photos/m/{im['id']}.jpg", w=w, h=h, author=user, license="CC BY-SA 4.0",
+                          license_url="https://creativecommons.org/licenses/by-sa/4.0/",
+                          page=f"https://www.mapillary.com/app/?pKey={im['id']}")
+        if n % 200 == 0:
+            log(f"mapillary {n}/{len(places)}")
+    return out
+
+
 def strip_html(s):
     return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", s or ""))).strip()
 
@@ -377,17 +447,30 @@ def main():
             if meta and (src == "picked" or not off_topic(meta, src)):
                 photos[i] = {k: v for k, v in meta.items() if k != "cats"} | {"via": src}
                 break
+    # Last resort: a street-level photo from Mapillary (Peter, 2026-10-25).
+    token = os.environ.get("MAPILLARY_TOKEN", "")
+    if token:
+        rest = [(i, dest[i]["location"]["lat"], dest[i]["location"]["lon"]) for i in ids if i not in photos and i not in fix.get("no_mapillary", [])]
+        for i, p in mapillary_photos(rest, token).items():
+            photos[i] = p | {"via": "mapillary"}
+    else:
+        log("no MAPILLARY_TOKEN: Mapillary skipped")
     # A bad hour at Commons or Wikidata returns little: keep last week's file rather than blank tiles.
     before = len(json.loads(OUT.read_text()).get("photos", {})) if OUT.exists() else 0
     if len(photos) < 0.7 * before:
         log(f"only {len(photos)} photos against {before} last time: keeping the old file")
         return 1
+    # Downloaded Mapillary files no place uses any more.
+    used = {p["url"].rsplit("/", 1)[1] for p in photos.values() if p["via"] == "mapillary"}
+    for f in MLY_DIR.glob("*.jpg"):
+        if f.name not in used:
+            f.unlink()
     OUT.write_text(json.dumps(dict(
         generated_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        source="Wikimedia Commons via Wikidata, Wikipedia and OpenStreetMap",
+        source="Wikimedia Commons via Wikidata, Wikipedia and OpenStreetMap; Mapillary",
         photos=dict(sorted(photos.items())),
     ), ensure_ascii=False, separators=(",", ":")) + "\n")
-    counts = {s: sum(p["via"] == s for p in photos.values()) for s in ("picked", "wikidata", "wikipedia", "near", "category", "area")}
+    counts = {s: sum(p["via"] == s for p in photos.values()) for s in ("picked", "wikidata", "wikipedia", "near", "category", "area", "mapillary")}
     log(f"tags {len(tags)}, wikidata {len(qid)}, articles {len(article)}, free photo {len(photos)} of {len(ids)} places {counts}")
     return 0
 

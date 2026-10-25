@@ -131,7 +131,7 @@ export async function getAllTripSlugs(): Promise<string[]> {
     .sort();
 }
 
-/** A free-licence photo of a trip's destination from Wikimedia Commons (pipeline/photos.py). */
+/** A free-licence photo of a trip's destination from Wikimedia Commons or Mapillary (pipeline/photos.py). */
 export interface PlacePhoto {
   url: string;
   w: number;
@@ -141,6 +141,13 @@ export interface PlacePhoto {
   /** Link to the licence text, from Commons (older files: none, the page links known CC licences itself). */
   license_url?: string | null;
   page: string;
+  /** Where it was found; "mapillary" = a street-level photo kept in public/photos/m/. */
+  via?: string;
+}
+
+/** The photo's archive, for the credit line. */
+export function photoSource(p: PlacePhoto): string {
+  return p.via === "mapillary" ? "Mapillary" : "Wikimedia Commons";
 }
 
 let photos: Promise<Record<string, PlacePhoto>> | null = null;
