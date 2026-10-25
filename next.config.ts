@@ -56,7 +56,7 @@ const DEPLOYMENT_ID = process.env.WORKERS_CI_COMMIT_SHA?.slice(0, 12) || undefin
 // full reload, so send it with every page here.
 const DEPLOYMENT_HEADERS = DEPLOYMENT_ID ? [{ key: "x-nextjs-deployment-id", value: DEPLOYMENT_ID }] : [];
 
-const OLD_HOSTS = ["mountour.nemcok-peter123.workers.dev", "www.turuj.sk"];
+const OLD_HOSTS = ["mountour.nemcok-peter123.workers.dev", "turuj.nemcok-peter123.workers.dev", "www.turuj.sk"];
 
 const nextConfig: NextConfig = {
   deploymentId: DEPLOYMENT_ID,

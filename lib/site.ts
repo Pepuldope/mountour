@@ -32,6 +32,7 @@ export const COUNTED_HOSTS = [
   "turuj.sk",
   "www.turuj.sk",
   "mountour.nemcok-peter123.workers.dev",
+  "turuj.nemcok-peter123.workers.dev",
   "mountour.vercel.app",
   "mountour.sk",
   "www.mountour.sk",
