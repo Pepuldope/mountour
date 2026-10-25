@@ -4,8 +4,6 @@
  * summary is unit tested.
  */
 import { daysBetween, isoDate } from "@/lib/days";
-import { tr } from "@/lib/lang";
-import type { Lang } from "@/lib/lang";
 import { clockShort, wallClock, zonedDate } from "@/lib/zoned";
 
 /** One forecast step, trimmed to what we show. */
@@ -130,11 +128,11 @@ const WORDS: [string, string][] = [
   ["clearsky", "jasno"],
 ];
 
-export function weatherWords(symbol: string, lang: Lang = "sk"): string {
-  const showers = symbol.includes("showers") ? tr(lang, " (prehánky)") : "";
+export function weatherWords(symbol: string): string {
+  const showers = symbol.includes("showers") ? " (prehánky)" : "";
   // "heavyrainandthunder" is a storm first.
   const hit = WORDS.find(([k]) => (k === "thunder" ? symbol.includes(k) : symbol.startsWith(k)));
-  return tr(lang, hit ? hit[1] : "premenlivo") + showers;
+  return (hit ? hit[1] : "premenlivo") + showers;
 }
 
 /** The weather of one forecast step, as the sun dial draws it. */
@@ -202,7 +200,7 @@ const hhmm = clockShort;
  * notes work: one line each, never a blocker. `top` is the forecast for the
  * goal's height, when there is one (wind and frost are worse up there).
  */
-export function weatherNotes(below: WeatherForecast, top: WeatherForecast | null, from: Date, to: Date, lang: Lang = "sk"): WeatherNote[] {
+export function weatherNotes(below: WeatherForecast, top: WeatherForecast | null, from: Date, to: Date): WeatherNote[] {
   const a = from.getTime();
   const b = to.getTime();
   const during = (f: WeatherForecast) =>
@@ -222,18 +220,18 @@ export function weatherNotes(below: WeatherForecast, top: WeatherForecast | null
 
   const out: WeatherNote[] = [];
   const thunder = when((s) => kind(s) === "thunder");
-  if (thunder) out.push({ text: tr(lang, "Búrky {when}. Na hrebeni a vrchole nebezpečné, buďte dole skôr.", { when: thunder }), strong: true });
+  if (thunder) out.push({ text: `Búrky ${thunder}. Na hrebeni a vrchole nebezpečné, buďte dole skôr.`, strong: true });
   const heavy = when((s) => kind(s) === "heavyrain" || s.rain / s.hours >= 4);
-  if (heavy && !thunder) out.push({ text: tr(lang, "Silný dážď {when}. Chodník bude šmykľavý.", { when: heavy }), strong: true });
+  if (heavy && !thunder) out.push({ text: `Silný dážď ${heavy}. Chodník bude šmykľavý.`, strong: true });
   const snow = when((s) => kind(s) === "heavysnow");
-  if (snow) out.push({ text: tr(lang, "Husté sneženie {when}, značky aj chodník môžu zmiznúť pod snehom.", { when: snow }), strong: true });
+  if (snow) out.push({ text: `Husté sneženie ${snow}, značky aj chodník môžu zmiznúť pod snehom.`, strong: true });
 
   const up = top ? during(top) : [];
   const all = up.length ? up : steps;
   const wind = Math.round(Math.max(0, ...all.map((s) => s.wind)));
-  if (wind >= 15) out.push({ text: tr(lang, "Silný vietor (do {wind} m/s), na hrebeni ešte silnejší.", { wind }), strong: false });
+  if (wind >= 15) out.push({ text: `Silný vietor (do ${wind} m/s), na hrebeni ešte silnejší.`, strong: false });
   const cold = Math.min(...all.map((s) => s.temp));
-  if (cold <= 0 && !snow) out.push({ text: tr(lang, "Mráz: chodník môže byť zľadovatený."), strong: false });
+  if (cold <= 0 && !snow) out.push({ text: "Mráz: chodník môže byť zľadovatený.", strong: false });
   return out;
 }
 
@@ -263,8 +261,7 @@ export function tripWeatherReport(
   top: WeatherForecast | null,
   from: Date,
   to: Date,
-  walk: { from: Date; to: Date } = { from, to },
-  lang: Lang = "sk"
+  walk: { from: Date; to: Date } = { from, to }
 ): TripWeatherReport | null {
   const a = from.getTime();
   const b = to.getTime();
@@ -291,7 +288,7 @@ export function tripWeatherReport(
     tempMin,
     tempMax: Math.round(Math.max(...steps.map((s) => s.temp))),
     topMin: topMin !== null && topMin < tempMin - 1 ? topMin : null,
-    worst: weatherWords(baseSymbol(worstCode), lang),
+    worst: weatherWords(baseSymbol(worstCode)),
     // "Najhoršie prevažne jasno" says nothing: fine weather gets no hours.
     worstWhen: worstSteps.length === steps.length || severity(worstCode) > SEVERITY.indexOf("cloudy") ? null : span(worstSteps),
     wet: wetSteps.length

@@ -2,6 +2,7 @@
 
 import { useTripStops } from "@/lib/tripStops";
 import { useState } from "react";
+import Link from "next/link";
 import type { BBox, LatLng } from "@/lib/types";
 import type { TripProfile } from "@/lib/tripProfile";
 import { offlineMapUrls } from "@/lib/tiles";
@@ -14,8 +15,6 @@ import { sinceArrival, track } from "@/lib/analytics";
 import { ShareButton } from "@/components/ShareButton";
 import type { ShareInfo } from "@/components/ShareButton";
 
-import { LangLink, useLang, useT } from "@/lib/i18n";
-import { langPath } from "@/lib/lang";
 interface Props extends ShareInfo {
   gpxUrl: string | null;
   bbox: BBox | null;
@@ -82,8 +81,6 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
   const { travel } = useTripSettings();
   const { plan, date, time, hikeMin, driveMin, route, transit, fixed, withKids, loading } = tripPlan;
   const { stops } = useTripStops(slug);
-  const t = useT();
-  const lang = useLang();
   const [status, setStatus] = useState<Status>("idle");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [askShare, setAskShare] = useState(false);
@@ -128,7 +125,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
       setStatus("idle");
       return;
     }
-    const required = [langPath(lang, `/trasa/${slug}`), ...(gpxUrl ? [gpxUrl] : [])];
+    const required = [`/trasa/${slug}`, ...(gpxUrl ? [gpxUrl] : [])];
     const mapUrls = bbox ? await offlineMapUrls(bbox) : [];
     const urls = [...required, ...loadedAssetUrls(), ...mapUrls];
     // The map style and its TileJSON (the URLs without a file extension): without them there is no offline map at all.
@@ -164,23 +161,23 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
       {showButton && (
         <button type="button" onClick={onSave} disabled={status === "saving" || !date || !time || loading} className={primary}>
           {status === "saving"
-            ? t("Ukladám aj na cestu bez signálu... ({done}/{total})", { done: progress.done, total: progress.total || "?" })
+            ? `Ukladám aj na cestu bez signálu... (${progress.done}/${progress.total || "?"})`
             : saved
-              ? t("Uložiť zmeny")
-              : t("Uložiť výlet")}
+              ? "Uložiť zmeny"
+              : "Uložiť výlet"}
         </button>
       )}
 
       {saved && askShare && (
         <div role="status" className="flex flex-col gap-2 rounded-xl bg-[var(--ok-bg)] p-3 text-sm">
           <p>
-            <strong>{t("Uložené.")}</strong> {t("Nájdete to v")}{" "}
-            <LangLink href="/ulozene" className="underline">
-              {t("Mojich výletoch")}
-            </LangLink>
+            <strong>Uložené.</strong> Nájdete to v{" "}
+            <Link href="/ulozene" className="underline">
+              Mojich výletoch
+            </Link>
             .
           </p>
-          <p className="font-semibold">{t("Poslať plán partii?")}</p>
+          <p className="font-semibold">Poslať plán partii?</p>
           <div className="flex flex-wrap gap-2">
             <ShareButton
               {...trip}
@@ -193,7 +190,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
               onShared={() => setAskShare(false)}
             />
             <button type="button" onClick={() => setAskShare(false)} className="px-2 text-sm underline">
-              {t("Teraz nie")}
+              Teraz nie
             </button>
           </div>
         </div>
@@ -201,17 +198,17 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
 
       {saved && !askShare && status !== "saving" && (
         <p className="text-sm">
-          {t("Uložené na")} <strong>{dayAfterNa(saved.date, lang)}</strong> {t("o")} <strong>{saved.time}</strong>
-          {saved.offline === "ok" ? t(", funguje aj bez signálu. ") : ". "}
+          Uložené na <strong>{dayAfterNa(saved.date)}</strong> o <strong>{saved.time}</strong>
+          {saved.offline === "ok" ? ", funguje aj bez signálu. " : ". "}
           <button type="button" onClick={() => remove(slug)} className="text-[var(--muted)] underline">
-            {t("Odstrániť")}
+            Odstrániť
           </button>
         </p>
       )}
 
       {status === "error" && (
         <p className="text-sm text-[var(--warn)]">
-          {t("Výlet je uložený, ale kópia bez signálu sa nepodarila. Skúste to znova so signálom.")}
+          Výlet je uložený, ale kópia bez signálu sa nepodarila. Skúste to znova so signálom.
         </p>
       )}
 

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { startTransition, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import type { Difficulty, LatLng, TrailDetail } from "@/lib/types";
 import { driveDestination, nearestStop, primaryTrailhead, routeWalk, sunLocation, trailDetailFrom } from "@/lib/data";
@@ -30,8 +31,6 @@ import { PullSky, SunPull } from "@/components/SunPull";
 import { UiIcon } from "@/components/UiIcon";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { SiteFooter } from "@/components/SiteFooter";
-import { LangLink, LangSwitch, useLang, useT } from "@/lib/i18n";
-import { decimal } from "@/lib/lang";
 import { StartChip } from "@/components/StartChip";
 import { TownButton } from "@/components/TownButton";
 import { TripCard } from "@/components/TripCard";
@@ -230,8 +229,6 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   // Back on the list: stops added on a trip page don't follow into the next one.
   useEffect(() => clearAllStops(), []);
   const { date, today, withKids, easier, travel, update } = useTripSettings();
-  const t = useT();
-  const lang = useLang();
   // Several kinds at once (testers): empty = every kind.
   const [goalFilter, setGoalFilter] = useState<DestinationKind[]>([]);
   const [diffFilter, setDiffFilter] = useState<Difficulty[]>([]);
@@ -450,7 +447,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   }, [scoped, limit, selected, bySlug]);
 
   const season = seasonOf(date ? new Date(`${date}T12:00`) : new Date());
-  const dayWord = date && today ? dayInSentence(date, new Date(), lang) : null;
+  const dayWord = date && today ? dayInSentence(date, new Date()) : null;
 
   // The map: every trip that passes the filters; the ones the day is too short for washed out.
   const mapTrips = useMemo<BrowseTrip[]>(
@@ -551,16 +548,16 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
 
   const zoomedIn = !!mapView && mapView.zoom >= mapView.areaZoom - 1;
   const heading = words.length > 0
-    ? t("Výsledky pre „{q}“", { q: query.trim() })
+    ? `Výsledky pre „${query.trim()}“`
     : zoomedIn
       ? dayWord && !noneFit
-        ? t("Stihnete {day}, najbližšie k stredu mapy", { day: dayWord })
-        : t("Najbližšie k stredu mapy")
+        ? `Stihnete ${dayWord}, najbližšie k stredu mapy`
+        : "Najbližšie k stredu mapy"
       : dayWord && !noneFit
-        ? t(start ? "Stihnete {day}, najbližšie prvé" : "Stihnete {day}", { day: dayWord })
+        ? `Stihnete ${dayWord}${start ? ", najbližšie prvé" : ""}`
         : start
-          ? t("Najbližšie výlety")
-          : t("Tisíce výletov po celom Slovensku");
+          ? "Najbližšie výlety"
+          : "Tisíce výletov po celom Slovensku";
 
   const pickedItem = isDesktop && selected ? bySlug.get(selected) : undefined;
 
@@ -579,21 +576,21 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
 
   const previewTrip = preview?.kind === "trip" ? bySlug.get(preview.slug) : undefined;
   const sheet = preview && !isDesktop && (preview.kind === "trail" || previewTrip) && (
-    <div role="dialog" aria-label={t("Náhľad výletu")} className="absolute inset-x-0 bottom-0 z-10 flex max-h-[70%] flex-col gap-3 overflow-y-auto rounded-t-[20px] border border-[var(--border)] bg-[var(--card-bg)] p-4 pb-[calc(16px+env(safe-area-inset-bottom))] shadow-[var(--shadow-float)]">
+    <div role="dialog" aria-label="Náhľad výletu" className="absolute inset-x-0 bottom-0 z-10 flex max-h-[70%] flex-col gap-3 overflow-y-auto rounded-t-[20px] border border-[var(--border)] bg-[var(--card-bg)] p-4 pb-[calc(16px+env(safe-area-inset-bottom))] shadow-[var(--shadow-float)]">
       <div className="flex items-center justify-between gap-3">
         <span className="mx-auto -mt-1 h-1 w-10 rounded-full bg-[var(--border)]" aria-hidden />
       </div>
       {previewTrip ? (
         <>
           <MiniCard item={previewTrip} />
-          <LangLink
+          <Link
             href={`/trasa/${previewTrip.detail.trail.slug}`}
             className="rounded-full bg-[var(--accent)] px-4 py-3 text-center text-[15px] font-bold text-[var(--accent-contrast)]"
           >
-            {t("Vybrať tento výlet")}
-          </LangLink>
+            Vybrať tento výlet
+          </Link>
           {preview.kind === "trip" && preview.also.length > 0 && (
-            <OtherTrips title={t("Týmto miestom vedú aj")} items={preview.also.flatMap((s) => (bySlug.get(s) ? [{ item: bySlug.get(s)!, note: null }] : []))} onPick={goToTrip} />
+            <OtherTrips title="Týmto miestom vedú aj" items={preview.also.flatMap((s) => (bySlug.get(s) ? [{ item: bySlug.get(s)!, note: null }] : []))} onPick={goToTrip} />
           )}
         </>
       ) : (
@@ -604,19 +601,19 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
                 <UiIcon name="boot" size={22} />
               </span>
               <div>
-                <h3 className="text-lg leading-tight font-bold">{t("Značený chodník")}</h3>
-                <p className="text-sm text-[var(--muted)]">{t("Tento kúsok zatiaľ nie je v žiadnom našom výlete.")}</p>
+                <h3 className="text-lg leading-tight font-bold">Značený chodník</h3>
+                <p className="text-sm text-[var(--muted)]">Tento kúsok zatiaľ nie je v žiadnom našom výlete.</p>
               </div>
             </div>
             <OtherTrips
-              title={preview.nearby.length ? t("Výlety v okolí") : t("V okolí zatiaľ nemáme výlet.")}
-              items={preview.nearby.flatMap((n) => (bySlug.get(n.slug) ? [{ item: bySlug.get(n.slug)!, note: t("{km} km odtiaľto", { km: decimal(lang, n.km) }) }] : []))}
+              title={preview.nearby.length ? "Výlety v okolí" : "V okolí zatiaľ nemáme výlet."}
+              items={preview.nearby.flatMap((n) => (bySlug.get(n.slug) ? [{ item: bySlug.get(n.slug)!, note: `${n.km.toFixed(1).replace(".", ",")} km odtiaľto` }] : []))}
               onPick={goToTrip}
             />
           </>
         )
       )}
-      <button type="button" onClick={() => pickTrip(null)} aria-label={t("Zavrieť")} className="absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-[var(--segment-bg)]">
+      <button type="button" onClick={() => pickTrip(null)} aria-label="Zavrieť" className="absolute top-3 right-3 grid h-8 w-8 place-items-center rounded-full bg-[var(--segment-bg)]">
         <UiIcon name="close" size={14} />
       </button>
     </div>
@@ -637,16 +634,16 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
           <div className="flex flex-col gap-2">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h3 className="font-bold">{t("Značený chodník")}</h3>
-                <p className="text-sm text-[var(--muted)]">{t("Tento kúsok zatiaľ nie je v žiadnom našom výlete.")}</p>
+                <h3 className="font-bold">Značený chodník</h3>
+                <p className="text-sm text-[var(--muted)]">Tento kúsok zatiaľ nie je v žiadnom našom výlete.</p>
               </div>
-              <button type="button" onClick={() => setPreview(null)} aria-label={t("Zavrieť")} className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--segment-bg)]">
+              <button type="button" onClick={() => setPreview(null)} aria-label="Zavrieť" className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--segment-bg)]">
                 <UiIcon name="close" size={12} />
               </button>
             </div>
             <OtherTrips
-              title={preview.nearby.length ? t("Výlety v okolí") : t("V okolí zatiaľ nemáme výlet.")}
-              items={preview.nearby.flatMap((n) => (bySlug.get(n.slug) ? [{ item: bySlug.get(n.slug)!, note: t("{km} km odtiaľto", { km: decimal(lang, n.km) }) }] : []))}
+              title={preview.nearby.length ? "Výlety v okolí" : "V okolí zatiaľ nemáme výlet."}
+              items={preview.nearby.flatMap((n) => (bySlug.get(n.slug) ? [{ item: bySlug.get(n.slug)!, note: `${n.km.toFixed(1).replace(".", ",")} km odtiaľto` }] : []))}
               onPick={goToTrip}
             />
           </div>
@@ -682,7 +679,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
           setPreview({ kind: "trail", ...t });
         }}
         bottomInset={isDesktop ? 0 : SHEET_INSET}
-        ariaLabel={t("Mapa všetkých výletov")}
+        ariaLabel="Mapa všetkých výletov"
       />
       <div
         className="pointer-events-none absolute left-3 z-[5] flex flex-col gap-1 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-2.5 py-1.5 text-[11px] text-[var(--muted)] shadow-[var(--shadow-float)]"
@@ -690,15 +687,15 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
         aria-hidden
       >
         <span className="flex items-center gap-1.5">
-          {t("málo chodené")} <PopularityKey /> {t("obľúbené")}
+          málo chodené <PopularityKey /> obľúbené
         </span>
         <span className="flex items-center gap-1.5">
-          <i className="block h-[3px] w-5 rounded-full bg-[#8a8f7a] opacity-60" /> {t("chodník bez výletu")}
+          <i className="block h-[3px] w-5 rounded-full bg-[#8a8f7a] opacity-60" /> chodník bez výletu
         </span>
       </div>
       {mapHint && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-[5] -translate-x-1/2 rounded-full bg-[#14233b]/90 px-4 py-2 text-[13px] font-semibold whitespace-nowrap text-white shadow-[var(--shadow-float)]" role="note">
-          {isDesktop ? t("Kliknite na oblasť alebo trasu na mape") : t("Ťuknite na oblasť alebo trasu na mape")}
+          {isDesktop ? "Kliknite na oblasť alebo trasu na mape" : "Ťuknite na oblasť alebo trasu na mape"}
         </div>
       )}
       {sheet}
@@ -710,7 +707,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
     <div ref={toolsRef} className="relative flex flex-col gap-2">
       <div className="flex gap-2">
         <label className="relative flex-1">
-          <span className="sr-only">{t("Hľadať výlet, pohorie alebo obec")}</span>
+          <span className="sr-only">Hľadať výlet, pohorie alebo obec</span>
           <span className="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-[var(--muted)]">
             <UiIcon name="search" size={18} />
           </span>
@@ -736,7 +733,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
                 (e.target as HTMLInputElement).blur();
               }
             }}
-            placeholder={t("Hľadať výlet, pohorie alebo obec")}
+            placeholder="Hľadať výlet, pohorie alebo obec"
             autoComplete="off"
             className="h-11 w-full rounded-full border border-[var(--border)] bg-[var(--card-bg)] pr-3 pl-10 text-[15px] shadow-[var(--shadow-float)] lg:shadow-none"
           />
@@ -753,18 +750,18 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
           }`}
         >
           <UiIcon name="filter" size={16} />
-          {filterCount ? `${t("Filtre")} · ${filterCount}` : t("Filtre")}
+          {filterCount ? `Filtre · ${filterCount}` : "Filtre"}
         </button>
       </div>
 
 
       {searchOpen && results && (
-        <div role="listbox" aria-label={t("Výsledky hľadania")} className="absolute top-12 right-0 left-0 z-30 max-h-[60vh] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-2 shadow-[var(--shadow-float)]">
-          {results.ranges.length > 0 && <MenuTitle>{t("Pohoria")}</MenuTitle>}
+        <div role="listbox" aria-label="Výsledky hľadania" className="absolute top-12 right-0 left-0 z-30 max-h-[60vh] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-2 shadow-[var(--shadow-float)]">
+          {results.ranges.length > 0 && <MenuTitle>Pohoria</MenuTitle>}
           {results.ranges.map((a) => (
-            <MenuRow key={a.name} onClick={() => showOnMap({ kind: "box", bbox: a.bbox, maxZoom: 11 })} icon={<UiIcon name="up" size={16} />} title={a.name} note={t("Ukázať výlety v pohorí na mape")} />
+            <MenuRow key={a.name} onClick={() => showOnMap({ kind: "box", bbox: a.bbox, maxZoom: 11 })} icon={<UiIcon name="up" size={16} />} title={a.name} note="Ukázať výlety v pohorí na mape" />
           ))}
-          {results.trips.length > 0 && <MenuTitle>{t("Výlety")}</MenuTitle>}
+          {results.trips.length > 0 && <MenuTitle>Výlety</MenuTitle>}
           {results.trips.map(({ detail, hikeMin }) => (
             <MenuRow
               key={detail.trail.slug}
@@ -775,22 +772,22 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
               }}
               icon={<GoalTile goal={detail.trail.goal ?? "ine"} size={28} />}
               title={detail.trail.name}
-              note={`${t(GOAL_LABEL[detail.trail.goal ?? "ine"])} · ${detail.trail.region_name ?? ""} · ${formatDurationShort(hikeMin)}`}
+              note={`${GOAL_LABEL[detail.trail.goal ?? "ine"]} · ${detail.trail.region_name ?? ""} · ${formatDurationShort(hikeMin)}`}
             />
           ))}
-          {results.places.length > 0 && <MenuTitle>{t("Obce a mestá")}</MenuTitle>}
-          {results.places.map((town) => (
-            <MenuRow key={town.id} onClick={() => showOnMap({ kind: "point", location: town.location, zoom: 10.5 })} icon={<UiIcon name="pin" size={16} />} title={town.name} note={t("Ukázať výlety okolo na mape")} />
+          {results.places.length > 0 && <MenuTitle>Obce a mestá</MenuTitle>}
+          {results.places.map((t) => (
+            <MenuRow key={t.id} onClick={() => showOnMap({ kind: "point", location: t.location, zoom: 10.5 })} icon={<UiIcon name="pin" size={16} />} title={t.name} note="Ukázať výlety okolo na mape" />
           ))}
           {results.ranges.length + results.trips.length + results.places.length === 0 && (
-            <p className="p-2 text-sm text-[var(--muted)]">{t("Nič sa nenašlo. Skúste názov vrchu, chaty, pohoria alebo obce.")}</p>
+            <p className="p-2 text-sm text-[var(--muted)]">Nič sa nenašlo. Skúste názov vrchu, chaty, pohoria alebo obce.</p>
           )}
         </div>
       )}
 
       {filtersOpen && (
         <div className="absolute top-12 right-0 left-0 z-30 max-h-[70vh] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--card-bg)] p-2 shadow-[var(--shadow-float)]">
-          <MenuTitle>{t("Cieľ")}</MenuTitle>
+          <MenuTitle>Cieľ</MenuTitle>
           <div className="grid grid-cols-2">
             {[null, ...GOAL_FILTERS].map((g) => (
               <label key={g ?? "all"} className="flex cursor-pointer items-center gap-2.5 rounded-lg p-2 text-[15px] hover:bg-[var(--segment-bg)]">
@@ -801,11 +798,11 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
                   className="h-[18px] w-[18px] accent-[var(--accent)]"
                 />
                 {g && <span className="h-3 w-3 rounded-[3px]" style={{ background: GOAL_COLOUR[g] }} />}
-                {g ? t(GOAL_PLURAL[g]) : t("Všetky ciele")}
+                {g ? GOAL_PLURAL[g] : "Všetky ciele"}
               </label>
             ))}
           </div>
-          <MenuTitle>{t("Náročnosť")}</MenuTitle>
+          <MenuTitle>Náročnosť</MenuTitle>
           <div className="grid grid-cols-2">
             {DIFFICULTIES.map((d) => (
               <label key={d} className="flex cursor-pointer items-center gap-2.5 rounded-lg p-2 text-[15px] hover:bg-[var(--segment-bg)]">
@@ -815,11 +812,11 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
                   onChange={(e) => setDiffFilter((prev) => (e.target.checked ? [...prev, d] : prev.filter((x) => x !== d)))}
                   className="h-[18px] w-[18px] accent-[var(--accent)]"
                 />
-                {t(DIFFICULTY_LABEL[d])}
+                {DIFFICULTY_LABEL[d]}
               </label>
             ))}
           </div>
-          <MenuTitle>{t("Čas na trase")}</MenuTitle>
+          <MenuTitle>Čas na trase</MenuTitle>
           <div className="grid grid-cols-2">
             {TIME_FILTERS.map((f) => (
               <label key={f.key} className="flex cursor-pointer items-center gap-2.5 rounded-lg p-2 text-[15px] hover:bg-[var(--segment-bg)]">
@@ -829,22 +826,22 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
                   onChange={(e) => setTimeFilter((prev) => (e.target.checked ? [...prev, f.key] : prev.filter((x) => x !== f.key)))}
                   className="h-[18px] w-[18px] accent-[var(--accent)]"
                 />
-                {t(f.label)}
+                {f.label}
               </label>
             ))}
           </div>
-          <MenuTitle>{transit ? t("Cesta autobusom či vlakom") : t("Cesta autom")}</MenuTitle>
+          <MenuTitle>{transit ? "Cesta autobusom či vlakom" : "Cesta autom"}</MenuTitle>
           {start ? (
             <div className="grid grid-cols-2">
               {[null, ...FAR_FILTERS].map((m) => (
                 <label key={m ?? "all"} className="flex cursor-pointer items-center gap-2.5 rounded-lg p-2 text-[15px] hover:bg-[var(--segment-bg)]">
                   <input type="radio" name="far" checked={farFilter === m} onChange={() => setFarFilter(m)} className="h-[18px] w-[18px] accent-[var(--accent)]" />
-                  {m === null ? t("Hocijako ďaleko") : m < 60 ? t("do {t} min", { t: m }) : t("do {t} h", { t: decimal(lang, m / 60, Number.isInteger(m / 60) ? 0 : 1) })}
+                  {m === null ? "Hocijako ďaleko" : m < 60 ? `do ${m} min` : `do ${m / 60} h`.replace(".5", ",5")}
                 </label>
               ))}
             </div>
           ) : (
-            <p className="p-2 text-sm text-[var(--muted)]">{t("Najprv vyberte, odkiaľ vyrážate.")}</p>
+            <p className="p-2 text-sm text-[var(--muted)]">Najprv vyberte, odkiaľ vyrážate.</p>
           )}
           <div className="sticky -bottom-2 mt-1 -mb-2 flex justify-between gap-2 border-t border-[var(--border)] bg-[var(--card-bg)] p-2">
             <button
@@ -857,10 +854,10 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
               }}
               className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold"
             >
-              {t("Zrušiť filtre")}
+              Zrušiť filtre
             </button>
             <button type="button" onClick={() => setFiltersOpen(false)} className="rounded-full bg-[var(--accent)] px-4 py-2 text-sm font-bold text-[var(--accent-contrast)]">
-              {t("Hotovo")}
+              Hotovo
             </button>
           </div>
         </div>
@@ -882,13 +879,11 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
       {noneFit && dayWord && (
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[var(--radius-card)] bg-[var(--warn-bg)] p-3 text-sm text-[var(--warn)]">
           <p className="font-semibold">
-            {date === today
-              ? t("Dnes už za svetla nestihnete žiadny výlet. Ukazujeme všetky.")
-              : t("{Day} za svetla nestihnete žiadny výlet. Ukazujeme všetky.", { Day: dayWord.charAt(0).toUpperCase() + dayWord.slice(1) })}
+            {dayWord === "dnes" || !dayWord ? "Dnes už" : dayWord.charAt(0).toUpperCase() + dayWord.slice(1)} za svetla nestihnete žiadny výlet. Ukazujeme všetky.
           </p>
-          {date === today && (
+          {dayWord === "dnes" && (
             <button type="button" onClick={showTomorrow} className="font-semibold underline">
-              {t("Pozrieť zajtra")}
+              Pozrieť zajtra
             </button>
           )}
         </div>
@@ -897,22 +892,22 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
       {visible.length === 0 && (
         <div className="flex flex-col gap-2 rounded-[var(--radius-card)] border border-dashed border-[var(--border)] p-4 text-sm">
           <p>
-            {listedAll.length === 0 ? t("S týmito filtrami nič nenachádzame.") : t("Tu nič nie je. Posuňte mapu alebo hľadajte inde.")}
+            {listedAll.length === 0 ? "S týmito filtrami nič nenachádzame." : "Tu nič nie je. Posuňte mapu alebo hľadajte inde."}
           </p>
           <div className="flex flex-wrap gap-3">
             {filterCount > 0 && (
               <button type="button" onClick={() => { setGoalFilter([]); setDiffFilter([]); }} className="font-semibold text-[var(--accent)] underline">
-                {t("Zrušiť filtre")}
+                Zrušiť filtre
               </button>
             )}
             {easier && (
               <button type="button" onClick={() => update({ easier: false })} className="font-semibold text-[var(--accent)] underline">
-                {t("Ukázať aj náročnejšie trasy")}
+                Ukázať aj náročnejšie trasy
               </button>
             )}
-            {date === today && (
+            {dayWord === "dnes" && (
               <button type="button" onClick={showTomorrow} className="font-semibold text-[var(--accent)] underline">
-                {t("Pozrieť zajtra")}
+                Pozrieť zajtra
               </button>
             )}
           </div>
@@ -942,7 +937,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
           onClick={() => setPaging({ key: filterKey, n: limit + PAGE })}
           className="w-fit self-center rounded-full border border-[var(--border)] bg-[var(--card-bg)] px-4 py-2 text-sm font-semibold text-[var(--accent)]"
         >
-          {t("Ukázať ďalšie")}
+          Ukázať ďalšie
         </button>
       )}
 
@@ -956,20 +951,17 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
         <header className="relative -mx-4 -mt-4 flex shrink-0 flex-col sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
           <SeasonScene season={season} width={440} height={250} seed={11} sunX={0.64} sunY={0.17} drop={0.2} noSun className="absolute inset-0 h-full w-full" />
           <SunPull season={season} width={440} height={250} sunX={0.64} sunY={0.17} moveRef={columnRef} />
-          <nav aria-label={t("Hlavná navigácia")} className="relative flex items-center justify-between gap-3 px-4 pt-4">
-            <LangLink href="/" aria-label="Túruj" className="block">
+          <nav aria-label="Hlavná navigácia" className="relative flex items-center justify-between gap-3 px-4 pt-4">
+            <Link href="/" aria-label="Túruj" className="block">
               {/* Name only: the seasonal mark blends into the header scene. The hero sky is light in both themes, so dark ink always. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/brand/turuj-wordmark.svg" alt="Túruj" width={61} height={26} className="h-[26px] w-auto" />
-            </LangLink>
-            <span className="flex items-center gap-2">
-              <LangSwitch className="bg-white/70 text-[#14233b]" />
-              <SavedTripsLink />
-            </span>
+            </Link>
+            <SavedTripsLink />
           </nav>
           <div className="relative flex flex-col gap-2 px-4 pt-6 pb-16 text-[#14233b]">
-            <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">{t("Kam na výlet?")}</h1>
-            <p className="max-w-[30ch] text-[15px] font-medium">{t("Výlety, z ktorých budete späť za svetla.")}</p>
+            <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">Kam na výlet?</h1>
+            <p className="max-w-[30ch] text-[15px] font-medium">Výlety, z ktorých budete späť za svetla.</p>
           </div>
         </header>
 
@@ -1042,7 +1034,6 @@ function MenuRow({ icon, title, note, onClick }: { icon: React.ReactNode; title:
 
 /** The trip in a preview: name, what and where, how long. */
 function MiniCard({ item }: { item: TripCardItem }) {
-  const t = useT();
   const { trail } = item.detail;
   const goal = trail.goal ?? "ine";
   return (
@@ -1051,7 +1042,7 @@ function MiniCard({ item }: { item: TripCardItem }) {
       <div className="min-w-0">
         <h3 className="text-lg leading-tight font-bold">{trail.name}</h3>
         <p className="text-[13px] text-[var(--muted)]">
-          {t(GOAL_LABEL[goal])}
+          {GOAL_LABEL[goal]}
           {trail.region_name ? ` · ${trail.region_name}` : ""}
         </p>
         <p className="font-data mt-1 flex flex-wrap gap-x-3 text-sm font-semibold">
@@ -1066,8 +1057,8 @@ function MiniCard({ item }: { item: TripCardItem }) {
             <UiIcon name="boot" size={14} />
             {formatDurationShort(item.hikeMin)}
           </span>
-          <span>{formatKm(item.walkM, useLang())}</span>
-          <span>{t(DIFFICULTY_LABEL[trail.difficulty])}</span>
+          <span>{formatKm(item.walkM)}</span>
+          <span>{DIFFICULTY_LABEL[trail.difficulty]}</span>
         </p>
       </div>
     </div>
@@ -1075,7 +1066,6 @@ function MiniCard({ item }: { item: TripCardItem }) {
 }
 
 function OtherTrips({ title, items, onPick }: { title: string; items: { item: TripCardItem; note: string | null }[]; onPick: (slug: string) => void }) {
-  const t = useT();
   return (
     <div className="border-t border-[var(--border)] pt-2">
       <p className="text-xs font-semibold text-[var(--muted)]">{title}</p>
@@ -1088,7 +1078,7 @@ function OtherTrips({ title, items, onPick }: { title: string; items: { item: Tr
               <span className="block truncate text-[15px] font-semibold">{trail.name}</span>
               <span className="block text-xs text-[var(--muted)]">
                 {note ? `${note} · ` : ""}
-                {formatDurationShort(item.hikeMin)} · {t(DIFFICULTY_LABEL[trail.difficulty])}
+                {formatDurationShort(item.hikeMin)} · {DIFFICULTY_LABEL[trail.difficulty]}
               </span>
             </span>
           </button>

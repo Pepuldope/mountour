@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { InfoPage } from "@/components/InfoPage";
 import { BIG_TOWNS } from "@/lib/townTrips";
 import { getTowns } from "@/lib/trips";
 import { pageMetadata } from "@/lib/seo";
-import { LangLink, T } from "@/lib/i18n";
 
 export const dynamic = "force-static";
 
@@ -21,18 +21,16 @@ export default function TownsPage() {
   const list = (ts: typeof towns) => (
     <div className="flex flex-wrap gap-2">
       {ts.map((t) => (
-        <LangLink key={t.id} href={`/vylety-z/${t.id}`} className={chip}>
+        <Link key={t.id} href={`/vylety-z/${t.id}`} className={chip}>
           {t.name}
-        </LangLink>
+        </Link>
       ))}
     </div>
   );
   return (
     <InfoPage title="Výlety z miest" intro="Odkiaľ idete? Ukážeme výlety do hodiny a pol autom.">
       {list(big)}
-      <h2>
-        <T>Ďalšie mestá</T>
-      </h2>
+      <h2>Ďalšie mestá</h2>
       {list(rest)}
     </InfoPage>
   );

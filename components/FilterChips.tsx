@@ -6,17 +6,13 @@ import type { BadSky } from "@/lib/weather";
 import { addDaysIso, dayStrip, isoDate, shortDay } from "@/lib/days";
 import { useTripSettings } from "@/lib/tripSettings";
 import { UiIcon } from "@/components/UiIcon";
-import { useLang, useT } from "@/lib/i18n";
-import type { Lang } from "@/lib/lang";
 
 const MONTHS = ["január", "február", "marec", "apríl", "máj", "jún", "júl", "august", "september", "október", "november", "december"];
-const EN_MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 /** "október", or "október – november" when the strip runs into the next month. */
-function stripMonths(first: string, last: string, lang: Lang): string {
-  const names = lang === "en" ? EN_MONTHS : MONTHS;
-  const a = names[Number(first.slice(5, 7)) - 1];
-  const b = names[Number(last.slice(5, 7)) - 1];
+function stripMonths(first: string, last: string): string {
+  const a = MONTHS[Number(first.slice(5, 7)) - 1];
+  const b = MONTHS[Number(last.slice(5, 7)) - 1];
   return a === b ? a : `${a} – ${b}`;
 }
 
@@ -38,8 +34,6 @@ const segBtn = (on: boolean) =>
 /** The day: Dnes, Zajtra, or Iný deň (two weeks to tap, and the full calendar). */
 export function FilterChips({ variant = "home", activeDate, dayWeather }: Props) {
   const { date, today, update } = useTripSettings();
-  const t = useT();
-  const lang = useLang();
   const dateInput = useRef<HTMLInputElement>(null);
   const [stripOpen, setStripOpen] = useState(false);
   const current = variant === "trip" ? (activeDate ?? date) : date;
@@ -49,9 +43,9 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
     return {
       today: isoDate(now),
       tomorrow: addDaysIso(isoDate(now), 1),
-      strip: dayStrip(now, 14, lang),
+      strip: dayStrip(now),
     };
-  }, [today, lang]);
+  }, [today]);
   const other = current !== null && days !== null && current !== days.today && current !== days.tomorrow;
   const showStrip = days !== null && stripOpen;
 
@@ -87,12 +81,12 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
 
   return (
     <div className="flex flex-col gap-2">
-      <div role="group" aria-label={t("Deň výletu")} className={segment}>
+      <div role="group" aria-label="Deň výletu" className={segment}>
         <button type="button" aria-pressed={!!days && current === days.today} onClick={() => days && pick(days.today)} className={segBtn(!!days && current === days.today)}>
-          {t("Dnes")}
+          Dnes
         </button>
         <button type="button" aria-pressed={!!days && current === days.tomorrow} onClick={() => days && pick(days.tomorrow)} className={segBtn(!!days && current === days.tomorrow)}>
-          {t("Zajtra")}
+          Zajtra
         </button>
         <button
           type="button"
@@ -105,17 +99,17 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
           <span className={other ? "hidden min-[380px]:inline-flex" : "inline-flex"}>
             <UiIcon name="cal" size={15} />
           </span>
-          {other && current ? shortDay(current, lang) : t("Iný deň")}
+          {other && current ? shortDay(current) : "Iný deň"}
         </button>
       </div>
 
       {showStrip && days && (
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between text-[12.5px] font-bold text-[var(--muted)]">
-            <span className="capitalize">{stripMonths(days.strip[0].iso, days.strip[days.strip.length - 1].iso, lang)}</span>
+            <span className="capitalize">{stripMonths(days.strip[0].iso, days.strip[days.strip.length - 1].iso)}</span>
             <span className="relative">
               <button type="button" onClick={openCalendar} className="inline-flex items-center gap-0.5 font-bold text-[var(--accent)]">
-                {t("Celý kalendár")} <UiIcon name="chev" size={13} />
+                Celý kalendár <UiIcon name="chev" size={13} />
               </button>
               <input
                 ref={dateInput}
@@ -129,7 +123,7 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
               />
             </span>
           </div>
-          <div role="listbox" aria-label={t("Vyberte deň")} className="flex gap-[5px] overflow-x-auto pb-0.5 [scrollbar-width:none]">
+          <div role="listbox" aria-label="Vyberte deň" className="flex gap-[5px] overflow-x-auto pb-0.5 [scrollbar-width:none]">
             {days.strip.map((d) => {
               const on = current === d.iso;
               return (
@@ -155,7 +149,7 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
                       width={20}
                       height={20}
                       role="img"
-                      aria-label={t(BAD_SKY_LABEL[dayWeather[d.iso]])}
+                      aria-label={BAD_SKY_LABEL[dayWeather[d.iso]]}
                       // Constant markup from lib/weatherIcons.ts, no user data.
                       dangerouslySetInnerHTML={{ __html: badSkySvg(dayWeather[d.iso], on) }}
                     />
@@ -173,20 +167,19 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
 /** Two questions (Peter, 2026-10-19): kids along (more time on the trail, said as time, not pace: Peter 2026-10-22) and easier trips only (the list). */
 export function KidsSwitch() {
   const { easier, update } = useTripSettings();
-  const t = useT();
   return (
     <div className="flex flex-col gap-2">
       {/* Kids along usually means easier trips too: one tap turns both on, the second can be undone below. */}
-      <KidsRow />
+      <KidsRow alsoEasier />
       <div className="flex items-center gap-2.5">
         <span className="inline-flex w-[22px] justify-center text-[var(--accent)]">
           <UiIcon name="walker" size={20} />
         </span>
         <span className="flex min-w-0 flex-1 flex-col">
-          <span className="text-[14.5px] font-bold">{t("Ukázať ľahšie trasy?")}</span>
-          <span className="text-[12.5px] text-[var(--muted)]">{t("Len trasy vhodné pre deti a začiatočníkov.")}</span>
+          <span className="text-[14.5px] font-bold">Ukázať ľahšie trasy?</span>
+          <span className="text-[12.5px] text-[var(--muted)]">Len trasy vhodné pre deti a začiatočníkov.</span>
         </span>
-        <Switch on={easier} label={t("Ukázať ľahšie trasy")} onChange={(on) => update({ easier: on })} />
+        <Switch on={easier} label="Ukázať ľahšie trasy" onChange={(on) => update({ easier: on })} />
       </div>
     </div>
   );
@@ -194,22 +187,20 @@ export function KidsSwitch() {
 
 /**
  * "Idete s deťmi?" with what turning it on does (Peter: the line says what the switch does, not its state).
- * It turns the easier-trips filter on (and off) with it, on home and on the planner alike: kids on with
- * easier trips off was only reachable from the planner (Peter, 2026-10-25).
+ * On home, `alsoEasier` turns on the easier-trips filter with it.
  */
-export function KidsRow() {
+export function KidsRow({ alsoEasier = false }: { alsoEasier?: boolean }) {
   const { withKids, update } = useTripSettings();
-  const t = useT();
   return (
     <div className="flex items-center gap-2.5">
       <span className="inline-flex text-[var(--accent)]">
         <UiIcon name="kid" size={22} />
       </span>
       <span className="flex min-w-0 flex-1 flex-col">
-        <span className="text-[14.5px] font-bold">{t("Idete s deťmi?")}</span>
-        <span className="text-[12.5px] text-[var(--muted)]">{t("Prispôsobíme čas trasy.")}</span>
+        <span className="text-[14.5px] font-bold">Idete s deťmi?</span>
+        <span className="text-[12.5px] text-[var(--muted)]">Prispôsobíme čas trasy.</span>
       </span>
-      <Switch on={withKids} label={t("Idete s deťmi")} onChange={(on) => update({ withKids: on, easier: on })} />
+      <Switch on={withKids} label="Idete s deťmi" onChange={(on) => update(alsoEasier ? { withKids: on, easier: on } : { withKids: on })} />
     </div>
   );
 }

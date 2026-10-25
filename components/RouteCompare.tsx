@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { formatDuration } from "@/lib/format";
@@ -10,8 +11,6 @@ import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack } from "@/components/TrailMap";
 import type { RouteWalk } from "@/lib/walkFacts";
 import { BusOk, NoParkingChip, routeAccess, routeLabel } from "@/components/routeBits";
-import { LangLink, useLang, useT } from "@/lib/i18n";
-import { routeNameIn } from "@/lib/lang";
 import { useRouteNumbers } from "@/components/RouteRows";
 
 interface Props {
@@ -32,8 +31,6 @@ const letter = (i: number) => ROUTE_LETTERS[i % ROUTE_LETTERS.length];
 /** All routes to a place on one map, each with its letter and colour; tap one to bring it forward. */
 export function RouteCompare({ slug, destination, goal, routes, walks, children }: Props) {
   const [sel, setSel] = useState(Math.max(0, routes.findIndex((r) => r.slug === slug)));
-  const t = useT();
-  const lang = useLang();
   // Under the pointer, on a card or on the map: lit up on the map, outlined in the list.
   const [hover, setHover] = useState<number | null>(null);
   const onHoverTrail = (s: string | null) => {
@@ -50,14 +47,14 @@ export function RouteCompare({ slug, destination, goal, routes, walks, children 
     () =>
       routes.map((r, i) => ({
         slug: r.slug,
-        label: routeNameIn(lang, routeLabel(r)),
+        label: routeLabel(r),
         points: r.up.map(([lon, lat]) => [lat, lon] as [number, number]),
         color: colour(i),
         state: i === sel || i === hover ? "selected" : "dimmed",
         // A route sharing a path with the picked one runs just beside it.
         sideBy: i !== sel,
       })),
-    [routes, sel, hover, lang]
+    [routes, sel, hover]
   );
   const markers = useMemo<MapMarker[]>(() => [
     ...routes.map((r, i) => ({
@@ -65,14 +62,14 @@ export function RouteCompare({ slug, destination, goal, routes, walks, children 
       kind: "poi" as const,
       location: { lat: r.up[0][1], lon: r.up[0][0] },
       title: `${letter(i)} · ${r.start_name}`,
-      lines: [routeNameIn(lang, routeLabel(r)), formatDuration(numbers[i].min)],
+      lines: [routeLabel(r), formatDuration(numbers[i].min)],
       colour: colour(i),
       icon: letter(i),
       active: i === sel,
       onClick: () => setSel(i),
     })),
     { id: "goal", kind: "trailhead" as const, location: goal, title: destination },
-  ], [routes, numbers, sel, goal, destination, lang]);
+  ], [routes, numbers, sel, goal, destination]);
   const bounds = useMemo<BBox>(() => {
     const pts = routes.flatMap((r) => r.up);
     const lons = pts.map((p) => p[0]);
@@ -85,7 +82,7 @@ export function RouteCompare({ slug, destination, goal, routes, walks, children 
       <div className="flex w-full flex-col gap-4 lg:w-[460px] lg:shrink-0 lg:overflow-y-auto lg:overscroll-contain">
         <div className="px-4 pt-4">{children}</div>
         <div className="h-[42vh] border-y border-[var(--border)] lg:hidden">
-          <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} onHoverTrail={onHoverTrail} ariaLabel={t("Cesty k cieľu {name} na mape", { name: destination })} />
+          <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} onHoverTrail={onHoverTrail} ariaLabel={`Cesty k cieľu ${destination} na mape`} />
         </div>
         <ul className="flex flex-col gap-2 px-4 pb-6">
           {routes.map((r, i) => (
@@ -111,34 +108,34 @@ export function RouteCompare({ slug, destination, goal, routes, walks, children 
                     </span>
                     <span className="flex min-w-0 flex-col">
                       <span className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-[15px] font-bold">
-                        {routeNameIn(lang, routeLabel(r))}
+                        {routeLabel(r)}
                         {!r.parking && <NoParkingChip />}
                       </span>
                       <span className="text-[13px] text-[var(--muted)]">
-                        {t("štart {name}", { name: r.start_name })} · {r.parking ? t(routeAccess(r)) : <BusOk />}
+                        štart {r.start_name} · {r.parking ? routeAccess(r) : <BusOk />}
                       </span>
                     </span>
                   </span>
                   <span className="grid grid-cols-[auto_1fr_auto] items-center gap-x-2 gap-y-1 text-[12.5px] text-[var(--muted)]">
-                    <span>{t("Čas")}</span>
+                    <span>Čas</span>
                     <Bar share={numbers[i].min / maxMin} colour={colour(i)} />
                     <span className="font-data text-right text-[15px] text-[var(--foreground)]">{formatDuration(numbers[i].min)}</span>
-                    <span>{t("Do kopca")}</span>
+                    <span>Do kopca</span>
                     <Bar share={numbers[i].ascentM / maxUp} colour={colour(i)} />
                     <span className="font-data text-right text-[15px] text-[var(--foreground)]">+{numbers[i].ascentM} m</span>
-                    <span>{t("Dĺžka")}</span>
+                    <span>Dĺžka</span>
                     <span />
                     <span className="font-data text-right text-[15px] text-[var(--foreground)]">{numbers[i].km}</span>
                   </span>
                 </button>
                 {i === sel && (
-                  <LangLink
+                  <Link
                     href={`/trasa/${r.slug}`}
                     onClick={(e) => e.stopPropagation()}
                     className="w-fit rounded-full bg-[var(--accent)] px-4 py-1.5 text-sm font-bold text-[var(--accent-contrast)]"
                   >
-                    {r.slug === slug ? t("Späť na túto cestu") : t("Vybrať túto cestu")}
-                  </LangLink>
+                    {r.slug === slug ? "Späť na túto cestu" : "Vybrať túto cestu"}
+                  </Link>
                 )}
               </div>
             </li>
@@ -146,7 +143,7 @@ export function RouteCompare({ slug, destination, goal, routes, walks, children 
         </ul>
       </div>
       <div className="hidden lg:block lg:h-dvh lg:flex-1 lg:border-l lg:border-[var(--border)]">
-        <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} onHoverTrail={onHoverTrail} ariaLabel={t("Cesty k cieľu {name} na mape", { name: destination })} />
+        <TrailMap tracks={tracks} markers={markers} bounds={bounds} onSelectTrail={(s) => setSel(routes.findIndex((r) => r.slug === s))} onHoverTrail={onHoverTrail} ariaLabel={`Cesty k cieľu ${destination} na mape`} />
       </div>
     </>
   );

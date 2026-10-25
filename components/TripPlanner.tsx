@@ -31,9 +31,6 @@ import { TravelSwitch } from "@/components/TravelSwitch";
 import { GOAL_WORDS, trimProfile, withApproach, withStops } from "@/lib/tripProfile";
 import { LUNCH, keepStopsOf, useTripStops } from "@/lib/tripStops";
 import type { TripProfile } from "@/lib/tripProfile";
-import { useLang, useT } from "@/lib/i18n";
-import { tr } from "@/lib/lang";
-import type { Lang } from "@/lib/lang";
 
 interface Props extends ShareInfo {
   sun: LatLng | null;
@@ -76,8 +73,6 @@ function meetingAt(date: string, hhmm: string): Date {
 export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, closures = [], walk, intro, children, outro, hasPlaces = false, ...trip }: Props) {
   const { start } = useUserLocation();
   const { today, update } = useTripSettings();
-  const t = useT();
-  const lang = useLang();
   const { destination, rideTo, approachMin, trailStart, transit: transitAccess, noCar, noBus, parking, stop, skip, walkFrom, trailJoin, walk: onFoot, choose, chooseStop } = useTripAccess();
   // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day,
   // with or without a start: the walk back to the car must fit the light too. Parked up the trail, the
@@ -141,7 +136,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
     }
     setShared(fromLink);
     // Until the ride is known, the meeting time itself: the walk starts then.
-    update({ date: fromLink.date, time: fromLink.meet ?? fromLink.time, withKids: fromLink.withKids, ...(fromLink.withKids ? { easier: true } : {}) });
+    update({ date: fromLink.date, time: fromLink.meet ?? fromLink.time, withKids: fromLink.withKids });
     if (fromLink.transit) chooseStop(fromLink.pick);
     else choose(fromLink.pick);
     // Once per link: the trip's own setters and slug don't change while the page is open.
@@ -179,7 +174,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
     plan !== null &&
     latest !== null &&
     (plan.noTrainInLight === true || latest.getTime() < plan.sunrise.getTime() - (driveMin ?? 0) * 60_000 || hourOf(latest) < EARLIEST_DEPARTURE_HOUR);
-  const startWord = hasDrive || walking ? t("Vyrazte") : transit && stop ? t("Buďte na zastávke {stop}", { stop: stopLabel(stop.name) }) : t("Začnite túru");
+  const startWord = hasDrive || walking ? "Vyrazte" : transit && stop ? `Buďte na zastávke ${stopLabel(stop.name)}` : "Začnite túru";
 
   // A time picked by hand that is far off a usual day out (back only in the dark, or leaving in the
   // middle of the night) is asked about once: change it to the latest good start, or keep it.
@@ -208,38 +203,38 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
       </div>
       {/* Three cards, so the eye takes one step at a time:
           plan the trip, see the day, then get there. */}
-      <section aria-label={t("Plán výletu")} className={part}>
+      <section aria-label="Plán výletu" className={part}>
         {intro}
 
         {shared && (
           <div className="flex flex-col gap-2 rounded-[var(--radius-card)] bg-[var(--accent-soft)] p-4 text-sm">
             <p>
-              <strong>{t("Plán od kamaráta")}</strong> · {longDay(shared.date, lang)}
-              {shared.withKids ? t(", s deťmi") : ""}
+              <strong>Plán od kamaráta</strong> · {longDay(shared.date)}
+              {shared.withKids ? ", s deťmi" : ""}
             </p>
             {shared.meet ? (
               <>
                 <p>
-                  <strong className="font-data text-base">{shared.meet.replace(/^0/, "")}</strong> {t("stretnutie")}{" "}
-                  {shared.transit && stop ? t("na zastávke {stop}", { stop: stopLabel(stop.name) }) : !transit && parking ? parkingPlace(parking.name, lang) : t("na začiatku trasy")}
+                  <strong className="font-data text-base">{shared.meet.replace(/^0/, "")}</strong> stretnutie{" "}
+                  {shared.transit && stop ? `na zastávke ${stopLabel(stop.name)}` : !transit && parking ? parkingPlace(parking.name) : "na začiatku trasy"}
                 </p>
                 <p className="text-[var(--muted)]">
                   {!start
-                    ? t("Zadajte hore, odkiaľ vyrážate, a ukážeme, kedy vyraziť.")
+                    ? "Zadajte hore, odkiaľ vyrážate, a ukážeme, kedy vyraziť."
                     : following
-                      ? t("Odchod nižšie je zo štartu {start}, aby ste tam boli o {time}.", { start: t(start.label.split(",")[0]), time: shared.meet.replace(/^0/, "") })
-                      : t("Čas odchodu ste zmenili, nižšie je podľa vás.")}
+                      ? `Odchod nižšie je zo štartu ${start.label.split(",")[0]}, aby ste tam boli o ${shared.meet.replace(/^0/, "")}.`
+                      : "Čas odchodu ste zmenili, nižšie je podľa vás."}
                 </p>
               </>
             ) : (
-              <p className="text-[var(--muted)]">{t("Odchod {time} z miesta kamaráta, nižšie je prepočítaný z vášho.", { time: shared.time ?? "" })}</p>
+              <p className="text-[var(--muted)]">Odchod {shared.time} z miesta kamaráta, nižšie je prepočítaný z vášho.</p>
             )}
           </div>
         )}
 
         {expired && (
           <p className="rounded-[var(--radius-card)] bg-[var(--accent-soft)] p-4 text-sm">
-            {t("Plán od kamaráta bol na")} <strong>{dayAfterNa(expired.date, lang)}</strong>{t(", ten deň už prešiel. Nižšie si vyberte nový deň.")}
+            Plán od kamaráta bol na <strong>{dayAfterNa(expired.date)}</strong>, ten deň už prešiel. Nižšie si vyberte nový deň.
           </p>
         )}
 
@@ -252,11 +247,11 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
         {/* Kids along, in the plan itself (Peter 2026-10-22: the pill above the card went unnoticed on a phone). */}
         <KidsRow />
 
-        <section aria-label={t("Deň a odchod")} className="flex flex-col gap-3">
+        <section aria-label="Deň a odchod" className="flex flex-col gap-3">
           <FilterChips variant="trip" activeDate={date} dayWeather={dayWeather} />
           <div className="flex flex-wrap items-center gap-3">
             <label className="flex items-center gap-2 text-sm font-semibold">
-              {hasDrive || walking ? t("Odchod") : transit && stop ? t("Na zastávke") : t("Začiatok túry")}
+              {hasDrive || walking ? "Odchod" : transit && stop ? "Na zastávke" : "Začiatok túry"}
               <input
                 type="time"
                 step={300}
@@ -274,10 +269,10 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
               a warning that then vanishes would only confuse. */}
           {plan && !tripPlan.loading && (late || latestPassed) && (
             <p role="status" className="rounded-xl bg-[var(--warn-bg)] px-3.5 py-3 text-base font-semibold text-[var(--warn)]">
-              {lateText(plan.verdict, { latestPassed: !!latestPassed, tooLong, noTrain: !!plan.noTrainInLight, startWord, latest: formatTime(latest!) }, lang)}
+              {lateText(plan.verdict, { latestPassed: !!latestPassed, tooLong, noTrain: !!plan.noTrainInLight, startWord, latest: formatTime(latest!) })}
             </p>
           )}
-          {driveStatus === "loading" && !walking && <p className="text-xs text-[var(--muted)]">{transit ? t("Počítame cestu na zastávku…") : t("Počítame cestu autom…")}</p>}
+          {driveStatus === "loading" && !walking && <p className="text-xs text-[var(--muted)]">{transit ? "Počítame cestu na zastávku…" : "Počítame cestu autom…"}</p>}
         </section>
       </section>
 
@@ -286,8 +281,8 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
           time={confirm}
           text={
             late || latestPassed
-              ? lateText(plan.verdict, { latestPassed: !!latestPassed, tooLong, noTrain: !!plan.noTrainInLight, startWord, latest: better ?? "" }, lang)
-              : t("To je uprostred noci, cesta by začínala po tme. Nemysleli ste ráno?")
+              ? lateText(plan.verdict, { latestPassed: !!latestPassed, tooLong, noTrain: !!plan.noTrainInLight, startWord, latest: better ?? "" })
+              : "To je uprostred noci, cesta by začínala po tme. Nemysleli ste ráno?"
           }
           better={late || latestPassed ? better : NIGHT_FIX}
           onBetter={() => {
@@ -299,46 +294,46 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
       )}
 
       {plan && (
-        <section aria-label={t("Priebeh dňa")} className={part}>
+        <section aria-label="Priebeh dňa" className={part}>
           {sun && (
             // Framed inside the card: its sky would otherwise blend into the page.
             <div className="overflow-hidden rounded-xl">
               <SunArc key={date ?? ""} plan={plan} profile={profile} sun={sun} hasDrive={hasDrive} byBus={transit} byTrain={transit && rail.status === "ok"} weather={weather.below} />
             </div>
           )}
-          {plan.startsInDark && <p className="text-sm text-[var(--warn)]">{t("Túra začína pred východom slnka, vezmite si čelovku.")}</p>}
+          {plan.startsInDark && <p className="text-sm text-[var(--warn)]">Túra začína pred východom slnka, vezmite si čelovku.</p>}
           {/* Peter: the arrival is the first big time; the departure (also set in the box above) sits
               small over it, a chip set apart from the labels below it. */}
           {hasDrive && (
             <p className="font-data -mb-2.5 w-fit rounded-full bg-[var(--segment-bg)] px-2 py-0.5 text-[14px] leading-tight font-semibold">
-              {t("odchod")} {formatTime(plan.segments[0].start)}
+              odchod {formatTime(plan.segments[0].start)}
             </p>
           )}
           <ol className="font-data grid grid-cols-[repeat(4,auto)] justify-between gap-x-2 text-[1.3rem] leading-tight font-bold sm:text-[1.6rem]">
             <Step
-              label={t(transit && stop ? "zastávka" : hasDrive ? (parking ? "parkovisko" : "na mieste") : "túra")}
+              label={transit && stop ? "zastávka" : hasDrive ? (parking ? "parkovisko" : "na mieste") : "túra"}
               time={plan.hikeStart}
             />
-            {profile && <Step label={t(GOAL_WORDS[profile.goalKind].noun)} time={goalTime(plan, profile)} approx />}
+            {profile && <Step label={GOAL_WORDS[profile.goalKind].noun} time={goalTime(plan, profile)} approx />}
             {/* One line each on a phone (Peter): "späť na zastávke" wrapped. */}
-            <Step label={t(transit && stop ? "na zastávke" : hasDrive ? "pri aute" : "späť")} time={plan.hikeEnd} />
-            {plan.segments[plan.segments.length - 1].kind === "drive-back" && <Step label={t("doma")} time={plan.segments[plan.segments.length - 1].end} />}
+            <Step label={transit && stop ? "na zastávke" : hasDrive ? "pri aute" : "späť"} time={plan.hikeEnd} />
+            {plan.segments[plan.segments.length - 1].kind === "drive-back" && <Step label="doma" time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
           <StopsRow slug={trip.slug} hasPlaces={hasPlaces} loop={!!walkProfile?.loop} />
           <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} sunAt={sun} closures={closures} onPickDay={(iso) => update({ date: iso })} onPickTime={(time) => update({ time })} />
           {transit && <TransitLegs plan={plan} rail={rail} />}
-          {transit && rail.status === "ok" && <p className="text-xs text-[var(--muted)]">{t("Podľa cestovného poriadku vlakov, spoj si vyberiete nižšie.")}</p>}
+          {transit && rail.status === "ok" && <p className="text-xs text-[var(--muted)]">Podľa cestovného poriadku vlakov, spoj si vyberiete nižšie.</p>}
           {driveApprox && !transit && (
-            <p className="text-xs text-[var(--muted)]">{t("Cestu autom teraz odhadujeme podľa vzdialenosti (~{t}).", { t: formatDuration(driveMin!) })}</p>
+            <p className="text-xs text-[var(--muted)]">Cestu autom teraz odhadujeme podľa vzdialenosti (~{formatDuration(driveMin!)}).</p>
           )}
-          {!start && !transit && <p className="text-xs text-[var(--muted)]">{t("Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.")}</p>}
+          {!start && !transit && <p className="text-xs text-[var(--muted)]">Vyberte, odkiaľ vyrážate, a pridáme aj cestu autom.</p>}
         </section>
       )}
 
-      <section aria-label={t("Na mieste")} className={part}>
+      <section aria-label="Na mieste" className={part}>
         {children}
 
-        <section aria-label={t("Uložiť a zdieľať")} className="flex flex-col gap-3">
+        <section aria-label="Uložiť a zdieľať" className="flex flex-col gap-3">
           <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} tripPlan={tripPlan} profile={profile} {...trip} />
           <NavHandoff drive={destination} start={start} walkFrom={walkStart} walk={walk} join={trailJoin} />
         </section>
@@ -356,7 +351,6 @@ const NIGHT_FIX = "08:00";
 
 /** "Naozaj o 16:30?": change to the latest good start, or keep the odd time. */
 function UnusualTime({ time, text, better, onBetter, onKeep }: { time: string; text: string; better: string | null; onBetter: () => void; onKeep: () => void }) {
-  const t = useT();
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onKeep();
     window.addEventListener("keydown", onKey);
@@ -373,7 +367,7 @@ function UnusualTime({ time, text, better, onBetter, onKeep }: { time: string; t
             <path d="M12 9.5v4.5M12 16.8v.4" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
           </svg>
           <span>
-            {t("Naozaj o")} <span className="font-data">{time}</span>?
+            Naozaj o <span className="font-data">{time}</span>?
           </span>
         </h2>
         <p className="text-[15px]">{text}</p>
@@ -385,7 +379,7 @@ function UnusualTime({ time, text, better, onBetter, onKeep }: { time: string; t
               autoFocus
               className="rounded-xl bg-[var(--accent)] px-4 py-3 text-[15px] font-bold text-[var(--accent-contrast)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
             >
-              {t("Zmeniť na")} <span className="font-data">{better}</span>
+              Zmeniť na <span className="font-data">{better}</span>
             </button>
           )}
           <button
@@ -394,7 +388,7 @@ function UnusualTime({ time, text, better, onBetter, onKeep }: { time: string; t
             autoFocus={!better}
             className="rounded-xl border border-[var(--border)] px-4 py-3 text-[15px] font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
           >
-            {t("Ponechať")} <span className="font-data">{time}</span>
+            Ponechať <span className="font-data">{time}</span>
           </button>
         </div>
       </div>
@@ -405,17 +399,15 @@ function UnusualTime({ time, text, better, onBetter, onKeep }: { time: string; t
 /** One warning, in the words the trip page uses for each case. */
 function lateText(
   verdict: Verdict,
-  o: { latestPassed: boolean; tooLong: boolean; noTrain: boolean; startWord: string; latest: string },
-  lang: Lang
+  o: { latestPassed: boolean; tooLong: boolean; noTrain: boolean; startWord: string; latest: string }
 ): string {
-  const t = (sk: string, vars?: Record<string, string>) => tr(lang, sk, vars);
-  if (o.tooLong && o.noTrain) return t("Vlakom to v tento deň za svetla nestihnete: žiadny vlak nepríde dosť skoro. Skúste autobus, kratšiu trasu alebo iný deň.");
-  if (o.tooLong) return t("V tento deň je táto túra na denné svetlo pridlhá. Skúste deň s dlhším svetlom alebo si vyberte kratšiu trasu.");
-  if (o.latestPassed) return t("Na dnes je to už neskoro, späť by ste boli po tme. Skúste zajtra ráno.");
-  const leave = t("{start} najneskôr o {time}.", { start: o.startWord, time: o.latest });
-  if (verdict === "tight") return t("Stihnete to tesne pred západom slnka. Pre rezervu {start} najneskôr o {time}.", { start: `${o.startWord.charAt(0).toLowerCase()}${o.startWord.slice(1)}`, time: o.latest });
-  if (verdict === "after-dusk") return `${t("Späť by ste boli až po tme.")} ${leave}`;
-  return `${t("Späť by ste boli po západe slnka.")} ${leave}`;
+  if (o.tooLong && o.noTrain) return "Vlakom to v tento deň za svetla nestihnete: žiadny vlak nepríde dosť skoro. Skúste autobus, kratšiu trasu alebo iný deň.";
+  if (o.tooLong) return "V tento deň je táto túra na denné svetlo pridlhá. Skúste deň s dlhším svetlom alebo si vyberte kratšiu trasu.";
+  if (o.latestPassed) return "Na dnes je to už neskoro, späť by ste boli po tme. Skúste zajtra ráno.";
+  const leave = `${o.startWord} najneskôr o ${o.latest}.`;
+  if (verdict === "tight") return `Stihnete to tesne pred západom slnka. Pre rezervu ${o.startWord.charAt(0).toLowerCase()}${o.startWord.slice(1)} najneskôr o ${o.latest}.`;
+  if (verdict === "after-dusk") return `Späť by ste boli až po tme. ${leave}`;
+  return `Späť by ste boli po západe slnka. ${leave}`;
 }
 
 function Step({ label, time, approx = false }: { label: string; time: Date; approx?: boolean }) {

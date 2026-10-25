@@ -6,7 +6,6 @@ import { googleMapsUrl, googleWalkUrl, mapyUrl, mapyWalkUrl } from "@/lib/links"
 import type { WalkRoute } from "@/lib/links";
 import type { LatLng } from "@/lib/types";
 import { useTripAccess } from "@/components/TripAccess";
-import { useT } from "@/lib/i18n";
 
 type App = "google" | "mapy";
 
@@ -64,7 +63,6 @@ export function NavHandoff({
 }) {
   // Without a parking lot the drive ends on the nearest road, not at a parking.
   const { parking } = useTripAccess();
-  const t = useT();
   const app = useSyncExternalStore(subscribe, readApp, () => "google" as App);
   const canWalk = walkFrom !== null && walk.points.length > 1;
   if (!drive && !canWalk) return null;
@@ -72,8 +70,8 @@ export function NavHandoff({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between gap-3">
-        <span className="text-sm font-semibold">{t("Navigovať v")}</span>
-        <div role="group" aria-label={t("Mapy na navigáciu")} className="grid grid-cols-2 gap-[3px] rounded-xl bg-[var(--segment-bg)] p-[3px]">
+        <span className="text-sm font-semibold">Navigovať v</span>
+        <div role="group" aria-label="Mapy na navigáciu" className="grid grid-cols-2 gap-[3px] rounded-xl bg-[var(--segment-bg)] p-[3px]">
           <button type="button" aria-pressed={google} onClick={() => pickApp("google")} className={segBtn(google)}>
             Google
           </button>
@@ -92,7 +90,7 @@ export function NavHandoff({
             rel="noopener noreferrer"
             className={navButton}
           >
-            {parking ? t("Na parkovisko") : t("Navigovať autom")}
+            {parking ? "Na parkovisko" : "Navigovať autom"}
           </a>
         )}
         {canWalk && (
@@ -103,15 +101,15 @@ export function NavHandoff({
             rel="noopener noreferrer"
             className={navButton}
           >
-            {t("Po trase")}
+            Po trase
           </a>
         )}
       </div>
       {canWalk && (
         <p className="text-xs text-[var(--muted)]">
           {google
-            ? t("Google vie po trase len 3 body a cestu medzi nimi si volí sám. Mapy.com idú po značených chodníkoch.")
-            : t(walk.loop ? (drive ? "Po trase ide po značených chodníkoch celým okruhom k autu." : "Po trase ide po značených chodníkoch celým okruhom k zastávke.") : drive ? "Po trase ide po značených chodníkoch hore aj späť k autu." : "Po trase ide po značených chodníkoch hore aj späť k zastávke.")}
+            ? "Google vie po trase len 3 body a cestu medzi nimi si volí sám. Mapy.com idú po značených chodníkoch."
+            : `Po trase ide po značených chodníkoch${walk.loop ? " celým okruhom" : " hore aj späť"} k ${drive ? "autu" : "zastávke"}.`}
         </p>
       )}
     </div>

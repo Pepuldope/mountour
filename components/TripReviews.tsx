@@ -6,8 +6,6 @@ import { isoDate } from "@/lib/days";
 import type { Fit } from "@/lib/reviewLimits";
 import { useSavedTrips } from "@/lib/savedTrips";
 import { ReviewSheet } from "@/components/ReviewSheet";
-import { useLang, useT } from "@/lib/i18n";
-import { decimal } from "@/lib/lang";
 
 /** Shown once a trip has this many reviews: fewer says more about one group than the trail. */
 const MIN_SHOWN = 3;
@@ -29,8 +27,6 @@ export function TripReviews({ slug, name }: { slug: string; name: string }) {
   const [summary, setSummary] = useState<Summary | null>(null);
   const { trips, patch } = useSavedTrips();
   const [reviewing, setReviewing] = useState(false);
-  const tx = useT();
-  const lang = useLang();
   const saved = trips.find((t) => t.slug === slug);
   const ask = saved && !saved.doneAt && !saved.skipAsk && saved.date < isoDate(new Date());
 
@@ -53,16 +49,16 @@ export function TripReviews({ slug, name }: { slug: string; name: string }) {
       {shown && (
         <p className="flex flex-wrap items-center gap-x-2 text-[14px]">
           <span className="font-bold">
-            <span className="text-[#f5b301]">★</span> {decimal(lang, summary.stars!)}
+            <span className="text-[#f5b301]">★</span> {summary.stars!.toFixed(1).replace(".", ",")}
           </span>
-          <span className="text-[var(--muted)]">· {tx("{n} hodnotení", { n: summary.n })}</span>
-          {topFit && topFit[1] > 0 && <span className="text-[var(--muted)]">· {tx("väčšinou {how}", { how: tx(FIT_WORDS[topFit[0]]) })}</span>}
-          {summary.crowded! * 2 > summary.n && <span className="text-[var(--muted)]">· {tx("často veľa ľudí")}</span>}
+          <span className="text-[var(--muted)]">· {summary.n} hodnotení</span>
+          {topFit && topFit[1] > 0 && <span className="text-[var(--muted)]">· väčšinou {FIT_WORDS[topFit[0]]}</span>}
+          {summary.crowded! * 2 > summary.n && <span className="text-[var(--muted)]">· často veľa ľudí</span>}
         </p>
       )}
       {ask && (
         <div className="flex flex-wrap items-center gap-2 rounded-[var(--radius-card)] border border-[var(--accent)] bg-[var(--card-bg)] p-3">
-          <span className="flex-1 text-[15px] font-bold">{tx("Boli ste na výlete {date}?", { date: formatDateSk(saved.date, lang) })}</span>
+          <span className="flex-1 text-[15px] font-bold">Boli ste na výlete {formatDateSk(saved.date)}?</span>
           <button
             type="button"
             onClick={() => {
@@ -71,10 +67,10 @@ export function TripReviews({ slug, name }: { slug: string; name: string }) {
             }}
             className="rounded-full bg-[var(--ok)] px-4 py-2 text-sm font-bold text-white"
           >
-            {tx("Áno")} ✓
+            Áno ✓
           </button>
           <button type="button" onClick={() => patch(slug, { skipAsk: true })} className="rounded-full border border-[var(--border)] px-4 py-2 text-sm font-semibold">
-            {tx("Ešte nie")}
+            Ešte nie
           </button>
         </div>
       )}
