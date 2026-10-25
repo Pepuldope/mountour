@@ -24,7 +24,7 @@ from .graph import Graph
 from .rules import RuleMatcher, section_keys
 from .trips import TripBuilder
 
-UA = "MounTour trip pipeline (https://github.com/Pepuldope/mountour)"
+UA = "Turuj trip pipeline (https://github.com/Pepuldope/turuj)"
 
 
 def log(msg):

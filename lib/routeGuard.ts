@@ -61,4 +61,4 @@ export async function overCallLimit(req: Request, use: "visit" | "event" | "weat
 export const TOO_MANY = () =>
   Response.json({ error: "Príliš veľa požiadaviek naraz, skúste o chvíľu." }, { status: 429, headers: { "Retry-After": String(LIMIT_RETRY_S) } });
 
-export const OTHER_SITE = () => Response.json({ error: "only for mountour pages" }, { status: 403 });
+export const OTHER_SITE = () => Response.json({ error: "only for turuj pages" }, { status: 403 });

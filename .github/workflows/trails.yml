@@ -76,7 +76,7 @@ jobs:
 
       - name: Commit the new data
         run: |
-          git config user.name "mountour-data-bot"
+          git config user.name "turuj-data-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Lay the fresh files on top of the branch as it is now, so a newer
           # data commit or code push never conflicts: the new build replaces it.

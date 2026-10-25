@@ -1,4 +1,4 @@
-# MounTour trip pipeline settings. Edit freely; the weekly job reads this file.
+# Túruj trip pipeline settings. Edit freely; the weekly job reads this file.
 # Distances in metres, times in minutes, boxes as [west, south, east, north].
 
 regions:

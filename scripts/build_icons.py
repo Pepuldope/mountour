@@ -87,7 +87,7 @@ def icon_svg(season, rounded=True):
     clip = '<clipPath id="c"><rect width="64" height="64" rx="14"/></clipPath>'
     inner = scene(season, "i")
     if rounded:
-        return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><title>MounTour</title><defs>{clip}</defs><g clip-path="url(#c)">{inner}</g></svg>'
+        return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><title>Túruj</title><defs>{clip}</defs><g clip-path="url(#c)">{inner}</g></svg>'
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">{inner}</svg>'
 
 

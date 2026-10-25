@@ -37,7 +37,7 @@ jobs:
       - run: npx vitest run lib/assetBudget.test.ts
       - name: Commit the photo list
         run: |
-          git config user.name "mountour-data-bot"
+          git config user.name "turuj-data-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           cp public/data/photos.json "$RUNNER_TEMP/photos.json"
           for attempt in 1 2 3; do

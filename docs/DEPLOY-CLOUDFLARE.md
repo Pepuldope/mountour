@@ -1,17 +1,17 @@
 # Deploying to Cloudflare Workers (free plan)
 
-MounTour runs on Cloudflare Workers through the OpenNext adapter (`@opennextjs/cloudflare`).
+Túruj runs on Cloudflare Workers through the OpenNext adapter (`@opennextjs/cloudflare`).
 The free Workers plan allows commercial use (Vercel Hobby does not) and gives 100k requests/day.
 
 ## One-time setup (Cloudflare dashboard)
 
 1. **Workers & Pages → Create → Import a repository.** Authorise the Cloudflare GitHub app for
-   `Pepuldope/mountour` only, then pick the repo.
+   `Pepuldope/turuj` only, then pick the repo.
 2. Build settings:
 
    | Field | Value |
    |---|---|
-   | Project / Worker name | `mountour` (must match `name` in `wrangler.jsonc`) |
+   | Project / Worker name | `turuj` (must match `name` in `wrangler.jsonc`) |
    | Production branch | `main` |
    | Build command | `npx opennextjs-cloudflare build` |
    | Deploy command | `npx opennextjs-cloudflare deploy` |
@@ -26,7 +26,7 @@ The free Workers plan allows commercial use (Vercel Hobby does not) and gives 10
 
    Trip data ships as static files (`public/data`) plus the D1 database; nothing else is needed.
 
-4. The site appears at `https://mountour.<your-subdomain>.workers.dev`. A custom domain is added later
+4. The site appears at `https://turuj.<your-subdomain>.workers.dev`. A custom domain is added later
    under Worker → Settings → Domains & Routes.
 
 ## Local commands

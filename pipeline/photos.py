@@ -26,7 +26,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-UA = "MounTour photos (https://github.com/Pepuldope/mountour)"
+UA = "Turuj photos (https://github.com/Pepuldope/turuj)"
 INDEX = Path("public/data/trips/index.json")
 OUT = Path("public/data/photos.json")
 OVERRIDES = Path("data/photo-overrides.json")

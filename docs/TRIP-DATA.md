@@ -1,6 +1,6 @@
 # Trip data (schema v1)
 
-MounTour's trips are plain static files generated from OpenStreetMap by a weekly
+Túruj's trips are plain static files generated from OpenStreetMap by a weekly
 GitHub Actions job (`.github/workflows/trips.yml`, code in `pipeline/`). Every
 destination near a marked trail that makes a good day trip is kept (2,131 places
 with 6,463 routes on 2026-10-16; no per-region cap). The trip files are static assets in `public/data`, not

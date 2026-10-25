@@ -26,7 +26,7 @@ const CSP = [
 ].join("; ");
 
 // Basic browser protections for every page and API answer: no other site may
-// show MounTour inside a frame (clickjacking), browsers don't guess file types,
+// show Túruj inside a frame (clickjacking), browsers don't guess file types,
 // links to other sites don't carry our full addresses, and only location (for
 // "Použiť moju polohu") is asked of the device. Files in public/ get the same
 // via public/_headers.
@@ -56,7 +56,7 @@ const DEPLOYMENT_ID = process.env.WORKERS_CI_COMMIT_SHA?.slice(0, 12) || undefin
 // full reload, so send it with every page here.
 const DEPLOYMENT_HEADERS = DEPLOYMENT_ID ? [{ key: "x-nextjs-deployment-id", value: DEPLOYMENT_ID }] : [];
 
-const OLD_HOSTS = ["mountour.nemcok-peter123.workers.dev", "www.turuj.sk"];
+const OLD_HOSTS = ["mountour.nemcok-peter123.workers.dev", "turuj.nemcok-peter123.workers.dev", "www.turuj.sk"];
 
 const nextConfig: NextConfig = {
   deploymentId: DEPLOYMENT_ID,
