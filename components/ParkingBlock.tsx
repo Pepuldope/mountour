@@ -5,31 +5,28 @@ import { useTripAccess } from "@/components/TripAccess";
 import { approachMin } from "@/lib/dayPlan";
 import { UiIcon } from "@/components/UiIcon";
 import type { ParkingLot } from "@/lib/types";
-import { useLang, useT } from "@/lib/i18n";
-import { decimal, tr } from "@/lib/lang";
-import type { Lang } from "@/lib/lang";
 
 /** How many parking options to offer; the rest are far or duplicates. */
 const MAX_OPTIONS = 4;
 
-function feeLabel(p: ParkingLot, lang: Lang): string | null {
-  return p.fee === true ? tr(lang, "spoplatnené") : p.fee === false ? tr(lang, "zadarmo") : null;
+function feeLabel(p: ParkingLot): string | null {
+  return p.fee === true ? "spoplatnené" : p.fee === false ? "zadarmo" : null;
 }
 
-function walkLabel(p: ParkingLot, lang: Lang): string {
+function walkLabel(p: ParkingLot): string {
   if (p.join) {
     const min = approachMin(p.join.walk_m);
-    const km = decimal(lang, p.join.skip_m / 1000);
-    const walk = min > 0 ? tr(lang, "{m} pešo k trase (~{t})", { m: formatWalk(p.join.walk_m, lang), t: formatDuration(min) }) : tr(lang, "priamo pri trase");
-    return p.join.skip_m > 0 ? tr(lang, "{walk}, túra kratšia o {km} km", { walk, km }) : walk;
+    const km = (p.join.skip_m / 1000).toFixed(1).replace(".", ",");
+    const walk = min > 0 ? `${formatWalk(p.join.walk_m)} pešo k trase (~${formatDuration(min)})` : "priamo pri trase";
+    return p.join.skip_m > 0 ? `${walk}, túra kratšia o ${km} km` : walk;
   }
   const min = approachMin(p.walk_m);
-  return min > 0 ? tr(lang, "{m} pešo k začiatku (~{t})", { m: formatWalk(p.walk_m, lang), t: formatDuration(min) }) : tr(lang, "pri začiatku trasy");
+  return min > 0 ? `${formatWalk(p.walk_m)} pešo k začiatku (~${formatDuration(min)})` : "pri začiatku trasy";
 }
 
-function summaryWalk(p: ParkingLot, lang: Lang): string {
-  if (p.join) return p.join.walk_m < 150 ? tr(lang, "pri trase") : tr(lang, "{m} k trase", { m: formatWalk(p.join.walk_m, lang) });
-  return p.walk_m < 150 ? tr(lang, "pri štarte") : formatWalk(p.walk_m, lang);
+function summaryWalk(p: ParkingLot): string {
+  if (p.join) return p.join.walk_m < 150 ? "pri trase" : `${formatWalk(p.join.walk_m)} k trase`;
+  return p.walk_m < 150 ? "pri štarte" : formatWalk(p.walk_m);
 }
 
 /**
@@ -39,8 +36,6 @@ function summaryWalk(p: ParkingLot, lang: Lang): string {
 export function ParkingBlock() {
   const { parkingLots, choice, choose, parking, transit, stops } = useTripAccess();
   const options = parkingLots.slice(0, MAX_OPTIONS);
-  const t = useT();
-  const lang = useLang();
   if (transit) return null;
 
   return (
@@ -49,9 +44,9 @@ export function ParkingBlock() {
         <span className="mt-pin mt-pin-parking shrink-0 scale-90" aria-hidden>
           P
         </span>
-        {t("Parkovanie")}
+        Parkovanie
         <span className="ml-auto truncate text-sm font-medium text-[var(--muted)]">
-          {parking ? [summaryWalk(parking, lang), feeLabel(parking, lang)].filter(Boolean).join(", ") : t("bez parkoviska")}
+          {parking ? [summaryWalk(parking), feeLabel(parking)].filter(Boolean).join(", ") : "bez parkoviska"}
         </span>
         <span className="text-[var(--muted)] transition-transform group-open:rotate-90">
           <UiIcon name="chev" size={16} />
@@ -60,16 +55,16 @@ export function ParkingBlock() {
       <div className="flex flex-col gap-2 px-4 pb-3.5">
       {!parking && (
         <p className="text-sm">
-          {t("Pri začiatku trasy nemáme parkovisko. Navigácia vás dovedie na najbližšiu cestu, odtiaľ pešo.")}
-          {stops.length > 0 && ` ${t("Skúste aj vlak alebo autobus.")}`}
+          Pri začiatku trasy nemáme parkovisko. Navigácia vás dovedie na najbližšiu cestu, odtiaľ pešo.
+          {stops.length > 0 && " Skúste aj vlak alebo autobus."}
         </p>
       )}
-      {options.length > 1 && <p className="text-sm text-[var(--muted)]">{t("Vyberte, kde zaparkujete. Cesta autom aj pešo sa prepočíta.")}</p>}
+      {options.length > 1 && <p className="text-sm text-[var(--muted)]">Vyberte, kde zaparkujete. Cesta autom aj pešo sa prepočíta.</p>}
       {options.length > 0 && (
-        <ul className="flex flex-col gap-1.5" role="radiogroup" aria-label={t("Parkovisko")}>
+        <ul className="flex flex-col gap-1.5" role="radiogroup" aria-label="Parkovisko">
           {options.map((p, i) => {
             const selected = i === choice;
-            const fee = feeLabel(p, lang);
+            const fee = feeLabel(p);
             return (
               <li key={p.id}>
                 <button
@@ -86,9 +81,9 @@ export function ParkingBlock() {
                     P
                   </span>
                   <span className="flex flex-col">
-                    <span className="font-semibold">{t(p.name)}</span>
+                    <span className="font-semibold">{p.name}</span>
                     <span className="text-[var(--muted)]">
-                      {walkLabel(p, lang)}
+                      {walkLabel(p)}
                       {fee ? `, ${fee}` : ""}
                     </span>
                   </span>
@@ -100,11 +95,11 @@ export function ParkingBlock() {
       )}
       {parking && (
         <p className="text-xs text-[var(--muted)]">
-          {t("Súradnice:")}{" "}
+          Súradnice:{" "}
           <span className="font-data select-all text-sm">
             {parking.location.lat.toFixed(5)}, {parking.location.lon.toFixed(5)}
           </span>{" "}
-          · {t("Zdroj: OpenStreetMap")}
+          · Zdroj: OpenStreetMap
         </p>
       )}
       </div>

@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { LoopTrip, loopMetadata } from "@/components/LoopTrip";
+import { notFound, redirect } from "next/navigation";
+import { cache } from "react";
+import { trailDetailFrom } from "@/lib/data";
+import { getLoop, getTrip } from "@/lib/tripFiles";
+import { TripSheet } from "@/components/TripSheet";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -13,10 +17,26 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   return [];
 }
 
+const loadLoop = cache(async (slug: string) => {
+  const loop = await getLoop(slug);
+  return loop ? { ...loop, detail: trailDetailFrom(loop.trip) } : null;
+});
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  return loopMetadata((await params).slug, "sk");
+  const loop = await loadLoop((await params).slug);
+  return {
+    title: loop ? `${loop.trip.name} – okruh` : "Trasa sa nenašla",
+    // The trip page itself is the one to find in search.
+    robots: { index: false },
+  };
 }
 
 export default async function LoopTripPage({ params }: Props) {
-  return <LoopTrip slug={(await params).slug} lang="sk" />;
+  const { slug } = await params;
+  const loop = await loadLoop(slug);
+  if (!loop) {
+    if (await getTrip(slug)) redirect(`/trasa/${slug}`);
+    notFound();
+  }
+  return <TripSheet trip={loop.trip} detail={loop.detail} loopBack={loop.back} />;
 }

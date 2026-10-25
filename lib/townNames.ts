@@ -151,8 +151,3 @@ const GENITIVE: Record<string, string> = {
 export function townGenitive(id: string, name: string): string {
   return GENITIVE[id] ?? `mesta ${name}`;
 }
-
-/** The town as "okolo {town}" needs it: genitive in Slovak, the plain name in English. */
-export function townOf(lang: "sk" | "en", id: string, name: string): string {
-  return lang === "en" ? name : townGenitive(id, name);
-}

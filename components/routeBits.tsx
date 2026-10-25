@@ -1,7 +1,4 @@
-"use client";
-
 import { ROUTE_COLOURS } from "@/lib/palette";
-import { useT } from "@/lib/i18n";
 import type { RouteBrief } from "@/lib/tripSchema";
 
 // Small pieces shared by the route list (trip page) and the route comparison page.
@@ -22,29 +19,26 @@ const warnTriangle = (
 
 /** A start with no car park: an amber chip next to the route's name. */
 export function NoParkingChip() {
-  const t = useT();
   return (
     <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border-[1.5px] border-[var(--warn)] bg-[var(--warn-bg)] px-2 py-px text-[12px] font-extrabold text-[var(--warn)]">
       {warnTriangle}
-      {t("Bez parkoviska")}
+      Bez parkoviska
     </span>
   );
 }
 
 /** A start with no bus or train stop nearby: the same chip, for the greyed bus in the car/bus switch. */
 export function NoStopChip() {
-  const t = useT();
   return (
     <span className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border-[1.5px] border-[var(--warn)] bg-[var(--warn-bg)] px-2 py-px text-[12px] font-extrabold text-[var(--warn)]">
       {warnTriangle}
-      {t("Bez zastávky")}
+      Bez zastávky
     </span>
   );
 }
 
 /** Said next to the no-parking chip, so it is plain the place is still easy to reach. */
 export function BusOk() {
-  const t = useT();
   return (
     <span className="inline-flex items-center gap-1 font-bold text-[var(--ok)]">
       <svg aria-hidden width="14" height="14" viewBox="0 0 16 16" className="shrink-0">
@@ -53,7 +47,7 @@ export function BusOk() {
         <circle cx="5.3" cy="10" r=".9" fill="currentColor" />
         <circle cx="10.7" cy="10" r=".9" fill="currentColor" />
       </svg>
-      {t("dá sa autobusom")}
+      dá sa autobusom
     </span>
   );
 }

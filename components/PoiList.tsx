@@ -10,14 +10,11 @@ import { stopFor, useTripStops, visits } from "@/lib/tripStops";
 import type { TripStop } from "@/lib/tripStops";
 import { WaySwitch } from "@/components/StopsRow";
 import { formatDurationShort } from "@/lib/format";
-import { useLang, useT } from "@/lib/i18n";
-import { tr } from "@/lib/lang";
-import type { Lang } from "@/lib/lang";
 
-function km(m: number, lang: Lang): string {
+function km(m: number): string {
   return m < 150
-    ? tr(lang, "pri štarte")
-    : `${(m / 1000).toLocaleString(lang === "en" ? "en-GB" : "sk-SK", { maximumFractionDigits: 1, minimumFractionDigits: 1 })} km`;
+    ? "pri štarte"
+    : `${(m / 1000).toLocaleString("sk-SK", { maximumFractionDigits: 1, minimumFractionDigits: 1 })} km`;
 }
 
 /** "Na trase": huts, springs, viewpoints... in the order the walk reaches them, then "Kúsok bokom":
@@ -32,24 +29,22 @@ export function PoiList({
   loop: boolean;
 }) {
   const stops = useTripStops(slug);
-  const t = useT();
-  const lang = useLang();
   if (pois.length === 0) return null;
   const on = pois.filter((p) => p.detour_min === null);
   const off = pois.filter((p) => p.detour_min !== null);
   const word =
-    lang === "en" ? (pois.length === 1 ? "place" : "places") : pois.length === 1 ? "miesto" : pois.length < 5 ? "miesta" : "miest";
+    pois.length === 1 ? "miesto" : pois.length < 5 ? "miesta" : "miest";
   return (
     <details
       open
       className="group rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)]"
     >
       <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-base font-bold [&::-webkit-details-marker]:hidden">
-        {t(on.length === 0
+        {on.length === 0
           ? "Kúsok bokom"
           : off.length > 0
             ? "Na trase a okolo"
-            : "Na trase")}
+            : "Na trase"}
         <span className="ml-auto text-sm font-medium text-[var(--muted)]">
           {pois.length} {word}
         </span>
@@ -70,7 +65,7 @@ export function PoiList({
         ))}
         {on.length > 0 && off.length > 0 && (
           <li className="pt-2 pb-0.5 text-xs font-bold tracking-wide text-[var(--muted)] uppercase">
-            {t("Kúsok bokom")}
+            Kúsok bokom
           </li>
         )}
         {off.map((p) => (
@@ -102,8 +97,6 @@ function PoiRow({
   onWay: (way: NonNullable<TripStop["way"]>) => void;
 }) {
   const added = stop !== null;
-  const t = useT();
-  const lang = useLang();
   return (
     <li className="flex flex-col">
       <div className="flex items-center gap-1">
@@ -116,18 +109,18 @@ function PoiRow({
         >
           <KindIcon kind={poiIcon(p)} colour={POI_COLOUR[p.kind]} />
           <span className="flex min-w-0 flex-1 flex-col">
-            <span className="truncate text-sm font-semibold">{t(p.name)}</span>
+            <span className="truncate text-sm font-semibold">{p.name}</span>
             <span className="text-xs text-[var(--muted)]">
               <span
                 className="kind-ink font-bold"
                 style={{ "--kind": POI_COLOUR[p.kind] } as React.CSSProperties}
               >
-                {t(poiLabel(p))}
+                {poiLabel(p)}
               </span>
               {p.detour_min !== null
-                ? ` · ${t("odbočka +{n} min tam aj späť", { n: p.detour_min })}`
+                ? ` · odbočka +${p.detour_min} min tam aj späť`
                 : p.along_m !== null
-                  ? ` · ${km(p.along_m, lang)}`
+                  ? ` · ${km(p.along_m)}`
                   : ""}
             </span>
           </span>
@@ -140,9 +133,9 @@ function PoiRow({
           onClick={onToggle}
           aria-pressed={added}
           aria-label={
-            added ? t("Odobrať zastávku {name}", { name: t(p.name) }) : t("Pridať zastávku {name}", { name: t(p.name) })
+            added ? `Odobrať zastávku ${p.name}` : `Pridať zastávku ${p.name}`
           }
-          title={added ? t("Odobrať zo zastávok") : t("Pridať ako zastávku")}
+          title={added ? "Odobrať zo zastávok" : "Pridať ako zastávku"}
           className={`grid h-9 w-9 shrink-0 place-items-center rounded-full text-lg leading-none font-extrabold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)] ${
             added
               ? "bg-[var(--accent)] text-[var(--accent-contrast)]"
@@ -157,7 +150,7 @@ function PoiRow({
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 pb-1.5 pl-9 text-xs text-[var(--muted)]">
           {!loop && <WaySwitch name={p.name} way={stop.way} onPick={onWay} />}
           <span>
-            {t("Zastávka")} +{formatDurationShort(stop.min * visits(stop))} ·{" "}
+            Zastávka +{formatDurationShort(stop.min * visits(stop))} ·{" "}
             <button
               type="button"
               onClick={() =>
@@ -167,7 +160,7 @@ function PoiRow({
               }
               className="font-semibold text-[var(--accent)] underline-offset-2 hover:underline"
             >
-              {t("v pláne dňa")}
+              v pláne dňa
             </button>
           </span>
         </div>

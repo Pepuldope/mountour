@@ -2,7 +2,6 @@
 
 import { track } from "@/lib/analytics";
 import { routeGpx } from "@/lib/gpx";
-import { useT } from "@/lib/i18n";
 
 /**
  * "Stiahnuť GPX trasu": a place's file holds every route to it, so this downloads only the
@@ -10,7 +9,6 @@ import { useT } from "@/lib/i18n";
  */
 export function GpxDownload({ gpxUrl, slug, name }: { gpxUrl: string; slug: string; name: string }) {
   const file = gpxUrl.split("#")[0];
-  const t = useT();
 
   async function download(e: React.MouseEvent<HTMLAnchorElement>) {
     // Decided before the fetch: once the click returns, the browser would already follow the link.
@@ -35,7 +33,7 @@ export function GpxDownload({ gpxUrl, slug, name }: { gpxUrl: string; slug: stri
 
   return (
     <a href={file} download={`${slug}.gpx`} onClick={download} className="w-fit font-semibold text-[var(--accent)] underline">
-      {t("Stiahnuť GPX trasu")}
+      Stiahnuť GPX trasu
     </a>
   );
 }

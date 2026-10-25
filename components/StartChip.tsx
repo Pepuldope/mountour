@@ -6,7 +6,6 @@ import type { Place } from "@/lib/geocode";
 import { TOWNS } from "@/lib/towns";
 import { useUserLocation } from "@/lib/userLocation";
 import { UiIcon } from "@/components/UiIcon";
-import { useT } from "@/lib/i18n";
 
 type SearchState = "idle" | "searching" | "results" | "empty" | "error";
 
@@ -21,7 +20,6 @@ const note = "w-fit rounded-lg bg-[var(--card-bg)] px-2.5 py-1.5 text-xs font-me
  */
 export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Zmeniť štart"): always open, closed by this. */ onDone?: () => void } = {}) {
   const { status, message, locate, start, setManualStart } = useUserLocation();
-  const t = useT();
   const [openState, setOpenState] = useState(false);
   const open = onDone ? true : openState;
   const setOpen = (v: boolean) => (onDone ? !v && onDone() : setOpenState(v));
@@ -57,7 +55,7 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
 
   return (
     <section
-      aria-label={t("Odkiaľ vyrážate")}
+      aria-label="Odkiaľ vyrážate"
       className={onDone ? "flex flex-col gap-2" : "flex flex-col gap-2 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-3.5 shadow-[var(--shadow-float)]"}
     >
       {start && !open ? (
@@ -66,21 +64,21 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
             <UiIcon name="pin" size={18} />
           </span>
           <div className="min-w-0 flex-1">
-            <span className="block text-[12.5px] text-[var(--muted)]">{t("Vyrážate z")}</span>
-            <strong className="block truncate text-lg leading-tight">{t(start.label.split(",")[0])}</strong>
+            <span className="block text-[12.5px] text-[var(--muted)]">Vyrážate z</span>
+            <strong className="block truncate text-lg leading-tight">{start.label.split(",")[0]}</strong>
           </div>
           <button type="button" onClick={() => setOpen(true)} aria-expanded={false} className="p-2 font-bold text-[var(--accent)]">
-            {t("Zmeniť")}
+            Zmeniť
           </button>
         </div>
       ) : (
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-[19px] leading-tight font-bold">{t("Odkiaľ vyrážate?")}</h2>
-            <p className="mt-0.5 text-[13.5px] text-[var(--muted)]">{t("Zoradíme výlety podľa cesty a ukážeme, kedy vyraziť.")}</p>
+            <h2 className="text-[19px] leading-tight font-bold">Odkiaľ vyrážate?</h2>
+            <p className="mt-0.5 text-[13.5px] text-[var(--muted)]">Zoradíme výlety podľa cesty a ukážeme, kedy vyraziť.</p>
           </div>
           {(start || onDone) && (
-            <button type="button" onClick={() => setOpen(false)} aria-label={t("Zavrieť")} className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--segment-bg)] text-[var(--muted)]">
+            <button type="button" onClick={() => setOpen(false)} aria-label="Zavrieť" className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--segment-bg)] text-[var(--muted)]">
               <UiIcon name="close" size={12} />
             </button>
           )}
@@ -99,19 +97,19 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
             className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] text-base font-bold text-[var(--accent-contrast)] disabled:opacity-70"
           >
             <UiIcon name="pin" size={18} />
-            {status === "locating" ? t("Hľadáme vašu polohu…") : t("Použiť moju polohu")}
+            {status === "locating" ? "Hľadáme vašu polohu…" : "Použiť moju polohu"}
           </button>
           <div className="grid grid-cols-2 gap-2">
-            {TOWNS.slice(0, 6).map((town) => (
+            {TOWNS.slice(0, 6).map((t) => (
               <button
-                key={town.label}
+                key={t.label}
                 type="button"
-                onClick={() => choose(town)}
+                onClick={() => choose(t)}
                 className={`h-11 truncate rounded-[10px] border bg-[var(--segment-bg)] px-3 text-left font-semibold hover:border-[var(--accent)] ${
-                  start?.label === town.label ? "border-[var(--accent)]" : "border-[var(--border)]"
+                  start?.label === t.label ? "border-[var(--accent)]" : "border-[var(--border)]"
                 }`}
               >
-                {town.label}
+                {t.label}
               </button>
             ))}
           </div>
@@ -126,26 +124,26 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
               <UiIcon name="search" size={16} />
             </span>
             <label htmlFor={inputId} className="sr-only">
-              {t("Iné mesto alebo obec")}
+              Iné mesto alebo obec
             </label>
             <input
               id={inputId}
               type="search"
               enterKeyHint="search"
-              placeholder={t("Iné mesto alebo obec, napr. Pezinok")}
+              placeholder="Iné mesto alebo obec, napr. Pezinok"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="min-w-0 flex-1 bg-transparent text-base outline-none"
             />
             {query.trim().length >= 2 && (
               <button type="submit" className="text-sm font-bold text-[var(--accent)]">
-                {t("Hľadať")}
+                Hľadať
               </button>
             )}
           </form>
-      {search === "searching" && <p className={`${note} text-[var(--muted)]`}>{t("Hľadáme miesto…")}</p>}
-          {search === "empty" && <p className={`${note} text-[var(--warn)]`}>{t("Také miesto sme nenašli.")}</p>}
-          {search === "error" && <p className={`${note} text-[var(--warn)]`}>{t("Toto sa nenačítalo. Skúste to znova.")}</p>}
+      {search === "searching" && <p className={`${note} text-[var(--muted)]`}>Hľadáme miesto…</p>}
+          {search === "empty" && <p className={`${note} text-[var(--warn)]`}>Také miesto sme nenašli.</p>}
+          {search === "error" && <p className={`${note} text-[var(--warn)]`}>Toto sa nenačítalo. Skúste to znova.</p>}
           {search === "results" && (
             <ul className="flex flex-col overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--card-bg)]">
               {results.map((p) => (
@@ -166,7 +164,7 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
 
       {message && status !== "locating" && (
         <p role="status" className={`${note} text-[var(--warn)]`}>
-          {t(message)}
+          {message}
         </p>
       )}
     </section>

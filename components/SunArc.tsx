@@ -17,7 +17,6 @@ import { SKY_GREY, SUN_SHOWS, weatherIconSvg, weatherSkySvg } from "@/lib/weathe
 import type { TripProfile } from "@/lib/tripProfile";
 import type { LatLng } from "@/lib/types";
 import { hourOf } from "@/lib/zoned";
-import { useLang, useT } from "@/lib/i18n";
 
 const MIN = 60000;
 const HOUR = 60 * MIN;
@@ -107,9 +106,6 @@ interface WalkPoint {
  * height profile. Hover (or drag on touch) to move through the day.
  */
 export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = false, weather = null }: Props) {
-  // `t` is the moment on the dial here, so the translator is `tx`.
-  const tx = useT();
-  const lang = useLang();
   const svgRef = useRef<SVGSVGElement>(null);
   const [scrub, setScrub] = useState<number | null>(null);
   const [intro, setIntro] = useState<number | null>(null);
@@ -348,7 +344,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
   const temp = now ? Math.round(now.temp - climbed * LAPSE_PER_M) : null;
   const tempW = temp === null ? 0 : 20 + `${temp}`.length * 7;
   // Height on the trail at that moment (Peter: see how it changes along the route); "1 234 m n. m.".
-  const heightText = height === null ? null : tx("{m} m n. m.", { m: height.toLocaleString(lang === "en" ? "en-GB" : "sk-SK") });
+  const heightText = height === null ? null : `${height.toLocaleString("sk-SK")} m n. m.`;
   const heightW = heightText ? 16 + heightText.length * 6.4 : 0;
   const heightY = temp !== null ? 45 : 25;
 
@@ -356,42 +352,42 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
   const goalWords = profile ? GOAL_WORDS[profile.goalKind] : null;
   const what =
     t < first || t >= home
-      ? tx("Doma")
+      ? "Doma"
       : t < hs
         ? byBus
           ? byTrain
-            ? tx("Cesta vlakom")
-            : tx("Cesta autobusom")
-          : tx("Cesta autom")
+            ? "Cesta vlakom"
+            : "Cesta autobusom"
+          : "Cesta autom"
         : t > he
-          ? tx("Cesta domov")
+          ? "Cesta domov"
           : scene.pauses.some((pa) => t >= pa.t0 && t <= pa.t1)
-            ? `${tx("Zastávka")}: ${tx(scene.pauses.find((pa) => t >= pa.t0 && t <= pa.t1)!.name)}`
+            ? `Zastávka: ${scene.pauses.find((pa) => t >= pa.t0 && t <= pa.t1)!.name}`
             : Math.abs(t - scene.goalT) < 6 * MIN && goalWords
-            ? `${tx(goalWords.at)}: ${profile!.goalName}`
+            ? `${goalWords.at}: ${profile!.goalName}`
             : t < scene.goalT
-              ? tx("Cesta tam")
+              ? "Cesta tam"
               : profile?.loop
-                ? tx("Okruh späť")
-                : tx("Cesta späť");
+                ? "Okruh späť"
+                : "Cesta späť";
 
   const sunNote =
     t < sunrise ? (
-      <>{tx("slnko vyjde o {time}", { time: formatTime(plan.sunrise) })}</>
+      <>slnko vyjde o {formatTime(plan.sunrise)}</>
     ) : t < sunset ? (
       <>
-        {tx("do západu slnka")}
+        do západu slnka
         <br />
         <strong>{formatDuration(Math.round((sunset - t) / MIN))}</strong>
       </>
     ) : t < dusk ? (
       <>
-        {tx("po západe, šero")}
+        po západe, šero
         <br />
-        {tx("tma o {time}", { time: formatTime(plan.dusk) })}
+        tma o {formatTime(plan.dusk)}
       </>
     ) : (
-      <>{tx("tma")}</>
+      <>tma</>
     );
 
   const timeAt = (clientX: number) => {
@@ -464,7 +460,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         className="block h-auto w-full cursor-ew-resize touch-pan-y"
         // A slider for keyboards and screen readers: arrows move through the day, the time and what happens are read out.
         role="slider"
-        aria-label={tx("Priebeh dňa. Slnko vychádza o {rise} a zapadá o {set}. Túra od {from} do {to}.", { rise: formatTime(plan.sunrise), set: formatTime(plan.sunset), from: formatTime(plan.hikeStart), to: formatTime(plan.hikeEnd) })}
+        aria-label={`Priebeh dňa. Slnko vychádza o ${formatTime(plan.sunrise)} a zapadá o ${formatTime(plan.sunset)}. Túra od ${formatTime(plan.hikeStart)} do ${formatTime(plan.hikeEnd)}.`}
         aria-valuemin={slideLo}
         aria-valuemax={slideHi}
         aria-valuenow={Math.max(slideLo, Math.min(slideHi, t))}
@@ -643,7 +639,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
               paintOrder="stroke"
               fontFamily={ground}
             >
-              {tx(word as string)} {formatTime(new Date(+at))}
+              {word} {formatTime(new Date(+at))}
             </text>
           </g>
         ))}
@@ -714,8 +710,8 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         type="button"
         onClick={() => setPlaying((p) => !p)}
         aria-pressed={playing}
-        aria-label={playing ? tx("Zastaviť") : tx("Prehrať celý deň")}
-        title={playing ? tx("Zastaviť") : tx("Prehrať celý deň")}
+        aria-label={playing ? "Zastaviť" : "Prehrať celý deň"}
+        title={playing ? "Zastaviť" : "Prehrať celý deň"}
         className="absolute top-[2.2%] left-[2.2%] inline-flex h-6 w-6 items-center justify-center rounded-full bg-white/90 text-[#14233b] shadow-sm focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
       >
         {/* Just the sign, so it hides as little of the sky and weather as it can. */}
@@ -736,7 +732,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
           value={Math.max(slideLo, Math.min(slideHi, t))}
           onChange={(e) => take(Number(e.target.value))}
           className="time-slider"
-          aria-label={tx("Čas počas dňa")}
+          aria-label="Čas počas dňa"
           aria-valuetext={formatTime(new Date(t))}
         />
       </div>
@@ -751,7 +747,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
             // One line always (the temperature sits under the time in the picture).
             <span className="inline-flex items-center gap-1 font-semibold whitespace-nowrap text-[var(--foreground)]">
               <svg viewBox="0 0 22 22" className="h-[18px] w-[22px]" aria-hidden="true" dangerouslySetInnerHTML={{ __html: weatherIconSvg(kind) }} />
-              {weatherWords(baseSymbol(now.symbol!), lang).split(" (")[0]}
+              {weatherWords(baseSymbol(now.symbol!)).split(" (")[0]}
             </span>
           )}
           <div>{sunNote}</div>

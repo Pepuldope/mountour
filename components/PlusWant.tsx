@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { track } from "@/lib/analytics";
 import { TESTER_FORM_URL } from "@/lib/site";
-import { useT } from "@/lib/i18n";
 
 /**
  * "Chcel by som to" for Túruj+, which does not exist yet: a price test. A tap is
@@ -11,17 +10,17 @@ import { useT } from "@/lib/i18n";
  */
 export function PlusWant() {
   const [answer, setAnswer] = useState<"want" | "no" | null>(null);
-  const t = useT();
 
   if (answer === "want") {
     return (
       <div role="status" className="flex flex-col gap-2 rounded-xl bg-[var(--ok-bg)] p-3 text-sm">
-        <p className="font-semibold text-[var(--ok)]">{t("Ďakujeme, započítané.")}</p>
+        <p className="font-semibold text-[var(--ok)]">Ďakujeme, započítané.</p>
         <p>
-          {t("Úprimne: Túruj+ zatiaľ neexistuje. Zisťujeme, či by oň bol záujem, a postavíme ho, len ak áno. Nič neplatíte a nič sme si o vás neuložili.")}
+          Úprimne: Túruj+ zatiaľ neexistuje. Zisťujeme, či by oň bol záujem, a postavíme ho, len ak áno. Nič
+          neplatíte a nič sme si o vás neuložili.
         </p>
         <a href={TESTER_FORM_URL} target="_blank" rel="noopener noreferrer" className="w-fit font-semibold text-[var(--accent)] underline">
-          {t("Chcem vedieť, keď bude hotový")}
+          Chcem vedieť, keď bude hotový
         </a>
       </div>
     );
@@ -29,7 +28,7 @@ export function PlusWant() {
   if (answer === "no") {
     return (
       <p role="status" className="rounded-xl bg-[var(--segment-bg)] p-3 text-sm">
-        {t("Ďakujeme, aj to nám pomôže. Túruj ostáva zadarmo tak ako doteraz.")}
+        Ďakujeme, aj to nám pomôže. Túruj ostáva zadarmo tak ako doteraz.
       </p>
     );
   }
@@ -43,7 +42,7 @@ export function PlusWant() {
         }}
         className="w-full rounded-xl bg-[var(--accent)] px-4 py-3 text-base font-bold text-[var(--accent-contrast)]"
       >
-        {t("Chcel by som to")}
+        Chcel by som to
       </button>
       <button
         type="button"
@@ -53,7 +52,7 @@ export function PlusWant() {
         }}
         className="px-2 text-sm text-[var(--muted)] underline"
       >
-        {t("Za túto cenu nie")}
+        Za túto cenu nie
       </button>
     </div>
   );
