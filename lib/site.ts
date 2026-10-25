@@ -4,10 +4,10 @@
 
 /**
  * The address search engines and link previews should treat as the real one.
- * Switch to "https://mountour.sk" once the domain points at the site.
+ * The old workers.dev address redirects here (next.config.ts).
  */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://mountour.nemcok-peter123.workers.dev"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://turuj.sk"
 ).replace(/\/+$/, "");
 
 export const SITE_NAME = "MounTour";
@@ -25,10 +25,12 @@ export const UMAMI_WEBSITE_ID = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID ?? "da6
 
 /**
  * Hosts where visits are counted. Local dev and preview builds stay out of
- * the numbers. Add "mountour.sk" when the domain is live.
+ * the numbers.
  */
 export const COUNTED_HOSTS = [
   new URL(SITE_URL).host,
+  "turuj.sk",
+  "www.turuj.sk",
   "mountour.nemcok-peter123.workers.dev",
   "mountour.vercel.app",
   "mountour.sk",
