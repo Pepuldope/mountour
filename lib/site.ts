@@ -10,7 +10,7 @@ export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://turuj.sk"
 ).replace(/\/+$/, "");
 
-export const SITE_NAME = "MounTour";
+export const SITE_NAME = "Túruj";
 
 export const SITE_TITLE = "Kam dnes na výlet do hôr – plánovač jednodňových túr";
 
@@ -45,10 +45,10 @@ export const OG_IMAGE = {
   url: "/og-image.png",
   width: 1200,
   height: 630,
-  alt: "MounTour – kam dnes na výlet, aby ste boli späť za svetla",
+  alt: "Túruj – kam dnes na výlet, aby ste boli späť za svetla",
 };
 
-export const REPO_URL = "https://github.com/Pepuldope/mountour";
+export const REPO_URL = "https://github.com/Pepuldope/turuj";
 
 /** Google Form for tester sign-up, linked from the footer ("Chcem testovať"). */
 export const TESTER_FORM_URL =

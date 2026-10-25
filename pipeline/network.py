@@ -37,7 +37,7 @@ from . import osm as osm_mod
 from . import packed
 from .geo import rdp_indices
 
-UA = "MounTour trail map (https://github.com/Pepuldope/mountour; nemcok.peter123@gmail.com)"
+UA = "Turuj trail map (https://github.com/Pepuldope/turuj; nemcok.peter123@gmail.com)"
 VERSION = 1
 
 PIECE_M = 600

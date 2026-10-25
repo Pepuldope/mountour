@@ -16,7 +16,7 @@ export type AnalyticsEvent =
   | "nav_open" // hand-off to Google Maps / a map app
   | "transit_open" // cp.sk link opened
   | "tester_signup_open" // "Chcem testovať" footer link tapped
-  | "plus_want" // "Chcel by som to" on /plus (MounTour+ price test)
+  | "plus_want" // "Chcel by som to" on /plus (Túruj+ price test)
   | "plus_no"; // "Za túto cenu nie" on /plus
 
 type EventData = Record<string, string | number | boolean>;

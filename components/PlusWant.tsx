@@ -5,7 +5,7 @@ import { track } from "@/lib/analytics";
 import { TESTER_FORM_URL } from "@/lib/site";
 
 /**
- * "Chcel by som to" for MounTour+, which does not exist yet: a price test. A tap is
+ * "Chcel by som to" for Túruj+, which does not exist yet: a price test. A tap is
  * counted in Umami (no personal data) and the page says so straight away.
  */
 export function PlusWant() {
@@ -16,7 +16,7 @@ export function PlusWant() {
       <div role="status" className="flex flex-col gap-2 rounded-xl bg-[var(--ok-bg)] p-3 text-sm">
         <p className="font-semibold text-[var(--ok)]">Ďakujeme, započítané.</p>
         <p>
-          Úprimne: MounTour+ zatiaľ neexistuje. Zisťujeme, či by oň bol záujem, a postavíme ho, len ak áno. Nič
+          Úprimne: Túruj+ zatiaľ neexistuje. Zisťujeme, či by oň bol záujem, a postavíme ho, len ak áno. Nič
           neplatíte a nič sme si o vás neuložili.
         </p>
         <a href={TESTER_FORM_URL} target="_blank" rel="noopener noreferrer" className="w-fit font-semibold text-[var(--accent)] underline">
@@ -28,7 +28,7 @@ export function PlusWant() {
   if (answer === "no") {
     return (
       <p role="status" className="rounded-xl bg-[var(--segment-bg)] p-3 text-sm">
-        Ďakujeme, aj to nám pomôže. MounTour ostáva zadarmo tak ako doteraz.
+        Ďakujeme, aj to nám pomôže. Túruj ostáva zadarmo tak ako doteraz.
       </p>
     );
   }

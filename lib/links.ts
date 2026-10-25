@@ -1,5 +1,5 @@
 /**
- * Everything that leaves MounTour as a link or a message: the shared plan,
+ * Everything that leaves Túruj as a link or a message: the shared plan,
  * navigation hand-offs (Google Maps, Mapy.com) and the cp.sk timetable search.
  * Pure, so the wording and parameters are unit tested.
  */

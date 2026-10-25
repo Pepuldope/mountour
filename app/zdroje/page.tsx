@@ -3,13 +3,13 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Zdroje a mapy",
-  description: "Odkiaľ MounTour berie mapy a údaje: OpenStreetMap, OpenFreeMap, openrouteservice, cestovný poriadok ŽSR.",
+  description: "Odkiaľ Túruj berie mapy a údaje: OpenStreetMap, OpenFreeMap, openrouteservice, cestovný poriadok ŽSR.",
   path: "/zdroje",
 });
 
 export default function SourcesPage() {
   return (
-    <InfoPage title="Zdroje a mapy" intro="MounTour stojí na otvorených údajoch. Ďakujeme všetkým, ktorí ich tvoria.">
+    <InfoPage title="Zdroje a mapy" intro="Túruj stojí na otvorených údajoch. Ďakujeme všetkým, ktorí ich tvoria.">
       <h2>OpenStreetMap</h2>
       <p>
         Trasy, parkoviská, zastávky a ďalšie miesta pochádzajú z{" "}

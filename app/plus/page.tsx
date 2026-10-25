@@ -3,8 +3,8 @@ import { PlusWant } from "@/components/PlusWant";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "MounTour+",
-  description: "MounTour+ pre tých, čo chodia von často: víkendový tip, strážca výletu a neobmedzené offline výlety za 9,99 € ročne.",
+  title: "Túruj+",
+  description: "Túruj+ pre tých, čo chodia von často: víkendový tip, strážca výletu a neobmedzené offline výlety za 9,99 € ročne.",
   path: "/plus",
 });
 
@@ -28,7 +28,7 @@ export default function PlusPage() {
     <InfoPage
       title={
         <>
-          MounTour+{" "}
+          Túruj+{" "}
           <span className="ml-1 rounded-full bg-[var(--warn-bg)] px-2.5 py-1 align-middle text-xs font-semibold text-[var(--warn)]">
             Pripravujeme
           </span>
@@ -54,7 +54,7 @@ export default function PlusPage() {
       </section>
 
       <p className="text-xs text-[var(--muted)]">
-        MounTour+ zatiaľ len pripravujeme. Poradie výletov sa nedá kúpiť, ani s MounTour+.
+        Túruj+ zatiaľ len pripravujeme. Poradie výletov sa nedá kúpiť, ani s Túruj+.
       </p>
     </InfoPage>
   );

@@ -1,4 +1,4 @@
-# MounTour roadmap
+# Túruj roadmap
 
 Feedback from Peter after the first live version (2026-10-07). Ordered roughly by
 dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
@@ -27,7 +27,7 @@ dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
 ## 4. Multi-leg trip: start → trailhead → trail  `[x]`
 - One route with stops: drive or transit leg to the trailhead, then the on-foot trail.
 - Show how long the drive/transit leg takes.
-- **Scope note:** the locked scope says MounTour "does not route-find" and hands the
+- **Scope note:** the locked scope says Túruj "does not route-find" and hands the
   drive to Google/Apple Maps. Drawing the drive leg + its duration needs a routing
   API (e.g. OSRM / OpenRouteService). Transit times for Slovakia have no free public
   API. **Decided 2026-10-07: reopen.** Draw the drive leg + duration via a free routing
@@ -75,7 +75,7 @@ dependency, not priority. Status: `[ ]` todo · `[~]` in progress · `[x]` done.
   departure, start, drive time) to localStorage AND caches the page + GPX + tiles + the
   build assets it runs on. `/ulozene` lists them (mini timeline, verdict, Otvoriť restores
   date/time/start, Odstrániť also drops the cache). Service worker: build assets
-  cache-first in `mountour-static`, pages network-first with the saved copy as offline
+  cache-first in `turuj-static`, pages network-first with the saved copy as offline
   fallback. Verified offline in headless Chromium: trip page + map tiles + /ulozene load.
 
 ## Data sources (decided 2026-10-07)

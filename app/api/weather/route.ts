@@ -14,7 +14,7 @@ import type { WeatherForecast, WeatherStep } from "@/lib/weather";
  * nearby trips share one cached forecast and MET is asked far less often.
  */
 
-const UA = "MounTour/1.0 https://github.com/Pepuldope/mountour nemcok.peter123@gmail.com";
+const UA = "Turuj/1.0 https://github.com/Pepuldope/turuj nemcok.peter123@gmail.com";
 const AREA = { minLat: 47, maxLat: 50, minLon: 16, maxLon: 23 };
 const CACHE_S = 1800;
 /** MET answering slowly must not hold the page. */

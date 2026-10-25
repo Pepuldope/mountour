@@ -952,10 +952,10 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
           <SeasonScene season={season} width={440} height={250} seed={11} sunX={0.64} sunY={0.17} drop={0.2} noSun className="absolute inset-0 h-full w-full" />
           <SunPull season={season} width={440} height={250} sunX={0.64} sunY={0.17} moveRef={columnRef} />
           <nav aria-label="Hlavná navigácia" className="relative flex items-center justify-between gap-3 px-4 pt-4">
-            <Link href="/" aria-label="MounTour" className="block">
+            <Link href="/" aria-label="Túruj" className="block">
               {/* Name only: the seasonal mark blends into the header scene. The hero sky is light in both themes, so dark ink always. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/brand/mountour-wordmark.svg" alt="MounTour" width={120} height={23} className="h-[23px] w-auto" />
+              <img src="/brand/turuj-wordmark.svg" alt="Túruj" width={61} height={26} className="h-[26px] w-auto" />
             </Link>
             <SavedTripsLink />
           </nav>

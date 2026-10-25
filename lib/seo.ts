@@ -16,7 +16,7 @@ export function pageMetadata({
   title: string;
   description: string;
   path: string;
-  /** true = use the title as is, without the " | MounTour" suffix. */
+  /** true = use the title as is, without the " | Túruj" suffix. */
   absoluteTitle?: boolean;
   /** Link-preview picture; the brand image unless the page has its own (a trip's place photo). */
   image?: { url: string; width: number; height: number; alt: string };

@@ -1,12 +1,12 @@
-# MounTour
+# Túruj
 
 A Slovak one-day-trip planner for the mountains and nature of all of Slovakia.
-MounTour plans the *chain* around a hike — where you start, the drive or bus there,
+Túruj plans the *chain* around a hike — where you start, the drive or bus there,
 where you park, the trail itself, and getting back before dark — and hands off
 to the tools that already do the rest: Google/Apple Maps or Mapy.com for
 turn-by-turn directions, and a GPX file for the hike itself.
 
-Live at https://mountour.nemcok-peter123.workers.dev (Cloudflare Workers, deployed
+Live at https://turuj.sk (Cloudflare Workers, deployed
 from `main`; setup in `docs/DEPLOY-CLOUDFLARE.md`). What is built and what was
 decided along the way is in `docs/ROADMAP.md` (a dated log).
 

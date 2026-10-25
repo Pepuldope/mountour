@@ -1,4 +1,4 @@
-// MounTour service worker.
+// Túruj service worker.
 //
 // Cache-on-plan, not cache-everything: nothing is precached at install time.
 // A trip is only cached when the visitor taps "Uložiť výlet" on its
