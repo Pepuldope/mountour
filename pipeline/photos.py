@@ -258,6 +258,10 @@ def mapillary_photos(places, token):
 
     MLY_DIR.mkdir(parents=True, exist_ok=True)
     auth = {"Authorization": f"OAuth {token}"}  # in a header, so the token never shows in a logged URL
+    # Self-check on a busy square (Bratislava, Hlavné námestie): an empty answer here means the request is wrong.
+    probe = "https://graph.mapillary.com/images?fields=id&bbox=17.1070,48.1430,17.1090,48.1445&limit=5"
+    log(f"mapillary probe, header: {json.dumps(get_json(probe, auth))[:200]}")
+    log(f"mapillary probe, param: {json.dumps(get_json(probe + '&access_token=' + urllib.parse.quote(token)))[:200]}")
     out = {}
     seen = kept = 0
     for n, (i, lat, lon) in enumerate(places):
