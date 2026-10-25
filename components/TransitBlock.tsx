@@ -13,6 +13,9 @@ import type { TransitStop } from "@/lib/types";
 import { clock } from "@/lib/zoned";
 import { useTripAccess } from "@/components/TripAccess";
 import { UiIcon } from "@/components/UiIcon";
+import { useLang, useT } from "@/lib/i18n";
+import { decimal, tr } from "@/lib/lang";
+import type { Lang } from "@/lib/lang";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const hhmm = clock;
@@ -21,11 +24,14 @@ const link = "w-fit text-sm font-semibold text-[var(--accent)] underline";
 /** How many stops to offer; the rest are far or duplicates. */
 const MAX_OPTIONS = 4;
 
-function walkLabel(s: TransitStop): string {
+function walkLabel(s: TransitStop, lang: Lang): string {
   const m = s.join?.walk_m ?? s.distance_m;
   const min = approachMin(m);
-  const walk = min > 0 ? `${formatFromUser(m)} pešo k ${s.join ? "trase" : "začiatku"} (~${formatDuration(min)})` : s.join ? "priamo pri trase" : "pri začiatku trasy";
-  return s.join && s.join.skip_m > 0 ? `${walk}, túra kratšia o ${(s.join.skip_m / 1000).toFixed(1).replace(".", ",")} km` : walk;
+  const walk =
+    min > 0
+      ? tr(lang, s.join ? "{m} pešo k trase (~{t})" : "{m} pešo k začiatku (~{t})", { m: formatFromUser(m, lang), t: formatDuration(min) })
+      : tr(lang, s.join ? "priamo pri trase" : "pri začiatku trasy");
+  return s.join && s.join.skip_m > 0 ? tr(lang, "{walk}, túra kratšia o {km} km", { walk, km: decimal(lang, s.join.skip_m / 1000) }) : walk;
 }
 
 export function StopIcon({ mode, size = 16 }: { mode: TransitStop["mode"]; size?: number }) {
@@ -38,6 +44,8 @@ export function StopIcon({ mode, size = 16 }: { mode: TransitStop["mode"]; size?
  */
 export function StopsBlock() {
   const { stops, stopChoice, chooseStop, stop, transit } = useTripAccess();
+  const t = useT();
+  const lang = useLang();
   if (!transit) return null;
   const options = stops.slice(0, MAX_OPTIONS);
 
@@ -47,19 +55,19 @@ export function StopsBlock() {
         <span className="mt-pin mt-pin-transit shrink-0 scale-90" aria-hidden>
           <StopIcon mode={stop?.mode ?? "autobus"} />
         </span>
-        Zastávky pri trase
+        {t("Zastávky pri trase")}
         <span className="ml-auto truncate text-sm font-medium text-[var(--muted)]">
-          {stop ? `${formatWalk(stop.join?.walk_m ?? stop.distance_m)} ${stop.join ? "k trase" : "k štartu"}` : "bez zastávky"}
+          {stop ? t(stop.join ? "{m} k trase" : "{m} k štartu", { m: formatWalk(stop.join?.walk_m ?? stop.distance_m, lang) }) : t("bez zastávky")}
         </span>
         <span className="text-[var(--muted)] transition-transform group-open:rotate-90">
           <UiIcon name="chev" size={16} />
         </span>
       </summary>
       <div className="flex flex-col gap-2 px-4 pb-3.5">
-        {options.length === 0 && <p className="text-sm">Pri trase sme nenašli zastávku vlaku ani autobusu.</p>}
-        {options.length > 1 && <p className="text-sm text-[var(--muted)]">Vyberte, kde vystúpite. Cesta pešo aj plán sa prepočítajú.</p>}
+        {options.length === 0 && <p className="text-sm">{t("Pri trase sme nenašli zastávku vlaku ani autobusu.")}</p>}
+        {options.length > 1 && <p className="text-sm text-[var(--muted)]">{t("Vyberte, kde vystúpite. Cesta pešo aj plán sa prepočítajú.")}</p>}
         {options.length > 0 && (
-          <ul className="flex flex-col gap-1.5" role="radiogroup" aria-label="Zastávka">
+          <ul className="flex flex-col gap-1.5" role="radiogroup" aria-label={t("Zastávka")}>
             {options.map((s, i) => {
               const selected = i === stopChoice;
               return (
@@ -80,7 +88,7 @@ export function StopsBlock() {
                     <span className="flex flex-col">
                       <span className="font-semibold">{stopLabel(s.name)}</span>
                       <span className="text-[var(--muted)]">
-                        {TRANSIT_LABEL[s.mode]}, {walkLabel(s)}
+                        {t(TRANSIT_LABEL[s.mode])}, {walkLabel(s, lang)}
                       </span>
                     </span>
                   </button>
@@ -102,6 +110,7 @@ const fromMidnight = (m: number) => `${pad(Math.floor(m / 60) % 24)}:${pad(m % 6
 
 /** A list of connections to pick from: departure, the trains, arrival. */
 function Connections({ list, choice, choose, label }: { list: RailJourney[]; choice: number; choose: (i: number) => void; label: string }) {
+  const t = useT();
   return (
     <ul className="flex flex-col gap-1.5" role="radiogroup" aria-label={label}>
       {list.map((j, i) => {
@@ -111,7 +120,7 @@ function Connections({ list, choice, choose, label }: { list: RailJourney[]; cho
             <button type="button" role="radio" aria-checked={i === choice} onClick={() => choose(i)} className={pill(i === choice)}>
               <span className="font-data text-xl leading-none font-semibold">{fromMidnight(j.dep)}</span>
               <span className="min-w-0 flex-1 truncate text-[var(--muted)]">
-                {j.legs[0].train.split(" ").slice(0, 2).join(" ")}, {changes === 0 ? "priamy" : changes === 1 ? "1 prestup" : `${changes} prestupy`}
+                {j.legs[0].train.split(" ").slice(0, 2).join(" ")}, {changes === 0 ? t("priamy") : changes === 1 ? t("1 prestup") : t("{n} prestupy", { n: changes })}
               </span>
               <span className="font-data text-base leading-none font-semibold">→ {fromMidnight(j.arr)}</span>
             </button>
@@ -124,6 +133,7 @@ function Connections({ list, choice, choose, label }: { list: RailJourney[]; cho
 
 /** The chosen connection, train by train, with the changes in between. */
 function Legs({ journey, before, after }: { journey: RailJourney; before?: string; after?: string }) {
+  const t = useT();
   return (
     <ol className="flex flex-col gap-1.5 border-l-2 border-dashed border-[var(--border)] pl-3 text-sm">
       {before && <li className="text-[var(--muted)]">{before}</li>}
@@ -131,7 +141,7 @@ function Legs({ journey, before, after }: { journey: RailJourney; before?: strin
         <li key={i} className="flex flex-col">
           {i > 0 && (
             <span className="font-semibold text-[var(--warn)]">
-              Prestup: {l.from}, {l.dep - journey.legs[i - 1].arr} min
+              {t("Prestup")}: {l.from}, {l.dep - journey.legs[i - 1].arr} min
             </span>
           )}
           <span>
@@ -155,6 +165,7 @@ function Legs({ journey, before, after }: { journey: RailJourney; before?: strin
 export function TransitHandoff() {
   const { stop } = useTripAccess();
   const { start } = useUserLocation();
+  const t = useT();
   if (!stop) return null;
   const to = stop.join?.location ?? stop.location;
   return (
@@ -167,7 +178,7 @@ export function TransitHandoff() {
         rel="noopener noreferrer"
         className="flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] px-4 py-3 text-[15px] font-bold whitespace-nowrap text-[var(--accent-contrast)] no-underline"
       >
-        <StopIcon mode={stop.mode} /> Nájsť spoj v Google Mapách ↗
+        <StopIcon mode={stop.mode} /> {t("Nájsť spoj v Google Mapách")} ↗
       </a>
     </div>
   );
@@ -185,6 +196,8 @@ export function TransitLegs({ plan, rail }: { plan: DayPlan; rail: RailTrip }) {
   const { start, fix } = useUserLocation();
   const { date } = useTripDay();
   const homeStop = useHomeStop(start);
+  const t = useT();
+  const lang = useLang();
   const town = startTown(start, fix?.town);
   // cp.sk finds connections between stops; the start's own stop beats the town name, unless it is a
   // city-bus stop named without its town ("Hodžovo nám."), which cp.sk can't place: then the town.
@@ -193,7 +206,7 @@ export function TransitLegs({ plan, rail }: { plan: DayPlan; rail: RailTrip }) {
   if (!stop) {
     return (
       <p className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-3 py-2.5 text-sm">
-        Pri začiatku trasy sme nenašli zastávku vlaku ani autobusu. Táto túra je lepšia autom.
+        {t("Pri začiatku trasy sme nenašli zastávku vlaku ani autobusu. Táto túra je lepšia autom.")}
       </p>
     );
   }
@@ -201,79 +214,79 @@ export function TransitLegs({ plan, rail }: { plan: DayPlan; rail: RailTrip }) {
   const there = hhmm(plan.hikeStart);
   const back = hhmm(plan.hikeEnd);
   const walkM = stop.join?.walk_m ?? stop.distance_m;
-  const walk = `${formatFromUser(walkM)} pešo k ${stop.join ? "trase" : "začiatku trasy"}`;
+  const walk = t(stop.join ? "{m} pešo k trase" : "{m} pešo k začiatku trasy", { m: formatFromUser(walkM, lang) });
   const train = rail.status === "ok" ? rail.there[rail.thereChoice] : null;
   const trainBack = rail.status === "ok" ? (rail.back[rail.backChoice] ?? null) : null;
   const rideMin = plan.segments[0].kind === "drive-there" ? Math.round((plan.hikeStart.getTime() - plan.segments[0].start.getTime()) / 60000) : null;
   const to = stop.join?.location ?? stop.location;
 
   return (
-    <section aria-label="Cesta vlakom a autobusom" className="flex flex-col gap-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-3 py-3 text-sm">
+    <section aria-label={t("Cesta vlakom a autobusom")} className="flex flex-col gap-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-3 py-3 text-sm">
       {train ? (
         <>
           <div className="flex flex-col gap-2">
             <p className="flex items-center gap-2 text-base font-bold">
-              <StopIcon mode="vlak" /> Tam vlakom
+              <StopIcon mode="vlak" /> {t("Tam vlakom")}
             </p>
-            <Connections list={rail.there} choice={rail.thereChoice} choose={rail.chooseThere} label="Vlak tam" />
+            <Connections list={rail.there} choice={rail.thereChoice} choose={rail.chooseThere} label={t("Vlak tam")} />
             <Legs
               journey={train}
-              before={rail.homeStation ? `Zo štartu na stanicu ${rail.homeStation.name} (~${formatDuration(rail.accessMin)})` : undefined}
+              before={rail.homeStation ? t("Zo štartu na stanicu {name} (~{t})", { name: rail.homeStation.name, t: formatDuration(rail.accessMin) }) : undefined}
               after={walk}
             />
           </div>
           <div className="flex flex-col gap-2">
             <p className="flex items-center gap-2 text-base font-bold">
-              <StopIcon mode="vlak" /> Späť vlakom
+              <StopIcon mode="vlak" /> {t("Späť vlakom")}
             </p>
             {trainBack ? (
               <>
                 <p className="text-[var(--muted)]">
-                  Na stanici budete okolo <span className="font-data text-base leading-none">{formatTime(plan.hikeEnd)}</span>. Vybrali sme prvý vlak, ktorý stihnete.
+                  {t("Na stanici budete okolo")} <span className="font-data text-base leading-none">{formatTime(plan.hikeEnd)}</span>. {t("Vybrali sme prvý vlak, ktorý stihnete.")}
                 </p>
-                <Connections list={rail.back} choice={rail.backChoice} choose={rail.chooseBack} label="Vlak späť" />
+                <Connections list={rail.back} choice={rail.backChoice} choose={rail.chooseBack} label={t("Vlak späť")} />
                 <Legs journey={trainBack} />
               </>
             ) : (
-              <p className="font-semibold text-[var(--warn)]">Po túre už v tento deň nejde vlak späť. Skúste skorší odchod alebo autobus.</p>
+              <p className="font-semibold text-[var(--warn)]">{t("Po túre už v tento deň nejde vlak späť. Skúste skorší odchod alebo autobus.")}</p>
             )}
           </div>
-          <p className="text-xs text-[var(--muted)]">Časy vlakov podľa cestovného poriadku ŽSR. Výluky a meškania overte na cp.sk.</p>
+          <p className="text-xs text-[var(--muted)]">{t("Časy vlakov podľa cestovného poriadku ŽSR. Výluky a meškania overte na cp.sk.")}</p>
         </>
       ) : (
         <div className="flex flex-col gap-1.5">
           <p className="flex items-center gap-2 text-base font-bold">
-            <StopIcon mode={stop.mode} /> {stop.mode === "vlak" ? "Vlakom" : "Autobusom"}
+            <StopIcon mode={stop.mode} /> {t(stop.mode === "vlak" ? "Vlakom" : "Autobusom")}
             {rideMin !== null && <span className="font-data text-lg leading-none">~{formatDuration(rideMin)}</span>}
           </p>
           <p>
             {homeStop ? (
               <>
-                Zo zastávky <strong>{stopLabel(homeStop.name)}</strong> ({TRANSIT_LABEL[homeStop.mode].toLowerCase()},{" "}
-                <span className="font-data leading-none">{formatFromUser(homeStop.distance_m)}</span> od štartu)
+                {t("Zo zastávky")} <strong>{stopLabel(homeStop.name)}</strong> ({t(TRANSIT_LABEL[homeStop.mode]).toLowerCase()},{" "}
+                <span className="font-data leading-none">{formatFromUser(homeStop.distance_m, lang)}</span> {t("od štartu")})
               </>
             ) : home ? (
               <>
-                Z <strong>{stopLabel(home)}</strong>
+                {t("Z")} <strong>{stopLabel(home)}</strong>
               </>
             ) : (
-              "Zo štartu"
+              t("Zo štartu")
             )}{" "}
-            na zastávku <strong>{stopLabel(stop.name)}</strong>, buďte tam okolo <span className="font-data text-base leading-none">{formatTime(plan.hikeStart)}</span>.
-            Odtiaľ {walk}.
+            {t("na zastávku")} <strong>{stopLabel(stop.name)}</strong>, {t("buďte tam okolo")} <span className="font-data text-base leading-none">{formatTime(plan.hikeStart)}</span>.{" "}
+            {t("Odtiaľ {walk}.", { walk })}
           </p>
           <p className="text-xs text-[var(--muted)]">
             {rail.status === "loading"
-              ? "Hľadáme vlaky…"
+              ? t("Hľadáme vlaky…")
               : rail.status === "no-day"
-                ? "Cestovný poriadok vlakov na tento deň ešte nemáme. Čas je odhad podľa cesty autom."
-                : "Čas je odhad podľa cesty autom s rezervou na zastávky a čakanie. Presný spoj nájdete v Google Mapách vyššie."}
+                ? t("Cestovný poriadok vlakov na tento deň ešte nemáme. Čas je odhad podľa cesty autom.")
+                : t("Čas je odhad podľa cesty autom s rezervou na zastávky a čakanie. Presný spoj nájdete v Google Mapách vyššie.")}
           </p>
           <p className="pt-1">
-            <span className="font-semibold">Späť:</span> na zastávke budete okolo <span className="font-data text-base leading-none">{formatTime(plan.hikeEnd)}</span>
+            <span className="font-semibold">{t("Späť:")}</span> {t("na zastávke budete okolo")} <span className="font-data text-base leading-none">{formatTime(plan.hikeEnd)}</span>
             {rideMin !== null && (
               <>
-                , doma približne o <span className="font-data text-base leading-none">{formatTime(plan.segments[plan.segments.length - 1].end)}</span>
+                {t(", doma približne o")} <span className="font-data text-base leading-none">{formatTime(plan.segments[plan.segments.length - 1].end)}</span>
               </>
             )}
             .
@@ -282,20 +295,20 @@ export function TransitLegs({ plan, rail }: { plan: DayPlan; rail: RailTrip }) {
       )}
 
       <div className="flex flex-col gap-2 border-t border-[var(--border)] pt-3">
-        <p className="font-semibold">Presné spoje a prestupy</p>
+        <p className="font-semibold">{t("Presné spoje a prestupy")}</p>
         <div className="flex flex-wrap gap-x-4 gap-y-1">
           <a href={cpSkUrl(stop.name, home, date, train ? fromMidnight(train.dep) : there, !train)} data-umami-event="transit_open" data-umami-event-leg="there" target="_blank" rel="noopener noreferrer" className={link}>
-            Spoje tam na cp.sk ↗
+            {t("Spoje tam na cp.sk")} ↗
           </a>
           <a href={cpSkBackUrl(stop.name, home, date, back)} data-umami-event="transit_open" data-umami-event-leg="back" target="_blank" rel="noopener noreferrer" className={link}>
-            Spoje späť na cp.sk ↗
+            {t("Spoje späť na cp.sk")} ↗
           </a>
           <a href={appleTransitUrl(to, start)} data-umami-event="transit_open" data-umami-event-leg="apple" target="_blank" rel="noopener noreferrer" className={link}>
-            Apple Mapy ↗
+            {t("Apple Mapy")} ↗
           </a>
         </div>
       </div>
-      {!start && <p className="text-xs text-[var(--muted)]">Vyberte, odkiaľ cestujete, a nájdeme vám najbližšiu zastávku aj vlaky.</p>}
+      {!start && <p className="text-xs text-[var(--muted)]">{t("Vyberte, odkiaľ cestujete, a nájdeme vám najbližšiu zastávku aj vlaky.")}</p>}
     </section>
   );
 }

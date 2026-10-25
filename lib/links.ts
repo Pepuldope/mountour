@@ -4,6 +4,8 @@
  * Pure, so the wording and parameters are unit tested.
  */
 import { DIFFICULTY_LABEL, formatDuration } from "@/lib/format";
+import { tr } from "@/lib/lang";
+import type { Lang } from "@/lib/lang";
 import { haversineM } from "@/lib/geo";
 import type { LatLng } from "@/lib/types";
 import type { StartPoint } from "@/lib/userLocation";
@@ -40,12 +42,12 @@ export interface SharedPlan {
   pick: number;
 }
 
-export function sharePath(slug: string, plan: Pick<SharedPlan, "date" | "transit" | "withKids" | "pick"> & { meet: string }): string {
+export function sharePath(slug: string, plan: Pick<SharedPlan, "date" | "transit" | "withKids" | "pick"> & { meet: string }, lang: Lang = "sk"): string {
   const q = new URLSearchParams({ [SHARE_PARAMS.date]: plan.date, [SHARE_PARAMS.meet]: plan.meet });
   if (plan.transit) q.set(SHARE_PARAMS.travel, "bus");
   if (plan.withKids) q.set(SHARE_PARAMS.kids, "1");
   if (plan.pick > 0) q.set(plan.transit ? SHARE_PARAMS.stop : SHARE_PARAMS.parking, String(plan.pick));
-  return `/trasa/${slug}?${q.toString()}`;
+  return `${lang === "en" ? "/en" : ""}/trasa/${slug}?${q.toString()}`;
 }
 
 /** "2026-10-17", and a day the calendar has (not 2026-02-30). */
@@ -108,23 +110,25 @@ export interface ShareTextInput {
  * Chat-ready plan, one fact a line. Only times that hold for everyone: friends leave from
  * different places, so the message has the meeting time, not the sender's departure or home time.
  */
-export function shareText(i: ShareTextInput): string {
-  const meet = i.place ? `${hhmm(i.meet)} stretnutie ${i.place}` : `${hhmm(i.meet)} začiatok túry`;
-  const endWord = i.endPlace === "car" ? "späť pri aute" : i.endPlace === "stop" ? "späť na zastávke" : "koniec túry";
-  const walk = `${formatDuration(i.hikeMin).replaceAll("\u00a0", " ")} chôdze, ${DIFFICULTY_LABEL[i.difficulty].toLowerCase()}`;
+export function shareText(i: ShareTextInput, lang: Lang = "sk"): string {
+  const t = (sk: string) => tr(lang, sk);
+  const meet = i.place ? `${hhmm(i.meet)} ${t("stretnutie")} ${i.place}` : `${hhmm(i.meet)} ${t("začiatok túry")}`;
+  const endWord = t(i.endPlace === "car" ? "späť pri aute" : i.endPlace === "stop" ? "späť na zastávke" : "koniec túry");
+  const walk = tr(lang, "{t} chôdze, {level}", { t: formatDuration(i.hikeMin).replaceAll("\u00a0", " "), level: t(DIFFICULTY_LABEL[i.difficulty]).toLowerCase() });
   return [
-    `${i.name}, ${i.dayLabel}${i.withKids ? " (s deťmi)" : ""}`,
+    `${i.name}, ${i.dayLabel}${i.withKids ? t(" (s deťmi)") : ""}`,
     meet,
     `${hhmm(i.end)} ${endWord}, ${walk}`,
-    ...(i.inDaylight ? [] : ["Pozor, z túry zídete až po západe slnka."]),
-    "Kedy vyraziť z tvojho miesta, ukáže odkaz:",
+    ...(i.inDaylight ? [] : [t("Pozor, z túry zídete až po západe slnka.")]),
+    t("Kedy vyraziť z tvojho miesta, ukáže odkaz:"),
     i.url,
   ].join("\n");
 }
 
 /** "na parkovisku", or with its name when the parking has one ("na parkovisku Pod Kriváňom"). */
-export function parkingPlace(name: string | null): string {
+export function parkingPlace(name: string | null, lang: Lang = "sk"): string {
   const own = name && name.trim() !== "Parkovisko" ? name.replace(/^parkovisko\s+/i, "").trim() : "";
+  if (lang === "en") return own ? `at the car park ${own}` : "at the car park";
   return own ? `na parkovisku ${own}` : "na parkovisku";
 }
 

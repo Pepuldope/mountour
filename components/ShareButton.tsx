@@ -10,6 +10,7 @@ import { useTripAccess } from "@/components/TripAccess";
 import { sinceArrival, track } from "@/lib/analytics";
 import { clock } from "@/lib/zoned";
 import { stopLabel } from "@/lib/format";
+import { useLang, useT } from "@/lib/i18n";
 
 export interface ShareInfo {
   slug: string;
@@ -37,6 +38,8 @@ interface Props extends ShareInfo {
  */
 export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Poslať partii", className, onShared, ...trip }: Props) {
   const { withKids } = useTripSettings();
+  const t = useT();
+  const lang = useLang();
   const { transit, choice, stopChoice, parking, stop } = useTripAccess();
   const [copied, setCopied] = useState(false);
 
@@ -46,22 +49,22 @@ export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Posl
     const byStop = hasDrive && transit && stop !== null;
     const atParking = hasDrive && !transit;
     const url = new URL(
-      sharePath(trip.slug, { date, meet: clock(plan.hikeStart), transit: byStop, withKids, pick: byStop ? stopChoice : choice }),
+      sharePath(trip.slug, { date, meet: clock(plan.hikeStart), transit: byStop, withKids, pick: byStop ? stopChoice : choice }, lang),
       window.location.origin
     ).toString();
     const text = shareText({
       name: trip.name,
-      dayLabel: longDay(date),
+      dayLabel: longDay(date, lang),
       withKids,
       meet: plan.hikeStart,
-      place: byStop ? `na zastávke ${stopLabel(stop.name)}` : atParking ? parkingPlace(parking?.name ?? null) : null,
+      place: byStop ? t("na zastávke {stop}", { stop: stopLabel(stop.name) }) : atParking ? parkingPlace(parking?.name ?? null, lang) : null,
       end: plan.hikeEnd,
       endPlace: byStop ? "stop" : atParking ? "car" : null,
       inDaylight: plan.verdict === "ok" || plan.verdict === "close" || plan.verdict === "tight",
       hikeMin,
       difficulty: trip.difficulty,
       url,
-    });
+    }, lang);
     // The URL is already the text's last line; passing it twice duplicates it in most chat apps.
     track("share", { trail: trip.slug, took: sinceArrival() });
     if (navigator.share) {
@@ -81,13 +84,13 @@ export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Posl
       setTimeout(() => setCopied(false), 2500);
       onShared?.();
     } catch {
-      window.prompt("Skopírujte plán:", text);
+      window.prompt(t("Skopírujte plán:"), text);
     }
   }
 
   return (
     <button type="button" onClick={share} disabled={!plan} className={className}>
-      {copied ? "Skopírované, vložte do chatu" : label}
+      {copied ? t("Skopírované, vložte do chatu") : t(label)}
     </button>
   );
 }
