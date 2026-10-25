@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { haversineM } from "@/lib/geo";
-import { townGenitive } from "@/lib/townNames";
+import { townOf } from "@/lib/townNames";
+import { LangLink, useLang, useT } from "@/lib/i18n";
 import { nearestTown } from "@/lib/trips";
 import type { LatLng } from "@/lib/types";
 
@@ -11,10 +11,12 @@ const NEAR_TOWN_M = 10_000;
 
 /** One big way into the town page, only when the start is a well-known town with good trips around it. */
 export function TownButton({ start, knownTowns }: { start: LatLng | null; knownTowns: string[] }) {
+  const t = useT();
+  const lang = useLang();
   const town = start ? nearestTown(start) : null;
   if (!start || !town || !knownTowns.includes(town.id) || haversineM(start, town.location) > NEAR_TOWN_M) return null;
   return (
-    <Link
+    <LangLink
       href={`/vylety-z/${town.id}`}
       className="-mx-1 flex items-center gap-3.5 rounded-[var(--radius-card)] border border-[var(--card-edge)] bg-[var(--card-bg)] px-4 py-3.5 text-[var(--foreground)] no-underline shadow-[var(--shadow-card)]"
     >
@@ -24,12 +26,12 @@ export function TownButton({ start, knownTowns }: { start: LatLng | null; knownT
         </svg>
       </span>
       <span className="flex min-w-0 flex-1 flex-col">
-        <span className="text-lg leading-tight font-extrabold">Výlety okolo {townGenitive(town.id, town.name)}</span>
-        <span className="text-sm text-[var(--muted)]">Hrady, vrcholy a jaskyne do 1,5 h autom</span>
+        <span className="text-lg leading-tight font-extrabold">{t("Výlety okolo {town}", { town: townOf(lang, town.id, town.name) })}</span>
+        <span className="text-sm text-[var(--muted)]">{t("Hrady, vrcholy a jaskyne do 1,5 h autom")}</span>
       </span>
       <span className="text-[26px] font-bold text-[var(--accent)]" aria-hidden="true">
         ›
       </span>
-    </Link>
+    </LangLink>
   );
 }
