@@ -1,7 +1,7 @@
 {
  "version": 1,
- "generated_at": "2026-10-19T10:48:29+00:00",
- "osm_data_at": "2026-10-18T20:25:06Z",
+ "generated_at": "2026-10-26T10:35:47+00:00",
+ "osm_data_at": "2026-10-25T21:21:21Z",
  "attribution": "© OpenStreetMap contributors (ODbL); popularity from Wikipedia page views (Wikimedia, CC0)",
  "grid": {
   "lon0": 16.75,
@@ -80,20 +80,20 @@
   "9_7"
  ],
  "levels": 5,
- "km": 19873,
- "pieces": 72314,
+ "km": 19901,
+ "pieces": 72497,
  "level_km": [
-  7949,
-  4968,
-  3577,
-  2186,
-  1193
+  7960,
+  4975,
+  3582,
+  2189,
+  1194
  ],
  "cuts": [
-  436,
-  1322,
-  3227,
-  11523
+  443,
+  1356,
+  3324,
+  11685
  ],
  "top_goals": [
   {
@@ -167,6 +167,11 @@
    "views": 52740
   },
   {
+   "name": "Sútok Bieleho a Čierneho Váhu",
+   "kind": "vyhliadka",
+   "views": 50472
+  },
+  {
    "name": "Devín",
    "kind": "hrad",
    "views": 50323
@@ -200,11 +205,6 @@
    "name": "Trenčiansky hrad",
    "kind": "hrad",
    "views": 33070
-  },
-  {
-   "name": "Sútok Bieleho a Čierneho Váhu",
-   "kind": "vyhliadka",
-   "views": 29914
   },
   {
    "name": "Pilsko",

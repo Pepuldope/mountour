@@ -1,7 +1,7 @@
 {
  "version": 2,
- "generated_at": "2026-10-19T10:48:48+00:00",
- "osm_data_at": "2026-10-18T20:25:06Z",
+ "generated_at": "2026-10-26T10:36:13+00:00",
+ "osm_data_at": "2026-10-25T21:21:21Z",
  "attribution": "© OpenStreetMap contributors (ODbL)",
  "grid": {
   "lon0": 16.75,
@@ -80,8 +80,8 @@
   "9_7"
  ],
  "counts": {
-  "autobus": 12437,
-  "vlak": 975,
+  "autobus": 12438,
+  "vlak": 968,
   "elektricka": 138,
   "with_lines": 3278
  }
