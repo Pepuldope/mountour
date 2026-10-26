@@ -2,7 +2,7 @@
 <gpx version="1.1" creator="Túruj (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Hrad Košeca</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Hrad Košeca</name><desc>koseca</desc><trkseg>
-    <trkpt lat="48.910668" lon="18.295946"><ele>421</ele></trkpt>
+    <trkpt lat="48.910637" lon="18.295935"><ele>421</ele></trkpt>
     <trkpt lat="48.910880" lon="18.295979"><ele>422</ele></trkpt>
     <trkpt lat="48.911013" lon="18.295188"><ele>425</ele></trkpt>
     <trkpt lat="48.911025" lon="18.294979"><ele>426</ele></trkpt>
@@ -430,7 +430,7 @@
     <trkpt lat="48.911025" lon="18.294979"><ele>426</ele></trkpt>
     <trkpt lat="48.911013" lon="18.295188"><ele>425</ele></trkpt>
     <trkpt lat="48.910880" lon="18.295979"><ele>422</ele></trkpt>
-    <trkpt lat="48.910668" lon="18.295946"><ele>421</ele></trkpt>
+    <trkpt lat="48.910637" lon="18.295935"><ele>421</ele></trkpt>
   </trkseg></trk>
   <trk><name>Hrad Košeca</name><desc>koseca-iliavka-chaty</desc><trkseg>
     <trkpt lat="48.960300" lon="18.273037"><ele>435</ele></trkpt>

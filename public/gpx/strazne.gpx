@@ -211,7 +211,7 @@
     <trkpt lat="48.842007" lon="18.241617"><ele>271</ele></trkpt>
   </trkseg></trk>
   <trk><name>Strážne (Šípkov)</name><desc>strazne-dolna-poruba</desc><trkseg>
-    <trkpt lat="48.910668" lon="18.295946"><ele>421</ele></trkpt>
+    <trkpt lat="48.910637" lon="18.295935"><ele>421</ele></trkpt>
     <trkpt lat="48.910075" lon="18.295750"><ele>419</ele></trkpt>
     <trkpt lat="48.909825" lon="18.295592"><ele>418</ele></trkpt>
     <trkpt lat="48.909470" lon="18.295120"><ele>417</ele></trkpt>
@@ -595,7 +595,7 @@
     <trkpt lat="48.909470" lon="18.295120"><ele>417</ele></trkpt>
     <trkpt lat="48.909825" lon="18.295592"><ele>418</ele></trkpt>
     <trkpt lat="48.910075" lon="18.295750"><ele>419</ele></trkpt>
-    <trkpt lat="48.910668" lon="18.295946"><ele>421</ele></trkpt>
+    <trkpt lat="48.910637" lon="18.295935"><ele>421</ele></trkpt>
   </trkseg></trk>
   <trk><name>Strážne (Šípkov)</name><desc>strazne-homolka</desc><trkseg>
     <trkpt lat="48.905279" lon="18.326663"><ele>770</ele></trkpt>

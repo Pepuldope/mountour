@@ -99,7 +99,7 @@
     <trkpt lat="49.134952" lon="18.500984"><ele>833</ele></trkpt>
   </trkseg></trk>
   <trk><name>Veľký Manín</name><desc>velky-manin-maninska-tiesnava-kemp</desc><trkseg>
-    <trkpt lat="49.144073" lon="18.497272"><ele>337</ele></trkpt>
+    <trkpt lat="49.144048" lon="18.497244"><ele>336</ele></trkpt>
     <trkpt lat="49.143832" lon="18.497321"><ele>334</ele></trkpt>
     <trkpt lat="49.143695" lon="18.497296"><ele>335</ele></trkpt>
     <trkpt lat="49.143413" lon="18.496847"><ele>344</ele></trkpt>
@@ -317,7 +317,7 @@
     <trkpt lat="49.143413" lon="18.496847"><ele>344</ele></trkpt>
     <trkpt lat="49.143695" lon="18.497296"><ele>335</ele></trkpt>
     <trkpt lat="49.143832" lon="18.497321"><ele>334</ele></trkpt>
-    <trkpt lat="49.144073" lon="18.497272"><ele>337</ele></trkpt>
+    <trkpt lat="49.144048" lon="18.497244"><ele>336</ele></trkpt>
   </trkseg></trk>
   <trk><name>Veľký Manín</name><desc>velky-manin-povazska-bystrica</desc><trkseg>
     <trkpt lat="49.117269" lon="18.451625"><ele>291</ele></trkpt>

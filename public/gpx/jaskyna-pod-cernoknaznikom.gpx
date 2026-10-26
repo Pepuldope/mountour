@@ -89,7 +89,7 @@
     <trkpt lat="49.135668" lon="18.517827"><ele>394</ele></trkpt>
   </trkseg></trk>
   <trk><name>Jaskyňa pod Černokňažníkom</name><desc>jaskyna-pod-cernoknaznikom-maninska-tiesnava-kemp</desc><trkseg>
-    <trkpt lat="49.144073" lon="18.497272"><ele>337</ele></trkpt>
+    <trkpt lat="49.144048" lon="18.497244"><ele>336</ele></trkpt>
     <trkpt lat="49.144197" lon="18.497315"><ele>343</ele></trkpt>
     <trkpt lat="49.144052" lon="18.497857"><ele>348</ele></trkpt>
     <trkpt lat="49.142701" lon="18.500186"><ele>357</ele></trkpt>
@@ -166,7 +166,7 @@
     <trkpt lat="49.142701" lon="18.500186"><ele>357</ele></trkpt>
     <trkpt lat="49.144052" lon="18.497857"><ele>348</ele></trkpt>
     <trkpt lat="49.144197" lon="18.497315"><ele>343</ele></trkpt>
-    <trkpt lat="49.144073" lon="18.497272"><ele>337</ele></trkpt>
+    <trkpt lat="49.144048" lon="18.497244"><ele>336</ele></trkpt>
   </trkseg></trk>
   <trk><name>Jaskyňa pod Černokňažníkom</name><desc>jaskyna-pod-cernoknaznikom-od-auta</desc><trkseg>
     <trkpt lat="49.139909" lon="18.508641"><ele>380</ele></trkpt>

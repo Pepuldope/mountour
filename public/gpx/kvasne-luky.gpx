@@ -745,7 +745,7 @@
   <trk><name>Kvašné lúky</name><desc>kvasne-luky-pod-tarcou-ina-cesta</desc><trkseg>
     <trkpt lat="48.937402" lon="20.561755"><ele>456</ele></trkpt>
     <trkpt lat="48.937382" lon="20.561899"><ele>455</ele></trkpt>
-    <trkpt lat="48.937231" lon="20.562124"><ele>456</ele></trkpt>
+    <trkpt lat="48.937229" lon="20.562128"><ele>456</ele></trkpt>
     <trkpt lat="48.937182" lon="20.562078"><ele>457</ele></trkpt>
     <trkpt lat="48.936796" lon="20.562112"><ele>465</ele></trkpt>
     <trkpt lat="48.936552" lon="20.562083"><ele>469</ele></trkpt>
@@ -1007,7 +1007,7 @@
     <trkpt lat="48.936552" lon="20.562083"><ele>469</ele></trkpt>
     <trkpt lat="48.936796" lon="20.562112"><ele>465</ele></trkpt>
     <trkpt lat="48.937182" lon="20.562078"><ele>457</ele></trkpt>
-    <trkpt lat="48.937231" lon="20.562124"><ele>456</ele></trkpt>
+    <trkpt lat="48.937229" lon="20.562128"><ele>456</ele></trkpt>
     <trkpt lat="48.937382" lon="20.561899"><ele>455</ele></trkpt>
     <trkpt lat="48.937402" lon="20.561755"><ele>456</ele></trkpt>
   </trkseg></trk>

@@ -182,31 +182,31 @@
   </trkseg></trk>
   <trk><name>Kučová</name><desc>kucova-liptovske-klacany-pri</desc><trkseg>
     <trkpt lat="49.037667" lon="19.473730"><ele>650</ele></trkpt>
-    <trkpt lat="49.034949" lon="19.472995"><ele>664</ele></trkpt>
-    <trkpt lat="49.034683" lon="19.472870"><ele>665</ele></trkpt>
+    <trkpt lat="49.035069" lon="19.473038"><ele>663</ele></trkpt>
+    <trkpt lat="49.034680" lon="19.472866"><ele>665</ele></trkpt>
     <trkpt lat="49.034431" lon="19.472604"><ele>666</ele></trkpt>
-    <trkpt lat="49.033001" lon="19.470440"><ele>675</ele></trkpt>
-    <trkpt lat="49.032674" lon="19.470205"><ele>675</ele></trkpt>
+    <trkpt lat="49.033099" lon="19.470606"><ele>674</ele></trkpt>
+    <trkpt lat="49.032837" lon="19.470335"><ele>675</ele></trkpt>
+    <trkpt lat="49.032339" lon="19.470039"><ele>678</ele></trkpt>
     <trkpt lat="49.029834" lon="19.468940"><ele>701</ele></trkpt>
-    <trkpt lat="49.030025" lon="19.467933"><ele>702</ele></trkpt>
-    <trkpt lat="49.031016" lon="19.464596"><ele>705</ele></trkpt>
-    <trkpt lat="49.031206" lon="19.463609"><ele>710</ele></trkpt>
+    <trkpt lat="49.030091" lon="19.467710"><ele>701</ele></trkpt>
+    <trkpt lat="49.031016" lon="19.464553"><ele>706</ele></trkpt>
+    <trkpt lat="49.031161" lon="19.463818"><ele>710</ele></trkpt>
     <trkpt lat="49.031298" lon="19.462869"><ele>714</ele></trkpt>
     <trkpt lat="49.031431" lon="19.462332"><ele>715</ele></trkpt>
     <trkpt lat="49.031509" lon="19.462098"><ele>716</ele></trkpt>
     <trkpt lat="49.031650" lon="19.461946"><ele>712</ele></trkpt>
     <trkpt lat="49.031826" lon="19.461832"><ele>713</ele></trkpt>
-    <trkpt lat="49.032030" lon="19.461817"><ele>713</ele></trkpt>
-    <trkpt lat="49.032311" lon="19.461721"><ele>712</ele></trkpt>
-    <trkpt lat="49.032501" lon="19.461405"><ele>711</ele></trkpt>
-    <trkpt lat="49.032724" lon="19.460919"><ele>710</ele></trkpt>
-    <trkpt lat="49.032854" lon="19.460388"><ele>711</ele></trkpt>
-    <trkpt lat="49.032886" lon="19.458999"><ele>700</ele></trkpt>
-    <trkpt lat="49.032937" lon="19.458607"><ele>698</ele></trkpt>
-    <trkpt lat="49.033109" lon="19.457923"><ele>692</ele></trkpt>
-    <trkpt lat="49.033332" lon="19.457366"><ele>689</ele></trkpt>
-    <trkpt lat="49.033850" lon="19.456874"><ele>693</ele></trkpt>
-    <trkpt lat="49.034124" lon="19.456520"><ele>695</ele></trkpt>
+    <trkpt lat="49.032300" lon="19.461700"><ele>712</ele></trkpt>
+    <trkpt lat="49.032401" lon="19.461548"><ele>712</ele></trkpt>
+    <trkpt lat="49.032716" lon="19.460874"><ele>711</ele></trkpt>
+    <trkpt lat="49.032788" lon="19.460661"><ele>711</ele></trkpt>
+    <trkpt lat="49.032837" lon="19.460375"><ele>712</ele></trkpt>
+    <trkpt lat="49.032874" lon="19.458832"><ele>700</ele></trkpt>
+    <trkpt lat="49.033153" lon="19.457722"><ele>691</ele></trkpt>
+    <trkpt lat="49.033315" lon="19.457342"><ele>690</ele></trkpt>
+    <trkpt lat="49.033852" lon="19.456849"><ele>693</ele></trkpt>
+    <trkpt lat="49.034183" lon="19.456341"><ele>694</ele></trkpt>
     <trkpt lat="49.034280" lon="19.456051"><ele>692</ele></trkpt>
     <trkpt lat="49.034866" lon="19.453599"><ele>705</ele></trkpt>
     <trkpt lat="49.035274" lon="19.452577"><ele>702</ele></trkpt>
@@ -436,31 +436,31 @@
     <trkpt lat="49.035274" lon="19.452577"><ele>702</ele></trkpt>
     <trkpt lat="49.034866" lon="19.453599"><ele>705</ele></trkpt>
     <trkpt lat="49.034280" lon="19.456051"><ele>692</ele></trkpt>
-    <trkpt lat="49.034124" lon="19.456520"><ele>695</ele></trkpt>
-    <trkpt lat="49.033850" lon="19.456874"><ele>693</ele></trkpt>
-    <trkpt lat="49.033332" lon="19.457366"><ele>689</ele></trkpt>
-    <trkpt lat="49.033109" lon="19.457923"><ele>692</ele></trkpt>
-    <trkpt lat="49.032937" lon="19.458607"><ele>698</ele></trkpt>
-    <trkpt lat="49.032886" lon="19.458999"><ele>700</ele></trkpt>
-    <trkpt lat="49.032854" lon="19.460388"><ele>711</ele></trkpt>
-    <trkpt lat="49.032724" lon="19.460919"><ele>710</ele></trkpt>
-    <trkpt lat="49.032501" lon="19.461405"><ele>711</ele></trkpt>
-    <trkpt lat="49.032311" lon="19.461721"><ele>712</ele></trkpt>
-    <trkpt lat="49.032030" lon="19.461817"><ele>713</ele></trkpt>
+    <trkpt lat="49.034183" lon="19.456341"><ele>694</ele></trkpt>
+    <trkpt lat="49.033852" lon="19.456849"><ele>693</ele></trkpt>
+    <trkpt lat="49.033315" lon="19.457342"><ele>690</ele></trkpt>
+    <trkpt lat="49.033153" lon="19.457722"><ele>691</ele></trkpt>
+    <trkpt lat="49.032874" lon="19.458832"><ele>700</ele></trkpt>
+    <trkpt lat="49.032837" lon="19.460375"><ele>712</ele></trkpt>
+    <trkpt lat="49.032788" lon="19.460661"><ele>711</ele></trkpt>
+    <trkpt lat="49.032716" lon="19.460874"><ele>711</ele></trkpt>
+    <trkpt lat="49.032401" lon="19.461548"><ele>712</ele></trkpt>
+    <trkpt lat="49.032300" lon="19.461700"><ele>712</ele></trkpt>
     <trkpt lat="49.031826" lon="19.461832"><ele>713</ele></trkpt>
     <trkpt lat="49.031650" lon="19.461946"><ele>712</ele></trkpt>
     <trkpt lat="49.031509" lon="19.462098"><ele>716</ele></trkpt>
     <trkpt lat="49.031431" lon="19.462332"><ele>715</ele></trkpt>
     <trkpt lat="49.031298" lon="19.462869"><ele>714</ele></trkpt>
-    <trkpt lat="49.031206" lon="19.463609"><ele>710</ele></trkpt>
-    <trkpt lat="49.031016" lon="19.464596"><ele>705</ele></trkpt>
-    <trkpt lat="49.030025" lon="19.467933"><ele>702</ele></trkpt>
+    <trkpt lat="49.031161" lon="19.463818"><ele>710</ele></trkpt>
+    <trkpt lat="49.031016" lon="19.464553"><ele>706</ele></trkpt>
+    <trkpt lat="49.030091" lon="19.467710"><ele>701</ele></trkpt>
     <trkpt lat="49.029834" lon="19.468940"><ele>701</ele></trkpt>
-    <trkpt lat="49.032674" lon="19.470205"><ele>675</ele></trkpt>
-    <trkpt lat="49.033001" lon="19.470440"><ele>675</ele></trkpt>
+    <trkpt lat="49.032339" lon="19.470039"><ele>678</ele></trkpt>
+    <trkpt lat="49.032837" lon="19.470335"><ele>675</ele></trkpt>
+    <trkpt lat="49.033099" lon="19.470606"><ele>674</ele></trkpt>
     <trkpt lat="49.034431" lon="19.472604"><ele>666</ele></trkpt>
-    <trkpt lat="49.034683" lon="19.472870"><ele>665</ele></trkpt>
-    <trkpt lat="49.034949" lon="19.472995"><ele>664</ele></trkpt>
+    <trkpt lat="49.034680" lon="19.472866"><ele>665</ele></trkpt>
+    <trkpt lat="49.035069" lon="19.473038"><ele>663</ele></trkpt>
     <trkpt lat="49.037667" lon="19.473730"><ele>650</ele></trkpt>
   </trkseg></trk>
   <trk><name>Kučová</name><desc>kucova-lupcianska-dolina-tajch</desc><trkseg>

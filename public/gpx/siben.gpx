@@ -37,8 +37,8 @@
     <trkpt lat="48.986195" lon="20.528732"><ele>516</ele></trkpt>
   </trkseg></trk>
   <trk><name>Šibeň</name><desc>siben-harichovce</desc><trkseg>
-    <trkpt lat="48.961737" lon="20.581479"><ele>453</ele></trkpt>
-    <trkpt lat="48.961850" lon="20.581578"><ele>453</ele></trkpt>
+    <trkpt lat="48.961719" lon="20.581578"><ele>453</ele></trkpt>
+    <trkpt lat="48.961793" lon="20.581650"><ele>453</ele></trkpt>
     <trkpt lat="48.962047" lon="20.581426"><ele>452</ele></trkpt>
     <trkpt lat="48.962254" lon="20.581089"><ele>452</ele></trkpt>
     <trkpt lat="48.962423" lon="20.580677"><ele>453</ele></trkpt>
@@ -176,8 +176,8 @@
     <trkpt lat="48.962423" lon="20.580677"><ele>453</ele></trkpt>
     <trkpt lat="48.962254" lon="20.581089"><ele>452</ele></trkpt>
     <trkpt lat="48.962047" lon="20.581426"><ele>452</ele></trkpt>
-    <trkpt lat="48.961850" lon="20.581578"><ele>453</ele></trkpt>
-    <trkpt lat="48.961737" lon="20.581479"><ele>453</ele></trkpt>
+    <trkpt lat="48.961793" lon="20.581650"><ele>453</ele></trkpt>
+    <trkpt lat="48.961719" lon="20.581578"><ele>453</ele></trkpt>
   </trkseg></trk>
   <trk><name>Šibeň</name><desc>siben-iliasovce-ina-cesta</desc><trkseg>
     <trkpt lat="48.986195" lon="20.528732"><ele>516</ele></trkpt>

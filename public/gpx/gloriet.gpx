@@ -2,7 +2,22 @@
 <gpx version="1.1" creator="Túruj (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Gloriet</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Gloriet</name><desc>gloriet</desc><trkseg>
-    <trkpt lat="48.853745" lon="20.940316"><ele>353</ele></trkpt>
+    <trkpt lat="48.858330" lon="20.946476"><ele>348</ele></trkpt>
+    <trkpt lat="48.857315" lon="20.945936"><ele>350</ele></trkpt>
+    <trkpt lat="48.857165" lon="20.945768"><ele>350</ele></trkpt>
+    <trkpt lat="48.856851" lon="20.945079"><ele>351</ele></trkpt>
+    <trkpt lat="48.855904" lon="20.942459"><ele>348</ele></trkpt>
+    <trkpt lat="48.855772" lon="20.941955"><ele>349</ele></trkpt>
+    <trkpt lat="48.855683" lon="20.941983"><ele>348</ele></trkpt>
+    <trkpt lat="48.855620" lon="20.942217"><ele>348</ele></trkpt>
+    <trkpt lat="48.855378" lon="20.942720"><ele>347</ele></trkpt>
+    <trkpt lat="48.855315" lon="20.942674"><ele>348</ele></trkpt>
+    <trkpt lat="48.855240" lon="20.942740"><ele>348</ele></trkpt>
+    <trkpt lat="48.854638" lon="20.941720"><ele>349</ele></trkpt>
+    <trkpt lat="48.854552" lon="20.941697"><ele>348</ele></trkpt>
+    <trkpt lat="48.854444" lon="20.941507"><ele>348</ele></trkpt>
+    <trkpt lat="48.854396" lon="20.941322"><ele>348</ele></trkpt>
+    <trkpt lat="48.854162" lon="20.940945"><ele>348</ele></trkpt>
     <trkpt lat="48.853735" lon="20.940427"><ele>352</ele></trkpt>
     <trkpt lat="48.853847" lon="20.941403"><ele>354</ele></trkpt>
     <trkpt lat="48.853791" lon="20.942025"><ele>363</ele></trkpt>
@@ -74,7 +89,22 @@
     <trkpt lat="48.853791" lon="20.942025"><ele>363</ele></trkpt>
     <trkpt lat="48.853847" lon="20.941403"><ele>354</ele></trkpt>
     <trkpt lat="48.853735" lon="20.940427"><ele>352</ele></trkpt>
-    <trkpt lat="48.853745" lon="20.940316"><ele>353</ele></trkpt>
+    <trkpt lat="48.854162" lon="20.940945"><ele>348</ele></trkpt>
+    <trkpt lat="48.854396" lon="20.941322"><ele>348</ele></trkpt>
+    <trkpt lat="48.854444" lon="20.941507"><ele>348</ele></trkpt>
+    <trkpt lat="48.854552" lon="20.941697"><ele>348</ele></trkpt>
+    <trkpt lat="48.854638" lon="20.941720"><ele>349</ele></trkpt>
+    <trkpt lat="48.855240" lon="20.942740"><ele>348</ele></trkpt>
+    <trkpt lat="48.855315" lon="20.942674"><ele>348</ele></trkpt>
+    <trkpt lat="48.855378" lon="20.942720"><ele>347</ele></trkpt>
+    <trkpt lat="48.855620" lon="20.942217"><ele>348</ele></trkpt>
+    <trkpt lat="48.855683" lon="20.941983"><ele>348</ele></trkpt>
+    <trkpt lat="48.855772" lon="20.941955"><ele>349</ele></trkpt>
+    <trkpt lat="48.855904" lon="20.942459"><ele>348</ele></trkpt>
+    <trkpt lat="48.856851" lon="20.945079"><ele>351</ele></trkpt>
+    <trkpt lat="48.857165" lon="20.945768"><ele>350</ele></trkpt>
+    <trkpt lat="48.857315" lon="20.945936"><ele>350</ele></trkpt>
+    <trkpt lat="48.858330" lon="20.946476"><ele>348</ele></trkpt>
   </trkseg></trk>
   <trk><name>Gloriet</name><desc>gloriet-hutno</desc><trkseg>
     <trkpt lat="48.815146" lon="20.915589"><ele>380</ele></trkpt>

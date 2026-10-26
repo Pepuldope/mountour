@@ -2,7 +2,7 @@
 <gpx version="1.1" creator="Túruj (OpenStreetMap)" xmlns="http://www.topografix.com/GPX/1/1">
   <metadata><name>Holý vŕšok</name><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/</license></copyright></metadata>
   <trk><name>Holý vŕšok</name><desc>holy-vrsok</desc><trkseg>
-    <trkpt lat="48.795230" lon="19.071810"><ele>447</ele></trkpt>
+    <trkpt lat="48.795228" lon="19.071807"><ele>447</ele></trkpt>
     <trkpt lat="48.794837" lon="19.071635"><ele>452</ele></trkpt>
     <trkpt lat="48.794682" lon="19.071500"><ele>455</ele></trkpt>
     <trkpt lat="48.794358" lon="19.071111"><ele>461</ele></trkpt>
@@ -138,7 +138,7 @@
     <trkpt lat="48.794358" lon="19.071111"><ele>461</ele></trkpt>
     <trkpt lat="48.794682" lon="19.071500"><ele>455</ele></trkpt>
     <trkpt lat="48.794837" lon="19.071635"><ele>452</ele></trkpt>
-    <trkpt lat="48.795230" lon="19.071810"><ele>447</ele></trkpt>
+    <trkpt lat="48.795228" lon="19.071807"><ele>447</ele></trkpt>
   </trkseg></trk>
   <trk><name>Holý vŕšok</name><desc>holy-vrsok-bulikova</desc><trkseg>
     <trkpt lat="48.760674" lon="19.086256"><ele>703</ele></trkpt>
