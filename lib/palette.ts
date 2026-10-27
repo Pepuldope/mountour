@@ -62,8 +62,7 @@ export const GOAL_COLOUR: Record<DestinationKind, string> = {
 /** Places on the way (huts, springs...), on the map and in the "Na trase" list. */
 export const POI_COLOUR: Record<PoiKind, string> = {
   chata: "#3f8628",
-  // Not red: red means closed on this site (Peter, 2026-10-26).
-  obcerstvenie: "#8a4fbf",
+  obcerstvenie: "#d9580d",
   pramen: "#1b8fcc",
   vyhliadka: "#cf3f74",
   utulna: "#86573a",
