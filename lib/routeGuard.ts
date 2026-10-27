@@ -20,7 +20,9 @@ export function fromOtherSite(req: Request): boolean {
   return site !== null && site !== "same-origin" && site !== "none";
 }
 
-async function limiter(binding: "ROUTE_LIMIT" | "COUNT_LIMIT"): Promise<RateLimiter | null> {
+type Binding = "ROUTE_LIMIT" | "COUNT_LIMIT" | "READ_LIMIT";
+
+async function limiter(binding: Binding): Promise<RateLimiter | null> {
   try {
     const { env } = await getCloudflareContext({ async: true });
     return ((env as unknown as Record<string, unknown>)[binding] as RateLimiter | undefined) ?? null;
@@ -29,7 +31,7 @@ async function limiter(binding: "ROUTE_LIMIT" | "COUNT_LIMIT"): Promise<RateLimi
   }
 }
 
-async function overLimit(req: Request, binding: "ROUTE_LIMIT" | "COUNT_LIMIT", prefix: string): Promise<boolean> {
+async function overLimit(req: Request, binding: Binding, prefix: string): Promise<boolean> {
   const rl = await limiter(binding);
   if (!rl) return false;
   const ip = req.headers.get("CF-Connecting-IP") ?? "unknown";
@@ -49,13 +51,24 @@ export async function overRouteLimit(req: Request): Promise<Response | null> {
 }
 
 /**
- * The cheaper calls get a looser limit of their own (COUNT_LIMIT, 60 a minute per address, kept
- * per `use`): the usage counters, each a database write, and new weather or trip-list answers,
- * each a call out or a database read. Loose enough for a whole class behind one school address,
- * tight enough that one script can't spend the day's free database writes.
+ * The usage counters and saved reviews (each a database write) and new trip lists (each reads the
+ * whole trip table) get a limit of their own (COUNT_LIMIT, 60 a minute per address, kept per
+ * `use`): loose enough for a whole class behind one school address (a repeat visit the same day
+ * writes nothing, a class shares its town's list), tight enough that one script can't spend the
+ * day's free database writes or reads.
  */
-export async function overCallLimit(req: Request, use: "visit" | "event" | "weather" | "vylety" | "review"): Promise<boolean> {
+export async function overCallLimit(req: Request, use: "visit" | "event" | "review" | "vylety"): Promise<boolean> {
   return overLimit(req, "COUNT_LIMIT", `${use}:`);
+}
+
+/**
+ * New weather and review-totals answers (a call out or a small database read; repeats come from
+ * the edge cache and aren't counted) get a looser one (READ_LIMIT, 300 a minute per address,
+ * kept per `use`). The load test (2026-10-27) had 100 people on one school address open different
+ * trips: at 60 a minute most of them saw no weather.
+ */
+export async function overReadLimit(req: Request, use: "weather" | "reviews"): Promise<boolean> {
+  return overLimit(req, "READ_LIMIT", `${use}:`);
 }
 
 export const TOO_MANY = () =>

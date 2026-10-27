@@ -13,9 +13,12 @@
   // New routes per visitor a minute (lib/routeGuard.ts), so a script can't spend
   // the free OpenRouteService quota for everyone. Free; namespace_id is any number
   // unique within the account.
-  // COUNT_LIMIT: the usage counters, weather and the trip list, keyed per use (lib/routeGuard.ts).
+  // COUNT_LIMIT: the usage counters, saved reviews and the trip list, keyed per use.
+  // READ_LIMIT: new weather and review-totals answers, looser so a whole class on
+  // one school address can open different trips at once (load test, 2026-10-27).
   "ratelimits": [
     { "name": "ROUTE_LIMIT", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } },
-    { "name": "COUNT_LIMIT", "namespace_id": "1002", "simple": { "limit": 60, "period": 60 } }
+    { "name": "COUNT_LIMIT", "namespace_id": "1002", "simple": { "limit": 60, "period": 60 } },
+    { "name": "READ_LIMIT", "namespace_id": "1003", "simple": { "limit": 300, "period": 60 } }
   ]
 }

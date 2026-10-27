@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { createContext, useCallback, useContext, useEffect } from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import type { ComponentProps, ReactNode } from "react";
 import { langOfPath, langPath, skPath, tr } from "@/lib/lang";
 import type { Lang, Vars } from "@/lib/lang";
@@ -26,9 +26,28 @@ export function useT() {
   return useCallback((sk: string, vars?: Vars) => tr(lang, sk, vars), [lang]);
 }
 
+/**
+ * A link that loads its page ahead only once someone points at it, touches it or tabs to it.
+ * Next.js loads every link on screen ahead by default: the home list alone sent a dozen trip
+ * pages to the Worker per visitor, a few came back 503 (Peter's console, 2026-10-26), and each
+ * one counts towards the free plan's 100,000 requests a day (load test, 2026-10-27).
+ */
+export function IntentLink({ prefetch, onPointerEnter, onTouchStart, onFocus, ...rest }: ComponentProps<typeof Link>) {
+  const [wanted, setWanted] = useState(false);
+  return (
+    <Link
+      {...rest}
+      prefetch={prefetch !== undefined ? prefetch : wanted ? null : false}
+      onPointerEnter={(e) => (setWanted(true), onPointerEnter?.(e))}
+      onTouchStart={(e) => (setWanted(true), onTouchStart?.(e))}
+      onFocus={(e) => (setWanted(true), onFocus?.(e))}
+    />
+  );
+}
+
 /** A link inside the site that stays in the page's language. */
 export function LangLink({ href, ...rest }: ComponentProps<typeof Link> & { href: string }) {
-  return <Link href={langPath(useLang(), href)} {...rest} />;
+  return <IntentLink href={langPath(useLang(), href)} {...rest} />;
 }
 
 /** Small "EN" / "SK" switch to the same page in the other language. */
