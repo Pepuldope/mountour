@@ -33,5 +33,16 @@
     "Chrám Zostúpenia sv. Ducha, Trnava pri Laborci 24 Slovakia 1.jpg",
     "Holic windmill 02.jpg"
   ],
-  "pick": {}
+  "pick": {},
+  "no_mapillary": [
+    "node/1294283585",
+    "node/2610725263",
+    "node/2611355529",
+    "node/485600308",
+    "node/5657425475",
+    "node/5657428541",
+    "node/5657430136",
+    "node/615564115",
+    "way/815056707"
+  ]
 }
