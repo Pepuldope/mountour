@@ -20,7 +20,7 @@ const note = "w-fit rounded-lg bg-[var(--card-bg)] px-2.5 py-1.5 text-xs font-me
  * travel times and sorts by them.
  */
 export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Zmeniť štart"): always open, closed by this. */ onDone?: () => void } = {}) {
-  const { status, message, locate, start, setManualStart } = useUserLocation();
+  const { status, message, locate, start, setManualStart, setPicking } = useUserLocation();
   const t = useT();
   const [openState, setOpenState] = useState(false);
   const open = onDone ? true : openState;
@@ -144,7 +144,22 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
               </button>
             )}
           </form>
-      {search === "searching" && <p className={`${note} text-[var(--muted)]`}>{t("Hľadáme miesto…")}</p>}
+          {!onDone && (
+            // Anywhere, not only places with an address: a cottage, a crossroads, a car park.
+            <button
+              type="button"
+              onClick={() => {
+                setPicking(true);
+                setOpen(false);
+                document.querySelector("[data-browse-map]")?.scrollIntoView({ block: "center", behavior: "smooth" });
+              }}
+              className="flex h-10 items-center justify-center gap-2 rounded-[10px] border border-dashed border-[var(--border)] text-sm font-semibold text-[var(--accent)] hover:border-[var(--accent)]"
+            >
+              <UiIcon name="pin" size={16} />
+              {t("Vybrať bod na mape")}
+            </button>
+          )}
+          {search === "searching" && <p className={`${note} text-[var(--muted)]`}>{t("Hľadáme miesto…")}</p>}
           {search === "empty" && <p className={`${note} text-[var(--warn)]`}>{t("Také miesto sme nenašli.")}</p>}
           {search === "error" && <p className={`${note} text-[var(--warn)]`}>{t("Toto sa nenačítalo. Skúste to znova.")}</p>}
           {search === "results" && (

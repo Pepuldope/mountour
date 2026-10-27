@@ -1,9 +1,23 @@
 "use client";
 
+import { KindIcon } from "@/components/KindIcon";
 import { formatDurationShort } from "@/lib/format";
+import type { PoiIcon } from "@/lib/food";
+import { POI_COLOUR } from "@/lib/palette";
+import type { PoiKind } from "@/lib/types";
 import { LUNCH, useTripStops, visits } from "@/lib/tripStops";
-import type { StopWay } from "@/lib/tripStops";
+import type { StopWay, TripStop } from "@/lib/tripStops";
 import { useT } from "@/lib/i18n";
+
+/** The lunch break's choices, worked out by the planner from the day's times. */
+export interface LunchPick {
+  /** Half hours during the walk ("12:30"). */
+  times: string[];
+  /** When the walk reaches the goal: lunch's default. */
+  goalTime: string;
+  /** Food places or huts the walk passes around lunch, nearest in time first. */
+  foods: { stop: TripStop; kind: PoiKind; icon: PoiIcon; time: string }[];
+}
 
 const WAYS: [StopWay, string][] = [
   ["tam", "Tam"],
@@ -19,12 +33,14 @@ export function StopsRow({
   slug,
   hasPlaces,
   loop,
+  lunch,
 }: {
   slug: string;
   hasPlaces: boolean;
   loop: boolean;
+  lunch?: LunchPick;
 }) {
-  const { stops, toggle, setWay, has, minutes } = useTripStops(slug);
+  const { stops, toggle, setWay, patch, lunchAt, has, minutes } = useTripStops(slug);
   const t = useT();
   return (
     <div id="zastavky" className="flex flex-col gap-1.5 scroll-mt-24">
@@ -37,6 +53,9 @@ export function StopsRow({
                 <span className="truncate">{t(s.name)}</span>
                 <span className="font-data shrink-0">+{formatDurationShort(s.min * visits(s))}</span>
                 {!loop && s.id !== LUNCH.id && <WaySwitch name={s.name} way={s.way} onPick={(way) => setWay(s.id, way)} />}
+                {s.id === LUNCH.id && lunch && (
+                  <LunchTime lunch={lunch} at={s.at} onPick={(at) => patch(LUNCH.id, { at })} />
+                )}
                 <button
                   type="button"
                   onClick={() => toggle(s)}
@@ -49,6 +68,27 @@ export function StopsRow({
             </li>
           ))}
         </ul>
+      )}
+      {has(LUNCH.id) && lunch && lunch.foods.length > 0 && (
+        <div className="flex flex-col gap-1">
+          <p className="text-xs font-semibold text-[var(--muted)]">{t("Okolo obeda idete popri:")}</p>
+          <ul className="flex flex-wrap gap-1.5">
+            {lunch.foods.map((f) => (
+              <li key={f.stop.id} className="min-w-0 max-w-full">
+                <button
+                  type="button"
+                  onClick={() => lunchAt(f.stop)}
+                  aria-label={t("Obed v {name}", { name: f.stop.name })}
+                  className="flex max-w-full min-w-0 items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--card-bg)] py-1 pr-3 pl-1.5 text-[13px] font-semibold hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+                >
+                  <KindIcon kind={f.icon} colour={POI_COLOUR[f.kind]} size={20} />
+                  <span className="truncate">{f.stop.name}</span>
+                  <span className="font-data shrink-0 text-[var(--muted)]">{f.time}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
       {!has(LUNCH.id) && (
         <button
@@ -67,6 +107,32 @@ export function StopsRow({
             : t("Pridajte prestávku, časy sa posunú.")}
       </p>
     </div>
+  );
+}
+
+/** When to eat: at the goal (default) or a half hour during the walk. */
+function LunchTime({ lunch, at, onPick }: { lunch: LunchPick; at: string | undefined; onPick: (at: string | undefined) => void }) {
+  const t = useT();
+  return (
+    <span className="relative inline-flex shrink-0 items-center">
+      <select
+        value={at ?? ""}
+        onChange={(e) => onPick(e.target.value || undefined)}
+        aria-label={t("Kedy obed")}
+        className="h-7 cursor-pointer appearance-none rounded-full border border-[var(--border)] bg-[var(--card-bg)] py-0 pr-6 pl-2.5 text-[13px] font-semibold text-[var(--foreground)] focus-visible:outline-2 focus-visible:outline-[var(--accent)]"
+      >
+        <option value="">{t("na cieli {t}", { t: lunch.goalTime })}</option>
+        {at && !lunch.times.includes(at) && <option value={at}>{at}</option>}
+        {lunch.times.map((time) => (
+          <option key={time} value={time}>
+            {time}
+          </option>
+        ))}
+      </select>
+      <span aria-hidden className="pointer-events-none absolute right-2 text-[10px] text-[var(--muted)]">
+        ▼
+      </span>
+    </span>
   );
 }
 
