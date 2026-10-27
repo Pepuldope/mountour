@@ -37,6 +37,11 @@ interface UserLocationState {
   /** Slovak, user-facing; null when there is nothing to say. */
   message: string | null;
   locate: () => void;
+  /** "Vybrať bod na mape": the next tap on the home map sets the start there. */
+  picking: boolean;
+  setPicking: (on: boolean) => void;
+  /** A start anywhere on the map: named "Bod na mape" at once, then after the nearest village. */
+  pickPoint: (lat: number, lon: number) => void;
 }
 
 const STORAGE_KEY = "turuj-user-fix";
@@ -97,6 +102,9 @@ const UserLocationContext = createContext<UserLocationState>({
   setManualStart: () => {},
   message: null,
   locate: () => {},
+  picking: false,
+  setPicking: () => {},
+  pickPoint: () => {},
 });
 
 export function UserLocationProvider({ children }: { children: ReactNode }) {
@@ -104,6 +112,7 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
   const [fix, setFix] = useState<UserFix | null>(null);
   const [manual, setManual] = useState<Omit<StartPoint, "source"> | null>(null);
   const [ready, setReady] = useState(false);
+  const [picking, setPicking] = useState(false);
   // How the first start of this visit came about, for the "start_set" event.
   const startHow = useRef<"gps" | "manual" | "remembered" | null>(null);
   const startSent = useRef(false);
@@ -163,6 +172,27 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
     setManual(place);
   }, []);
 
+  const pickPoint = useCallback(
+    (lat: number, lon: number) => {
+      const point = { lat, lon, label: "Bod na mape" };
+      setManualStart(point);
+      setPicking(false);
+      reverseTown(lat, lon)
+        .then((town) => {
+          if (!town) return;
+          // Only if the start is still this point (not moved again meanwhile).
+          setManual((cur) => {
+            if (cur?.lat !== lat || cur?.lon !== lon) return cur;
+            const named = { lat, lon, label: town };
+            writeManual(named);
+            return named;
+          });
+        })
+        .catch(() => {});
+    },
+    [setManualStart]
+  );
+
   const start = useMemo<StartPoint | null>(() => {
     if (manual) return { ...manual, source: "manual" };
     if (fix) return { lat: fix.lat, lon: fix.lon, label: fix.town ?? "Vaša poloha", source: "gps" };
@@ -179,8 +209,8 @@ export function UserLocationProvider({ children }: { children: ReactNode }) {
   }, [start]);
 
   const value = useMemo<UserLocationState>(
-    () => ({ status, ready, fix, start, setManualStart, message: MESSAGES[status] ?? null, locate }),
-    [status, ready, fix, start, setManualStart, locate]
+    () => ({ status, ready, fix, start, setManualStart, message: MESSAGES[status] ?? null, locate, picking, setPicking, pickPoint }),
+    [status, ready, fix, start, setManualStart, locate, picking, pickPoint]
   );
 
   return <UserLocationContext.Provider value={value}>{children}</UserLocationContext.Provider>;

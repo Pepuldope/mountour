@@ -3,6 +3,10 @@
 // string shown through t()/tr() has no entry here. Trip, place and town names are never translated.
 
 export const EN: Record<string, string> = {
+  "Vybrať bod na mape": "Pick a spot on the map",
+  "Ťuknite na mapu, kde začínate.": "Tap the map where you're starting from.",
+  "Bod na mape": "Spot on the map",
+  "Zrušiť": "Cancel",
   // Weather
   " (prehánky)": " (showers)",
   " ({how}, do {mm} mm/h)": " ({how}, up to {mm} mm/h)",

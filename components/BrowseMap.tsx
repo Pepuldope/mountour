@@ -272,10 +272,15 @@ export function BrowseMap({
   const userMarkers = useRef<Marker[]>([]);
   // The start the map last moved to; undefined until the first one is seen.
   const startKey = useRef<string | null | undefined>(undefined);
-  const { fix, start } = useUserLocation();
+  const { fix, start, picking, setPicking, pickPoint } = useUserLocation();
+  const pickingRef = useRef(picking);
   const initialRef = useRef(initialView);
   const insetRef = useRef(bottomInset);
   const zoomToAreaRef = useRef<(a: BrowseArea) => void>(() => {});
+  const startPickRef = useRef(pickPoint);
+  useEffect(() => {
+    startPickRef.current = pickPoint;
+  }, [pickPoint]);
   const hoverAreaRef = useRef<(id: string | null) => void>(() => {});
 
   useEffect(() => {
@@ -283,6 +288,7 @@ export function BrowseMap({
     tripsRef.current = trips;
     areasRef.current = areas;
     insetRef.current = bottomInset;
+    pickingRef.current = picking;
   });
 
   // Create the map once.
@@ -597,6 +603,8 @@ export function BrowseMap({
         handlers.current.onHover(null);
       });
       m.on("click", (e) => {
+        // "Vybrať bod na mape": this tap is the start, not a trip.
+        if (pickingRef.current) return startPickRef.current(e.lngLat.lat, e.lngLat.lng);
         const r = fine ? 6 : 14;
         // Zoomed out: a tap on any line zooms in there, so nothing is a dead end.
         if (m.getZoom() < areaZoom) {
@@ -816,7 +824,15 @@ export function BrowseMap({
       name.textContent = start.label;
       el.append(dot, name);
       // Anchored on the house, with the name hanging below it.
-      userMarkers.current.push(new ml.Marker({ element: el, anchor: "top", offset: [0, -18] }).setLngLat([start.lon, start.lat]).addTo(map));
+      // The house can be dragged: a start anywhere, fine-tuned by hand.
+      dot.style.pointerEvents = "auto";
+      dot.style.cursor = "grab";
+      const marker = new ml.Marker({ element: el, anchor: "top", offset: [0, -18], draggable: true }).setLngLat([start.lon, start.lat]).addTo(map);
+      marker.on("dragend", () => {
+        const at = marker.getLngLat();
+        startPickRef.current(at.lat, at.lng);
+      });
+      userMarkers.current.push(marker);
     }
     // A new start (or the first one with no remembered view): show its surroundings, where the nearest trips are.
     const key = start ? `${start.lat.toFixed(4)},${start.lon.toFixed(4)}` : null;
@@ -827,6 +843,28 @@ export function BrowseMap({
     if (fix) userMarkers.current.push(new ml.Marker({ element: pin("mt-pin-me", "", tr(pageLang(), "Vaša poloha")) }).setLngLat([fix.lon, fix.lat]).addTo(map));
   }, [ctx, fix, start]);
 
+  // Picking a start: a crosshair over the map, Escape cancels.
+  useEffect(() => {
+    if (!ctx) return;
+    ctx.map.getCanvas().style.cursor = picking ? "crosshair" : "";
+    if (!picking) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setPicking(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [ctx, picking, setPicking]);
+
   // `isolate`: area dots stack among themselves only, never above the legend and buttons laid over the map.
-  return <div ref={containerRef} className="isolate h-full w-full" role="region" aria-label={ariaLabel} />;
+  return (
+    <div className="relative h-full w-full" data-browse-map="">
+      <div ref={containerRef} className="isolate h-full w-full" role="region" aria-label={ariaLabel} />
+      {picking && (
+        <div role="status" className="absolute bottom-3 left-3 right-14 z-[30] flex max-w-sm items-center gap-3 rounded-xl bg-[var(--accent)] px-3.5 py-2.5 text-sm font-semibold text-[var(--accent-contrast)] shadow-[var(--shadow-float)]">
+          <span className="min-w-0 flex-1">{tr(pageLang(), "Ťuknite na mapu, kde začínate.")}</span>
+          <button type="button" onClick={() => setPicking(false)} className="shrink-0 rounded-lg bg-white/20 px-2.5 py-1 font-bold">
+            {tr(pageLang(), "Zrušiť")}
+          </button>
+        </div>
+      )}
+    </div>
+  );
 }
