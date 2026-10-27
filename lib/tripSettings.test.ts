@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { defaultDay, defaultDeparture } from "./tripSettings";
+import { defaultDay, defaultDeparture, timeGone } from "./tripSettings";
 
 describe("defaultDeparture", () => {
   it("leaves soon during the day", () => {
@@ -26,5 +26,16 @@ describe("defaultDay", () => {
 
   it("crosses the month", () => {
     expect(defaultDay(new Date(2026, 9, 31, 12, 0))).toBe("2026-11-01");
+  });
+});
+
+describe("timeGone", () => {
+  const now = new Date(2026, 9, 12, 10, 30);
+  it("keeps a picked time on another day", () => {
+    expect(timeGone("2026-10-13", "07:00", now)).toBe(false);
+  });
+  it("drops a time already past today", () => {
+    expect(timeGone("2026-10-12", "09:00", now)).toBe(true);
+    expect(timeGone("2026-10-12", "11:00", now)).toBe(false);
   });
 });

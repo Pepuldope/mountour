@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { IntentLink } from "@/lib/i18n";
 import { formatDurationShort } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
@@ -10,7 +10,7 @@ import type { Lang } from "@/lib/lang";
 export function TownTile({ tile, lang = "sk" }: { tile: Tile; lang?: Lang }) {
   const colour = GOAL_COLOUR[tile.kind] ?? GOAL_COLOUR.ine;
   return (
-    <Link href={langPath(lang, `/trasa/${tile.slug}`)} className="flex w-[150px] flex-none snap-start flex-col gap-1.5 text-inherit no-underline">
+    <IntentLink href={langPath(lang, `/trasa/${tile.slug}`)} className="flex w-[150px] flex-none snap-start flex-col gap-1.5 text-inherit no-underline">
       <span
         className="relative block aspect-square overflow-hidden rounded-2xl"
         style={{ background: `linear-gradient(170deg, ${colour}, ${colour}dd)` }}
@@ -57,6 +57,6 @@ export function TownTile({ tile, lang = "sk" }: { tile: Tile; lang?: Lang }) {
         <span>{tr(lang, "{t} autom", { t: formatDurationShort(tile.carMin) })}</span>
         <span>{tr(lang, "{t} pešo", { t: formatDurationShort(tile.walkMin) })}</span>
       </span>
-    </Link>
+    </IntentLink>
   );
 }

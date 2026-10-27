@@ -5,16 +5,17 @@ import type { NextConfig } from "next";
 // It doesn't stop an injected inline script from running (Next.js puts its page
 // data in inline scripts, hence 'unsafe-inline'; nonces would stop pages from
 // being prebuilt). Map: OpenFreeMap (style, tiles, fonts, icons), and MapLibre
-// draws in a blob: worker. Place search: Nominatim. Visits: Umami Cloud. Town
+// draws in a blob: worker. Place search: Nominatim. Visits: Umami Cloud and Cloudflare
+// Web Analytics (its beacon is added by Cloudflare, not by the site). Town
 // photos: Wikimedia (lib/assetBudget.test.ts checks photos.json against img-src).
 // Adding a new outside service? Add it here.
 const CSP = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' https://cloud.umami.is${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline' https://cloud.umami.is https://static.cloudflareinsights.com${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://tiles.openfreemap.org https://thumb.wikimedia.org https://upload.wikimedia.org",
   "font-src 'self' data:",
-  "connect-src 'self' https://tiles.openfreemap.org https://nominatim.openstreetmap.org https://cloud.umami.is https://api-gateway.umami.dev",
+  "connect-src 'self' https://tiles.openfreemap.org https://nominatim.openstreetmap.org https://cloud.umami.is https://api-gateway.umami.dev https://cloudflareinsights.com",
   "worker-src 'self' blob:",
   "child-src 'self' blob:",
   "frame-src 'none'",

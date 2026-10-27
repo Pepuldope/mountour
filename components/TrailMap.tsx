@@ -449,8 +449,6 @@ export function TrailMap({
   useEffect(() => {
     if (!ctx) return;
     const order: Record<TrackState, number> = { dimmed: 0, normal: 1, selected: 2 };
-    // Routes drawn beside the picked one take turns left and right of it.
-    let side = 0;
     const features: GeoJSON.Feature[] = [...tracks]
       .filter((t) => t.points.length >= 2)
       .sort((a, b) => order[a.state] - order[b.state])
@@ -461,7 +459,9 @@ export function TrailMap({
           color: t.color,
           state: t.state,
           label: t.label ?? "",
-          offset: t.sideBy ? (side++ % 2 ? -SIDE_BY_PX : SIDE_BY_PX) : 0,
+          // All on one side, whatever is hovered: taking turns left and right drew two routes on the
+          // same path as two lines, and a hover re-dealt the sides so lines jumped (Peter, 2026-10-26).
+          offset: t.sideBy ? SIDE_BY_PX : 0,
         },
         geometry: { type: "LineString", coordinates: t.points.map(lngLat) },
       }));

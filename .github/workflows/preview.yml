@@ -1,0 +1,59 @@
+name: Preview
+
+# A test copy of a branch for Peter, before anything goes live (his rule, 2026-10-26:
+# at most 5 live deploys a day, each batch tried first). Uploads a new Worker version
+# with a preview address and does NOT send any visitors to it: turuj.sk stays as it is.
+# The address is https://<alias>-turuj.<account>.workers.dev, printed in the run summary.
+# Same build as deploy.yml; needs the same two secrets.
+
+on:
+  push:
+    branches: ["claude/**"]
+  workflow_dispatch:
+
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    env:
+      CF_READY: ${{ secrets.CLOUDFLARE_DEPLOY_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
+    steps:
+      - if: env.CF_READY != 'true'
+        run: echo "::notice::CLOUDFLARE_DEPLOY_TOKEN or CLOUDFLARE_ACCOUNT_ID secret not set; no preview."
+      - if: env.CF_READY == 'true'
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL && df -h /
+      - if: env.CF_READY == 'true'
+        uses: actions/checkout@v7
+      - if: env.CF_READY == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+      - if: env.CF_READY == 'true'
+        run: npm ci
+      - if: env.CF_READY == 'true'
+        run: npx opennextjs-cloudflare build
+        env:
+          WORKERS_CI_COMMIT_SHA: ${{ github.sha }}
+      # Alias from the branch name: "claude/project-thread-7gs4ec" -> "project-thread-7gs4ec".
+      - if: env.CF_READY == 'true'
+        id: alias
+        run: |
+          a="${GITHUB_REF_NAME##*/}"
+          a="$(echo "$a" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9-\n' '-' | cut -c1-40)"
+          echo "alias=${a%-}" >> "$GITHUB_OUTPUT"
+      - if: env.CF_READY == 'true'
+        run: |
+          set -o pipefail
+          up() { npx opennextjs-cloudflare upload --preview-alias "${{ steps.alias.outputs.alias }}" 2>&1 | tee upload.log; }
+          up || (sleep 60 && up)
+          url="$(grep -oE 'https://${{ steps.alias.outputs.alias }}-turuj[a-z0-9.-]*workers\.dev' upload.log | head -1)"
+          echo "Preview: ${url:-see the upload log above}" >> "$GITHUB_STEP_SUMMARY"
+          echo "::notice::Preview ${url}"
+        env:
+          WORKERS_CI_COMMIT_SHA: ${{ github.sha }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_DEPLOY_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -58,6 +58,7 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
   return (
     <section
       aria-label={t("Odkiaľ vyrážate")}
+      data-start-chip={onDone ? undefined : ""}
       className={onDone ? "flex flex-col gap-2" : "flex flex-col gap-2 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-3.5 shadow-[var(--shadow-float)]"}
     >
       {start && !open ? (
