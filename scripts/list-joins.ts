@@ -6,7 +6,7 @@
 // Run after every pipeline build: npm run list-joins (lib/listJoins.test.ts checks it was).
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { nearestStop, shorterRoutes, trailDetailFrom } from "@/lib/data";
+import { easierRoute, nearestStop, shorterRoutes, trailDetailFrom } from "@/lib/data";
 import type { TrailJoin } from "@/lib/trailJoin";
 import type { ListJoin, TripDetail, TripList } from "@/lib/tripSchema";
 
@@ -23,6 +23,7 @@ const list = JSON.parse(readFileSync(LIST, "utf8")) as TripList;
 const read = (slug: string) => JSON.parse(readFileSync(join(DIR, `${slug}.json`), "utf8")) as TripDetail;
 let joins = 0;
 let shorter = 0;
+let easier = 0;
 for (const item of list.trips) {
   const trip = read(item.slug);
   const detail = trailDetailFrom(trip);
@@ -33,6 +34,13 @@ for (const item of list.trips) {
   if (short) {
     item.shorter = short;
     shorter++;
+  }
+  // An easier route, so a "ľahká" filter still finds a place whose main route is harder (A13).
+  const easy = easierRoute(detail, others);
+  delete item.easier;
+  if (easy) {
+    item.easier = easy;
+    easier++;
   }
   if (item.parking) {
     const j = stored(detail.parkingLots[0]?.join ?? null);
@@ -52,4 +60,4 @@ for (const item of list.trips) {
 }
 // Same layout as pipeline/publish.py writes it.
 writeFileSync(LIST, JSON.stringify(list) + "\n");
-console.log(`list.json: ${joins} joins, ${shorter} shorter routes for ${list.trips.length} trips`);
+console.log(`list.json: ${joins} joins, ${shorter} shorter and ${easier} easier routes for ${list.trips.length} trips`);

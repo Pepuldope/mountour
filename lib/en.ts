@@ -375,6 +375,8 @@ export const EN: Record<string, string> = {
   "späť": "back",
   "tam a späť": "there and back",
   "Ľahká": "Easy",
+  "aj {d} cesta": "{d} route too",
+  "Ľahšia cesta k tomu istému cieľu, na stránke výletu": "An easier route to the same place, on the trip page",
   "Stredná": "Moderate",
   "Ťažká": "Hard",
   "pre deti": "for kids",

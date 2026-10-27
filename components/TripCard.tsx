@@ -8,7 +8,7 @@ import { DIFFICULTY_LABEL, GOAL_LABEL, formatDurationShort, formatFromUser, form
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
 import { formatKm } from "@/lib/walkFacts";
-import type { ParkingLot, TrailDetail, TransitStop } from "@/lib/types";
+import type { Difficulty, ParkingLot, TrailDetail, TransitStop } from "@/lib/types";
 import { useTripSettings } from "@/lib/tripSettings";
 import { UiIcon } from "@/components/UiIcon";
 import { LangLink, useLang } from "@/lib/i18n";
@@ -21,6 +21,8 @@ export interface TripCardItem {
   hikeMin: number;
   /** The walk of a clearly shorter route to the same place (kids pace applied); null when there is none. */
   shortMin: number | null;
+  /** Listed through an easier route to the same place (a difficulty filter): that route's difficulty. */
+  easierRoute?: Difficulty | null;
   /** ...its length and climb. */
   walkM: number;
   ascentM: number;
@@ -230,6 +232,11 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
               </span>
             )}
           </span>
+          {item.easierRoute && (
+            <span className="on-card-ok font-sans text-[12.5px] font-semibold text-[var(--ok)]" title={t("Ľahšia cesta k tomu istému cieľu, na stránke výletu")}>
+              {t("aj {d} cesta", { d: t(DIFFICULTY_LABEL[item.easierRoute]).toLowerCase() })}
+            </span>
+          )}
           {total !== null && (
             <span className="text-[var(--muted)]">
               {t("spolu")} {approx}

@@ -198,6 +198,8 @@ export interface TripSummary {
    * scared people off places with a 1 h way up (Peter, 2026-10-23).
    */
   shorter?: { car?: ShorterRoute; bus?: ShorterRoute };
+  /** Home list only: the easiest other route when it is easier than this one, so a difficulty filter finds the place (A13, Peter 2026-10-26). */
+  easier?: { slug: string; difficulty: Difficulty };
 }
 
 /** Another route to the same place and its walk in minutes (from its parking or stop, there and back). */
