@@ -29,7 +29,8 @@ import { WeatherReport, useTripWeather } from "@/components/WeatherBlock";
 import { TransitHandoff, TransitLegs } from "@/components/TransitBlock";
 import { TravelSwitch } from "@/components/TravelSwitch";
 import { GOAL_WORDS, trimProfile, withApproach, withStops } from "@/lib/tripProfile";
-import { LUNCH, keepStopsOf, useTripStops } from "@/lib/tripStops";
+import { LUNCH, STAY_MIN, keepStopsOf, stopsMinutes, useTripStops } from "@/lib/tripStops";
+import type { LunchPick } from "@/components/StopsRow";
 import type { PauseAt, TripProfile } from "@/lib/tripProfile";
 import { useLang, useT } from "@/lib/i18n";
 import { tr } from "@/lib/lang";
@@ -102,12 +103,32 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
   // Stops belong to this visit: opening another trip or the list forgets them (a saved trip keeps
   // its own copy); the route comparison and the loop of this trip keep them.
   useEffect(() => keepStopsOf(trip.slug), [trip.slug]);
+  // Walking time alone (the plan's time less the stops), and when the walk starts: the lunch break's
+  // clock time maps onto the walk with these (Peter 2026-10-27: lunch when you want it, not only at the goal).
+  const walkOnlyMin = Math.max(1, tripPlan.hikeMin - stopsMinutes(stops));
+  const hikeStartMs = plan?.hikeStart.getTime() ?? null;
+  const lunchTime = stops.find((s) => s.id === LUNCH.id)?.at;
+  const lunchFrac = useMemo(() => {
+    if (!walkProfile) return null;
+    const goalAt = walkProfile.points[walkProfile.goalIndex].at;
+    if (!lunchTime || hikeStartMs === null) return goalAt;
+    const [h, m] = lunchTime.split(":").map(Number);
+    const [sh, sm] = formatTime(new Date(hikeStartMs)).split(":").map(Number);
+    const elapsed = h * 60 + m - (sh * 60 + sm);
+    // Time already spent at the stops before it.
+    const before = stops
+      .filter((s) => s.id !== LUNCH.id)
+      .reduce((sum, s) => {
+        const place = walkProfile.places?.find((p) => p.id === s.id);
+        return place && place.out * walkOnlyMin < elapsed ? sum + s.min : sum;
+      }, 0);
+    return Math.min(1, Math.max(0, (elapsed - before) / walkOnlyMin));
+  }, [walkProfile, lunchTime, hikeStartMs, stops, walkOnlyMin]);
   const profile = useMemo(() => {
     if (!walkProfile || !stops.length) return walkProfile;
-    const goalAt = walkProfile.points[walkProfile.goalIndex].at;
     const pauses = stops.flatMap((s): PauseAt[] => {
       // Lunch shows as food on the sun dial, like a buffet stop.
-      if (s.id === LUNCH.id) return [{ at: goalAt, min: s.min, name: s.name, kind: "obcerstvenie", icon: "restauracia" }];
+      if (s.id === LUNCH.id) return [{ at: lunchFrac ?? 0, min: s.min, name: s.name, kind: "obcerstvenie", icon: "restauracia" }];
       const place = walkProfile.places?.find((p) => p.id === s.id);
       if (!place) return [];
       const way = place.back === null ? "tam" : (s.way ?? "tam");
@@ -117,7 +138,45 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
       ];
     });
     return withStops(walkProfile, pauses, tripPlan.hikeMin);
-  }, [walkProfile, stops, tripPlan.hikeMin]);
+  }, [walkProfile, stops, tripPlan.hikeMin, lunchFrac]);
+  // Lunch: times to pick, and food places (or huts) the walk passes around then.
+  const lunch = useMemo<LunchPick | undefined>(() => {
+    if (!walkProfile || hikeStartMs === null || !plan) return undefined;
+    // On the clock: the walking time to there plus the other stops before it (lunch there replaces the break).
+    const clock = (frac: number) => {
+      const stood = stops.reduce((sum, s) => {
+        const at = walkProfile.places?.find((p) => p.id === s.id)?.out;
+        return at != null && at < frac ? sum + s.min : sum;
+      }, 0);
+      return new Date(hikeStartMs + (frac * walkOnlyMin + stood) * 60000);
+    };
+    const goal = clock(walkProfile.points[walkProfile.goalIndex].at);
+    const times: string[] = [];
+    // Every half hour while walking, from 10:30 to 15:00.
+    for (let t = Math.ceil((plan.hikeStart.getTime() + 20 * 60000) / 1800000) * 1800000; t < plan.hikeEnd.getTime() - 15 * 60000; t += 1800000) {
+      const hhmm = formatTime(new Date(t));
+      if (hhmm >= "10:30" && hhmm <= "15:00") times.push(hhmm);
+    }
+    const around = lunchFrac ?? 0;
+    const near = 75 / walkOnlyMin;
+    const foods = (walkProfile.places ?? [])
+      .filter((p) => p.name && (p.kind === "obcerstvenie" || p.kind === "chata"))
+      .map((p) => {
+        // The pass closest to lunch: on the way there or back.
+        const at = p.back !== null && Math.abs(p.back - around) < Math.abs(p.out - around) ? p.back : p.out;
+        return { p, at, way: at === p.out ? ("tam" as const) : ("spat" as const) };
+      })
+      .filter((f) => Math.abs(f.at - around) <= near && !stops.some((s) => s.id === f.p.id))
+      .sort((a, b) => Math.abs(a.at - around) - Math.abs(b.at - around))
+      .slice(0, 3)
+      .map(({ p, at, way }) => ({
+        stop: { id: p.id, name: p.name!, min: (p.detour ?? 0) + STAY_MIN[p.kind], ...(walkProfile.loop ? {} : { way }) },
+        kind: p.kind,
+        icon: p.icon ?? "restauracia",
+        time: formatTime(clock(at)),
+      }));
+    return { times, goalTime: formatTime(goal), foods };
+  }, [walkProfile, hikeStartMs, plan, walkOnlyMin, lunchFrac, stops]);
   const [shared, setShared] = useState<SharedPlan | null>(null);
   const weather = useTripWeather(plan, trailStart, goal, walkProfile?.points[0]?.ele ?? null);
   // The day strip marks the days in the forecast whose walk (same start time) gets rain, snow, fog or storms.
@@ -325,7 +384,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
             <Step label={t(transit && stop ? "na zastávke" : hasDrive ? "pri aute" : "späť")} time={plan.hikeEnd} />
             {plan.segments[plan.segments.length - 1].kind === "drive-back" && <Step label={t("doma")} time={plan.segments[plan.segments.length - 1].end} />}
           </ol>
-          <StopsRow slug={trip.slug} hasPlaces={hasPlaces} loop={!!walkProfile?.loop} />
+          <StopsRow slug={trip.slug} hasPlaces={hasPlaces} loop={!!walkProfile?.loop} lunch={lunch} />
           <WeatherReport plan={plan} weather={weather} goal={goal} wholeDay={transit} sunAt={sun} closures={closures} onPickDay={(iso) => update({ date: iso })} onPickTime={(time) => update({ time })} />
           {transit && <TransitLegs plan={plan} rail={rail} />}
           {transit && rail.status === "ok" && <p className="text-xs text-[var(--muted)]">{t("Podľa cestovného poriadku vlakov, spoj si vyberiete nižšie.")}</p>}

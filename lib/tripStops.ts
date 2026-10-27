@@ -15,6 +15,8 @@ export interface TripStop {
   min: number;
   /** On a there-and-back walk: stop on the way there, on the way back, or both times. Unset = there. */
   way?: StopWay;
+  /** LUNCH only: the clock time picked for it ("12:30"); unset = at the goal. */
+  at?: string;
 }
 
 export type StopWay = "tam" | "spat" | "oboje";
@@ -117,9 +119,30 @@ export function useTripStops(slug: string | null) {
     [slug],
   );
 
+  /** Changes one stop (lunch's time). */
+  const patch = useCallback(
+    (id: string, change: Partial<TripStop>) => {
+      if (!slug) return;
+      const all = readAll();
+      write({ ...all, [slug]: (all[slug] ?? []).map((s) => (s.id === id ? { ...s, ...change } : s)) });
+    },
+    [slug],
+  );
+
+  /** Lunch at a place: the place becomes the stop instead of the plain lunch break. */
+  const lunchAt = useCallback(
+    (stop: TripStop) => {
+      if (!slug) return;
+      const all = readAll();
+      const rest = (all[slug] ?? []).filter((s) => s.id !== LUNCH.id && s.id !== stop.id);
+      write({ ...all, [slug]: [...rest, stop] });
+    },
+    [slug],
+  );
+
   const has = useCallback(
     (id: string) => stops.some((s) => s.id === id),
     [stops],
   );
-  return { stops, toggle, setWay, has, minutes: stopsMinutes(stops) };
+  return { stops, toggle, setWay, patch, lunchAt, has, minutes: stopsMinutes(stops) };
 }

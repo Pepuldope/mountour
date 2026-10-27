@@ -6,6 +6,10 @@ export const EN: Record<string, string> = {
   "Vybrať bod na mape": "Pick a spot on the map",
   "Ťuknite na mapu, kde začínate.": "Tap the map where you're starting from.",
   "Bod na mape": "Spot on the map",
+  "Okolo obeda idete popri:": "Around lunchtime you pass:",
+  "Obed v {name}": "Lunch at {name}",
+  "Kedy obed": "When to have lunch",
+  "na cieli {t}": "at the destination {t}",
   "Zrušiť": "Cancel",
   // Weather
   " (prehánky)": " (showers)",

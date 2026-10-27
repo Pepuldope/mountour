@@ -28,7 +28,7 @@ export interface TripProfile {
    * Where the walk passes each place on the trip page (its Poi id), as a share of the walking time:
    * on the way there, and on the way back for "tam-a-spat" (null on a loop). Missing on old saved trips.
    */
-  places?: { id: string; kind: PoiKind; icon?: PoiIcon; out: number; back: number | null }[];
+  places?: { id: string; kind: PoiKind; icon?: PoiIcon; out: number; back: number | null; name?: string; detour?: number }[];
   /** Stops the group added, as stretches of the day spent standing (filled by withStops). */
   pauses?: { from: number; to: number; name: string; kind?: PoiKind; icon?: PoiIcon }[];
 }
@@ -114,7 +114,16 @@ export function buildProfile(trip: TripDetail): TripProfile | null {
       if (m < bestM) [best, bestM] = [j, m];
     }
     // The ids lib/data.ts gives the trip page's places.
-    return { id: `${trip.slug}:poi:${i}`, kind: poi.kind, icon: poiIcon(poi), out: cost[best] / total, back: loop ? null : cost[last2 - best] / total };
+    return {
+      id: `${trip.slug}:poi:${i}`,
+      kind: poi.kind,
+      icon: poiIcon(poi),
+      out: cost[best] / total,
+      back: loop ? null : cost[last2 - best] / total,
+      // For lunch suggestions: the name, and the side trip there and back.
+      name: poi.name,
+      detour: poi.detour_min ?? 0,
+    };
   });
 
   return {
