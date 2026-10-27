@@ -107,7 +107,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
     const goalAt = walkProfile.points[walkProfile.goalIndex].at;
     const pauses = stops.flatMap((s): PauseAt[] => {
       // Lunch shows as food on the sun dial, like a buffet stop.
-      if (s.id === LUNCH.id) return [{ at: goalAt, min: s.min, name: s.name, kind: "obcerstvenie" }];
+      if (s.id === LUNCH.id) return [{ at: goalAt, min: s.min, name: s.name, kind: "obcerstvenie", icon: "restauracia" }];
       const place = walkProfile.places?.find((p) => p.id === s.id);
       if (!place) return [];
       const way = place.back === null ? "tam" : (s.way ?? "tam");
