@@ -511,9 +511,8 @@ export const EN: Record<string, string> = {
   "S deťmi: čas na trase o 30 % dlhší": "With kids: 30% more time on the trail",
   "Len trasy vhodné pre deti a začiatočníkov.": "Only routes good for kids and beginners.",
   "Prispôsobíme čas trasy.": "We'll adjust the walking time.",
+  "Viac času na trase a len trasy vhodné pre deti.": "More time on the trail, and only kid-friendly routes.",
   "Ukázať aj náročnejšie trasy": "Show harder routes too",
-  "Ukázať ľahšie trasy": "Show easier routes",
-  "Ukázať ľahšie trasy?": "Show easier routes?",
   "Rodiny s deťmi": "Families with kids",
   "Turisti": "Hikers",
 

@@ -14,7 +14,7 @@ export interface TripSettings {
   time: string | null;
   /** Kids along: the walk is timed at a slower pace. */
   withKids: boolean;
-  /** Only easier trips, the ones marked suitable for kids (asked separately from the pace). */
+  /** Only trips marked suitable for kids: on with `withKids` (one switch, Peter 2026-10-27); the empty list can let it go. */
   easier: boolean;
   /** How the group gets there: by car, or by train/bus (then the plan starts at the stop). */
   travel: Travel;
@@ -126,7 +126,9 @@ export function TripSettingsProvider({ children }: { children: ReactNode }) {
     const travel = readTravel();
     // A new visit plans for tomorrow; a day the visitor un-picked stays un-picked.
     const fresh = stored?.date === undefined || stale;
-    setSettings({ ...DEFAULTS, ...stored, ...(fresh ? { date: defaultDay(), time: null } : {}), ...(travel ? { travel } : {}) });
+    const merged = { ...DEFAULTS, ...stored, ...(fresh ? { date: defaultDay(), time: null } : {}), ...(travel ? { travel } : {}) };
+    // The old separate "easier trips" switch is gone: without kids, nothing narrows the list.
+    setSettings(merged.withKids ? merged : { ...merged, easier: false });
   }, []);
 
   // A tab left open past midnight: "Dnes" moves to the new day, and a day now in the past

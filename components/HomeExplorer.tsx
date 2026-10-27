@@ -23,7 +23,7 @@ import { useTripSettings } from "@/lib/tripSettings";
 import { knownDriveMin, useStartDrives, useTownDrives } from "@/lib/useDriveRoute";
 import { clearAllStops } from "@/lib/tripStops";
 import { useUserLocation } from "@/lib/userLocation";
-import { FilterChips, KidsSwitch } from "@/components/FilterChips";
+import { FilterChips, KidsRow } from "@/components/FilterChips";
 import { MapExpandButton } from "@/components/MapExpandButton";
 import { SeasonScene } from "@/components/SeasonScene";
 import { PullSky, SunPull } from "@/components/SunPull";
@@ -1016,7 +1016,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
 
         <div className="-mx-1 flex flex-col gap-3 rounded-[18px] bg-[var(--card-bg)] p-3 shadow-[var(--shadow-float)]">
           <FilterChips />
-          <KidsSwitch />
+          <KidsRow forList />
         </div>
 
         <TownButton start={start} knownTowns={knownTowns} />
