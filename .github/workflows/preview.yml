@@ -46,6 +46,7 @@ jobs:
           a="$(echo "$a" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9-\n' '-' | cut -c1-40)"
           echo "alias=${a%-}" >> "$GITHUB_OUTPUT"
       - if: env.CF_READY == 'true'
+        id: upload
         run: |
           set -o pipefail
           up() { npx opennextjs-cloudflare upload --preview-alias "${{ steps.alias.outputs.alias }}" 2>&1 | tee upload.log; }
@@ -53,7 +54,24 @@ jobs:
           url="$(grep -oE 'https://${{ steps.alias.outputs.alias }}-turuj[a-z0-9.-]*workers\.dev' upload.log | head -1)"
           echo "Preview: ${url:-see the upload log above}" >> "$GITHUB_STEP_SUMMARY"
           echo "::notice::Preview ${url}"
+          echo "url=${url}" >> "$GITHUB_OUTPUT"
         env:
           WORKERS_CI_COMMIT_SHA: ${{ github.sha }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_DEPLOY_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      # Layout check (Peter, 2026-10-27): 0/1/10/100 saved trips, long and short names, phone to
+      # computer sizes. Runs on the preview; a red step here means something overlaps or runs off
+      # the screen. The report and screenshots are in the run's "layout-check" download.
+      - if: env.CF_READY == 'true' && steps.upload.outputs.url != ''
+        run: |
+          npm i --no-save playwright
+          npx playwright install --with-deps chromium
+          node scripts/layout-check.mjs "${{ steps.upload.outputs.url }}"
+      - if: always() && env.CF_READY == 'true' && steps.upload.outputs.url != ''
+        run: cat layout-check/report.md >> "$GITHUB_STEP_SUMMARY" || true
+      - if: always() && env.CF_READY == 'true' && steps.upload.outputs.url != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: layout-check
+          path: layout-check/
+          if-no-files-found: ignore

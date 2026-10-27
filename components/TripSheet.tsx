@@ -158,7 +158,7 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
         <JsonLd data={trailJsonLd(detail, photo?.url ?? null, town, lang)} />
         <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
         <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 md:max-w-[760px] lg:mx-0 lg:w-[460px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
-          <header className="relative -mx-4 -mt-4 flex h-[220px] shrink-0 flex-col justify-between sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
+          <header className="relative -mx-4 -mt-4 flex min-h-[220px] shrink-0 flex-col justify-between sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
             {photo ? (
               <>
                 {/* Plain img, no cookies or referrer to Wikimedia (as on town tiles). */}
@@ -212,7 +212,7 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
                   </Badge>
                 )}
               </div>
-              <h1 className="text-[2.4rem] leading-none font-extrabold tracking-tight [text-shadow:0_1px_3px_rgba(0,0,0,.45),0_1px_14px_rgba(0,0,0,.3)]">{trail.name}</h1>
+              <h1 className={`${trail.name.length > 30 ? "text-[1.85rem]" : "text-[2.4rem]"} leading-none font-extrabold tracking-tight [text-shadow:0_1px_3px_rgba(0,0,0,.45),0_1px_14px_rgba(0,0,0,.3)]`}>{trail.name}</h1>
               <p className="text-[13.5px] font-semibold [text-shadow:0_1px_2px_rgba(0,0,0,.6),0_0_10px_rgba(0,0,0,.45)]">
                 {[trail.region_name, trip ? tr(lang, "štart {name}", { name: trip.start.name }) : null].filter(Boolean).join(" · ")}
               </p>

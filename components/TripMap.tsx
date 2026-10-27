@@ -7,7 +7,7 @@ import { haversineM, nearestOnPath } from "@/lib/geo";
 import { useDriveRoute, useWalkRoute, useWalkRoutes } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { useHomeStop } from "@/lib/useHomeStop";
-import { fetchTrack } from "@/lib/gpx";
+import { fetchGpxText, fetchTrack, parseGpxTrackExact } from "@/lib/gpx";
 import { GOAL_LABEL, TRANSIT_LABEL, formatWalk } from "@/lib/format";
 import { poiIcon, poiLabel } from "@/lib/food";
 import { kindSvg } from "@/lib/kindIcons";
@@ -153,22 +153,48 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
   // There-and-back tracks run out and back, so that stretch is cut at both ends.
   const hovered = useHoveredRoute();
+  // The other routes' full tracks from the place's GPX (the picked route's file holds them all):
+  // the trip file's lines are simplified and looked "low-poly" next to the picked one (Peter, 2026-10-27).
+  const otherSlugs = others.map((o) => o.slug).join(",");
+  const [fullOthers, setFullOthers] = useState<Record<string, [number, number][]>>({});
+  useEffect(() => {
+    let cancelled = false;
+    if (gpxUrl && otherSlugs) {
+      fetchGpxText(gpxUrl.split("#")[0]).then((text) => {
+        if (cancelled || !text) return;
+        const got: Record<string, [number, number][]> = {};
+        for (const slug of otherSlugs.split(",")) {
+          const track = parseGpxTrackExact(text, slug);
+          if (track.length >= 2) got[slug] = track.map((p) => [p.lat, p.lon]);
+        }
+        setFullOthers(got);
+      });
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [gpxUrl, otherSlugs]);
   const otherTracks = useMemo<MapTrack[]>(
     () =>
       // An other route under the pointer (on the map or in the route list) lights up in its list colour.
-      others.flatMap((o): MapTrack[] =>
-        o.slug === hovered
-          ? [{ slug: o.slug, label: o.label, points: o.points, color: o.colour, state: "selected", sideBy: true }]
+      others.flatMap((o): MapTrack[] => {
+        const pts = fullOthers[o.slug] ?? o.points;
+        return o.slug === hovered
+          ? [{ slug: o.slug, label: o.label, points: pts, color: o.colour, state: "selected" }]
           : o.hoverOnly
             ? []
-            : [{ slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal", sideBy: true }]
-      ),
-    [others, hovered]
+            : [{ slug: o.slug, label: o.label, points: pts, color: OTHER_ROUTE_COLOUR, state: "normal" }];
+      }),
+    [others, hovered, fullOthers]
   );
   const tracks = useMemo<MapTrack[]>(() => {
     const color = trackColor(trail.marking);
-    // Other routes first, so the one you picked draws on top where they share a trail.
-    const whole: MapTrack[] = [...otherTracks, { slug: trail.slug, points, color, state: "selected" }];
+    // Drawn where they really run, never shifted aside: a shifted line bent and broke at sharp
+    // turns (Peter, 2026-10-27). Other routes run thin over the picked one (TrailMap orders
+    // them), and a hovered one goes on top in its colour.
+    const under = otherTracks.filter((o) => o.state !== "selected");
+    const over = otherTracks.filter((o) => o.state === "selected");
+    const whole: MapTrack[] = [...under, { slug: trail.slug, points, color, state: "selected" }, ...over];
     if (!skip || !trailJoin || points.length < 3) return whole;
     const ll = points.map(([lat, lon]) => ({ lat, lon }));
     const mid = Math.floor((points.length - 1) / 2);
@@ -179,10 +205,11 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
     const b: [number, number] = [back.point.lat, back.point.lon];
     const bi = mid + back.i;
     return [
-      ...otherTracks,
+      ...under,
       { slug: `${trail.slug}-skipped-out`, points: [...points.slice(0, out.i + 1), a], color, state: "dimmed" },
       { slug: `${trail.slug}-skipped-back`, points: [b, ...points.slice(bi + 1)], color, state: "dimmed" },
       { slug: trail.slug, points: [a, ...points.slice(out.i + 1, bi + 1), b], color, state: "selected" },
+      ...over,
     ];
   }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks]);
 

@@ -41,14 +41,38 @@ export function routeGpx(gpxText: string, track?: string, name?: string): string
   return new XMLSerializer().serializeToString(doc);
 }
 
+/** One route's track, or [] when the file has no track for it (never another route's). */
+export function parseGpxTrackExact(gpxText: string, track: string): LatLng[] {
+  const doc = new DOMParser().parseFromString(gpxText, "application/xml");
+  const trk = Array.from(doc.getElementsByTagName("trk")).find((t) => t.getElementsByTagName("desc")[0]?.textContent === track);
+  return trk ? parseGpxTrack(new XMLSerializer().serializeToString(trk)) : [];
+}
+
+const fileCache = new Map<string, Promise<string>>();
+
+/** A place's GPX file as text, fetched once per page load; "" on any failure (not kept, so it can be retried). */
+export function fetchGpxText(fileUrl: string): Promise<string> {
+  let p = fileCache.get(fileUrl);
+  if (!p) {
+    p = fetch(fileUrl)
+      .then((res) => (res.ok ? res.text() : ""))
+      .catch(() => "");
+    fileCache.set(fileUrl, p);
+    p.then((text) => {
+      if (!text) fileCache.delete(fileUrl);
+    });
+  }
+  return p;
+}
+
 const trackCache = new Map<string, Promise<LatLng[]>>();
 
 /** Fetches + parses a GPX track ("/gpx/<place>.gpx#<slug>") once per page load; resolves to [] on any failure. */
 export function fetchTrack(gpxUrl: string): Promise<LatLng[]> {
   let p = trackCache.get(gpxUrl);
   if (!p) {
-    p = fetch(gpxUrl)
-      .then((res) => (res.ok ? res.text() : ""))
+    // One download per place file, whichever of its routes is asked for.
+    p = fetchGpxText(gpxUrl.split("#")[0])
       .then((text) => (text ? parseGpxTrack(text, decodeURIComponent(new URL(gpxUrl, "http://x").hash.slice(1))) : []))
       .catch(() => []);
     trackCache.set(gpxUrl, p);
