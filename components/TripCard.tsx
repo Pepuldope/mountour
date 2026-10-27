@@ -209,7 +209,8 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
               : nearStop && carMin !== null
                 ? `~${formatDurationShort(transitMinutes(carMin))}`
                 : nearStop
-                  ? formatFromUser(stopWalkM, lang)
+                  ? // No start yet: no time to show, and the stop's metres read as the trip's (Peter, 2026-10-26).
+                    driveLoading ? "…" : ""
                   : "–"}
           </span>
           <span className="inline-flex items-center gap-1 text-[var(--foreground)]">

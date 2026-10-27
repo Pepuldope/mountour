@@ -50,6 +50,15 @@ export function defaultDeparture(now = new Date()): { date: string; time: string
   return { date: isoDate(d), time: `${pad(at.h)}:${pad(at.mi)}` };
 }
 
+/** True when `time` on `date` is already in the past (Slovak clock). */
+export function timeGone(date: string | null, time: string, now = new Date()): boolean {
+  if (!date) return false;
+  const today = isoDate(now);
+  if (date !== today) return date < today;
+  const at = wallClock(now);
+  return time <= `${pad(at.h)}:${pad(at.mi)}`;
+}
+
 /** Default departure on a given day: soon if it's today, else 08:00. */
 export function defaultTimeFor(date: string, now = new Date()): string {
   const soon = defaultDeparture(now);
@@ -141,9 +150,10 @@ export function TripSettingsProvider({ children }: { children: ReactNode }) {
   const update = useCallback((patch: Partial<TripSettings>) => {
     if (patch.travel) storeTravel(patch.travel);
     setSettings((prev) => {
-      // A new day resets a hand-picked departure: 08:00 on Saturday isn't 15:30 today.
+      // A new day keeps the picked departure and every other choice (Peter, 2026-10-26),
+      // unless that time has already gone by today.
       const next = { ...prev, ...patch };
-      if (patch.date !== undefined && patch.date !== prev.date && patch.time === undefined) next.time = null;
+      if (patch.date !== undefined && patch.date !== prev.date && patch.time === undefined && next.time && timeGone(next.date, next.time)) next.time = null;
       store(next);
       return next;
     });

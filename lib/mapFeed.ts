@@ -10,7 +10,7 @@ const POINTS_PER_STEP = 8000;
  * another, each when the map has taken the previous one, so a frame is never
  * held up for long and only the tiles the new lines touch are redrawn.
  */
-export function lineFeeder(source: () => GeoJSONSource | undefined): (features: GeoJSON.Feature[]) => void {
+export function lineFeeder(source: () => GeoJSONSource | undefined): (features: GeoJSON.Feature[]) => Promise<void> {
   let nextId = 0;
   let queue = Promise.resolve();
   return (features) => {
@@ -31,5 +31,7 @@ export function lineFeeder(source: () => GeoJSONSource | undefined): (features: 
       }
     }
     if (batch.length) send(batch);
+    // Settles once the map has taken every batch of these lines.
+    return queue;
   };
 }

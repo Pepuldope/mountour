@@ -79,6 +79,11 @@ interface Props {
 }
 
 const MAP_DATA = "/data/map";
+/**
+ * The two quietest levels turn dotted/dashed only from here: below it their lines are
+ * too thin for the dots to show, and they looked missing (Peter, 2026-10-26).
+ */
+const QUIET_DASH_ZOOM = 13;
 /** Below this zoom the map shows areas; their squares come from here on. */
 export const AREA_ZOOM = 9;
 /**
@@ -377,7 +382,7 @@ export function BrowseMap({
           m.addLayer({ id: `${src}-top`, type: "line", source: src, ...range, filter: ["==", ["get", "p"], 4], layout, paint: { "line-color": POPULARITY_TOP_OUTLINE, "line-width": width(0.6, 1.4, 2.5, 1), "line-opacity": 0.9 } });
           // A thin dark thread under the two quietest (yellow) levels: on a white or pale road the yellow alone washes out.
           m.addLayer({ id: `${src}-thread`, type: "line", source: src, ...range, filter: ["<=", ["get", "p"], 1], layout, paint: { "line-color": QUIET_THREAD, "line-width": width(0.6, 1.4, 2.5, 1.2), "line-opacity": 0.4 } });
-          m.addLayer({ id: `${src}-line`, type: "line", source: src, ...range, layout, paint: { "line-color": RAMP, "line-width": width(0.6, 1.4, 2.5), "line-opacity": ["case", ["==", ["get", "p"], 0], 1, 0.95], "line-dasharray": ["step", ["zoom"], ["literal", [1, 0]], 10, POPULARITY_DASH] as unknown as ExpressionSpecification } });
+          m.addLayer({ id: `${src}-line`, type: "line", source: src, ...range, layout, paint: { "line-color": RAMP, "line-width": width(0.6, 1.4, 2.5), "line-opacity": ["case", ["==", ["get", "p"], 0], 1, 0.95], "line-dasharray": ["step", ["zoom"], ["literal", [1, 0]], QUIET_DASH_ZOOM, POPULARITY_DASH] as unknown as ExpressionSpecification } });
           // Wide and invisible, so a thin line is easy to hit.
           m.addLayer({ id: `${src}-hit`, type: "line", source: src, ...range, paint: { "line-color": "#000", "line-width": 18, "line-opacity": 0 } });
         }
@@ -518,9 +523,11 @@ export function BrowseMap({
           // A trip crossing two areas is in both files: keep it once.
           const add = got.features.filter((f) => !onMap.has(f.properties?.s));
           add.forEach((f) => onMap.add(f.properties?.s));
-          addLines(add);
+          // The overview lines go only once the map has taken every batch of the detailed ones
+          // and drawn them ("idle"): dropped earlier, a trip had no line at all for a while (Peter, 2026-10-26).
+          await addLines(add);
+          if (cancelled) return;
           covered.push(...add.map((f) => f.properties?.s));
-          // "idle": every source is loaded and drawn, so the detailed lines are on screen.
           m.once("idle", dropCovered);
           remember(got.features, true);
         })

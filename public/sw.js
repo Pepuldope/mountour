@@ -103,11 +103,17 @@ self.addEventListener("message", (event) => {
   );
 });
 
+const ANALYTICS_HOSTS = ["umami.is", "umami.dev", "cloudflareinsights.com"];
+
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
 
   const url = new URL(req.url);
+
+  // Visit counters (Umami, Cloudflare Web Analytics): never through here. An ad blocker
+  // stopping them turned into "FetchEvent ... promise was rejected" errors (2026-10-26).
+  if (ANALYTICS_HOSTS.some((h) => url.hostname === h || url.hostname.endsWith(`.${h}`))) return;
 
   // Build assets are content-hashed: cache-first, and keep the recent ones we see
   // so a saved trip page can still hydrate offline (its own are saved with it).

@@ -73,6 +73,10 @@ const DIFFICULTIES: Difficulty[] = ["lahka", "stredna", "tazka"];
  * known trip competes with one 10 km nearer. Raise it to favour popular trips, lower it for distance.
  */
 const KM_PER_RANK = 0.1;
+/** The header sun sits between the logo and the buttons: at 0.64 the EN/SK button covered it on phones (Peter, 2026-10-26). */
+const HEADER_SUN_X = 0.42;
+/** Zoomed far in, the list still takes trips from at least this far round the map (km, half a side). */
+const LIST_MIN_HALF_KM = 11;
 
 /** Trips outside the named mountain ranges: they join the closest area. */
 const OTHER_REGION = "Ďalšie";
@@ -243,7 +247,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   const [placeIndex, setPlaceIndex] = useState<PlaceSearch | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const transit = travel === "transit";
-  const { start } = useUserLocation();
+  const { start, ready: startReady } = useUserLocation();
   const [selected, setSelected] = useState<string | null>(null);
   // The picked trip's other routes to the same place, from its own file.
   const [otherRoutes, setOtherRoutes] = useState<{ slug: string; lines: number[][][] } | null>(null);
@@ -428,6 +432,18 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
       return [...found.filter((i) => nameMatches(i.detail)), ...found.filter((i) => !nameMatches(i.detail))];
     }
     if (!mapView || mapView.zoom < mapView.areaZoom - 1) return listedAll;
+    // With a start, the trips on the map (and a little around it) in the order of the
+    // rest of the list: nearest to the start first, not to the map centre (Peter, 2026-10-26).
+    if (start) {
+      const [w, s, e, n] = mapView.bounds;
+      const padX = Math.max((e - w) * 0.25, (LIST_MIN_HALF_KM - (e - w) * 37) / 74);
+      const padY = Math.max((n - s) * 0.25, (LIST_MIN_HALF_KM - (n - s) * 55.6) / 111.2);
+      const inView = listedAll.filter((i) => {
+        const at = goalOf(i.detail);
+        return !!at && at.lon >= w - padX && at.lon <= e + padX && at.lat >= s - padY && at.lat <= n + padY;
+      });
+      if (inView.length > 0) return inView;
+    }
     const [lon, lat] = mapView.center;
     const score = (i: TripCardItem) => {
       const at = goalOf(i.detail);
@@ -437,7 +453,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
     const ranked = listedAll.map((i) => ({ i, s: score(i), late: !fitsDay(i) }));
     ranked.sort((a, b) => Number(a.late) - Number(b.late) || a.s - b.s);
     return ranked.filter((r) => r.s < Infinity).map((r) => r.i);
-  }, [listedAll, words, matches, nameMatches, mapView]);
+  }, [listedAll, words, matches, nameMatches, mapView, start]);
 
   // Cards come in pages; a new filter or another part of the map starts again from the first page.
   const filterKey = [goalFilter.join(), diffFilter.join(), timeFilter.join(), farFilter, withKids, easier, date, travel, query].join("|");
@@ -554,9 +570,13 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   const heading = words.length > 0
     ? t("Výsledky pre „{q}“", { q: query.trim() })
     : zoomedIn
-      ? dayWord && !noneFit
-        ? t("Stihnete {day}, najbližšie k stredu mapy", { day: dayWord })
-        : t("Najbližšie k stredu mapy")
+      ? start
+        ? dayWord && !noneFit
+          ? t("Stihnete {day}, na mape najbližšie k vášmu štartu", { day: dayWord })
+          : t("Na mape, najbližšie k vášmu štartu")
+        : dayWord && !noneFit
+          ? t("Stihnete {day}, najbližšie k stredu mapy", { day: dayWord })
+          : t("Najbližšie k stredu mapy")
       : dayWord && !noneFit
         ? t(start ? "Stihnete {day}, najbližšie prvé" : "Stihnete {day}", { day: dayWord })
         : start
@@ -869,6 +889,12 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
     </div>
   );
 
+  const focusStart = () => {
+    const box = document.querySelector<HTMLElement>("[data-start-chip]");
+    box?.scrollIntoView({ behavior: "smooth", block: "center" });
+    box?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+  };
+
   const showTomorrow = () => {
     update({ date: addDaysIso(isoDate(new Date()), 1) });
   };
@@ -879,6 +905,16 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
       <div className="flex flex-col" aria-live="polite">
         <h2 className="text-base font-bold">{heading}</h2>
       </div>
+
+      {/* No start: the drive (and bus) to each trip can't be worked out yet, so say so before the list (Peter, 2026-10-26). */}
+      {startReady && !start && words.length === 0 && (
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[var(--radius-card)] bg-[var(--warn-bg)] p-3 text-sm text-[var(--warn)]">
+          <p className="font-semibold">{t("Nevieme, odkiaľ vyrážate, preto zatiaľ neukazujeme čas cesty autom ani autobusom.")}</p>
+          <button type="button" onClick={focusStart} className="font-semibold underline">
+            {t("Zadať štart")}
+          </button>
+        </div>
+      )}
 
       {noneFit && dayWord && (
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-[var(--radius-card)] bg-[var(--warn-bg)] p-3 text-sm text-[var(--warn)]">
@@ -955,8 +991,8 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
       <div ref={columnRef} className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 md:max-w-[760px] lg:mx-0 lg:w-[440px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
         <PullSky season={season} />
         <header className="relative -mx-4 -mt-4 flex shrink-0 flex-col sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
-          <SeasonScene season={season} width={440} height={250} seed={11} sunX={0.64} sunY={0.17} drop={0.2} noSun className="absolute inset-0 h-full w-full" />
-          <SunPull season={season} width={440} height={250} sunX={0.64} sunY={0.17} moveRef={columnRef} />
+          <SeasonScene season={season} width={440} height={250} seed={11} sunX={HEADER_SUN_X} sunY={0.17} drop={0.2} noSun className="absolute inset-0 h-full w-full" />
+          <SunPull season={season} width={440} height={250} sunX={HEADER_SUN_X} sunY={0.17} moveRef={columnRef} />
           <nav aria-label={t("Hlavná navigácia")} className="relative flex items-center justify-between gap-3 px-4 pt-4">
             <LangLink href="/" aria-label="Túruj" className="block">
               {/* Name only: the seasonal mark blends into the header scene. The hero sky is light in both themes, so dark ink always. */}
