@@ -40,6 +40,15 @@ import { BrowseMap } from "@/components/BrowseMap";
 import type { BrowseArea, BrowseTrip, MapFocus, MapView } from "@/components/BrowseMap";
 import "@/lib/legacyStorage";
 
+/** The home headline, one at random per visit (the server and first paint keep the first one). */
+const HEADLINES = ["Kam na výlet?", "Kam vyrazíme?", "Kam do hôr?", "Kam ťa to ťahá?", "Vyrazme von!", "Hory čakajú."];
+let headline: string | null = null;
+const pickHeadline = () => (headline ??= HEADLINES[Math.floor(Math.random() * HEADLINES.length)]);
+const noChange = () => () => {};
+function useHeadline(): string {
+  return useSyncExternalStore(noChange, pickHeadline, () => HEADLINES[0]);
+}
+
 interface Props {
   /** The best known trips, rendered with the page; every trip loads after it. */
   trails: TrailDetail[];
@@ -236,6 +245,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   useEffect(() => clearAllStops(), []);
   const { date, today, withKids, easier, travel, update } = useTripSettings();
   const t = useT();
+  const title = useHeadline();
   const lang = useLang();
   // Several kinds at once (testers): empty = every kind.
   const [goalFilter, setGoalFilter] = useState<DestinationKind[]>([]);
@@ -1008,7 +1018,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
             </span>
           </nav>
           <div className="relative flex flex-col gap-2 px-4 pt-6 pb-16 text-[#14233b]">
-            <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">{t("Kam na výlet?")}</h1>
+            <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">{t(title)}</h1>
             <p className="max-w-[30ch] text-[15px] font-medium">{t("Výlety, z ktorých budete späť za svetla.")}</p>
           </div>
         </header>

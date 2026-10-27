@@ -540,6 +540,11 @@ export const EN: Record<string, string> = {
 
   // Home and lists
   "Kam na výlet?": "Where to today?",
+  "Kam vyrazíme?": "Where are we off to?",
+  "Kam do hôr?": "Which hills today?",
+  "Kam ťa to ťahá?": "Where's calling you?",
+  "Vyrazme von!": "Let's get outside!",
+  "Hory čakajú.": "The mountains are waiting.",
   "Hlavná navigácia": "Main navigation",
   "Výlety": "Trips",
   "Všetky výlety": "All trips",
