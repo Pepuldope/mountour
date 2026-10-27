@@ -60,7 +60,7 @@ const CASES = [
 /** Runs in the page: puts extreme names into the visible name spots. */
 function stressNames({ which, long, short }) {
   if (which === "home") {
-    const titles = [...document.querySelectorAll('a[href*="/trasa/"] span.font-bold')];
+    const titles = [...document.querySelectorAll("[data-trip-name]")];
     titles.forEach((el, i) => (el.textContent = i % 2 ? long : short));
   }
   if (which === "trip") {

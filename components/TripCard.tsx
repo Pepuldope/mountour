@@ -143,7 +143,7 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
       href={`/trasa/${trail.slug}`}
       onMouseEnter={() => onActive(trail.slug)}
       onFocus={() => onActive(trail.slug)}
-      className={`grid grid-cols-[64px_1fr] gap-3 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-3 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
+      className={`grid grid-cols-[64px_minmax(0,1fr)] gap-3 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-3 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
         big ? "border-2 border-[var(--accent)] shadow-[0_10px_28px_rgba(20,35,59,0.22)]" : active ? "trip-card-active border-[var(--accent)]" : "border-[var(--border)]"
       }`}
     >
@@ -170,7 +170,7 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
       )}
       <span className="flex min-w-0 flex-col gap-1">
         <span className="flex items-baseline justify-between gap-2">
-          <span className={`leading-tight font-bold ${big ? "text-xl" : "text-base"} ${dim ? "text-[var(--muted)]" : ""}`}>{trail.name}</span>
+          <span data-trip-name className={`leading-tight font-bold ${big ? "text-xl" : "text-base"} ${dim ? "text-[var(--muted)]" : ""}`}>{trail.name}</span>
           {big ? (
             <button
               type="button"
@@ -195,7 +195,8 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
             <span aria-hidden className="inline-flex" dangerouslySetInnerHTML={{ __html: kindSvg(goal, 12) }} />
             {t(GOAL_LABEL[goal])}
           </span>
-          {trail.region_name && <span className="min-w-0 truncate">· {trail.region_name}</span>}
+          {/* Under 360 px there is no room left for it: rather none than a lone "…". */}
+          {trail.region_name && <span className="min-w-0 truncate max-[359px]:hidden">· {trail.region_name}</span>}
           <span className="shrink-0">· {km}</span>
           {/* With kids on, every card listed is kid-friendly: the tag would say nothing. */}
           {trail.family_friendly && !withKids && <span className="on-card-ok shrink-0 font-semibold text-[var(--ok)]">· {t("pre deti")}</span>}
