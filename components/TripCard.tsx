@@ -186,15 +186,17 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
             <span className="shrink-0 text-xs font-semibold text-[var(--muted)]">{t(DIFFICULTY_LABEL[trail.difficulty]).toLowerCase()}</span>
           )}
         </span>
-        <span className="flex flex-wrap items-center gap-x-1.5 text-[12.5px] text-[var(--muted)]">
+        {/* One row, always (A11, Peter 2026-10-27): a long region gives way with "…" so "pre deti" never wraps the card taller. */}
+        <span className="flex items-center gap-x-1.5 text-[12.5px] whitespace-nowrap text-[var(--muted)]">
           {/* The kind as a filled chip: with a photo in place of the icon it must read on its own (Peter, 2026-10-22). */}
-          <span className="inline-flex items-center gap-1 rounded-full px-1.5 py-px text-[11.5px] font-bold text-white" style={{ background: colour }}>
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-full px-1.5 py-px text-[11.5px] font-bold text-white" style={{ background: colour }}>
             <span aria-hidden className="inline-flex" dangerouslySetInnerHTML={{ __html: kindSvg(goal, 12) }} />
             {t(GOAL_LABEL[goal])}
           </span>
-          {trail.region_name && <span>· {trail.region_name}</span>}
-          <span>· {km}</span>
-          {trail.family_friendly && <span className="on-card-ok font-semibold text-[var(--ok)]">· {t("pre deti")}</span>}
+          {trail.region_name && <span className="min-w-0 truncate">· {trail.region_name}</span>}
+          <span className="shrink-0">· {km}</span>
+          {/* With kids on, every card listed is kid-friendly: the tag would say nothing. */}
+          {trail.family_friendly && !withKids && <span className="on-card-ok shrink-0 font-semibold text-[var(--ok)]">· {t("pre deti")}</span>}
         </span>
         <span className="font-data flex flex-wrap items-center gap-x-3 text-[15px]">
           <span className={leg(!byBus)}>
