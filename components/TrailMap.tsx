@@ -302,7 +302,8 @@ export function TrailMap({
           layout: { "line-cap": "round", "line-join": "round" },
           paint: {
             "line-color": "#ffffff",
-            "line-width": ["match", ["get", "state"], "selected", 10, "dimmed", 5, 7],
+            // Other routes ("normal") get no white band: they run as a thin line on top (below).
+            "line-width": ["match", ["get", "state"], "selected", 10, "dimmed", 5, 0],
             "line-opacity": ["match", ["get", "state"], "dimmed", 0.4, 1],
           },
         });
@@ -313,7 +314,7 @@ export function TrailMap({
           layout: { "line-cap": "round", "line-join": "round" },
           paint: {
             "line-color": ["get", "color"],
-            "line-width": ["match", ["get", "state"], "selected", 5, "dimmed", 2.5, 3.5],
+            "line-width": ["match", ["get", "state"], "selected", 5, "dimmed", 2.5, 2],
             "line-opacity": ["match", ["get", "state"], "dimmed", 0.35, 1],
           },
         });
@@ -439,10 +440,12 @@ export function TrailMap({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctx, boundsKey]);
 
-  // Tracks: dimmed first, selected last so it paints on top.
+  // Tracks: dimmed first, then the picked line, other routes thin on top.
   useEffect(() => {
     if (!ctx) return;
-    const order: Record<TrackState, number> = { dimmed: 0, normal: 1, selected: 2 };
+    // Other routes go over the picked one as a thin line, so where they share a path both
+    // show: a stripe down the middle of it (Peter's pick, 2026-10-27).
+    const order: Record<TrackState, number> = { dimmed: 0, selected: 1, normal: 2 };
     const features: GeoJSON.Feature[] = [...tracks]
       .filter((t) => t.points.length >= 2)
       .sort((a, b) => order[a.state] - order[b.state])

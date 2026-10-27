@@ -7,7 +7,7 @@ import { haversineM, nearestOnPath } from "@/lib/geo";
 import { useDriveRoute, useWalkRoute, useWalkRoutes } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { useHomeStop } from "@/lib/useHomeStop";
-import { fetchTrack } from "@/lib/gpx";
+import { fetchGpxText, fetchTrack, parseGpxTrackExact } from "@/lib/gpx";
 import { GOAL_LABEL, TRANSIT_LABEL, formatWalk } from "@/lib/format";
 import { poiIcon, poiLabel } from "@/lib/food";
 import { kindSvg } from "@/lib/kindIcons";
@@ -153,24 +153,45 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
   // There-and-back tracks run out and back, so that stretch is cut at both ends.
   const hovered = useHoveredRoute();
+  // The other routes' full tracks from the place's GPX (the picked route's file holds them all):
+  // the trip file's lines are simplified and looked "low-poly" next to the picked one (Peter, 2026-10-27).
+  const otherSlugs = others.map((o) => o.slug).join(",");
+  const [fullOthers, setFullOthers] = useState<Record<string, [number, number][]>>({});
+  useEffect(() => {
+    let cancelled = false;
+    if (gpxUrl && otherSlugs) {
+      fetchGpxText(gpxUrl.split("#")[0]).then((text) => {
+        if (cancelled || !text) return;
+        const got: Record<string, [number, number][]> = {};
+        for (const slug of otherSlugs.split(",")) {
+          const track = parseGpxTrackExact(text, slug);
+          if (track.length >= 2) got[slug] = track.map((p) => [p.lat, p.lon]);
+        }
+        setFullOthers(got);
+      });
+    }
+    return () => {
+      cancelled = true;
+    };
+  }, [gpxUrl, otherSlugs]);
   const otherTracks = useMemo<MapTrack[]>(
     () =>
       // An other route under the pointer (on the map or in the route list) lights up in its list colour.
-      others.flatMap((o): MapTrack[] =>
-        o.slug === hovered
-          ? [{ slug: o.slug, label: o.label, points: o.points, color: o.colour, state: "selected" }]
+      others.flatMap((o): MapTrack[] => {
+        const pts = fullOthers[o.slug] ?? o.points;
+        return o.slug === hovered
+          ? [{ slug: o.slug, label: o.label, points: pts, color: o.colour, state: "selected" }]
           : o.hoverOnly
             ? []
-            : [{ slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal" }]
-      ),
-    [others, hovered]
+            : [{ slug: o.slug, label: o.label, points: pts, color: OTHER_ROUTE_COLOUR, state: "normal" }];
+      }),
+    [others, hovered, fullOthers]
   );
   const tracks = useMemo<MapTrack[]>(() => {
     const color = trackColor(trail.marking);
-    // Other routes first, so the one you picked draws on top where they share a trail.
     // Drawn where they really run, never shifted aside: a shifted line bent and broke at sharp
-    // turns (Peter, 2026-10-27). Where routes share a path the picked one covers the others,
-    // and a hovered other route goes on top of it.
+    // turns (Peter, 2026-10-27). Other routes run thin over the picked one (TrailMap orders
+    // them), and a hovered one goes on top in its colour.
     const under = otherTracks.filter((o) => o.state !== "selected");
     const over = otherTracks.filter((o) => o.state === "selected");
     const whole: MapTrack[] = [...under, { slug: trail.slug, points, color, state: "selected" }, ...over];
