@@ -30,3 +30,15 @@ def test_credit_lines_name_the_author():
     assert credit({"Attribution": {"value": "Photo: Jane Doe"}, "Artist": {"value": "jdoe"}}) == "Photo: Jane Doe"
     long = credit({"Artist": {"value": "word " * 40}})
     assert len(long) <= 101 and long.endswith("…") and not long[:-1].endswith(" ")
+
+
+def test_mapillary_drops_sequences_shot_from_a_vehicle():
+    from pipeline.photos import from_a_vehicle
+
+    def shot(seq, ms, lon):
+        return {"sequence": seq, "captured_at": ms, "geometry": {"coordinates": [lon, 48.0]}}
+
+    # ~37 m in 2 s (~67 km/h) is a car; ~4 m in 5 s is someone walking.
+    car = [shot("car", 1_600_000_000_000, 17.0), shot("car", 1_600_000_002_000, 17.0005)]
+    walk = [shot("walk", 1_600_000_000_000, 17.0), shot("walk", 1_600_000_005_000, 17.00005)]
+    assert from_a_vehicle(car + walk) == {"car"}

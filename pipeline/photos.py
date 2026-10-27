@@ -251,6 +251,32 @@ def bearing(lat1, lon1, lat2, lon2):
     return (math.degrees(math.atan2(y, x)) + 360) % 360
 
 
+# Faster than this between two shots of one sequence = taken from a car or bus (dashcam road
+# views, Peter 2026-10-27: "quite shit photos"). Walkers and cyclists on paths stay below it.
+WALK_KMH = 15
+
+
+def from_a_vehicle(images):
+    """The sequences in `images` whose consecutive shots moved faster than WALK_KMH."""
+    by_seq = {}
+    for im in images:
+        g = (im.get("geometry") or {}).get("coordinates")
+        if g and im.get("sequence") and im.get("captured_at") is not None:
+            by_seq.setdefault(im["sequence"], []).append((im["captured_at"], g))
+    fast = set()
+    for seq, shots in by_seq.items():
+        shots.sort()
+        for (t0, a), (t1, b) in zip(shots, shots[1:]):
+            dt = (t1 - t0) / 3_600_000  # captured_at is in milliseconds
+            if dt <= 0:
+                continue
+            km = math.hypot((b[1] - a[1]) * 111.32, (b[0] - a[0]) * 111.32 * math.cos(math.radians(a[1])))
+            if km / dt > WALK_KMH:
+                fast.add(seq)
+                break
+    return fast
+
+
 def mapillary_photos(places, token):
     """For places still without a photo: the best Mapillary image within 150 m, downloaded and
     shrunk to 500 px. Best = facing the place (when not standing right on it), then nearest, then newest."""
@@ -263,13 +289,15 @@ def mapillary_photos(places, token):
     for n, (i, lat, lon) in enumerate(places):
         dlat = MLY_M / 111_320
         dlon = MLY_M / (111_320 * math.cos(math.radians(lat)))
-        body = get_json("https://graph.mapillary.com/images?fields=id,geometry,computed_geometry,compass_angle,captured_at,creator,is_pano"
+        body = get_json("https://graph.mapillary.com/images?fields=id,geometry,computed_geometry,compass_angle,captured_at,creator,is_pano,sequence"
                         f"&bbox={lon - dlon},{lat - dlat},{lon + dlon},{lat + dlat}&limit=100", auth)
         ranked = []
-        for im in (body or {}).get("data", []):
+        images = (body or {}).get("data", [])
+        moving = from_a_vehicle(images)
+        for im in images:
             seen += 1
             g = (im.get("computed_geometry") or im.get("geometry") or {}).get("coordinates")
-            if not g or im.get("is_pano"):
+            if not g or im.get("is_pano") or im.get("sequence") in moving:
                 continue
             dy = (g[1] - lat) * 111_320
             dx = (g[0] - lon) * 111_320 * math.cos(math.radians(lat))
