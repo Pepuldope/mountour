@@ -542,7 +542,7 @@ export const EN: Record<string, string> = {
   "Kam na výlet?": "Where to today?",
   "Kam vyrazíme?": "Where are we off to?",
   "Kam do hôr?": "Which hills today?",
-  "Kam ťa to ťahá?": "Where's calling you?",
+  "Kam ťa to ťahá?": "What's calling you?",
   "Vyrazme von!": "Let's get outside!",
   "Hory čakajú.": "The mountains are waiting.",
   "Hlavná navigácia": "Main navigation",
