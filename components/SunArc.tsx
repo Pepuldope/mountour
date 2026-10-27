@@ -48,6 +48,18 @@ const EDGE = {
 // The white night car keeps its headlights: amber instead of the icon's white.
 const CAR_AT_NIGHT = UI_ICON.car.replaceAll('fill="#fff"', 'fill="#f4a51c"');
 
+const UNMARKED = "#55627a";
+const LATE = "#9a4a06";
+/** The marking colours as the legend names them. */
+const MARKING_WORD: Record<string, string> = {
+  [MARKING_COLOR.red]: "červená značka",
+  [MARKING_COLOR.blue]: "modrá značka",
+  [MARKING_COLOR.green]: "zelená značka",
+  [MARKING_COLOR.yellow]: "žltá značka",
+  [MARKING_COLOR.black]: "čierna značka",
+  [UNMARKED]: "bez značky",
+};
+
 /** Sky colours by sun height (degrees): [height, top, horizon]. */
 const SKY: [number, string, string][] = [
   [-12, "#141d36", "#1d2a52"],
@@ -169,7 +181,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
         x: x(t),
         y: HOR - ((p.ele - mn) / (mx - mn || 1)) * rise,
         ele: p.ele,
-        colour: p.colour ? MARKING_COLOR[p.colour] : "#55627a",
+        colour: p.colour ? MARKING_COLOR[p.colour] : UNMARKED,
       };
     });
 
@@ -246,7 +258,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
       const t0 = hs + pa.from * (he - hs);
       const t1 = hs + pa.to * (he - hs);
       const i = Math.max(0, walk.findIndex((p) => p.t >= t0));
-      return { t0, t1, name: pa.name, kind: pa.kind, icon: pa.icon, x: x((t0 + t1) / 2), y: walk[i].y };
+      return { t0, t1, name: pa.name, kind: pa.kind, icon: pa.icon, x: x((t0 + t1) / 2), x0: x(t0), x1: x(t1), y: walk[i].y };
     });
 
     return { lo, hi, x, y, walk, pauses, sky, goal: walk[goalIndex], goalT: walk[goalIndex].t, arc, dash, ridge, hill, hours, season, deco, snow, capY, capEdge };
@@ -352,6 +364,16 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
   const heightW = heightText ? 16 + heightText.length * 6.4 : 0;
   const heightY = temp !== null ? 45 : 25;
 
+  // The trail colours worth naming: a few metres of another colour at a junction would only puzzle.
+  const legendColours = useMemo(() => {
+    const share = new Map<string, number>();
+    const w = scene.walk;
+    for (let i = 1; i < w.length; i++) if (w[i].t <= sunset) share.set(w[i].colour, (share.get(w[i].colour) ?? 0) + (w[i].x - w[i - 1].x));
+    const total = [...share.values()].reduce((a, b) => a + b, 0) || 1;
+    return [...share].filter(([, len]) => len / total >= 0.05).map(([c]) => c);
+  }, [scene.walk, sunset]);
+  // Standing at an added stop: the walker shows as that place's pin.
+  const atPause = onTrail ? scene.pauses.find((pa) => pa.kind && t >= pa.t0 && t <= pa.t1) : undefined;
   const marker = onTrail ? "walker" : inCar ? (byBus ? (byTrain ? "train" : "bus") : "car") : "dot";
   const goalWords = profile ? GOAL_WORDS[profile.goalKind] : null;
   const what =
@@ -552,7 +574,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
               y1={prev.y}
               x2={p.x}
               y2={p.y}
-              stroke={late ? "#9a4a06" : p.colour}
+              stroke={late ? LATE : p.colour}
               strokeWidth={2.6}
               strokeLinecap="round"
               strokeDasharray={late ? "3 2" : undefined}
@@ -560,12 +582,17 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
           );
         })}
 
-        {/* Added stops: a ring where the walk stands still and the place's map pin above it, in its colour (Peter, 2026-10-24). */}
+        {/* Added stops: the time spent there cut out of the walk in the place's colour, its map pin above
+            (Peter, 2026-10-24 and 2026-10-26). While the walker is there, the walker turns into the pin. */}
         {scene.pauses.map((pa) => {
           const c = pa.kind ? POI_COLOUR[pa.kind] : WALKER;
+          // At least a few pixels wide, so a short stop on a long day still shows.
+          const half = Math.max(3, (pa.x1 - pa.x0) / 2);
           return (
             <g key={pa.t0}>
-              {pa.kind && (
+              <line x1={pa.x - half} x2={pa.x + half} y1={pa.y} y2={pa.y} stroke="#fff" strokeWidth={8} strokeLinecap="round" />
+              <line x1={pa.x - half} x2={pa.x + half} y1={pa.y} y2={pa.y} stroke={c} strokeWidth={5} strokeLinecap="round" />
+              {pa.kind && pa !== atPause && (
                 <g transform={`translate(${pa.x} ${pa.y - 17})`}>
                   <line y1={7} y2={12} stroke={c} strokeWidth={2.2} />
                   {/* A faint dark rim keeps the white edge visible on a pale sky or snow. */}
@@ -575,9 +602,6 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
                   <g transform="translate(-5.5 -5.5) scale(0.46)" color="#fff" dangerouslySetInnerHTML={{ __html: KIND_ICON[pa.icon ?? pa.kind] }} />
                 </g>
               )}
-              {/* A solid dot in the place's colour with a white edge: strong on the hill and in the dark. */}
-              <circle cx={pa.x} cy={pa.y} r={5.4} fill={INK} opacity={0.3} />
-              <circle cx={pa.x} cy={pa.y} r={4.6} fill={c} stroke="#fff" strokeWidth={1.6} />
             </g>
           );
         })}
@@ -674,7 +698,15 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
           );
         })}
 
-        {/* Who is where: the car on the road, the walker on the trail, a dot at home. */}
+        {/* Who is where: the car on the road, the walker on the trail (the place's pin at a stop), a dot at home. */}
+        {atPause?.kind ? (
+          <g transform={`translate(${walker[0]} ${walker[1] - 13})`}>
+            <circle r={11.2} fill={INK} opacity={0.3} />
+            <circle r={10} fill={POI_COLOUR[atPause.kind]} stroke="#fff" strokeWidth={1.8} />
+            {/* Constant markup from lib/kindIcons.ts, no user data. */}
+            <g transform="translate(-6.6 -6.6) scale(0.55)" color="#fff" dangerouslySetInnerHTML={{ __html: KIND_ICON[atPause.icon ?? atPause.kind] }} />
+          </g>
+        ) : (
         <g transform={`translate(${onTrail ? walker[0] : sx} ${onTrail ? walker[1] - 12 : inCar ? HOR - 11 : HOR + 3}) translate(-12.5 -12.5) scale(1.04)`}>
           {/* A thin even edge keeps the marker apart from what is behind it: white around the blue walker
               (a dark one made him hard to read on phones) and the dark car by day, dark around the white car at night. */}
@@ -684,6 +716,7 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
             dangerouslySetInnerHTML={{ __html: night && marker === "car" ? CAR_AT_NIGHT : UI_ICON[marker] }}
           />
         </g>
+        )}
 
         <g transform={`translate(${W - 8} 8)`}>
           <rect x={-50} y={0} width={50} height={22} rx={11} fill="#fff" opacity={0.92} />
@@ -740,6 +773,32 @@ export function SunArc({ plan, profile, sun, hasDrive, byBus = false, byTrain = 
           aria-valuetext={formatTime(new Date(t))}
         />
       </div>
+
+      {/* What the colours mean (Peter, 2026-10-26: "make it obvious what each one means"): only what this day's picture shows. */}
+      <ul className="flex flex-wrap gap-x-3 gap-y-1 px-4 pb-2 text-[11.5px] text-[var(--muted)]" aria-label={tx("Vysvetlivky")}>
+        {legendColours.map((c) => (
+          <li key={c} className="inline-flex items-center gap-1.5">
+            <svg width="16" height="6" aria-hidden="true"><line x1="1.5" x2="14.5" y1="3" y2="3" stroke={c} strokeWidth="2.6" strokeLinecap="round" /></svg>
+            {tx(MARKING_WORD[c] ?? "bez značky")}
+          </li>
+        ))}
+        {scene.walk.some((p) => p.t > sunset) && (
+          <li className="inline-flex items-center gap-1.5">
+            <svg width="16" height="6" aria-hidden="true"><line x1="1.5" x2="14.5" y1="3" y2="3" stroke={LATE} strokeWidth="2.6" strokeDasharray="3 2" /></svg>
+            {tx("po západe slnka")}
+          </li>
+        )}
+        {hasDrive && (
+          <li className="inline-flex items-center gap-1.5">
+            <svg width="16" height="8" aria-hidden="true"><rect x="0.5" y="0.5" width="15" height="7" rx="3.5" fill={INK} /></svg>
+            {tx(byTrain ? "vo vlaku" : byBus ? "v autobuse" : "v aute")}
+          </li>
+        )}
+        <li className="inline-flex items-center gap-1.5">
+          <svg width="16" height="6" aria-hidden="true"><line x1="1.5" x2="14.5" y1="3" y2="3" stroke="#e08a00" strokeWidth="1.7" strokeDasharray="2.5 2.5" /></svg>
+          {tx("dráha slnka")}
+        </li>
+      </ul>
 
       <div className="flex justify-between gap-3 border-t border-[var(--border)] px-4 pt-2.5 pb-3.5 text-sm">
         <div>

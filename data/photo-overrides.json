@@ -1,6 +1,7 @@
 {
   "_comment": "Hand fixes for pipeline/photos.py. block: Commons file names never to use (not a view of the place). pick: a Commons file to use for a place, by OSM id or trip/<slug>.",
   "block": [
+    "Brečtanová 1 02.jpg",
     "Sedlo Javorina 01.JPG",
     "Boží hrob gelnica.jpg",
     "Pod Krásnou Hôrkou 03.jpg",

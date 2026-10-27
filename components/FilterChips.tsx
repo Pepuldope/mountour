@@ -170,34 +170,12 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
   );
 }
 
-/** Two questions (Peter, 2026-10-19): kids along (more time on the trail, said as time, not pace: Peter 2026-10-22) and easier trips only (the list). */
-export function KidsSwitch() {
-  const { easier, update } = useTripSettings();
-  const t = useT();
-  return (
-    <div className="flex flex-col gap-2">
-      {/* Kids along usually means easier trips too: one tap turns both on, the second can be undone below. */}
-      <KidsRow />
-      <div className="flex items-center gap-2.5">
-        <span className="inline-flex w-[22px] justify-center text-[var(--accent)]">
-          <UiIcon name="walker" size={20} />
-        </span>
-        <span className="flex min-w-0 flex-1 flex-col">
-          <span className="text-[14.5px] font-bold">{t("Ukázať ľahšie trasy?")}</span>
-          <span className="text-[12.5px] text-[var(--muted)]">{t("Len trasy vhodné pre deti a začiatočníkov.")}</span>
-        </span>
-        <Switch on={easier} label={t("Ukázať ľahšie trasy")} onChange={(on) => update({ easier: on })} />
-      </div>
-    </div>
-  );
-}
-
 /**
  * "Idete s deťmi?" with what turning it on does (Peter: the line says what the switch does, not its state).
- * It turns the easier-trips filter on (and off) with it, on home and on the planner alike: kids on with
- * easier trips off was only reachable from the planner (Peter, 2026-10-25).
+ * The one "slower" question (Peter, 2026-10-27, A12): it adds time on the trail and keeps the home list
+ * to kid-friendly trips. The list says so (`forList`); a trip page only changes the time.
  */
-export function KidsRow() {
+export function KidsRow({ forList = false }: { forList?: boolean }) {
   const { withKids, update } = useTripSettings();
   const t = useT();
   return (
@@ -207,7 +185,7 @@ export function KidsRow() {
       </span>
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="text-[14.5px] font-bold">{t("Idete s deťmi?")}</span>
-        <span className="text-[12.5px] text-[var(--muted)]">{t("Prispôsobíme čas trasy.")}</span>
+        <span className="text-[12.5px] text-[var(--muted)]">{forList ? t("Viac času na trase a len trasy vhodné pre deti.") : t("Prispôsobíme čas trasy.")}</span>
       </span>
       <Switch on={withKids} label={t("Idete s deťmi")} onChange={(on) => update({ withKids: on, easier: on })} />
     </div>

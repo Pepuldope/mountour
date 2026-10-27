@@ -70,6 +70,7 @@ function toTrail(t: TripSummary): Trail {
     goal_name: t.destination.name,
     rank: t.rank,
     ...(t.shorter ? { shorter: t.shorter } : {}),
+    ...(t.easier ? { easier: t.easier } : {}),
     bbox: { sw: { lat: s, lon: w }, ne: { lat: n, lon: e } },
     created_at: "",
   };
@@ -214,4 +215,16 @@ export function shorterRoutes(main: TrailDetail, others: TrailDetail[]): TripSum
   const car = pick(false);
   const bus = pick(true);
   return car || bus ? { ...(car ? { car } : {}), ...(bus ? { bus } : {}) } : undefined;
+}
+
+const DIFFICULTY_RANK: Record<TrailDetail["trail"]["difficulty"], number> = { lahka: 0, stredna: 1, tazka: 2 };
+
+/** The easiest other route to the place, when it is easier than the main one (home list: scripts/list-joins.ts). */
+export function easierRoute(main: TrailDetail, others: TrailDetail[]): TripSummary["easier"] {
+  let best: TrailDetail | undefined;
+  for (const o of others) {
+    if (DIFFICULTY_RANK[o.trail.difficulty] >= DIFFICULTY_RANK[(best ?? main).trail.difficulty]) continue;
+    best = o;
+  }
+  return best ? { slug: best.trail.slug, difficulty: best.trail.difficulty } : undefined;
 }

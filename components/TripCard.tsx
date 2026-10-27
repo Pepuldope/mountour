@@ -8,7 +8,7 @@ import { DIFFICULTY_LABEL, GOAL_LABEL, formatDurationShort, formatFromUser, form
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR } from "@/lib/palette";
 import { formatKm } from "@/lib/walkFacts";
-import type { ParkingLot, TrailDetail, TransitStop } from "@/lib/types";
+import type { Difficulty, ParkingLot, TrailDetail, TransitStop } from "@/lib/types";
 import { useTripSettings } from "@/lib/tripSettings";
 import { UiIcon } from "@/components/UiIcon";
 import { LangLink, useLang } from "@/lib/i18n";
@@ -21,6 +21,8 @@ export interface TripCardItem {
   hikeMin: number;
   /** The walk of a clearly shorter route to the same place (kids pace applied); null when there is none. */
   shortMin: number | null;
+  /** Listed through an easier route to the same place (a difficulty filter): that route's difficulty. */
+  easierRoute?: Difficulty | null;
   /** ...its length and climb. */
   walkM: number;
   ascentM: number;
@@ -141,7 +143,7 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
       href={`/trasa/${trail.slug}`}
       onMouseEnter={() => onActive(trail.slug)}
       onFocus={() => onActive(trail.slug)}
-      className={`grid grid-cols-[64px_1fr] gap-3 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-3 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
+      className={`grid grid-cols-[64px_minmax(0,1fr)] gap-3 rounded-[var(--radius-card)] border bg-[var(--card-bg)] p-3 transition-colors hover:border-[var(--accent)] focus-visible:outline-2 focus-visible:outline-[var(--accent)] ${
         big ? "border-2 border-[var(--accent)] shadow-[0_10px_28px_rgba(20,35,59,0.22)]" : active ? "trip-card-active border-[var(--accent)]" : "border-[var(--border)]"
       }`}
     >
@@ -168,7 +170,7 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
       )}
       <span className="flex min-w-0 flex-col gap-1">
         <span className="flex items-baseline justify-between gap-2">
-          <span className={`leading-tight font-bold ${big ? "text-xl" : "text-base"} ${dim ? "text-[var(--muted)]" : ""}`}>{trail.name}</span>
+          <span data-trip-name className={`leading-tight font-bold ${big ? "text-xl" : "text-base"} ${dim ? "text-[var(--muted)]" : ""}`}>{trail.name}</span>
           {big ? (
             <button
               type="button"
@@ -186,15 +188,18 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
             <span className="shrink-0 text-xs font-semibold text-[var(--muted)]">{t(DIFFICULTY_LABEL[trail.difficulty]).toLowerCase()}</span>
           )}
         </span>
-        <span className="flex flex-wrap items-center gap-x-1.5 text-[12.5px] text-[var(--muted)]">
+        {/* One row, always (A11, Peter 2026-10-27): a long region gives way with "…" so "pre deti" never wraps the card taller. */}
+        <span className="flex items-center gap-x-1.5 text-[12.5px] whitespace-nowrap text-[var(--muted)]">
           {/* The kind as a filled chip: with a photo in place of the icon it must read on its own (Peter, 2026-10-22). */}
-          <span className="inline-flex items-center gap-1 rounded-full px-1.5 py-px text-[11.5px] font-bold text-white" style={{ background: colour }}>
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-full px-1.5 py-px text-[11.5px] font-bold text-white" style={{ background: colour }}>
             <span aria-hidden className="inline-flex" dangerouslySetInnerHTML={{ __html: kindSvg(goal, 12) }} />
             {t(GOAL_LABEL[goal])}
           </span>
-          {trail.region_name && <span>· {trail.region_name}</span>}
-          <span>· {km}</span>
-          {trail.family_friendly && <span className="on-card-ok font-semibold text-[var(--ok)]">· {t("pre deti")}</span>}
+          {/* Under 360 px there is no room left for it: rather none than a lone "…". */}
+          {trail.region_name && <span className="min-w-0 truncate max-[359px]:hidden">· {trail.region_name}</span>}
+          <span className="shrink-0">· {km}</span>
+          {/* With kids on, every card listed is kid-friendly: the tag would say nothing. */}
+          {trail.family_friendly && !withKids && <span className="on-card-ok shrink-0 font-semibold text-[var(--ok)]">· {t("pre deti")}</span>}
         </span>
         <span className="font-data flex flex-wrap items-center gap-x-3 text-[15px]">
           <span className={leg(!byBus)}>
@@ -228,6 +233,11 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
               </span>
             )}
           </span>
+          {item.easierRoute && (
+            <span className="on-card-ok font-sans text-[12.5px] font-semibold text-[var(--ok)]" title={t("Ľahšia cesta k tomu istému cieľu, na stránke výletu")}>
+              {t("aj {d} cesta", { d: t(DIFFICULTY_LABEL[item.easierRoute]).toLowerCase() })}
+            </span>
+          )}
           {total !== null && (
             <span className="text-[var(--muted)]">
               {t("spolu")} {approx}

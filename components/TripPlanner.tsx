@@ -30,7 +30,7 @@ import { TransitHandoff, TransitLegs } from "@/components/TransitBlock";
 import { TravelSwitch } from "@/components/TravelSwitch";
 import { GOAL_WORDS, trimProfile, withApproach, withStops } from "@/lib/tripProfile";
 import { LUNCH, keepStopsOf, useTripStops } from "@/lib/tripStops";
-import type { TripProfile } from "@/lib/tripProfile";
+import type { PauseAt, TripProfile } from "@/lib/tripProfile";
 import { useLang, useT } from "@/lib/i18n";
 import { tr } from "@/lib/lang";
 import type { Lang } from "@/lib/lang";
@@ -105,8 +105,9 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
   const profile = useMemo(() => {
     if (!walkProfile || !stops.length) return walkProfile;
     const goalAt = walkProfile.points[walkProfile.goalIndex].at;
-    const pauses = stops.flatMap((s) => {
-      if (s.id === LUNCH.id) return [{ at: goalAt, min: s.min, name: s.name }];
+    const pauses = stops.flatMap((s): PauseAt[] => {
+      // Lunch shows as food on the sun dial, like a buffet stop.
+      if (s.id === LUNCH.id) return [{ at: goalAt, min: s.min, name: s.name, kind: "obcerstvenie", icon: "restauracia" }];
       const place = walkProfile.places?.find((p) => p.id === s.id);
       if (!place) return [];
       const way = place.back === null ? "tam" : (s.way ?? "tam");

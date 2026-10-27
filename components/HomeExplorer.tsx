@@ -23,7 +23,7 @@ import { useTripSettings } from "@/lib/tripSettings";
 import { knownDriveMin, useStartDrives, useTownDrives } from "@/lib/useDriveRoute";
 import { clearAllStops } from "@/lib/tripStops";
 import { useUserLocation } from "@/lib/userLocation";
-import { FilterChips, KidsSwitch } from "@/components/FilterChips";
+import { FilterChips, KidsRow } from "@/components/FilterChips";
 import { MapExpandButton } from "@/components/MapExpandButton";
 import { SeasonScene } from "@/components/SeasonScene";
 import { PullSky, SunPull } from "@/components/SunPull";
@@ -330,7 +330,9 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
       const stop = nearestStop(detail);
       if (easier && !detail.trail.family_friendly) return [];
       if (goalFilter.length > 0 && !goalFilter.includes(detail.trail.goal ?? "ine")) return [];
-      if (diffFilter.length > 0 && !diffFilter.includes(detail.trail.difficulty)) return [];
+      // Another, easier route to the place counts too, and the card says so (A13, Peter 2026-10-26).
+      const viaEasier = diffFilter.length > 0 && !diffFilter.includes(detail.trail.difficulty) && !!detail.trail.easier && diffFilter.includes(detail.trail.easier.difficulty);
+      if (diffFilter.length > 0 && !diffFilter.includes(detail.trail.difficulty) && !viaEasier) return [];
       // The trip page's own route once it was opened from this start (the same number on both pages),
       // else the real drive from this start (/api/drives, away from the table towns),
       // else the trip page's first guess: the weekly table from the nearest town, or a straight-line estimate.
@@ -360,6 +362,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
           detail,
           hikeMin,
           shortMin,
+          easierRoute: viaEasier ? detail.trail.easier!.difficulty : null,
           walkM: walk?.m ?? detail.trail.distance_m,
           ascentM: walk?.ascentM ?? detail.trail.ascent_m,
           driveMin,
@@ -1016,7 +1019,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
 
         <div className="-mx-1 flex flex-col gap-3 rounded-[18px] bg-[var(--card-bg)] p-3 shadow-[var(--shadow-float)]">
           <FilterChips />
-          <KidsSwitch />
+          <KidsRow forList />
         </div>
 
         <TownButton start={start} knownTowns={knownTowns} />
