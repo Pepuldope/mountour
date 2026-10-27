@@ -25,8 +25,6 @@ export interface MapTrack {
   /** Line colour: the trail's KST marking (lib/mapLayers trackColor). */
   color: string;
   state: TrackState;
-  /** Drawn just beside the picked line, so where routes share a path both stay visible instead of one hiding the other. */
-  sideBy?: boolean;
 }
 
 /** The way off the trail to an added stop and back, in the place's own colour. */
@@ -35,8 +33,6 @@ export interface SideLeg {
   colour: string;
 }
 
-/** How far beside the picked line other routes run, px: clear of its white edge. */
-const SIDE_BY_PX = 6;
 
 export type MarkerKind = "trailhead" | "parking" | "transit-autobus" | "transit-elektricka" | "transit-vlak" | "poi" | "goal";
 
@@ -308,7 +304,6 @@ export function TrailMap({
             "line-color": "#ffffff",
             "line-width": ["match", ["get", "state"], "selected", 10, "dimmed", 5, 7],
             "line-opacity": ["match", ["get", "state"], "dimmed", 0.4, 1],
-            "line-offset": ["get", "offset"],
           },
         });
         map.addLayer({
@@ -320,7 +315,6 @@ export function TrailMap({
             "line-color": ["get", "color"],
             "line-width": ["match", ["get", "state"], "selected", 5, "dimmed", 2.5, 3.5],
             "line-opacity": ["match", ["get", "state"], "dimmed", 0.35, 1],
-            "line-offset": ["get", "offset"],
           },
         });
         // Parking -> trail start on foot: small dots, on top of the trail's start.
@@ -459,9 +453,6 @@ export function TrailMap({
           color: t.color,
           state: t.state,
           label: t.label ?? "",
-          // All on one side, whatever is hovered: taking turns left and right drew two routes on the
-          // same path as two lines, and a hover re-dealt the sides so lines jumped (Peter, 2026-10-26).
-          offset: t.sideBy ? SIDE_BY_PX : 0,
         },
         geometry: { type: "LineString", coordinates: t.points.map(lngLat) },
       }));

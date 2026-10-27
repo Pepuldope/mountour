@@ -158,17 +158,22 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
       // An other route under the pointer (on the map or in the route list) lights up in its list colour.
       others.flatMap((o): MapTrack[] =>
         o.slug === hovered
-          ? [{ slug: o.slug, label: o.label, points: o.points, color: o.colour, state: "selected", sideBy: true }]
+          ? [{ slug: o.slug, label: o.label, points: o.points, color: o.colour, state: "selected" }]
           : o.hoverOnly
             ? []
-            : [{ slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal", sideBy: true }]
+            : [{ slug: o.slug, label: o.label, points: o.points, color: OTHER_ROUTE_COLOUR, state: "normal" }]
       ),
     [others, hovered]
   );
   const tracks = useMemo<MapTrack[]>(() => {
     const color = trackColor(trail.marking);
     // Other routes first, so the one you picked draws on top where they share a trail.
-    const whole: MapTrack[] = [...otherTracks, { slug: trail.slug, points, color, state: "selected" }];
+    // Drawn where they really run, never shifted aside: a shifted line bent and broke at sharp
+    // turns (Peter, 2026-10-27). Where routes share a path the picked one covers the others,
+    // and a hovered other route goes on top of it.
+    const under = otherTracks.filter((o) => o.state !== "selected");
+    const over = otherTracks.filter((o) => o.state === "selected");
+    const whole: MapTrack[] = [...under, { slug: trail.slug, points, color, state: "selected" }, ...over];
     if (!skip || !trailJoin || points.length < 3) return whole;
     const ll = points.map(([lat, lon]) => ({ lat, lon }));
     const mid = Math.floor((points.length - 1) / 2);
@@ -179,10 +184,11 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
     const b: [number, number] = [back.point.lat, back.point.lon];
     const bi = mid + back.i;
     return [
-      ...otherTracks,
+      ...under,
       { slug: `${trail.slug}-skipped-out`, points: [...points.slice(0, out.i + 1), a], color, state: "dimmed" },
       { slug: `${trail.slug}-skipped-back`, points: [b, ...points.slice(bi + 1)], color, state: "dimmed" },
       { slug: trail.slug, points: [a, ...points.slice(out.i + 1, bi + 1), b], color, state: "selected" },
+      ...over,
     ];
   }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks]);
 
