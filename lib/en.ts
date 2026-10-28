@@ -650,7 +650,7 @@ export const EN: Record<string, string> = {
   "Záložky": "Bookmarks",
   "Získať appku": "Get the app",
   "Zadarmo, na ploche telefónu": "Free, on your home screen",
-  "Hore na kopci bez signálu? Výlet otvoríte najrýchlejšie z ikony na ploche.": "No signal up on the hill? The trip opens fastest from the home screen icon.",
+  "Hore na kopci bez signálu? Uložený výlet otvoríte najrýchlejšie z ikony na ploche.": "No signal up on the hill? A saved trip opens fastest from the home screen icon.",
   "iPhone": "iPhone",
   "kde práve ste na trase, pripomienku večer pred výletom a pred západom slnka, záznam vašej trasy s odoslaním do Stravy a denník výletov.": "where you are on the route, a reminder the evening before and before sunset, recording your walk and sending it to Strava, and a trip diary.",
   "otvorí sa celá obrazovka ako appka, uložené výlety (plán, mapa aj trasa) fungujú bez signálu a výlet zdieľate jedným ťuknutím.": "opens full screen like an app, saved trips (plan, map and route) work without signal, and you share a trip with one tap.",

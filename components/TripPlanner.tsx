@@ -79,7 +79,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
   const { today, update } = useTripSettings();
   const t = useT();
   const lang = useLang();
-  const { destination, rideTo, approachMin, trailStart, transit: transitAccess, noCar, noBus, parking, stop, skip, walkFrom, trailJoin, walk: onFoot, choose, chooseStop } = useTripAccess();
+  const { destination, rideTo, approachMin, trailStart, transit: transitAccess, noCar, noBus, parking, stop, skip, walkFrom, trailJoin, walk: onFoot, choose, chooseStop, setWalking } = useTripAccess();
   // The walk from the parking (by car) or the stop (by train/bus) to the trail and back belongs to the day,
   // with or without a start: the walk back to the car must fit the light too. Parked up the trail, the
   // stretch below is skipped both ways.
@@ -94,6 +94,8 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
   const walkThere = start && trailStart ? walkThereMinutes(haversineM(start, trailStart)) : null;
   const [onFootChoice, setOnFoot] = useState(false);
   const walking = onFootChoice && walkThere !== null;
+  // The map, the parking card and the navigation follow: on foot there's no parking or stop to show.
+  useEffect(() => setWalking(walking), [walking, setWalking]);
   // On foot there is no bus either: everything below reads `transit` as the ride actually taken.
   const transit = transitAccess && !walking;
   const tripPlan = useTripPlan(sun, rideTo, baseHikeMin, transitAccess && stop?.mode === "vlak" ? stop.location : null, transitAccess, trip.slug, walking ? walkThere : null);
@@ -181,8 +183,8 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
   const weather = useTripWeather(plan, trailStart, goal, walkProfile?.points[0]?.ele ?? null);
   // The day strip marks the days in the forecast whose walk (same start time) gets rain, snow, fog or storms.
   const dayWeather = useMemo(
-    () => (plan && weather.below ? badDays(weather.below, plan.hikeStart, plan.hikeEnd, dayStrip(new Date()).map((d) => d.iso)) : undefined),
-    [plan, weather.below]
+    () => (plan && weather.strip ? badDays(weather.strip, plan.hikeStart, plan.hikeEnd, dayStrip(new Date()).map((d) => d.iso)) : undefined),
+    [plan, weather.strip]
   );
 
   // A shared link opens the sender's day, kids pace and parking or stop (once, then it's ours to change).
@@ -228,7 +230,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
 
   const hasDrive = driveMin !== null;
   // The walk starts where the ride ends: the parking (or the trail start, with no parking) or the stop.
-  const walkStart = walkFrom ?? destination;
+  const walkStart = walking ? start : (walkFrom ?? destination);
   const latest = plan ? floorTo5(plan.latestStart) : null;
   const latestPassed = latest && date === today && latest < new Date();
 

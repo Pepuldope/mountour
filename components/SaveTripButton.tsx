@@ -211,16 +211,17 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
         </p>
       )}
 
-
       {status === "error" && (
         <p className="text-sm text-[var(--warn)]">
           {t("Výlet je uložený, ale kópia bez signálu sa nepodarila. Skúste to znova so signálom.")}
         </p>
       )}
 
-      {saved && !askShare && status !== "saving" && !installed && (
+      {!askShare && share}
+
+      {status !== "saving" && !installed && (
         <div className="flex items-center gap-3 rounded-xl bg-[var(--sun-soft)] p-3 text-sm">
-          <span className="min-w-0 flex-1">{t("Hore na kopci bez signálu? Výlet otvoríte najrýchlejšie z ikony na ploche.")}</span>
+          <span className="min-w-0 flex-1">{t("Hore na kopci bez signálu? Uložený výlet otvoríte najrýchlejšie z ikony na ploche.")}</span>
           <LangLink
             href="/aplikacia"
             onClick={() => track("app_link", { from: "saved" })}
@@ -230,8 +231,6 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
           </LangLink>
         </div>
       )}
-
-      {!askShare && share}
     </div>
   );
 }
