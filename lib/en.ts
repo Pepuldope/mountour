@@ -641,11 +641,11 @@ export const EN: Record<string, string> = {
   "Otvoriť": "Open",
   "Odstrániť": "Remove",
   "Ponechať": "Keep",
-  "Poslať plán partii?": "Send the plan to your group?",
-  "Poslať partii": "Send to your group",
+  "Zdieľať výlet?": "Share this trip?",
+  "Zdieľať výlet": "Share trip",
   "Skopírované, vložte do chatu": "Copied, paste it into the chat",
   "Skopírujte plán:": "Copy the plan:",
-  "Kedy vyraziť z tvojho miesta, ukáže odkaz:": "The link shows when to leave from where you are:",
+  "Celý plán a kedy vyraziť z tvojho miesta:": "Full plan, and when to leave from where you are:",
 
   // Reviews
   "Aký bol výlet?": "How was the trip?",
@@ -691,7 +691,7 @@ export const EN: Record<string, string> = {
   "Úprimne: Túruj+ zatiaľ neexistuje. Zisťujeme, či by oň bol záujem, a postavíme ho, len ak áno. Nič neplatíte a nič sme si o vás neuložili.": "Honestly: Túruj+ doesn't exist yet. We're finding out whether people want it, and we'll build it only if they do. You pay nothing and we've stored nothing about you.",
   "Túruj+ zatiaľ len pripravujeme. Poradie výletov sa nedá kúpiť, ani s Túruj+.": "Túruj+ is still in the works. The order of trips can't be bought, not even with Túruj+.",
   "Ďakujeme, aj to nám pomôže. Túruj ostáva zadarmo tak ako doteraz.": "Thanks, that helps us too. Túruj stays free as it is now.",
-  "Pre tých, čo chodia von často. Zoznam výletov, plány, parkovanie, uzávery aj posielanie partii ostávajú zadarmo navždy.": "For people who head out often. The trip list, plans, parking, closures and sending plans to your group stay free forever.",
+  "Pre tých, čo chodia von často. Zoznam výletov, plány, parkovanie, uzávery aj zdieľanie výletov ostávajú zadarmo navždy.": "For people who head out often. The trip list, plans, parking, closures and sharing trips stay free forever.",
   "Víkendový tip": "Weekend tip",
   "V piatok ráno vám pošleme tri výlety, ktoré tento víkend sedia práve vám: od vášho štartu, s deťmi aj bez, podľa počasia.": "Every Friday morning, three trips picked for your weekend: from your start, with or without kids, matched to the weather.",
   "Strážca výletu": "Trip watch",

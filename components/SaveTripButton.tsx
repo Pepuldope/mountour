@@ -180,7 +180,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
             </LangLink>
             .
           </p>
-          <p className="font-semibold">{t("Poslať plán partii?")}</p>
+          <p className="font-semibold">{t("Zdieľať výlet?")}</p>
           <div className="flex flex-wrap gap-2">
             <ShareButton
               {...trip}

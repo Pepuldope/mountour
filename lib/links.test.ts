@@ -68,10 +68,12 @@ describe("shared plan links", () => {
       url: "https://turuj.sk/trasa/hucak",
     });
     expect(text).toBe(
-      "Vodopád Hučák, sobota 24. 10. (s deťmi)\n" +
-        "8:56 stretnutie na parkovisku\n" +
-        "9:41 späť pri aute, 45 min chôdze, ľahká\n" +
-        "Kedy vyraziť z tvojho miesta, ukáže odkaz:\n" +
+      "Vodopád Hučák · sobota 24. 10. (s deťmi)\n" +
+        "• 8:56 stretnutie na parkovisku\n" +
+        "• 45 min chôdze, ľahká\n" +
+        "• 9:41 späť pri aute\n" +
+        "\n" +
+        "Celý plán a kedy vyraziť z tvojho miesta:\n" +
         "https://turuj.sk/trasa/hucak"
     );
   });
@@ -90,7 +92,7 @@ describe("shared plan links", () => {
       difficulty: "tazka",
       url: "https://turuj.sk/trasa/chleb",
     });
-    expect(text).toContain("10:00 začiatok túry\n19:10 koniec túry, 6 h chôdze");
+    expect(text).toContain("• 10:00 začiatok túry\n• 6 h chôdze, ťažká\n• 19:10 koniec túry");
     expect(text).toContain("Pozor, z túry zídete až po západe slnka.");
   });
 
