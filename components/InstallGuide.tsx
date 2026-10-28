@@ -18,9 +18,9 @@ import {
 } from "@/components/InstallShots";
 
 /** One numbered step: what to do, a short tip, and a drawing of the screen. */
-function Step({ n, title, children, shot }: { n: number; title: string; children?: ReactNode; shot: ReactNode }) {
+function Step({ id, n, title, children, shot }: { id?: string; n: number; title: string; children?: ReactNode; shot: ReactNode }) {
   return (
-    <li className="flex flex-col gap-3 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4 sm:flex-row sm:items-center sm:gap-5">
+    <li id={id} className="scroll-mt-4 flex flex-col gap-3 rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-4 sm:flex-row sm:items-center sm:gap-5">
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">
         <div className="flex items-center gap-2.5">
           <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--accent)] text-sm font-extrabold text-[var(--accent-contrast)]">
@@ -92,22 +92,35 @@ export function InstallGuide() {
               <span>{text}</span>
             </li>
           ))}
-          <li className="!mt-1">
-            <a href="#android" className="font-semibold">{t("Máte Android? Návod je nižšie ↓")}</a>
-          </li>
         </ul>
+      )}
+
+      {!installed && (
+        <nav aria-label={t("Návody")} className="grid grid-cols-2 gap-2">
+          <a href="#iphone" className="flex h-12 items-center justify-center gap-2 rounded-xl bg-[var(--accent)] font-bold !text-[var(--accent-contrast)] !no-underline">
+            {APPLE}
+            {t("Návod pre iPhone")}
+          </a>
+          <a href="#android" className="flex h-12 items-center justify-center gap-2 rounded-xl border-2 border-[var(--accent)] bg-[var(--card-bg)] font-bold !no-underline">
+            {ANDROID}
+            {t("Návod pre Android")}
+          </a>
+        </nav>
       )}
 
       <Section id="iphone" icon={APPLE} title={t("iPhone")} intro={t("Trvá to pol minúty. Návod je pre Safari, ktorý má každý iPhone.")}>
         <ol className="flex flex-col gap-3 !list-none !pl-0">
           <Step n={1} title={t("Otvorte turuj.sk v Safari")} shot={<IosShareShot tap="address" />}>
-            <p>{t("Ak ste túto stránku otvorili v inej appke (Messenger, Instagram), najprv ťuknite na tri bodky a vyberte Otvoriť v Safari.")}</p>
+            <p>{t("Ste už v Safari? Tento krok preskočte. Ak ste túto stránku otvorili v inej appke (Messenger, Instagram), najprv ťuknite na tri bodky a vyberte Otvoriť v Safari.")}</p>
           </Step>
           <Step n={2} title={t("Ťuknite na Zdieľať")} shot={<IosShareShot />}>
             <p>{t("Je to štvorček so šípkou hore, v spodnej lište Safari, v strede.")}</p>
+            <p className="mt-2 rounded-lg bg-[var(--sun-soft)] px-3 py-2 text-[var(--foreground)]">
+              {t("Nevidíte dole Zdieľať, len adresu a tri bodky?")} <a href="#krok-3" className="font-semibold">{t("Preskočte na krok 3.")}</a>
+            </p>
           </Step>
-          <Step n={3} title={t("Nová Safari? Najprv tri bodky, potom Zdieľať")} shot={<IosMoreShot />}>
-            <p>{t("Ak dole vidíte len adresu a vedľa nej tri bodky, ťuknite na ne (1) a potom na Zdieľať (2). Ak ste Zdieľať našli hneď, tento krok preskočte.")}</p>
+          <Step id="krok-3" n={3} title={t("Nová Safari? Najprv tri bodky, potom Zdieľať")} shot={<IosMoreShot />}>
+            <p>{t("Ťuknite na tri bodky vedľa adresy (1) a potom na Zdieľať (2). Ak ste Zdieľať našli už v kroku 2, tento krok preskočte.")}</p>
           </Step>
           <Step n={4} title={t("Posuňte ponuku nižšie a vyberte Pridať na plochu")} shot={<IosAddShot />}>
             <p>{t("Ponuka sa otvorí odspodu. Posuňte ju prstom hore, kým neuvidíte Pridať na plochu so štvorčekom a plusom.")}</p>

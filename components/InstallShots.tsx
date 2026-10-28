@@ -78,7 +78,7 @@ export function IosShareShot({ tap = "share" }: { tap?: "share" | "address" }) {
         <path d="M34 218l-6 7 6 7" />
         <path d="M74 218l6 7-6 7" opacity=".35" />
         <path d={IOS_SHARE} transform="translate(120 225)" />
-        <path d="M156 219h8a4 4 0 0 1 4 4v10h-8a4 4 0 0 0-4 4zM180 219h-8a4 4 0 0 0-4 4" />
+        <path d="M154 220h6a6 6 0 0 1 6 6v10a4 4 0 0 0-4-4h-8zM178 220h-6a6 6 0 0 0-6 6v10a4 4 0 0 1 4-4h8z" />
         <rect x="200" y="218" width="12" height="12" rx="2" /><path d="M204 214h11a2 2 0 0 1 2 2v11" />
       </g>
       {tap === "share" ? <Tap x={106} y={210} w={28} h={30} /> : <Tap x={22} y={170} w={196} h={30} />}

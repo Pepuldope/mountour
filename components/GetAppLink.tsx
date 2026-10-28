@@ -16,9 +16,7 @@ export function GetAppLink() {
       className="inline-flex w-fit items-center gap-1.5 rounded-[var(--radius-chip)] bg-[var(--accent)] px-3 py-1.5 text-sm font-bold whitespace-nowrap text-[var(--accent-contrast)]"
     >
       <UiIcon name="phone" size={15} />
-      {/* Narrow phones: the top bar also holds the name, EN and "Moje výlety" with its count. */}
-      <span className="max-[399px]:hidden">{t("Získať appku")}</span>
-      <span className="min-[400px]:hidden">{t("Appka")}</span>
+      {t("Získať appku")}
     </LangLink>
   );
 }
