@@ -46,6 +46,13 @@ export default function PrivacyPage() {
         first. We do not store your name, e-mail or IP address. The trip page shows only totals.
       </p>
 
+      <h2>Messages via Write to us and Report a problem</h2>
+      <p>
+        What you write is stored in our database on Cloudflare, with the date and the trip it is about. We store your
+        email only if you fill it in, and use it only to reply. We store no IP address and nothing else about you. We
+        delete a message on request.
+      </p>
+
       <h2>Tester sign-up and feedback</h2>
       <p>
         If you sign up for testing (the &ldquo;I want to test&rdquo; link) or fill in the short questionnaire after a

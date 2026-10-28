@@ -90,50 +90,25 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
 
       {expanded && (
         <div className="flex flex-col gap-2 pt-1">
-          <button
-            type="button"
-            onClick={() => {
-              locate();
-              setOpen(false);
-            }}
-            disabled={status === "locating"}
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] text-base font-bold text-[var(--accent-contrast)] disabled:opacity-70"
-          >
-            <UiIcon name="pin" size={18} />
-            {status === "locating" ? t("Hľadáme vašu polohu…") : t("Použiť moju polohu")}
-          </button>
-          <div className="grid grid-cols-2 gap-2">
-            {TOWNS.slice(0, 6).map((town) => (
-              <button
-                key={town.label}
-                type="button"
-                onClick={() => choose(town)}
-                className={`h-11 truncate rounded-[10px] border bg-[var(--segment-bg)] px-3 text-left font-semibold hover:border-[var(--accent)] ${
-                  start?.label === town.label ? "border-[var(--accent)]" : "border-[var(--border)]"
-                }`}
-              >
-                {town.label}
-              </button>
-            ))}
-          </div>
           <form
-            className="flex h-11 items-center gap-2 rounded-[10px] border border-[var(--border)] bg-[var(--card-bg)] px-3 focus-within:border-[var(--accent)]"
+            className="flex h-12 items-center gap-2 rounded-xl border-2 border-[var(--accent)] bg-[var(--card-bg)] px-3 shadow-[0_2px_8px_rgba(23,105,209,0.12)]"
             onSubmit={(e) => {
               e.preventDefault();
               runSearch();
             }}
           >
-            <span className="text-[var(--muted)]">
-              <UiIcon name="search" size={16} />
+            <span className="text-[var(--accent)]">
+              <UiIcon name="search" size={18} />
             </span>
             <label htmlFor={inputId} className="sr-only">
-              {t("Iné mesto alebo obec")}
+              {t("Mesto alebo obec")}
             </label>
             <input
               id={inputId}
+              data-start-search=""
               type="search"
               enterKeyHint="search"
-              placeholder={t("Iné mesto alebo obec, napr. Pezinok")}
+              placeholder={t("Napíšte mesto alebo obec")}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="min-w-0 flex-1 bg-transparent text-base outline-none"
@@ -144,21 +119,6 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
               </button>
             )}
           </form>
-          {!onDone && (
-            // Anywhere, not only places with an address: a cottage, a crossroads, a car park.
-            <button
-              type="button"
-              onClick={() => {
-                setPicking(true);
-                setOpen(false);
-                document.querySelector("[data-browse-map]")?.scrollIntoView({ block: "center", behavior: "smooth" });
-              }}
-              className="flex h-10 items-center justify-center gap-2 rounded-[10px] border border-dashed border-[var(--border)] text-sm font-semibold text-[var(--accent)] hover:border-[var(--accent)]"
-            >
-              <UiIcon name="pin" size={16} />
-              {t("Vybrať bod na mape")}
-            </button>
-          )}
           {search === "searching" && <p className={`${note} text-[var(--muted)]`}>{t("Hľadáme miesto…")}</p>}
           {search === "empty" && <p className={`${note} text-[var(--warn)]`}>{t("Také miesto sme nenašli.")}</p>}
           {search === "error" && <p className={`${note} text-[var(--warn)]`}>{t("Toto sa nenačítalo. Skúste to znova.")}</p>}
@@ -176,6 +136,48 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
                 </li>
               ))}
             </ul>
+          )}
+          <button
+            type="button"
+            onClick={() => {
+              locate();
+              setOpen(false);
+            }}
+            disabled={status === "locating"}
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] text-base font-bold text-[var(--accent-contrast)] disabled:opacity-70"
+          >
+            <UiIcon name="pin" size={18} />
+            {status === "locating" ? t("Hľadáme vašu polohu…") : t("Som tu, vyrážam odtiaľto")}
+          </button>
+          <p className="-mt-1 text-center text-xs text-[var(--muted)]">{t("Polohu si neukladáme, použijeme ju len na výpočet cesty.")}</p>
+          <div className="grid grid-cols-2 gap-2">
+            {TOWNS.slice(0, 6).map((town) => (
+              <button
+                key={town.label}
+                type="button"
+                onClick={() => choose(town)}
+                className={`h-11 truncate rounded-[10px] border bg-[var(--segment-bg)] px-3 text-left font-semibold hover:border-[var(--accent)] ${
+                  start?.label === town.label ? "border-[var(--accent)]" : "border-[var(--border)]"
+                }`}
+              >
+                {town.label}
+              </button>
+            ))}
+          </div>
+          {!onDone && (
+            // Anywhere, not only places with an address: a cottage, a crossroads, a car park.
+            <button
+              type="button"
+              onClick={() => {
+                setPicking(true);
+                setOpen(false);
+                document.querySelector("[data-browse-map]")?.scrollIntoView({ block: "center", behavior: "smooth" });
+              }}
+              className="flex h-10 items-center justify-center gap-2 rounded-[10px] border border-dashed border-[var(--border)] text-sm font-semibold text-[var(--accent)] hover:border-[var(--accent)]"
+            >
+              <UiIcon name="pin" size={16} />
+              {t("Vybrať bod na mape")}
+            </button>
           )}
         </div>
       )}

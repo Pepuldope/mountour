@@ -32,11 +32,11 @@ interface Props extends ShareInfo {
 }
 
 /**
- * "Poslať partii": the phone's share sheet with a chat-ready plan and a link. Desktop falls back to copying.
+ * "Zdieľať výlet" (was "Poslať partii" until Peter, 2026-10-28: not everyone goes with a group): the phone's share sheet with a chat-ready plan and a link. Desktop falls back to copying.
  * Friends leave from different places (Peter, 2026-10-22), so what goes out is the day and the meeting
  * time where the walk starts, never the sender's start; each friend's page works out their own departure.
  */
-export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Poslať partii", className, onShared, ...trip }: Props) {
+export function ShareButton({ plan, date, time, hikeMin, hasDrive, label = "Zdieľať výlet", className, onShared, ...trip }: Props) {
   const { withKids } = useTripSettings();
   const t = useT();
   const lang = useLang();

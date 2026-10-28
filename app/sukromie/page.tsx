@@ -50,6 +50,13 @@ export default function PrivacyPage() {
         neukladáme. Na stránke výletu ukazujeme len súčty.
       </p>
 
+      <h2>Správy cez Napíšte nám a Nahlásiť chybu</h2>
+      <p>
+        Čo napíšete, uložíme v našej databáze na Cloudflare spolu s dátumom a výletom, ktorého sa správa týka. Email
+        uložíme, len ak ho vyplníte, a použijeme ho iba na odpoveď. IP adresu ani nič iné o vás neukladáme. Správu
+        na požiadanie zmažeme.
+      </p>
+
       <h2>Prihláška na testovanie a spätná väzba</h2>
       <p>
         Ak sa prihlásite na testovanie (odkaz „Chcem testovať“) alebo vyplníte krátky dotazník po teste, odpovede

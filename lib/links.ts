@@ -115,12 +115,15 @@ export function shareText(i: ShareTextInput, lang: Lang = "sk"): string {
   const meet = i.place ? `${hhmm(i.meet)} ${t("stretnutie")} ${i.place}` : `${hhmm(i.meet)} ${t("začiatok túry")}`;
   const endWord = t(i.endPlace === "car" ? "späť pri aute" : i.endPlace === "stop" ? "späť na zastávke" : "koniec túry");
   const walk = tr(lang, "{t} chôdze, {level}", { t: formatDuration(i.hikeMin).replaceAll("\u00a0", " "), level: t(DIFFICULTY_LABEL[i.difficulty]).toLowerCase() });
+  // Step by step, one fact a line (Peter, 2026-10-28: a plain "share trip" message for anyone).
   return [
-    `${i.name}, ${i.dayLabel}${i.withKids ? t(" (s deťmi)") : ""}`,
-    meet,
-    `${hhmm(i.end)} ${endWord}, ${walk}`,
+    `${i.name} · ${i.dayLabel}${i.withKids ? t(" (s deťmi)") : ""}`,
+    `• ${meet}`,
+    `• ${walk}`,
+    `• ${hhmm(i.end)} ${endWord}`,
     ...(i.inDaylight ? [] : [t("Pozor, z túry zídete až po západe slnka.")]),
-    t("Kedy vyraziť z tvojho miesta, ukáže odkaz:"),
+    "",
+    t("Celý plán a kedy vyraziť z tvojho miesta:"),
     i.url,
   ].join("\n");
 }

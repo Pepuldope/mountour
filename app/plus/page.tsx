@@ -35,7 +35,7 @@ export default function PlusPage() {
           </span>
         </>
       }
-      intro="Pre tých, čo chodia von často. Zoznam výletov, plány, parkovanie, uzávery aj posielanie partii ostávajú zadarmo navždy."
+      intro="Pre tých, čo chodia von často. Zoznam výletov, plány, parkovanie, uzávery aj zdieľanie výletov ostávajú zadarmo navždy."
     >
       <ul className="!list-none !pl-0 flex flex-col gap-3">
         {FEATURES.map((f) => (

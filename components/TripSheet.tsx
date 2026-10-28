@@ -283,6 +283,14 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
             </Link>
           )}
 
+          {/* C2: something wrong on this trip (closed trail, car park, photo) goes straight to us. */}
+          <Link
+            href={langPath(lang, `/nahlasit-chybu?vylet=${trail.slug}&nazov=${encodeURIComponent(trail.name)}`)}
+            className="w-fit text-sm text-[var(--muted)] underline"
+          >
+            {tr(lang, "Nesedí tu niečo? Nahlásiť chybu")}
+          </Link>
+
           <SiteFooter />
         </div>
 

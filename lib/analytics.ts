@@ -9,7 +9,7 @@ export type AnalyticsEvent =
   | "start_set" // a start is known: GPS, a typed place, or one remembered from an earlier visit
   | "trip_open" // a trip page was viewed
   | "trip_saved" // "Uložiť výlet" tapped
-  | "share" // "Poslať partii" tapped
+  | "share" // "Zdieľať výlet" tapped
   | "share_sent" // the share sheet sent it, or the text was copied
   | "shared_open" // a friend opened a shared plan link
   | "gpx_download" // "Stiahnuť GPX trasu" tapped

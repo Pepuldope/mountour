@@ -6,6 +6,8 @@ import { LangLink, useT } from "@/lib/i18n";
 const LINKS = [
   { href: "/vylety-z", label: "Výlety z miest" },
   { href: "/o-nas", label: "O nás" },
+  { href: "/napiste-nam", label: "Napíšte nám" },
+  { href: "/nahlasit-chybu", label: "Nahlásiť chybu" },
   { href: "/sukromie", label: "Súkromie" },
   { href: "/upozornenie", label: "Upozornenie" },
   { href: "/zdroje", label: "Zdroje" },
