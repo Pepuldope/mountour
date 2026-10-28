@@ -21,6 +21,15 @@ jobs:
     env:
       CF_READY: ${{ secrets.CLOUDFLARE_DEPLOY_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
     steps:
+      # TEMP weather probe (remove before merge): what live turuj.sk's /api/weather answers.
+      - continue-on-error: true
+        run: |
+          for q in "lat=49.12&lon=20.06&alt=1350" "lat=48.17&lon=16.98&alt=300"; do
+            code=$(curl -s -m 20 -o w.json -w "%{http_code}" "https://turuj.sk/api/weather?$q")
+            echo "== $q -> HTTP $code"
+            head -c 300 w.json; echo
+            node -e 'const f=require("./w.json");const by={};for(const s of f.steps||[]){const d=s.t.slice(0,10);(by[d]??=new Set()).add(s.symbol)}console.log("updated",f.updated,"steps",(f.steps||[]).length);for(const d in by)console.log(d,[...by[d]].join(","))' || true
+          done
       - if: env.CF_READY != 'true'
         run: echo "::notice::CLOUDFLARE_DEPLOY_TOKEN or CLOUDFLARE_ACCOUNT_ID secret not set; no preview."
       - if: env.CF_READY == 'true'

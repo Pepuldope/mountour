@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { BAD_SKY_LABEL, badSkySvg } from "@/lib/weatherIcons";
 import type { BadSky } from "@/lib/weather";
 import { addDaysIso, dayStrip, isoDate, shortDay } from "@/lib/days";
@@ -40,7 +40,6 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
   const { date, today, update } = useTripSettings();
   const t = useT();
   const lang = useLang();
-  const dateInput = useRef<HTMLInputElement>(null);
   const [stripOpen, setStripOpen] = useState(false);
   const current = variant === "trip" ? (activeDate ?? date) : date;
   const days = useMemo(() => {
@@ -73,15 +72,13 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
     setStripOpen((v) => !v);
   }
 
-  function openCalendar() {
-    const el = dateInput.current;
-    if (!el) return;
+  // The date input itself takes the tap (Peter, 2026-10-28: a hidden input opened from a button did
+  // nothing on some phones). Chrome on a computer only opens it from the little icon, so ask for the picker too.
+  function openCalendar(el: HTMLInputElement) {
     try {
       el.showPicker();
     } catch {
-      // Older browsers: focusing the (invisible) input opens the native picker.
-      el.focus();
-      el.click();
+      // Not supported or already open: the tap on the input opens it.
     }
   }
 
@@ -113,19 +110,18 @@ export function FilterChips({ variant = "home", activeDate, dayWeather }: Props)
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between text-[12.5px] font-bold text-[var(--muted)]">
             <span className="capitalize">{stripMonths(days.strip[0].iso, days.strip[days.strip.length - 1].iso, lang)}</span>
-            <span className="relative">
-              <button type="button" onClick={openCalendar} className="inline-flex items-center gap-0.5 font-bold text-[var(--accent)]">
+            <span className="relative -my-2 py-2">
+              <span aria-hidden="true" className="inline-flex items-center gap-0.5 font-bold text-[var(--accent)]">
                 {t("Celý kalendár")} <UiIcon name="chev" size={13} />
-              </button>
+              </span>
               <input
-                ref={dateInput}
                 type="date"
+                aria-label={t("Celý kalendár")}
                 min={days.today}
                 value={current ?? ""}
+                onClick={(e) => openCalendar(e.currentTarget)}
                 onChange={(e) => e.target.value && update({ date: e.target.value })}
-                tabIndex={-1}
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 h-full w-full opacity-0"
+                className="absolute inset-0 h-full w-full min-w-0 cursor-pointer appearance-none opacity-0"
               />
             </span>
           </div>
