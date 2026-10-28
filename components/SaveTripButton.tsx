@@ -7,6 +7,7 @@ import type { TripProfile } from "@/lib/tripProfile";
 import { offlineMapUrls } from "@/lib/tiles";
 import { dayAfterNa } from "@/lib/days";
 import { useSavedTrips } from "@/lib/savedTrips";
+import { useInstalled } from "@/lib/installApp";
 import { useTripSettings } from "@/lib/tripSettings";
 import type { TripPlan } from "@/lib/useTripPlan";
 import { useUserLocation } from "@/lib/userLocation";
@@ -83,6 +84,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
   const { plan, date, time, hikeMin, driveMin, route, transit, fixed, withKids, loading } = tripPlan;
   const { stops } = useTripStops(slug);
   const t = useT();
+  const installed = useInstalled();
   const lang = useLang();
   const [status, setStatus] = useState<Status>("idle");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
@@ -209,10 +211,24 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
         </p>
       )}
 
+
       {status === "error" && (
         <p className="text-sm text-[var(--warn)]">
           {t("Výlet je uložený, ale kópia bez signálu sa nepodarila. Skúste to znova so signálom.")}
         </p>
+      )}
+
+      {saved && !askShare && status !== "saving" && !installed && (
+        <div className="flex items-center gap-3 rounded-xl bg-[var(--sun-soft)] p-3 text-sm">
+          <span className="min-w-0 flex-1">{t("Hore na kopci bez signálu? Výlet otvoríte najrýchlejšie z ikony na ploche.")}</span>
+          <LangLink
+            href="/aplikacia"
+            onClick={() => track("app_link", { from: "saved" })}
+            className="shrink-0 rounded-[var(--radius-chip)] bg-[var(--accent)] px-3 py-2 font-bold whitespace-nowrap text-[var(--accent-contrast)]"
+          >
+            {t("Získať appku")}
+          </LangLink>
+        </div>
       )}
 
       {!askShare && share}

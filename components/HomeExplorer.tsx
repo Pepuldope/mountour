@@ -29,7 +29,7 @@ import { SeasonScene } from "@/components/SeasonScene";
 import { PullSky, SunPull } from "@/components/SunPull";
 import { UiIcon } from "@/components/UiIcon";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
-import { GetAppLink } from "@/components/GetAppLink";
+import { AppBar } from "@/components/AppBar";
 import { SiteFooter } from "@/components/SiteFooter";
 import { LangLink, LangSwitch, useLang, useT } from "@/lib/i18n";
 import { decimal } from "@/lib/lang";
@@ -1021,7 +1021,6 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
           <div className="relative flex flex-col gap-2 px-4 pt-6 pb-16 text-[#14233b]">
             <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">{t(title)}</h1>
             <p className="max-w-[30ch] text-[15px] font-medium">{t("Výlety, z ktorých budete späť za svetla.")}</p>
-            <span className="mt-1"><GetAppLink /></span>
           </div>
         </header>
 
@@ -1060,6 +1059,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
         {list}
 
         <SiteFooter />
+        <AppBar hidden={isDesktop || fullMap || !!sheet} />
       </div>
 
       {isDesktop && <div className="sticky top-0 h-dvh flex-1 border-l border-[var(--border)]">{map}</div>}
