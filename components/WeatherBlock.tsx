@@ -36,15 +36,18 @@ export interface TripWeather {
   /** Up at the goal, for its height. */
   above: WeatherForecast | null;
   loading: boolean;
+  /** The trail start's forecast whatever day is picked: the day strip marks the bad days in it even when a day past the forecast is picked. */
+  strip: WeatherForecast | null;
 }
 
 /** The forecast for the day of the walk, at the start and up at the goal; nothing beyond the forecast range. */
 export function useTripWeather(plan: DayPlan | null, start: LatLng | null, goal: Goal, startEle: number | null): TripWeather {
   const [now] = useState(() => Date.now());
   const inRange = !!plan && !!start && plan.hikeStart.getTime() - now < FORECAST_DAYS * DAY && plan.hikeEnd.getTime() > now;
-  const below = useCachedJson<WeatherForecast>(inRange ? url(start!, startEle) : null);
+  // One request either way: the same URL is shared and cached.
+  const below = useCachedJson<WeatherForecast>(start ? url(start, startEle) : null);
   const above = useCachedJson<WeatherForecast>(inRange && goal?.ele ? url(goal, goal.ele) : null);
-  return { below: below.data, above: above.data, loading: below.status === "loading" };
+  return { below: inRange ? below.data : null, above: above.data, loading: inRange && below.status === "loading", strip: below.data };
 }
 
 /**

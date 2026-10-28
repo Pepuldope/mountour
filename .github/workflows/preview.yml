@@ -67,10 +67,6 @@ jobs:
           npm i --no-save playwright
           npx playwright install --with-deps chromium
           node scripts/layout-check.mjs "${{ steps.upload.outputs.url }}"
-      # TEMP weather probe (remove before merge): what /api/weather answers a real browser, live and on the preview.
-      - if: always() && env.CF_READY == 'true' && steps.upload.outputs.url != ''
-        continue-on-error: true
-        run: node scripts/weather-probe.mjs https://turuj.sk "${{ steps.upload.outputs.url }}"
       - if: always() && env.CF_READY == 'true' && steps.upload.outputs.url != ''
         run: cat layout-check/report.md >> "$GITHUB_STEP_SUMMARY" || true
       - if: always() && env.CF_READY == 'true' && steps.upload.outputs.url != ''

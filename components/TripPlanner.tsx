@@ -181,8 +181,8 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
   const weather = useTripWeather(plan, trailStart, goal, walkProfile?.points[0]?.ele ?? null);
   // The day strip marks the days in the forecast whose walk (same start time) gets rain, snow, fog or storms.
   const dayWeather = useMemo(
-    () => (plan && weather.below ? badDays(weather.below, plan.hikeStart, plan.hikeEnd, dayStrip(new Date()).map((d) => d.iso)) : undefined),
-    [plan, weather.below]
+    () => (plan && weather.strip ? badDays(weather.strip, plan.hikeStart, plan.hikeEnd, dayStrip(new Date()).map((d) => d.iso)) : undefined),
+    [plan, weather.strip]
   );
 
   // A shared link opens the sender's day, kids pace and parking or stop (once, then it's ours to change).
