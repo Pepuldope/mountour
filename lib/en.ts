@@ -29,6 +29,7 @@ export const EN: Record<string, string> = {
   "(nepovinné, len ak chcete odpoveď)": "(optional, only if you'd like a reply)",
   "Správu sa nepodarilo poslať. Skúste to znova o chvíľu.": "The message didn't send. Please try again in a moment.",
   "Posielame…": "Sending…",
+  "Radšej email?": "Prefer email?",
   "Poslať": "Send",
   "Čítame každú správu. Pomôžete nám spraviť Túruj lepším.": "We read every message. You help us make Túruj better.",
   "Videli ste niečo zlé? Opravíme to čo najskôr.": "Spotted something wrong? We'll fix it as soon as we can.",

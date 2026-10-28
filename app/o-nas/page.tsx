@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { InfoPage } from "@/components/InfoPage";
-import { CONTACT_EMAIL, REPO_URL } from "@/lib/site";
+import { CONTACT_EMAIL, OWNER_EMAIL } from "@/lib/site";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -31,16 +31,12 @@ export default function AboutPage() {
 
       <h2>Kontakt</h2>
       <p>
-        Našli ste chybu v trase alebo parkovisku?{" "}
-        {CONTACT_EMAIL ? (
-          <>
-            Napíšte nám na <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
-          </>
-        ) : (
-          <>
-            Napíšte nám cez <a href={`${REPO_URL}/issues`}>GitHub</a>.
-          </>
-        )}
+        Napíšte nám na <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> alebo priamo Petrovi na{" "}
+        <a href={`mailto:${OWNER_EMAIL}`}>{OWNER_EMAIL}</a>.
+      </p>
+      <p>
+        Našli ste chybu v trase alebo parkovisku? <Link href="/nahlasit-chybu">Nahláste chybu</Link>. Nápad
+        alebo pochvalu nám pošlite cez <Link href="/napiste-nam">Napíšte nám</Link>.
       </p>
     </InfoPage>
   );

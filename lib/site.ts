@@ -44,8 +44,11 @@ export const COUNTED_HOSTS = [
   "www.mountour.sk",
 ].filter((h, i, all) => all.indexOf(h) === i);
 
-/** Public contact for privacy requests. Empty = point people to GitHub issues. */
-export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "";
+/** Public contact (Cloudflare Email Routing forwards it to Peter). */
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "info@turuj.sk";
+
+/** Peter's own address, shown on O nás next to the site address. */
+export const OWNER_EMAIL = "nemcok.peter123@gmail.com";
 
 /** Link-preview image (1200x630) from the brand guide. */
 export const OG_IMAGE = {
