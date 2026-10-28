@@ -3,6 +3,11 @@
 // string shown through t()/tr() has no entry here. Trip, place and town names are never translated.
 
 export const EN: Record<string, string> = {
+  "Som tu, vyrážam odtiaľto": "I'm here, start from here",
+  "Polohu si neukladáme, použijeme ju len na výpočet cesty.": "We don't store your location; we only use it to work out the journey.",
+  "Napíšte mesto alebo obec": "Type a town or village",
+  "Mesto alebo obec": "Town or village",
+  "nevybraté": "not picked yet",
   "Napíšte nám": "Write to us",
   "Nahlásiť chybu": "Report a problem",
   "Nesedí tu niečo? Nahlásiť chybu": "Something wrong here? Report a problem",

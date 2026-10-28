@@ -1035,7 +1035,10 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
         <TownButton start={start} knownTowns={knownTowns} />
 
         {/* Search, filters and Mapa / Zoznam stay on top while the map fills the screen. */}
-        <div className="sticky top-0 z-20 -mx-4 bg-[var(--background)] px-4 py-2 lg:static lg:mx-0 lg:bg-transparent lg:p-0">{tools}</div>
+        <div className="sticky top-0 z-20 -mx-4 bg-[var(--background)] px-4 py-2 lg:static lg:mx-0 lg:bg-transparent lg:p-0">
+          {startReady && !start && <StartReminder />}
+          {tools}
+        </div>
 
         {!isDesktop && (
           // A card with gutters: a thumb beside it still scrolls the page past the map.
@@ -1166,5 +1169,42 @@ function PopularityKey() {
         />
       ))}
     </svg>
+  );
+}
+
+/**
+ * No start yet and the start card scrolled away (Peter, 2026-10-28: D1): a slim bar above the search,
+ * "Vyrážate z: nevybraté · Vybrať štart", back to the card with its search box ready.
+ */
+function StartReminder() {
+  const t = useT();
+  const [away, setAway] = useState(false);
+  useEffect(() => {
+    const card = document.querySelector("[data-start-chip]");
+    if (!card) return;
+    const io = new IntersectionObserver(([e]) => setAway(!e.isIntersecting && e.boundingClientRect.top < 0));
+    io.observe(card);
+    return () => io.disconnect();
+  }, []);
+  if (!away) return null;
+  return (
+    <div className="mb-2 flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-3 py-2 shadow-[var(--shadow-float)] lg:hidden">
+      <span className="min-w-0 flex-1 leading-tight">
+        <span className="block text-[11.5px] text-[var(--muted)]">{t("Vyrážate z")}</span>
+        <strong className="block truncate text-sm text-[var(--accent)]">{t("nevybraté")}</strong>
+      </span>
+      <button
+        type="button"
+        onClick={() => {
+          const card = document.querySelector("[data-start-chip]");
+          card?.scrollIntoView({ block: "start", behavior: "smooth" });
+          // Ready to type once it is back in view.
+          setTimeout(() => (document.querySelector("[data-start-search]") as HTMLInputElement | null)?.focus({ preventScroll: true }), 450);
+        }}
+        className="h-9 shrink-0 rounded-lg bg-[var(--accent)] px-3.5 text-sm font-bold text-[var(--accent-contrast)]"
+      >
+        {t("Vybrať štart")}
+      </button>
+    </div>
   );
 }
