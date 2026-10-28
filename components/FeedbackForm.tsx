@@ -4,6 +4,7 @@ import { useEffect, useId, useState } from "react";
 import { FEEDBACK_MAX, PROBLEM_TOPICS } from "@/lib/feedbackLimits";
 import type { FeedbackKind, ProblemTopic } from "@/lib/feedbackLimits";
 import { LangLink, useLang, useT } from "@/lib/i18n";
+import { CONTACT_EMAIL } from "@/lib/site";
 
 const TOPIC_LABEL: Record<ProblemTopic, string> = {
   trasa: "Trasa je zlá alebo uzavretá",
@@ -122,6 +123,9 @@ export function FeedbackForm({ kind }: { kind: FeedbackKind }) {
       >
         {state === "sending" ? t("Posielame…") : t("Poslať")}
       </button>
+      <p className="text-center text-[var(--muted)]">
+        {t("Radšej email?")} <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+      </p>
     </form>
   );
 }
