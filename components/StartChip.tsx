@@ -147,7 +147,7 @@ export function StartChip({ onDone }: { /** Shown in a panel (the trip page's "Z
             className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[var(--accent)] text-base font-bold text-[var(--accent-contrast)] disabled:opacity-70"
           >
             <UiIcon name="pin" size={18} />
-            {status === "locating" ? t("Hľadáme vašu polohu…") : t("Som tu, vyrážam odtiaľto")}
+            {status === "locating" ? t("Hľadáme vašu polohu…") : t("Použiť moju polohu")}
           </button>
           <p className="-mt-1 text-center text-xs text-[var(--muted)]">{t("Polohu si neukladáme, použijeme ju len na výpočet cesty.")}</p>
           <div className="grid grid-cols-2 gap-2">
