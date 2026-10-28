@@ -1015,13 +1015,13 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
             </LangLink>
             <span className="flex items-center gap-2">
               <LangSwitch className="bg-white/70 text-[#14233b]" />
-              <GetAppLink />
               <SavedTripsLink />
             </span>
           </nav>
           <div className="relative flex flex-col gap-2 px-4 pt-6 pb-16 text-[#14233b]">
             <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">{t(title)}</h1>
             <p className="max-w-[30ch] text-[15px] font-medium">{t("Výlety, z ktorých budete späť za svetla.")}</p>
+            <span className="mt-1"><GetAppLink /></span>
           </div>
         </header>
 
