@@ -10,7 +10,7 @@ export function SavedTripsLink() {
   return (
     <LangLink
       href="/ulozene"
-      className="inline-flex w-fit items-center gap-2 rounded-[var(--radius-chip)] border border-[var(--border)] bg-[var(--card-bg)] px-3 py-1.5 text-sm font-medium hover:border-[var(--accent)]"
+      className="inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-[var(--radius-chip)] border border-[var(--border)] bg-[var(--card-bg)] px-3 py-1.5 text-sm font-medium hover:border-[var(--accent)]"
     >
       {t("Moje výlety")}
       {trips.length > 0 && (

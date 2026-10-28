@@ -13,6 +13,7 @@ const GROUPS: { title: string; links: FooterLink[] }[] = [
     title: "Výlety",
     links: [
       { href: "/vylety-z", label: "Výlety z miest", icon: "peak" },
+      { href: "/aplikacia", label: "Získať appku", icon: "phone" },
       { href: "/zdroje", label: "Zdroje", icon: "book" },
     ],
   },

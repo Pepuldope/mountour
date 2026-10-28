@@ -29,6 +29,7 @@ import { SeasonScene } from "@/components/SeasonScene";
 import { PullSky, SunPull } from "@/components/SunPull";
 import { UiIcon } from "@/components/UiIcon";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
+import { GetAppLink } from "@/components/GetAppLink";
 import { SiteFooter } from "@/components/SiteFooter";
 import { LangLink, LangSwitch, useLang, useT } from "@/lib/i18n";
 import { decimal } from "@/lib/lang";
@@ -1014,6 +1015,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
             </LangLink>
             <span className="flex items-center gap-2">
               <LangSwitch className="bg-white/70 text-[#14233b]" />
+              <GetAppLink />
               <SavedTripsLink />
             </span>
           </nav>

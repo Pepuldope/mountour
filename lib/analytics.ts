@@ -17,7 +17,9 @@ export type AnalyticsEvent =
   | "transit_open" // cp.sk link opened
   | "tester_signup_open" // "Chcem testovať" footer link tapped
   | "plus_want" // "Chcel by som to" on /plus (Túruj+ price test)
-  | "plus_no"; // "Za túto cenu nie" on /plus
+  | "plus_no" // "Za túto cenu nie" on /plus
+  | "app_link" // "Získať appku" tapped in the home top bar
+  | "app_installed"; // Android install dialog accepted on /aplikacia
 
 type EventData = Record<string, string | number | boolean>;
 
