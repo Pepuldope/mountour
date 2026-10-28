@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { Fit, Timing } from "@/lib/reviewLimits";
 import "@/lib/legacyStorage";
-import { useT } from "@/lib/i18n";
+import { LangLink, useT } from "@/lib/i18n";
 
 const REVIEWER_KEY = "turuj-reviewer";
 
@@ -116,6 +116,17 @@ export function ReviewSheet({ slug, name, onDone }: { slug: string; name: string
             ))}
           </div>
         </div>
+        {/* More than the quick choices (C2): an idea for us, or something wrong on this trip. */}
+        <p className="text-[13px] text-[var(--muted)]">
+          {tx("Chcete nám napísať viac?")}{" "}
+          <LangLink href={`/napiste-nam?vylet=${slug}&nazov=${encodeURIComponent(name)}`} className="font-semibold text-[var(--accent)] underline">
+            {tx("Napíšte nám")}
+          </LangLink>{" "}
+          ·{" "}
+          <LangLink href={`/nahlasit-chybu?vylet=${slug}&nazov=${encodeURIComponent(name)}`} className="font-semibold text-[var(--accent)] underline">
+            {tx("Nahlásiť chybu")}
+          </LangLink>
+        </p>
         {state === "error" && <p className="text-sm text-[var(--danger)]">{tx("Nepodarilo sa odoslať. Skúste to o chvíľu.")}</p>}
         <div className="flex justify-between gap-2">
           <button type="button" onClick={() => onDone(false)} className="rounded-full border border-[var(--border)] px-4 py-2.5 text-sm font-semibold">
