@@ -29,6 +29,7 @@ import { SeasonScene } from "@/components/SeasonScene";
 import { PullSky, SunPull } from "@/components/SunPull";
 import { UiIcon } from "@/components/UiIcon";
 import { SavedTripsLink } from "@/components/SavedTripsLink";
+import { AppBar } from "@/components/AppBar";
 import { SiteFooter } from "@/components/SiteFooter";
 import { LangLink, LangSwitch, useLang, useT } from "@/lib/i18n";
 import { decimal } from "@/lib/lang";
@@ -1058,6 +1059,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
         {list}
 
         <SiteFooter />
+        <AppBar hidden={isDesktop || fullMap || !!sheet} />
       </div>
 
       {isDesktop && <div className="sticky top-0 h-dvh flex-1 border-l border-[var(--border)]">{map}</div>}
