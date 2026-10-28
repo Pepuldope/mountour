@@ -218,7 +218,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
         </p>
       )}
 
-      {saved && !askShare && status !== "saving" && !installed && (
+      {saved && status !== "saving" && !installed && (
         <div className="flex items-center gap-3 rounded-xl bg-[var(--sun-soft)] p-3 text-sm">
           <span className="min-w-0 flex-1">{t("Hore na kopci bez signálu? Výlet otvoríte najrýchlejšie z ikony na ploche.")}</span>
           <LangLink

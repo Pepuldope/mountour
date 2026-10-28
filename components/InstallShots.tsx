@@ -145,8 +145,8 @@ export function IosConfirmShot() {
       <rect x="9" y="9" width="222" height="251" fill="#eef0f4" />
       <Txt x={22} y={42} size={12} fill={BLUE}>{t("Zrušiť")}</Txt>
       <Txt x={120} y={42} size={12} weight={700} anchor="middle">{t("Pridať na plochu")}</Txt>
-      <Txt x={216} y={42} size={12} weight={700} fill={BLUE} anchor="end">{t("Pridať")}</Txt>
-      <Tap x={186} y={28} w={34} h={20} r={6} />
+      <Txt x={198} y={42} size={12} weight={700} fill={BLUE} anchor="middle">{t("Pridať")}</Txt>
+      <Tap x={177} y={28} w={42} h={20} r={6} />
       <rect x="18" y="62" width="204" height="74" rx="12" fill="#fff" />
       <image href="/icons/icon.svg" x="28" y="72" width="54" height="54" />
       <Txt x={94} y={92} size={13} weight={600}>Túruj</Txt>
