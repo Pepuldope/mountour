@@ -211,12 +211,13 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
         </p>
       )}
 
-
       {status === "error" && (
         <p className="text-sm text-[var(--warn)]">
           {t("Výlet je uložený, ale kópia bez signálu sa nepodarila. Skúste to znova so signálom.")}
         </p>
       )}
+
+      {!askShare && share}
 
       {status !== "saving" && !installed && (
         <div className="flex items-center gap-3 rounded-xl bg-[var(--sun-soft)] p-3 text-sm">
@@ -230,8 +231,6 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
           </LangLink>
         </div>
       )}
-
-      {!askShare && share}
     </div>
   );
 }
