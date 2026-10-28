@@ -37,11 +37,11 @@ function summaryWalk(p: ParkingLot, lang: Lang): string {
  * visitor picks one; the drive, the walk to the trail and the plan follow.
  */
 export function ParkingBlock() {
-  const { parkingLots, choice, choose, parking, transit, stops } = useTripAccess();
+  const { parkingLots, choice, choose, parking, transit, stops, walking } = useTripAccess();
   const options = parkingLots.slice(0, MAX_OPTIONS);
   const t = useT();
   const lang = useLang();
-  if (transit) return null;
+  if (transit || walking) return null;
 
   return (
     <details className="group rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)]">

@@ -66,7 +66,7 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
   const lang = useLang();
   const { trail, trailheads, pois } = detail;
   const router = useRouter();
-  const { parkingLots, choice, choose, rideTo: destination, trailJoin, walkFrom, walkLine, transit, stops, stopChoice, chooseStop, skip } = useTripAccess();
+  const { parkingLots, choice, choose, rideTo: destination, trailJoin, walkFrom, walkLine, transit, stops, stopChoice, chooseStop, skip, walking } = useTripAccess();
   const [gpxPoints, setGpxPoints] = useState<[number, number][]>([]);
   const points = path ?? gpxPoints;
   const { start } = useUserLocation();
@@ -79,7 +79,8 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
   // Where the walk to the trail begins: the stop, the chosen parking, else the end of the road route.
   // It ends where it meets the trail: the start, or the nearest point when parked up the trail.
   const driveEnd = drive.route?.points[drive.route.points.length - 1];
-  const carStop: LatLng | null = walkFrom ?? (!transit && driveEnd ? { lat: driveEnd[0], lon: driveEnd[1] } : null);
+  // Pešo: the walk runs from the start itself.
+  const carStop: LatLng | null = walking ? start : (walkFrom ?? (!transit && driveEnd ? { lat: driveEnd[0], lon: driveEnd[1] } : null));
   const needsWalk = carStop !== null && trailJoin !== null && haversineM(carStop, trailJoin) > AT_TRAIL_M;
   // The weekly build stores this walk on paths; use it when it ends where the page joins the trail.
   const storedEnd = walkLine?.line[walkLine.line.length - 1];

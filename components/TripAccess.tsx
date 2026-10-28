@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useMemo, useSyncExternalStore } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, useSyncExternalStore } from "react";
 import type { ReactNode } from "react";
 import { approachMin } from "@/lib/dayPlan";
 import { useTripSettings } from "@/lib/tripSettings";
@@ -56,6 +56,12 @@ export interface TripAccess {
   skip: Pick<TrailJoin, "skip_out" | "skip_back" | "skip_m" | "skip_ascent_m"> | null;
   /** The walk from there (lib/walkFacts.ts): what the facts, the route list and the day all count. */
   walk: WalkFacts;
+  /**
+   * Pešo: the group walks from its start to the trail (set by the planner). No parking or stop then
+   * (Peter, 2026-10-28: on foot you don't go to a parking, you don't even need to see them).
+   */
+  walking: boolean;
+  setWalking: (on: boolean) => void;
 }
 
 const Ctx = createContext<TripAccess>({
@@ -80,6 +86,8 @@ const Ctx = createContext<TripAccess>({
   trailJoin: null,
   skip: null,
   walk: { min: 0, m: 0, ascentM: 0, approachMin: 0, skipped: false },
+  walking: false,
+  setWalking: () => {},
 });
 
 // Picks are remembered per trip for this browser session (back and forth between pages).
@@ -146,9 +154,38 @@ export function TripAccessProvider({
   // And the other way round: with no stop, a remembered "bus" would leave the day without a ride at all.
   const noBus = transitStops.length === 0;
   const { travel } = useTripSettings();
+  const [walking, setWalking] = useState(false);
   const transit = noCar || (travel === "transit" && !noBus);
 
   const value = useMemo<TripAccess>(() => {
+    if (walking) {
+      // On foot from the start: the walk begins at the trail's first point, nothing to park or catch.
+      return {
+        parkingLots: [],
+        choice: 0,
+        choose,
+        parking: null,
+        trailStart,
+        destination: null,
+        rideTo: null,
+        parkingApproachMin: 0,
+        stops: [],
+        stopChoice: 0,
+        chooseStop,
+        stop: null,
+        transit: false,
+        noCar,
+        noBus,
+        walkFrom: null,
+        walkLine: null,
+        approachMin: 0,
+        trailJoin: trailStart,
+        skip: null,
+        walk: walkFacts(trail, null),
+        walking,
+        setWalking,
+      };
+    }
     const parking = parkingLots[choice] ?? null;
     const stop = stops[stopChoice] ?? null;
     const walk = walkFacts(trail, transit ? stop : parking);
@@ -176,8 +213,10 @@ export function TripAccessProvider({
       trailJoin: join?.location ?? trailStart,
       skip: join && join.skip_m > 0 ? join : null,
       walk,
+      walking,
+      setWalking,
     };
-  }, [parkingLots, stops, choice, choose, stopChoice, chooseStop, trailStart, trail, transit, noCar, noBus]);
+  }, [parkingLots, stops, choice, choose, stopChoice, chooseStop, trailStart, trail, transit, noCar, noBus, walking]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }
