@@ -267,6 +267,15 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
                 </section>
               )
             }
+            trail={{
+              path: trip.path.map(([lon, lat, ele]) => [+lon.toFixed(5), +lat.toFixed(5), ele === null ? null : Math.round(ele)]),
+              marking_runs: trip.marking_runs,
+              turnaround_index: trip.turnaround_index,
+              route: trip.route,
+              duration_min: trip.duration_min,
+              goal: trip.destination.name,
+              bbox: trail.bbox,
+            }}
             walk={{ points: trip.path.map(([lon, lat]) => [+lat.toFixed(5), +lon.toFixed(5)]), loop: trip.route === "okruh" }}
           >
             {/* Testers: Uložiť and navigation belong at the end; parking first, then the map. */}

@@ -7,6 +7,7 @@ import type { TripProfile } from "@/lib/tripProfile";
 import { offlineMapUrls } from "@/lib/tiles";
 import { dayAfterNa } from "@/lib/days";
 import { useSavedTrips } from "@/lib/savedTrips";
+import type { SavedTrail } from "@/lib/savedTrips";
 import { useInstalled } from "@/lib/installApp";
 import { useTripSettings } from "@/lib/tripSettings";
 import type { TripPlan } from "@/lib/useTripPlan";
@@ -24,6 +25,8 @@ interface Props extends ShareInfo {
   /** The trip page's plan (with real train times), so the saved and shared day match what the page shows. */
   tripPlan: TripPlan;
   profile: TripProfile | null;
+  /** The walk, kept with the saved trip for the trail screen. */
+  trail?: SavedTrail;
 }
 
 type Status = "idle" | "saving" | "error";
@@ -76,7 +79,7 @@ const secondary =
  * device and stores it for offline use. Right after saving, one tap offers to
  * send the plan to the group.
  */
-export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }: Props) {
+export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, trail, ...trip }: Props) {
   const { slug, name } = trip;
   const { trips, save, patch, remove } = useSavedTrips();
   const { start } = useUserLocation();
@@ -120,6 +123,7 @@ export function SaveTripButton({ gpxUrl, bbox, sun, tripPlan, profile, ...trip }
       sun,
       profile,
       stops,
+      trail,
       savedAt: new Date().toISOString(),
       offline: "pending",
     });

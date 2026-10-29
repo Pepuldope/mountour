@@ -6,6 +6,8 @@ import type { LatLng } from "@/lib/types";
 import type { TripProfile } from "@/lib/tripProfile";
 import type { FixedRide } from "@/lib/dayPlan";
 import type { Travel } from "@/lib/tripSettings";
+import type { WalkTrip } from "@/lib/onTrail";
+import type { BBox } from "@/lib/types";
 import "@/lib/legacyStorage";
 
 /**
@@ -42,8 +44,18 @@ export interface SavedTrip {
   skipAsk?: boolean;
   /** A quick review was sent for this trip from this browser. */
   reviewed?: boolean;
+  /** The walk itself, for the trail screen ("Začať výlet"); missing on trips saved before it existed. */
+  trail?: SavedTrail;
   /** Offline copy state: the page, GPX and map tiles. */
   offline: "ok" | "failed" | "pending";
+}
+
+/** What the trail screen needs to place a GPS fix on the walk, kept with the saved trip so it works offline. */
+export interface SavedTrail extends WalkTrip {
+  /** DIN walking time of the whole walk, minutes, no breaks (TripSummary.duration_min). */
+  duration_min: number;
+  goal: string;
+  bbox: BBox | null;
 }
 
 const KEY = "turuj-saved-trips";
