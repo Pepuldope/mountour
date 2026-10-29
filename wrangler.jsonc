@@ -1,10 +1,13 @@
 {
   "name": "turuj",
-  // worker.ts answers pages built ahead itself and hands the rest to OpenNext (.open-next/worker.js).
+  // worker.ts answers pages built ahead itself, sends walk reminders on the cron below and hands
+  // the rest to OpenNext (.open-next/worker.js).
   "main": "worker.ts",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  // Walk reminders (lib/pushPlan.ts, sent by worker.ts). Free plan: up to 5 cron triggers.
+  "triggers": { "crons": ["*/5 * * * *"] },
   // Workers Logs (Observability tab): every request and error with its URL, so
   // errors can be traced (A18, 2026-10-28). Free up to 200k events a day; above
   // that Cloudflare samples.

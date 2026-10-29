@@ -1,4 +1,6 @@
-// The Worker's front door (wrangler.jsonc "main"). Pages built ahead (home, every trip and town
+// The Worker's front door (wrangler.jsonc "main"), plus a cron job: every 5 minutes (wrangler.jsonc
+// "triggers") it sends the walk reminders that fall due (lib/pushPlan.ts).
+// Pages built ahead (home, every trip and town
 // page, the info pages) are answered here straight from the deploy's page cache, without
 // starting Next.js; everything else goes to the OpenNext Worker as before.
 //
@@ -27,12 +29,19 @@ import { runWithCloudflareRequestContext } from "./.open-next/cloudflare/init.js
 import { GET as reviewTotals } from "./app/api/review/route";
 import { GET as tripList } from "./app/api/vylety/route";
 import { weatherKey } from "./lib/apiKeys";
+import type { D1Like } from "./lib/d1";
 import { edgeHit, edgeKey } from "./lib/edgeCache";
 import { pick } from "./lib/pageEntry";
+import { sendDue } from "./lib/pushPlan";
 import { fromOtherSite } from "./lib/routeGuard";
 
 interface Env {
   ASSETS: { fetch(req: Request | string): Promise<Response> };
+  VISITS_DB?: D1Like;
+}
+
+interface Ctx {
+  waitUntil(p: Promise<unknown>): void;
 }
 
 interface FastPages {
@@ -113,7 +122,7 @@ async function keptAnswer(req: Request): Promise<Response | null> {
 }
 
 const worker = {
-  async fetch(req: Request, env: Env, ctx: unknown): Promise<Response> {
+  async fetch(req: Request, env: Env, ctx: Ctx): Promise<Response> {
     try {
       const page = (await fastPage(req, env)) ?? (await keptAnswer(req));
       if (page) return page;
@@ -124,6 +133,15 @@ const worker = {
     const route = req.method === "GET" ? DATA_ROUTES[new URL(req.url).pathname] : undefined;
     if (route) return runWithCloudflareRequestContext(req, env, ctx, () => route(req));
     return openNext.fetch(req, env, ctx);
+  },
+  async scheduled(_event: unknown, env: Env, ctx: Ctx) {
+    if (!env.VISITS_DB) return;
+    ctx.waitUntil(
+      sendDue(env.VISITS_DB).then(
+        (r) => r.sent + r.dropped > 0 && console.log(`[push] sent ${r.sent}, dropped ${r.dropped}`),
+        (err) => console.warn("[push] cron failed:", err)
+      )
+    );
   },
 };
 

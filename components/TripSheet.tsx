@@ -37,6 +37,7 @@ import { langPath, tr } from "@/lib/lang";
 import type { Lang } from "@/lib/lang";
 import { LangSwitch } from "@/lib/i18n";
 import { describeEn } from "@/lib/describeEn";
+import { markSigns } from "@/lib/markSigns";
 
 /** schema.org data: the trail as a place to visit + breadcrumbs (all trips > the nearest town's page > this one). */
 function trailJsonLd(detail: TrailDetail, photoUrl: string | null, town: Town | null, lang: Lang) {
@@ -136,7 +137,13 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
       ? describeEn(trail.description) // Generated from the map data; a hand-written one stays out.
       : trail.description;
   // A loop has no GPX file: its maps draw the line from the trip itself.
+  // The points where the walk changes trail marking: a KST sign on the map at each.
+  const marks = markSigns(trip);
   const loopLine = loopBack ? trip.path.map(([lon, lat]) => [lat, lon] as [number, number]) : undefined;
+  // The picked route keeps its colour from the route list and the comparison map (Peter, 2026-10-29);
+  // the marking colours are on the signs. A place with one route keeps its marking colour.
+  const ownIndex = routes.findIndex((r) => r.slug === current);
+  const ownColour = routes.length > 1 && ownIndex >= 0 ? ROUTE_COLOURS[ownIndex % ROUTE_COLOURS.length] : undefined;
   const others: OtherRoute[] = routes
     .map((r, i) => ({
       slug: r.slug,
@@ -260,6 +267,15 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
                 </section>
               )
             }
+            trail={{
+              path: trip.path.map(([lon, lat, ele]) => [+lon.toFixed(5), +lat.toFixed(5), ele === null ? null : Math.round(ele)]),
+              marking_runs: trip.marking_runs,
+              turnaround_index: trip.turnaround_index,
+              route: trip.route,
+              duration_min: trip.duration_min,
+              goal: trip.destination.name,
+              bbox: trail.bbox,
+            }}
             walk={{ points: trip.path.map(([lon, lat]) => [+lat.toFixed(5), +lon.toFixed(5)]), loop: trip.route === "okruh" }}
           >
             {/* Testers: Uložiť and navigation belong at the end; parking first, then the map. */}
@@ -267,7 +283,7 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
             <StopsBlock />
 
             <div className="lg:hidden">
-              <PhoneTripMap detail={detail} gpxUrl={gpxUrl} path={loopLine} others={others} loop={trip.route === "okruh"} />
+              <PhoneTripMap detail={detail} gpxUrl={gpxUrl} path={loopLine} others={others} loop={trip.route === "okruh"} marks={marks} colour={ownColour} />
             </div>
 
             {closures.length === 0 && <ClosureBanner closures={closures} />}
@@ -295,7 +311,7 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
         </div>
 
         <div className="hidden lg:sticky lg:top-0 lg:block lg:h-dvh lg:flex-1 lg:border-l lg:border-[var(--border)]">
-          <TripMap detail={detail} gpxUrl={gpxUrl} path={loopLine} others={others} loop={trip.route === "okruh"} />
+          <TripMap detail={detail} gpxUrl={gpxUrl} path={loopLine} others={others} loop={trip.route === "okruh"} marks={marks} colour={ownColour} />
         </div>
       </main>
     </TripAccessProvider>

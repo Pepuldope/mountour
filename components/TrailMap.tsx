@@ -25,6 +25,8 @@ export interface MapTrack {
   /** Line colour: the trail's KST marking (lib/mapLayers trackColor). */
   color: string;
   state: TrackState;
+  /** Arrows along the line in walking order: a loop reads differently clockwise and back (Peter, 2026-10-29). */
+  arrows?: boolean;
 }
 
 /** The way off the trail to an added stop and back, in the place's own colour. */
@@ -34,7 +36,7 @@ export interface SideLeg {
 }
 
 
-export type MarkerKind = "trailhead" | "parking" | "transit-autobus" | "transit-elektricka" | "transit-vlak" | "poi" | "goal";
+export type MarkerKind = "trailhead" | "parking" | "transit-autobus" | "transit-elektricka" | "transit-vlak" | "poi" | "goal" | "mark" | "me";
 
 export interface MapMarker {
   id: string;
@@ -84,6 +86,8 @@ const MARKER_GLYPH: Record<MarkerKind, string> = {
   "transit-vlak": "",
   poi: "*",
   goal: "",
+  mark: "",
+  me: "",
 };
 
 const pictogram = (svg: string) => `<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">${svg}</svg>`;
@@ -119,6 +123,8 @@ const MARKER_CLASS: Record<MarkerKind, string> = {
   "transit-vlak": "mt-pin-transit",
   poi: "mt-pin-poi",
   goal: "mt-pin-goal",
+  mark: "mt-pin-mark",
+  me: "mt-pin-me",
 };
 
 export const SLOVAKIA: [[number, number], [number, number]] = [
@@ -149,6 +155,32 @@ function popupContent(title: string, lines: string[] = [], action?: MapMarker["a
     el.appendChild(b);
   }
   return el;
+}
+
+/** A white chevron pointing along the line (east = forwards), drawn at 2x for sharp screens. */
+function arrowImage(): ImageData {
+  const size = 36;
+  const c = document.createElement("canvas");
+  c.width = c.height = size;
+  const g = c.getContext("2d")!;
+  // A white disc with a dark edge, readable on every line colour, and a dark chevron in it.
+  g.beginPath();
+  g.arc(18, 18, 15, 0, Math.PI * 2);
+  g.fillStyle = "#ffffff";
+  g.fill();
+  g.strokeStyle = "rgba(23, 33, 58, 0.45)";
+  g.lineWidth = 2;
+  g.stroke();
+  g.beginPath();
+  g.moveTo(14, 10.5);
+  g.lineTo(22, 18);
+  g.lineTo(14, 25.5);
+  g.lineCap = "round";
+  g.lineJoin = "round";
+  g.strokeStyle = "#17213a";
+  g.lineWidth = 4.5;
+  g.stroke();
+  return g.getImageData(0, 0, size, size);
 }
 
 function pinElement(className: string, glyph: string, title: string): HTMLElement {
@@ -318,6 +350,22 @@ export function TrailMap({
             "line-opacity": ["match", ["get", "state"], "dimmed", 0.35, 1],
           },
         });
+        // Which way a loop goes: small white chevrons along the picked line.
+        map.addImage("track-arrow", arrowImage(), { pixelRatio: 2 });
+        map.addLayer({
+          id: "track-arrows",
+          type: "symbol",
+          source: "tracks",
+          filter: ["==", ["get", "arrows"], true],
+          layout: {
+            "symbol-placement": "line",
+            "symbol-spacing": 140,
+            "icon-image": "track-arrow",
+            "icon-rotation-alignment": "map",
+            "icon-allow-overlap": true,
+            "icon-ignore-placement": true,
+          },
+        });
         // Parking -> trail start on foot: small dots, on top of the trail's start.
         map.addLayer({
           id: "walk-casing",
@@ -456,6 +504,7 @@ export function TrailMap({
           color: t.color,
           state: t.state,
           label: t.label ?? "",
+          arrows: !!t.arrows,
         },
         geometry: { type: "LineString", coordinates: t.points.map(lngLat) },
       }));

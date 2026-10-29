@@ -57,7 +57,7 @@ export async function overRouteLimit(req: Request): Promise<Response | null> {
  * writes nothing, a class shares its town's list), tight enough that one script can't spend the
  * day's free database writes or reads.
  */
-export async function overCallLimit(req: Request, use: "visit" | "event" | "review" | "vylety" | "feedback"): Promise<boolean> {
+export async function overCallLimit(req: Request, use: "visit" | "event" | "review" | "vylety" | "feedback" | "push"): Promise<boolean> {
   return overLimit(req, "COUNT_LIMIT", `${use}:`);
 }
 

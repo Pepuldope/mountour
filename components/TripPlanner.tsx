@@ -35,6 +35,7 @@ import type { PauseAt, TripProfile } from "@/lib/tripProfile";
 import { useLang, useT } from "@/lib/i18n";
 import { tr } from "@/lib/lang";
 import type { Lang } from "@/lib/lang";
+import type { SavedTrail } from "@/lib/savedTrips";
 
 interface Props extends ShareInfo {
   sun: LatLng | null;
@@ -55,6 +56,8 @@ interface Props extends ShareInfo {
   outro?: ReactNode;
   /** The trip has places on or near the walk that can be added as stops. */
   hasPlaces?: boolean;
+  /** The walk, kept with the saved trip for the trail screen ("Začať výlet"). */
+  trail?: SavedTrail;
 }
 
 /** One of the page's three cards, set off from the darker page so each step reads on its own. */
@@ -74,7 +77,7 @@ function meetingAt(date: string, hhmm: string): Date {
   return zonedDate(y, mo, d, h, mi);
 }
 
-export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, closures = [], walk, intro, children, outro, hasPlaces = false, ...trip }: Props) {
+export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, closures = [], walk, intro, children, outro, hasPlaces = false, trail, ...trip }: Props) {
   const { start } = useUserLocation();
   const { today, update } = useTripSettings();
   const t = useT();
@@ -401,7 +404,7 @@ export function TripPlanner({ sun, goal, profile: fullProfile, gpxUrl, bbox, clo
         {children}
 
         <section aria-label={t("Uložiť a zdieľať")} className="flex flex-col gap-3">
-          <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} tripPlan={tripPlan} profile={profile} {...trip} />
+          <SaveTripButton gpxUrl={gpxUrl} bbox={bbox} sun={sun} tripPlan={tripPlan} profile={profile} trail={trail} {...trip} />
           <NavHandoff drive={destination} start={start} walkFrom={walkStart} walk={walk} join={trailJoin} />
         </section>
 
