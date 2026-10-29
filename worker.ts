@@ -9,8 +9,9 @@
 //
 // Only plain page loads and full page data (a tap on a link) take this path; prefetches of single
 // parts (Next-Router-Segment-Prefetch), other methods, query strings and old addresses that
-// redirect still go through Next.js. The review totals and weather every trip page asks for come
-// back from the edge cache the same way when they are kept there. scripts/fast-pages.mjs writes
+// redirect still go through Next.js. The weather every trip page asks for comes back from
+// the edge cache the same way when it is kept there, and the review totals and trip lists are
+// worked out here too (DATA_ROUTES). scripts/fast-pages.mjs writes
 // the table of pages at build time.
 
 // Both files exist only after a build, so the type check (run before it in CI) may or may not see them.
@@ -20,7 +21,12 @@ import openNext from "./.open-next/worker.js";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: written by scripts/fast-pages.mjs
 import fast from "./.open-next/fast-pages.mjs";
-import { reviewKey, weatherKey } from "./lib/apiKeys";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: written by opennextjs-cloudflare build
+import { runWithCloudflareRequestContext } from "./.open-next/cloudflare/init.js";
+import { GET as reviewTotals } from "./app/api/review/route";
+import { GET as tripList } from "./app/api/vylety/route";
+import { weatherKey } from "./lib/apiKeys";
 import { edgeHit, edgeKey } from "./lib/edgeCache";
 import { pick } from "./lib/pageEntry";
 import { fromOtherSite } from "./lib/routeGuard";
@@ -84,9 +90,18 @@ async function fastPage(req: Request, env: Env): Promise<Response | null> {
   return new Response(body, { headers });
 }
 
-/** Every trip page asks for these; a kept answer goes back without Next.js, a miss goes to the route. */
+/**
+ * Two read-only data answers every visit asks for, run here without Next.js: the review totals
+ * on each trip page and a town's trip list. Plain functions of the request and the database
+ * (the 29 Oct preview test: with pages fast, these were the answers still hitting error 1102).
+ */
+const DATA_ROUTES: Record<string, (req: Request) => Promise<Response>> = {
+  "/api/review": reviewTotals,
+  "/api/vylety": tripList,
+};
+
+/** Every trip page asks for the weather; a kept answer goes back without Next.js, a miss goes to the route. */
 const KEPT_ANSWERS: Record<string, (q: URLSearchParams) => Record<string, string> | null> = {
-  "/api/review": reviewKey,
   "/api/weather": weatherKey,
 };
 
@@ -106,6 +121,8 @@ const worker = {
       // Anything odd in the fast path: Next.js answers as before.
       console.warn("[fast] fell back to Next.js:", err);
     }
+    const route = req.method === "GET" ? DATA_ROUTES[new URL(req.url).pathname] : undefined;
+    if (route) return runWithCloudflareRequestContext(req, env, ctx, () => route(req));
     return openNext.fetch(req, env, ctx);
   },
 };
