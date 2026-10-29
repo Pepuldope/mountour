@@ -204,7 +204,6 @@ h2,
 /* Where the walk changes trail marking: a KST sign, white with a stripe in the next colour
    (set inline). No marking from here: a plain white sign with a dashed edge. */
 .mt-pin-mark {
-  position: relative;
   width: 20px;
   height: 15px;
   border-radius: 2px;
