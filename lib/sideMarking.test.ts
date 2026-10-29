@@ -25,6 +25,10 @@ describe("markingAlong", () => {
     expect(markingAlong(side, [{ ...red, pts: [...red.pts, ...yellow.pts], box: [19, 48, 19, 48.01] }], trip)).toBe("red");
     expect(markingAlong([[48.001, 19], [48.003, 19]], [red, yellow], trip)).toBeUndefined();
   });
+  it("names the other marking on a line shared with the route's", () => {
+    expect(markingAlong(walk(19), [line("bg", 19)], [], "blue")).toBe("green");
+    expect(markingAlong(walk(19), [line("b", 19)], [], "blue")).toBe("blue");
+  });
   it("is unknown without colour data", () => {
     expect(markingAlong(walk(19), [line("", 19)])).toBeUndefined();
     expect(markingAlong(walk(19), [])).toBeUndefined();

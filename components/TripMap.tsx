@@ -164,20 +164,6 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
       };
     });
   }, [points, walkLeg, sidePairs, sideRoutes, sideStops, sideFrom]);
-  // The marking each side walk follows: a sign where it leaves the trail.
-  const sideKey = JSON.stringify(sideLegs.map((l) => l.points));
-  const [sideMarks, setSideMarks] = useState<{ key: string; marks: (MarkColour | null | undefined)[] }>({ key: "", marks: [] });
-  useEffect(() => {
-    let cancelled = false;
-    const legs = JSON.parse(sideKey) as [number, number][][];
-    const trip = points.map(([lat, lon]) => ({ lat, lon }));
-    Promise.all(legs.map(async (leg) => markingAlong(leg.slice(0, -1), await linesNear(leg), trip))).then(
-      (marks) => !cancelled && setSideMarks({ key: sideKey, marks })
-    );
-    return () => {
-      cancelled = true;
-    };
-  }, [sideKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
   // There-and-back tracks run out and back, so that stretch is cut at both ends.
@@ -224,15 +210,39 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
     const up = loop ? points.length - 1 : Math.floor((points.length - 1) / 2);
     const ll = points.slice(0, up + 1).map(([lat, lon]) => ({ lat, lon }));
     let at = 0;
-    const out: (MarkSigns["signs"][number])[] = [];
+    const out: (MarkSigns["signs"][number] & { at: number })[] = [];
     for (const s of marks.signs) {
       const hit = nearestOnPath(ll.slice(at), s.location);
       if (!hit || hit.distanceM > SIGN_ON_TRACK_M) continue;
       at += hit.i;
-      out.push({ ...s, location: hit.point });
+      out.push({ ...s, location: hit.point, at });
     }
     return out;
   }, [points, marks, loop]);
+
+  // The marking each side walk follows: a sign where it leaves the trail.
+  const sideKey = JSON.stringify(sideLegs.map((l) => l.points));
+  const [sideMarks, setSideMarks] = useState<{ key: string; marks: (MarkColour | null | undefined)[] }>({ key: "", marks: [] });
+  useEffect(() => {
+    let cancelled = false;
+    const legs = JSON.parse(sideKey) as [number, number][][];
+    const trip = points.map(([lat, lon]) => ({ lat, lon }));
+    // The route's own marking where the walk turns off: on a line carrying several markings, the
+    // other one is the one to name, or both signs at the junction would say the same (Peter, 2026-10-29).
+    const up = loop ? points.length - 1 : Math.floor((points.length - 1) / 2);
+    const routeAt = (p: [number, number]): MarkColour | null => {
+      const hit = nearestOnPath(trip, { lat: p[0], lon: p[1] });
+      if (!marks || !hit) return null;
+      const i = loop || hit.i <= up ? hit.i : Math.max(0, points.length - 2 - hit.i);
+      return signs.filter((x) => x.at <= i).pop()?.colour ?? marks.start;
+    };
+    Promise.all(legs.map(async (leg) => markingAlong(leg.slice(0, -1), await linesNear(leg), trip, routeAt(leg[0])))).then(
+      (marks) => !cancelled && setSideMarks({ key: sideKey, marks })
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, [sideKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const tracks = useMemo<MapTrack[]>(() => {
     const color = ownColour ?? trackColor(trail.marking);

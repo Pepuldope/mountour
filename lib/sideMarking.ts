@@ -44,9 +44,17 @@ interface Line {
  * The marking along a walk of [lat, lon] points: its colour, null when it runs mostly off marked
  * trails, or undefined when that isn't known (no data, or trail data from before the colours, or
  * a walk that never really leaves the trip's own line). Points by the trip's own line are left out:
- * read there, the side path took the route's marking (Peter, 2026-10-29).
+ * read there, the side path took the route's marking (Peter, 2026-10-29). Where a line carries
+ * the route's marking and another, the other is named: the sign must differ from the route's.
  */
-export function markingAlong(walk: [number, number][], lines: Line[], trip: readonly { lat: number; lon: number }[] = []): MarkColour | null | undefined {
+export function markingAlong(
+  walk: [number, number][],
+  lines: Line[],
+  trip: readonly { lat: number; lon: number }[] = [],
+  /** The route's marking where the walk turns off: on a shared line, the other marking is named. */
+  route: MarkColour | null = null
+): MarkColour | null | undefined {
+  const skip = route ? Object.keys(CODE).find((k) => CODE[k] === route) : undefined;
   walk = densify(walk);
   if (trip.length >= 2) {
     walk = walk.filter(([lat, lon]) => (nearestOnPath(trip, { lat, lon })?.distanceM ?? Infinity) > ON_TRIP_M);
@@ -69,7 +77,8 @@ export function markingAlong(walk: [number, number][], lines: Line[], trip: read
     }
     if (!best?.code) continue;
     marked++;
-    for (const c of best.code) count[c] = (count[c] ?? 0) + 1;
+    const code = skip && best.code.length > 1 ? best.code.replace(skip, "") : best.code;
+    for (const c of code) count[c] = (count[c] ?? 0) + 1;
   }
   if (marked < walk.length * MARKED_SHARE) return null;
   const top = Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0];
