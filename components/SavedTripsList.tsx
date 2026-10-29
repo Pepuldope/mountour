@@ -1,7 +1,7 @@
 "use client";
 
 import { setTripStops } from "@/lib/tripStops";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { planDay } from "@/lib/dayPlan";
 import { isoDate } from "@/lib/days";
@@ -12,6 +12,7 @@ import { useTripSettings } from "@/lib/tripSettings";
 import { useUserLocation } from "@/lib/userLocation";
 import { ReviewSheet } from "@/components/ReviewSheet";
 import { SunArc } from "@/components/SunArc";
+import { TrailMode, activeTrip, trackTrailStart } from "@/components/TrailMode";
 import { useLang, useT } from "@/lib/i18n";
 import { langPath } from "@/lib/lang";
 
@@ -29,6 +30,30 @@ export function SavedTripsList() {
   const t = useT();
   const lang = useLang();
   const today = todayIso();
+  // "Začať výlet": the trail screen, in the address as ?na-trase=<slug> so Back closes it and a
+  // reopened app finds it (offline, the saved page is served whatever the query).
+  const [onTrail, setOnTrail] = useState<string | null>(null);
+  useEffect(() => {
+    const sync = () => setOnTrail(new URLSearchParams(window.location.search).get("na-trase"));
+    // Opened the app again during a walk started today: straight back to it.
+    const going = activeTrip();
+    if (!new URLSearchParams(window.location.search).has("na-trase") && going) {
+      window.history.replaceState(null, "", `?na-trase=${encodeURIComponent(going.slug)}`);
+    }
+    sync();
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, []);
+  const startTrip = (trip: SavedTrip) => {
+    trackTrailStart(trip.slug);
+    window.history.pushState(null, "", `?na-trase=${encodeURIComponent(trip.slug)}`);
+    setOnTrail(trip.slug);
+  };
+  const closeTrip = () => {
+    window.history.replaceState(null, "", window.location.pathname);
+    setOnTrail(null);
+  };
+  const walking = onTrail ? trips.find((x) => x.slug === onTrail) : undefined;
 
   function open(trip: SavedTrip) {
     update({ date: trip.date, time: trip.time, ...(trip.travel ? { travel: trip.travel } : {}), ...(trip.withKids !== undefined ? { withKids: trip.withKids } : {}) });
@@ -59,6 +84,7 @@ export function SavedTripsList() {
 
   return (
     <>
+      {walking && <TrailMode trip={walking} onClose={closeTrip} />}
       {reviewing && (
         <ReviewSheet
           slug={reviewing.slug}
@@ -70,7 +96,7 @@ export function SavedTripsList() {
         />
       )}
       {planned.length > 0 && done.length > 0 && <h2 className="text-base font-bold">{t("Plánované")}</h2>}
-      {planned.length > 0 && <TripList trips={planned} today={today} open={open} remove={remove} went={went} />}
+      {planned.length > 0 && <TripList trips={planned} today={today} open={open} remove={remove} went={went} start={startTrip} />}
       {done.length > 0 && (
         <>
           <h2 className="pt-2 text-base font-bold">
@@ -111,12 +137,14 @@ function TripList({
   open,
   remove,
   went,
+  start,
 }: {
   trips: SavedTrip[];
   today: string;
   open: (trip: SavedTrip) => void;
   remove: (slug: string) => void;
   went: (trip: SavedTrip) => void;
+  start: (trip: SavedTrip) => void;
 }) {
   const t = useT();
   const lang = useLang();
@@ -171,8 +199,15 @@ function TripList({
             <div className="flex flex-wrap gap-3 pt-1">
               <button
                 type="button"
-                onClick={() => open(trip)}
+                onClick={() => start(trip)}
                 className="rounded-xl bg-[var(--accent)] px-4 py-2.5 text-sm font-bold text-[var(--accent-contrast)]"
+              >
+                {t("Začať výlet")}
+              </button>
+              <button
+                type="button"
+                onClick={() => open(trip)}
+                className="rounded-xl border border-[var(--border)] bg-[var(--card-bg)] px-4 py-2.5 text-sm font-semibold hover:border-[var(--accent)]"
               >
                 {t("Otvoriť")}
               </button>

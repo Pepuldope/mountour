@@ -19,7 +19,8 @@ export type AnalyticsEvent =
   | "plus_want" // "Chcel by som to" on /plus (Túruj+ price test)
   | "plus_no" // "Za túto cenu nie" on /plus
   | "app_link" // "Získať appku" tapped: home bottom bar or after saving a trip
-  | "app_installed"; // Android install dialog accepted on /aplikacia
+  | "app_installed" // Android install dialog accepted on /aplikacia
+  | "on_trail"; // "Kde som na trase?" tapped on a trip page
 
 type EventData = Record<string, string | number | boolean>;
 
