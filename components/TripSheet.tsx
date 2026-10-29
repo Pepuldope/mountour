@@ -140,6 +140,10 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
   // The points where the walk changes trail marking: a KST sign on the map at each.
   const marks = markSigns(trip);
   const loopLine = loopBack ? trip.path.map(([lon, lat]) => [lat, lon] as [number, number]) : undefined;
+  // The picked route keeps its colour from the route list and the comparison map (Peter, 2026-10-29);
+  // the marking colours are on the signs. A place with one route keeps its marking colour.
+  const ownIndex = routes.findIndex((r) => r.slug === current);
+  const ownColour = routes.length > 1 && ownIndex >= 0 ? ROUTE_COLOURS[ownIndex % ROUTE_COLOURS.length] : undefined;
   const others: OtherRoute[] = routes
     .map((r, i) => ({
       slug: r.slug,
@@ -270,7 +274,7 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
             <StopsBlock />
 
             <div className="lg:hidden">
-              <PhoneTripMap detail={detail} gpxUrl={gpxUrl} path={loopLine} others={others} loop={trip.route === "okruh"} marks={marks} />
+              <PhoneTripMap detail={detail} gpxUrl={gpxUrl} path={loopLine} others={others} loop={trip.route === "okruh"} marks={marks} colour={ownColour} />
             </div>
 
             {closures.length === 0 && <ClosureBanner closures={closures} />}
@@ -298,7 +302,7 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
         </div>
 
         <div className="hidden lg:sticky lg:top-0 lg:block lg:h-dvh lg:flex-1 lg:border-l lg:border-[var(--border)]">
-          <TripMap detail={detail} gpxUrl={gpxUrl} path={loopLine} others={others} loop={trip.route === "okruh"} marks={marks} />
+          <TripMap detail={detail} gpxUrl={gpxUrl} path={loopLine} others={others} loop={trip.route === "okruh"} marks={marks} colour={ownColour} />
         </div>
       </main>
     </TripAccessProvider>

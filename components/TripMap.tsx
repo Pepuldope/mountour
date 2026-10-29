@@ -44,6 +44,8 @@ interface Props {
   loop?: boolean;
   /** Where the walk changes trail marking (lib/markSigns.ts). */
   marks?: MarkSigns;
+  /** The picked route's colour from the route list; else its trail marking's. */
+  colour?: string;
 }
 
 /** Other routes in a muted slate: clearly not the walk you picked (that one keeps its trail colour), still easy to see. */
@@ -67,7 +69,7 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  * With a start, the whole way: the drive (dashed) to the chosen parking, the
  * walk from there to the trail (dotted), then the trail itself.
  */
-export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks }: Props) {
+export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks, colour: ownColour }: Props) {
   const t = useT();
   const lang = useLang();
   const { trail, trailheads, pois } = detail;
@@ -213,7 +215,7 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
   }, [points, marks, loop]);
 
   const tracks = useMemo<MapTrack[]>(() => {
-    const color = trackColor(trail.marking);
+    const color = ownColour ?? trackColor(trail.marking);
     // Drawn where they really run, never shifted aside: a shifted line bent and broke at sharp
     // turns (Peter, 2026-10-27). Other routes run thin over the picked one (TrailMap orders
     // them), and a hovered one goes on top in its colour.
@@ -236,7 +238,7 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
       { slug: trail.slug, points: [a, ...points.slice(out.i + 1, bi + 1), b], color, state: "selected", arrows: loop },
       ...over,
     ];
-  }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks, loop]);
+  }, [trail.slug, trail.marking, ownColour, points, skip, trailJoin, otherTracks, loop]);
 
   const goal = trail.goal_location;
   const goalKind = trail.goal ?? "ine";

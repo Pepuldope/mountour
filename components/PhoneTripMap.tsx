@@ -24,6 +24,7 @@ export function PhoneTripMap({
   others,
   loop = false,
   marks,
+  colour,
 }: {
   detail: TrailDetail;
   gpxUrl: string | null;
@@ -31,6 +32,7 @@ export function PhoneTripMap({
   others: OtherRoute[];
   loop?: boolean;
   marks?: MarkSigns;
+  colour?: string;
 }) {
   const [full, setFull] = useState(false);
   const t = useT();
@@ -56,7 +58,7 @@ export function PhoneTripMap({
           : "relative h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)]"
       }
     >
-      <TripMap detail={detail} gpxUrl={gpxUrl} path={path} others={others} loop={loop} marks={marks} />
+      <TripMap detail={detail} gpxUrl={gpxUrl} path={path} others={others} loop={loop} marks={marks} colour={colour} />
       {/* Top left: the map's zoom buttons sit top right. */}
       <MapExpandButton
         side="left"

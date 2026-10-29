@@ -157,20 +157,25 @@ function popupContent(title: string, lines: string[] = [], action?: MapMarker["a
 
 /** A white chevron pointing along the line (east = forwards), drawn at 2x for sharp screens. */
 function arrowImage(): ImageData {
-  const size = 32;
+  const size = 36;
   const c = document.createElement("canvas");
   c.width = c.height = size;
   const g = c.getContext("2d")!;
+  // A white disc with a dark edge, readable on every line colour, and a dark chevron in it.
+  g.beginPath();
+  g.arc(18, 18, 15, 0, Math.PI * 2);
+  g.fillStyle = "#ffffff";
+  g.fill();
+  g.strokeStyle = "rgba(23, 33, 58, 0.45)";
+  g.lineWidth = 2;
+  g.stroke();
+  g.beginPath();
+  g.moveTo(14, 10.5);
+  g.lineTo(22, 18);
+  g.lineTo(14, 25.5);
   g.lineCap = "round";
   g.lineJoin = "round";
-  g.beginPath();
-  g.moveTo(11, 8);
-  g.lineTo(20, 16);
-  g.lineTo(11, 24);
-  g.strokeStyle = "rgba(23, 33, 58, 0.7)";
-  g.lineWidth = 8;
-  g.stroke();
-  g.strokeStyle = "#ffffff";
+  g.strokeStyle = "#17213a";
   g.lineWidth = 4.5;
   g.stroke();
   return g.getImageData(0, 0, size, size);
@@ -352,7 +357,7 @@ export function TrailMap({
           filter: ["==", ["get", "arrows"], true],
           layout: {
             "symbol-placement": "line",
-            "symbol-spacing": 80,
+            "symbol-spacing": 140,
             "icon-image": "track-arrow",
             "icon-rotation-alignment": "map",
             "icon-allow-overlap": true,
