@@ -12,7 +12,9 @@ import { GOAL_LABEL, TRANSIT_LABEL, formatWalk } from "@/lib/format";
 import { poiIcon, poiLabel } from "@/lib/food";
 import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR, POI_COLOUR } from "@/lib/palette";
-import { trackColor } from "@/lib/mapLayers";
+import { MARKING_COLOR, MARKING_LABEL, trackColor } from "@/lib/mapLayers";
+import type { MarkSigns } from "@/lib/markSigns";
+import type { MarkColour } from "@/lib/tripSchema";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack, SideLeg } from "@/components/TrailMap";
 import { useTripAccess } from "@/components/TripAccess";
@@ -40,6 +42,8 @@ interface Props {
   others?: OtherRoute[];
   /** A loop passes each place once; a there-and-back walk twice (stops pick the way there, back or both). */
   loop?: boolean;
+  /** Where the walk changes trail marking (lib/markSigns.ts). */
+  marks?: MarkSigns;
 }
 
 /** Other routes in a muted slate: clearly not the walk you picked (that one keeps its trail colour), still easy to see. */
@@ -49,6 +53,10 @@ const OTHER_ROUTE_COLOUR = "#6b7a93";
 const AT_TRAIL_M = 60;
 /** A stored walk ending this close to the join point is the one to draw (pipeline/walks.py). */
 const STORED_END_M = 40;
+/** Stretches without a trail marking (roads, unmarked paths): a muted brown, apart from every KST colour. */
+const UNMARKED_COLOUR = "#8a6a4a";
+/** A marking sign this close to the drawn walk is on it (the GPX line and the trip's path differ by a few metres). */
+const SIGN_ON_TRACK_M = 40;
 /** A place on the way this close to the goal is the goal itself: one pin, not two. */
 const SAME_PLACE_M = 60;
 
@@ -61,7 +69,7 @@ const pair = (p: LatLng): [number, number] => [p.lat, p.lon];
  * With a start, the whole way: the drive (dashed) to the chosen parking, the
  * walk from there to the trail (dotted), then the trail itself.
  */
-export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Props) {
+export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks }: Props) {
   const t = useT();
   const lang = useLang();
   const { trail, trailheads, pois } = detail;
@@ -188,14 +196,51 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
       }),
     [others, hovered, fullOthers]
   );
+  // The colour of each stretch of the drawn line (seg[i]: points[i] to points[i + 1]), changing
+  // at the marking signs. The trip's path and the drawn line differ, so each sign finds its point
+  // on the line in walking order. A there-and-back line comes back the same way: mirrored.
+  const seg = useMemo<string[]>(() => {
+    const base = trackColor(trail.marking);
+    const out = points.slice(1).map(() => base);
+    if (!marks || points.length < 2) return out;
+    const markColour = (c: MarkColour | null) => (c ? MARKING_COLOR[c] : UNMARKED_COLOUR);
+    const up = loop ? points.length - 1 : Math.floor((points.length - 1) / 2);
+    const ll = points.slice(0, up + 1).map(([lat, lon]) => ({ lat, lon }));
+    let at = 0;
+    let colour = markColour(marks.start);
+    for (const s of [...marks.signs, null]) {
+      let next = up;
+      if (s) {
+        const hit = nearestOnPath(ll.slice(at), s.location);
+        if (!hit || hit.distanceM > SIGN_ON_TRACK_M) continue;
+        next = at + hit.i + (hit.t > 0.5 ? 1 : 0);
+      }
+      for (let i = at; i < next; i++) out[i] = colour;
+      at = next;
+      if (s) colour = markColour(s.colour);
+    }
+    if (!loop) for (let i = up; i < out.length; i++) out[i] = out[Math.max(0, Math.min(out.length - 1 - i, up - 1))];
+    return out;
+  }, [points, marks, loop, trail.marking]);
+
   const tracks = useMemo<MapTrack[]>(() => {
-    const color = trackColor(trail.marking);
     // Drawn where they really run, never shifted aside: a shifted line bent and broke at sharp
     // turns (Peter, 2026-10-27). Other routes run thin over the picked one (TrailMap orders
     // them), and a hovered one goes on top in its colour.
     const under = otherTracks.filter((o) => o.state !== "selected");
     const over = otherTracks.filter((o) => o.state === "selected");
-    const whole: MapTrack[] = [...under, { slug: trail.slug, points, color, state: "selected" }, ...over];
+    // One piece per marking colour; cols[i] colours line[i] to line[i + 1].
+    const pieces = (slug: string, line: [number, number][], cols: string[], state: MapTrack["state"]): MapTrack[] => {
+      const out: MapTrack[] = [];
+      let s = 0;
+      for (let i = 1; i <= cols.length; i++) {
+        if (i < cols.length && cols[i] === cols[s]) continue;
+        out.push({ slug, points: line.slice(s, i + 1), color: cols[s], state });
+        s = i;
+      }
+      return out.length ? out : [{ slug, points: line, color: trackColor(trail.marking), state }];
+    };
+    const whole: MapTrack[] = [...under, ...pieces(trail.slug, points, seg, "selected"), ...over];
     if (!skip || !trailJoin || points.length < 3) return whole;
     const ll = points.map(([lat, lon]) => ({ lat, lon }));
     const mid = Math.floor((points.length - 1) / 2);
@@ -207,23 +252,41 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
     const bi = mid + back.i;
     return [
       ...under,
-      { slug: `${trail.slug}-skipped-out`, points: [...points.slice(0, out.i + 1), a], color, state: "dimmed" },
-      { slug: `${trail.slug}-skipped-back`, points: [b, ...points.slice(bi + 1)], color, state: "dimmed" },
-      { slug: trail.slug, points: [a, ...points.slice(out.i + 1, bi + 1), b], color, state: "selected" },
+      ...pieces(`${trail.slug}-skipped-out`, [...points.slice(0, out.i + 1), a], seg.slice(0, out.i + 1), "dimmed"),
+      ...pieces(`${trail.slug}-skipped-back`, [b, ...points.slice(bi + 1)], seg.slice(bi), "dimmed"),
+      ...pieces(trail.slug, [a, ...points.slice(out.i + 1, bi + 1), b], seg.slice(out.i, bi + 1), "selected"),
       ...over,
     ];
-  }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks]);
+  }, [trail.slug, trail.marking, points, seg, skip, trailJoin, otherTracks]);
 
   const goal = trail.goal_location;
   const goalKind = trail.goal ?? "ine";
+  // Parked up the trail, the signs on the stretch you skip go faint with it.
+  const walked = useMemo(() => tracks.find((tk) => tk.slug === trail.slug)?.points ?? [], [tracks, trail.slug]);
   const markers = useMemo<MapMarker[]>(
     () => [
+      // Under every other pin: a sign where the marking changes, the stripe in the colour to follow next.
+      ...(marks?.signs ?? []).map((s, i) => {
+        const mark = (c: MarkColour | null) => (c ? t(MARKING_LABEL[c]) : t("bez značky"));
+        const off = !!skip && !walked.some(([lat, lon]) => haversineM({ lat, lon }, s.location) < SIGN_ON_TRACK_M);
+        return {
+          id: `mark-${i}`,
+          kind: "mark" as const,
+          location: s.location,
+          title: loop ? t("Ďalej {mark}", { mark: mark(s.colour) }) : t("Zmena značky"),
+          lines: loop
+            ? []
+            : [t("Cestou tam ďalej {mark}", { mark: mark(s.colour) }), t("Cestou späť ďalej {mark}", { mark: mark(s.before) })],
+          colour: s.colour ? `linear-gradient(#fff 0 30%, ${MARKING_COLOR[s.colour]} 30% 70%, #fff 70%)` : undefined,
+          dimmed: off,
+        };
+      }),
       ...trailheads.map((th) => ({
         id: `th-${th.id}`,
         kind: "trailhead" as const,
         location: th.location,
         title: th.name,
-        lines: [t("Začiatok trasy")],
+        lines: [t("Začiatok trasy"), ...(marks ? [t("Na začiatku {mark}", { mark: marks.start ? t(MARKING_LABEL[marks.start]) : t("bez značky") })] : [])],
       })),
       // By car only parking, by train or bus only the stops: never both.
       ...(transit
@@ -303,7 +366,7 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false }: Pro
           ]
         : []),
     ],
-    [trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name, addedStops, toggleStop, loop, t, lang]
+    [marks, walked, skip, trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name, addedStops, toggleStop, loop, t, lang]
   );
 
   // Opens on the trail and where the car stops. The drive is drawn too, but a long drive would

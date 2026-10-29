@@ -11,6 +11,7 @@ import { focusOnMap } from "@/lib/mapFocus";
 import { POI_COLOUR } from "@/lib/palette";
 import type { TrailDetail } from "@/lib/types";
 import { useT } from "@/lib/i18n";
+import type { MarkSigns } from "@/lib/markSigns";
 
 /**
  * The trip map on phones: "Celá mapa" opens it full screen, with a small "Na trase" tab
@@ -22,12 +23,14 @@ export function PhoneTripMap({
   path,
   others,
   loop = false,
+  marks,
 }: {
   detail: TrailDetail;
   gpxUrl: string | null;
   path?: [number, number][];
   others: OtherRoute[];
   loop?: boolean;
+  marks?: MarkSigns;
 }) {
   const [full, setFull] = useState(false);
   const t = useT();
@@ -53,7 +56,7 @@ export function PhoneTripMap({
           : "relative h-[45vh] overflow-hidden rounded-[var(--radius-card)] border border-[var(--border)]"
       }
     >
-      <TripMap detail={detail} gpxUrl={gpxUrl} path={path} others={others} loop={loop} />
+      <TripMap detail={detail} gpxUrl={gpxUrl} path={path} others={others} loop={loop} marks={marks} />
       {/* Top left: the map's zoom buttons sit top right. */}
       <MapExpandButton
         side="left"

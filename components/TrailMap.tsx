@@ -34,7 +34,7 @@ export interface SideLeg {
 }
 
 
-export type MarkerKind = "trailhead" | "parking" | "transit-autobus" | "transit-elektricka" | "transit-vlak" | "poi" | "goal";
+export type MarkerKind = "trailhead" | "parking" | "transit-autobus" | "transit-elektricka" | "transit-vlak" | "poi" | "goal" | "mark";
 
 export interface MapMarker {
   id: string;
@@ -84,6 +84,7 @@ const MARKER_GLYPH: Record<MarkerKind, string> = {
   "transit-vlak": "",
   poi: "*",
   goal: "",
+  mark: "",
 };
 
 const pictogram = (svg: string) => `<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">${svg}</svg>`;
@@ -119,6 +120,7 @@ const MARKER_CLASS: Record<MarkerKind, string> = {
   "transit-vlak": "mt-pin-transit",
   poi: "mt-pin-poi",
   goal: "mt-pin-goal",
+  mark: "mt-pin-mark",
 };
 
 export const SLOVAKIA: [[number, number], [number, number]] = [
