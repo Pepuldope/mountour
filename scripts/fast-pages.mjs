@@ -11,7 +11,14 @@ import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 
 const manifest = JSON.parse(readFileSync(".next/routes-manifest.json", "utf8"));
-const buildId = readFileSync(".next/BUILD_ID", "utf8").trim();
+// OpenNext keys the page cache by next.config's deploymentId (the commit, in CI) or else the
+// build id: take the one folder the build wrote.
+const ids = existsSync(".open-next/cache") ? readdirSync(".open-next/cache").filter((d) => d !== "__fetch") : [];
+if (ids.length !== 1) {
+  console.error(`Expected one page cache folder in .open-next/cache, found: ${ids.join(", ") || "none"}`);
+  process.exit(1);
+}
+const buildId = ids[0];
 const pagesDir = `.open-next/cache/${buildId}/route-cache/APP_PAGE`;
 const built = new Set(existsSync(pagesDir) ? readdirSync(pagesDir) : []);
 
