@@ -129,7 +129,10 @@ const pct = (sorted, p) => sorted[Math.min(sorted.length - 1, Math.floor((p / 10
 const until = Date.now() + MINUTES * 60_000;
 const started = performance.now();
 console.log(`${PEOPLE} people for ${MINUTES} min on ${BASE}${ONE_ADDRESS ? " (all from one address)" : ""}`);
-await Promise.all(Array.from({ length: PEOPLE }, (_, i) => person(i, until)));
+// Arrivals spread over the first 3 seconds: 200 new connections in the same millisecond time out
+// on the test machine itself (ETIMEDOUT on connect, 29 Oct), which says nothing about the site.
+const arrive = (i) => new Promise((r) => setTimeout(r, Math.random() * 3000)).then(() => person(i, until));
+await Promise.all(Array.from({ length: PEOPLE }, (_, i) => arrive(i)));
 const secs = (performance.now() - started) / 1000;
 
 /** Answers a working site gives under load: limits and a busy router are expected, the page copes. */
