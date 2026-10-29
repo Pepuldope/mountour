@@ -35,7 +35,7 @@ jobs:
       - if: env.CF_READY == 'true'
         run: npm ci
       - if: env.CF_READY == 'true'
-        run: npx opennextjs-cloudflare build
+        run: npx opennextjs-cloudflare build && node scripts/fast-pages.mjs
         env:
           WORKERS_CI_COMMIT_SHA: ${{ github.sha }}
       # Alias from the branch name: "claude/project-thread-7gs4ec" -> "project-thread-7gs4ec".

@@ -5,8 +5,9 @@ name: Load test
 # service, MET and the statistics aren't touched. A run of 100 people for a minute and 200 for
 # half a minute is about 7,000 Worker requests, a few percent of the free 100,000 a day: run it
 # by hand, not on a schedule. 29 Oct 2026: ~1 in 8 answers was Cloudflare's "Worker exceeded
-# resource limits" (error 1102, the free plan's 10 ms of CPU per request). Everything comes from one GitHub address, so it is also the
-# "whole class on one wifi" case for the per-address limits.
+# resource limits" (error 1102, the free plan's 10 ms of CPU per request); worker.ts is the fix.
+# Everything comes from one GitHub address, so it is also the "whole class on one wifi" case for
+# the per-address limits.
 
 on:
   workflow_dispatch:
@@ -17,22 +18,38 @@ on:
       minutes:
         description: Minutes
         default: "1"
+      target:
+        description: Site to test
+        default: https://turuj.sk
   push:
     branches: ["claude/project-thread-wzfwcj"]
-    paths: [".github/workflows/loadtest.yml", "scripts/load-test.mjs"]
+    paths: [".github/workflows/loadtest.yml", "scripts/load-test.mjs", "worker.ts"]
 
 jobs:
   load:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
+    env:
+      # A push tests the branch's preview copy (preview.yml uploads it, same database and limits,
+      # no live visitors), so a change can be load tested before it goes live.
+      TARGET: ${{ inputs.target || 'https://project-thread-wzfwcj-turuj.nemcok-peter123.workers.dev' }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+      - name: Wait for the preview of this commit
+        if: github.event_name == 'push'
+        run: |
+          id="${GITHUB_SHA:0:12}"
+          for i in $(seq 1 50); do
+            curl -sI "$TARGET/zdroje" | grep -qi "x-nextjs-deployment-id: $id" && exit 0
+            sleep 30
+          done
+          echo "::error::The preview never showed commit $id"; exit 1
       # The script prints its table and exits 1 on unexpected answers; both runs always print.
       - name: People at once
-        run: node scripts/load-test.mjs https://turuj.sk --live --people "${{ inputs.people || '100' }}" --minutes "${{ inputs.minutes || '1' }}" | tee -a "$GITHUB_STEP_SUMMARY"
+        run: node scripts/load-test.mjs "$TARGET" --live --people "${{ inputs.people || '100' }}" --minutes "${{ inputs.minutes || '1' }}" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Twice as many for half a minute
         if: always() && github.event_name == 'push'
-        run: node scripts/load-test.mjs https://turuj.sk --live --people 200 --minutes 0.5 | tee -a "$GITHUB_STEP_SUMMARY"
+        run: node scripts/load-test.mjs "$TARGET" --live --people 200 --minutes 0.5 | tee -a "$GITHUB_STEP_SUMMARY"

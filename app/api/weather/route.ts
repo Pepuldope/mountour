@@ -1,3 +1,4 @@
+import { weatherKey } from "@/lib/apiKeys";
 import { withEdgeCache } from "@/lib/edgeCache";
 import { OTHER_SITE, TOO_MANY, fromOtherSite, overReadLimit } from "@/lib/routeGuard";
 import type { WeatherForecast, WeatherStep } from "@/lib/weather";
@@ -15,11 +16,9 @@ import type { WeatherForecast, WeatherStep } from "@/lib/weather";
  */
 
 const UA = "Turuj/1.0 https://github.com/Pepuldope/turuj nemcok.peter123@gmail.com";
-const AREA = { minLat: 47, maxLat: 50, minLon: 16, maxLon: 23 };
 const CACHE_S = 1800;
 /** MET answering slowly must not hold the page. */
 const TIMEOUT_MS = 8000;
-const snap = (n: number) => Math.round(n * 100) / 100;
 
 interface MetStep {
   time: string;
@@ -47,27 +46,13 @@ function trim(s: MetStep): WeatherStep {
 export async function GET(req: Request) {
   // Each new answer is a call to MET in our name: only for our pages, and only so many a minute.
   if (fromOtherSite(req)) return OTHER_SITE();
-  const q = new URL(req.url).searchParams;
-  const lat = snap(Number(q.get("lat")));
-  const lon = snap(Number(q.get("lon")));
-  const alt = q.get("alt") ? Math.round(Number(q.get("alt")) / 10) * 10 : null;
-  if (
-    !Number.isFinite(lat) ||
-    !Number.isFinite(lon) ||
-    lat < AREA.minLat ||
-    lat > AREA.maxLat ||
-    lon < AREA.minLon ||
-    lon > AREA.maxLon ||
-    (alt !== null && (!Number.isFinite(alt) || alt < 0 || alt > 3000))
-  ) {
-    return Response.json({ error: "lat/lon in Slovakia, alt 0..3000" }, { status: 400 });
-  }
+  const key = weatherKey(new URL(req.url).searchParams);
+  if (!key) return Response.json({ error: "lat/lon in Slovakia, alt 0..3000" }, { status: 400 });
 
   const url =
     "https://api.met.no/weatherapi/locationforecast/2.0/compact" +
-    `?lat=${lat.toFixed(2)}&lon=${lon.toFixed(2)}${alt !== null ? `&altitude=${alt}` : ""}`;
-  const cacheKey = { lat: lat.toFixed(2), lon: lon.toFixed(2), alt: alt === null ? "" : String(alt) };
-  return withEdgeCache(req, CACHE_S, async () => ((await overReadLimit(req, "weather")) ? TOO_MANY() : forecast(url)), cacheKey);
+    `?lat=${key.lat}&lon=${key.lon}${key.alt ? `&altitude=${key.alt}` : ""}`;
+  return withEdgeCache(req, CACHE_S, async () => ((await overReadLimit(req, "weather")) ? TOO_MANY() : forecast(url)), key);
 }
 
 async function forecast(url: string): Promise<Response> {
