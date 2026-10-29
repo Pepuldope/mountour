@@ -14,6 +14,7 @@ import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR, POI_COLOUR } from "@/lib/palette";
 import { MARKING_COLOR, MARKING_LABEL, trackColor } from "@/lib/mapLayers";
 import type { MarkSigns } from "@/lib/markSigns";
+import { linesNear, markingAlong } from "@/lib/sideMarking";
 import type { MarkColour } from "@/lib/tripSchema";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack, SideLeg } from "@/components/TrailMap";
@@ -163,6 +164,19 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
       };
     });
   }, [points, walkLeg, sidePairs, sideRoutes, sideStops, sideFrom]);
+  // The marking each side walk follows: a sign where it leaves the trail.
+  const sideKey = JSON.stringify(sideLegs.map((l) => l.points));
+  const [sideMarks, setSideMarks] = useState<{ key: string; marks: (MarkColour | null | undefined)[] }>({ key: "", marks: [] });
+  useEffect(() => {
+    let cancelled = false;
+    const legs = JSON.parse(sideKey) as [number, number][][];
+    Promise.all(legs.map(async (leg) => markingAlong(leg.slice(0, -1), await linesNear(leg)))).then(
+      (marks) => !cancelled && setSideMarks({ key: sideKey, marks })
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, [sideKey]);
 
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
   // There-and-back tracks run out and back, so that stretch is cut at both ends.
@@ -267,6 +281,22 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
           dimmed: off,
         };
       }),
+      // Where a side walk leaves the trail, the marking it follows to the stop.
+      ...(sideMarks.key === sideKey ? sideLegs : []).flatMap((leg, i) => {
+        const c = sideMarks.marks[i];
+        if (c === undefined || leg.points.length < 2) return [];
+        const [lat, lon] = leg.points[0];
+        return [
+          {
+            id: `side-mark-${i}`,
+            kind: "mark" as const,
+            location: { lat, lon },
+            title: t("K zastávke {mark}", { mark: c ? t(MARKING_LABEL[c]) : t("bez značky") }),
+            lines: [t(sideStops[i].poi.name)],
+            colour: c ? `linear-gradient(#fff 0 30%, ${MARKING_COLOR[c]} 30% 70%, #fff 70%)` : undefined,
+          },
+        ];
+      }),
       ...trailheads.map((th) => ({
         id: `th-${th.id}`,
         kind: "trailhead" as const,
@@ -352,7 +382,7 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
           ]
         : []),
     ],
-    [marks, signs, walked, skip, trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name, addedStops, toggleStop, loop, t, lang]
+    [marks, signs, walked, skip, sideMarks, sideKey, sideLegs, sideStops, trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name, addedStops, toggleStop, loop, t, lang]
   );
 
   // Opens on the trail and where the car stops. The drive is drawn too, but a long drive would

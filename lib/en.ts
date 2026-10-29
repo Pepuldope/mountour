@@ -424,6 +424,7 @@ export const EN: Record<string, string> = {
   "Cestou tam ďalej {mark}": "On the way there, from here {mark}",
   "Cestou späť ďalej {mark}": "On the way back, from here {mark}",
   "Na začiatku {mark}": "At the start {mark}",
+  "K zastávke {mark}": "To the stop {mark}",
   "po západe slnka": "after sunset",
   "vo vlaku": "on the train",
   "v autobuse": "on the bus",
