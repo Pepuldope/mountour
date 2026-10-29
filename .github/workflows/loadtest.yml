@@ -18,7 +18,7 @@ on:
         default: "1"
   push:
     branches: ["claude/project-thread-wzfwcj"]
-    paths: [".github/workflows/loadtest.yml"]
+    paths: [".github/workflows/loadtest.yml", "scripts/load-test.mjs"]
 
 jobs:
   load:

@@ -44,6 +44,8 @@ const today = () => new Date().toLocaleDateString("sv-SE", { timeZone: "Europe/B
 
 /** Per kind of request: times (ms) and how many of each status. */
 const stats = new Map();
+/** "kind status" -> the start of one such answer. */
+const samples = new Map();
 function note(kind, ms, status) {
   let s = stats.get(kind);
   if (!s) stats.set(kind, (s = { ms: [], status: {} }));
@@ -66,8 +68,12 @@ async function hit(kind, path, person, init = {}) {
       },
       signal: AbortSignal.timeout(30_000),
     });
-    await res.arrayBuffer();
+    const body = await res.text();
     status = res.status;
+    // One sample of each failure, to tell Cloudflare's own errors (e.g. "error code: 1102") from ours.
+    if (status >= 400 && !samples.has(`${kind} ${status}`)) {
+      samples.set(`${kind} ${status}`, `${res.headers.get("server") ?? ""} ${res.headers.get("cf-mitigated") ?? ""} ${body.replace(/\s+/g, " ").slice(0, 160)}`);
+    }
   } catch (err) {
     status = err.name === "TimeoutError" ? "timeout" : "network";
   }
@@ -135,5 +141,6 @@ for (const [kind, s] of [...stats].sort()) {
   const cols = [ms.length, pct(ms, 50), pct(ms, 95), pct(ms, 99), ms[ms.length - 1]].map((v) => String(Math.round(v)).padStart(8));
   console.log(`${kind.padEnd(15)}${cols.join(" ")}   ${JSON.stringify(s.status)}`);
 }
+for (const [what, sample] of samples) console.log(`${what}: ${sample}`);
 console.log(`\n${total} requests in ${secs.toFixed(0)} s (${(total / secs).toFixed(1)} a second), ${bad} unexpected answers`);
 process.exit(bad > 0 ? 1 : 0);
