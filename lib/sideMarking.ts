@@ -4,12 +4,14 @@
 import { cellsInView } from "@/lib/trailNetwork";
 import type { TrailNetworkMeta } from "@/lib/trailNetwork";
 import { fetchLines } from "@/lib/packedLines";
-import { nearestOnPath } from "@/lib/geo";
+import { haversineM, nearestOnPath } from "@/lib/geo";
 import type { MarkColour } from "@/lib/tripSchema";
 
 const CODE: Record<string, MarkColour> = { r: "red", b: "blue", g: "green", y: "yellow", k: "black" };
 /** A walk point this close to a marked line follows it. */
 const ON_LINE_M = 15;
+/** Walk points this close to the trip's own line are still on it, and its marking says nothing about the side path. */
+const ON_TRIP_M = 25;
 /** At least this share of the walk on marked lines, or it counts as unmarked. */
 const MARKED_SHARE = 0.5;
 
@@ -40,9 +42,15 @@ interface Line {
 
 /**
  * The marking along a walk of [lat, lon] points: its colour, null when it runs mostly off marked
- * trails, or undefined when that isn't known (no data, or trail data from before the colours).
+ * trails, or undefined when that isn't known (no data, or trail data from before the colours, or
+ * a walk that never really leaves the trip's own line). Points by the trip's own line are left out:
+ * read there, the side path took the route's marking (Peter, 2026-10-29).
  */
-export function markingAlong(walk: [number, number][], lines: Line[]): MarkColour | null | undefined {
+export function markingAlong(walk: [number, number][], lines: Line[], trip: readonly { lat: number; lon: number }[] = []): MarkColour | null | undefined {
+  walk = densify(walk);
+  if (trip.length >= 2) {
+    walk = walk.filter(([lat, lon]) => (nearestOnPath(trip, { lat, lon })?.distanceM ?? Infinity) > ON_TRIP_M);
+  }
   if (walk.length < 2 || lines.length === 0) return undefined;
   if (!lines.some((l) => l.code)) return undefined;
   const count: Record<string, number> = {};
@@ -66,6 +74,20 @@ export function markingAlong(walk: [number, number][], lines: Line[]): MarkColou
   if (marked < walk.length * MARKED_SHARE) return null;
   const top = Object.entries(count).sort((a, b) => b[1] - a[1])[0]?.[0];
   return top ? (CODE[top] ?? null) : null;
+}
+
+/** A point every ~10 m: router lines are simplified to a few corners. */
+function densify(walk: [number, number][]): [number, number][] {
+  const out: [number, number][] = [];
+  for (let i = 0; i < walk.length; i++) {
+    out.push(walk[i]);
+    if (i + 1 === walk.length) break;
+    const [a, b] = [walk[i], walk[i + 1]];
+    const m = haversineM({ lat: a[0], lon: a[1] }, { lat: b[0], lon: b[1] });
+    const n = Math.min(Math.floor(m / 10), 200);
+    for (let k = 1; k < n; k++) out.push([a[0] + ((b[0] - a[0]) * k) / n, a[1] + ((b[1] - a[1]) * k) / n]);
+  }
+  return out;
 }
 
 /** The marked lines near a walk, from the network's detail cells. */

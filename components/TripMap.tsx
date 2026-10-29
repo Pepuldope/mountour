@@ -170,13 +170,14 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
   useEffect(() => {
     let cancelled = false;
     const legs = JSON.parse(sideKey) as [number, number][][];
-    Promise.all(legs.map(async (leg) => markingAlong(leg.slice(0, -1), await linesNear(leg)))).then(
+    const trip = points.map(([lat, lon]) => ({ lat, lon }));
+    Promise.all(legs.map(async (leg) => markingAlong(leg.slice(0, -1), await linesNear(leg), trip))).then(
       (marks) => !cancelled && setSideMarks({ key: sideKey, marks })
     );
     return () => {
       cancelled = true;
     };
-  }, [sideKey]);
+  }, [sideKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
   // There-and-back tracks run out and back, so that stretch is cut at both ends.
