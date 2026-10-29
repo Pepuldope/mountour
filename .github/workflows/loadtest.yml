@@ -4,7 +4,8 @@ name: Load test
 # its --live mode, which asks only pages, the trip list and review totals, so the route
 # service, MET and the statistics aren't touched. A run of 100 people for a minute and 200 for
 # half a minute is about 7,000 Worker requests, a few percent of the free 100,000 a day: run it
-# by hand, not on a schedule. Everything comes from one GitHub address, so it is also the
+# by hand, not on a schedule. 29 Oct 2026: ~1 in 8 answers was Cloudflare's "Worker exceeded
+# resource limits" (error 1102, the free plan's 10 ms of CPU per request). Everything comes from one GitHub address, so it is also the
 # "whole class on one wifi" case for the per-address limits.
 
 on:
@@ -33,5 +34,5 @@ jobs:
       - name: People at once
         run: node scripts/load-test.mjs https://turuj.sk --live --people "${{ inputs.people || '100' }}" --minutes "${{ inputs.minutes || '1' }}" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Twice as many for half a minute
-        if: false
+        if: always() && github.event_name == 'push'
         run: node scripts/load-test.mjs https://turuj.sk --live --people 200 --minutes 0.5 | tee -a "$GITHUB_STEP_SUMMARY"
