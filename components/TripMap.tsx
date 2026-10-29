@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
-import { haversineM, nearestOnPath } from "@/lib/geo";
+import { haversineM, legOffPath, nearestOnPath } from "@/lib/geo";
 import { useDriveRoute, useWalkRoute, useWalkRoutes } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { useHomeStop } from "@/lib/useHomeStop";
@@ -150,14 +150,19 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
   );
   const sideRoutes = useWalkRoutes(sidePairs);
   // Each in its place's own colour, so the way to a stop stands out from the trail and the walk from the car.
-  const sideLegs = useMemo<SideLeg[]>(
-    () =>
-      sidePairs.map(([from, to], i) => ({
-        points: [pair(from), ...(sideRoutes[i]?.points ?? []), pair(to)],
+  // The walk router starts at the nearest point of the trail, but the path to the place often leaves
+  // the trail a bit further on: the first stretch then runs along the trail (Peter, 2026-10-29: "you
+  // would have to come back"). The leg is drawn from where it really leaves the trail or the walk.
+  const sideLegs = useMemo<SideLeg[]>(() => {
+    const ll = points.map(([lat, lon]) => ({ lat, lon }));
+    const walk = walkLeg?.map(([lat, lon]) => ({ lat, lon })) ?? [];
+    return sidePairs.map(([from, to], i) => {
+      return {
+        points: legOffPath(sideFrom[i].offTrail ? walk : ll, pair(from), sideRoutes[i]?.points ?? [], pair(to)),
         colour: POI_COLOUR[sideStops[i].poi.kind],
-      })),
-    [sidePairs, sideRoutes, sideStops]
-  );
+      };
+    });
+  }, [points, walkLeg, sidePairs, sideRoutes, sideStops, sideFrom]);
 
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
   // There-and-back tracks run out and back, so that stretch is cut at both ends.

@@ -71,3 +71,23 @@ export function nearestOnPath(points: readonly LatLng[], p: LatLng): PathHit | n
   }
   return best;
 }
+
+/** A side walk this close to the trail still runs along it (router and trail lines differ by a few metres). */
+const ON_PATH_M = 20;
+
+/**
+ * A walk off `along` to a place, as [lat, lon] points: the router's line from `from` (the nearest
+ * point of `along`) to `to`, started where it really leaves `along`. Routers often follow the trail
+ * a while before the path to the place turns off; drawn from `from`, that read as a detour.
+ */
+export function legOffPath(along: readonly LatLng[], from: [number, number], route: [number, number][], to: [number, number]): [number, number][] {
+  let leave = -1;
+  if (along.length >= 2) {
+    for (let k = 0; k < route.length; k++) {
+      const hit = nearestOnPath(along, { lat: route[k][0], lon: route[k][1] });
+      if (!hit || hit.distanceM > ON_PATH_M) break;
+      leave = k;
+    }
+  }
+  return leave >= 0 ? [...route.slice(leave), to] : [from, ...route, to];
+}
