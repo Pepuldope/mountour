@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getAllTrails } from "@/lib/tripFiles";
-import { EN_TRIPS_AHEAD, absoluteUrl } from "@/lib/site";
+import { EN_TRIPS_AHEAD, SUPPORT_ON, absoluteUrl } from "@/lib/site";
 import { getTowns } from "@/lib/trips";
 import { langPath } from "@/lib/lang";
 
@@ -8,7 +8,7 @@ import { langPath } from "@/lib/lang";
 // trips appear without touching this file and the Worker never re-reads the index for it.
 export const dynamic = "force-static";
 
-const INFO_PAGES = ["/aplikacia", "/o-nas", "/napiste-nam", "/nahlasit-chybu", "/zdroje", "/sukromie", "/upozornenie"];
+const INFO_PAGES = ["/aplikacia", "/o-nas", "/napiste-nam", "/nahlasit-chybu", "/zdroje", "/sukromie", "/upozornenie", ...(SUPPORT_ON ? ["/podporte-nas"] : [])];
 
 /**
  * Every page in Slovak and in English (/en), each pointing to the other (hreflang). English trip

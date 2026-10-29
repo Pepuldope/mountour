@@ -58,6 +58,12 @@ export const OG_IMAGE = {
   alt: "Túruj – kam dnes na výlet, aby ste boli späť za svetla",
 };
 
+/**
+ * "Podporte nás" (/podporte-nas, lib/support.ts): links the page from the footer and sitemap, lets
+ * search engines in and shows the gift card on turuj.sk. Off until Peter has asked the teacher (11 Nov).
+ */
+export const SUPPORT_ON = process.env.NEXT_PUBLIC_SUPPORT_ON === "1";
+
 export const REPO_URL = "https://github.com/Pepuldope/turuj";
 
 /** Google Form for tester sign-up, linked from the footer ("Chcem testovať"). */
