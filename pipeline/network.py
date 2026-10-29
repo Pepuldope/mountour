@@ -320,22 +320,33 @@ def build(ways, goals, views, border=None):
     return runs, stats
 
 
-def merged_features(lines_by_level):
-    """Join touching runs of the same level into long lines: far fewer features, far smaller files."""
+COLOUR_CODE = {"red": "r", "blue": "b", "green": "g", "yellow": "y", "black": "k"}
+
+
+def colour_code(colours):
+    """The KST colours of a way as a short sorted code ("bg" = blue and green), "" when unknown."""
+    return "".join(sorted(COLOUR_CODE[c] for c in colours if c in COLOUR_CODE))
+
+
+def merged_features(lines_by_key):
+    """Join touching runs of the same level (and marking, in the detail cells) into long lines:
+    far fewer features, far smaller files. Keys are a level, or (level, colour code)."""
     from shapely.geometry import MultiLineString
     from shapely.ops import linemerge
 
     feats = []
-    for level in sorted(lines_by_level):
-        lines = [l for l in lines_by_level[level] if len(l) >= 2]
+    for key in sorted(lines_by_key):
+        lines = [l for l in lines_by_key[key] if len(l) >= 2]
         if not lines:
             continue
+        level, code = key if isinstance(key, tuple) else (key, None)
+        props = {"p": int(level)} if code is None else {"p": int(level), "c": code}
         merged = linemerge(MultiLineString(lines))
         parts = list(merged.geoms) if hasattr(merged, "geoms") else [merged]
         for g in parts:
             feats.append({
                 "type": "Feature",
-                "properties": {"p": int(level)},
+                "properties": props,
                 "geometry": {"type": "LineString", "coordinates": [list(c) for c in g.coords]},
             })
     return feats
@@ -355,10 +366,13 @@ def write(root, ways, runs, stats, osm_ts=None):
         overview.setdefault(run["level"], []).append(simplify(lats, lons, OVERVIEW_TOL_M, 4))
         detail = simplify(lats, lons, DETAIL_TOL_M, 5)
         mid = detail[len(detail) // 2]
-        cells.setdefault(cell_of(mid[1], mid[0]), {}).setdefault(run["level"], []).append(detail)
+        # The detail cells carry each line's KST colours too: the trip page reads which marking a
+        # side walk to a stop follows (Peter, 2026-10-29).
+        key = (run["level"], colour_code(w["colours"]))
+        cells.setdefault(cell_of(mid[1], mid[0]), {}).setdefault(key, []).append(detail)
     packed.dump(out / "overview.json", merged_features(overview), 4)
-    for key, by_level in cells.items():
-        packed.dump(cells_dir / f"{key}.json", merged_features(by_level), 5)
+    for key, by_key in cells.items():
+        packed.dump(cells_dir / f"{key}.json", merged_features(by_key), 5)
     meta = dict(
         version=VERSION,
         generated_at=dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),

@@ -1,5 +1,7 @@
 {
   "name": "turuj",
+  // worker.ts answers pages built ahead itself, sends walk reminders on the cron below and hands
+  // the rest to OpenNext (.open-next/worker.js).
   "main": "worker.ts",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],

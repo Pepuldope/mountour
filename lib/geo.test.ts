@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { distanceAlongM, haversineM } from "./geo";
+import { distanceAlongM, haversineM, legOffPath } from "./geo";
 
 describe("haversineM", () => {
   it("is zero for identical points", () => {
@@ -30,5 +30,29 @@ describe("distanceAlongM", () => {
   it("measures to the nearest path point", () => {
     expect(distanceAlongM(path, { lat: 49.0, lon: 19.0 })).toBe(0);
     expect(Math.round(distanceAlongM(path, { lat: 49.0199, lon: 19.0005 }) / 10)).toBe(222);
+  });
+});
+
+describe("legOffPath", () => {
+  // A trail running north; the path to the place turns east 300 m up.
+  const trail = Array.from({ length: 11 }, (_, i) => ({ lat: 48 + i * 0.001, lon: 19 }));
+  it("starts the side walk where it leaves the trail, not where the router joined it", () => {
+    const route: [number, number][] = [
+      [48.002, 19],
+      [48.0025, 19.00005],
+      [48.003, 19],
+      [48.003, 19.002],
+      [48.003, 19.004],
+    ];
+    expect(legOffPath(trail, [48.002, 19], route, [48.003, 19.005])).toEqual([
+      [48.003, 19],
+      [48.003, 19.002],
+      [48.003, 19.004],
+      [48.003, 19.005],
+    ]);
+  });
+  it("keeps the whole line when the route starts off the trail", () => {
+    const route: [number, number][] = [[48.002, 19.001], [48.002, 19.003]];
+    expect(legOffPath(trail, [48.002, 19], route, [48.002, 19.004])).toEqual([[48.002, 19], ...route, [48.002, 19.004]]);
   });
 });

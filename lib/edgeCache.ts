@@ -16,6 +16,22 @@ function edgeCache(): EdgeCache | null {
 /** An answer may ask to be kept for less time than usual (a route that is only partly right). */
 export const KEEP_FOR = "X-Keep-For";
 
+/** The cache key for this GET: its URL, with the query replaced by `params` when given. */
+export function edgeKey(req: Request, params?: Record<string, string>): Request {
+  const url = new URL(req.url);
+  if (params) url.search = new URLSearchParams(params).toString();
+  return new Request(url.toString(), { method: "GET" });
+}
+
+/** A kept answer for this key, or null (no edge cache here, a miss, or a hiccup). */
+export async function edgeHit(key: Request): Promise<Response | null> {
+  try {
+    return (await edgeCache()?.match(key)) ?? null;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * A cached answer for this GET, else `compute()`; good answers are kept for `maxAgeS`
  * (or the shorter `X-Keep-For` seconds the answer names).
@@ -29,9 +45,7 @@ export async function withEdgeCache(
   params?: Record<string, string>
 ): Promise<Response> {
   const cache = edgeCache();
-  const url = new URL(req.url);
-  if (params) url.search = new URLSearchParams(params).toString();
-  const key = new Request(url.toString(), { method: "GET" });
+  const key = edgeKey(req, params);
   if (cache) {
     try {
       const hit = await cache.match(key);

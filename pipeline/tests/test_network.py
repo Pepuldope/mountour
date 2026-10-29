@@ -53,3 +53,11 @@ def test_end_to_end(tmp_path):
     assert level_at[48] > level_at[49]
     assert meta["cells"] and all((out / "c" / f"{c}.json").exists() for c in meta["cells"])
     assert meta["top_goals"][0]["name"] == "Testovací vrch"
+    # the detail cells say which marking each line follows
+    cell = packed.read_features(out / "c" / f"{meta['cells'][0]}.json")
+    assert any(f["properties"].get("c") == "r" for f in cell)
+
+
+def test_colour_code():
+    assert network.colour_code({"green", "blue"}) == "bg"
+    assert network.colour_code(set()) == ""

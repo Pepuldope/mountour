@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { BBox, LatLng, TrailDetail } from "@/lib/types";
-import { haversineM, nearestOnPath } from "@/lib/geo";
+import { haversineM, legOffPath, nearestOnPath } from "@/lib/geo";
 import { useDriveRoute, useWalkRoute, useWalkRoutes } from "@/lib/useDriveRoute";
 import { useUserLocation } from "@/lib/userLocation";
 import { useHomeStop } from "@/lib/useHomeStop";
@@ -14,6 +14,7 @@ import { kindSvg } from "@/lib/kindIcons";
 import { GOAL_COLOUR, POI_COLOUR } from "@/lib/palette";
 import { MARKING_COLOR, MARKING_LABEL, trackColor } from "@/lib/mapLayers";
 import type { MarkSigns } from "@/lib/markSigns";
+import { linesNear, markingAlong } from "@/lib/sideMarking";
 import type { MarkColour } from "@/lib/tripSchema";
 import { TrailMap } from "@/components/TrailMapClient";
 import type { MapMarker, MapTrack, SideLeg } from "@/components/TrailMap";
@@ -150,14 +151,19 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
   );
   const sideRoutes = useWalkRoutes(sidePairs);
   // Each in its place's own colour, so the way to a stop stands out from the trail and the walk from the car.
-  const sideLegs = useMemo<SideLeg[]>(
-    () =>
-      sidePairs.map(([from, to], i) => ({
-        points: [pair(from), ...(sideRoutes[i]?.points ?? []), pair(to)],
+  // The walk router starts at the nearest point of the trail, but the path to the place often leaves
+  // the trail a bit further on: the first stretch then runs along the trail (Peter, 2026-10-29: "you
+  // would have to come back"). The leg is drawn from where it really leaves the trail or the walk.
+  const sideLegs = useMemo<SideLeg[]>(() => {
+    const ll = points.map(([lat, lon]) => ({ lat, lon }));
+    const walk = walkLeg?.map(([lat, lon]) => ({ lat, lon })) ?? [];
+    return sidePairs.map(([from, to], i) => {
+      return {
+        points: legOffPath(sideFrom[i].offTrail ? walk : ll, pair(from), sideRoutes[i]?.points ?? [], pair(to)),
         colour: POI_COLOUR[sideStops[i].poi.kind],
-      })),
-    [sidePairs, sideRoutes, sideStops]
-  );
+      };
+    });
+  }, [points, walkLeg, sidePairs, sideRoutes, sideStops, sideFrom]);
 
   // Parked up the trail: the stretch below the join is drawn faint, the walk you do in full colour.
   // There-and-back tracks run out and back, so that stretch is cut at both ends.
@@ -204,15 +210,39 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
     const up = loop ? points.length - 1 : Math.floor((points.length - 1) / 2);
     const ll = points.slice(0, up + 1).map(([lat, lon]) => ({ lat, lon }));
     let at = 0;
-    const out: (MarkSigns["signs"][number])[] = [];
+    const out: (MarkSigns["signs"][number] & { at: number })[] = [];
     for (const s of marks.signs) {
       const hit = nearestOnPath(ll.slice(at), s.location);
       if (!hit || hit.distanceM > SIGN_ON_TRACK_M) continue;
       at += hit.i;
-      out.push({ ...s, location: hit.point });
+      out.push({ ...s, location: hit.point, at });
     }
     return out;
   }, [points, marks, loop]);
+
+  // The marking each side walk follows: a sign where it leaves the trail.
+  const sideKey = JSON.stringify(sideLegs.map((l) => l.points));
+  const [sideMarks, setSideMarks] = useState<{ key: string; marks: (MarkColour | null | undefined)[] }>({ key: "", marks: [] });
+  useEffect(() => {
+    let cancelled = false;
+    const legs = JSON.parse(sideKey) as [number, number][][];
+    const trip = points.map(([lat, lon]) => ({ lat, lon }));
+    // The route's own marking where the walk turns off: on a line carrying several markings, the
+    // other one is the one to name, or both signs at the junction would say the same (Peter, 2026-10-29).
+    const up = loop ? points.length - 1 : Math.floor((points.length - 1) / 2);
+    const routeAt = (p: [number, number]): MarkColour | null => {
+      const hit = nearestOnPath(trip, { lat: p[0], lon: p[1] });
+      if (!marks || !hit) return null;
+      const i = loop || hit.i <= up ? hit.i : Math.max(0, points.length - 2 - hit.i);
+      return signs.filter((x) => x.at <= i).pop()?.colour ?? marks.start;
+    };
+    Promise.all(legs.map(async (leg) => markingAlong(leg.slice(0, -1), await linesNear(leg), trip, routeAt(leg[0])))).then(
+      (marks) => !cancelled && setSideMarks({ key: sideKey, marks })
+    );
+    return () => {
+      cancelled = true;
+    };
+  }, [sideKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const tracks = useMemo<MapTrack[]>(() => {
     const color = ownColour ?? trackColor(trail.marking);
@@ -261,6 +291,22 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
           colour: s.colour ? `linear-gradient(#fff 0 30%, ${MARKING_COLOR[s.colour]} 30% 70%, #fff 70%)` : undefined,
           dimmed: off,
         };
+      }),
+      // Where a side walk leaves the trail, the marking it follows to the stop.
+      ...(sideMarks.key === sideKey ? sideLegs : []).flatMap((leg, i) => {
+        const c = sideMarks.marks[i];
+        if (c === undefined || leg.points.length < 2) return [];
+        const [lat, lon] = leg.points[0];
+        return [
+          {
+            id: `side-mark-${i}`,
+            kind: "mark" as const,
+            location: { lat, lon },
+            title: t("K zastávke {mark}", { mark: c ? t(MARKING_LABEL[c]) : t("bez značky") }),
+            lines: [t(sideStops[i].poi.name)],
+            colour: c ? `linear-gradient(#fff 0 30%, ${MARKING_COLOR[c]} 30% 70%, #fff 70%)` : undefined,
+          },
+        ];
       }),
       ...trailheads.map((th) => ({
         id: `th-${th.id}`,
@@ -347,7 +393,7 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
           ]
         : []),
     ],
-    [marks, signs, walked, skip, trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name, addedStops, toggleStop, loop, t, lang]
+    [marks, signs, walked, skip, sideMarks, sideKey, sideLegs, sideStops, trailheads, parkingLots, choice, choose, stops, stopChoice, chooseStop, homeStop, pois, transit, goal, goalKind, trail.goal_name, trail.name, addedStops, toggleStop, loop, t, lang]
   );
 
   // Opens on the trail and where the car stops. The drive is drawn too, but a long drive would
