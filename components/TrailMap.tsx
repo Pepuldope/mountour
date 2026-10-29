@@ -25,6 +25,8 @@ export interface MapTrack {
   /** Line colour: the trail's KST marking (lib/mapLayers trackColor). */
   color: string;
   state: TrackState;
+  /** Arrows along the line in walking order: a loop reads differently clockwise and back (Peter, 2026-10-29). */
+  arrows?: boolean;
 }
 
 /** The way off the trail to an added stop and back, in the place's own colour. */
@@ -151,6 +153,27 @@ function popupContent(title: string, lines: string[] = [], action?: MapMarker["a
     el.appendChild(b);
   }
   return el;
+}
+
+/** A white chevron pointing along the line (east = forwards), drawn at 2x for sharp screens. */
+function arrowImage(): ImageData {
+  const size = 32;
+  const c = document.createElement("canvas");
+  c.width = c.height = size;
+  const g = c.getContext("2d")!;
+  g.lineCap = "round";
+  g.lineJoin = "round";
+  g.beginPath();
+  g.moveTo(11, 8);
+  g.lineTo(20, 16);
+  g.lineTo(11, 24);
+  g.strokeStyle = "rgba(23, 33, 58, 0.7)";
+  g.lineWidth = 8;
+  g.stroke();
+  g.strokeStyle = "#ffffff";
+  g.lineWidth = 4.5;
+  g.stroke();
+  return g.getImageData(0, 0, size, size);
 }
 
 function pinElement(className: string, glyph: string, title: string): HTMLElement {
@@ -320,6 +343,22 @@ export function TrailMap({
             "line-opacity": ["match", ["get", "state"], "dimmed", 0.35, 1],
           },
         });
+        // Which way a loop goes: small white chevrons along the picked line.
+        map.addImage("track-arrow", arrowImage(), { pixelRatio: 2 });
+        map.addLayer({
+          id: "track-arrows",
+          type: "symbol",
+          source: "tracks",
+          filter: ["==", ["get", "arrows"], true],
+          layout: {
+            "symbol-placement": "line",
+            "symbol-spacing": 80,
+            "icon-image": "track-arrow",
+            "icon-rotation-alignment": "map",
+            "icon-allow-overlap": true,
+            "icon-ignore-placement": true,
+          },
+        });
         // Parking -> trail start on foot: small dots, on top of the trail's start.
         map.addLayer({
           id: "walk-casing",
@@ -458,6 +497,7 @@ export function TrailMap({
           color: t.color,
           state: t.state,
           label: t.label ?? "",
+          arrows: !!t.arrows,
         },
         geometry: { type: "LineString", coordinates: t.points.map(lngLat) },
       }));

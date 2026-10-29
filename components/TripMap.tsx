@@ -219,7 +219,7 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
     // them), and a hovered one goes on top in its colour.
     const under = otherTracks.filter((o) => o.state !== "selected");
     const over = otherTracks.filter((o) => o.state === "selected");
-    const whole: MapTrack[] = [...under, { slug: trail.slug, points, color, state: "selected" }, ...over];
+    const whole: MapTrack[] = [...under, { slug: trail.slug, points, color, state: "selected", arrows: loop }, ...over];
     if (!skip || !trailJoin || points.length < 3) return whole;
     const ll = points.map(([lat, lon]) => ({ lat, lon }));
     const mid = Math.floor((points.length - 1) / 2);
@@ -233,10 +233,10 @@ export function TripMap({ detail, gpxUrl, path, others = [], loop = false, marks
       ...under,
       { slug: `${trail.slug}-skipped-out`, points: [...points.slice(0, out.i + 1), a], color, state: "dimmed" },
       { slug: `${trail.slug}-skipped-back`, points: [b, ...points.slice(bi + 1)], color, state: "dimmed" },
-      { slug: trail.slug, points: [a, ...points.slice(out.i + 1, bi + 1), b], color, state: "selected" },
+      { slug: trail.slug, points: [a, ...points.slice(out.i + 1, bi + 1), b], color, state: "selected", arrows: loop },
       ...over,
     ];
-  }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks]);
+  }, [trail.slug, trail.marking, points, skip, trailJoin, otherTracks, loop]);
 
   const goal = trail.goal_location;
   const goalKind = trail.goal ?? "ine";
