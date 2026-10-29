@@ -221,6 +221,16 @@ h2,
   inset: -10px;
 }
 
+/* "Kde som na trase?": the visitor's own spot, the usual blue dot with a white ring. */
+.mt-pin-me {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #1769d1;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 6px rgb(23 105 209 / 0.2), 0 1px 3px rgb(0 0 0 / 0.35);
+}
+
 .mt-pin-poi {
   width: 24px;
   height: 24px;

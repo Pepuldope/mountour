@@ -103,6 +103,44 @@ self.addEventListener("message", (event) => {
   );
 });
 
+// Walk reminders (lib/pushPlan.ts): the server sends at most two per trip. Show them as sent;
+// a tap opens the trip's trail screen, in a Túruj window that is already open if there is one.
+self.addEventListener("push", (event) => {
+  let msg = null;
+  try {
+    msg = event.data ? event.data.json() : null;
+  } catch {
+    msg = null;
+  }
+  if (!msg || !msg.title) return;
+  event.waitUntil(
+    self.registration.showNotification(msg.title, {
+      body: msg.body || "",
+      tag: msg.tag || "turuj",
+      icon: "/icons/icon-192.png",
+      badge: "/icons/icon-192.png",
+      data: { url: msg.url || "/ulozene" },
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = new URL((event.notification.data && event.notification.data.url) || "/ulozene", self.location.origin).href;
+  event.waitUntil(
+    (async () => {
+      const open = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+      for (const c of open) {
+        if (new URL(c.url).origin !== self.location.origin) continue;
+        await c.focus();
+        if ("navigate" in c) await c.navigate(url);
+        return;
+      }
+      await self.clients.openWindow(url);
+    })()
+  );
+});
+
 const ANALYTICS_HOSTS = ["umami.is", "umami.dev", "cloudflareinsights.com"];
 
 self.addEventListener("fetch", (event) => {
@@ -229,14 +267,17 @@ async function matchingCacheName(req) {
  * A stored answer, from the cache of the trip the asking page shows first. Every saved
  * trip keeps its own copy of the map style and TileJSON, and those name the tiles by the
  * map's weekly build: trip B saved a week after trip A must get B's copy, or offline
- * its map asks for A's week of tiles and stays blank. Other pages take any copy.
+ * its map asks for A's week of tiles and stays blank. The trail screen on Moje výlety
+ * (/ulozene?na-trase=<slug>) counts as that trip's page. Other pages take any copy.
  */
 async function matchForPage(event, key) {
   try {
     const client = event.clientId ? await self.clients.get(event.clientId) : null;
-    const m = client && /^\/trasa\/([^/?#]+)/.exec(new URL(client.url).pathname);
-    if (m) {
-      const own = await caches.open(CACHE_PREFIX + decodeURIComponent(m[1]));
+    const at = client ? new URL(client.url) : null;
+    const m = at && /^(?:\/en)?\/trasa\/([^/?#]+)/.exec(at.pathname);
+    const slug = m ? decodeURIComponent(m[1]) : at?.searchParams.get("na-trase");
+    if (slug) {
+      const own = await caches.open(CACHE_PREFIX + slug);
       const hit = await own.match(key);
       if (hit) return hit;
     }
