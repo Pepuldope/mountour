@@ -72,7 +72,9 @@ async function hit(kind, path, person, init = {}) {
     status = res.status;
     // One sample of each failure, to tell Cloudflare's own errors (e.g. "error code: 1102") from ours.
     if (status >= 400 && !samples.has(`${kind} ${status}`)) {
-      samples.set(`${kind} ${status}`, `${res.headers.get("server") ?? ""} ${res.headers.get("cf-mitigated") ?? ""} ${body.replace(/\s+/g, " ").slice(0, 160)}`);
+      const title = /<title>([^<]*)<\/title>/i.exec(body)?.[1] ?? body.slice(0, 120);
+      const code = /Error(?: code)?:?\s*(\d{3,4})/i.exec(body)?.[1] ?? "";
+      samples.set(`${kind} ${status}`, `${res.headers.get("server") ?? ""} ${res.headers.get("cf-mitigated") ?? ""} ${code} ${title.replace(/\s+/g, " ").trim()}`);
     }
   } catch (err) {
     status = err.name === "TimeoutError" ? "timeout" : "network";

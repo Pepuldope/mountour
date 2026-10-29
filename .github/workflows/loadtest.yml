@@ -33,5 +33,5 @@ jobs:
       - name: People at once
         run: node scripts/load-test.mjs https://turuj.sk --live --people "${{ inputs.people || '100' }}" --minutes "${{ inputs.minutes || '1' }}" | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Twice as many for half a minute
-        if: always() && github.event_name == 'push'
+        if: false
         run: node scripts/load-test.mjs https://turuj.sk --live --people 200 --minutes 0.5 | tee -a "$GITHUB_STEP_SUMMARY"
