@@ -78,6 +78,8 @@ async function hit(kind, path, person, init = {}) {
     }
   } catch (err) {
     status = err.name === "TimeoutError" ? "timeout" : "network";
+    // What broke: our side (e.g. too many new connections at once) or theirs (connection reset).
+    if (!samples.has(`${kind} ${status}`)) samples.set(`${kind} ${status}`, `${err.cause?.code ?? ""} ${err.cause?.message ?? err.message}`);
   }
   note(kind, performance.now() - t, status);
   return status;
