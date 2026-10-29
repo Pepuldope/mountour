@@ -53,7 +53,11 @@ function note(kind, ms, status) {
   s.status[status] = (s.status[status] ?? 0) + 1;
 }
 
-async function hit(kind, path, person, init = {}) {
+/** Connections that couldn't be opened and were tried again, as a browser does. */
+let reconnects = 0;
+const CONNECT_ERRORS = new Set(["ETIMEDOUT", "ECONNRESET", "ECONNREFUSED", "UND_ERR_CONNECT_TIMEOUT"]);
+
+async function hit(kind, path, person, init = {}, retry = true) {
   const t = performance.now();
   let status;
   try {
@@ -77,6 +81,12 @@ async function hit(kind, path, person, init = {}) {
       samples.set(`${kind} ${status}`, `${res.headers.get("server") ?? ""} ${res.headers.get("cf-mitigated") ?? ""} ${code} ${title.replace(/\s+/g, " ").trim()}`);
     }
   } catch (err) {
+    // The test machine failing to open a connection (29 Oct: a few ETIMEDOUT on random pages from a
+    // busy GitHub runner, never an answer from the site) gets one more try; a second failure counts.
+    if (retry && CONNECT_ERRORS.has(err.cause?.code)) {
+      reconnects++;
+      return hit(kind, path, person, init, false);
+    }
     status = err.name === "TimeoutError" ? "timeout" : "network";
     // What broke: our side (e.g. too many new connections at once) or theirs (connection reset).
     if (!samples.has(`${kind} ${status}`)) samples.set(`${kind} ${status}`, `${path} ${err.cause?.code ?? ""} ${err.cause?.message ?? err.message}`);
@@ -149,5 +159,5 @@ for (const [kind, s] of [...stats].sort()) {
   console.log(`${kind.padEnd(15)}${cols.join(" ")}   ${JSON.stringify(s.status)}`);
 }
 for (const [what, sample] of samples) console.log(`${what}: ${sample}`);
-console.log(`\n${total} requests in ${secs.toFixed(0)} s (${(total / secs).toFixed(1)} a second), ${bad} unexpected answers`);
+console.log(`\n${total} requests in ${secs.toFixed(0)} s (${(total / secs).toFixed(1)} a second), ${bad} unexpected answers, ${reconnects} connections tried again`);
 process.exit(bad > 0 ? 1 : 0);
