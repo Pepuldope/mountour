@@ -201,6 +201,26 @@ h2,
   border-width: 3px;
 }
 
+/* Where the walk changes trail marking: a KST sign, white with a stripe in the next colour
+   (set inline). No marking from here: a plain white sign with a dashed edge. */
+.mt-pin-mark {
+  width: 20px;
+  height: 15px;
+  border-radius: 2px;
+  border: 1px solid #5b6577;
+  background: #fff;
+}
+
+.mt-pin-mark:not([style*="gradient"]) {
+  border-style: dashed;
+}
+
+.mt-pin-mark::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+}
+
 .mt-pin-poi {
   width: 24px;
   height: 24px;
