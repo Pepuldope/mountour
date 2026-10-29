@@ -46,7 +46,7 @@ jobs:
       # Same commands as Workers Builds. WORKERS_CI_COMMIT_SHA gives the build its
       # deployment id (next.config.ts), so open tabs reload after a deploy.
       - if: env.CF_READY == 'true'
-        run: npx opennextjs-cloudflare build
+        run: npx opennextjs-cloudflare build && node scripts/fast-pages.mjs
         env:
           WORKERS_CI_COMMIT_SHA: ${{ github.sha }}
       # Cloudflare's asset upload sometimes answers "unknown error [code: 10013]"; a second try passes.
