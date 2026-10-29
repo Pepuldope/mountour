@@ -1,0 +1,37 @@
+name: Load test
+
+# Many people on turuj.sk at once (Peter, 2026-10-25 and 2026-10-29): scripts/load-test.mjs in
+# its --live mode, which asks only pages, the trip list and review totals, so the route
+# service, MET and the statistics aren't touched. A run of 100 people for a minute and 200 for
+# half a minute is about 7,000 Worker requests, a few percent of the free 100,000 a day: run it
+# by hand, not on a schedule. Everything comes from one GitHub address, so it is also the
+# "whole class on one wifi" case for the per-address limits.
+
+on:
+  workflow_dispatch:
+    inputs:
+      people:
+        description: People at once
+        default: "100"
+      minutes:
+        description: Minutes
+        default: "1"
+  push:
+    branches: ["claude/project-thread-wzfwcj"]
+    paths: [".github/workflows/loadtest.yml"]
+
+jobs:
+  load:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      # The script prints its table and exits 1 on unexpected answers; both runs always print.
+      - name: People at once
+        run: node scripts/load-test.mjs https://turuj.sk --live --people "${{ inputs.people || '100' }}" --minutes "${{ inputs.minutes || '1' }}" | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Twice as many for half a minute
+        if: always() && github.event_name == 'push'
+        run: node scripts/load-test.mjs https://turuj.sk --live --people 200 --minutes 0.5 | tee -a "$GITHUB_STEP_SUMMARY"

@@ -1,7 +1,7 @@
 // Load test: many people using the site at once (Peter, 2026-10-25: "the site should hold at
 // least 100 people clicking, planning trips, changing things at the same time").
 //
-//   node scripts/load-test.mjs [base-url] [--people 100] [--minutes 1] [--one-address]
+//   node scripts/load-test.mjs [base-url] [--people 100] [--minutes 1] [--one-address] [--live]
 //
 // Each simulated person walks the path a real visitor takes: the home page and its trip list,
 // a few trip pages with their weather, reviews and drive, a town page, the usage counters, and
@@ -14,6 +14,11 @@
 // short time and the owner's OK. --one-address sends everyone from one address (a class on
 // school wifi), which is the hardest case for the per-address limits; otherwise each person
 // gets an address of their own (local runs only: Cloudflare sets the real one live).
+//
+// --live is for turuj.sk itself (.github/workflows/loadtest.yml): it leaves out everything that
+// spends a shared free quota or writes into the statistics (drives use the route service's
+// 2,000 a day, weather asks MET, the counters and reviews write to the database), so only pages,
+// the trip list and review totals are asked, as a visitor reading trips would.
 
 import { readFileSync } from "node:fs";
 
@@ -26,6 +31,7 @@ const BASE = (args.find((a) => /^https?:/.test(a)) ?? "http://localhost:8787").r
 const PEOPLE = Number(flag("people", 100));
 const MINUTES = Number(flag("minutes", 1));
 const ONE_ADDRESS = args.includes("--one-address");
+const LIVE = args.includes("--live");
 const THINK_MS = [500, 3000];
 
 const list = JSON.parse(readFileSync(new URL("../public/data/trips/list.json", import.meta.url), "utf8")).trips;
@@ -52,10 +58,10 @@ async function hit(kind, path, person, init = {}) {
     const res = await fetch(BASE + path, {
       ...init,
       headers: {
-        "User-Agent": "Mozilla/5.0 (load test) Chrome/130",
+        "User-Agent": "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Mobile Safari/537.36 turuj-load-test",
         "Sec-Fetch-Site": "same-origin",
         // Local runs only: workerd takes the visitor's address from this header.
-        "CF-Connecting-IP": ONE_ADDRESS ? "10.0.0.1" : `10.1.${person >> 8}.${person & 255}`,
+        ...(LIVE ? {} : { "CF-Connecting-IP": ONE_ADDRESS ? "10.0.0.1" : `10.1.${person >> 8}.${person & 255}` }),
         ...init.headers,
       },
       signal: AbortSignal.timeout(30_000),
@@ -76,21 +82,28 @@ async function person(n, until) {
   const from = `${(town.location.lat + (Math.random() - 0.5) * 0.05).toFixed(3)},${(town.location.lon + (Math.random() - 0.5) * 0.05).toFixed(3)}`;
   await hit("home page", "/", n);
   await hit("home list", "/data/home-list.json", n);
-  await hit("visit counter", "/api/visit", n, { method: "POST" });
+  if (!LIVE) await hit("visit counter", "/api/visit", n, { method: "POST" });
   while (Date.now() < until) {
     await think();
     const trip = pick(list);
     const p = trip.parking?.location ?? trip.start.location;
-    await hit("trip page", `/trasa/${trip.slug}`, n);
+    // A tap on a trip card inside the site fetches the page's data (RSC), a shared link the whole page.
+    if (Math.random() < 0.5) await hit("trip page", `/trasa/${trip.slug}`, n);
+    else await hit("trip page data", `/trasa/${trip.slug}?_rsc=load`, n, { headers: { RSC: "1" } });
     await Promise.all([
-      hit("weather", `/api/weather?lat=${trip.destination.location.lat}&lon=${trip.destination.location.lon}`, n),
       hit("reviews", `/api/review?slug=${trip.slug}`, n),
-      hit("drive", `/api/drive?from=${from}&to=${p.lat},${p.lon}`, n),
-      hit("visit counter", "/api/visit", n, { method: "POST" }),
+      ...(LIVE
+        ? []
+        : [
+            hit("weather", `/api/weather?lat=${trip.destination.location.lat}&lon=${trip.destination.location.lon}`, n),
+            hit("drive", `/api/drive?from=${from}&to=${p.lat},${p.lon}`, n),
+            hit("visit counter", "/api/visit", n, { method: "POST" }),
+          ]),
     ]);
     await think();
     if (Math.random() < 0.3) await hit("trip list", `/api/vylety?z=${town.id}&den=${today()}&limit=50`, n);
     if (Math.random() < 0.3) await hit("town page", `/vylety-z/${town.id}`, n);
+    if (LIVE) continue;
     if (Math.random() < 0.3) {
       await hit("event counter", "/api/event", n, { method: "POST", body: JSON.stringify({ name: "trip_saved" }) });
     }
