@@ -100,6 +100,8 @@ const SQUARE_MAX = 12;
 const SPACING = 54;
 /** How far past the area zoom a new start zooms in: its surroundings, about an hour's drive across. */
 const START_ZOOM_IN = 0.6;
+/** Picking a start: at least this close, so the pin lands on a street, not a district. */
+const PICK_ZOOM = 14;
 /** Up to this many trips (a filter on), every one gets a square even zoomed out, a little bigger. */
 const FEW_TRIPS = 300;
 const SUN = "#ffb81c";
@@ -603,8 +605,8 @@ export function BrowseMap({
         handlers.current.onHover(null);
       });
       m.on("click", (e) => {
-        // "Vybrať bod na mape": this tap is the start, not a trip.
-        if (pickingRef.current) return startPickRef.current(e.lngLat.lat, e.lngLat.lng);
+        // "Vybrať bod na mape": the pin stays in the middle; a tap brings that spot under it.
+        if (pickingRef.current) return void m.easeTo({ center: e.lngLat, duration: 400 });
         const r = fine ? 6 : 14;
         // Zoomed out: a tap on any line zooms in there, so nothing is a dead end.
         if (m.getZoom() < areaZoom) {
@@ -843,11 +845,12 @@ export function BrowseMap({
     if (fix) userMarkers.current.push(new ml.Marker({ element: pin("mt-pin-me", "", tr(pageLang(), "Vaša poloha")) }).setLngLat([fix.lon, fix.lat]).addTo(map));
   }, [ctx, fix, start]);
 
-  // Picking a start: a crosshair over the map, Escape cancels.
+  // Picking a start, as in Google Maps: a pin fixed in the middle of the map, the map moves under
+  // it, "Tu začínam" takes the spot (Peter, 2026-10-29). Close enough in to place it on a street.
   useEffect(() => {
     if (!ctx) return;
-    ctx.map.getCanvas().style.cursor = picking ? "crosshair" : "";
     if (!picking) return;
+    if (ctx.map.getZoom() < PICK_ZOOM) ctx.map.easeTo({ zoom: PICK_ZOOM, duration: 600 });
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setPicking(false);
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -858,12 +861,37 @@ export function BrowseMap({
     <div className="relative h-full w-full" data-browse-map="">
       <div ref={containerRef} className="isolate h-full w-full" role="region" aria-label={ariaLabel} />
       {picking && (
-        <div role="status" className="absolute bottom-3 left-3 right-14 z-[30] flex max-w-sm items-center gap-3 rounded-xl bg-[var(--accent)] px-3.5 py-2.5 text-sm font-semibold text-[var(--accent-contrast)] shadow-[var(--shadow-float)]">
-          <span className="min-w-0 flex-1">{tr(pageLang(), "Ťuknite na mapu, kde začínate.")}</span>
-          <button type="button" onClick={() => setPicking(false)} className="shrink-0 rounded-lg bg-white/20 px-2.5 py-1 font-bold">
-            {tr(pageLang(), "Zrušiť")}
-          </button>
-        </div>
+        <>
+          {/* The pin's tip is the middle of the map. */}
+          <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 z-[30] -translate-x-1/2 -translate-y-full">
+            <svg viewBox="0 0 32 44" width="32" height="44" className="drop-shadow-[0_2px_3px_rgba(0,0,0,0.35)]">
+              <path d="M16 43C16 43 2 26.5 2 16a14 14 0 0 1 28 0c0 10.5-14 27-14 27z" fill="var(--accent)" stroke="#fff" strokeWidth="2" />
+              <circle cx="16" cy="16" r="5" fill="#fff" />
+            </svg>
+          </div>
+          <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 z-[29] h-1.5 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-black/30" />
+          <div
+            role="status"
+            className="absolute bottom-[calc(12px+env(safe-area-inset-bottom))] left-3 right-14 z-[30] flex max-w-md flex-col gap-2.5 rounded-xl bg-[var(--card-bg)] p-3 text-sm shadow-[var(--shadow-float)]"
+          >
+            <span className="font-semibold">{tr(pageLang(), "Posuňte mapu tak, aby špendlík ukazoval, kde začínate.")}</span>
+            <div className="flex gap-2">
+              <button type="button" onClick={() => setPicking(false)} className="h-10 rounded-[10px] border border-[var(--border)] px-4 font-bold">
+                {tr(pageLang(), "Zrušiť")}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const c = ctx?.map.getCenter();
+                  if (c) pickPoint(c.lat, c.lng);
+                }}
+                className="h-10 flex-1 rounded-[10px] bg-[var(--accent)] px-4 font-bold text-[var(--accent-contrast)]"
+              >
+                {tr(pageLang(), "Tu začínam")}
+              </button>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

@@ -258,7 +258,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   const [placeIndex, setPlaceIndex] = useState<PlaceSearch | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const transit = travel === "transit";
-  const { start, ready: startReady } = useUserLocation();
+  const { start, ready: startReady, picking } = useUserLocation();
   const [selected, setSelected] = useState<string | null>(null);
   // The picked trip's other routes to the same place, from its own file.
   const [otherRoutes, setOtherRoutes] = useState<{ slug: string; lines: number[][][] } | null>(null);
@@ -317,6 +317,17 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
   const toolsRef = useRef<HTMLDivElement>(null);
   const pickedRef = useRef<HTMLDivElement>(null);
   const isDesktop = useIsDesktop();
+  // Picking the start on a phone: the map goes full screen so the pin in its middle is easy to place,
+  // and closes again when the start is set or picking is cancelled (Peter, 2026-10-29).
+  const [pickOpened, setPickOpened] = useState(false);
+  if (picking && !isDesktop && !fullMap && !pickOpened) {
+    setPickOpened(true);
+    setFullMap(true);
+  }
+  if (!picking && pickOpened) {
+    setPickOpened(false);
+    setFullMap(false);
+  }
   const focusKey = useRef(0);
   const moveMap = useCallback((f: Omit<Extract<MapFocus, { kind: "box" }>, "key"> | Omit<Extract<MapFocus, { kind: "point" }>, "key">) => {
     focusKey.current += 1;
@@ -731,7 +742,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
           <i className="block h-[3px] w-5 rounded-full bg-[#8a8f7a] opacity-60" /> {t("chodník bez výletu")}
         </span>
       </div>
-      {mapHint && (
+      {mapHint && !picking && (
         <div className="pointer-events-none absolute bottom-4 left-1/2 z-[5] -translate-x-1/2 rounded-full bg-[#14233b]/90 px-4 py-2 text-[13px] font-semibold whitespace-nowrap text-white shadow-[var(--shadow-float)]" role="note">
           {isDesktop ? t("Kliknite na oblasť alebo trasu na mape") : t("Ťuknite na oblasť alebo trasu na mape")}
         </div>
