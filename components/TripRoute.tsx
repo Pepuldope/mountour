@@ -8,6 +8,7 @@ import { getTripPhoto } from "@/lib/tripFiles";
 import { formatDistance, formatDuration } from "@/lib/format";
 import { TripSheet } from "@/components/TripSheet";
 import { pageMetadata } from "@/lib/seo";
+import { metaDescription } from "@/lib/describeSk";
 import { langPath, tr } from "@/lib/lang";
 import type { Lang } from "@/lib/lang";
 
@@ -18,16 +19,25 @@ const loadTrip = cache(async (slug: string) => {
 });
 
 export async function tripMetadata(slug: string, lang: Lang): Promise<Metadata> {
-  const detail = (await loadTrip(slug))?.detail;
-  if (!detail) return { title: tr(lang, "Trasa sa nenašla"), robots: { index: false } };
+  const loaded = await loadTrip(slug);
+  const detail = loaded?.detail;
+  if (!loaded || !detail) return { title: tr(lang, "Trasa sa nenašla"), robots: { index: false } };
   const { trail } = detail;
-  const photo = await getTripPhoto(trail.slug, (await loadTrip(slug))?.trip.destination.osm);
+  const { trip } = loaded;
+  const photo = await getTripPhoto(trail.slug, trip.destination.osm);
   // The same walk as the page's facts (from the default parking), so search results don't show another number.
   const w = pickWalk(routeWalk(detail), false, detail.parkingLots.length > 0);
   const facts = tr(lang, "{km}, +{up} m, {t} chôdze", { km: formatDistance(w?.m ?? trail.distance_m, lang), up: w?.ascentM ?? trail.ascent_m, t: formatDuration(w?.min ?? trail.duration_min) });
   return pageMetadata({
-    title: tr(lang, "{name} – túra, parkovanie a čas návratu", { name: trail.name }),
-    description: tr(lang, "{name}: {facts}. Kde zaparkovať, kedy najneskôr vyraziť a stihnúť návrat za svetla.", { name: trail.name, facts }),
+    // Most places have several routes, one page each: the other routes' pages carry their start in
+    // the title, so search results tell them apart (6,200 of 6,466 pages shared a title before).
+    title: trip.variant_of
+      ? tr(lang, "{name} zo štartu {start} ({km}) – túra a parkovanie", { name: trail.name, start: trip.start.name, km: formatDistance(trip.distance_m, lang) })
+      : tr(lang, "{name} – túra, parkovanie a čas návratu", { name: trail.name }),
+    description:
+      lang === "sk"
+        ? metaDescription(trip, facts)
+        : tr(lang, "{name}: {facts}. Kde zaparkovať, kedy najneskôr vyraziť a stihnúť návrat za svetla.", { name: trail.name, facts }),
     path: `/trasa/${trail.slug}`,
     lang,
     // Shared links and search results show the place itself when Commons has a photo of it.
