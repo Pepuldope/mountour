@@ -1,0 +1,40 @@
+name: SEO check
+
+# Runs Lighthouse's SEO audits against the LIVE site and prints what fails, plus the
+# robots headers and tags each page sends. Read-only: it deploys nothing.
+
+on:
+  push:
+    branches: ["claude/project-thread-tenkmx"]
+    paths: [".github/workflows/seo-check.yml"]
+  workflow_dispatch:
+
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Lighthouse SEO on live pages
+        run: |
+          npm i -g lighthouse@12 >/dev/null 2>&1
+          for u in https://turuj.sk/ https://turuj.sk/en https://turuj.sk/vylety-z https://turuj.sk/vylety-z/poprad https://turuj.sk/trasa/krivan https://turuj.sk/trasa/velky-choc https://turuj.sk/o-nas https://turuj.nemcok-peter123.workers.dev/; do
+            echo "## $u" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            curl -sS -o page.html -D - -A "Mozilla/5.0 (compatible; Googlebot/2.1)" "$u" | grep -iE "^HTTP|robots|location|content-signal" >> "$GITHUB_STEP_SUMMARY" || true
+            grep -oiE '<meta name="robots"[^>]*>' page.html >> "$GITHUB_STEP_SUMMARY" || true
+            lighthouse "$u" --only-categories=seo --output=json --output-path=lh.json --quiet --chrome-flags="--headless=new --no-sandbox" || true
+            node -e '
+              const r = require("./lh.json");
+              console.log("SEO score:", Math.round(r.categories.seo.score * 100));
+              for (const ref of r.categories.seo.auditRefs) {
+                const a = r.audits[ref.id];
+                if (a.score !== null && a.score < 1) console.log("FAIL", a.id, "-", a.title, JSON.stringify((a.details && a.details.items || []).slice(0, 5)).slice(0, 600));
+              }' >> "$GITHUB_STEP_SUMMARY" 2>&1 || echo "lighthouse failed" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          done
+          echo '## robots.txt' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          curl -sS https://turuj.sk/robots.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
