@@ -12,6 +12,9 @@ function back(next: string, error?: string): Response {
   return new Response(null, { status: 302, headers: { Location: url, "Cache-Control": "no-store" } });
 }
 
+/** A client id with or without Google's ".apps.googleusercontent.com" ending (Google takes both). */
+const bare = (clientId: string) => clientId.trim().replace(/\.apps\.googleusercontent\.com$/, "");
+
 function payload(idToken: string): Record<string, unknown> | null {
   try {
     const part = idToken.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
@@ -63,7 +66,7 @@ export async function GET(request: Request): Promise<Response> {
     const p = id_token ? payload(id_token) : null;
     const email = cleanEmail(p?.email);
     const iss = String(p?.iss ?? "");
-    const bad = !p ? "id" : !email ? "email" : p.email_verified !== true ? "overenie" : p.aud !== id ? "aud" : !iss.endsWith("accounts.google.com") ? "iss" : typeof p.sub !== "string" ? "sub" : null;
+    const bad = !p ? "id" : !email ? "email" : p.email_verified !== true ? "overenie" : bare(String(p.aud)) !== bare(id) ? "aud" : !iss.endsWith("accounts.google.com") ? "iss" : typeof p.sub !== "string" ? "sub" : null;
     if (bad || !p || !email || typeof p.sub !== "string") return back(next, `chyba-udaje-${bad}`);
     const account = await accountFor(email, { sub: p.sub, name: typeof p.name === "string" ? p.name.slice(0, 80) : null });
     const token = await startSession(account.id);
