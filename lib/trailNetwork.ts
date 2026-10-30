@@ -2,7 +2,7 @@
 // public/data/trails). The country view draws a light overview file; zoomed in,
 // the detailed file of each grid cell on screen is fetched once and added.
 import type { GeoJSONSource, Map as MlMap } from "maplibre-gl";
-import { lineFeeder } from "@/lib/mapFeed";
+import { lineFeeder, OVERVIEW_POINTS_PER_STEP } from "@/lib/mapFeed";
 import { fetchLines } from "@/lib/packedLines";
 import { POPULARITY_DASH } from "@/lib/palette";
 
@@ -166,7 +166,7 @@ export function attachTrailNetwork(
     meta = await getJson<TrailNetworkMeta>(`${BASE}/meta.json`);
     if (!meta || stopped) return;
     const overview = await fetchLines(`${BASE}/overview.json?v=${meta.generated_at}`);
-    if (overview && !stopped) lineFeeder(() => map.getSource("network") as GeoJSONSource | undefined)(overview.features);
+    if (overview && !stopped) lineFeeder(() => map.getSource("network") as GeoJSONSource | undefined, OVERVIEW_POINTS_PER_STEP)(overview.features);
     loadVisibleCells();
   })();
 

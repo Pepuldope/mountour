@@ -7,7 +7,7 @@ import type { DestinationKind } from "@/lib/tripSchema";
 import { MAP_STYLE_URL, mapPixelRatio } from "@/lib/mapLayers";
 import { keepInSlovakia } from "@/lib/slovakia";
 import { GOAL_COLOUR, POPULARITY_DASH, POPULARITY_RAMP, POPULARITY_TOP_OUTLINE, QUIET_THREAD, desaturate } from "@/lib/palette";
-import { lineFeeder } from "@/lib/mapFeed";
+import { lineFeeder, OVERVIEW_POINTS_PER_STEP } from "@/lib/mapFeed";
 import { fetchLines } from "@/lib/packedLines";
 import { attachTrailNetwork, cellsInView, LINE_TILE_MAX } from "@/lib/trailNetwork";
 import { useUserLocation } from "@/lib/userLocation";
@@ -268,6 +268,10 @@ export function BrowseMap({
   const tripsRef = useRef(trips);
   const areasRef = useRef(areas);
   const areaEls = useRef<HTMLElement[]>([]);
+  // Whether the hover outline and the picked trip are drawn now: an empty one needs no redraw.
+  const hoverShown = useRef(false);
+  const selShown = useRef(false);
+  const altShown = useRef(false);
   const fewRef = useRef(false);
   const userMarkers = useRef<Marker[]>([]);
   // The start the map last moved to; undefined until the first one is seen.
@@ -502,9 +506,9 @@ export function BrowseMap({
         }
         const overview = await fetchLines(`${MAP_DATA}/overview.json?v=${got.generated_at}`);
         if (overview && !cancelled) {
-          lineFeeder(() => m.getSource("trip-lines") as GeoJSONSource | undefined)(overview.features);
+          lineFeeder(() => m.getSource("trip-lines") as GeoJSONSource | undefined, OVERVIEW_POINTS_PER_STEP)(overview.features);
           // The same features in the same order, so both sources give each trip the same id.
-          lineFeeder(() => m.getSource("trip-lines-gap") as GeoJSONSource | undefined)(overview.features);
+          lineFeeder(() => m.getSource("trip-lines-gap") as GeoJSONSource | undefined, OVERVIEW_POINTS_PER_STEP)(overview.features);
           for (const f of overview.features) if (f.id !== undefined) overviewId.set(f.properties?.s, f.id);
           remember(overview.features, false);
         }
@@ -769,6 +773,9 @@ export function BrowseMap({
     if (!ctx) return;
     const { map } = ctx;
     const t = selected ? trips.find((x) => x.slug === selected) : undefined;
+    // Nothing picked, before or now: no redraw for every change of the list or batch of lines.
+    if (!selected && !selShown.current) return;
+    selShown.current = !!selected;
     (map.getSource("sel") as GeoJSONSource | undefined)?.setData(line(selected ? lines.current.get(selected)?.coords : undefined));
     (map.getSource("sel-start") as GeoJSONSource | undefined)?.setData(
       t ? { type: "Feature", properties: {}, geometry: { type: "Point", coordinates: [t.start.lon, t.start.lat] } } : EMPTY
@@ -779,6 +786,8 @@ export function BrowseMap({
   // The picked trip's other routes.
   useEffect(() => {
     if (!ctx) return;
+    if (!alternatives.length && !altShown.current) return;
+    altShown.current = alternatives.length > 0;
     (ctx.map.getSource("alt") as GeoJSONSource | undefined)?.setData({
       type: "FeatureCollection",
       features: alternatives.map((coordinates) => ({ type: "Feature", properties: {}, geometry: { type: "LineString", coordinates } })),
@@ -789,6 +798,9 @@ export function BrowseMap({
   useEffect(() => {
     if (!ctx) return;
     const coords = highlighted && highlighted !== selected ? lines.current.get(highlighted)?.coords : undefined;
+    // Every batch of lines bumps linesVersion: an empty outline stays empty without a redraw.
+    if (!coords && !hoverShown.current) return;
+    hoverShown.current = !!coords;
     (ctx.map.getSource("hover") as GeoJSONSource | undefined)?.setData(line(coords));
   }, [ctx, highlighted, selected, linesVersion]);
 
