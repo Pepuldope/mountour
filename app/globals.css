@@ -458,3 +458,21 @@ h2,
 }
 .time-slider:focus-visible { outline: none; }
 .time-slider:focus-visible::-webkit-slider-thumb { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* The confirm card by a freshly placed start pin: a short pop, so the eye catches it. */
+.mt-pick-card {
+  animation: mt-pick-pop 260ms ease-out;
+}
+
+@keyframes mt-pick-pop {
+  from {
+    opacity: 0;
+    scale: 0.85;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-pick-card {
+    animation: none;
+  }
+}
