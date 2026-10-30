@@ -18,7 +18,7 @@ export const SAMPLE_IBAN = "SK9611000000002918599669";
 export const SAMPLE_NAME = "Ukážkový príjemca";
 
 /** What the payer sees as the message for the recipient. */
-export const SUPPORT_NOTE = "Podpora Túruj";
+export const SUPPORT_NOTE = "Dar pre Túruj";
 
 /** The next goal (Peter, 2026-10-29): a year of Cloudflare Pro (about 220 €) plus Apple's 100 € fee, then the App Store. */
 export const SUPPORT_GOAL_EUR = 320;

@@ -110,7 +110,7 @@ function Hero() {
             </p>
             <div className="flex flex-wrap gap-3">
               <a href="#prispevok" className={`${BTN} bg-white text-[var(--sky-night)]`}>
-                {t("Prispieť")}
+                {t("Poslať dar")}
               </a>
               <a href="#zdielat" className={`${BTN} bg-white/15 text-white`}>
                 {t("Pomôcť inak")}
@@ -202,7 +202,7 @@ function Benefits() {
   const t = useT();
   return (
     <section className="order-0 flex flex-col gap-3 lg:order-none">
-      <h2 className={H2}>{t("Čo z vašej podpory budete mať")}</h2>
+      <h2 className={H2}>{t("Na čo pôjdu vaše dary")}</h2>
       <p className="text-[var(--muted)]">{t("Každé euro ide do Túruja. Tu je, na čom robíme ďalej.")}</p>
       <ul className="grid gap-2.5 sm:grid-cols-2">
         {BENEFITS.map((b) => (
@@ -221,27 +221,14 @@ function Benefits() {
   );
 }
 
+/** A plain thank-you: a gift buys nothing (Peter, 2026-10-30), so no perks that would make it a sale. */
 function Rewards() {
   const t = useT();
-  const items = [
-    "Ak chcete, vaše meno pridáme na stránku O nás medzi podporovateľov.",
-    "Spýtame sa vás, ktoré pohorie máme pridať ako ďalšie.",
-    "Nové funkcie vyskúšate medzi prvými.",
-  ];
   return (
-    <section className="flex flex-col gap-3">
-      <h2 className="font-display text-xl font-extrabold">{t("Ako sa vám odvďačíme")}</h2>
-      <ol className="flex flex-col gap-2.5">
-        {items.map((s, i) => (
-          <li key={s} className="flex items-start gap-2.5">
-            <span className="grid size-[26px] shrink-0 place-items-center rounded-lg bg-[var(--accent-soft)] text-[13px] font-extrabold text-[var(--accent)]">
-              {i + 1}
-            </span>
-            <span>{t(s)}</span>
-          </li>
-        ))}
-      </ol>
-      <p className="text-sm text-[var(--muted)]">{t("Všetko, čo Túruj vie, ostáva zadarmo pre všetkých, aj pre tých, čo neprispejú.")}</p>
+    <section className="flex flex-col gap-2">
+      <h2 className="font-display text-xl font-extrabold">{t("Ako sa vám poďakujeme")}</h2>
+      <p>{t("Ak chcete, vaše meno pridáme na stránku O nás medzi darcov.")}</p>
+      <p className="text-sm text-[var(--muted)]">{t("Všetko, čo Túruj vie, ostáva zadarmo pre všetkých, aj pre tých, čo nič nepošlú.")}</p>
     </section>
   );
 }
@@ -278,8 +265,8 @@ function GiftCard() {
   if (!account) {
     return (
       <section id="prispevok" className={`${CARD} flex scroll-mt-4 flex-col gap-2 border-[var(--card-edge)] p-5 shadow-[var(--shadow-card)]`}>
-        <h2 className="font-display text-2xl font-extrabold">{t("Pošlite príspevok")}</h2>
-        <p className="text-[var(--muted)]">{t("Príspevky spustíme už čoskoro. Zatiaľ nám pomôžete najviac, keď o nás poviete ďalej.")}</p>
+        <h2 className="font-display text-2xl font-extrabold">{t("Pošlite dar")}</h2>
+        <p className="text-[var(--muted)]">{t("Dary začneme prijímať už čoskoro. Zatiaľ nám pomôžete najviac, keď o nás poviete ďalej.")}</p>
       </section>
     );
   }
@@ -318,8 +305,8 @@ function GiftCard() {
           {t("Ukážka: účet ešte nie je náš. Platbu nepotvrdzujte.")}
         </p>
       )}
-      <h2 className="font-display text-2xl leading-tight font-extrabold">{t("Pošlite príspevok")}</h2>
-      <p className="-mt-2 text-sm text-[var(--muted)]">{t("Koľko pošlete, je len na vás. Platíte vo svojej banke, bez poplatkov.")}</p>
+      <h2 className="font-display text-2xl leading-tight font-extrabold">{t("Pošlite dar")}</h2>
+      <p className="-mt-2 text-sm text-[var(--muted)]">{t("Je to dobrovoľný dar, za ktorý nič nekupujete. Koľko pošlete, je len na vás. Posielate ho bežným prevodom zo svojej banky, bez poplatkov.")}</p>
 
       <div role="group" aria-label={t("Ako často")} className="grid grid-cols-2 gap-1 rounded-xl bg-[var(--segment-bg)] p-1">
         <button type="button" aria-pressed={!monthly} onClick={() => setMonthly(false)} className={seg(!monthly)}>
@@ -606,9 +593,10 @@ function OtherWays() {
 function Faq() {
   const t = useT();
   const items = [
-    ["Komu posielam peniaze?", SUPPORT_NAME ? "Na účet, ktorý vidíte pri platbe. Všetko ide na Túruj." : "Doplníme, keď spustíme príspevky."],
+    ["Komu posielam peniaze?", SUPPORT_NAME ? "Na účet, ktorý vidíte pri platbe. Všetko ide na Túruj." : "Doplníme, keď začneme prijímať dary."],
     ["Je to bezpečné?", "Áno. QR kód len vyplní platbu v appke vašej banky. Skontrolujete ju a potvrdíte sami, ako každú inú."],
-    ["Dá sa zaplatiť kartou?", "Zatiaľ len prevodom z banky, aby z príspevku nič nezobral poplatok."],
+    ["Je to dar?", "Áno. Posielate dobrovoľný dar a nič zaň nekupujete. Túruj je rovnaký pre všetkých."],
+    ["Dá sa poslať dar kartou?", "Nie, len bankovým prevodom. Tak z daru nič nezoberie poplatok."],
     ["Bude Túruj niekedy platený?", "Výlety, plány, parkovanie, uzávery a zdieľanie ostanú zadarmo navždy. Neskôr pribudne Túruj+ s funkciami navyše pre tých, čo chodia von často."],
   ];
   return (

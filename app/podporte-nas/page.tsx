@@ -9,7 +9,7 @@ export const dynamic = "force-static";
 export const metadata = {
   ...pageMetadata({
     title: "Podporte nás",
-    description: "Túruj je zadarmo a bez reklám. Pomôžte nám príspevkom cez QR kód v banke alebo tým, že o nás poviete ďalej.",
+    description: "Túruj je zadarmo a bez reklám. Pomôžte nám darom cez bankový prevod alebo tým, že o nás poviete ďalej.",
     path: "/podporte-nas",
   }),
   // Out of search until money is switched on (lib/support.ts).
