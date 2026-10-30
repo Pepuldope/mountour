@@ -109,7 +109,13 @@ export function TopBar() {
       ref={boxRef}
       className={`fixed inset-x-0 top-0 z-40 pt-[env(safe-area-inset-top)] transition-[transform,background-color,box-shadow] duration-200 motion-reduce:transition-none lg:inset-x-auto lg:top-3 lg:right-3 lg:translate-y-0 lg:bg-transparent lg:p-0 lg:shadow-none ${
         visible ? "translate-y-0" : "-translate-y-full"
-      } ${solid || panel ? "bg-[var(--card-bg)] shadow-[0_1px_0_var(--border),0_6px_16px_rgba(20,35,59,.08)]" : "bg-transparent"}`}
+      } ${
+        solid || panel
+          ? "bg-[var(--card-bg)] shadow-[0_1px_0_var(--border),0_6px_16px_rgba(20,35,59,.08)]"
+          : // See-through over the page's own header: taps go to what is under it (the "Všetky výlety" link,
+            // Peter 2026-10-30), only the buttons take them.
+            "pointer-events-none bg-transparent"
+      }`}
     >
       <div className={`flex h-[52px] items-center justify-between gap-2 px-3 lg:h-auto lg:justify-end lg:gap-1 lg:rounded-full lg:bg-[var(--card-bg)] lg:p-1 lg:shadow-[var(--shadow-float)]`}>
         {/* The name only once the page's own header (which shows it) has scrolled away. */}
@@ -119,7 +125,7 @@ export function TopBar() {
             <img src="/brand/turuj-wordmark.svg" alt="Túruj" width={56} height={24} className="h-6 w-auto" />
           </picture>
         </LangLink>
-        <span className="flex items-center gap-2 lg:gap-1">
+        <span className="pointer-events-auto flex items-center gap-2 lg:gap-1">
           <button
             type="button"
             onClick={() => toggle("account")}
