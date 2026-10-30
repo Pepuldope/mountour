@@ -5,13 +5,13 @@ import { CONTACT_EMAIL, REPO_URL } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Súkromie",
-  description: "Aké údaje Túruj používa: bez cookies, bez účtov, uložené výlety ostávajú vo vašom zariadení.",
+  description: "Aké údaje Túruj používa: účet len ak chcete, žiadne reklamné cookies, uložené výlety ostávajú vo vašom zariadení.",
   path: "/sukromie",
 });
 
 export default function PrivacyPage() {
   return (
-    <InfoPage title="Súkromie" intro="Krátko: nepoužívame cookies, nemáme účty a nepredávame žiadne údaje. Aktualizované 21. 10. 2026.">
+    <InfoPage title="Súkromie" intro="Krátko: účet si založíte, len ak chcete, cookie používame len na prihlásenie a nepredávame žiadne údaje. Aktualizované 30. 10. 2026.">
       <h2>Kto sme</h2>
       <p>
         Túruj je študentský projekt Petra Nemčoka a Radoslava Nemca. Pri otázkach o vašich údajoch nám napíšte{" "}
@@ -40,6 +40,15 @@ export default function PrivacyPage() {
         Pre niekoľko krokov (zadaný štart, uložený alebo poslaný plán, otvorený plán od kamaráta, navigácia) si
         server navyše pripočíta jedna k mesačnému súčtu, pri pláne aj to, či to bolo do 2 minút od príchodu. Neukladá
         sa pri tom nič o vás ani o mieste.
+      </p>
+
+      <h2>Účet a prihlásenie</h2>
+      <p>
+        Účet je dobrovoľný. Keď sa prihlásite cez Google alebo kódom na email, uložíme váš email, pri Google aj meno
+        a číslo účtu Google, ktoré nám Google pošle, a kedy ste sa naposledy prihlásili. Heslo nemáme. Kód na email
+        posielame cez službu Resend a po použití alebo 15 minútach ho zmažeme. Prihlásenie si prehliadač drží v jednej
+        cookie (turuj_s) najviac 180 dní; u nás je uložený len jej odtlačok. Nastavuje sa až po prihlásení a nie je
+        reklamná. Účet so všetkými údajmi na požiadanie zmažeme.
       </p>
 
       <h2>Hodnotenia výletov</h2>

@@ -28,10 +28,9 @@ import { MapExpandButton } from "@/components/MapExpandButton";
 import { SeasonScene } from "@/components/SeasonScene";
 import { PullSky, SunPull } from "@/components/SunPull";
 import { UiIcon } from "@/components/UiIcon";
-import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { AppBar } from "@/components/AppBar";
 import { SiteFooter } from "@/components/SiteFooter";
-import { LangLink, LangSwitch, useLang, useT } from "@/lib/i18n";
+import { LangLink, useLang, useT } from "@/lib/i18n";
 import { decimal } from "@/lib/lang";
 import { StartChip } from "@/components/StartChip";
 import { TownButton } from "@/components/TownButton";
@@ -983,7 +982,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
 
       {pickedItem && (
         // Picked on the map: a bigger card that stays on top while the list scrolls under it.
-        <div ref={pickedRef} className="sticky top-0 z-10 -mx-1 bg-[var(--background)] px-1 pt-1 pb-2">
+        <div ref={pickedRef} className="sticky top-[var(--topbar,0px)] z-10 transition-[top] duration-200 -mx-1 bg-[var(--background)] px-1 pt-1 pb-2">
           <TripCard
             item={pickedItem}
             dayWord={dayWord}
@@ -1024,10 +1023,6 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/brand/turuj-wordmark.svg" alt="Túruj" width={61} height={26} className="h-[26px] w-auto" />
             </LangLink>
-            <span className="flex items-center gap-2">
-              <LangSwitch className="bg-white/70 text-[#14233b]" />
-              <SavedTripsLink />
-            </span>
           </nav>
           <div className="relative flex flex-col gap-2 px-4 pt-6 pb-16 text-[#14233b]">
             <h1 className="text-[2.15rem] leading-none font-extrabold tracking-tight">{t(title)}</h1>
@@ -1047,7 +1042,7 @@ export function HomeExplorer({ trails: initial, knownTowns }: Props) {
         <TownButton start={start} knownTowns={knownTowns} />
 
         {/* Search, filters and Mapa / Zoznam stay on top while the map fills the screen. */}
-        <div className="sticky top-0 z-20 -mx-4 bg-[var(--background)] px-4 py-2 lg:static lg:mx-0 lg:bg-transparent lg:p-0">
+        <div className="sticky top-[var(--topbar,0px)] z-20 transition-[top] duration-200 -mx-4 bg-[var(--background)] px-4 py-2 lg:static lg:mx-0 lg:bg-transparent lg:p-0">
           {startReady && !start && <StartReminder />}
           {tools}
         </div>

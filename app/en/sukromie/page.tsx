@@ -5,7 +5,7 @@ import { CONTACT_EMAIL, REPO_URL } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Privacy",
-  description: "What data Túruj uses: no cookies, no accounts, saved trips stay on your device.",
+  description: "What data Túruj uses: an account only if you want one, no advertising cookies, saved trips stay on your device.",
   path: "/sukromie",
   lang: "en",
 });
@@ -13,7 +13,7 @@ export const metadata = pageMetadata({
 // The Slovak page (app/sukromie) is the one that counts; this is its translation.
 export default function PrivacyPage() {
   return (
-    <InfoPage title="Privacy" intro="In short: we use no cookies, have no accounts and sell no data. Updated 21 October 2026.">
+    <InfoPage title="Privacy" intro="In short: an account only if you want one, a cookie only for signing in, and we sell no data. Updated 30 October 2026.">
       <h2>Who we are</h2>
       <p>
         Túruj is a student project by Peter Nemčok and Radoslav Nemec. For questions about your data, write to us{" "}
@@ -36,6 +36,15 @@ export default function PrivacyPage() {
         For a few steps (entering a start, saving or sending a plan, opening a plan from a friend, navigation) the
         server also adds one to a monthly total, and for a plan whether it happened within 2 minutes of arriving.
         Nothing about you or the place is stored.
+      </p>
+
+      <h2>Account and sign-in</h2>
+      <p>
+        An account is optional. When you sign in with Google or with a code sent to your email, we store your email,
+        with Google also your name and the Google account number Google sends us, and when you last signed in. We have
+        no password. The email code is sent through the Resend service and deleted once used or after 15 minutes. Your
+        browser keeps the sign-in in one cookie (turuj_s) for at most 180 days; we store only a fingerprint of it. It
+        is set only after you sign in and is not used for advertising. We delete the account and all its data on request.
       </p>
 
       <h2>Trip reviews</h2>
