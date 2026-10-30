@@ -1,8 +1,10 @@
 import { getDb } from "@/lib/d1";
 import type { D1Like } from "@/lib/d1";
 
-// Accounts (Peter, 2026-10-30: "Google + email code"). No passwords: a person signs in with
-// Google or with a 6-digit code sent to their email. The browser keeps a random session token in
+// Accounts (Peter, 2026-10-30: "Google + email code", then "just a password is fine"). A person
+// signs up with name, email and password (the email proved by a 6-digit code), and signs in with
+// the password, Google, or a code sent to their email. Passwords are stored only as salted PBKDF2
+// hashes (see PW_ROUNDS). The browser keeps a random session token in
 // an httpOnly cookie; the database keeps only its SHA-256, so a copy of the database can't sign
 // anyone in. Tables live in the site's one D1 database (lib/d1.ts).
 
@@ -28,15 +30,20 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS signin_month (month TEXT NOT NULL, method TEXT NOT NULL, n INTEGER NOT NULL, PRIMARY KEY (month, method)) WITHOUT ROWID`,
   `CREATE TABLE IF NOT EXISTS login_code (email TEXT PRIMARY KEY, code TEXT NOT NULL, expires INTEGER NOT NULL, sent INTEGER NOT NULL, tries INTEGER NOT NULL) WITHOUT ROWID`,
 ];
+// Columns added after the first tables; "duplicate column" on later runs is fine.
+const ADD = [`ALTER TABLE account ADD COLUMN pw TEXT`, `ALTER TABLE account ADD COLUMN pw_fails INTEGER NOT NULL DEFAULT 0`, `ALTER TABLE account ADD COLUMN pw_locked INTEGER NOT NULL DEFAULT 0`];
 let ready: Promise<unknown> | null = null;
 
 async function db(): Promise<D1Like | null> {
   const d = await getDb();
   if (!d) return null;
-  ready ??= d.batch(SCHEMA.map((s) => d.prepare(s))).catch((err) => {
-    ready = null;
-    throw err;
-  });
+  ready ??= d
+    .batch(SCHEMA.map((s) => d.prepare(s)))
+    .then(() => Promise.all(ADD.map((s) => d.prepare(s).run().catch(() => undefined))))
+    .catch((err) => {
+      ready = null;
+      throw err;
+    });
   await ready;
   return d;
 }
@@ -93,7 +100,7 @@ export async function currentAccount(req: Request): Promise<Account | null> {
   return row ?? null;
 }
 
-export type SignInMethod = "google" | "email";
+export type SignInMethod = "google" | "email" | "password";
 
 /** A new session for the account; returns the token for the cookie. */
 export async function startSession(accountId: string, method: SignInMethod): Promise<string> {
@@ -192,6 +199,7 @@ export interface AccountMonth {
   /** Sign-ins this month (a new account's first one included), by way. */
   google: number;
   email: number;
+  password: number;
 }
 
 /** Accounts for /statistiky: the total and each month, newest first; null without the database. */
@@ -205,7 +213,7 @@ export async function accountStats(): Promise<{ total: number; months: AccountMo
   const months = new Map<string, AccountMonth>();
   const at = (month: string) => {
     let m = months.get(month);
-    if (!m) months.set(month, (m = { month, created: 0, google: 0, email: 0 }));
+    if (!m) months.set(month, (m = { month, created: 0, google: 0, email: 0, password: 0 }));
     return m;
   };
   let total = 0;
@@ -213,6 +221,87 @@ export async function accountStats(): Promise<{ total: number; months: AccountMo
     at(r.month).created += r.n;
     total += r.n;
   }
-  for (const r of signins.results) if (r.method === "google" || r.method === "email") at(r.month)[r.method] += r.n;
+  for (const r of signins.results) if (r.method === "google" || r.method === "email" || r.method === "password") at(r.month)[r.method] += r.n;
   return { total, months: [...months.values()].sort((a, b) => b.month.localeCompare(a.month)) };
+}
+
+/** Shortest password we take. */
+export const PW_MIN = 8;
+/** Wrong passwords in a row before the account waits, and how long. */
+export const PW_TRIES = 8;
+export const PW_LOCK_MIN = 15;
+/**
+ * PBKDF2 rounds for new hashes. 100,000 took ~16 ms of CPU in a test, over the free Workers plan's
+ * 10 ms a request, so half that. Each hash keeps its own count: raise this on a paid plan and old
+ * passwords still check.
+ */
+const PW_ROUNDS = 50_000;
+
+const b64 = (a: Uint8Array) => btoa(String.fromCharCode(...a));
+const unb64 = (s: string): Uint8Array<ArrayBuffer> => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+
+async function pbkdf2(password: string, salt: Uint8Array<ArrayBuffer>, rounds: number): Promise<Uint8Array> {
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(password.normalize("NFC")), "PBKDF2", false, ["deriveBits"]);
+  return new Uint8Array(await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: rounds }, key, 256));
+}
+
+/** "pbkdf2$rounds$salt$hash", all a password check needs. */
+export async function hashPassword(password: string): Promise<string> {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  return `pbkdf2$${PW_ROUNDS}$${b64(salt)}$${b64(await pbkdf2(password, salt, PW_ROUNDS))}`;
+}
+
+export async function passwordMatches(password: string, stored: string): Promise<boolean> {
+  const [kind, rounds, salt, hash] = stored.split("$");
+  if (kind !== "pbkdf2" || !salt || !hash) return false;
+  const got = await pbkdf2(password, unb64(salt), Number(rounds));
+  const want = unb64(hash);
+  if (got.length !== want.length) return false;
+  let diff = 0;
+  for (let i = 0; i < got.length; i++) diff |= got[i] ^ want[i];
+  return diff === 0;
+}
+
+/** A password we take: long enough, not absurdly long. */
+export function okPassword(raw: unknown): raw is string {
+  return typeof raw === "string" && raw.length >= PW_MIN && raw.length <= 200;
+}
+
+export async function setPassword(accountId: string, password: string): Promise<void> {
+  const d = await db();
+  if (!d) throw new Error("no database");
+  await d.prepare(`UPDATE account SET pw = ?, pw_fails = 0, pw_locked = 0 WHERE id = ?`).bind(await hashPassword(password), accountId).run();
+}
+
+export async function setName(accountId: string, name: string): Promise<void> {
+  const d = await db();
+  if (!d) return;
+  await d.prepare(`UPDATE account SET name = ? WHERE id = ?`).bind(name, accountId).run();
+}
+
+export type PasswordLogin = { ok: true; account: Account } | { ok: false; why: "wrong" | "locked" | "nopw" };
+
+/**
+ * Checks email + password. Unknown email and wrong password answer the same ("wrong"), so the
+ * form doesn't tell anyone which emails have accounts. An account with no password yet (made
+ * with Google or a code) says "nopw", and after PW_TRIES wrong ones in a row it waits a while.
+ */
+export async function passwordLogin(email: string, password: string): Promise<PasswordLogin> {
+  const d = await db();
+  if (!d) throw new Error("no database");
+  const row = await d
+    .prepare(`SELECT id, email, name, pw, pw_fails, pw_locked FROM account WHERE email = ?`)
+    .bind(email)
+    .first<Account & { pw: string | null; pw_fails: number; pw_locked: number }>();
+  if (!row) return { ok: false, why: "wrong" };
+  if (row.pw_locked > Date.now()) return { ok: false, why: "locked" };
+  if (!row.pw) return { ok: false, why: "nopw" };
+  if (await passwordMatches(password, row.pw)) {
+    if (row.pw_fails) await d.prepare(`UPDATE account SET pw_fails = 0 WHERE id = ?`).bind(row.id).run();
+    return { ok: true, account: { id: row.id, email: row.email, name: row.name } };
+  }
+  const fails = row.pw_fails + 1;
+  const lock = fails >= PW_TRIES ? Date.now() + PW_LOCK_MIN * 60_000 : 0;
+  await d.prepare(`UPDATE account SET pw_fails = ?, pw_locked = ? WHERE id = ?`).bind(lock ? 0 : fails, lock, row.id).run();
+  return { ok: false, why: lock ? "locked" : "wrong" };
 }
