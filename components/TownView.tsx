@@ -4,7 +4,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 import { TownTile } from "@/components/TownTile";
 import { getTown, getTownTrips } from "@/lib/townTrips";
 import { tripsCount } from "@/lib/format";
-import { townOf } from "@/lib/townNames";
+import { townFrom, townOf } from "@/lib/townNames";
 import { pageMetadata } from "@/lib/seo";
 import { JsonLd } from "@/components/JsonLd";
 import { absoluteUrl } from "@/lib/site";
@@ -16,7 +16,7 @@ export function townMetadata(id: string, lang: Lang) {
   const town = getTown(id);
   if (!town) return { title: tr(lang, "Mesto sa nenašlo"), robots: { index: false } };
   return pageMetadata({
-    title: tr(lang, "Výlety na jeden deň: {town} a okolie", { town: town.name }),
+    title: tr(lang, "Výlety {from} a okolia – túry na jeden deň", { from: townFrom(lang, town.id, town.name) }),
     description: tr(lang, "Jednodňové výlety do hôr a prírody do hodiny a pol autom z mesta {town}: hrady, vrcholy, jaskyne, výlety s deťmi. Koľko trvá cesta a túra a kedy vyraziť.", { town: town.name }),
     path: `/vylety-z/${town.id}`,
     lang,

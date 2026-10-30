@@ -10,6 +10,8 @@ import { TripSheet } from "@/components/TripSheet";
 import { pageMetadata } from "@/lib/seo";
 import { metaDescription } from "@/lib/describeSk";
 import { langPath, tr } from "@/lib/lang";
+import { nearestTown } from "@/lib/trips";
+import { townFrom } from "@/lib/townNames";
 import type { Lang } from "@/lib/lang";
 
 /** One database read per request, shared by the metadata and the page. */
@@ -28,12 +30,16 @@ export async function tripMetadata(slug: string, lang: Lang): Promise<Metadata> 
   // The same walk as the page's facts (from the default parking), so search results don't show another number.
   const w = pickWalk(routeWalk(detail), false, detail.parkingLots.length > 0);
   const facts = tr(lang, "{km}, +{up} m, {t} chôdze", { km: formatDistance(w?.m ?? trail.distance_m, lang), up: w?.ascentM ?? trail.ascent_m, t: formatDuration(w?.min ?? trail.duration_min) });
+  const town = nearestTown(trip.start.location);
   return pageMetadata({
     // Most places have several routes, one page each: the other routes' pages carry their start in
     // the title, so search results tell them apart (6,200 of 6,466 pages shared a title before).
     title: trip.variant_of
       ? tr(lang, "{name} zo štartu {start} ({km}) – výlet, túra a parkovanie", { name: trail.name, start: trip.start.name, km: formatDistance(trip.distance_m, lang) })
-      : tr(lang, "{name} – výlet a túra: parkovanie, čas návratu", { name: trail.name }),
+      : town
+        ? // People search "výlet na Devín", "výlety z Bratislavy": the place, then the nearest town (Peter 2026-10-30).
+          tr(lang, "{name} – výlet {from}: túra, parkovanie", { name: trail.name, from: townFrom(lang, town.id, town.name) })
+        : tr(lang, "{name} – výlet a túra: parkovanie, čas návratu", { name: trail.name }),
     description:
       lang === "sk"
         ? metaDescription(trip, facts)
