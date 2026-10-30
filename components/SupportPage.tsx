@@ -58,6 +58,10 @@ export function SupportPage({ trips, towns }: { trips: number; towns: number }) 
           <div className="order-6 lg:order-none">
             <Faq />
           </div>
+          {/* In the story column on a computer, so it lines up with the questions above, not with the app card beside it. */}
+          <p className="font-display order-7 text-center text-2xl font-extrabold text-[var(--accent)] lg:order-none lg:text-left">
+            {t("Ďakujeme. Neplánuj. Turuj.")}
+          </p>
         </div>
         <aside className="contents lg:sticky lg:top-4 lg:flex lg:flex-col lg:gap-5">
           <div className="order-1 lg:order-none">
@@ -67,9 +71,6 @@ export function SupportPage({ trips, towns }: { trips: number; towns: number }) 
             <AppCard />
           </div>
         </aside>
-        <p className="font-display order-7 text-center text-2xl font-extrabold text-[var(--accent)] lg:col-span-2">
-          {t("Ďakujeme. Neplánuj. Turuj.")}
-        </p>
       </div>
       <div className="mx-auto w-full max-w-6xl px-4 pb-6 lg:px-6">
         <SiteFooter />
