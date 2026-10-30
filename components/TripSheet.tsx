@@ -2,7 +2,8 @@ import Link from "next/link";
 import { primaryTrailhead, sunLocation } from "@/lib/data";
 import { gpxUrlFor } from "@/lib/gpx";
 import { GpxDownload } from "@/components/GpxDownload";
-import { getRouteWalks, getTrip, getTripPhoto, photoSource, withLoopRoutes } from "@/lib/tripFiles";
+import { getRouteWalks, getTownDrives, getTrip, getTripPhoto, photoSource, withLoopRoutes } from "@/lib/tripFiles";
+import { aboutTrip } from "@/lib/describeSk";
 import { buildProfile } from "@/lib/tripProfile";
 import { GOAL_LABEL, POI_LABEL } from "@/lib/format";
 import { kindSvg } from "@/lib/kindIcons";
@@ -38,7 +39,7 @@ import { describeEn } from "@/lib/describeEn";
 import { markSigns } from "@/lib/markSigns";
 
 /** schema.org data: the trail as a place to visit + breadcrumbs (all trips > the nearest town's page > this one). */
-function trailJsonLd(detail: TrailDetail, photoUrl: string | null, town: Town | null, lang: Lang) {
+function trailJsonLd(detail: TrailDetail, photoUrl: string | null, town: Town | null, lang: Lang, about: string[]) {
   const { trail } = detail;
   const url = absoluteUrl(langPath(lang, `/trasa/${trail.slug}`));
   const start = primaryTrailhead(detail)?.location;
@@ -50,7 +51,8 @@ function trailJsonLd(detail: TrailDetail, photoUrl: string | null, town: Town | 
         "@id": `${url}#trail`,
         name: trail.name,
         url,
-        ...(trail.description ? { description: trail.description } : {}),
+        // The page's own "O výlete" text when there is one (Slovak pages), else the short line.
+        ...(about.length ? { description: about.join(" ") } : trail.description ? { description: trail.description } : {}),
         image: photoUrl ?? absoluteUrl("/og-image.png"),
         // Only when an entry fee is known; no known fee doesn't mean free.
         ...(detail.fees.some((f) => f.kind === "vstupne") ? { isAccessibleForFree: false } : {}),
@@ -129,6 +131,11 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
   const photo = await getTripPhoto(trail.slug, trip.destination.osm);
   // The town page this trip belongs to: a link for people and search engines to more trips nearby.
   const town = nearestTown(trip.start.location);
+  // "O výlete": a few sentences from this trip's own facts, Slovak pages only (lib/describeSk.ts).
+  const about =
+    lang === "sk" && !loopBack
+      ? aboutTrip({ trip, detail, town, driveMin: town ? ((await getTownDrives(town.id))[trail.slug] ?? null) : null })
+      : [];
   const description = loopBack
     ? tr(lang, "Okruh zo štartu {start}: hore po trase {up}, dole po trase {down}.", { start: trip.start.name, up: routeName(routes.find((r) => r.slug === trail.slug), lang), down: routeName(loopBack, lang) })
     : lang === "en"
@@ -160,7 +167,7 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
   return (
     <TripAccessProvider slug={trail.slug} parkingLots={parkingLots} transitStops={transitStops} trailStart={trailStart} trail={trailNumbers}>
       <main className="flex flex-1 flex-col bg-[var(--page-sunk)] lg:h-dvh lg:flex-none lg:flex-row lg:overflow-hidden">
-        <JsonLd data={trailJsonLd(detail, photo?.url ?? null, town, lang)} />
+        <JsonLd data={trailJsonLd(detail, photo?.url ?? null, town, lang, about)} />
         <TrackEvent name="trip_open" data={{ trail: trail.slug }} />
         <div className="mx-auto flex w-full max-w-[640px] flex-col gap-5 px-4 pt-4 pb-6 md:max-w-[760px] lg:mx-0 lg:w-[460px] lg:max-w-none lg:shrink-0 relative lg:overflow-y-auto lg:overscroll-contain">
           <header className="relative -mx-4 -mt-4 flex min-h-[220px] shrink-0 flex-col justify-between sm:overflow-hidden sm:rounded-b-[24px] lg:overflow-visible lg:rounded-none">
@@ -254,12 +261,22 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
               </>
             }
             outro={
-              gpxUrl && (
-                <section className="flex flex-col gap-1 text-sm">
-                  <h2 className="text-base font-bold">{tr(lang, "Na túru")}</h2>
-                  <GpxDownload gpxUrl={gpxUrl} slug={trail.slug} name={gpxName} />
-                </section>
-              )
+              <>
+                {about.length > 0 && (
+                  <section className="flex flex-col gap-1.5 text-sm text-[var(--muted)]">
+                    <h2 className="text-base font-bold text-[var(--foreground)]">{tr(lang, "O výlete")}</h2>
+                    {about.map((p) => (
+                      <p key={p}>{p}</p>
+                    ))}
+                  </section>
+                )}
+                {gpxUrl && (
+                  <section className="flex flex-col gap-1 text-sm">
+                    <h2 className="text-base font-bold">{tr(lang, "Na túru")}</h2>
+                    <GpxDownload gpxUrl={gpxUrl} slug={trail.slug} name={gpxName} />
+                  </section>
+                )}
+              </>
             }
             trail={{
               path: trip.path.map(([lon, lat, ele]) => [+lon.toFixed(5), +lat.toFixed(5), ele === null ? null : Math.round(ele)]),
