@@ -702,6 +702,8 @@ export const EN: Record<string, string> = {
 
   // Trip page
   "{name} – túra, parkovanie a čas návratu": "{name} – hike, parking and return time",
+  "{name} zo štartu {start} ({km}) – túra a parkovanie": "{name} from {start} ({km}) – hike and parking",
+  "O výlete": "About the trip",
   "{name}: {facts}. Kde zaparkovať, kedy najneskôr vyraziť a stihnúť návrat za svetla.": "{name}: {facts}. Where to park, and the latest time to leave and be back in daylight.",
   "Uložiť výlet": "Save trip",
   "Uložiť a zdieľať": "Save and share",

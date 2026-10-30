@@ -32,6 +32,15 @@ export async function TownView({ id, lang }: { id: string; lang: Lang }) {
   const url = absoluteUrl(langPath(lang, `/vylety-z/${town.id}`));
   const around = townOf(lang, town.id, town.name);
   const listed = rows.flatMap((r) => r.tiles).filter((t, i, all) => all.findIndex((x) => x.slug === t.slug) === i);
+  // A line of text from the page's own facts, so the town page reads as more than a grid of tiles.
+  const nearest = [...listed].sort((a, b) => a.carMin - b.carMin).slice(0, 3);
+  const kids = listed.filter((t) => t.kids).length;
+  const intro =
+    lang === "sk" && nearest.length
+      ? `Najbližšie výlety z ${around}: ${nearest.map((t) => `${t.name} (${t.carMin} min autom)`).join(", ")}.` +
+        (kids ? ` Z výletov na tejto stránke sa ${kids === 1 ? "1 hodí" : kids < 5 ? `${kids} hodia` : `${kids} hodí`} aj pre rodiny s deťmi.` : "") +
+        " Pri každom nájdete parkovanie, autobus či vlak a čas, kedy najneskôr vyraziť."
+      : null;
   const credits = rows.flatMap((r) => r.tiles).filter((t, i, all) => t.photo && all.findIndex((x) => x.slug === t.slug) === i);
 
   return (
@@ -73,6 +82,7 @@ export async function TownView({ id, lang }: { id: string; lang: Lang }) {
       <header className="flex flex-col gap-1">
         <h1 className="text-[2.3rem] leading-none font-extrabold tracking-tight">{tr(lang, "Okolo {town}", { town: around })}</h1>
         <p className="font-medium text-[var(--muted)]">{tr(lang, "{n} do hodiny a pol autom", { n: tripsCount(total, lang) })}</p>
+        {intro && <p className="mt-1 text-sm text-[var(--muted)]">{intro}</p>}
       </header>
       {rows.map((row) => (
         <section key={row.title} className="flex flex-col gap-2.5">
