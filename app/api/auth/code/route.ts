@@ -17,7 +17,7 @@ export async function POST(request: Request): Promise<Response> {
     const check = await checkLoginCode(email, code);
     if (check !== "ok") return Response.json({ error: check }, { status: 400 });
     const account = await accountFor(email);
-    const token = await startSession(account.id);
+    const token = await startSession(account.id, "email");
     return Response.json({ account: { email: account.email, name: account.name } }, { headers: { "Set-Cookie": sessionCookie(token), "Cache-Control": "no-store" } });
   } catch (err) {
     console.warn("[auth] code check failed:", err);

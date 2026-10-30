@@ -24,6 +24,8 @@ export interface Account {
 const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS account (id TEXT PRIMARY KEY, email TEXT NOT NULL UNIQUE, name TEXT, google TEXT UNIQUE, created TEXT NOT NULL, seen TEXT NOT NULL)`,
   `CREATE TABLE IF NOT EXISTS account_session (token TEXT PRIMARY KEY, account TEXT NOT NULL, expires INTEGER NOT NULL) WITHOUT ROWID`,
+  // Sign-ins per month and way, for /statistiky (Peter, 2026-10-30: "how many people sign in and register").
+  `CREATE TABLE IF NOT EXISTS signin_month (month TEXT NOT NULL, method TEXT NOT NULL, n INTEGER NOT NULL, PRIMARY KEY (month, method)) WITHOUT ROWID`,
   `CREATE TABLE IF NOT EXISTS login_code (email TEXT PRIMARY KEY, code TEXT NOT NULL, expires INTEGER NOT NULL, sent INTEGER NOT NULL, tries INTEGER NOT NULL) WITHOUT ROWID`,
 ];
 let ready: Promise<unknown> | null = null;
@@ -91,8 +93,10 @@ export async function currentAccount(req: Request): Promise<Account | null> {
   return row ?? null;
 }
 
+export type SignInMethod = "google" | "email";
+
 /** A new session for the account; returns the token for the cookie. */
-export async function startSession(accountId: string): Promise<string> {
+export async function startSession(accountId: string, method: SignInMethod): Promise<string> {
   const d = await db();
   if (!d) throw new Error("no database");
   const token = randomToken();
@@ -102,6 +106,9 @@ export async function startSession(accountId: string): Promise<string> {
     // Expired sessions of anyone go now and then, so the table stays small.
     d.prepare(`DELETE FROM account_session WHERE expires < ?`).bind(now),
     d.prepare(`UPDATE account SET seen = ? WHERE id = ?`).bind(new Date(now).toISOString(), accountId),
+    d
+      .prepare(`INSERT INTO signin_month (month, method, n) VALUES (?, ?, 1) ON CONFLICT (month, method) DO UPDATE SET n = n + 1`)
+      .bind(new Date(now).toISOString().slice(0, 7), method),
   ]);
   return token;
 }
@@ -176,4 +183,36 @@ export async function checkLoginCode(email: string, code: string): Promise<CodeC
 export function safeNext(raw: string | null | undefined): string {
   if (!raw || !raw.startsWith("/") || raw.startsWith("//") || raw.startsWith("/\\")) return "/";
   return raw.slice(0, 300);
+}
+
+export interface AccountMonth {
+  month: string;
+  /** Accounts made this month. */
+  created: number;
+  /** Sign-ins this month (a new account's first one included), by way. */
+  google: number;
+  email: number;
+}
+
+/** Accounts for /statistiky: the total and each month, newest first; null without the database. */
+export async function accountStats(): Promise<{ total: number; months: AccountMonth[] } | null> {
+  const d = await db().catch(() => null);
+  if (!d) return null;
+  const [made, signins] = await Promise.all([
+    d.prepare(`SELECT substr(created, 1, 7) AS month, COUNT(*) AS n FROM account GROUP BY month`).all<{ month: string; n: number }>(),
+    d.prepare(`SELECT month, method, n FROM signin_month`).all<{ month: string; method: string; n: number }>(),
+  ]);
+  const months = new Map<string, AccountMonth>();
+  const at = (month: string) => {
+    let m = months.get(month);
+    if (!m) months.set(month, (m = { month, created: 0, google: 0, email: 0 }));
+    return m;
+  };
+  let total = 0;
+  for (const r of made.results) {
+    at(r.month).created += r.n;
+    total += r.n;
+  }
+  for (const r of signins.results) if (r.method === "google" || r.method === "email") at(r.month)[r.method] += r.n;
+  return { total, months: [...months.values()].sort((a, b) => b.month.localeCompare(a.month)) };
 }

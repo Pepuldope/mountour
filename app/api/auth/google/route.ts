@@ -69,7 +69,7 @@ export async function GET(request: Request): Promise<Response> {
     const bad = !p ? "id" : !email ? "email" : p.email_verified !== true ? "overenie" : bare(String(p.aud)) !== bare(id) ? `aud-${id.length}-${String(p.aud).length}` : !iss.endsWith("accounts.google.com") ? "iss" : typeof p.sub !== "string" ? "sub" : null;
     if (bad || !p || !email || typeof p.sub !== "string") return back(next, `chyba-udaje-${bad}`);
     const account = await accountFor(email, { sub: p.sub, name: typeof p.name === "string" ? p.name.slice(0, 80) : null });
-    const token = await startSession(account.id);
+    const token = await startSession(account.id, "google");
     const headers = new Headers({ Location: next, "Cache-Control": "no-store" });
     headers.append("Set-Cookie", sessionCookie(token));
     headers.append("Set-Cookie", `${STATE_COOKIE}=; Path=/api/auth/google; Max-Age=0; HttpOnly; Secure; SameSite=Lax`);

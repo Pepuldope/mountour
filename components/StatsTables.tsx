@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { AccountMonth } from "@/lib/auth";
 import type { MonthEvents } from "@/lib/eventCounts";
 import type { MonthStats } from "@/lib/visitStore";
 
 interface Stats {
   months: MonthStats[] | null;
   events: MonthEvents[] | null;
+  accounts?: { total: number; months: AccountMonth[] } | null;
 }
 
 /** The tables on /statistiky, read from /api/statistiky when the page opens. */
@@ -21,7 +23,7 @@ export function StatsTables() {
 
   if (data === "loading") return <p>Načítavame…</p>;
   if (data === "error") return <p>Čísla sa nepodarilo načítať. Skúste stránku obnoviť.</p>;
-  const { months: rows, events } = data;
+  const { months: rows, events, accounts } = data;
 
   return (
     <>
@@ -91,6 +93,37 @@ export function StatsTables() {
               ))}
             </tbody>
           </table>
+        </>
+      )}
+      {accounts && (
+        <>
+          <h2>Účty</h2>
+          <p className="text-sm">
+            Spolu <b>{accounts.total}</b> účtov. Nové účty v mesiaci a koľkokrát sa ľudia prihlásili cez Google a
+            kódom na email (prvé prihlásenie nového účtu sa počíta tiež).
+          </p>
+          {accounts.months.length > 0 && (
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-b border-[var(--border)]">
+                  <th className="py-2">Mesiac</th>
+                  <th>Nové účty</th>
+                  <th>Prihlásenia Google</th>
+                  <th>Prihlásenia email</th>
+                </tr>
+              </thead>
+              <tbody>
+                {accounts.months.map((m) => (
+                  <tr key={m.month} className="border-b border-[var(--border)]">
+                    <td className="py-2">{m.month}</td>
+                    <td className="font-semibold">{m.created}</td>
+                    <td>{m.google}</td>
+                    <td>{m.email}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </>
       )}
       <p className="text-xs opacity-70">

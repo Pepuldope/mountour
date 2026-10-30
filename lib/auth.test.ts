@@ -83,11 +83,20 @@ describe("accounts and sessions", () => {
 
   it("starts, reads and ends a session", async () => {
     const a = await auth.accountFor("f@b.sk");
-    const token = await auth.startSession(a.id);
+    const token = await auth.startSession(a.id, "email");
     expect(await auth.currentAccount(req(token))).toMatchObject({ id: a.id, email: "f@b.sk" });
     expect(await auth.currentAccount(req("x".repeat(43)))).toBeNull();
     expect(await auth.currentAccount(req())).toBeNull();
     await auth.endSession(req(token));
     expect(await auth.currentAccount(req(token))).toBeNull();
+  });
+
+  it("counts accounts and sign-ins for /statistiky", async () => {
+    const a = await auth.accountFor("g@b.sk", { sub: "g2", name: null });
+    await auth.startSession(a.id, "google");
+    const stats = await auth.accountStats();
+    const month = new Date().toISOString().slice(0, 7);
+    expect(stats?.total).toBe(3); // e@, f@ and g@ from these tests
+    expect(stats?.months[0]).toMatchObject({ month, created: 3, google: 1, email: 1 });
   });
 });
