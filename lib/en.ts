@@ -701,8 +701,8 @@ export const EN: Record<string, string> = {
   "S deťmi do hodiny": "With kids, within an hour",
 
   // Trip page
-  "{name} – túra, parkovanie a čas návratu": "{name} – hike, parking and return time",
-  "{name} zo štartu {start} ({km}) – túra a parkovanie": "{name} from {start} ({km}) – hike and parking",
+  "{name} – výlet a túra: parkovanie, čas návratu": "{name} – trip and hike: parking, return time",
+  "{name} zo štartu {start} ({km}) – výlet, túra a parkovanie": "{name} from {start} ({km}) – trip, hike and parking",
   "O výlete": "About the trip",
   "{name}: {facts}. Kde zaparkovať, kedy najneskôr vyraziť a stihnúť návrat za svetla.": "{name}: {facts}. Where to park, and the latest time to leave and be back in daylight.",
   "Uložiť výlet": "Save trip",

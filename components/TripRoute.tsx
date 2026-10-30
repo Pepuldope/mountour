@@ -32,8 +32,8 @@ export async function tripMetadata(slug: string, lang: Lang): Promise<Metadata> 
     // Most places have several routes, one page each: the other routes' pages carry their start in
     // the title, so search results tell them apart (6,200 of 6,466 pages shared a title before).
     title: trip.variant_of
-      ? tr(lang, "{name} zo štartu {start} ({km}) – túra a parkovanie", { name: trail.name, start: trip.start.name, km: formatDistance(trip.distance_m, lang) })
-      : tr(lang, "{name} – túra, parkovanie a čas návratu", { name: trail.name }),
+      ? tr(lang, "{name} zo štartu {start} ({km}) – výlet, túra a parkovanie", { name: trail.name, start: trip.start.name, km: formatDistance(trip.distance_m, lang) })
+      : tr(lang, "{name} – výlet a túra: parkovanie, čas návratu", { name: trail.name }),
     description:
       lang === "sk"
         ? metaDescription(trip, facts)
