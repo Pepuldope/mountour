@@ -10,7 +10,6 @@ import { JsonLd } from "@/components/JsonLd";
 import { absoluteUrl } from "@/lib/site";
 import { langPath, tr } from "@/lib/lang";
 import type { Lang } from "@/lib/lang";
-import { LangSwitch } from "@/lib/i18n";
 import { photoSource } from "@/lib/tripFiles";
 
 export function townMetadata(id: string, lang: Lang) {
@@ -68,7 +67,6 @@ export async function TownView({ id, lang }: { id: string; lang: Lang }) {
         <Link href={langPath(lang, "/")} className="w-fit text-sm font-semibold text-[var(--accent)]">
           ← {tr(lang, "Všetky výlety")}
         </Link>
-        <LangSwitch className="text-[var(--muted)]" />
       </div>
       <header className="flex flex-col gap-1">
         <h1 className="text-[2.3rem] leading-none font-extrabold tracking-tight">{tr(lang, "Okolo {town}", { town: around })}</h1>

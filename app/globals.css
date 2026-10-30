@@ -476,3 +476,11 @@ h2,
     animation: none;
   }
 }
+
+/* The account + menu card sits in the top right corner on a computer (components/TopBar.tsx):
+   map buttons there move down under it. */
+@media (min-width: 1024px) {
+  .maplibregl-ctrl-top-right {
+    margin-top: 52px;
+  }
+}

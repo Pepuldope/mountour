@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { SiteFooter } from "@/components/SiteFooter";
-import { LangLink, LangSwitch, useT } from "@/lib/i18n";
+import { LangLink, useT } from "@/lib/i18n";
 
 /** Plain text page (privacy, disclaimer, sources). */
 export function InfoPage({ title, intro, children }: { title: ReactNode; intro?: ReactNode; children: ReactNode }) {
@@ -13,7 +13,6 @@ export function InfoPage({ title, intro, children }: { title: ReactNode; intro?:
         <LangLink href="/" className="w-fit text-sm font-semibold text-[var(--accent)]">
           ← {t("Všetky výlety")}
         </LangLink>
-        <LangSwitch className="text-[var(--muted)]" />
       </div>
       <header className="flex flex-col gap-1">
         <h1 className="text-[1.65rem] leading-tight font-extrabold">{typeof title === "string" ? t(title) : title}</h1>

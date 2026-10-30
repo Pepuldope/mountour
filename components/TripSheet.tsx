@@ -18,7 +18,6 @@ import { StopsBlock } from "@/components/TransitBlock";
 import { ClosureBanner } from "@/components/ClosureBanner";
 import { TripPlanner } from "@/components/TripPlanner";
 import { TripReviews } from "@/components/TripReviews";
-import { SavedTripsLink } from "@/components/SavedTripsLink";
 import { SiteFooter } from "@/components/SiteFooter";
 import { TripFacts } from "@/components/TripFacts";
 import { TripMap } from "@/components/TripMap";
@@ -35,7 +34,6 @@ import { nearestTown } from "@/lib/trips";
 import { townOf } from "@/lib/townNames";
 import { langPath, tr } from "@/lib/lang";
 import type { Lang } from "@/lib/lang";
-import { LangSwitch } from "@/lib/i18n";
 import { describeEn } from "@/lib/describeEn";
 import { markSigns } from "@/lib/markSigns";
 
@@ -201,10 +199,6 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
                 <UiIcon name="back" size={15} />
                 {tr(lang, "Všetky výlety")}
               </Link>
-              <span className="flex items-center gap-2">
-                <LangSwitch className="border border-[var(--border)] bg-[var(--card-bg)]/90" />
-                <SavedTripsLink />
-              </span>
             </nav>
             <div className="relative flex flex-col gap-1.5 px-4 pb-3.5 text-white">
               <div className="flex flex-wrap gap-1.5">

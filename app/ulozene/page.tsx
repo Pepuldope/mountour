@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SavedTripsList } from "@/components/SavedTripsList";
 import { SiteFooter } from "@/components/SiteFooter";
-import { LangLink, LangSwitch, T } from "@/lib/i18n";
+import { LangLink, T } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Moje výlety",
@@ -15,7 +15,6 @@ export default function SavedTripsPage() {
         <LangLink href="/" className="w-fit text-sm font-semibold text-[var(--accent)]">
           ← <T>Všetky výlety</T>
         </LangLink>
-        <LangSwitch className="text-[var(--muted)]" />
       </div>
       <header className="flex flex-col gap-1">
         <h1 className="text-[1.65rem] leading-tight font-extrabold"><T>Moje výlety</T></h1>
