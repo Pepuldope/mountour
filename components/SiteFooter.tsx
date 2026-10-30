@@ -1,6 +1,6 @@
 "use client";
 
-import { CONTACT_EMAIL, TESTER_FORM_URL } from "@/lib/site";
+import { CONTACT_EMAIL, SUPPORT_ON, TESTER_FORM_URL } from "@/lib/site";
 import { LangLink, useT } from "@/lib/i18n";
 import { UiIcon } from "@/components/UiIcon";
 import type { UiIconName } from "@/lib/uiIcons";
@@ -28,6 +28,8 @@ const GROUPS: { title: string; links: FooterLink[] }[] = [
     title: "O projekte",
     links: [
       { href: "/o-nas", label: "O nás", icon: "person" },
+      // Linked once money is switched on (lib/support.ts); until then only the address works.
+      ...(SUPPORT_ON ? [{ href: "/podporte-nas", label: "Podporte nás", icon: "star" as const }] : []),
       { href: "/sukromie", label: "Súkromie", icon: "lock" },
       { href: "/upozornenie", label: "Upozornenie", icon: "warn" },
     ],

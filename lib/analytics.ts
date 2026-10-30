@@ -20,7 +20,9 @@ export type AnalyticsEvent =
   | "plus_no" // "Za túto cenu nie" on /plus
   | "app_link" // "Získať appku" tapped: home bottom bar or after saving a trip
   | "app_installed" // Android install dialog accepted on /aplikacia
-  | "on_trail"; // "Kde som na trase?" tapped on a trip page
+  | "on_trail" // "Kde som na trase?" tapped on a trip page
+  | "support_pay" // /podporte-nas: bank app link, QR saved or downloaded, or a payment detail copied
+  | "support_share"; // /podporte-nas: "Zdieľať Túruj", a chat app, e-mail or a copied link
 
 type EventData = Record<string, string | number | boolean>;
 
