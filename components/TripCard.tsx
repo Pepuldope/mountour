@@ -151,7 +151,7 @@ export function TripCard({ item, dayWord, transit, active, onClose, onActive, re
         // A photo of the place in place of the kind icon (Peter, 2026-10-22); the kind sits on it as a small badge.
         <span aria-hidden className={`relative h-[64px] w-[64px] overflow-hidden rounded-[14px] ${dim ? "opacity-50 grayscale-[75%]" : ""}`} style={{ background: colour }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={thumb} alt="" loading="lazy" decoding="async" crossOrigin="anonymous" referrerPolicy="no-referrer" className="h-full w-full object-cover" />
+          <img src={thumb} alt={trail.name} loading="lazy" decoding="async" crossOrigin="anonymous" referrerPolicy="no-referrer" className="h-full w-full object-cover" />
           <span
             className="absolute bottom-1 left-1 grid h-[22px] w-[22px] place-items-center rounded-[7px] text-white shadow-[0_0_0_1.5px_#fff]"
             style={{ background: colour }}

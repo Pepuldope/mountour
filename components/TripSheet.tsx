@@ -179,7 +179,7 @@ export async function TripSheet({ trip, detail, loopBack, lang = "sk" }: { trip:
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={photo.url}
-                  alt=""
+                  alt={trail.name}
                   decoding="async"
                   crossOrigin="anonymous"
                   referrerPolicy="no-referrer"

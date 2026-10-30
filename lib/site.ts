@@ -18,10 +18,12 @@ export const SITE_NAME = "Túruj";
  */
 export const EN_TRIPS_AHEAD = 1500;
 
-export const SITE_TITLE = "Kam dnes na výlet do hôr – plánovač jednodňových túr";
+// Planning ahead, not only for today (Peter 2026-10-29): "5 minút" is the pitch. Same words as the
+// home h1 ("Kam na výlet?") so search engines read one topic.
+export const SITE_TITLE = "Kam na výlet do hôr – jednodňová túra naplánovaná za 5 minút";
 
 export const SITE_DESCRIPTION =
-  "Jednodňové výlety do hôr a prírody na Slovensku: koľko trvá cesta, kde zaparkovať, kedy najneskôr vyraziť a stihnúť návrat za svetla.";
+  "Výlety do hôr a prírody na Slovensku na jeden deň: koľko trvá cesta, kde zaparkovať, autobus či vlak a kedy najneskôr vyraziť, aby ste stihli návrat za svetla.";
 
 /**
  * Umami Cloud website ID (Umami → Settings → Websites → Edit → Website ID).
