@@ -4,6 +4,22 @@
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
 
+# Icons, brand pictures and the link-preview image change only with a redesign: a week.
+# Their names carry no hash, so not a year (a new icon shows within a week at worst).
+# Trip data (/data/*) stays re-checked on every visit: the code reads it in step with each deploy.
+/icons/*
+  Cache-Control: public, max-age=604800
+
+/brand/*
+  Cache-Control: public, max-age=604800
+
+/og-image.png
+  Cache-Control: public, max-age=604800
+
+# GPX files change with the weekly trip refresh: a day.
+/gpx/*
+  Cache-Control: public, max-age=86400
+
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
