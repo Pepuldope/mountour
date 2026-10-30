@@ -39,6 +39,7 @@ export function TopBar() {
   const [shown, setShown] = useState(true);
   const [solid, setSolid] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [noticeCode, setNoticeCode] = useState<string | null>(null);
   const boxRef = useRef<HTMLDivElement>(null);
   const { account } = useAccount();
 
@@ -79,6 +80,7 @@ export function TopBar() {
     if (why === "zrusene") return;
     const id = setTimeout(() => {
       setNotice(why === "off" ? "Prihlásenie cez Google ešte nie je zapnuté. Skúste email." : "Prihlásenie cez Google sa nepodarilo. Skúste znova alebo cez email.");
+      setNoticeCode(why.startsWith("chyba-") ? why.slice(6).replace(/[^a-z0-9-]/g, "").slice(0, 40) : null);
       setOpened({ kind: "account", path: location.pathname });
     });
     return () => clearTimeout(id);
@@ -141,7 +143,7 @@ export function TopBar() {
       </div>
       {panel && (
         <div className="absolute inset-x-3 top-[calc(100%+6px)] max-h-[calc(100dvh-80px)] overflow-y-auto rounded-[var(--radius-card)] border border-[var(--border)] bg-[var(--card-bg)] p-2 shadow-[var(--shadow-float)] lg:inset-x-auto lg:right-0 lg:w-80">
-          {panel === "menu" ? <MenuList /> : <AccountPanel notice={notice} onDone={() => setNotice(null)} />}
+          {panel === "menu" ? <MenuList /> : <AccountPanel notice={notice} code={noticeCode} onDone={() => setNotice(null)} />}
         </div>
       )}
     </div>
@@ -187,7 +189,7 @@ const ERRORS: Record<string, string> = {
   mail: "Email sa nepodarilo poslať. Skúste to neskôr.",
 };
 
-function AccountPanel({ notice, onDone }: { notice: string | null; onDone: () => void }) {
+function AccountPanel({ notice, code: why, onDone }: { notice: string | null; code: string | null; onDone: () => void }) {
   const t = useT();
   const lang = useLang();
   const { account } = useAccount();
@@ -261,7 +263,7 @@ function AccountPanel({ notice, onDone }: { notice: string | null; onDone: () =>
         <p className="text-[17px] font-bold">{t("Prihláste sa")}</p>
         <p className="text-sm text-[var(--muted)]">{t("Bez hesla: cez Google alebo kódom na email.")}</p>
       </div>
-      {(notice || error) && <p className="rounded-lg bg-[var(--warn-bg)] px-3 py-2 text-sm font-semibold text-[var(--warn)]">{t((error ?? notice)!)}</p>}
+      {(notice || error) && <p className="rounded-lg bg-[var(--warn-bg)] px-3 py-2 text-sm font-semibold text-[var(--warn)]">{t((error ?? notice)!)}{!error && why && <span className="font-normal opacity-75"> ({why})</span>}</p>}
       {step === "email" ? (
         <>
           <a

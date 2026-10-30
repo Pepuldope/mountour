@@ -23,8 +23,9 @@ function payload(idToken: string): Record<string, unknown> | null {
 
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
-  const id = process.env.GOOGLE_CLIENT_ID;
-  const secret = process.env.GOOGLE_CLIENT_SECRET;
+  // Trimmed: a key pasted into Cloudflare with a space or new line still works.
+  const id = process.env.GOOGLE_CLIENT_ID?.trim();
+  const secret = process.env.GOOGLE_CLIENT_SECRET?.trim();
   const redirect = `${url.origin}/api/auth/google`;
   const code = url.searchParams.get("code");
 
@@ -43,7 +44,8 @@ export async function GET(request: Request): Promise<Response> {
   // Back from Google: the state must match the one this browser was given.
   const saved = (request.headers.get("cookie") ?? "").match(new RegExp(`(?:^|;\\s*)${STATE_COOKIE}=([A-Za-z0-9_-]+)\\.([^;]*)`));
   const next = safeNext(saved ? decodeURIComponent(saved[2]) : "/");
-  if (!saved || saved[1] !== url.searchParams.get("state") || !id || !secret) return back(next, "chyba");
+  // Each failure says which step it was (shown after the message), so a screenshot tells us.
+  if (!saved || saved[1] !== url.searchParams.get("state") || !id || !secret) return back(next, "chyba-stav");
   try {
     const res = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
@@ -51,17 +53,18 @@ export async function GET(request: Request): Promise<Response> {
       body: new URLSearchParams({ code, client_id: id, client_secret: secret, redirect_uri: redirect, grant_type: "authorization_code" }),
     });
     if (!res.ok) {
-      console.warn("[auth] google token:", res.status, (await res.text()).slice(0, 200));
-      return back(next, "chyba");
+      const text = await res.text();
+      console.warn("[auth] google token:", res.status, text.slice(0, 200));
+      const why = (text.match(/"error"\s*:\s*"([a-z_]+)"/)?.[1] ?? String(res.status)).replace(/_/g, "-");
+      return back(next, `chyba-token-${why}`);
     }
     const { id_token } = (await res.json()) as { id_token?: string };
     // Straight from Google over TLS, so its claims are Google's (OpenID Connect, code flow).
     const p = id_token ? payload(id_token) : null;
     const email = cleanEmail(p?.email);
     const iss = String(p?.iss ?? "");
-    if (!p || !email || p.email_verified !== true || p.aud !== id || !iss.endsWith("accounts.google.com") || typeof p.sub !== "string") {
-      return back(next, "chyba");
-    }
+    const bad = !p ? "id" : !email ? "email" : p.email_verified !== true ? "overenie" : p.aud !== id ? "aud" : !iss.endsWith("accounts.google.com") ? "iss" : typeof p.sub !== "string" ? "sub" : null;
+    if (bad || !p || !email || typeof p.sub !== "string") return back(next, `chyba-udaje-${bad}`);
     const account = await accountFor(email, { sub: p.sub, name: typeof p.name === "string" ? p.name.slice(0, 80) : null });
     const token = await startSession(account.id);
     const headers = new Headers({ Location: next, "Cache-Control": "no-store" });
@@ -70,6 +73,6 @@ export async function GET(request: Request): Promise<Response> {
     return new Response(null, { status: 302, headers });
   } catch (err) {
     console.warn("[auth] google failed:", err);
-    return back(next, "chyba");
+    return back(next, "chyba-db");
   }
 }
