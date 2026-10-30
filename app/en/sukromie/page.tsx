@@ -42,7 +42,7 @@ export default function PrivacyPage() {
       <p>
         An account is optional. We store your email, your name if you give one (with Google, the one Google sends us,
         and the Google account number), and when you last signed in. We never store your password in readable form,
-        only a salted fingerprint of it (PBKDF2) that the password can't be worked out from. The email code is sent through the Resend service and deleted once used or after 15 minutes. Your
+        only a salted fingerprint of it (PBKDF2) that the password cannot be worked out from. The email code is sent through the Resend service and deleted once used or after 15 minutes. Your
         browser keeps the sign-in in one cookie (turuj_s) for at most 180 days; we store only a fingerprint of it. It
         is set only after you sign in and is not used for advertising. We delete the account and all its data on request.
       </p>
