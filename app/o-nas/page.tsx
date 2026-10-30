@@ -11,7 +11,7 @@ export const metadata = pageMetadata({
 
 export default function AboutPage() {
   return (
-    <InfoPage title="O nás" intro="Túruj vám povie, kam dnes na výlet, aby ste stihli cestu, túru aj návrat za svetla.">
+    <InfoPage title="O nás" intro="Túruj vám povie, kam na výlet, aby ste stihli cestu, túru aj návrat za svetla.">
       <p>
         Robia ho Peter Nemčok (trasy, výpočty, web) a Radoslav Nemec (testovanie, propagácia). Začali sme ako maturitný
         projekt v roku 2026 a chceme, aby vydržal. Túruj je zadarmo a poradie výletov si nikto nemôže kúpiť.

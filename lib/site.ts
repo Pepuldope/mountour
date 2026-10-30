@@ -57,7 +57,7 @@ export const OG_IMAGE = {
   url: "/og-image.png",
   width: 1200,
   height: 630,
-  alt: "Túruj – kam dnes na výlet, aby ste boli späť za svetla",
+  alt: "Túruj – kam na výlet, aby ste boli späť za svetla",
 };
 
 export const REPO_URL = "https://github.com/Pepuldope/turuj";

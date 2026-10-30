@@ -787,6 +787,7 @@ export const EN: Record<string, string> = {
 
   // Footer and info pages
   "O nás": "About",
+  "Ako to funguje": "How it works",
   "Súkromie": "Privacy",
   "Upozornenie": "Disclaimer",
   "Zdroje": "Sources",

@@ -2,6 +2,12 @@ import type { GeoJSONSource } from "maplibre-gl";
 
 /** Points per message to the map's worker: about 10 ms of copying on a mid-range phone. */
 const POINTS_PER_STEP = 8000;
+/**
+ * For the whole-country lines while the page opens: nobody is zooming yet, and every
+ * batch redraws the map, so fewer and bigger ones (30 small batches kept the phone busy
+ * redrawing for seconds after load, Lighthouse 2026-10-30).
+ */
+export const OVERVIEW_POINTS_PER_STEP = 60000;
 
 /**
  * Adds lines to a map source a small batch at a time. The map copies whatever
@@ -10,7 +16,10 @@ const POINTS_PER_STEP = 8000;
  * another, each when the map has taken the previous one, so a frame is never
  * held up for long and only the tiles the new lines touch are redrawn.
  */
-export function lineFeeder(source: () => GeoJSONSource | undefined): (features: GeoJSON.Feature[]) => Promise<void> {
+export function lineFeeder(
+  source: () => GeoJSONSource | undefined,
+  pointsPerStep = POINTS_PER_STEP
+): (features: GeoJSON.Feature[]) => Promise<void> {
   let nextId = 0;
   let queue = Promise.resolve();
   return (features) => {
@@ -24,7 +33,7 @@ export function lineFeeder(source: () => GeoJSONSource | undefined): (features: 
       f.id = nextId++;
       batch.push(f);
       points += f.geometry.type === "LineString" ? f.geometry.coordinates.length : 1;
-      if (points >= POINTS_PER_STEP) {
+      if (points >= pointsPerStep) {
         send(batch);
         batch = [];
         points = 0;
