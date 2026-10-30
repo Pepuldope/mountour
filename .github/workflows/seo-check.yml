@@ -22,17 +22,26 @@ jobs:
           for u in https://turuj.sk/ https://turuj.sk/en https://turuj.sk/vylety-z https://turuj.sk/vylety-z/poprad https://turuj.sk/trasa/krivan https://turuj.sk/trasa/velky-choc https://turuj.sk/o-nas https://turuj.nemcok-peter123.workers.dev/; do
             echo "## $u" >> "$GITHUB_STEP_SUMMARY"
             echo '```' >> "$GITHUB_STEP_SUMMARY"
-            curl -sS -o page.html -D - -A "Mozilla/5.0 (compatible; Googlebot/2.1)" "$u" | grep -iE "^HTTP|robots|location|content-signal" >> "$GITHUB_STEP_SUMMARY" || true
-            grep -oiE '<meta name="robots"[^>]*>' page.html >> "$GITHUB_STEP_SUMMARY" || true
+            for ua in "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Mobile Safari/537.36 Chrome-Lighthouse"; do
+              echo "UA: ${ua:0:40}... -> $(curl -sS -o page.html -w '%{http_code}' -A "$ua" "$u") $(grep -oiE '<title>[^<]*</title>|<meta name="robots"[^>]*>' page.html | tr '\n' ' ')" >> "$GITHUB_STEP_SUMMARY"
+            done
             lighthouse "$u" --only-categories=seo --output=json --output-path=lh.json --quiet --chrome-flags="--headless=new --no-sandbox" || true
             node -e '
               const r = require("./lh.json");
-              console.log("SEO score:", Math.round(r.categories.seo.score * 100));
+              console.log("SEO score:", Math.round(r.categories.seo.score * 100), "| seen:", r.finalDisplayedUrl, "| title audit:", r.audits["document-title"].score);
               for (const ref of r.categories.seo.auditRefs) {
                 const a = r.audits[ref.id];
                 if (a.score !== null && a.score < 1) console.log("FAIL", a.id, "-", a.title, JSON.stringify((a.details && a.details.items || []).slice(0, 5)).slice(0, 600));
               }' >> "$GITHUB_STEP_SUMMARY" 2>&1 || echo "lighthouse failed" >> "$GITHUB_STEP_SUMMARY"
             echo '```' >> "$GITHUB_STEP_SUMMARY"
+          done
+          echo '## PageSpeed Insights (Google servers)' >> "$GITHUB_STEP_SUMMARY"
+          for u in https://turuj.sk/ https://turuj.sk/trasa/krivan; do
+            curl -sS "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=$u&category=seo&strategy=mobile" -o psi.json || true
+            node -e '
+              const r = require("./psi.json"); if (!r.lighthouseResult) { console.log("PSI error", JSON.stringify(r.error || r).slice(0, 300)); process.exit(0); }
+              const l = r.lighthouseResult; console.log(process.argv[1], "PSI SEO:", Math.round(l.categories.seo.score * 100));
+              for (const ref of l.categories.seo.auditRefs) { const a = l.audits[ref.id]; if (a.score !== null && a.score < 1) console.log("FAIL", a.id, JSON.stringify((a.details && a.details.items || []).slice(0, 3)).slice(0, 400)); }' "$u" >> "$GITHUB_STEP_SUMMARY" 2>&1 || true
           done
           echo '## robots.txt' >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
