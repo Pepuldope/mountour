@@ -43,6 +43,24 @@ jobs:
               const l = r.lighthouseResult; console.log(process.argv[1], "PSI SEO:", Math.round(l.categories.seo.score * 100));
               for (const ref of l.categories.seo.auditRefs) { const a = l.audits[ref.id]; if (a.score !== null && a.score < 1) console.log("FAIL", a.id, JSON.stringify((a.details && a.details.items || []).slice(0, 3)).slice(0, 400)); }' "$u" >> "$GITHUB_STEP_SUMMARY" 2>&1 || true
           done
+          echo '## Caching and compression of what the home page loads' >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          ua="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+          curl -sS -A "$ua" https://turuj.sk/ -o home.html
+          for a in / /data/home-list.json /data/search.json /data/map/areas.json /data/photo-thumbs.json /icons/icon-192.png /og-image.png /manifest.json /sw.js $(grep -oE '/_next/static/[^"]+\.(js|css|woff2)' home.html | sort -u | head -4); do
+            echo "$a -> $(curl -sS -o /dev/null -D - -A "$ua" -H 'Accept-Encoding: gzip, br' "https://turuj.sk$a" | grep -iE '^(HTTP|cache-control|content-encoding|expires|cf-cache-status|content-length)' | tr -d '\r' | tr '\n' ' ')" >> "$GITHUB_STEP_SUMMARY"
+          done
+          echo "Scripts/styles/fonts in home HTML: $(grep -oE '/_next/static/[^"]+' home.html | sort -u | wc -l)" >> "$GITHUB_STEP_SUMMARY"
+          lighthouse https://turuj.sk/ --only-categories=performance --output=json --output-path=perf.json --quiet --chrome-flags="--headless=new --no-sandbox" || true
+          node -e '
+            const r = require("./perf.json"); const A = r.audits;
+            console.log("Performance (mobile):", Math.round(r.categories.performance.score * 100));
+            for (const id of ["first-contentful-paint","largest-contentful-paint","total-blocking-time","cumulative-layout-shift","speed-index","network-requests","total-byte-weight","uses-long-cache-ttl","uses-text-compression","redirects","render-blocking-resources","unused-javascript"]) {
+              const a = A[id]; if (!a) continue;
+              console.log(id, "|", a.displayValue || "", "| score", a.score, id === "network-requests" ? "| count " + (a.details.items || []).length : "");
+            }
+            const lc = A["uses-long-cache-ttl"]; if (lc && lc.details) for (const i of lc.details.items.slice(0, 12)) console.log("  short cache:", i.url.slice(0, 90), Math.round(i.cacheLifetimeMs / 1000) + "s");' >> "$GITHUB_STEP_SUMMARY" 2>&1 || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
           echo '## robots.txt' >> "$GITHUB_STEP_SUMMARY"
           echo '```' >> "$GITHUB_STEP_SUMMARY"
           curl -sS https://turuj.sk/robots.txt >> "$GITHUB_STEP_SUMMARY"

@@ -33,6 +33,8 @@ const CSP = [
 // via public/_headers.
 const SECURITY_HEADERS = [
   { key: "X-Frame-Options", value: "DENY" },
+  // HTTPS only from the first visit on (no includeSubDomains: other subdomains may come later).
+  { key: "Strict-Transport-Security", value: "max-age=31536000" },
   { key: "Content-Security-Policy", value: CSP },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

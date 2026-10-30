@@ -20,7 +20,7 @@ export function TownTile({ tile, lang = "sk" }: { tile: Tile; lang?: Lang }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={tile.photo.url}
-            alt=""
+            alt={tile.name}
             loading="lazy"
             decoding="async"
             // No cookies and no referrer to Wikimedia (it would otherwise set its own tracking cookies;
