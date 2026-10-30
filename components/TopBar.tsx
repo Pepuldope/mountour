@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import { googleHref, signOut, signedIn, useAccount } from "@/lib/account";
+import type { MyAccount } from "@/lib/account";
 import { LangLink, useLang, useT } from "@/lib/i18n";
 import { langOfPath, langPath, skPath } from "@/lib/lang";
 import { useSavedTrips } from "@/lib/savedTrips";
@@ -187,15 +188,26 @@ const ERRORS: Record<string, string> = {
   expired: "Tento kód už neplatí. Pošlite si nový.",
   off: "Prihlásenie teraz nefunguje. Skúste to neskôr.",
   mail: "Email sa nepodarilo poslať. Skúste to neskôr.",
+  pw: "Heslo musí mať aspoň 8 znakov.",
+  wrongpw: "Email alebo heslo nesedí.",
+  locked: "Priveľa pokusov. Skúste o 15 minút alebo si nastavte nové heslo.",
+  nopw: "Tento účet ešte nemá heslo. Nastavte si ho cez „Zabudli ste heslo?“ alebo sa prihláste cez Google.",
 };
+
+/** login and signup are the two tabs; reset ("Zabudli ste heslo?") and code (sign in by email code) hang off login. */
+type Mode = "login" | "signup" | "reset" | "code";
 
 function AccountPanel({ notice, code: why, onDone }: { notice: string | null; code: string | null; onDone: () => void }) {
   const t = useT();
   const lang = useLang();
   const { account } = useAccount();
+  const [mode, setMode] = useState<Mode>("login");
+  const [verify, setVerify] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPw, setShowPw] = useState(false);
   const [code, setCode] = useState("");
-  const [step, setStep] = useState<"email" | "code">("email");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -218,54 +230,186 @@ function AccountPanel({ notice, code: why, onDone }: { notice: string | null; co
     );
   }
 
+  const go = (m: Mode) => {
+    setMode(m);
+    setVerify(false);
+    setError(null);
+    setCode("");
+  };
+
   async function post(url: string, body: object): Promise<{ ok: boolean; json: Record<string, unknown> }> {
     const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     return { ok: r.ok, json: await r.json().catch(() => ({})) };
   }
 
-  async function sendCode(e?: FormEvent) {
-    e?.preventDefault();
+  async function run(job: () => Promise<void>) {
     setBusy(true);
     setError(null);
     onDone();
     try {
-      const { ok, json } = await post("/api/auth/email", { email, lang });
-      if (ok) {
-        setStep("code");
-        setCode("");
-      } else setError(ERRORS[String(json.error)] ?? ERRORS.off);
+      await job();
     } catch {
       setError(ERRORS.off);
     }
     setBusy(false);
   }
 
-  async function checkCode(e: FormEvent) {
+  const fail = (json: Record<string, unknown>) => setError(ERRORS[String(json.error)] ?? ERRORS.off);
+
+  const sendCode = () =>
+    run(async () => {
+      const { ok, json } = await post("/api/auth/email", { email, lang });
+      if (ok) {
+        setVerify(true);
+        setCode("");
+      } else fail(json);
+    });
+
+  function submit(e: FormEvent) {
     e.preventDefault();
-    setBusy(true);
-    setError(null);
-    try {
-      const { ok, json } = await post("/api/auth/code", { email, code });
-      if (ok && json.account) signedIn(json.account as { email: string; name: string | null });
-      else setError(ERRORS[String(json.error)] ?? ERRORS.off);
-    } catch {
-      setError(ERRORS.off);
+    if (mode === "login") {
+      return void run(async () => {
+        const { ok, json } = await post("/api/auth/password", { email, password });
+        if (ok && json.account) signedIn(json.account as MyAccount);
+        else fail(json);
+      });
     }
-    setBusy(false);
+    // Sign-up and a new password are checked here first, so the email isn't sent for nothing.
+    if ((mode === "signup" || (mode === "reset" && verify)) && password.length < 8) return setError(ERRORS.pw);
+    if (!verify) return void sendCode();
+    void run(async () => {
+      const body = mode === "signup" ? { email, code, password, name } : mode === "reset" ? { email, code, password } : { email, code };
+      const { ok, json } = await post("/api/auth/code", body);
+      if (ok && json.account) signedIn(json.account as MyAccount);
+      else fail(json);
+    });
   }
 
   const input = "w-full rounded-xl border border-[var(--border)] bg-[var(--background)] px-3 py-2.5 text-[16px] outline-none focus:border-[var(--accent)]";
   const main = "w-full rounded-full bg-[var(--accent)] px-4 py-2.5 text-[15px] font-bold text-[var(--accent-contrast)] disabled:opacity-60";
+  const link = "text-sm font-semibold text-[var(--accent)]";
+  const codeOk = code.replace(/\D/g, "").length === 6;
+
+  const pwField = (id: string, label: string, auto: string) => (
+    <div className="relative">
+      <label className="sr-only" htmlFor={id}>{t(label)}</label>
+      <input
+        id={id}
+        type={showPw ? "text" : "password"}
+        required
+        minLength={auto === "new-password" ? 8 : undefined}
+        autoComplete={auto}
+        placeholder={t(label)}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        className={`${input} pr-20`}
+      />
+      <button type="button" onClick={() => setShowPw((v) => !v)} className="absolute top-1/2 right-3 -translate-y-1/2 text-xs font-bold text-[var(--accent)]">
+        {showPw ? t("Skryť") : t("Ukázať")}
+      </button>
+    </div>
+  );
+
+  const emailField = (
+    <>
+      <label className="sr-only" htmlFor="login-email">{t("Email")}</label>
+      <input id="login-email" type="email" required autoComplete="email" inputMode="email" placeholder={t("Email")} value={email} onChange={(e) => setEmail(e.target.value)} className={input} readOnly={verify} />
+    </>
+  );
+
+  const codeField = (
+    <>
+      <p className="text-sm">{t("Poslali sme 6-miestny kód na {email}. Pozrite aj spam.", { email })}</p>
+      <label className="sr-only" htmlFor="login-code">{t("Kód z emailu")}</label>
+      <input
+        id="login-code"
+        autoFocus
+        required
+        inputMode="numeric"
+        autoComplete="one-time-code"
+        pattern="[0-9 ]{6,7}"
+        maxLength={7}
+        placeholder="123456"
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        className={`${input} text-center text-[22px] font-bold tracking-[0.3em]`}
+      />
+    </>
+  );
+
+  const label =
+    mode === "login"
+      ? t("Prihlásiť sa")
+      : mode === "signup"
+        ? verify ? t("Vytvoriť účet") : t("Pokračovať")
+        : mode === "reset"
+          ? verify ? t("Uložiť heslo a prihlásiť sa") : t("Poslať kód")
+          : verify ? t("Prihlásiť sa") : t("Poslať kód");
 
   return (
     <div className="flex flex-col gap-3 p-2">
-      <div>
-        <p className="text-[17px] font-bold">{t("Prihláste sa")}</p>
-        <p className="text-sm text-[var(--muted)]">{t("Bez hesla: cez Google alebo kódom na email.")}</p>
-      </div>
+      {mode === "login" || mode === "signup" ? (
+        <div role="tablist" className="grid grid-cols-2 rounded-full bg-[var(--segment-bg)] p-1 text-sm font-bold">
+          {(["login", "signup"] as const).map((m) => (
+            <button key={m} type="button" role="tab" aria-selected={mode === m} onClick={() => go(m)} className={`rounded-full px-3 py-2 ${mode === m ? "bg-[var(--card-bg)] shadow-sm" : "text-[var(--muted)]"}`}>
+              {m === "login" ? t("Prihlásiť sa") : t("Vytvoriť účet")}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div>
+          <button type="button" onClick={() => go("login")} className={link}>← {t("Späť na prihlásenie")}</button>
+          <p className="pt-2 text-[17px] font-bold">{mode === "reset" ? t("Nové heslo") : t("Prihlásenie kódom na email")}</p>
+          <p className="text-sm text-[var(--muted)]">
+            {mode === "reset" ? t("Pošleme vám kód na email a potom si nastavíte nové heslo.") : t("Pošleme vám 6-miestny kód, heslo netreba.")}
+          </p>
+        </div>
+      )}
+      {mode === "signup" && !verify && <p className="text-sm text-[var(--muted)]">{t("Účet je zadarmo. Email si overíme jedným kódom.")}</p>}
       {(notice || error) && <p className="rounded-lg bg-[var(--warn-bg)] px-3 py-2 text-sm font-semibold text-[var(--warn)]">{t((error ?? notice)!)}{!error && why && <span className="font-normal opacity-75"> ({why})</span>}</p>}
-      {step === "email" ? (
+
+      <form onSubmit={submit} className="flex flex-col gap-2">
+        {mode === "signup" && !verify && (
+          <>
+            <label className="sr-only" htmlFor="login-name">{t("Meno")}</label>
+            <input id="login-name" autoComplete="name" placeholder={t("Meno")} value={name} onChange={(e) => setName(e.target.value)} className={input} maxLength={80} />
+          </>
+        )}
+        {!verify && emailField}
+        {mode === "login" && pwField("login-pw", "Heslo", "current-password")}
+        {mode === "signup" && !verify && (
+          <>
+            {pwField("login-pw", "Heslo", "new-password")}
+            <p className="px-1 text-xs text-[var(--muted)]">{t("Aspoň 8 znakov.")}</p>
+          </>
+        )}
+        {verify && codeField}
+        {mode === "reset" && verify && pwField("login-pw", "Nové heslo", "new-password")}
+        <button type="submit" disabled={busy || (verify && !codeOk)} className={main}>
+          {busy ? t("Chvíľku…") : label}
+        </button>
+        {verify ? (
+          <div className="flex justify-between gap-2">
+            <button type="button" className={link} onClick={() => (setVerify(false), setError(null))}>{t("Iný email")}</button>
+            <button type="button" className={link} disabled={busy} onClick={() => void sendCode()}>{t("Poslať znova")}</button>
+          </div>
+        ) : (
+          mode === "login" && (
+            <div className="flex flex-wrap justify-between gap-x-3 gap-y-1">
+              <button type="button" className={link} onClick={() => go("reset")}>{t("Zabudli ste heslo?")}</button>
+              <button type="button" className={link} onClick={() => go("code")}>{t("Prihlásiť sa kódom")}</button>
+            </div>
+          )
+        )}
+      </form>
+
+      {(mode === "login" || mode === "signup") && !verify && (
         <>
+          <div className="flex items-center gap-3 text-xs font-semibold text-[var(--muted)]">
+            <span className="h-px flex-1 bg-[var(--border)]" />
+            {t("alebo")}
+            <span className="h-px flex-1 bg-[var(--border)]" />
+          </div>
           <a
             href="/api/auth/google"
             onClick={(e) => (e.currentTarget.href = googleHref())}
@@ -274,44 +418,7 @@ function AccountPanel({ notice, code: why, onDone }: { notice: string | null; co
             <GoogleG />
             {t("Pokračovať cez Google")}
           </a>
-          <div className="flex items-center gap-3 text-xs font-semibold text-[var(--muted)]">
-            <span className="h-px flex-1 bg-[var(--border)]" />
-            {t("alebo emailom")}
-            <span className="h-px flex-1 bg-[var(--border)]" />
-          </div>
-          <form onSubmit={sendCode} className="flex flex-col gap-2">
-            <label className="sr-only" htmlFor="login-email">{t("Email")}</label>
-            <input id="login-email" type="email" required autoComplete="email" inputMode="email" placeholder={t("vas@email.sk")} value={email} onChange={(e) => setEmail(e.target.value)} className={input} />
-            <button type="submit" disabled={busy || !email} className={main}>
-              {busy ? t("Posielame…") : t("Poslať kód")}
-            </button>
-          </form>
         </>
-      ) : (
-        <form onSubmit={checkCode} className="flex flex-col gap-2">
-          <p className="text-sm">{t("Poslali sme 6-miestny kód na {email}. Pozrite aj spam.", { email })}</p>
-          <label className="sr-only" htmlFor="login-code">{t("Kód z emailu")}</label>
-          <input
-            id="login-code"
-            autoFocus
-            required
-            inputMode="numeric"
-            autoComplete="one-time-code"
-            pattern="[0-9 ]{6,7}"
-            maxLength={7}
-            placeholder="123456"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            className={`${input} text-center text-[22px] font-bold tracking-[0.3em]`}
-          />
-          <button type="submit" disabled={busy || code.replace(/\D/g, "").length !== 6} className={main}>
-            {busy ? t("Overujeme…") : t("Prihlásiť sa")}
-          </button>
-          <div className="flex justify-between gap-2 text-sm font-semibold text-[var(--accent)]">
-            <button type="button" onClick={() => (setStep("email"), setError(null))}>{t("Iný email")}</button>
-            <button type="button" disabled={busy} onClick={() => void sendCode()}>{t("Poslať znova")}</button>
-          </div>
-        </form>
       )}
     </div>
   );

@@ -44,8 +44,9 @@ export default function PrivacyPage() {
 
       <h2>Účet a prihlásenie</h2>
       <p>
-        Účet je dobrovoľný. Keď sa prihlásite cez Google alebo kódom na email, uložíme váš email, pri Google aj meno
-        a číslo účtu Google, ktoré nám Google pošle, a kedy ste sa naposledy prihlásili. Heslo nemáme. Kód na email
+        Účet je dobrovoľný. Uložíme váš email, meno, ak ho zadáte (pri Google to, ktoré nám Google pošle, a číslo
+        účtu Google), a kedy ste sa naposledy prihlásili. Heslo nemáme v čitateľnej podobe, len jeho solený odtlačok
+        (PBKDF2), z ktorého sa heslo spätne nedá zistiť. Kód na email
         posielame cez službu Resend a po použití alebo 15 minútach ho zmažeme. Prihlásenie si prehliadač drží v jednej
         cookie (turuj_s) najviac 180 dní; u nás je uložený len jej odtlačok. Nastavuje sa až po prihlásení a nie je
         reklamná. Účet so všetkými údajmi na požiadanie zmažeme.

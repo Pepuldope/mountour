@@ -7,14 +7,14 @@ const FROM = "Túruj <prihlasenie@turuj.sk>";
 
 const TEXT = {
   sk: {
-    subject: (c: string) => `${c} je váš kód do Túruj`,
+    subject: (c: string) => `${c} je váš kód pre Túruj`,
     body: (c: string, min: number) =>
-      `Váš kód na prihlásenie do Túruj:\n\n${c}\n\nPlatí ${min} minút. Ak ste o kód nežiadali, tento email pokojne zmažte.\n\nTúruj · turuj.sk`,
+      `Váš kód pre Túruj:\n\n${c}\n\nPlatí ${min} minút. Ak ste o kód nežiadali, tento email pokojne zmažte.\n\nTúruj · turuj.sk`,
   },
   en: {
     subject: (c: string) => `${c} is your Túruj code`,
     body: (c: string, min: number) =>
-      `Your code to sign in to Túruj:\n\n${c}\n\nIt works for ${min} minutes. If you didn't ask for it, just delete this email.\n\nTúruj · turuj.sk`,
+      `Your Túruj code:\n\n${c}\n\nIt works for ${min} minutes. If you didn't ask for it, just delete this email.\n\nTúruj · turuj.sk`,
   },
 };
 
