@@ -152,6 +152,13 @@ export function townGenitive(id: string, name: string): string {
   return GENITIVE[id] ?? `mesta ${name}`;
 }
 
+/** "z Bratislavy" / "zo Senca" (zo before s, z, š, ž), "from Bratislava" in English. */
+export function townFrom(lang: "sk" | "en", id: string, name: string): string {
+  if (lang === "en") return `from ${name}`;
+  const gen = townGenitive(id, name);
+  return `${/^[szšž]/i.test(gen) ? "zo" : "z"} ${gen}`;
+}
+
 /** The town as "okolo {town}" needs it: genitive in Slovak, the plain name in English. */
 export function townOf(lang: "sk" | "en", id: string, name: string): string {
   return lang === "en" ? name : townGenitive(id, name);

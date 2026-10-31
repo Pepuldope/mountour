@@ -691,7 +691,7 @@ export const EN: Record<string, string> = {
   "Okolo {town}": "Around {town}",
   "Výlety okolo {town}": "Trips around {town}",
   "Ďalšie výlety okolo {town}": "More trips around {town}",
-  "Výlety na jeden deň: {town} a okolie": "Day trips from {town}",
+  "Výlety {from} a okolia – túry na jeden deň": "Day trips {from} and around – one-day hikes",
   "Jednodňové výlety do hôr a prírody do hodiny a pol autom z mesta {town}: hrady, vrcholy, jaskyne, výlety s deťmi. Koľko trvá cesta a túra a kedy vyraziť.": "Day trips to the mountains and nature within an hour and a half by car from {town}: castles, summits, caves, trips with kids. How long the drive and hike take, and when to leave.",
   "Hrady, vrcholy a jaskyne do 1,5 h autom": "Castles, peaks and caves within 1.5 h by car",
   "{n} do hodiny a pol autom": "{n} within 90 minutes by car",
@@ -701,8 +701,9 @@ export const EN: Record<string, string> = {
   "S deťmi do hodiny": "With kids, within an hour",
 
   // Trip page
-  "{name} – túra, parkovanie a čas návratu": "{name} – hike, parking and return time",
-  "{name} zo štartu {start} ({km}) – túra a parkovanie": "{name} from {start} ({km}) – hike and parking",
+  "{name} – výlet {from}: túra, parkovanie": "{name} – day trip {from}: hike, parking",
+  "{name} – výlet a túra: parkovanie, čas návratu": "{name} – trip and hike: parking, return time",
+  "{name} zo štartu {start} ({km}) – výlet, túra a parkovanie": "{name} from {start} ({km}) – trip, hike and parking",
   "O výlete": "About the trip",
   "{name}: {facts}. Kde zaparkovať, kedy najneskôr vyraziť a stihnúť návrat za svetla.": "{name}: {facts}. Where to park, and the latest time to leave and be back in daylight.",
   "Uložiť výlet": "Save trip",
