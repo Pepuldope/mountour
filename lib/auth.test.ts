@@ -100,3 +100,34 @@ describe("accounts and sessions", () => {
     expect(stats?.months[0]).toMatchObject({ month, created: 3, google: 1, email: 1 });
   });
 });
+
+describe("passwords", () => {
+  it("hashes with a salt and checks", async () => {
+    const h = await auth.hashPassword("horske-chodniky");
+    expect(h).toMatch(/^pbkdf2\$\d+\$/);
+    expect(await auth.hashPassword("horske-chodniky")).not.toBe(h);
+    expect(await auth.passwordMatches("horske-chodniky", h)).toBe(true);
+    expect(await auth.passwordMatches("horske-chodnik", h)).toBe(false);
+  });
+
+  it("signs in with the password, and waits after too many wrong ones", async () => {
+    const a = await auth.accountFor("p@b.sk");
+    expect(await auth.passwordLogin("p@b.sk", "whatever1")).toEqual({ ok: false, why: "nopw" });
+    await auth.setPassword(a.id, "spravne-heslo");
+    expect(await auth.passwordLogin("nikto@b.sk", "spravne-heslo")).toEqual({ ok: false, why: "wrong" });
+    expect(await auth.passwordLogin("p@b.sk", "spravne-heslo")).toMatchObject({ ok: true, account: { id: a.id } });
+    for (let i = 1; i < auth.PW_TRIES; i++) expect((await auth.passwordLogin("p@b.sk", "zle-heslo"))).toEqual({ ok: false, why: "wrong" });
+    expect(await auth.passwordLogin("p@b.sk", "zle-heslo")).toEqual({ ok: false, why: "locked" });
+    expect(await auth.passwordLogin("p@b.sk", "spravne-heslo")).toEqual({ ok: false, why: "locked" });
+    // A new password (after an email code) lifts the wait.
+    await auth.setPassword(a.id, "nove-heslo-1");
+    expect(await auth.passwordLogin("p@b.sk", "nove-heslo-1")).toMatchObject({ ok: true });
+  });
+
+  it("takes passwords of 8 to 200 characters", () => {
+    expect(auth.okPassword("1234567")).toBe(false);
+    expect(auth.okPassword("12345678")).toBe(true);
+    expect(auth.okPassword("x".repeat(201))).toBe(false);
+    expect(auth.okPassword(12345678)).toBe(false);
+  });
+});
