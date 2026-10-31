@@ -11,6 +11,8 @@ export type Pt = [number, number];
 type OrsProfile = "driving-car" | "foot-hiking" | "foot-walking";
 
 const DAY_S = 86400;
+/** HeiGIT retires api.openrouteservice.org on 2-6 Nov 2026; the same keys work here. */
+const ORS_BASE = "https://api.heigit.org/openrouteservice/v2";
 /** A router that hangs must not hold the page: give up after this long. */
 export const ROUTER_TIMEOUT_MS = 8000;
 /** The last stretch to a parking is a nicety (without it the drive stops a little short): never wait long for it. */
@@ -53,7 +55,7 @@ export async function viaOrs(
   if (known) return known;
   if (!(await spendOrsCall())) throw new OverBudget(`ORS ${profile}: daily budget spent`);
   // POST so we can lift the 350 m snapping limit for points off the network.
-  const res = await fetch(`https://api.openrouteservice.org/v2/directions/${profile}/geojson`, {
+  const res = await fetch(`${ORS_BASE}/directions/${profile}/geojson`, {
     method: "POST",
     headers: { Authorization: key, Accept: "application/geo+json", "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -85,7 +87,7 @@ const MATRIX_TIMEOUT_MS = 15000;
  */
 export async function driveMatrix(key: string, from: Pt, to: Pt[]): Promise<(number | null)[]> {
   if (!(await spendOrsCall("matrix"))) throw new OverBudget("ORS matrix: daily budget spent");
-  const res = await fetch("https://api.openrouteservice.org/v2/matrix/driving-car", {
+  const res = await fetch(`${ORS_BASE}/matrix/driving-car`, {
     method: "POST",
     headers: { Authorization: key, Accept: "application/json", "Content-Type": "application/json" },
     body: JSON.stringify({

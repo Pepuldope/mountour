@@ -15,7 +15,7 @@ const CSP = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://tiles.openfreemap.org https://thumb.wikimedia.org https://upload.wikimedia.org",
   "font-src 'self' data:",
-  "connect-src 'self' https://tiles.openfreemap.org https://nominatim.openstreetmap.org https://cloud.umami.is https://api-gateway.umami.dev https://cloudflareinsights.com",
+  "connect-src 'self' https://tiles.openfreemap.org https://nominatim.openstreetmap.org https://cloud.umami.is https://gateway.umami.is https://api-gateway.umami.dev https://cloudflareinsights.com",
   "worker-src 'self' blob:",
   "child-src 'self' blob:",
   "frame-src 'none'",
