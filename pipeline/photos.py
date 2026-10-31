@@ -489,7 +489,24 @@ def main():
     else:
         log("no MAPILLARY_TOKEN: Mapillary skipped")
     # A bad hour at Commons or Wikidata returns little: keep last week's file rather than blank tiles.
-    before = len(json.loads(OUT.read_text()).get("photos", {})) if OUT.exists() else 0
+    old = json.loads(OUT.read_text()).get("photos", {}) if OUT.exists() else {}
+    before = len(old)
+    # A place that had a photo keeps it when this run found none (Commons search returned less,
+    # or Mapillary was skipped without its token). Blocked files and Mapillary photos whose
+    # download is gone still drop out.
+    kept = 0
+    for i in ids:
+        p = old.get(i)
+        if i in photos or not p:
+            continue
+        if p.get("via") == "mapillary":
+            if i in fix.get("no_mapillary", []) or not (MLY_DIR / p["url"].rsplit("/", 1)[1]).exists():
+                continue
+        elif urllib.parse.unquote(p.get("page", "").rsplit("File:", 1)[-1]).replace("_", " ") in blocked:
+            continue
+        photos[i] = p
+        kept += 1
+    log(f"kept {kept} photos from last time that this run did not find again")
     if len(photos) < 0.7 * before:
         log(f"only {len(photos)} photos against {before} last time: keeping the old file")
         return 1
